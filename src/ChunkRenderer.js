@@ -1,4 +1,4 @@
-ChunkRenderer = function(gl, tileSizeX, tileSize) {
+ChunkRenderer = function(gl, tileSize) {
     this.gl = gl;
     this.tileSize = tileSize;
     this.chunkGLWorld = new Map2D();
@@ -20,9 +20,9 @@ ChunkRenderer = function(gl, tileSizeX, tileSize) {
     this.loadTexture();
 
     this.shaderProgram = null;
-    this.shaders = [
-       createShader("data/shaders/terrain/vert.glsl"),
-       createShader("data/shaders/terrain/frag.glsl")
+    this.shaderRequests = [
+       new ShaderRequest("data/shaders/terrain/vert.glsl", gl.VERTEX_SHADER),
+       new ShaderRequest("data/shaders/terrain/frag.glsl", gl.FRAGMENT_SHADER)
     ];
 
     this.isReady = false; // False until shaders, buffers, attributes and uniforms are loaded.
@@ -33,7 +33,7 @@ ChunkRenderer.prototype.lazyInit = function() {
         return;
 
     if (!this.shaderProgram)
-        this.shaderProgram = tryLinkShaderProgram(this.shaders);
+        this.shaderProgram = tryLinkShaderProgram(this.gl, this.shaderRequests);
     
     if (this.shaderProgram && !this.buffer) {
         var size = this.tileSize*CHUNK_DIM;
@@ -62,16 +62,18 @@ ChunkRenderer.prototype.lazyInit = function() {
 			new Uint16Array(triangle_faces),
 		gl.STATIC_DRAW);
 		
+        gl.useProgram(this.shaderProgram);
+
 		// Get attribute locations
-		this.attributePos = this.shaderProgram.getAttributeLocation(gl, "aPos");
-		this.attributeUV = this.shaderProgram.getAttributeLocation(gl, "aUV");
+		this.attributePos = gl.getAttribLocation(this.shaderProgram, "aPos");
+		this.attributeUV = gl.getAttribLocation(this.shaderProgram, "aUV");
 		
 		// Get uniform locations
-		this.uniformTextureDensity = this.shaderProgram.getUniformLocation(gl, "textureDensity");
-		this.uniformTextureTiles = this.shaderProgram.getUniformLocation(gl, "textureTiles");
-		this.uniformTextureTerrain = this.shaderProgram.getUniformLocation(gl, "textureTerrain");
-		this.uniformMatVP = this.shaderProgram.getUniformLocation(gl, "matVP");
-		this.uniformMatM = this.shaderProgram.getUniformLocation(gl, "matM");
+		this.uniformTextureDensity = gl.getUniformLocation(this.shaderProgram, "textureDensity");
+		this.uniformTextureTiles = gl.getUniformLocation(this.shaderProgram, "textureTiles");
+		this.uniformTextureTerrain = gl.getUniformLocation(this.shaderProgram, "textureTerrain");
+		this.uniformMatVP = gl.getUniformLocation(this.shaderProgram, "matVP");
+		this.uniformMatM = gl.getUniformLocation(this.shaderProgram, "matM");
 		
 		this.isReady = true;
     }
@@ -113,13 +115,13 @@ ChunkRenderer.prototype.renderChunks = function(matVP, chunksToRender) {
 	gl.uniform1i(this.uniformTextureTile, 1);
     gl.uniform1i(this.uniformTextureDensity, 2);
     // Terrain texture:
-    gl.ativateTexture(gl.TEXTURE0);
+    gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, this.textureTerrain);
 
     for (var i = 0; i < chunksToRender.length; ++i) {
-        var x = chunks[i].x;
-        var y = chunks[i].y;        
-        var chunk = chunks[i].chunk;
+        var x = chunksToRender[i].x;
+        var y = chunksToRender[i].y;        
+        var chunk = chunksToRender[i].chunk;
         if (!chunk)
             continue;
 
@@ -148,8 +150,11 @@ ChunkRenderer.prototype.renderChunks = function(matVP, chunksToRender) {
 
 		// Attributes
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
+
+        gl.enableVertexAttribArray(this.attributePos);
+        gl.enableVertexAttribArray(this.attributeUv);
 		gl.vertexAttribPointer(this.attributePos, 2, gl.FLOAT, false, 4*4,0);
-		gl.vertexAttribPointer(this.attributeNormal, 2, gl.FLOAT, false, 4*4,8);
+		gl.vertexAttribPointer(this.attributeUv, 2, gl.FLOAT, false, 4*4,8);
 
 		// Render chunk
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferIndices);
@@ -162,26 +167,20 @@ ChunkRenderer.prototype.renderChunks = function(matVP, chunksToRender) {
 }
 
 ChunkRenderer.prototype.loadTexture = function() {
-	var get_texture=function(image_URL){
-		var image = new Image();
+    var image = new Image();
+	image.src = "data/textures/ground.png";
+	image.webglTexture = false;
+    var that = this;
+	image.onload = function(e) {
+		var texture = gl.createTexture();
+		gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
-		image.src = image_URL;
-		image.webglTexture = false;
-
-		image.onload = function(that, e) {
-			var texture = gl.createTexture();
-			gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-
-			gl.bindTexture(gl.TEXTURE_2D, texture);
-			gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-			gl.bindTexture(gl.TEXTURE_2D, null);
-			gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
-			that.texture = texture;
-		};
-		return image;
+		gl.bindTexture(gl.TEXTURE_2D, texture);
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+		gl.bindTexture(gl.TEXTURE_2D, null);
+		gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+		that.textureTerrain = texture;
 	};
-
-	get_texture(this, "data/textures/ground.png");
 }
