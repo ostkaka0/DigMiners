@@ -23,6 +23,7 @@
             }
 
             addScriptsRecursive("lib");
+            addScriptsRecursive("lib_front_end");
             addScriptsRecursive("src");
 
             // Run game/test

@@ -23,6 +23,7 @@ function loadScriptsRecursive(dir) {
 	}
 }
 
+loadScriptsRecursive("lib");
 loadScriptsRecursive("src");
 
 var world = new Map2D();
