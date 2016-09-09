@@ -10,3 +10,8 @@ function canvasInitGL(canvas) {
 
     return gl;
 }
+
+function canvasUpdateSize(canvas) {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
