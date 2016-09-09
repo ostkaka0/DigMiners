@@ -1,6 +1,5 @@
 v2 = {};
 
-console.log("v2 here");
 v2.create = function(x, y) {
 	var v = [toFix(x), toFix(y)];
 	
