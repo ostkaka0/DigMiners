@@ -1,4 +1,5 @@
 var CHUNK_DIM = 30;
+var CHUNK_DIM_2 = CHUNK_DIM + 2;
 var CHUNK_SIZE = 30*30;
 
 Chunk = function() {
