@@ -1,8 +1,8 @@
 #version 100
 
-uniform sampler2D densityTexture;
-uniform sampler2D tileTexture;
-uniform sampler2D texture;
+uniform sampler2D textureDensity;
+uniform sampler2D textureTiles;
+uniform sampler2D textureTerrain;
 
 varying highp vec2 fragUv;
 varying highp vec2 fragPos;
@@ -43,13 +43,13 @@ highp float noise(in highp vec2 pos)
 }
 
 highp vec3 getTileColor(Tile tile) {
-	highp vec2 texturePos = mod(fragUv*2.0/TILE_DIM_F, 1.0/TILE_DIM_F) + vec2(mod(tile.tileID/TILE_DIM_F, 1.0), mod(floor(tile.tileID/TILE_DIM_F)/TILE_DIM_F, 1.0));
-	return texture2D(texture, texturePos).xyz;
+	highp vec2 textureTerrainPos = mod(fragUv*2.0/TILE_DIM_F, 1.0/TILE_DIM_F) + vec2(mod(tile.tileID/TILE_DIM_F, 1.0), mod(floor(tile.tileID/TILE_DIM_F)/TILE_DIM_F, 1.0));
+	return texture2D(textureTerrain, textureTerrainPos).xyz;
 }
 
 highp float getDensity(highp vec2 pos) {
 	
-	highp float density = texture2D(densityTexture, (pos*30.0+1.0)/32.0).x;
+	highp float density = texture2D(textureDensity, (pos*30.0+1.0)/32.0).x;
 	highp float scale = 32.0;
 	for (int i = 0; i < 3; ++i) {
 		
@@ -61,9 +61,9 @@ highp float getDensity(highp vec2 pos) {
 }
 
 Tile calcTile(highp vec2 tilePos, highp vec2 delta) {
-	highp float density = texture2D(densityTexture, tilePos/32.0).x;
+	highp float density = texture2D(textureDensity, tilePos/32.0).x;
 	highp float strength = 1.0*density+clamp((1.0-delta.x)*(1.0-delta.y), 0.0, 1.0);
-	highp float tileID = texture2D(tileTexture, tilePos/32.0).x*255.0;
+	highp float tileID = texture2D(textureTiles, tilePos/32.0).x*255.0;
 	
 	strength -= 0.5*noise(64.0*fragUv+tileID);// + vec2(0.2*tileID, 0.2*mod(tileID, 4.0)));
 	strength -= 0.25*noise(128.0*fragUv+tileID);// + vec2(0.2*tileID, 0.2*mod(tileID, 4.0)));
@@ -141,11 +141,11 @@ void main() {
 	
 	
 	
-	//highp float tileID = 0.0;//tile.tileID;//texture2D(tileTexture, floor(fragUv*30.0+1.0)/32.0).x*255.0;
-	//highp vec2 texturePos = mod(fragUv*2.0/TILE_DIM_F, 1.0/TILE_DIM_F) + vec2(mod(tileID/TILE_DIM_F, 1.0), mod(floor(tileID/TILE_DIM_F)/TILE_DIM_F, 1.0));
-	highp vec3 textureColor = tileColor;//texture2D(texture, texturePos).xyz;
-	highp vec3 colorA = textureColor*clamp(0.125+density+0.5*(deltaStrength-1.0), 0.5, 1.0);
-	highp vec3 colorB = textureColor*clamp(0.5-0.25*density, 0.0, 1.0);
+	//highp float tileID = 0.0;//tile.tileID;//texture2D(textureTiles, floor(fragUv*30.0+1.0)/32.0).x*255.0;
+	//highp vec2 textureTerrainPos = mod(fragUv*2.0/TILE_DIM_F, 1.0/TILE_DIM_F) + vec2(mod(tileID/TILE_DIM_F, 1.0), mod(floor(tileID/TILE_DIM_F)/TILE_DIM_F, 1.0));
+	highp vec3 textureTerrainColor = tileColor;//texture2D(textureTerrain, textureTerrainPos).xyz;
+	highp vec3 colorA = textureTerrainColor*clamp(0.125+density+0.5*(deltaStrength-1.0), 0.5, 1.0);
+	highp vec3 colorB = textureTerrainColor*clamp(0.5-0.25*density, 0.0, 1.0);
 	
 	gl_FragColor = vec4(mix(colorB, colorA, clamp(32.0*(density-0.5), 0.0, 1.0)), 1.0);
 	gl_FragColor = vec4(vec3(a.strength), 1.0);

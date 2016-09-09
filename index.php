@@ -5,34 +5,31 @@
     </head>
     <body>
         <canvas class="canvas" id="canvas"></canvas>
-
+        <script type = "text/javascript">
+            var isServer = false;
+        </script>        
         <?php
-            function addScript($path, $type) {
-                echo "\n\t\t" . '<script id="' . $path . '" type="' . $type . '" src="' . $path . '"></script>';
+            function addScript($path) {
+                echo "\n\t\t" . '<script type="text/javascript" src="' . $path . '"></script>';
             }
 
-            function addScriptsRecursive($path, $type, $extensions) {
+            function addScriptsRecursive($path) {
                 $it = new RecursiveDirectoryIterator($path);
+                $extensions = [".js"];
                 foreach(new RecursiveIteratorIterator($it) as $file) {
-
                     if (in_array(substr($file, strrpos($file, '.')), $extensions))
                         addScript($file, $type);
                 }
             }
 
-            // Add shaders:
-            addScriptsRecursive("data/shaders", "glsl", [".glsl"]);
-
-            // Add source
-            addScriptsRecursive("lib", "text/javascript", [".js"]);
-            addScriptsRecursive("src", "text/javascript", [".js"]);
+            addScriptsRecursive("lib");
+            addScriptsRecursive("src");
 
             // Run game/test
             if (isset($_GET["test"]) && preg_match("/^[a-zA-Z0-9_]*$/i", $_GET["test"]))
                 addScript("tests/" . $_GET["test"] . ".js", "text/javascript");
             else
-                addScript("DigMiners.js", "text/javascript");
-            
+                addScript("DigMiners.js");
         ?>
     </body>
 </html>
