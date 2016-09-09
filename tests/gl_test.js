@@ -9,7 +9,7 @@ function start() {
     canvas = document.getElementById("canvas");
 
     // Initialize the GL context
-    gl = initWebGL(canvas);
+    gl = canvasInitGL(canvas);
 
     // Only continue if WebGL is available and working
     if (!gl) {
@@ -31,22 +31,9 @@ function start() {
     setInterval(render, 1000.0/60.0);
 }
 
-function initWebGL(canvas) {
-    gl = null;
-
-    // Try to grab the standard context. If it fails, fallback to experimental.
-    gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
-
-    // If we don't have a GL context, give up now
-    if (!gl)
-        alert("Unable to initialize WebGL. Your browser may not support it.");
-
-    return gl;
-}
-
-function initShaders() {
-    var shaderVert = getShader(gl, "shader-vert");
-    var shaderFrag = getShader(gl, "shader-frag");
+/*function initShaders() {
+    var shaderVert = getShader(gl, "data/shaders/tests/basic_vert.glsl", gl.VERTEX_SHADER);
+    var shaderFrag = getShader(gl, "data/shaders/tests/basic_frag.glsl", gl.FRAGMENT_SHADER);
     shaderProgram = gl.createProgram();
     gl.attachShader(shaderProgram, shaderVert);
     gl.attachShader(shaderProgram, shaderFrag);
@@ -68,38 +55,32 @@ function getShader(gl, id, type) {
 
     shaderScript = document.getElementById(id);
 
-    if (!shaderScript) {
+    if (!shaderScript)
         return null;
-    }
 
-    theSource = shaderScript.text;
+    source = shaderScript.src;
 
-    if (!type) {
-        if (shaderScript.type == "x-shader/x-fragment") {
-            type = gl.FRAGMENT_SHADER;
-        } else if (shaderScript.type == "x-shader/x-vertex") {
-            type = gl.VERTEX_SHADER;
-        } else {
-          // Unknown shader type
+    console.log(source);
+
+    if (!type)
           return null;
-        }
-    }
+
     shader = gl.createShader(type);
 
-    gl.shaderSource(shader, theSource);
+    gl.shaderSource(shader, source);
 
     // Compile the shader program
     gl.compileShader(shader);  
 
     // See if it compiled successfully
     if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {  
-        alert("An error occurred compiling the shaders: " + gl.getShaderInfoLog(shader));  
+        console.log("An error occurred compiling the shaders: " + gl.getShaderInfoLog(shader)) + gl.get;  
         gl.deleteShader(shader);
         return null;  
     }
     
   return shader;
-}
+}*/
 
 function initBuffers() {
     vboSquare = gl.createBuffer();
@@ -116,8 +97,7 @@ function initBuffers() {
 }
 
 function render() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvasUpdateSize(canvas);
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
