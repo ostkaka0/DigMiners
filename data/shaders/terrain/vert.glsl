@@ -12,5 +12,5 @@ varying highp vec2 fragPos;
 void main() {
 	gl_Position = vec4(vec3(aPos, 1.0)*matM*matVP, 1.0);
 	fragUv = aUV;
-	fragPos = (vec3(aPos, 1.0)*matM).xy/32.0/30.0;
+	fragPos = (vec3(aPos, 1.0)*matM).xy;///32.0/30.0;
 }

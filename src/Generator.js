@@ -7,10 +7,10 @@ Generator = function(seed) {
 }
 
 Generator.prototype.generate = function(chunk, x, y) {
-	for (var yy = 0; yy < chunk.width; ++yy) {
-		for (var xx = 0; xx < chunk.height; ++xx) {
-			var x = xx+chunk.x*chunk.width;
-			var y = yy+chunk.y*chunk.height;
+	for (var yy = 0; yy < CHUNK_DIM; ++yy) {
+		for (var xx = 0; xx < CHUNK_DIM; ++xx) {
+			var x = xx+chunk.x*CHUNK_DIM;
+			var y = yy+chunk.y*CHUNK_DIM;
 
 			var distance = Math.sqrt(x * x + y * y)/200.0
 			distance -= 0.25;
@@ -51,4 +51,6 @@ Generator.prototype.generate = function(chunk, x, y) {
 			chunk.setTileId(xx, yy, tileId);
 		}
 	}
+
+    chunk.setDensity(4, 4, 0);
 }
