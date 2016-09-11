@@ -82,10 +82,10 @@ ChunkRenderer.prototype.lazyInit = function() {
 ChunkRenderer.prototype.render = function(world, matVP, camera) {
     var chunksToRender = [];
 
-    var x1 = Math.floor(camera.pos.x/this.tileSize/CHUNK_DIM);
-	var y1 = Math.floor(camera.pos.y/this.tileSize/CHUNK_DIM);
-	var x2 = Math.ceil((camera.pos.x+camera.width)/this.tileSize/CHUNK_DIM);
-	var y2 = Math.ceil((camera.pos.y+camera.width)/this.tileSize/CHUNK_DIM);
+    var x1 = Math.floor((camera.pos.x-camera.width/2)/this.tileSize/CHUNK_DIM);
+	var y1 = Math.floor((camera.pos.y-camera.width/2)/this.tileSize/CHUNK_DIM);
+	var x2 = Math.ceil((camera.pos.x+camera.width/2)/this.tileSize/CHUNK_DIM);
+	var y2 = Math.ceil((camera.pos.y+camera.width/2)/this.tileSize/CHUNK_DIM);
 
     for (var y = y1; y <= y2; ++y) {
         for (var x = x1; x <= x2; ++x) {
@@ -112,7 +112,7 @@ ChunkRenderer.prototype.renderChunks = function(matVP, chunksToRender) {
     gl.uniformMatrix3fv(this.uniformMatVP, false, matVP.toArray());
     // Texture uniforms
 	gl.uniform1i(this.uniformTextureTerrain, 0);
-	gl.uniform1i(this.uniformTextureTile, 1);
+	gl.uniform1i(this.uniformTextureTiles, 1);
     gl.uniform1i(this.uniformTextureDensity, 2);
     // Terrain texture:
     gl.activeTexture(gl.TEXTURE0);
@@ -152,9 +152,9 @@ ChunkRenderer.prototype.renderChunks = function(matVP, chunksToRender) {
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
 
         gl.enableVertexAttribArray(this.attributePos);
-        gl.enableVertexAttribArray(this.attributeUv);
+        gl.enableVertexAttribArray(this.attributeUV);
 		gl.vertexAttribPointer(this.attributePos, 2, gl.FLOAT, false, 4*4,0);
-		gl.vertexAttribPointer(this.attributeUv, 2, gl.FLOAT, false, 4*4,8);
+		gl.vertexAttribPointer(this.attributeUV, 2, gl.FLOAT, false, 4*4,8);
 
 		// Render chunk
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferIndices);

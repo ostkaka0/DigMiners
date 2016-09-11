@@ -148,8 +148,10 @@ void main() {
 	highp vec3 colorB = textureTerrainColor*clamp(0.5-0.25*density, 0.0, 1.0);
 	
 	gl_FragColor = vec4(mix(colorB, colorA, clamp(32.0*(density-0.5), 0.0, 1.0)), 1.0);
-	gl_FragColor = vec4(vec3(a.strength), 1.0);
-	
+	//gl_FragColor = vec4(vec3(texture2D(textureTerrain, fragUv.xy/4.0).xyz), 1.0);
+    //gl_FragColor = vec4(vec3(texture2D(textureDensity, fragUv.xy).xyz), 1.0);
+    //gl_FragColor = vec4(texture2D(textureTiles, fragUv).xxx, 1.0);
+	//gl_FragColor = vec4(fragUv.xyy, 1.0);
 	//if (density == 0.0)
 	//	gl_FragColor = vec4(vec3(1.0), 1.0);
 }
