@@ -9,7 +9,11 @@
             var isServer = false;
         </script>        
         <?php
+            $includedScripts = array();
             function addScript($path) {
+                if (isset($includedScripts[$path]))
+                    return;
+                $includedScripts[$path] = true;
                 echo "\n\t\t" . '<script type="text/javascript" src="' . $path . '"></script>';
             }
 
@@ -18,13 +22,18 @@
                 $extensions = [".js"];
                 foreach(new RecursiveIteratorIterator($it) as $file) {
                     if (in_array(substr($file, strrpos($file, '.')), $extensions))
-                        addScript($file, $type);
+                        addScript($file);
                 }
             }
 
             addScriptsRecursive("lib");
             addScriptsRecursive("lib_front_end");
             addScriptsRecursive("src");
+
+            // Run unit tests:
+            addScript("UnitTest.js");
+            addScriptsRecursive("unit_tests");
+            echo '<script type="text/javascript"> runUnitTests(); </script>';
 
             // Run game/test
             if (isset($_GET["test"]) && preg_match("/^[a-zA-Z0-9_]*$/i", $_GET["test"]))
