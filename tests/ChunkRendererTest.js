@@ -19,8 +19,10 @@ gl.clearColor(0.1, 0.1, 0.1, 1.0);
 var frameTime = 1000/60;
 var lastFrameTime = new Date();
 var startDate = new Date();
-update();
-function update() {
+//update();
+window.requestAnimationFrame(update);
+
+function update(timestamp) {
 	camera.frustrum.x = 2000*Math.sin((startDate - new Date())/2000);
 	render();
 	
@@ -33,7 +35,8 @@ function update() {
 		console.log("Skipping frame");
 	}
 	lastFrameTime.setMilliseconds(lastFrameTime.getMilliseconds() + frameTime);
-	window.setTimeout(update, delay);
+	window.requestAnimationFrame(update);
+	//window.setTimeout(update, delay);
 }
 
 function render() {
