@@ -4,6 +4,12 @@ path = require("path");
 
 var isServer = true;
 
+function loadScript(filePath) {
+    console.log("Loading " + filePath + "...");
+    var content = fs.readFileSync(filePath, "utf8");
+    eval(content);
+}
+
 function loadScriptsRecursive(dir) {
 	var files = fs.readdirSync(dir);
 	for(var i = 0; i < files.length; ++i) {
@@ -12,19 +18,18 @@ function loadScriptsRecursive(dir) {
 
 		if (stat.isDirectory())
 			loadScriptsRecursive(filePath);
-        else if (stat.isFile()) {
-			if (path.extname(filePath) != ".js")
-				continue;
-
-			var content = fs.readFileSync(filePath, "utf8");
-            console.log("Loading " + filePath + "...");
-            eval(content);
-		}
+        else if (stat.isFile() && path.extname(filePath) == ".js")
+			loadScript(filePath)
 	}
 }
 
 loadScriptsRecursive("lib");
 loadScriptsRecursive("src");
+
+////Unit testing
+//loadScript("UnitTest.js");
+//loadScriptsRecursive("unit_tests");
+//runUnitTests();
 
 var world = new Map2D();
 var generator = new Generator();
