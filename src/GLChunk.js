@@ -37,8 +37,8 @@ GLChunk.prototype.update = function(gl, chunk) {
     chunk.isChanged = false; 
 }
 
-GLChunk.prototype.updateBorder = function(gl, chunk, chunkNeighbor, x1, y1, x2, y2) {
-	if (!chunk || !chunkNeighbor)
+GLChunk.prototype.updateBorder = function(gl, chunkNeighbor, x1, y1, x2, y2) {
+	if (!chunkNeighbor)
 		return;
     
 	// Calculate intersecting rectangle.

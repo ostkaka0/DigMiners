@@ -50,7 +50,7 @@ highp vec3 getTileColor(Tile tile) {
 highp float getDensity(highp vec2 pos) {
 	
 	highp float density = texture2D(textureDensity, (pos*30.0+1.0)/32.0).x;
-	highp float scale = 32.0;
+	highp float scale = 1.0/32.0;
 	for (int i = 0; i < 3; ++i) {
 		
 		density += 0.2*noise(fragPos*scale);

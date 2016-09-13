@@ -6,11 +6,11 @@ Generator = function(seed) {
 	this.oreNoise3 = this.seed+71117;
 }
 
-Generator.prototype.generate = function(chunk, x, y) {
+Generator.prototype.generate = function(chunk, chunkX, chunkY) {
 	for (var yy = 0; yy < CHUNK_DIM; ++yy) {
 		for (var xx = 0; xx < CHUNK_DIM; ++xx) {
-			var x = xx+chunk.x*CHUNK_DIM;
-			var y = yy+chunk.y*CHUNK_DIM;
+			var x = xx+chunkX*CHUNK_DIM;
+			var y = yy+chunkY*CHUNK_DIM;
 
 			var distance = Math.sqrt(x * x + y * y)/200.0
 			distance -= 0.25;
@@ -49,6 +49,8 @@ Generator.prototype.generate = function(chunk, x, y) {
 			}
 				
 			chunk.setTileId(xx, yy, tileId);
+			if (value < -0.5)
+				chunk.setDensity(xx, yy, 0);
 		}
 	}
 

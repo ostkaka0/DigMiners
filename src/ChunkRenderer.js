@@ -1,6 +1,7 @@
-ChunkRenderer = function(gl, tileSize) {
+ChunkRenderer = function(gl, world, tileSize) {
     this.gl = gl;
     this.tileSize = tileSize;
+	this.world = world;
     this.chunkGLWorld = new Map2D();
 
     this.attributePos = 0;
@@ -131,11 +132,13 @@ ChunkRenderer.prototype.renderChunks = function(matVP, chunksToRender) {
             glChunk = new GLChunk(this.gl, chunk);
             this.chunkGLWorld.set(x, y, glChunk);
             chunk.isChanged = false;
+			this.handleChunkChange(chunk, x, y);
         }
         // Update glChunk
         if (chunk.isChanged) {
             glChunk.update(this.gl, chunk);
             chunk.isChanged = false;
+			this.handleChunkChange(chunk, x, y);
         }
 
         // Render the chunk
@@ -183,4 +186,30 @@ ChunkRenderer.prototype.loadTexture = function() {
 		gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
 		that.textureTerrain = texture;
 	};
+}
+
+ChunkRenderer.prototype.handleChunkChange = function(chunk, x, y) {
+	//console.log("onChunkChange event! x:" + x + " y:" + y);
+	var gl = this.gl;
+	var that = this;
+	var glChunk = that.chunkGLWorld.get(x, y);
+	
+	if (!chunk || !glChunk)
+		return;
+	
+	var notifyNeighbor = function(ex, ey, x2, y2) {
+		var glChunk2 = that.chunkGLWorld.get(x2, y2);
+		var chunk2 = that.world.get(x2, y2);
+		if (chunk2 && glChunk2) {
+			glChunk.updateBorder(gl, chunk2, ex, ey, x2, y2);
+			glChunk2.updateBorder(gl, chunk, x2, y2, ex, ey);
+			//that.onChunkChange2(gl, ex, ey, x2, y2, chunk, chunk2);
+			//that.onChunkChange2(gl, x2, y2, ex, ey, chunk2, chunk);
+		}
+	}
+	
+	notifyNeighbor(x, y, x+1, y);
+	notifyNeighbor(x, y, x-1, y);
+	notifyNeighbor(x, y, x, y+1);
+	notifyNeighbor(x, y, x, y-1);
 }

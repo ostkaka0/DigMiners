@@ -3,7 +3,7 @@ var gl = canvasInitGL(canvas);
 
 var world = new Map2D();
 var generator = new Generator(1234);
-var chunkRenderer = new ChunkRenderer(gl, 32.0);
+var chunkRenderer = new ChunkRenderer(gl, world, 32.0);
 var camera = new Camera();
 var lastFrameTime = Date();
 
@@ -11,7 +11,7 @@ for (var x = -2; x < 20; ++x) {
     for (var y = -2; y < 2; ++y) {
         var chunk = new Chunk();
         generator.generate(chunk, x, y);
-        world.set(x, y, new Chunk());
+        world.set(x, y, chunk);
     }
 }
 console.log(chunk.getTileId(4, 4));
@@ -49,3 +49,18 @@ function render() {
     viewMatrix = viewMatrix.scale(2/canvas.width, 2/canvas.height);
     chunkRenderer.render(world, projectionMatrix.clone().append(viewMatrix), camera);
 }
+
+canvas.onclick = function(event) {
+	var worldX = event.clientX + camera.pos.x - camera.width/2;
+	var worldY = canvas.height - event.clientY + camera.pos.y - camera.height/2;
+	var tileX = Math.floor(worldX/32);
+	var tileY = Math.floor(worldY/32);
+	var chunkX = Math.floor(tileX/CHUNK_DIM);
+	var chunkY = Math.floor(tileY/CHUNK_DIM);
+	var localX = tileX%CHUNK_DIM;
+	var localY = tileY%CHUNK_DIM;
+	var chunk = world.get(chunkX, chunkY);
+	if (chunk)
+		chunk.setDensity(localX, localY, 0);
+	
+};
