@@ -19,7 +19,6 @@ gl.clearColor(0.1, 0.1, 0.1, 1.0);
 var frameTime = 1000/60;
 var lastFrameTime = new Date();
 var startDate = new Date();
-//update();
 window.requestAnimationFrame(update);
 
 function update(timestamp) {
@@ -36,7 +35,6 @@ function update(timestamp) {
 	}
 	lastFrameTime.setMilliseconds(lastFrameTime.getMilliseconds() + frameTime);
 	window.requestAnimationFrame(update);
-	//window.setTimeout(update, delay);
 }
 
 function render() {
