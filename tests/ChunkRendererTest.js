@@ -7,7 +7,7 @@ var chunkRenderer = new ChunkRenderer(gl, world, 32.0);
 var camera = new Camera();
 var lastFrameTime = Date();
 
-for (var x = -2; x < 20; ++x) {
+for (var x = -10; x < 10; ++x) {
     for (var y = -2; y < 2; ++y) {
         var chunk = new Chunk();
         generator.generate(chunk, x, y);
@@ -18,10 +18,10 @@ console.log(chunk.getTileId(4, 4));
 gl.clearColor(0.1, 0.1, 0.1, 1.0);
 var frameTime = 1000/60;
 var lastFrameTime = new Date();
+var startDate = new Date();
 update();
-
 function update() {
-	camera.frustrum.x += 100.0*frameTime/1000.0;
+	camera.frustrum.x = 2000*Math.sin((startDate - new Date())/2000);
 	render();
 	
 	// Skip frames:
@@ -38,7 +38,7 @@ function update() {
 
 function render() {
     canvasUpdateSize(canvas);
-    camera.wdith = canvas.width;
+    camera.width = canvas.width;
     camera.height = canvas.height;
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
