@@ -17,23 +17,23 @@ for (var x = -10; x < 10; ++x) {
 console.log(chunk.getTileId(4, 4));
 gl.clearColor(0.1, 0.1, 0.1, 1.0);
 var frameTime = 1000/60;
-var lastFrameTime = new Date();
-var startDate = new Date();
+var lastFrameTime = performance.now();
+var startDate = performance.now();
 window.requestAnimationFrame(update);
 
 function update(timestamp) {
-	camera.frustrum.x = 2000*Math.sin((startDate - new Date())/2000);
+	camera.frustrum.x = 2000*Math.sin((startDate - performance.now())/2000);
 	render();
 	
 	// Skip frames:
-	var now = new Date();
+	var now = performance.now();
 	var delay = lastFrameTime - now + frameTime;
-	while(delay < 0.5*frameTime) {
+	while(delay < 0.0*frameTime) {
 		delay += frameTime;
-		lastFrameTime.setMilliseconds(lastFrameTime.getMilliseconds() + frameTime);
+		lastFrameTime += frameTime;//lastFrameTime.setMilliseconds(lastFrameTime.getMilliseconds() + frameTime);
 		console.log("Skipping frame");
 	}
-	lastFrameTime.setMilliseconds(lastFrameTime.getMilliseconds() + frameTime);
+	lastFrameTime += frameTime;//lastFrameTime.setMilliseconds(lastFrameTime.getMilliseconds() + frameTime);
 	window.requestAnimationFrame(update);
 }
 

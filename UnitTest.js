@@ -18,6 +18,6 @@ function runUnitTests() {
 	});
 	if (failedTests.length > 0)
 		console.log("Failed tests: " + failedTests);
-	console.log((tests.length - failedTests.length) + "/" + tests.length + " tests succeded.")
+	console.log((tests.length - failedTests.length) + "/" + tests.length + " unit tests succeeded.")
 	console.log("Unit tests done!")
 }
