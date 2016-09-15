@@ -22,6 +22,11 @@ v2.clone = function(a) {
 	return [a[0], a[1]];
 }
 
+v2.copy = function(a, out) {
+	out[0] = a[0];
+	out[1] = a[1];
+}
+
 v2.add = function(a, b, out) {
 	out[0] = fix.add(a[0],b[0]);
 	out[1] = fix.add(a[1],b[1]);
