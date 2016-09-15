@@ -1,7 +1,7 @@
 var EntityWorld = function() {
     this.entityArray = [];
     this.entities = {};
-    this.nextId = 0;
+    this.nextId = 1;
     this.freeIdList = [];
     this.entitiesToCreate = [];
     this.entitiesToDestroy = [];
