@@ -15,9 +15,11 @@ function physicsBodySimulate(physicsBody, dt) {
 	v2.mul(fix.pow(physicsBody.damping, dt), physicsBody.speed, physicsBody.speed);
 }
 
-function entityFunctionPhysicsBodySimulate(entityWorld, dt) {
-	var entityArray = entityWorld.entityArray;
-	entityArray.forEach(function(entity) {
+function entityFunctionPhysicsBodySimulate(gameData, dt) {
+	var entityWorld = gameData.entityWorld;
+	if (!entityWorld)
+		console.error("Missing gameData.entityWorld");
+	entityWorld.objectArray.forEach(function(entity) {
 		if (entity.physicsBody)
 			physicsBodySimulate(entity.physicsBody, dt);
 	});

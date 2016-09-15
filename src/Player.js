@@ -1,4 +1,6 @@
 var Player = function(name, entityId) {
-	this.name = name;
-	this.entityId = (entityId)? entityId : 0;
+    this.isActive = false;
+    this.id = 0;
+    this.name = name;
+    this.entityId = (entityId)? entityId : 0;
 }

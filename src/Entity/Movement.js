@@ -6,13 +6,17 @@ var Movement = function(speed) {
 	this.speed = speed;
 }
 
-function entityFunctionPlayerMovement(dt, players, entityWorld) {
-	var numPlayers = players.length;
+function entityFunctionPlayerMovement(gameData, dt) {
+	var playerWorld = gameData.playerWorld;
+	var entityWorld = gameData.entityWorld;
+	if (!playerWorld ||!entityWorld)
+		console.error("Missing gameData properties");
+	var numPlayers = playerWorld.objectArray.length;
 	for (var i = 0; i < numPlayers; ++i) {
-		var player = players[i];
+		var player = playerWorld.objectArray[i];
 		if (!player.entityId)
 			continue;
-		var entity = entityWorld.entities[player.entityId];
+		var entity = entityWorld.objects[player.entityId];
 		if (!entity || !entity.movement || !entity.physicsBody)
 			continue;
 		var deltaSpeed = v2.create(0, 0);
