@@ -7,7 +7,8 @@
         <canvas class="canvas" id="canvas"></canvas>
         <script type = "text/javascript">
             var isServer = false;
-        </script>        
+        </script>
+        <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
         <?php
             $includedScripts = array();
             function addScript($path) {

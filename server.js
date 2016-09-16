@@ -1,6 +1,9 @@
 console = require("console");
 fs = require("fs");
 path = require("path");
+app = require("express")();
+http = require("http").Server(app);
+io = require("socket.io")(app);
 
 var isServer = true;
 
@@ -57,6 +60,14 @@ tick = function() {
 	playerWorld.update();
 	entityWorld.update();
 }
+
+io.on("connection", function(socket) {
+	console.log("User connected");
+});
+
+http.listen(3000, function(){
+	console.log("Listening on :3000");
+});
 
 update();
 console.log("\nTODO: Implement server\n");
