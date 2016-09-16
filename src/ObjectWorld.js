@@ -1,4 +1,4 @@
-var ObjectWorld = function() {
+ObjectWorld = function() {
     this.objectArray = [];
     this.objects = {};
     this.nextId = 1;

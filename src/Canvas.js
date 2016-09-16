@@ -1,4 +1,4 @@
-function canvasInitGL(canvas) {
+canvasInitGL = function(canvas) {
     gl = null;
     
     // Try to grab the standard context. If it fails, fallback to experimental.
@@ -11,7 +11,7 @@ function canvasInitGL(canvas) {
     return gl;
 }
 
-function canvasUpdateSize(canvas) {
+canvasUpdateSize = function(canvas) {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 }

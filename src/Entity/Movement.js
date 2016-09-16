@@ -1,4 +1,4 @@
-var Movement = function(speed) {
+Movement = function(speed) {
 	this.up = false;
 	this.left = false;
 	this.down = false;

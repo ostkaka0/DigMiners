@@ -1,4 +1,4 @@
-var fix = {};
+fix = {};
 // Convert float to 32 bit fixed point with 16 bit fraction.
 // Must be done after each operation.
 // Example: toFix(toFix(toFix(a*b)/3)+14.3)

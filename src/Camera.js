@@ -3,7 +3,7 @@
  * @param world
  * @constructor
  */
-var Camera = function () {
+Camera = function () {
 
     PIXI.Container.call(this);
 
