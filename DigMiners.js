@@ -14,6 +14,7 @@ var loadChunk = function(world, x, y) {
 
 var canvas = document.getElementById("canvas");
 var gl = canvasInitGL(canvas);
+var socket = io("127.0.0.1:3000");
 
 if (gl) {
     gl.clearColor(0.1, 0.1, 0.1, 1.0);
