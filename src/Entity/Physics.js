@@ -1,4 +1,4 @@
-var PhysicsBody = function(pos, damping) {
+PhysicsBody = function(pos, damping) {
 	this.pos = v2.clone(pos);
 	this.posOld = v2.clone(pos);
 	this.speed = v2.create(0, 0);

@@ -1,4 +1,4 @@
-var Player = function(name, entityId) {
+Player = function(name, entityId) {
     this.isActive = false;
     this.id = 0;
     this.name = name;

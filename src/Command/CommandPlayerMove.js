@@ -1,4 +1,4 @@
-var PlayerMoveDirection = {
+PlayerMoveDirection = {
 	ENABLE_UP : 0,
 	ENABLE_LEFT: 1, 
 	ENABLE_DOWN: 2, 
@@ -9,7 +9,7 @@ var PlayerMoveDirection = {
 	DISABLE_RIGHT: 7
 }
 
-var CommandPlayerMove = function(playerId, playerMoveDirection) {
+CommandPlayerMove = function(playerId, playerMoveDirection) {
 	this.playerId = playerId;
 	this.playerMoveDirection = playerMoveDirection;
 }

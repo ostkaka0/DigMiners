@@ -1,6 +1,6 @@
-var g_unitTests = {};
+g_unitTests = {};
 
-function runUnitTests() {
+runUnitTests = function() {
 
 	var tests = Object.getOwnPropertyNames(g_unitTests);
 	var failedTests = [];
