@@ -26,58 +26,54 @@ playerEntity.sprite = new PIXI.Sprite(texture);
 playerEntity.sprite.anchor.x = 0.5;
 playerEntity.sprite.anchor.y = 0.5;
 
-var frameTime = 1000/60;
+/*var frameTime = 1000/60;
 var lastFrameTime = performance.now();
 var startDate = performance.now();
 var tickDuration = 1000.0/8.0;
 var firstTickTime = performance.now();
-var tickNum = 0;
+var tickNum = 0;*/
 var commands = [];
 
-for (var x = -4; x < 4; ++x) {
-    for (var y = -4; y < 4; ++y) {
-        var chunk = new Chunk();
-        generator.generate(chunk, x, y);
-        tileWorld.set(x, y, chunk);
+loadGame = function() {
+    for (var x = -4; x < 4; ++x) {
+        for (var y = -4; y < 4; ++y) {
+            loadChunk(tileWorld, x, y);
+        }
     }
+
+    // Player input
+    document.addEventListener('keypress', function(event) {
+        var char = String.fromCharCode(event.keyCode).toLowerCase();
+        var playerMoveDirection = null;
+        if (char == "w") playerMoveDirection = PlayerMoveDirection.ENABLE_UP;
+        if (char == "a") playerMoveDirection = PlayerMoveDirection.ENABLE_LEFT;
+        if (char == "s") playerMoveDirection = PlayerMoveDirection.ENABLE_DOWN;
+        if (char == "d") playerMoveDirection = PlayerMoveDirection.ENABLE_RIGHT;
+        if (playerMoveDirection != null)
+            commands.push(new CommandPlayerMove(player.id, playerMoveDirection));
+    });
+    document.addEventListener('keyup', function(event) {
+        var char = String.fromCharCode(event.keyCode).toLowerCase();
+        var playerMoveDirection = null;
+        if (char == "w") playerMoveDirection = PlayerMoveDirection.DISABLE_UP;
+        if (char == "a") playerMoveDirection = PlayerMoveDirection.DISABLE_LEFT;
+        if (char == "s") playerMoveDirection = PlayerMoveDirection.DISABLE_DOWN;
+        if (char == "d") playerMoveDirection = PlayerMoveDirection.DISABLE_RIGHT;
+        if (playerMoveDirection != null)
+            commands.push(new CommandPlayerMove(player.id, playerMoveDirection));
+    });
+
+    // Start gameLoop
+    gameLoop(tick, render);
 }
 
-window.requestAnimationFrame(update);
-
-// Player input
-document.addEventListener('keypress', function(event) {
-    var char = String.fromCharCode(event.keyCode).toLowerCase();
-    var playerMoveDirection = null;
-    if (char == "w") playerMoveDirection = PlayerMoveDirection.ENABLE_UP;
-    if (char == "a") playerMoveDirection = PlayerMoveDirection.ENABLE_LEFT;
-    if (char == "s") playerMoveDirection = PlayerMoveDirection.ENABLE_DOWN;
-    if (char == "d") playerMoveDirection = PlayerMoveDirection.ENABLE_RIGHT;
-    if (playerMoveDirection != null)
-        commands.push(new CommandPlayerMove(player.id, playerMoveDirection));
-});
-document.addEventListener('keyup', function(event) {
-    var char = String.fromCharCode(event.keyCode).toLowerCase();
-    var playerMoveDirection = null;
-    if (char == "w") playerMoveDirection = PlayerMoveDirection.DISABLE_UP;
-    if (char == "a") playerMoveDirection = PlayerMoveDirection.DISABLE_LEFT;
-    if (char == "s") playerMoveDirection = PlayerMoveDirection.DISABLE_DOWN;
-    if (char == "d") playerMoveDirection = PlayerMoveDirection.DISABLE_RIGHT;
-    if (playerMoveDirection != null)
-        commands.push(new CommandPlayerMove(player.id, playerMoveDirection));
-});
-
-var loadChunk = function(world, x, y) {
+loadChunk = function(world, x, y) {
     var chunk = new Chunk();
     generator.generate(chunk, x, y);
     world.set(x, y, chunk);
 }
 
-
-if (gl) {
-    gl.clearColor(0.1, 0.1, 0.1, 1.0);
-}
-
-function update() {
+/*function update() {
     window.requestAnimationFrame(update);
     var now = performance.now();
     var newTickNum = Math.floor((now - firstTickTime) / tickDuration);
@@ -97,15 +93,12 @@ function update() {
         console.log("Skipping frame");
     }
     lastFrameTime += frameTime;
-}
+}*/
 
-function tick(dt) {
+tick = function(dt) {
     entityWorld.objectArray.forEach(function(entity) {
         if (entity.angle) entity.angleOld = entity.angle;
     });
-    // Only rotate half of the ticks
-    if (tickNum %2 == 0)
-        playerEntity.angle = fix.add(playerEntity.angle, 24*dt);
 
     commands.forEach(function(command) {
         command.execute(gameData);
@@ -145,3 +138,5 @@ render = function(tickFracTime) {
             renderer.render(entity.sprite);
     });
 }
+
+loadGame();
