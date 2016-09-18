@@ -1,6 +1,7 @@
 var canvas = document.getElementById("canvas");
 var gl = canvasInitGL(canvas);
 var renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight, {'transparent':true});
+var stage = new PIXI.Container();
 renderer.view.style.position = 'absolute';
 renderer.view.style.left = '0%';
 renderer.view.style.top = '0%';
@@ -22,7 +23,7 @@ onTexturesLoadProgress = function(name, file, progress) {
 onTexturesLoadComplete = function() {
     // Must wait until all textures have loaded to continue! important
 
-    var animationManager = new AnimationManager();
+    animationManager = new AnimationManager();
     animationManager.load();
 
     //todo: playerEntity is global
@@ -33,11 +34,24 @@ onTexturesLoadComplete = function() {
 
     playerEntity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.02);
     playerEntity.movement = new Movement(2000.0);
+    //todo: remove angle and angleOld
     playerEntity.angle = toFix(0);
     playerEntity.angleOld = playerEntity.angle;
-    playerEntity.sprite = new PIXI.Sprite(textures.gubbe);
-    playerEntity.sprite.anchor.x = 0.5;
-    playerEntity.sprite.anchor.y = 0.5;
+    var sprite = new PIXI.Sprite(textures.feet);
+    sprite.anchor.x = 0.5;
+    sprite.anchor.y = 0.5;  
+    var bodySprite = new PIXI.Sprite(textures.dig);
+    bodySprite.anchor.x = 0.5;
+    bodySprite.anchor.y = 0.5;
+    var bodyparts = {
+        "feet": {
+            "sprite": sprite
+        },
+        "body": {
+            "sprite": bodySprite
+        }
+    };
+    playerEntity.drawable = new Drawable(stage, bodyparts, animationManager);
     
     //todo: commands is global
     commands = [];
@@ -61,6 +75,7 @@ loadGame = function() {
         if (char == "a") playerMoveDirection = PlayerMoveDirection.ENABLE_LEFT;
         if (char == "s") playerMoveDirection = PlayerMoveDirection.ENABLE_DOWN;
         if (char == "d") playerMoveDirection = PlayerMoveDirection.ENABLE_RIGHT;
+        if (char == " ") playerEntity.drawable.animate("body", "dig", 200, false);
         if (playerMoveDirection != null)
             commands.push(new CommandPlayerMove(player.id, playerMoveDirection));
     });
@@ -71,6 +86,7 @@ loadGame = function() {
         if (char == "a") playerMoveDirection = PlayerMoveDirection.DISABLE_LEFT;
         if (char == "s") playerMoveDirection = PlayerMoveDirection.DISABLE_DOWN;
         if (char == "d") playerMoveDirection = PlayerMoveDirection.DISABLE_RIGHT;
+        if (char == " ") playerEntity.drawable.unanimate("body", "dig", true);
         if (playerMoveDirection != null)
             commands.push(new CommandPlayerMove(player.id, playerMoveDirection));
     });
@@ -117,14 +133,16 @@ render = function(tickFracTime) {
     chunkRenderer.render(tileWorld, projectionMatrix.clone().append(viewMatrix), camera);
 
     entityWorld.objectArray.forEach(function(entity) {
-        if (entity.physicsBody && entity.sprite) {
-            entity.sprite.position.x = -camera.frustrum.x + canvas.width/2 + tickFracTime * entity.physicsBody.pos[0] + (1-tickFracTime) * entity.physicsBody.posOld[0];
-            entity.sprite.position.y = camera.frustrum.y + canvas.height/2 - (tickFracTime * entity.physicsBody.pos[1] + (1-tickFracTime) * entity.physicsBody.posOld[1]);
-            entity.sprite.rotation = -(tickFracTime * entity.angle + (1-tickFracTime) * entity.angleOld);
+        if (entity.physicsBody && entity.drawable) {
+            var x = -camera.frustrum.x + canvas.width/2 + tickFracTime * entity.physicsBody.pos[0] + (1-tickFracTime) * entity.physicsBody.posOld[0];
+            var y = camera.frustrum.y + canvas.height/2 - (tickFracTime * entity.physicsBody.pos[1] + (1-tickFracTime) * entity.physicsBody.posOld[1]);
+            var rotation = -(tickFracTime * entity.angle + (1-tickFracTime) * entity.angleOld);
+            entity.drawable.positionAll(x, y, rotation);
+            //console.log(entity.physicsBody.speed);
+            playerEntity.drawable.animate("feet", "feet", Math.sqrt(entity.physicsBody.speed[0]*entity.physicsBody.speed[0] + entity.physicsBody.speed[1]*entity.physicsBody.speed[1])/5.0, false);
         }
     });
-    entityWorld.objectArray.forEach(function(entity) {
-        if (entity.sprite)
-            renderer.render(entity.sprite);
-    });
+    //TODO: animationmanager use dt? maybe not needed
+    animationManager.update();
+    renderer.render(stage);
 }
