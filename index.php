@@ -21,7 +21,7 @@
             function addScriptsRecursive($path) {
                 $it = new RecursiveDirectoryIterator($path);
                 $extensions = [".js"];
-                foreach(new RecursiveIteratorIterator($it) as $file) {
+                foreach(new RecursiveIteratorIterator($it) as $file => $other) {
                     if (in_array(substr($file, strrpos($file, '.')), $extensions))
                         addScript($file);
                 }
