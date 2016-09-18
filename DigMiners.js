@@ -15,24 +15,36 @@ var chunkRenderer = new ChunkRenderer(gl, tileWorld, 32.0);
 var camera = new Camera();
 var gameData = { playerWorld: playerWorld, entityWorld: entityWorld, tileWorld: tileWorld };
 
-var texture = PIXI.Texture.fromImage("data/textures/cheese.png");
-var playerEntity = entityWorld.add({});
-var player = playerWorld.add(new Player("karl", playerEntity.id));
-playerEntity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.02);
-playerEntity.movement = new Movement(2000.0);
-playerEntity.angle = toFix(0);
-playerEntity.angleOld = playerEntity.angle;
-playerEntity.sprite = new PIXI.Sprite(texture);
-playerEntity.sprite.anchor.x = 0.5;
-playerEntity.sprite.anchor.y = 0.5;
+onTexturesLoadProgress = function(name, file, progress) {
 
-/*var frameTime = 1000/60;
-var lastFrameTime = performance.now();
-var startDate = performance.now();
-var tickDuration = 1000.0/8.0;
-var firstTickTime = performance.now();
-var tickNum = 0;*/
-var commands = [];
+}
+
+onTexturesLoadComplete = function() {
+    // Must wait until all textures have loaded to continue! important
+
+    var animationManager = new AnimationManager();
+    animationManager.load();
+
+    //todo: playerEntity is global
+    playerEntity = entityWorld.add({});
+
+    //todo: player is global
+    player = playerWorld.add(new Player("karl", playerEntity.id));
+
+    playerEntity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.02);
+    playerEntity.movement = new Movement(2000.0);
+    playerEntity.angle = toFix(0);
+    playerEntity.angleOld = playerEntity.angle;
+    playerEntity.sprite = new PIXI.Sprite(textures.gubbe);
+    playerEntity.sprite.anchor.x = 0.5;
+    playerEntity.sprite.anchor.y = 0.5;
+    
+    //todo: commands is global
+    commands = [];
+    
+    loadGame();
+}
+var textureManager = new TextureManager();
 
 loadGame = function() {
     for (var x = -4; x < 4; ++x) {
@@ -72,6 +84,7 @@ loadChunk = function(world, x, y) {
     generator.generate(chunk, x, y);
     world.set(x, y, chunk);
 }
+
 tick = function(dt) {
     entityWorld.objectArray.forEach(function(entity) {
         if (entity.angle) entity.angleOld = entity.angle;
@@ -104,7 +117,7 @@ render = function(tickFracTime) {
     chunkRenderer.render(tileWorld, projectionMatrix.clone().append(viewMatrix), camera);
 
     entityWorld.objectArray.forEach(function(entity) {
-        if (entity.physicsBody && entity.angle && entity.sprite) {
+        if (entity.physicsBody && entity.sprite) {
             entity.sprite.position.x = -camera.frustrum.x + canvas.width/2 + tickFracTime * entity.physicsBody.pos[0] + (1-tickFracTime) * entity.physicsBody.posOld[0];
             entity.sprite.position.y = camera.frustrum.y + canvas.height/2 - (tickFracTime * entity.physicsBody.pos[1] + (1-tickFracTime) * entity.physicsBody.posOld[1]);
             entity.sprite.rotation = -(tickFracTime * entity.angle + (1-tickFracTime) * entity.angleOld);
@@ -115,5 +128,3 @@ render = function(tickFracTime) {
             renderer.render(entity.sprite);
     });
 }
-
-loadGame();
