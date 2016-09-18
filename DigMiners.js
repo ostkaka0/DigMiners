@@ -72,29 +72,6 @@ loadChunk = function(world, x, y) {
     generator.generate(chunk, x, y);
     world.set(x, y, chunk);
 }
-
-/*function update() {
-    window.requestAnimationFrame(update);
-    var now = performance.now();
-    var newTickNum = Math.floor((now - firstTickTime) / tickDuration);
-    var tickFracTime = (now - firstTickTime) / tickDuration - newTickNum;
-    for(; tickNum < newTickNum; ++tickNum) {
-        tick(toFix(tickDuration/1000.0));
-    }
-
-    render(tickFracTime);
-    
-    // Skip frames:
-    var now = performance.now();
-    var delay = lastFrameTime - now + frameTime;
-    while(delay < 0.0*frameTime) {
-        delay += frameTime;
-        lastFrameTime += frameTime;
-        console.log("Skipping frame");
-    }
-    lastFrameTime += frameTime;
-}*/
-
 tick = function(dt) {
     entityWorld.objectArray.forEach(function(entity) {
         if (entity.angle) entity.angleOld = entity.angle;
