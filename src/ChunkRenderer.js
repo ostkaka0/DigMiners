@@ -197,19 +197,23 @@ ChunkRenderer.prototype.handleChunkChange = function(chunk, x, y) {
 	if (!chunk || !glChunk)
 		return;
 	
-	var notifyNeighbor = function(ex, ey, x2, y2) {
+	var notifyNeighbor = function(x2, y2) {
 		var glChunk2 = that.chunkGLWorld.get(x2, y2);
 		var chunk2 = that.world.get(x2, y2);
 		if (chunk2 && glChunk2) {
-			glChunk.updateBorder(gl, chunk2, ex, ey, x2, y2);
-			glChunk2.updateBorder(gl, chunk, x2, y2, ex, ey);
+			glChunk.updateBorder(gl, chunk2, x, y, x2, y2);
+			glChunk2.updateBorder(gl, chunk, x2, y2, x, y);
 			//that.onChunkChange2(gl, ex, ey, x2, y2, chunk, chunk2);
 			//that.onChunkChange2(gl, x2, y2, ex, ey, chunk2, chunk);
 		}
 	}
 	
-	notifyNeighbor(x, y, x+1, y);
-	notifyNeighbor(x, y, x-1, y);
-	notifyNeighbor(x, y, x, y+1);
-	notifyNeighbor(x, y, x, y-1);
+	notifyNeighbor(x, y+1);
+	notifyNeighbor(x-1, y+1);
+	notifyNeighbor(x-1, y);
+	notifyNeighbor(x-1, y-1);
+	notifyNeighbor(x, y-1);
+	notifyNeighbor(x+1, y-1);
+	notifyNeighbor(x+1, y);
+	notifyNeighbor(x+1, y+1);
 }
