@@ -30,7 +30,7 @@ function physicsBodySimulate(physicsBody, dt) {
 	v2.mul(dt, physicsBody.speed, deltaPos);
 	v2.add(deltaPos, physicsBody.pos, physicsBody.pos);
 	v2.mul(fix.pow(physicsBody.damping, dt), physicsBody.speed, physicsBody.speed);
-	physicsBody.rotateTo(Math.atan2(-physicsBody.speed[1], physicsBody.speed[0]), physicsBody.rotationSpeed, dt);
+	physicsBody.rotateTo(Math.atan2(physicsBody.speed[1], physicsBody.speed[0]), physicsBody.rotationSpeed, dt);
 }
 
 function entityFunctionPhysicsBodySimulate(gameData, dt) {

@@ -103,7 +103,8 @@ loadChunk = function(world, x, y) {
 
 tick = function(dt) {
     entityWorld.objectArray.forEach(function(entity) {
-        if (entity.angle) entity.angleOld = entity.angle;
+        if (entity.physicsBody && entity.physicsBody.angle) 
+            entity.physicsBody.angleOld = entity.physicsBody.angle;
     });
 
     commands.forEach(function(command) {
@@ -137,7 +138,8 @@ render = function(tickFracTime) {
             var x = -camera.frustrum.x + canvas.width/2 + tickFracTime * entity.physicsBody.pos[0] + (1-tickFracTime) * entity.physicsBody.posOld[0];
             var y = camera.frustrum.y + canvas.height/2 - (tickFracTime * entity.physicsBody.pos[1] + (1-tickFracTime) * entity.physicsBody.posOld[1]);
             var rotation = -(tickFracTime * entity.physicsBody.angle + (1-tickFracTime) * entity.physicsBody.angleOld);
-            entity.drawable.positionAll(x, y, entity.physicsBody.angle);
+            //console.log("angle " + entity.physicsBody.angle + " old " + entity.physicsBody.angleOld);
+            entity.drawable.positionAll(x, y, rotation);
         }
     });
 
