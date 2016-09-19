@@ -4,6 +4,23 @@ PhysicsBody = function(pos, damping) {
 	this.speed = v2.create(0, 0);
 	this.speedOld = v2.clone(this.speed);
 	this.damping = toFix(damping);
+	this.angle = 0;
+	this.angleOld = 0;
+	this.rotationSpeed = 5.0;
+}
+
+PhysicsBody.prototype.rotateTo = function(angle, speed, dt) {
+	if(this.angle == angle)
+		return;
+
+	var newDirx = Math.cos(angle); 
+	var newDiry = Math.sin(angle);
+	var oldDirx = Math.cos(this.angle);
+	var oldDiry = Math.sin(this.angle);
+	oldDirx += (newDirx - oldDirx) * speed * dt;
+	oldDiry += (newDiry - oldDiry) * speed * dt;
+	this.angle = Math.atan2(oldDiry, oldDirx);
+	//console.log("angle " + this.angle);
 }
 
 function physicsBodySimulate(physicsBody, dt) {
@@ -13,6 +30,7 @@ function physicsBodySimulate(physicsBody, dt) {
 	v2.mul(dt, physicsBody.speed, deltaPos);
 	v2.add(deltaPos, physicsBody.pos, physicsBody.pos);
 	v2.mul(fix.pow(physicsBody.damping, dt), physicsBody.speed, physicsBody.speed);
+	physicsBody.rotateTo(Math.atan2(-physicsBody.speed[1], physicsBody.speed[0]), physicsBody.rotationSpeed, dt);
 }
 
 function entityFunctionPhysicsBodySimulate(gameData, dt) {
