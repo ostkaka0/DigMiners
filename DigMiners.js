@@ -136,12 +136,14 @@ render = function(tickFracTime) {
         if (entity.physicsBody && entity.drawable) {
             var x = -camera.frustrum.x + canvas.width/2 + tickFracTime * entity.physicsBody.pos[0] + (1-tickFracTime) * entity.physicsBody.posOld[0];
             var y = camera.frustrum.y + canvas.height/2 - (tickFracTime * entity.physicsBody.pos[1] + (1-tickFracTime) * entity.physicsBody.posOld[1]);
-            var rotation = -(tickFracTime * entity.angle + (1-tickFracTime) * entity.angleOld);
-            entity.drawable.positionAll(x, y, rotation);
-            //console.log(entity.physicsBody.speed);
-            playerEntity.drawable.animate("feet", "feet", Math.sqrt(entity.physicsBody.speed[0]*entity.physicsBody.speed[0] + entity.physicsBody.speed[1]*entity.physicsBody.speed[1])/5.0, false);
+            var rotation = -(tickFracTime * entity.physicsBody.angle + (1-tickFracTime) * entity.physicsBody.angleOld);
+            entity.drawable.positionAll(x, y, entity.physicsBody.angle);
         }
     });
+
+    playerEntity.drawable.animate("feet", "feet", Math.sqrt(playerEntity.physicsBody.speed[0]*playerEntity.physicsBody.speed[0] + playerEntity.physicsBody.speed[1]*playerEntity.physicsBody.speed[1])/5.0, false);
+
+
     //TODO: animationmanager use dt? maybe not needed
     animationManager.update();
     renderer.render(stage);
