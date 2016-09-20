@@ -20,11 +20,14 @@ function entityFunctionPlayerMovement(gameData, dt) {
 		if (!entity || !entity.movement || !entity.physicsBody)
 			continue;
 		var deltaSpeed = v2.create(0, 0);
-		if (entity.movement.up)    deltaSpeed[1] += entity.movement.speed;
-		if (entity.movement.down)  deltaSpeed[1] -= entity.movement.speed;
-		if (entity.movement.left)  deltaSpeed[0] -= entity.movement.speed;
-		if (entity.movement.right) deltaSpeed[0] += entity.movement.speed;
-		v2.mul(dt, deltaSpeed, deltaSpeed);
-		v2.add(deltaSpeed, entity.physicsBody.speed, entity.physicsBody.speed);
+		if (entity.movement.up)    deltaSpeed[1] += 1.0;
+		if (entity.movement.down)  deltaSpeed[1] -= 1.0;
+		if (entity.movement.left)  deltaSpeed[0] -= 1.0;
+		if (entity.movement.right) deltaSpeed[0] += 1.0;
+		var normalized = v2.create(0, 0);
+		v2.normalize(deltaSpeed, normalized);
+		v2.mul(entity.movement.speed, normalized, normalized);
+		v2.mul(dt, normalized, normalized);
+		v2.add(normalized, entity.physicsBody.speed, entity.physicsBody.speed);
 	}
 }
