@@ -23,13 +23,13 @@ getDensity = function(terrainWorld, x, y) {
 }
 
 calcDensity = function(terrainWorld, x, y) {
-	var x1 = Math.floor(x);
-	var y1 = Math.floor(y);
+	var x1 = Math.floor(x-0.5);
+	var y1 = Math.floor(y-0.5);
 	var x2 = x1 + 1;
 	var y2 = y1 + 1;
 		
-	var fractX = x - x1;
-	var fractY = y - y1;
+	var fractX = x - 0.5 - x1;
+	var fractY = y - 0.5 - y1;
 	
 	var a = [
 		1.0 - fractX,
@@ -67,6 +67,7 @@ calcDir = function(terrainWorld, x, y) {
 	v2.add(vec, g, vec);
 	v2.add(vec, h, vec);
 	v2.add(vec, i, vec);
+	v2.div(vec, 255.0, vec);
 	
 	return vec;
 }

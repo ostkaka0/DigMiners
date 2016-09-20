@@ -64,6 +64,8 @@ v2.mod = function (a, c, out) {
 
 v2.normalize = function(a, out) {
 	var length = v2.length(a);
+	if(length == 0)
+		return;
 	out[0] = fix.div(a[0], length);
 	out[1] = fix.div(a[1], length);
 }
