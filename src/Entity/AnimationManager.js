@@ -48,6 +48,7 @@ AnimationManager.prototype.update = function() {
 						bodypart.lastFrame = new Date();
 						//console.log("found animation to animate " + player.text.text);				
 						bodypart.currentFrame += 1;
+						//console.log("adding 1");
 						if(bodypart.currentFrame >= bodypart.animInstance.numFrames)
 							bodypart.currentFrame = 0;
 						bodypart.sprite.texture.frame = bodypart.animInstance.frames[bodypart.currentFrame];

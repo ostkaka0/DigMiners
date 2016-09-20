@@ -2,7 +2,7 @@ function gameLoop(tick, render) {
 	var frameTime = 1000/60;
 	var lastFrameTime = performance.now();
 	var startDate = performance.now();
-	var tickDuration = 1000.0/8.0;
+	var tickDuration = 1000.0/20.0;
 	var firstTickTime = performance.now();
 	var tickNum = 0;
 
