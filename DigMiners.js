@@ -32,11 +32,8 @@ onTexturesLoadComplete = function() {
     //todo: player is global
     player = playerWorld.add(new Player("karl", playerEntity.id));
 
-    playerEntity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.02);
+    playerEntity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
     playerEntity.movement = new Movement(2000.0);
-    //todo: remove angle and angleOld
-    playerEntity.angle = toFix(0);
-    playerEntity.angleOld = playerEntity.angle;
     var sprite = new PIXI.Sprite(textures.feet);
     sprite.anchor.x = 0.5;
     sprite.anchor.y = 0.5;  
@@ -137,14 +134,18 @@ render = function(tickFracTime) {
         if (entity.physicsBody && entity.drawable) {
             var x = -camera.frustrum.x + canvas.width/2 + tickFracTime * entity.physicsBody.pos[0] + (1-tickFracTime) * entity.physicsBody.posOld[0];
             var y = camera.frustrum.y + canvas.height/2 - (tickFracTime * entity.physicsBody.pos[1] + (1-tickFracTime) * entity.physicsBody.posOld[1]);
-            var rotation = -(tickFracTime * entity.physicsBody.angle + (1-tickFracTime) * entity.physicsBody.angleOld);
+
+            var a = (entity.physicsBody.angle - entity.physicsBody.angleOld) % (Math.PI*2);
+            var rotation = entity.physicsBody.angleOld + (2 * a % (Math.PI*2) - a) * tickFracTime;
             //console.log("angle " + entity.physicsBody.angle + " old " + entity.physicsBody.angleOld);
             entity.drawable.positionAll(x, y, rotation);
+
+            var entitySpeed = Math.sqrt(entity.physicsBody.speed[0] * entity.physicsBody.speed[0] + entity.physicsBody.speed[1] * entity.physicsBody.speed[1]);
+            //console.log(entitySpeed);
+            if(entity.drawable.bodyparts.feet)
+                entity.drawable.animate("feet", "feet", entitySpeed / 2.0, false);
         }
     });
-
-    playerEntity.drawable.animate("feet", "feet", Math.sqrt(playerEntity.physicsBody.speed[0]*playerEntity.physicsBody.speed[0] + playerEntity.physicsBody.speed[1]*playerEntity.physicsBody.speed[1])/5.0, false);
-
 
     //TODO: animationmanager use dt? maybe not needed
     animationManager.update();

@@ -6,7 +6,7 @@ PhysicsBody = function(pos, damping) {
 	this.damping = toFix(damping);
 	this.angle = 0;
 	this.angleOld = 0;
-	this.rotationSpeed = 5.0;
+	this.rotationSpeed = 10.0;
 }
 
 PhysicsBody.prototype.rotateTo = function(angle, speed, dt) {
@@ -30,7 +30,7 @@ function physicsBodySimulate(physicsBody, dt) {
 	v2.mul(dt, physicsBody.speed, deltaPos);
 	v2.add(deltaPos, physicsBody.pos, physicsBody.pos);
 	v2.mul(fix.pow(physicsBody.damping, dt), physicsBody.speed, physicsBody.speed);
-	physicsBody.rotateTo(Math.atan2(physicsBody.speed[1], physicsBody.speed[0]), physicsBody.rotationSpeed, dt);
+	physicsBody.rotateTo(Math.atan2(-physicsBody.speed[1], physicsBody.speed[0]), physicsBody.rotationSpeed, dt);
 }
 
 function entityFunctionPhysicsBodySimulate(gameData, dt) {
@@ -41,4 +41,17 @@ function entityFunctionPhysicsBodySimulate(gameData, dt) {
 		if (entity.physicsBody)
 			physicsBodySimulate(entity.physicsBody, dt);
 	});
+}
+
+function angleLerp(from, to, factor) {
+	if(from == to)
+		return;
+
+	var newDirx = Math.cos(from); 
+	var newDiry = Math.sin(from);
+	var oldDirx = Math.cos(to);
+	var oldDiry = Math.sin(to);
+	oldDirx += (newDirx - oldDirx) * factor;
+	oldDiry += (newDiry - oldDiry) * factor;
+	return Math.atan2(oldDiry, oldDirx);
 }
