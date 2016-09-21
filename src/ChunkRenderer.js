@@ -1,7 +1,7 @@
 ChunkRenderer = function(gl, world, tileSize) {
     this.gl = gl;
     this.tileSize = tileSize;
-	this.world = world;
+    this.world = world;
     this.chunkGLWorld = new Map2D();
 
     this.attributePos = 0;
@@ -39,44 +39,44 @@ ChunkRenderer.prototype.lazyInit = function() {
     if (this.shaderProgram && !this.buffer) {
         var size = this.tileSize*CHUNK_DIM;
         var vertices = [
-			0,0,
-			0,0,
-			size,0,
-			1,0,
-			0,size,
-			0,1,
-			size,size,
-			1,1,
-		];
+            0,0,
+            0,0,
+            size,0,
+            1,0,
+            0,size,
+            0,1,
+            size,size,
+            1,1,
+        ];
 
-		this.buffer = gl.createBuffer();
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
-		gl.bufferData(gl.ARRAY_BUFFER,
-		new Float32Array(vertices),
-		gl.STATIC_DRAW);
-		
-		//FACES :
-		var triangle_faces = [0, 1, 3, 0, 3, 2];
-		this.bufferIndices = gl.createBuffer();
-		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferIndices);
-		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,
-			new Uint16Array(triangle_faces),
-		gl.STATIC_DRAW);
-		
+        this.buffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
+        gl.bufferData(gl.ARRAY_BUFFER,
+        new Float32Array(vertices),
+        gl.STATIC_DRAW);
+        
+        //FACES :
+        var triangle_faces = [0, 1, 3, 0, 3, 2];
+        this.bufferIndices = gl.createBuffer();
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferIndices);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,
+            new Uint16Array(triangle_faces),
+        gl.STATIC_DRAW);
+        
         gl.useProgram(this.shaderProgram);
 
-		// Get attribute locations
-		this.attributePos = gl.getAttribLocation(this.shaderProgram, "aPos");
-		this.attributeUV = gl.getAttribLocation(this.shaderProgram, "aUV");
-		
-		// Get uniform locations
-		this.uniformTextureDensity = gl.getUniformLocation(this.shaderProgram, "textureDensity");
-		this.uniformTextureTiles = gl.getUniformLocation(this.shaderProgram, "textureTiles");
-		this.uniformTextureTerrain = gl.getUniformLocation(this.shaderProgram, "textureTerrain");
-		this.uniformMatVP = gl.getUniformLocation(this.shaderProgram, "matVP");
-		this.uniformMatM = gl.getUniformLocation(this.shaderProgram, "matM");
-		
-		this.isReady = true;
+        // Get attribute locations
+        this.attributePos = gl.getAttribLocation(this.shaderProgram, "aPos");
+        this.attributeUV = gl.getAttribLocation(this.shaderProgram, "aUV");
+        
+        // Get uniform locations
+        this.uniformTextureDensity = gl.getUniformLocation(this.shaderProgram, "textureDensity");
+        this.uniformTextureTiles = gl.getUniformLocation(this.shaderProgram, "textureTiles");
+        this.uniformTextureTerrain = gl.getUniformLocation(this.shaderProgram, "textureTerrain");
+        this.uniformMatVP = gl.getUniformLocation(this.shaderProgram, "matVP");
+        this.uniformMatM = gl.getUniformLocation(this.shaderProgram, "matM");
+        
+        this.isReady = true;
     }
 }
 
@@ -84,9 +84,9 @@ ChunkRenderer.prototype.render = function(world, matVP, camera) {
     var chunksToRender = [];
 
     var x1 = Math.floor((camera.pos.x-camera.width/2)/this.tileSize/CHUNK_DIM);
-	var y1 = Math.floor((camera.pos.y-camera.height/2)/this.tileSize/CHUNK_DIM);
-	var x2 = Math.floor((camera.pos.x+camera.width/2)/this.tileSize/CHUNK_DIM);
-	var y2 = Math.floor((camera.pos.y+camera.height/2)/this.tileSize/CHUNK_DIM);
+    var y1 = Math.floor((camera.pos.y-camera.height/2)/this.tileSize/CHUNK_DIM);
+    var x2 = Math.floor((camera.pos.x+camera.width/2)/this.tileSize/CHUNK_DIM);
+    var y2 = Math.floor((camera.pos.y+camera.height/2)/this.tileSize/CHUNK_DIM);
 
     for (var y = y1; y <= y2; ++y) {
         for (var x = x1; x <= x2; ++x) {
@@ -112,12 +112,9 @@ ChunkRenderer.prototype.renderChunks = function(matVP, chunksToRender) {
     // Model-view matrix
     gl.uniformMatrix3fv(this.uniformMatVP, false, matVP.toArray());
     // Texture uniforms
-	gl.uniform1i(this.uniformTextureTerrain, 0);
-	gl.uniform1i(this.uniformTextureTiles, 1);
+    gl.uniform1i(this.uniformTextureTerrain, 0);
+    gl.uniform1i(this.uniformTextureTiles, 1);
     gl.uniform1i(this.uniformTextureDensity, 2);
-    // Terrain texture:
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, this.textureTerrain);
 
     for (var i = 0; i < chunksToRender.length; ++i) {
         var x = chunksToRender[i].x;
@@ -132,88 +129,93 @@ ChunkRenderer.prototype.renderChunks = function(matVP, chunksToRender) {
             glChunk = new GLChunk(this.gl, chunk);
             this.chunkGLWorld.set(x, y, glChunk);
             chunk.isChanged = false;
-			this.handleChunkChange(chunk, x, y);
+            this.handleChunkChange(chunk, x, y);
         }
         // Update glChunk
         if (chunk.isChanged) {
             glChunk.update(this.gl, chunk);
             chunk.isChanged = false;
-			this.handleChunkChange(chunk, x, y);
+            this.handleChunkChange(chunk, x, y);
         }
+        if (!glChunk.textureTiles || !glChunk.textureDensity)
+            continue;
 
         // Render the chunk
         var matM = PIXI.Matrix.IDENTITY.clone().translate(x*CHUNK_DIM*this.tileSize, y*CHUNK_DIM*this.tileSize);
         gl.uniformMatrix3fv(this.uniformMatM, false, matM.toArray());
         
+        // Terrain texture:
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, this.textureTerrain);
         // Chunk textures
         gl.activeTexture(gl.TEXTURE1);
-		gl.bindTexture(gl.TEXTURE_2D, glChunk.textureTiles);
-		gl.activeTexture(gl.TEXTURE2);
-	    gl.bindTexture(gl.TEXTURE_2D, glChunk.textureDensity);
+        gl.bindTexture(gl.TEXTURE_2D, glChunk.textureTiles);
+        gl.activeTexture(gl.TEXTURE2);
+        gl.bindTexture(gl.TEXTURE_2D, glChunk.textureDensity);
 
-		// Attributes
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
+        // Attributes
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
 
         gl.enableVertexAttribArray(this.attributePos);
         gl.enableVertexAttribArray(this.attributeUV);
-		gl.vertexAttribPointer(this.attributePos, 2, gl.FLOAT, false, 4*4,0);
-		gl.vertexAttribPointer(this.attributeUV, 2, gl.FLOAT, false, 4*4,8);
+        gl.vertexAttribPointer(this.attributePos, 2, gl.FLOAT, false, 4*4,0);
+        gl.vertexAttribPointer(this.attributeUV, 2, gl.FLOAT, false, 4*4,8);
 
-		// Render chunk
-		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferIndices);
-		gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
-		
-		// Unbind buffers
-		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-		gl.bindBuffer(gl.ARRAY_BUFFER, null);
+        // Render chunk
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferIndices);
+        gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
+        
+        // Unbind buffers
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+        gl.bindBuffer(gl.ARRAY_BUFFER, null);
     }
 }
 
 ChunkRenderer.prototype.loadTexture = function() {
     var image = new Image();
-	image.src = "data/textures/ground.png";
-	image.webglTexture = false;
+    image.src = "data/textures/ground.png";
+    image.webglTexture = false;
     var that = this;
-	image.onload = function(e) {
-		var texture = gl.createTexture();
-		gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    image.onload = function(e) {
+        var texture = gl.createTexture();
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
-		gl.bindTexture(gl.TEXTURE_2D, texture);
-		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-		gl.bindTexture(gl.TEXTURE_2D, null);
-		gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
-		that.textureTerrain = texture;
-	};
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+        gl.bindTexture(gl.TEXTURE_2D, null);
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+        that.textureTerrain = texture;
+    };
 }
 
 ChunkRenderer.prototype.handleChunkChange = function(chunk, x, y) {
-	//console.log("onChunkChange event! x:" + x + " y:" + y);
-	var gl = this.gl;
-	var that = this;
-	var glChunk = that.chunkGLWorld.get(x, y);
-	
-	if (!chunk || !glChunk)
-		return;
-	
-	var notifyNeighbor = function(x2, y2) {
-		var glChunk2 = that.chunkGLWorld.get(x2, y2);
-		var chunk2 = that.world.get(x2, y2);
-		if (chunk2 && glChunk2) {
-			glChunk.updateBorder(gl, chunk2, x, y, x2, y2);
-			glChunk2.updateBorder(gl, chunk, x2, y2, x, y);
-			//that.onChunkChange2(gl, ex, ey, x2, y2, chunk, chunk2);
-			//that.onChunkChange2(gl, x2, y2, ex, ey, chunk2, chunk);
-		}
-	}
-	
-	notifyNeighbor(x, y+1);
-	notifyNeighbor(x-1, y+1);
-	notifyNeighbor(x-1, y);
-	notifyNeighbor(x-1, y-1);
-	notifyNeighbor(x, y-1);
-	notifyNeighbor(x+1, y-1);
-	notifyNeighbor(x+1, y);
-	notifyNeighbor(x+1, y+1);
+    //console.log("onChunkChange event! x:" + x + " y:" + y);
+    var gl = this.gl;
+    var that = this;
+    var glChunk = that.chunkGLWorld.get(x, y);
+    
+    if (!chunk || !glChunk)
+        return;
+    
+    var notifyNeighbor = function(x2, y2) {
+        var glChunk2 = that.chunkGLWorld.get(x2, y2);
+        var chunk2 = that.world.get(x2, y2);
+        if (chunk2 && glChunk2) {
+            glChunk.updateBorder(gl, chunk2, x, y, x2, y2);
+            glChunk2.updateBorder(gl, chunk, x2, y2, x, y);
+            //that.onChunkChange2(gl, ex, ey, x2, y2, chunk, chunk2);
+            //that.onChunkChange2(gl, x2, y2, ex, ey, chunk2, chunk);
+        }
+    }
+    
+    notifyNeighbor(x, y+1);
+    notifyNeighbor(x-1, y+1);
+    notifyNeighbor(x-1, y);
+    notifyNeighbor(x-1, y-1);
+    notifyNeighbor(x, y-1);
+    notifyNeighbor(x+1, y-1);
+    notifyNeighbor(x+1, y);
+    notifyNeighbor(x+1, y+1);
 }
