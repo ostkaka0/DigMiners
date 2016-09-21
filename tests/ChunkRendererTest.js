@@ -31,23 +31,23 @@ render = function() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     var projectionMatrix = PIXI.Matrix.IDENTITY.clone();//this.renderer.renderTarget.projectionMatrix.clone();
-	var viewMatrix = PIXI.Matrix.IDENTITY.clone();
+    var viewMatrix = PIXI.Matrix.IDENTITY.clone();
     viewMatrix = viewMatrix.translate(-camera.frustrum.x, -camera.frustrum.y);
     viewMatrix = viewMatrix.scale(2/canvas.width, 2/canvas.height);
     chunkRenderer.render(world, projectionMatrix.clone().append(viewMatrix), camera);
 }
 
 canvas.onclick = function(event) {
-	var worldX = event.clientX + camera.pos.x - camera.width/2;
-	var worldY = canvas.height - event.clientY + camera.pos.y - camera.height/2;
-	var tileX = Math.floor(worldX/32);
-	var tileY = Math.floor(worldY/32);
-	var chunkX = Math.floor(tileX/CHUNK_DIM);
-	var chunkY = Math.floor(tileY/CHUNK_DIM);
-	var localX = tileX%CHUNK_DIM;
-	var localY = tileY%CHUNK_DIM;
-	var chunk = world.get(chunkX, chunkY);
-	if (chunk)
-		chunk.setDensity(localX, localY, 0);
-	
+    var worldX = event.clientX + camera.pos.x - camera.width/2;
+    var worldY = canvas.height - event.clientY + camera.pos.y - camera.height/2;
+    var tileX = Math.floor(worldX/32);
+    var tileY = Math.floor(worldY/32);
+    var chunkX = Math.floor(tileX/CHUNK_DIM);
+    var chunkY = Math.floor(tileY/CHUNK_DIM);
+    var localX = tileX%CHUNK_DIM;
+    var localY = tileY%CHUNK_DIM;
+    var chunk = world.get(chunkX, chunkY);
+    if (chunk)
+        chunk.setDensity(localX, localY, 0);
+    
 };
