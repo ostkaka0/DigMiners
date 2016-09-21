@@ -143,7 +143,7 @@ render = function(tickFracTime) {
             var entitySpeed = Math.sqrt(entity.physicsBody.speed[0] * entity.physicsBody.speed[0] + entity.physicsBody.speed[1] * entity.physicsBody.speed[1]);
             //console.log(entitySpeed);
             if(entity.drawable.bodyparts.feet)
-                entity.drawable.animate("feet", "feet", entitySpeed / 2.0, false);
+                entity.drawable.animate("feet", "feet", entitySpeed * 16.0, false);
         }
     });
 
