@@ -21,8 +21,10 @@ PhysicsBody = function(pos, damping) {
 }*/
 
 function physicsBodySimulate(tileWorld, physicsBody, dt) {
+    // Update posOld, speedOld
     v2.copy(physicsBody.pos, physicsBody.posOld);
     v2.copy(physicsBody.speed, physicsBody.speedOld);
+    // Calculate deltaPos and number of steps
     var deltaPos = v2.create(0, 0);
     v2.mul(dt, physicsBody.speed, deltaPos);
     var deltaPosLength = v2.length(deltaPos);
@@ -31,10 +33,10 @@ function physicsBodySimulate(tileWorld, physicsBody, dt) {
     deltaPosLength /= numSteps;
     v2.mul(fix.pow(physicsBody.damping, dt), physicsBody.speed, physicsBody.speed);
     var newPos = v2.create(0, 0);
+    // Simulate steps
     for (i = 0; i < numSteps; i++) {
         v2.add(deltaPos, physicsBody.pos, newPos);
         var density = calcDensity(tileWorld, newPos[0], newPos[1]);
-        console.log("Density: " + density);
         if (density > 0) {
             var dir = calcDir(tileWorld, newPos[0], newPos[1])
             v2.div(dir, 2.0, dir);
@@ -75,27 +77,7 @@ PhysicsBody.prototype.rotateTo = function(angle, speed, dt) {
 	oldDirx += (newDirx - oldDirx) * speed * dt;
 	oldDiry += (newDiry - oldDiry) * speed * dt;
 	this.angle = Math.atan2(oldDiry, oldDirx);
-	//console.log("angle " + this.angle);
 }
-
-/*function physicsBodySimulate(physicsBody, dt) {
-	v2.copy(physicsBody.pos, physicsBody.posOld);
-	v2.copy(physicsBody.speed, physicsBody.speedOld);
-	var deltaPos = v2.create(0, 0);
-	v2.mul(dt, physicsBody.speed, deltaPos);
-	v2.add(deltaPos, physicsBody.pos, physicsBody.pos);
-	v2.mul(fix.pow(physicsBody.damping, dt), physicsBody.speed, physicsBody.speed);
-	
-
-function entityFunctionPhysicsBodySimulate(gameData, dt) {
-	var entityWorld = gameData.entityWorld;
-	if (!entityWorld)
-		console.error("Missing gameData.entityWorld");
-	entityWorld.objectArray.forEach(function(entity) {
-		if (entity.physicsBody)
-			physicsBodySimulate(entity.physicsBody, dt);
-	});
-}*/
 
 function angleLerp(from, to, factor) {
 	if(from == to)
