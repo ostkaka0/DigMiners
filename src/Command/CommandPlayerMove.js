@@ -23,6 +23,7 @@ CommandPlayerMove.prototype.execute = function(gameData) {
     }
 
     var player = playerWorld.objects[this.playerId];
+    if (!player) return;
     var playerEntity = entityWorld.objects[player.entityId];
     if (!playerEntity) return;
     var movement = playerEntity.movement;
