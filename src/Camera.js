@@ -9,9 +9,9 @@ Camera = function () {
 
     this.root = new PIXI.Container();
 
-	this.targetPos = v2.create(0, 0);
-	this.target = null;
-	this.velocity = null;
+    this.targetPos = v2.create(0, 0);
+    this.target = null;
+    this.velocity = null;
 
     this.mask = new PIXI.Graphics();
     this.viewport = new PIXI.Rectangle(0, 0, window.innerWidth, window.innerHeight);
@@ -32,13 +32,13 @@ if (!isServer)
  * @param dt delta time
  */
 Camera.prototype.update = function (dt) {
-	if(this.velocity) {
-		this.targetPos.x += this.velocity.x;
-		this.targetPos.y += this.velocity.y;
-	}
+    if(this.velocity) {
+        this.targetPos.x += this.velocity.x;
+        this.targetPos.y += this.velocity.y;
+    }
 
-	var x = ((this.target != null ? this.target.ix : this.targetPos.x) * this.zoom) - (this.width / 2);
-	var y = ((this.target != null ? this.target.iy : this.targetPos.y) * this.zoom) - (this.height / 2);
+    var x = ((this.target != null ? this.target.ix : this.targetPos.x) * this.zoom) - (this.width / 2);
+    var y = ((this.target != null ? this.target.iy : this.targetPos.y) * this.zoom) - (this.height / 2);
 
     this.frustrum.x = x / this.zoom;
     this.frustrum.y = y / this.zoom;
@@ -49,7 +49,7 @@ Camera.prototype.update = function (dt) {
         -this.frustrum.x * this.zoom,
         -this.frustrum.y * this.zoom
     );
-	
+    
 };
 
 /**
@@ -157,8 +157,8 @@ Object.defineProperties(Camera.prototype, {
             return this._zoom;
         }
     },
-	
-	pos: {
+    
+    pos: {
 
         get: function () {
 
@@ -167,15 +167,15 @@ Object.defineProperties(Camera.prototype, {
 
         set: function (input) {
 
-			if(input != undefined) {
-				if(input.x != undefined)
-					this.frustrum.x = input.x;
-				if(input.y != undefined)
-					this.frustrum.y = input.y;
-				
-				this._scaleFrustrum();
-				this._constrainFrustrum();
-			}
+            if(input != undefined) {
+                if(input.x != undefined)
+                    this.frustrum.x = input.x;
+                if(input.y != undefined)
+                    this.frustrum.y = input.y;
+                
+                this._scaleFrustrum();
+                this._constrainFrustrum();
+            }
 
             return { x: this.frustrum.x, y: this.frustrum.y };
         }

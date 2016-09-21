@@ -1,5 +1,5 @@
 g_unitTests.testobjectWorld = function() {
-	var objectWorld = new ObjectWorld();
+    var objectWorld = new ObjectWorld();
     objectWorld.update();
     var object = objectWorld.add();
     if (object.isActive || objectWorld.objectArray.length != 0 || objectWorld.freeIdList.length > 0 || objectWorld.nextId != 2)
@@ -13,5 +13,5 @@ g_unitTests.testobjectWorld = function() {
     objectWorld.update();
     if (object.isActive || objectWorld.objectArray.length != 0 || objectWorld.freeIdList.length != 1 || objectWorld.nextId != 2) 
         return false;
-	return true;
+    return true;
 }

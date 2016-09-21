@@ -1,33 +1,33 @@
 function gameLoop(tick, render) {
-	var frameTime = 1000/60;
-	var lastFrameTime = performance.now();
-	var startDate = performance.now();
-	var tickDuration = 1000.0/20.0;
-	var firstTickTime = performance.now();
-	var tickNum = 0;
+    var frameTime = 1000/60;
+    var lastFrameTime = performance.now();
+    var startDate = performance.now();
+    var tickDuration = 1000.0/20.0;
+    var firstTickTime = performance.now();
+    var tickNum = 0;
 
-	function update() {
-	    window.requestAnimationFrame(update);
-	    var now = performance.now();
-	    
-	    // Simulate ticks:
-	    var newTickNum = Math.floor((now - firstTickTime) / tickDuration);
-	    var tickFracTime = (now - firstTickTime) / tickDuration - newTickNum;
-	    for(; tickNum < newTickNum; ++tickNum) {
-	        tick(toFix(tickDuration/1000.0));
-	    }
-	    // Render:
-	    render(tickFracTime);
-	    
-	    // Skip frames:
-	    var now = performance.now();
-	    var delay = lastFrameTime - now + frameTime;
-	    while(delay < 0.0*frameTime) {
-	        delay += frameTime;
-	        lastFrameTime += frameTime;
-	        console.log("Skipping frame");
-	    }
-	    lastFrameTime += frameTime;
-	}
-	window.requestAnimationFrame(update);
+    function update() {
+        window.requestAnimationFrame(update);
+        var now = performance.now();
+        
+        // Simulate ticks:
+        var newTickNum = Math.floor((now - firstTickTime) / tickDuration);
+        var tickFracTime = (now - firstTickTime) / tickDuration - newTickNum;
+        for(; tickNum < newTickNum; ++tickNum) {
+            tick(toFix(tickDuration/1000.0));
+        }
+        // Render:
+        render(tickFracTime);
+        
+        // Skip frames:
+        var now = performance.now();
+        var delay = lastFrameTime - now + frameTime;
+        while(delay < 0.0*frameTime) {
+            delay += frameTime;
+            lastFrameTime += frameTime;
+            console.log("Skipping frame");
+        }
+        lastFrameTime += frameTime;
+    }
+    window.requestAnimationFrame(update);
 }
