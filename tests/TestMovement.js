@@ -8,7 +8,7 @@ window.requestAnimationFrame(render);
 
 var playerWorld = new ObjectWorld();
 var entityWorld = new ObjectWorld();
-var gameData = { playerWorld: playerWorld, entityWorld: entityWorld };
+var gameData = { playerWorld: playerWorld, entityWorld: entityWorld, tileWorld: new Map2D() };
 
 var texture = PIXI.Texture.fromImage("data/textures/cheese.png");
 var cheese = entityWorld.add({});
@@ -27,7 +27,7 @@ var tickNum = 0;
 
 var commands = [];
 
-window.requestAnimationFrame(update);
+gameLoop(tick, render);
 
 // Player input
 document.addEventListener('keypress', function(event) {
@@ -50,18 +50,6 @@ document.addEventListener('keyup', function(event) {
     if (playerMoveDirection != null)
         commands.push(new CommandPlayerMove(player.id, playerMoveDirection));
 });
-
-function update() {
-    window.requestAnimationFrame(update);
-    var now = performance.now();
-    var newTickNum = Math.floor((now - firstTickTime) / tickDuration);
-    var tickFracTime = (now - firstTickTime) / tickDuration - newTickNum;
-    for(; tickNum < newTickNum; ++tickNum) {
-        tick(toFix(tickDuration/1000.0));
-    }
-
-    render(tickFracTime);
-}
 
 function tick(dt) {
     entityWorld.objectArray.forEach(function(entity) {

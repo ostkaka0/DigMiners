@@ -19,25 +19,11 @@ gl.clearColor(0.1, 0.1, 0.1, 1.0);
 var frameTime = 1000/60;
 var lastFrameTime = performance.now();
 var startDate = performance.now();
-window.requestAnimationFrame(update);
+gameLoop(tick, render);
 
-function update(timestamp) {
-	camera.frustrum.x = 2000*Math.sin((startDate - performance.now())/2000);
-	render();
-	
-	// Skip frames:
-	var now = performance.now();
-	var delay = lastFrameTime - now + frameTime;
-	while(delay < 0.0*frameTime) {
-		delay += frameTime;
-		lastFrameTime += frameTime;//lastFrameTime.setMilliseconds(lastFrameTime.getMilliseconds() + frameTime);
-		console.log("Skipping frame");
-	}
-	lastFrameTime += frameTime;//lastFrameTime.setMilliseconds(lastFrameTime.getMilliseconds() + frameTime);
-	window.requestAnimationFrame(update);
-}
+tick = function() {}
 
-function render() {
+render = function() {
     canvasUpdateSize(canvas);
     camera.width = canvas.width;
     camera.height = canvas.height;
