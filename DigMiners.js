@@ -6,7 +6,7 @@ renderer.view.style.position = 'absolute';
 renderer.view.style.left = '0%';
 renderer.view.style.top = '0%';
 document.body.appendChild(renderer.view);
-var socket = io("127.0.0.1:3000");
+var client = new Client("127.0.0.1", 3000);
 
 var playerWorld = new ObjectWorld();
 var entityWorld = new ObjectWorld();
@@ -74,7 +74,7 @@ loadGame = function() {
         if (char == "d") playerMoveDirection = PlayerMoveDirection.ENABLE_RIGHT;
         if (char == " ") playerEntity.drawable.animate("body", "dig", 200, false);
         if (playerMoveDirection != null)
-            commands.push(new CommandPlayerMove(player.id, playerMoveDirection));
+            client.sendCommand(new CommandPlayerMove(player.id, playerMoveDirection));
     });
     document.addEventListener('keyup', function(event) {
         var char = String.fromCharCode(event.keyCode).toLowerCase();
@@ -85,7 +85,7 @@ loadGame = function() {
         if (char == "d") playerMoveDirection = PlayerMoveDirection.DISABLE_RIGHT;
         if (char == " ") playerEntity.drawable.unanimate("body", "dig", true);
         if (playerMoveDirection != null)
-            commands.push(new CommandPlayerMove(player.id, playerMoveDirection));
+            client.sendCommand(new CommandPlayerMove(player.id, playerMoveDirection));
     });
 
     // Start gameLoop

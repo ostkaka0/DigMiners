@@ -1,20 +1,20 @@
 PlayerMoveDirection = {
-    ENABLE_UP : 0,
-    ENABLE_LEFT: 1, 
-    ENABLE_DOWN: 2, 
+    ENABLE_UP: 0,
+    ENABLE_LEFT: 1,
+    ENABLE_DOWN: 2,
     ENABLE_RIGHT: 3,
-    DISABLE_UP : 4,
-    DISABLE_LEFT: 5, 
-    DISABLE_DOWN: 6, 
+    DISABLE_UP: 4,
+    DISABLE_LEFT: 5,
+    DISABLE_DOWN: 6,
     DISABLE_RIGHT: 7
 }
 
-CommandPlayerMove = function(playerId, playerMoveDirection) {
+CommandPlayerMove = function (playerId, playerMoveDirection) {
     this.playerId = playerId;
     this.playerMoveDirection = playerMoveDirection;
 }
 
-CommandPlayerMove.prototype.execute = function(gameData) {
+CommandPlayerMove.prototype.execute = function (gameData) {
     var playerWorld = gameData.playerWorld;
     var entityWorld = gameData.entityWorld;
     if (!playerWorld || !entityWorld) {
@@ -29,31 +29,38 @@ CommandPlayerMove.prototype.execute = function(gameData) {
     var movement = playerEntity.movement;
     if (!movement) return;
 
-    switch(this.playerMoveDirection) {
-    case PlayerMoveDirection.ENABLE_UP:
-        movement.up = true;
-        break;
-    case PlayerMoveDirection.ENABLE_LEFT:
-        movement.left = true;
-        break;
-    case PlayerMoveDirection.ENABLE_DOWN:
-        movement.down = true;
-        break;
-    case PlayerMoveDirection.ENABLE_RIGHT:
-        movement.right = true;
-        break;
-    case PlayerMoveDirection.DISABLE_UP:
-        movement.up = false;
-        break;
-    case PlayerMoveDirection.DISABLE_LEFT:
-        movement.left = false;
-        break;
-    case PlayerMoveDirection.DISABLE_DOWN:
-        movement.down = false;
-        break;
-    case PlayerMoveDirection.DISABLE_RIGHT:
-        movement.right = false;
-        break;
+    switch (this.playerMoveDirection) {
+        case PlayerMoveDirection.ENABLE_UP:
+            movement.up = true;
+            break;
+        case PlayerMoveDirection.ENABLE_LEFT:
+            movement.left = true;
+            break;
+        case PlayerMoveDirection.ENABLE_DOWN:
+            movement.down = true;
+            break;
+        case PlayerMoveDirection.ENABLE_RIGHT:
+            movement.right = true;
+            break;
+        case PlayerMoveDirection.DISABLE_UP:
+            movement.up = false;
+            break;
+        case PlayerMoveDirection.DISABLE_LEFT:
+            movement.left = false;
+            break;
+        case PlayerMoveDirection.DISABLE_DOWN:
+            movement.down = false;
+            break;
+        case PlayerMoveDirection.DISABLE_RIGHT:
+            movement.right = false;
+            break;
     }
+}
 
+CommandPlayerMove.prototype.getName = function () {
+    return "CommandPlayerMove";
+}
+
+CommandPlayerMove.prototype.getData = function () {
+    return { 'playerId': this.playerId, 'playerMoveDirection': this.playerMoveDirection };
 }
