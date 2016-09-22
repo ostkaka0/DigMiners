@@ -65,7 +65,7 @@ loadGame = function() {
     }
 
     // Player input
-    document.addEventListener('keypress', function(event) {
+    document.addEventListener('keydown', function(event) {
         var char = String.fromCharCode(event.keyCode).toLowerCase();
         var playerMoveDirection = null;
         if (char == "w") playerMoveDirection = PlayerMoveDirection.ENABLE_UP;

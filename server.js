@@ -65,7 +65,13 @@ tick = function () {
 io.on("connection", function (socket) {
 	players[socket.id] = { 'socket': socket };
 
+	players[socket.id].pingIntervalId = setInterval(function () {
+		startTime = Date.now();
+		socket.emit('ping');
+	}, 2000);
+
 	socket.on("disconnect", function () {
+		clearInterval(players[socket.id].pingIntervalId);
 		delete players[socket.id];
 		console.log(socket.id + " disconnected.");
 	});
@@ -75,9 +81,16 @@ io.on("connection", function (socket) {
     });
 
 	socket.on('command', function (data) {
-		setTimeout(function () { socket.emit("command", data) }, 300);
+		setTimeout(function () { io.sockets.emit("command", data) }, 300);
+		//console.log("Received " + data[0] + " and " + JSON.stringify(data[1]));
+    });
 
-		console.log("Received " + data[0] + " and " + JSON.stringify(data[1]));
+    socket.on('ping', function () {
+        socket.emit('pong', Date.now());
+    });
+
+    socket.on('pong', function (time) {
+        players[socket.id].ping = 2 * (Date.now() - time);
     });
 
 	console.log(socket.id + " connected.");
