@@ -7,7 +7,7 @@ Movement = function (speed) {
     this.speed = speed;
 }
 
-function entityFunctionPlayerMovement(gameData, dt) {
+entityFunctionPlayerMovement = function (gameData, dt) {
     var playerWorld = gameData.playerWorld;
     var entityWorld = gameData.entityWorld;
     if (!playerWorld || !entityWorld)
@@ -31,9 +31,11 @@ function entityFunctionPlayerMovement(gameData, dt) {
         v2.mul(dt, normalized, normalized);
         v2.add(normalized, entity.physicsBody.speed, entity.physicsBody.speed);
 
-        if (entity.movement.spacebar)
-            entity.drawable.animate("body", "dig", 200, false);
-        else
-            entity.drawable.unanimate("body", "dig", true);
+        if (entity.drawable) {
+            if (entity.movement.spacebar)
+                entity.drawable.animate("body", "dig", 200, false);
+            else
+                entity.drawable.unanimate("body", "dig", true);
+        }
     }
 }

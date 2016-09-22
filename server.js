@@ -39,6 +39,7 @@ var entityWorld = new ObjectWorld();
 var tileWorld = new Map2D();
 var generator = new Generator();
 var players = new Array();
+var gameData = { playerWorld: playerWorld, entityWorld: entityWorld, tileWorld: tileWorld };
 
 var tickDuration = 1000 / 8;
 var firstTickTime = process.hrtime();
@@ -52,13 +53,16 @@ update = function () {
 	var delay = -diff_ms + tickNum * tickDuration;
 	setTimeout(update, delay);
 
-	tick();
+	tick(delay);
 	tickNum++;
 }
 
-tick = function () {
+tick = function (dt) {
+	//console.log(dt);
 	//console.log("Tick #" + tickNum);
 	playerWorld.update();
+	entityFunctionPlayerMovement(gameData, dt);
+    entityFunctionPhysicsBodySimulate(gameData, dt);
 	entityWorld.update();
 }
 

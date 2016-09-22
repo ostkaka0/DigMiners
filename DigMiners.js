@@ -108,6 +108,7 @@ loadChunk = function (world, x, y) {
 }
 
 tick = function (dt) {
+    //console.log(dt);
     entityWorld.objectArray.forEach(function (entity) {
         if (entity.physicsBody && entity.physicsBody.angle)
             entity.physicsBody.angleOld = entity.physicsBody.angle;

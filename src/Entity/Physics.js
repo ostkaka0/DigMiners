@@ -1,6 +1,6 @@
 PHYSICS_MAX_STEP_LENGTH = 0.5;
 
-PhysicsBody = function(pos, damping) {
+PhysicsBody = function (pos, damping) {
     this.pos = v2.clone(pos);
     this.posOld = v2.clone(pos);
     this.speed = v2.create(0, 0);
@@ -20,7 +20,7 @@ PhysicsBody = function(pos, damping) {
     v2.mul(fix.pow(physicsBody.damping, dt), physicsBody.speed, physicsBody.speed);
 }*/
 
-function physicsBodySimulate(tileWorld, physicsBody, dt) {
+physicsBodySimulate = function (tileWorld, physicsBody, dt) {
     // Update posOld, speedOld
     v2.copy(physicsBody.pos, physicsBody.posOld);
     v2.copy(physicsBody.speed, physicsBody.speedOld);
@@ -44,8 +44,8 @@ function physicsBodySimulate(tileWorld, physicsBody, dt) {
             var normal = v2.create(0, 0);
             v2.normalize(dir, normal);
             if (normal[0] || normal[1]) {
-               deltaPos = [(1.0-Math.abs(normal[0]))*deltaPos[0], (1.0-Math.abs(normal[1]))*deltaPos[1]];
-               physicsBody.speed = [(1.0-Math.abs(normal[0]))*physicsBody.speed[0], (1.0-Math.abs(normal[1]))*physicsBody.speed[1]];
+                deltaPos = [(1.0 - Math.abs(normal[0])) * deltaPos[0], (1.0 - Math.abs(normal[1])) * deltaPos[1]];
+                physicsBody.speed = [(1.0 - Math.abs(normal[0])) * physicsBody.speed[0], (1.0 - Math.abs(normal[1])) * physicsBody.speed[1]];
             }
         }
         v2.copy(newPos, physicsBody.pos);
@@ -55,22 +55,22 @@ function physicsBodySimulate(tileWorld, physicsBody, dt) {
     physicsBody.rotateTo(Math.atan2(-physicsBody.speed[1], physicsBody.speed[0]), physicsBody.rotationSpeed, dt);
 }
 
-function entityFunctionPhysicsBodySimulate(gameData, dt) {
+entityFunctionPhysicsBodySimulate = function (gameData, dt) {
     var entityWorld = gameData.entityWorld;
     var tileWorld = gameData.tileWorld;
     if (!entityWorld || !tileWorld)
         console.error("Missing gameData properties");
-    entityWorld.objectArray.forEach(function(entity) {
+    entityWorld.objectArray.forEach(function (entity) {
         if (entity.physicsBody)
             physicsBodySimulate(tileWorld, entity.physicsBody, dt);
     });
 }
 
-PhysicsBody.prototype.rotateTo = function(angle, speed, dt) {
-    if(this.angle == angle)
+PhysicsBody.prototype.rotateTo = function (angle, speed, dt) {
+    if (this.angle == angle)
         return;
 
-    var newDirx = Math.cos(angle); 
+    var newDirx = Math.cos(angle);
     var newDiry = Math.sin(angle);
     var oldDirx = Math.cos(this.angle);
     var oldDiry = Math.sin(this.angle);
@@ -79,11 +79,11 @@ PhysicsBody.prototype.rotateTo = function(angle, speed, dt) {
     this.angle = Math.atan2(oldDiry, oldDirx);
 }
 
-function angleLerp(from, to, factor) {
-    if(from == to)
+angleLerp = function (from, to, factor) {
+    if (from == to)
         return;
 
-    var newDirx = Math.cos(from); 
+    var newDirx = Math.cos(from);
     var newDiry = Math.sin(from);
     var oldDirx = Math.cos(to);
     var oldDiry = Math.sin(to);
