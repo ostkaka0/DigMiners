@@ -11,7 +11,7 @@ ObjectWorld.prototype.add = function(object) {
     if (!object) object = {};
     object.isActive = false;
     if (this.freeIdList.length > 0)
-        object.id = freeIdList.pop();
+        object.id = this.freeIdList.pop();
     else
         object.id = this.nextId++;
     this.objectsToCreate.push(object);

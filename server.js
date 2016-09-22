@@ -70,8 +70,17 @@ io.on("connection", function (socket) {
 		socket.emit('ping');
 	}, 2000);
 
+	players[socket.id].entity = entityWorld.add({});
+	players[socket.id].player = playerWorld.add(new Player("karl", players[socket.id].entity.id, socket.id));
+	players[socket.id].entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
+	players[socket.id].entity.movement = new Movement(50.0);
+
+	socket.emit("init", socket.id);
+
 	socket.on("disconnect", function () {
 		clearInterval(players[socket.id].pingIntervalId);
+		entityWorld.remove(players[socket.id].entity);
+		playerWorld.remove(players[socket.id].player);
 		delete players[socket.id];
 		console.log(socket.id + " disconnected.");
 	});
