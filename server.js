@@ -75,7 +75,8 @@ io.on("connection", function (socket) {
     });
 
 	socket.on('command', function (data) {
-		socket.emit("command", data);
+		setTimeout(function () { socket.emit("command", data) }, 300);
+
 		console.log("Received " + data[0] + " and " + JSON.stringify(data[1]));
     });
 
