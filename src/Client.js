@@ -13,7 +13,7 @@ Client = function (ip, port) {
         console.log("Connected.");
     });
 
-    socket.on('message', function (msg, data) {
+    socket.on('message', function (msg) {
         console.log("Message from server: " + msg);
     });
 
