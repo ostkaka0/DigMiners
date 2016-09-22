@@ -75,7 +75,7 @@ loadGame = function () {
             if (char == "a") playerMoveDirection = PlayerMoveDirection.ENABLE_LEFT;
             if (char == "s") playerMoveDirection = PlayerMoveDirection.ENABLE_DOWN;
             if (char == "d") playerMoveDirection = PlayerMoveDirection.ENABLE_RIGHT;
-            if (char == " ") playerEntity.drawable.animate("body", "dig", 200, false);
+            if (char == " ") playerMoveDirection = PlayerMoveDirection.ENABLE_SPACEBAR;
             if (playerMoveDirection != null)
                 client.sendCommand(new CommandPlayerMove(player.id, playerMoveDirection));
         }
@@ -89,7 +89,7 @@ loadGame = function () {
             if (char == "a") playerMoveDirection = PlayerMoveDirection.DISABLE_LEFT;
             if (char == "s") playerMoveDirection = PlayerMoveDirection.DISABLE_DOWN;
             if (char == "d") playerMoveDirection = PlayerMoveDirection.DISABLE_RIGHT;
-            if (char == " ") playerEntity.drawable.unanimate("body", "dig", true);
+            if (char == " ") playerMoveDirection = PlayerMoveDirection.DISABLE_SPACEBAR;
             if (playerMoveDirection != null)
                 client.sendCommand(new CommandPlayerMove(player.id, playerMoveDirection));
         }

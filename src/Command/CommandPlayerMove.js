@@ -3,10 +3,12 @@ PlayerMoveDirection = {
     ENABLE_LEFT: 1,
     ENABLE_DOWN: 2,
     ENABLE_RIGHT: 3,
-    DISABLE_UP: 4,
-    DISABLE_LEFT: 5,
-    DISABLE_DOWN: 6,
-    DISABLE_RIGHT: 7
+    ENABLE_SPACEBAR: 4,
+    DISABLE_UP: 5,
+    DISABLE_LEFT: 6,
+    DISABLE_DOWN: 7,
+    DISABLE_RIGHT: 8,
+    DISABLE_SPACEBAR: 9
 }
 
 CommandPlayerMove = function (playerId, playerMoveDirection) {
@@ -42,6 +44,9 @@ CommandPlayerMove.prototype.execute = function (gameData) {
         case PlayerMoveDirection.ENABLE_RIGHT:
             movement.right = true;
             break;
+        case PlayerMoveDirection.ENABLE_SPACEBAR:
+            movement.spacebar = true;
+            break;
         case PlayerMoveDirection.DISABLE_UP:
             movement.up = false;
             break;
@@ -53,6 +58,9 @@ CommandPlayerMove.prototype.execute = function (gameData) {
             break;
         case PlayerMoveDirection.DISABLE_RIGHT:
             movement.right = false;
+            break;
+        case PlayerMoveDirection.DISABLE_SPACEBAR:
+            movement.spacebar = false;
             break;
     }
 }
