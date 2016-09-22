@@ -62,5 +62,5 @@ CommandPlayerMove.prototype.getName = function () {
 }
 
 CommandPlayerMove.prototype.getData = function () {
-    return { 'playerId': this.playerId, 'playerMoveDirection': this.playerMoveDirection };
+    return [this.playerId, this.playerMoveDirection];
 }
