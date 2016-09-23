@@ -19,6 +19,7 @@ CommandEntityStatus.prototype.execute = function (gameData) {
     if (!physicsBody) return;
     console.dir(this.physicsBody);
     physicsBody.pos = this.physicsBody.pos;
+    console.log("set " + this.entityId + " pos to " + physicsBody.pos);
     physicsBody.posOld = this.physicsBody.posOld;
     physicsBody.speed = this.physicsBody.speed;
     physicsBody.speedOld = this.physicsBody.speedOld;

@@ -14,16 +14,16 @@ loadScript = function (filePath) {
 }
 
 loadScriptsRecursive = function (dir) {
-	var files = fs.readdirSync(dir);
-	for (var i = 0; i < files.length; ++i) {
-		var filePath = dir + "/" + files[i];
-		var stat = fs.statSync(filePath);
+    var files = fs.readdirSync(dir);
+    for (var i = 0; i < files.length; ++i) {
+        var filePath = dir + "/" + files[i];
+        var stat = fs.statSync(filePath);
 
-		if (stat.isDirectory())
-			loadScriptsRecursive(filePath);
+        if (stat.isDirectory())
+            loadScriptsRecursive(filePath);
         else if (stat.isFile() && path.extname(filePath) == ".js")
-			loadScript(filePath)
-	}
+            loadScript(filePath)
+    }
 }
 
 loadScriptsRecursive("lib");
@@ -51,83 +51,91 @@ var tickNum = 0;
 var commands = [];
 
 update = function () {
-	var now = process.hrtime();
+    var now = process.hrtime();
 
-	var diff = process.hrtime(firstTickTime);
-	var diff_ms = diff[0] * 1e3 + diff[1] / 1e6;
-	var delay = -diff_ms + tickNum * tickDuration;
-	setTimeout(update, delay);
+    var diff = process.hrtime(firstTickTime);
+    var diff_ms = diff[0] * 1e3 + diff[1] / 1e6;
+    var delay = -diff_ms + tickNum * tickDuration;
+    setTimeout(update, delay);
 
-	tick(delay);
-	tickNum++;
+    tick(1.0 / 20.0);
+    tickNum++;
 }
 
 tick = function (dt) {
-	//console.log(dt);
-	//console.log("Tick #" + tickNum);
-	commands.forEach(function (command) {
+    //console.log(dt);
+    //console.log("Tick #" + tickNum);
+    commands.forEach(function (command) {
         command.execute(gameData);
     });
     commands.length = 0;
-	playerWorld.update();
-	entityFunctionPlayerMovement(gameData, dt);
+    playerWorld.update();
+    entityFunctionPlayerMovement(gameData, dt);
     entityFunctionPhysicsBodySimulate(gameData, dt);
-	entityWorld.update();
+    entityWorld.update();
 }
 
 io.on("connection", function (socket) {
-	players[socket.id] = { 'socket': socket };
+    players[socket.id] = { 'socket': socket };
 
-	players[socket.id].pingIntervalId = setInterval(function () {
-		startTime = Date.now();
-		socket.emit('ping');
-	}, 2000);
+    players[socket.id].pingIntervalId = setInterval(function () {
+        startTime = Date.now();
+        socket.emit('ping');
+    }, 2000);
 
-	players[socket.id].name = "Bertil";
+    players[socket.id].name = "Bertil";
 
-	players[socket.id].entity = entityWorld.add({}, idList.next());
-	var entity = players[socket.id].entity;
+    players[socket.id].entity = entityWorld.add({}, idList.next());
+    var entity = players[socket.id].entity;
 
-	players[socket.id].player = playerWorld.add(new Player("karl", entity.id, socket.id), idList.next());
-	var player = players[socket.id].player;
+    players[socket.id].player = playerWorld.add(new Player("karl", entity.id, socket.id), idList.next());
+    var player = players[socket.id].player;
 
-	entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
-	entity.movement = new Movement(50.0);
+    entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
+    entity.movement = new Movement(50.0);
 
-	socket.emit("init", [socket.id, player.id, entity.id, players[socket.id].name]);
-	for (var key in players) {
-		if (key != socket.id) {
-			socket.emit("playerJoin", [key, players[key].entity.id, players[key].name]);
-			var commandEntityStatus = new CommandEntityStatus(players[key].entity.id, players[key].entity.physicsBody);
-			socket.emit("command", [commandEntityStatus.getName(), commandEntityStatus.getData()]);
-		}
-	}
-	socket.broadcast.emit("playerJoin", [socket.id, entity.id, players[socket.id].name]);
-	var commandEntityStatus = new CommandEntityStatus(entity.id, entity.physicsBody);
-	io.sockets.emit("command", [commandEntityStatus.getName(), commandEntityStatus.getData()]);
+    socket.emit("init", [socket.id, player.id, entity.id, players[socket.id].name, Object.keys(players).length - 1]);
+    for (var key in players) {
+        if (key != socket.id) {
+            socket.emit("playerJoin", [key, players[key].entity.id, players[key].name]);
+        }
+    }
+    socket.broadcast.emit("playerJoin", [socket.id, entity.id, players[socket.id].name]);
 
-	socket.on("disconnect", function () {
-		clearInterval(players[socket.id].pingIntervalId);
-		socket.broadcast.emit("playerLeave", players[socket.id].entity.id);
-		entityWorld.remove(players[socket.id].entity);
-		playerWorld.remove(players[socket.id].player);
-		delete players[socket.id];
-		console.log(socket.id + " disconnected.");
-	});
-
-	socket.on('message', function (msg) {
-		console.log("Message from " + socket.id + ": " + msg);
+    socket.on("init2", function () {
+        for (var key in players) {
+            if (key != socket.id) {
+                var commandEntityStatus = new CommandEntityStatus(players[key].entity.id, players[key].entity.physicsBody);
+                socket.emit("command", [commandEntityStatus.getName(), commandEntityStatus.getData()]);
+            }
+        }
+        var commandEntityStatus = new CommandEntityStatus(entity.id, entity.physicsBody);
+        io.sockets.emit("command", [commandEntityStatus.getName(), commandEntityStatus.getData()]);
+        console.log("sent init2");
     });
 
-	socket.on('command', function (data) {
-		setTimeout(function () {
-			if (data[0] == "CommandPlayerMove")
-				commands.push(new CommandPlayerMove(data[1][0], data[1][1]));
-			else if (data[0] == "CommandEntityStatus")
-				commands.push(new CommandEntityStatus(data[1][0], data[1][1]));
-			io.sockets.emit("command", data);
-		}, 300);
-		//console.log("Received " + data[0] + " and " + JSON.stringify(data[1]));
+    socket.on("disconnect", function () {
+        clearInterval(players[socket.id].pingIntervalId);
+        socket.broadcast.emit("playerLeave", players[socket.id].entity.id);
+        entityWorld.remove(players[socket.id].entity);
+        playerWorld.remove(players[socket.id].player);
+        delete players[socket.id];
+        console.log(socket.id + " disconnected.");
+    });
+
+    socket.on('message', function (msg) {
+        console.log("Message from " + socket.id + ": " + msg);
+    });
+
+    socket.on('command', function (data) {
+        setTimeout(function () {
+            if (data[0] == "CommandPlayerMove")
+                commands.push(new CommandPlayerMove(data[1][0], data[1][1]));
+            else if (data[0] == "CommandEntityStatus")
+                commands.push(new CommandEntityStatus(data[1][0], data[1][1]));
+            io.sockets.emit("command", data);
+        }, 300);
+        //console.log("Received " + data[0] + " and " + JSON.stringify(data[1]));
     });
 
     socket.on('ping', function () {
@@ -138,11 +146,11 @@ io.on("connection", function (socket) {
         players[socket.id].ping = 2 * (Date.now() - time);
     });
 
-	console.log(socket.id + " connected.");
+    console.log(socket.id + " connected.");
 });
 
 http.listen(3000, function () {
-	console.log("Listening on :3000");
+    console.log("Listening on :3000");
 });
 
 update();
