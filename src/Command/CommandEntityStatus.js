@@ -44,10 +44,10 @@ CommandEntityStatus.prototype.getData = function () {
 CommandEntityStatus.prototype.serialize = function (byteArray, index) {
     console.log("serializing physicsbody " + JSON.stringify(this.physicsBody));
     serializeInt32(byteArray, index, this.entityId);
-    serializeV2(byteArray, index += 4, this.physicsBody.pos);
-    serializeV2(byteArray, index += 4, this.physicsBody.posOld);
-    serializeV2(byteArray, index += 4, this.physicsBody.speed);
-    serializeV2(byteArray, index += 4, this.physicsBody.speedOld);
+    serializeV2(byteArray, index += 8, this.physicsBody.pos);
+    serializeV2(byteArray, index += 8, this.physicsBody.posOld);
+    serializeV2(byteArray, index += 8, this.physicsBody.speed);
+    serializeV2(byteArray, index += 8, this.physicsBody.speedOld);
     serializeFix(byteArray, index += 4, this.physicsBody.damping);
     serializeFix(byteArray, index += 4, this.physicsBody.angle);
     serializeFix(byteArray, index += 4, this.physicsBody.angleOld);
