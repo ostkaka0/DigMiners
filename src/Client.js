@@ -2,6 +2,8 @@
 Client = function (ip, port) {
     console.log("Connecting to " + ip + ":" + port + "...");
     socket = io(ip + ":" + port);
+    sentInit2 = false;
+    playersReceived = 0;
 
     socket.on('connect', function () {
 
@@ -42,6 +44,7 @@ Client = function (ip, port) {
         var socketId = data[0];
         var entityId = data[1];
         var playerName = data[2];
+        playersToReceive = data[3];
 
         animationManager = new AnimationManager();
         animationManager.load();
@@ -69,6 +72,8 @@ Client = function (ip, port) {
             }
         };
         playerEntity.drawable = new Drawable(stage, bodyparts, animationManager);
+        var text = new PIXI.Text(entityId + "(current)", { fill: '#ffffff' });
+        playerEntity.drawable.addSprite("username", text, v2.create(- text.width / 2, -80), false);
 
         //todo: commands is global
         commands = [];
@@ -102,6 +107,16 @@ Client = function (ip, port) {
             }
         };
         entity.drawable = new Drawable(stage, bodyparts, animationManager);
+        var text = new PIXI.Text(entityId, { fill: '#ffffff' });
+        entity.drawable.addSprite("username", text, v2.create(- text.width / 2, -80), false);
+
+        if (!sentInit2) {
+            playersReceived++;
+            if (playersReceived >= playersToReceive) {
+                socket.emit("init2");
+                sentInit2 = true;
+            }
+        }
     });
 
     socket.on('playerLeave', function (id) {

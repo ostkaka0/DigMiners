@@ -55,7 +55,7 @@ update = function () {
 	var delay = -diff_ms + tickNum * tickDuration;
 	setTimeout(update, delay);
 
-	tick(delay);
+	tick(1.0 / 20.0);
 	tickNum++;
 }
 
@@ -91,17 +91,25 @@ io.on("connection", function (socket) {
 	entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
 	entity.movement = new Movement(50.0);
 
-	socket.emit("init", [socket.id, entity.id, players[socket.id].name]);
+	socket.emit("init", [socket.id, entity.id, players[socket.id].name, Object.keys(players).length - 1]);
 	for (var key in players) {
 		if (key != socket.id) {
 			socket.emit("playerJoin", [key, players[key].entity.id, players[key].name]);
-			var commandEntityStatus = new CommandEntityStatus(players[key].entity.id, players[key].entity.physicsBody);
-			socket.emit("command", [commandEntityStatus.getName(), commandEntityStatus.getData()]);
 		}
 	}
 	socket.broadcast.emit("playerJoin", [socket.id, entity.id, players[socket.id].name]);
-	var commandEntityStatus = new CommandEntityStatus(entity.id, entity.physicsBody);
-	io.sockets.emit("command", [commandEntityStatus.getName(), commandEntityStatus.getData()]);
+
+	socket.on("init2", function () {
+		for (var key in players) {
+			if (key != socket.id) {
+				var commandEntityStatus = new CommandEntityStatus(players[key].entity.id, players[key].entity.physicsBody);
+				socket.emit("command", [commandEntityStatus.getName(), commandEntityStatus.getData()]);
+			}
+		}
+		var commandEntityStatus = new CommandEntityStatus(entity.id, entity.physicsBody);
+		io.sockets.emit("command", [commandEntityStatus.getName(), commandEntityStatus.getData()]);
+		console.log("sent init2");
+	});
 
 	socket.on("disconnect", function () {
 		clearInterval(players[socket.id].pingIntervalId);
