@@ -52,7 +52,8 @@ physicsBodySimulate = function (tileWorld, physicsBody, dt) {
     }
 
     // Rotate
-    physicsBody.rotateTo(Math.atan2(-physicsBody.speed[1], physicsBody.speed[0]), physicsBody.rotationSpeed, dt);
+    if (Math.round(physicsBody.speed[1]) != 0 || Math.round(physicsBody.speed[0]) != 0)
+        physicsBody.rotateTo(Math.atan2(-physicsBody.speed[1], physicsBody.speed[0]), physicsBody.rotationSpeed, dt);
     //console.log("player at " + physicsBody.pos);
 }
 
