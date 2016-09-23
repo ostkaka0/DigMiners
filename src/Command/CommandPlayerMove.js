@@ -16,6 +16,12 @@ CommandPlayerMove = function (entityId, playerMoveDirection) {
     this.playerMoveDirection = playerMoveDirection;
 }
 
+var COMMAND_ID_COUNTER = (COMMAND_ID_COUNTER || 0)+1;
+var COMMANDS = COMMANDS || [null];
+CommandPlayerMove.prototype.id = COMMAND_ID_COUNTER;
+COMMANDS.push("CommandPlayerMove");
+
+
 CommandPlayerMove.prototype.execute = function (gameData) {
     var playerWorld = gameData.playerWorld;
     var entityWorld = gameData.entityWorld;
@@ -71,4 +77,14 @@ CommandPlayerMove.prototype.getName = function () {
 
 CommandPlayerMove.prototype.getData = function () {
     return [this.entityId, this.playerMoveDirection];
+}
+
+CommandEntityStatus.prototype.serialize = function(byteArray) {
+    serializeInt32(byteArray, this.entityId);
+    serializeInt32(byteArray, this.playerMoveDirection);
+}
+
+CommandEntityStatus.prototype.deserialize = function(byteArray, index) {
+    this.entityId = serializeInt32(byteArray, index);
+    this.playerMoveDirection = serializeInt32(byteArray, index);
 }
