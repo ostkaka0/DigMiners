@@ -1,23 +1,15 @@
 ObjectWorld = function () {
     this.objectArray = [];
     this.objects = {};
-    this.nextId = 1;
-    this.freeIdList = [];
     this.objectsToCreate = [];
     this.objectsToDestroy = [];
+    this.onRemove = null;
 }
 
 ObjectWorld.prototype.add = function (object, id) {
-    if (!object) object = {};
     object.isActive = false;
-    if (id)
-        object.id = id;
-    else {
-        if (this.freeIdList.length > 0)
-            object.id = this.freeIdList.pop();
-        else
-            object.id = this.nextId++;
-    }
+    object.id = id;
+
     this.objectsToCreate.push(object);
     return object;
 }
@@ -31,8 +23,9 @@ ObjectWorld.prototype.update = function () {
     // Destroy objects
     this.objectsToDestroy.forEach(function (object) {
         delete that.objects[object.id];
-        that.freeIdList.push(object.id);
         object.isActive = false;
+        if (that.onRemove)
+            that.onRemove(object);
     });
     this.objectsToDestroy.length = 0;
 

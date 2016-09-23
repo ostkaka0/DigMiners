@@ -6,13 +6,14 @@ renderer.view.style.top = '0%';
 document.body.appendChild(renderer.view);
 window.requestAnimationFrame(render);
 
+var idList = new IdList();
 var playerWorld = new ObjectWorld();
 var entityWorld = new ObjectWorld();
 var gameData = { playerWorld: playerWorld, entityWorld: entityWorld, tileWorld: new Map2D() };
 
 var texture = PIXI.Texture.fromImage("data/textures/cheese.png");
-var cheese = entityWorld.add({});
-var player = playerWorld.add(new Player("karl", cheese.id));
+var cheese = entityWorld.add({}, idList.next());
+var player = playerWorld.add(new Player("karl", cheese.id), idList.next());
 cheese.physicsBody = new PhysicsBody(v2.create(0, 0), 0.02);
 cheese.movement = new Movement(2000.0);
 cheese.angle = toFix(0);

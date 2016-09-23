@@ -40,8 +40,9 @@ Client = function (ip, port) {
     socket.on("init", function (data) {
         console.log("init");
         var socketId = data[0];
-        var entityId = data[1];
-        var playerName = data[2];
+        var playerId = data[1];
+        var entityId = data[2];
+        var playerName = data[3];
 
         animationManager = new AnimationManager();
         animationManager.load();
@@ -50,7 +51,7 @@ Client = function (ip, port) {
         playerEntity = entityWorld.add({}, entityId);
 
         //todo: player is global
-        player = playerWorld.add(new Player(playerName, playerEntity.id, socketId), entityId);
+        player = playerWorld.add(new Player(playerName, playerEntity.id, socketId), playerId);
 
         playerEntity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
         playerEntity.movement = new Movement(50.0);
