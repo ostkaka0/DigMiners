@@ -20,6 +20,7 @@ Client = function (ip, port) {
     });
 
     socket.on('command', function (data) {
+        //var command = deserializeCommand(data[1], 0);
         if (data[0] == "CommandPlayerMove")
             commands.push(new CommandPlayerMove(data[1][0], data[1][1]));
         else if (data[0] == "CommandEntityStatus")

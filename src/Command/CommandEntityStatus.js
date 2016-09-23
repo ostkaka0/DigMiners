@@ -6,6 +6,11 @@ CommandEntityStatus = function (entityId, physicsBody) {
     this.physicsBody = physicsBodyClone;
 }
 
+var COMMAND_ID_COUNTER = (COMMAND_ID_COUNTER || 0)+1;
+var COMMANDS = COMMANDS || [null];
+CommandEntityStatus.prototype.id = COMMAND_ID_COUNTER;
+COMMANDS.push("CommandEntityStatus");
+
 CommandEntityStatus.prototype.execute = function (gameData) {
     var entityWorld = gameData.entityWorld;
     if (!entityWorld) {
@@ -35,4 +40,15 @@ CommandEntityStatus.prototype.getName = function () {
 
 CommandEntityStatus.prototype.getData = function () {
     return [this.entityId, this.physicsBody];
+}
+
+CommandEntityStatus.prototype.serialize = function(byteArray) {
+    serializeInt32(byteArray, this.entityId);
+    this.physicsBody.serialize(byteArray);
+}
+
+CommandEntityStatus.prototype.deserialize = function(byteArray, index) {
+    this.entityId = deserializeInt32(byteArray, index);
+    //this.physicsBody = new physicsBody();
+    physicsBody.deserialize(byteArray, index);
 }

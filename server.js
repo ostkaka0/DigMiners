@@ -129,10 +129,19 @@ io.on("connection", function (socket) {
 
     socket.on('command', function (data) {
         setTimeout(function () {
+            var command = null;
             if (data[0] == "CommandPlayerMove")
-                commands.push(new CommandPlayerMove(data[1][0], data[1][1]));
+                command = new CommandPlayerMove(data[1][0], data[1][1]);
             else if (data[0] == "CommandEntityStatus")
-                commands.push(new CommandEntityStatus(data[1][0], data[1][1]));
+                command = new CommandEntityStatus(data[1][0], data[1][1]);
+
+            if (!command) return;
+
+            commands.push(command);
+
+            var byteArray = new Uint8Array(0);
+            //serializeCommand(byteArray, command);
+            //io.sockets.emit("command", byteArray);
             io.sockets.emit("command", data);
         }, 300);
         //console.log("Received " + data[0] + " and " + JSON.stringify(data[1]));
