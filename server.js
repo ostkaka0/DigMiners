@@ -36,9 +36,9 @@ runUnitTests();
 
 var idList = new IdList();
 var playerWorld = new ObjectWorld();
-playerWorld.onRemove = function(player) { idList.remove(player.id); };
+playerWorld.onRemove = function (player) { idList.remove(player.id); };
 var entityWorld = new ObjectWorld();
-entityWorld.onRemove = function(entity) { idList.remove(entity.id); };
+entityWorld.onRemove = function (entity) { idList.remove(entity.id); };
 var tileWorld = new Map2D();
 var generator = new Generator();
 var players = new Array(); // key socketId, value player object
@@ -129,20 +129,10 @@ io.on("connection", function (socket) {
 
     socket.on('command', function (data) {
         setTimeout(function () {
-            var command = null;
-            if (data[0] == "CommandPlayerMove")
-                command = new CommandPlayerMove(data[1][0], data[1][1]);
-            else if (data[0] == "CommandEntityStatus")
-                command = new CommandEntityStatus(data[1][0], data[1][1]);
-
-            if (!command) return;
-
+            var command = deserializeCommand(data);
             commands.push(command);
-
-            var byteArray = new Uint8Array(0);
-            //serializeCommand(byteArray, command);
-            //io.sockets.emit("command", byteArray);
-            io.sockets.emit("command", data);
+            var byteArray = serializeCommand(command);
+            io.sockets.emit("command", byteArray);
         }, 300);
         //console.log("Received " + data[0] + " and " + JSON.stringify(data[1]));
     });
