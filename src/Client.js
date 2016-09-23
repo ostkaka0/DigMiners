@@ -22,7 +22,8 @@ Client = function (ip, port) {
     socket.on('command', function (data) {
         var command = deserializeCommand(data);
         commands.push(command);
-        //console.log("Received " + data[0] + " and " + JSON.stringify(data[1]));
+        if (command.id == 1)
+            console.log("Received " + JSON.stringify(command));
     });
 
     socket.on('error', function (error) {
@@ -81,6 +82,10 @@ Client = function (ip, port) {
         loadGame();
     });
 
+    socket.on('init2', function () {
+        //console.log("test " + entityWorld.objects[4]);
+    });
+
     socket.on('playerJoin', function (data) {
         console.log("playerjoin");
         var socketId = data[0];
@@ -112,6 +117,8 @@ Client = function (ip, port) {
         if (!sentInit2) {
             playersReceived++;
             if (playersReceived >= playersToReceive) {
+                entityWorld.update();
+                playerWorld.update();
                 socket.emit("init2");
                 sentInit2 = true;
             }

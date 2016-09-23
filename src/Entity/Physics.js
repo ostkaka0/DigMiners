@@ -8,7 +8,7 @@ PhysicsBody = function (pos, damping) {
     this.damping = toFix(damping);
     this.angle = 0;
     this.angleOld = 0;
-    this.rotationSpeed = 10.0;
+    this.rotationSpeed = toFix(10.0);
 }
 
 /*function physicsBodySimulate(tileWorld, physicsBody, dt) {
@@ -53,7 +53,7 @@ physicsBodySimulate = function (tileWorld, physicsBody, dt) {
 
     // Rotate
     physicsBody.rotateTo(Math.atan2(-physicsBody.speed[1], physicsBody.speed[0]), physicsBody.rotationSpeed, dt);
-    console.log("player at " + physicsBody.pos);
+    //console.log("player at " + physicsBody.pos);
 }
 
 entityFunctionPhysicsBodySimulate = function (gameData, dt) {

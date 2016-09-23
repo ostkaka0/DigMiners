@@ -2,6 +2,8 @@
 CommandEntityStatus = function (entityId, physicsBody) {
     this.entityId = entityId;
     //TODO: PROPER CLONE
+    if (!physicsBody)
+        physicsBody = {};
     var physicsBodyClone = JSON.parse(JSON.stringify(physicsBody));
     this.physicsBody = physicsBodyClone;
 }
@@ -21,7 +23,6 @@ CommandEntityStatus.prototype.execute = function (gameData) {
     if (!entity) return;
     var physicsBody = entity.physicsBody;
     if (!physicsBody) return;
-    console.dir(this.physicsBody);
     physicsBody.pos = this.physicsBody.pos;
     physicsBody.posOld = this.physicsBody.posOld;
     physicsBody.speed = this.physicsBody.speed;
@@ -41,11 +42,12 @@ CommandEntityStatus.prototype.getData = function () {
 }
 
 CommandEntityStatus.prototype.serialize = function (byteArray, index) {
+    console.log("serializing physicsbody " + JSON.stringify(this.physicsBody));
     serializeInt32(byteArray, index, this.entityId);
-    serializeFix(byteArray, index += 4, this.physicsBody.pos);
-    serializeFix(byteArray, index += 4, this.physicsBody.posOld);
-    serializeFix(byteArray, index += 4, this.physicsBody.speed);
-    serializeFix(byteArray, index += 4, this.physicsBody.speedOld);
+    serializeV2(byteArray, index += 4, this.physicsBody.pos);
+    serializeV2(byteArray, index += 4, this.physicsBody.posOld);
+    serializeV2(byteArray, index += 4, this.physicsBody.speed);
+    serializeV2(byteArray, index += 4, this.physicsBody.speedOld);
     serializeFix(byteArray, index += 4, this.physicsBody.damping);
     serializeFix(byteArray, index += 4, this.physicsBody.angle);
     serializeFix(byteArray, index += 4, this.physicsBody.angleOld);
@@ -53,11 +55,11 @@ CommandEntityStatus.prototype.serialize = function (byteArray, index) {
 }
 
 CommandEntityStatus.prototype.deserialize = function (byteArray, index) {
-    this.entityId = deserializeFix(byteArray, index);
-    this.physicsBody.pos = deserializeFix(byteArray, index += 4);
-    this.physicsBody.posOld = deserializeFix(byteArray, index += 4);
-    this.physicsBody.speed = deserializeFix(byteArray, index += 4);
-    this.physicsBody.speedOld = deserializeFix(byteArray, index += 4);
+    this.entityId = deserializeInt32(byteArray, index);
+    this.physicsBody.pos = deserializeV2(byteArray, index += 8);
+    this.physicsBody.posOld = deserializeV2(byteArray, index += 8);
+    this.physicsBody.speed = deserializeV2(byteArray, index += 8);
+    this.physicsBody.speedOld = deserializeV2(byteArray, index += 8);
     this.physicsBody.damping = deserializeFix(byteArray, index += 4);
     this.physicsBody.angle = deserializeFix(byteArray, index += 4);
     this.physicsBody.angleOld = deserializeFix(byteArray, index += 4);
@@ -65,5 +67,5 @@ CommandEntityStatus.prototype.deserialize = function (byteArray, index) {
 }
 
 CommandEntityStatus.prototype.getSerializationSize = function () {
-    return 36;
+    return 52;
 }
