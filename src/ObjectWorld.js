@@ -1,4 +1,4 @@
-ObjectWorld = function() {
+ObjectWorld = function () {
     this.objectArray = [];
     this.objects = {};
     this.nextId = 1;
@@ -7,25 +7,29 @@ ObjectWorld = function() {
     this.objectsToDestroy = [];
 }
 
-ObjectWorld.prototype.add = function(object) {
+ObjectWorld.prototype.add = function (object, id) {
     if (!object) object = {};
     object.isActive = false;
-    if (this.freeIdList.length > 0)
-        object.id = this.freeIdList.pop();
-    else
-        object.id = this.nextId++;
+    if (id)
+        object.id = id;
+    else {
+        if (this.freeIdList.length > 0)
+            object.id = this.freeIdList.pop();
+        else
+            object.id = this.nextId++;
+    }
     this.objectsToCreate.push(object);
     return object;
 }
 
-ObjectWorld.prototype.remove = function(object) {
+ObjectWorld.prototype.remove = function (object) {
     this.objectsToDestroy.push(object);
 }
 
-ObjectWorld.prototype.update = function() {
+ObjectWorld.prototype.update = function () {
     var that = this;
     // Destroy objects
-    this.objectsToDestroy.forEach(function(object){
+    this.objectsToDestroy.forEach(function (object) {
         delete that.objects[object.id];
         that.freeIdList.push(object.id);
         object.isActive = false;
@@ -33,7 +37,7 @@ ObjectWorld.prototype.update = function() {
     this.objectsToDestroy.length = 0;
 
     // Create objects
-    this.objectsToCreate.forEach(function(object){
+    this.objectsToCreate.forEach(function (object) {
         that.objects[object.id] = object;
         object.isActive = true;
     });
@@ -41,7 +45,7 @@ ObjectWorld.prototype.update = function() {
 
     // Update this.objects
     this.objectArray.length = 0;
-    for(var id in this.objects) {
+    for (var id in this.objects) {
         this.objectArray.push(this.objects[id]);
     }
 }

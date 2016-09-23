@@ -11,8 +11,8 @@ PlayerMoveDirection = {
     DISABLE_SPACEBAR: 9
 }
 
-CommandPlayerMove = function (playerId, playerMoveDirection) {
-    this.playerId = playerId;
+CommandPlayerMove = function (entityId, playerMoveDirection) {
+    this.entityId = entityId;
     this.playerMoveDirection = playerMoveDirection;
 }
 
@@ -24,7 +24,7 @@ CommandPlayerMove.prototype.execute = function (gameData) {
         return;
     }
 
-    var player = playerWorld.objects[this.playerId];
+    var player = playerWorld.objects[this.entityId];
     if (!player) return;
     var playerEntity = entityWorld.objects[player.entityId];
     if (!playerEntity) return;
@@ -70,5 +70,5 @@ CommandPlayerMove.prototype.getName = function () {
 }
 
 CommandPlayerMove.prototype.getData = function () {
-    return [this.playerId, this.playerMoveDirection];
+    return [this.entityId, this.playerMoveDirection];
 }
