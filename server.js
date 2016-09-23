@@ -105,12 +105,11 @@ io.on("connection", function (socket) {
     socket.on("init2", function () {
         for (var key in players) {
             if (key != socket.id) {
-                var commandEntityStatus = new CommandEntityStatus(players[key].entity.id, players[key].entity.physicsBody);
-                socket.emit("command", [commandEntityStatus.getName(), commandEntityStatus.getData()]);
+                sendCommand(socket, new CommandEntityStatus(players[key].entity.id, players[key].entity.physicsBody));
             }
         }
-        var commandEntityStatus = new CommandEntityStatus(entity.id, entity.physicsBody);
-        io.sockets.emit("command", [commandEntityStatus.getName(), commandEntityStatus.getData()]);
+        sendCommand(io.sockets, new CommandEntityStatus(entity.id, entity.physicsBody));
+        socket.emit("init2");
         console.log("sent init2");
     });
 
@@ -131,8 +130,7 @@ io.on("connection", function (socket) {
         setTimeout(function () {
             var command = deserializeCommand(data);
             commands.push(command);
-            var byteArray = serializeCommand(command);
-            io.sockets.emit("command", byteArray);
+            sendCommand(io.sockets, command);
         }, 300);
         //console.log("Received " + data[0] + " and " + JSON.stringify(data[1]));
     });
@@ -147,6 +145,11 @@ io.on("connection", function (socket) {
 
     console.log(socket.id + " connected.");
 });
+
+sendCommand = function (socket, command) {
+    socket.emit("command", serializeCommand(command));
+    //console.log("Sent " + command.getName() + " and " + JSON.stringify(command.getData()));
+}
 
 http.listen(3000, function () {
     console.log("Listening on :3000");

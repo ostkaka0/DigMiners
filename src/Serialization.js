@@ -1,6 +1,5 @@
 
 serializeInt32 = function (byteArray, index, value) {
-    console.log(byteArray);
     byteArray[index] = (value >> 24) & 0xFF;
     byteArray[index + 1] = (value >> 16) & 0xFF;
     byteArray[index + 2] = (value >> 8) & 0xFF;
@@ -16,9 +15,18 @@ deserializeInt32 = function (byteArray, index) {
 }
 
 serializeFix = function (byteArray, index, value) {
-    return serializeInt32(byteArray, index, value * 65536)
+    serializeInt32(byteArray, index, value * 65536);
 }
 
 deserializeFix = function (byteArray, index) {
-    return deserializeInt32(byteArray, index, value) / 65536.0;
+    return deserializeInt32(byteArray, index) / 65536.0;
+}
+
+serializeV2 = function (byteArray, index, value) {
+    serializeInt32(byteArray, index, value[0] * 65536);
+    serializeInt32(byteArray, index + 4, value[1] * 65536);
+}
+
+deserializeV2 = function (byteArray, index) {
+    return v2.create(deserializeInt32(byteArray, index) / 65536.0, deserializeInt32(byteArray, index + 4) / 65536.0);
 }
