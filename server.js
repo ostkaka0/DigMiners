@@ -38,12 +38,14 @@ var playerWorld = new ObjectWorld();
 var entityWorld = new ObjectWorld();
 var tileWorld = new Map2D();
 var generator = new Generator();
-var players = new Array();
+var players = new Array(); // key socketId, value player object
 var gameData = { playerWorld: playerWorld, entityWorld: entityWorld, tileWorld: tileWorld };
 
 var tickDuration = 1000 / 8;
 var firstTickTime = process.hrtime();
 var tickNum = 0;
+
+var commands = [];
 
 update = function () {
 	var now = process.hrtime();
@@ -60,6 +62,10 @@ update = function () {
 tick = function (dt) {
 	//console.log(dt);
 	//console.log("Tick #" + tickNum);
+	commands.forEach(function (command) {
+        command.execute(gameData);
+    });
+    commands.length = 0;
 	playerWorld.update();
 	entityFunctionPlayerMovement(gameData, dt);
     entityFunctionPhysicsBodySimulate(gameData, dt);
@@ -74,15 +80,32 @@ io.on("connection", function (socket) {
 		socket.emit('ping');
 	}, 2000);
 
-	players[socket.id].entity = entityWorld.add({});
-	players[socket.id].player = playerWorld.add(new Player("karl", players[socket.id].entity.id, socket.id));
-	players[socket.id].entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
-	players[socket.id].entity.movement = new Movement(50.0);
+	players[socket.id].name = "Bertil";
 
-	socket.emit("init", socket.id);
+	players[socket.id].entity = entityWorld.add({});
+	var entity = players[socket.id].entity;
+
+	players[socket.id].player = playerWorld.add(new Player("karl", entity.id, socket.id), entity.id);
+	var player = players[socket.id].player;
+
+	entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
+	entity.movement = new Movement(50.0);
+
+	socket.emit("init", [socket.id, entity.id, players[socket.id].name]);
+	for (var key in players) {
+		if (key != socket.id) {
+			socket.emit("playerJoin", [key, players[key].entity.id, players[key].name]);
+			var commandEntityStatus = new CommandEntityStatus(players[key].entity.id, players[key].entity.physicsBody);
+			socket.emit("command", [commandEntityStatus.getName(), commandEntityStatus.getData()]);
+		}
+	}
+	socket.broadcast.emit("playerJoin", [socket.id, entity.id, players[socket.id].name]);
+	var commandEntityStatus = new CommandEntityStatus(entity.id, entity.physicsBody);
+	io.sockets.emit("command", [commandEntityStatus.getName(), commandEntityStatus.getData()]);
 
 	socket.on("disconnect", function () {
 		clearInterval(players[socket.id].pingIntervalId);
+		socket.broadcast.emit("playerLeave", players[socket.id].entity.id);
 		entityWorld.remove(players[socket.id].entity);
 		playerWorld.remove(players[socket.id].player);
 		delete players[socket.id];
@@ -94,7 +117,13 @@ io.on("connection", function (socket) {
     });
 
 	socket.on('command', function (data) {
-		setTimeout(function () { io.sockets.emit("command", data) }, 300);
+		setTimeout(function () {
+			if (data[0] == "CommandPlayerMove")
+				commands.push(new CommandPlayerMove(data[1][0], data[1][1]));
+			else if (data[0] == "CommandEntityStatus")
+				commands.push(new CommandEntityStatus(data[1][0], data[1][1]));
+			io.sockets.emit("command", data);
+		}, 300);
 		//console.log("Received " + data[0] + " and " + JSON.stringify(data[1]));
     });
 

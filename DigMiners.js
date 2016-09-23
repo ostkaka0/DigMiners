@@ -23,40 +23,6 @@ onTexturesLoadComplete = function () {
     // Must wait until all textures have loaded to continue! important
 
     client = new Client("127.0.0.1", 3000);
-    socket.on("init", function (playerId) {
-        animationManager = new AnimationManager();
-        animationManager.load();
-
-        //todo: playerEntity is global
-        playerEntity = entityWorld.add({});
-
-        //todo: player is global
-        player = playerWorld.add(new Player("karl", playerEntity.id, playerId));
-
-        playerEntity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
-        playerEntity.movement = new Movement(50.0);
-        var sprite = new PIXI.Sprite(textures.feet);
-        sprite.anchor.x = 0.5;
-        sprite.anchor.y = 0.5;
-        var bodySprite = new PIXI.Sprite(textures.dig);
-        bodySprite.anchor.x = 0.5;
-        bodySprite.anchor.y = 0.5;
-        var bodyparts = {
-            "feet": {
-                "sprite": sprite
-            },
-            "body": {
-                "sprite": bodySprite
-            }
-        };
-        playerEntity.drawable = new Drawable(stage, bodyparts, animationManager);
-
-        //todo: commands is global
-        commands = [];
-        keysDown = [];
-
-        loadGame();
-    });
 }
 var textureManager = new TextureManager();
 
