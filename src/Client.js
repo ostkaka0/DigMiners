@@ -20,11 +20,8 @@ Client = function (ip, port) {
     });
 
     socket.on('command', function (data) {
-        //var command = deserializeCommand(data[1], 0);
-        if (data[0] == "CommandPlayerMove")
-            commands.push(new CommandPlayerMove(data[1][0], data[1][1]));
-        else if (data[0] == "CommandEntityStatus")
-            commands.push(new CommandEntityStatus(data[1][0], data[1][1]));
+        var command = deserializeCommand(data);
+        commands.push(command);
         //console.log("Received " + data[0] + " and " + JSON.stringify(data[1]));
     });
 
@@ -132,6 +129,6 @@ Client = function (ip, port) {
 }
 
 Client.prototype.sendCommand = function (command) {
-    socket.emit("command", [command.getName(), command.getData()]);
+    socket.emit("command", serializeCommand(command));
     //console.log("Sent " + command.getName() + " and " + JSON.stringify(command.getData()));
 }

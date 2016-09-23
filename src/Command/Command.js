@@ -1,15 +1,16 @@
-var COMMAND_ID_COUNTER = (COMMAND_ID_COUNTER || 0)+1;
-var COMMANDS = COMMANDS || [null];
+COMMAND_ID_COUNTER = 0;
+COMMANDS = [];
 
-serializeCommand = function(byteArray, command) {
-    console.log(byteArray.push);
-    serializeInt32(byteArray, command.id);
-    command.serialize(byteArray);
+serializeCommand = function (command) {
+    var byteArray = new Uint8Array(command.getSerializationSize() + 4);
+    serializeInt32(byteArray, 0, command.id);
+    command.serialize(byteArray, 4);
+    return byteArray;
 }
 
-deserializeCommand = function(byteArray, index) {
-    var commandId = deserializeInt32(byteArray, index);
+deserializeCommand = function (byteArray) {
+    var commandId = deserializeInt32(byteArray, 0);
     var command = new COMMANDS[commandId]();
-    command.deserialize(byteArray, index);
+    command.deserialize(byteArray, 4);
     return command;
 }
