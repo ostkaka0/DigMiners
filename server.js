@@ -34,8 +34,11 @@ loadScript("UnitTest.js");
 loadScriptsRecursive("unit_tests");
 runUnitTests();
 
+var idList = new IdList();
 var playerWorld = new ObjectWorld();
+playerWorld.onRemove = function(player) { idList.remove(player.id); };
 var entityWorld = new ObjectWorld();
+entityWorld.onRemove = function(entity) { idList.remove(entity.id); };
 var tileWorld = new Map2D();
 var generator = new Generator();
 var players = new Array(); // key socketId, value player object
@@ -82,16 +85,16 @@ io.on("connection", function (socket) {
 
 	players[socket.id].name = "Bertil";
 
-	players[socket.id].entity = entityWorld.add({});
+	players[socket.id].entity = entityWorld.add({}, idList.next());
 	var entity = players[socket.id].entity;
 
-	players[socket.id].player = playerWorld.add(new Player("karl", entity.id, socket.id), entity.id);
+	players[socket.id].player = playerWorld.add(new Player("karl", entity.id, socket.id), idList.next());
 	var player = players[socket.id].player;
 
 	entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
 	entity.movement = new Movement(50.0);
 
-	socket.emit("init", [socket.id, entity.id, players[socket.id].name]);
+	socket.emit("init", [socket.id, player.id, entity.id, players[socket.id].name]);
 	for (var key in players) {
 		if (key != socket.id) {
 			socket.emit("playerJoin", [key, players[key].entity.id, players[key].name]);

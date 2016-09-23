@@ -7,19 +7,20 @@ var chunkRenderer = new ChunkRenderer(gl, world, 32.0);
 var camera = new Camera();
 var lastFrameTime = Date();
 
-for (var x = -10; x < 10; ++x) {
-    for (var y = -2; y < 2; ++y) {
-        var chunk = new Chunk();
-        generator.generate(chunk, x, y);
-        world.set(x, y, chunk);
+init = function() {
+    for (var x = -10; x < 10; ++x) {
+        for (var y = -2; y < 2; ++y) {
+            var chunk = new Chunk();
+            generator.generate(chunk, x, y);
+            world.set(x, y, chunk);
+        }
     }
+    console.log(chunk.getTileId(4, 4));
+    gl.clearColor(0.1, 0.1, 0.1, 1.0);
+    var frameTime = 1000/60;
+    var lastFrameTime = performance.now();
+    var startDate = performance.now();
 }
-console.log(chunk.getTileId(4, 4));
-gl.clearColor(0.1, 0.1, 0.1, 1.0);
-var frameTime = 1000/60;
-var lastFrameTime = performance.now();
-var startDate = performance.now();
-gameLoop(tick, render);
 
 tick = function() {}
 
@@ -51,3 +52,6 @@ canvas.onclick = function(event) {
         chunk.setDensity(localX, localY, 0);
     
 };
+
+init();
+gameLoop(tick, render);
