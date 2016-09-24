@@ -14,6 +14,7 @@ var generator = new Generator(1337);
 var chunkRenderer = new ChunkRenderer(gl, tileWorld, 32.0);
 var camera = new Camera();
 var gameData = { playerWorld: playerWorld, entityWorld: entityWorld, tileWorld: tileWorld };
+var commandTypes = new CommandsTypes([CommandPlayerMove, CommandEntityStatus]);
 
 onTexturesLoadProgress = function (name, file, progress) {
 

@@ -48,6 +48,7 @@ var tickDuration = 1000 / 8;
 var firstTickTime = process.hrtime();
 var tickNum = 0;
 
+var commandTypes = new CommandsTypes([CommandPlayerMove, CommandEntityStatus]);
 var commands = [];
 
 update = function () {
@@ -128,7 +129,7 @@ io.on("connection", function (socket) {
 
     socket.on('command', function (data) {
         setTimeout(function () {
-            var command = deserializeCommand(data);
+            var command = commandTypes.deserializeCommand(data);
             commands.push(command);
             sendCommand(io.sockets, command);
         }, 300);
@@ -147,7 +148,7 @@ io.on("connection", function (socket) {
 });
 
 sendCommand = function (socket, command) {
-    socket.emit("command", serializeCommand(command));
+    socket.emit("command", commandTypes.serializeCommand(command));
     //console.log("Sent " + command.getName() + " and " + JSON.stringify(command.getData()));
 }
 
