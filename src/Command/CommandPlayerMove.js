@@ -16,10 +16,6 @@ CommandPlayerMove = function (entityId, playerMoveDirection) {
     this.playerMoveDirection = playerMoveDirection;
 }
 
-COMMAND_ID_COUNTER = COMMAND_ID_COUNTER + 1;
-CommandPlayerMove.prototype.id = COMMAND_ID_COUNTER;
-COMMANDS[COMMAND_ID_COUNTER] = CommandPlayerMove;
-
 CommandPlayerMove.prototype.execute = function (gameData) {
     var playerWorld = gameData.playerWorld;
     var entityWorld = gameData.entityWorld;

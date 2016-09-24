@@ -20,7 +20,7 @@ Client = function (ip, port) {
     });
 
     socket.on('command', function (data) {
-        var command = deserializeCommand(data);
+        var command = commandTypes.deserializeCommand(data);
         commands.push(command);
         if (command.id == 1)
             console.log("Received " + JSON.stringify(command));
@@ -136,6 +136,6 @@ Client = function (ip, port) {
 }
 
 Client.prototype.sendCommand = function (command) {
-    socket.emit("command", serializeCommand(command));
+    socket.emit("command", commandTypes.serializeCommand(command));
     //console.log("Sent " + command.getName() + " and " + JSON.stringify(command.getData()));
 }

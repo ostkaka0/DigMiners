@@ -8,10 +8,6 @@ CommandEntityStatus = function (entityId, physicsBody) {
     this.physicsBody = physicsBodyClone;
 }
 
-COMMAND_ID_COUNTER = COMMAND_ID_COUNTER + 1;
-CommandEntityStatus.prototype.id = COMMAND_ID_COUNTER;
-COMMANDS[COMMAND_ID_COUNTER] = CommandEntityStatus;
-
 CommandEntityStatus.prototype.execute = function (gameData) {
     var entityWorld = gameData.entityWorld;
     if (!entityWorld) {

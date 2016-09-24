@@ -25,7 +25,7 @@ function gameLoop(tick, render) {
         while(delay < 0.0*frameTime) {
             delay += frameTime;
             lastFrameTime += frameTime;
-            console.log("Skipping frame");
+            //console.log("Skipping frame");
         }
         lastFrameTime += frameTime;
     }
