@@ -25,6 +25,11 @@ Client = function (gameData, ip, port) {
         commands.push(command);
         //console.log("Received " + JSON.stringify(command));
     });
+    socket.on('entityStatus', function(data) {
+        var message = new MessageEntityStatus();
+        message.deserialize(data, 0);
+        message.execute(gameData);
+    })
 
     socket.on('error', function (error) {
         console.log("Connection failed. " + error);

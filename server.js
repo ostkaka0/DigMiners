@@ -100,10 +100,11 @@ io.on("connection", function (socket) {
     socket.on("init2", function () {
         for (var key in connections) {
             if (key != socket.id) {
-                sendCommand(socket, new CommandEntityStatus(connections[key].entity.id, connections[key].entity.physicsBody));
+                var byte
+                sendMessage(socket, "entityStatus", MessageEntityStatus(connections[key].entity.id, connections[key].entity.physicsBody));
             }
         }
-        sendCommand(io.sockets, new CommandEntityStatus(entity.id, entity.physicsBody));
+        sendMessage(io.sockets, "entityStatus", new MessageEntityStatus(entity.id, entity.physicsBody));
         socket.emit("init2");
         console.log("sent init2");
     });
@@ -144,6 +145,12 @@ io.on("connection", function (socket) {
 sendCommand = function (socket, command) {
     socket.emit("command", gameData.commandTypes.serializeCommand(command));
     //console.log("Sent " + command.getName() + " and " + JSON.stringify(command.getData()));
+}
+
+sendMessage = function(socket, messageLabel, message) {
+    var byteArray = new Uint8Array(message.serializationSize);
+    message.serialize(message, 0);
+    socket.emit(messageLabel, byteArray);
 }
 
 http.listen(3000, function () {
