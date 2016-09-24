@@ -28,6 +28,7 @@ loadGame = function () {
             loadChunk(gameData.tileWorld, x, y);
         }
     }
+    carveCircle(gameData, 0, 0, 12)
 
     // Player input
     document.addEventListener('keydown', function (event) {
