@@ -1,5 +1,6 @@
 
-Client = function (ip, port) {
+Client = function (gameData, ip, port) {
+
     console.log("Connecting to " + ip + ":" + port + "...");
     socket = io(ip + ":" + port);
     sentInit2 = false;
@@ -20,7 +21,7 @@ Client = function (ip, port) {
     });
 
     socket.on('command', function (data) {
-        var command = commandTypes.deserializeCommand(data);
+        var command = gameData.commandTypes.deserializeCommand(data);
         commands.push(command);
         if (command.id == 1)
             console.log("Received " + JSON.stringify(command));
@@ -50,10 +51,10 @@ Client = function (ip, port) {
         animationManager.load();
 
         //todo: playerEntity is global
-        playerEntity = entityWorld.add({}, entityId);
+        playerEntity = gameData.entityWorld.add({}, entityId);
 
         //todo: player is global
-        player = playerWorld.add(new Player(playerName, playerEntity.id, socketId), playerId);
+        player = gameData.playerWorld.add(new Player(playerName, playerEntity.id, socketId), playerId);
 
         playerEntity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
         playerEntity.movement = new Movement(50.0);
@@ -83,7 +84,7 @@ Client = function (ip, port) {
     });
 
     socket.on('init2', function () {
-        //console.log("test " + entityWorld.objects[4]);
+        //console.log("test " + gameData.entityWorld.objects[4]);
     });
 
     socket.on('playerJoin', function (data) {
@@ -92,8 +93,8 @@ Client = function (ip, port) {
         var entityId = data[1];
         var playerName = data[2];
         console.log(socketId + " connected with entityId " + entityId);
-        var entity = entityWorld.add({}, entityId);
-        var player = playerWorld.add(new Player(playerName, entityId, socketId), entityId);
+        var entity = gameData.entityWorld.add({}, entityId);
+        var player = gameData.playerWorld.add(new Player(playerName, entityId, socketId), entityId);
         entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
         entity.movement = new Movement(50.0);
         var sprite = new PIXI.Sprite(textures.feet);
@@ -117,8 +118,8 @@ Client = function (ip, port) {
         if (!sentInit2) {
             playersReceived++;
             if (playersReceived >= playersToReceive) {
-                entityWorld.update();
-                playerWorld.update();
+                gameData.entityWorld.update();
+                gameData.playerWorld.update();
                 socket.emit("init2");
                 sentInit2 = true;
             }
@@ -126,16 +127,16 @@ Client = function (ip, port) {
     });
 
     socket.on('playerLeave', function (id) {
-        var entity = entityWorld.objects[id];
+        var entity = gameData.entityWorld.objects[id];
         entity.drawable.remove();
-        var player = playerWorld.objects[id];
-        entityWorld.remove(entity);
-        playerWorld.remove(player);
+        var player = gameData.playerWorld.objects[id];
+        gameData.entityWorld.remove(entity);
+        gameData.playerWorld.remove(player);
         //TODO: Delete more things
     });
 }
 
 Client.prototype.sendCommand = function (command) {
-    socket.emit("command", commandTypes.serializeCommand(command));
+    socket.emit("command", gameData.commandTypes.serializeCommand(command));
     //console.log("Sent " + command.getName() + " and " + JSON.stringify(command.getData()));
 }

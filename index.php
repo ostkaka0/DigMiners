@@ -30,6 +30,7 @@
             addScriptsRecursive("lib");
             addScriptsRecursive("lib_front_end");
             addScriptsRecursive("src");
+            addScriptsRecursive("game");
 
             // Run unit tests:
             addScript("UnitTest.js");

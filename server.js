@@ -28,6 +28,7 @@ loadScriptsRecursive = function (dir) {
 
 loadScriptsRecursive("lib");
 loadScriptsRecursive("src");
+loadScriptsRecursive("game");
 
 //Unit testing
 loadScript("UnitTest.js");
@@ -35,20 +36,13 @@ loadScriptsRecursive("unit_tests");
 runUnitTests();
 
 var idList = new IdList();
-var playerWorld = new ObjectWorld();
-playerWorld.onRemove = function (player) { idList.remove(player.id); };
-var entityWorld = new ObjectWorld();
-entityWorld.onRemove = function (entity) { idList.remove(entity.id); };
-var tileWorld = new Map2D();
-var generator = new Generator();
 var players = new Array(); // key socketId, value player object
-var gameData = { playerWorld: playerWorld, entityWorld: entityWorld, tileWorld: tileWorld };
+var gameData = new GameData(idList);
 
-var tickDuration = 1000 / 8;
+var tickDuration = gameData.tickDuration;
 var firstTickTime = process.hrtime();
 var tickNum = 0;
 
-var commandTypes = new CommandsTypes([CommandPlayerMove, CommandEntityStatus]);
 var commands = [];
 
 update = function () {
@@ -70,10 +64,10 @@ tick = function (dt) {
         command.execute(gameData);
     });
     commands.length = 0;
-    playerWorld.update();
+    gameData.playerWorld.update();
     entityFunctionPlayerMovement(gameData, dt);
     entityFunctionPhysicsBodySimulate(gameData, dt);
-    entityWorld.update();
+    gameData.entityWorld.update();
 }
 
 io.on("connection", function (socket) {
@@ -86,10 +80,10 @@ io.on("connection", function (socket) {
 
     players[socket.id].name = "Bertil";
 
-    players[socket.id].entity = entityWorld.add({}, idList.next());
+    players[socket.id].entity = gameData.entityWorld.add({}, idList.next());
     var entity = players[socket.id].entity;
 
-    players[socket.id].player = playerWorld.add(new Player("karl", entity.id, socket.id), idList.next());
+    players[socket.id].player = gameData.playerWorld.add(new Player("karl", entity.id, socket.id), idList.next());
     var player = players[socket.id].player;
 
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
@@ -117,8 +111,8 @@ io.on("connection", function (socket) {
     socket.on("disconnect", function () {
         clearInterval(players[socket.id].pingIntervalId);
         socket.broadcast.emit("playerLeave", players[socket.id].entity.id);
-        entityWorld.remove(players[socket.id].entity);
-        playerWorld.remove(players[socket.id].player);
+        gameData.entityWorld.remove(players[socket.id].entity);
+        gameData.playerWorld.remove(players[socket.id].player);
         delete players[socket.id];
         console.log(socket.id + " disconnected.");
     });
@@ -129,7 +123,7 @@ io.on("connection", function (socket) {
 
     socket.on('command', function (data) {
         setTimeout(function () {
-            var command = commandTypes.deserializeCommand(data);
+            var command = gameData.commandTypes.deserializeCommand(data);
             commands.push(command);
             sendCommand(io.sockets, command);
         }, 300);
@@ -148,7 +142,7 @@ io.on("connection", function (socket) {
 });
 
 sendCommand = function (socket, command) {
-    socket.emit("command", commandTypes.serializeCommand(command));
+    socket.emit("command", gameData.commandTypes.serializeCommand(command));
     //console.log("Sent " + command.getName() + " and " + JSON.stringify(command.getData()));
 }
 
