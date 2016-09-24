@@ -33,7 +33,7 @@ entityFunctionPlayerMovement = function (gameData, dt) {
 
         if (entity.drawable) {
             if (entity.movement.spacebar)
-                entity.drawable.animate("body", "dig", 200, false);
+                entity.drawable.animate("body", "dig", 250, false);
             else
                 entity.drawable.unanimate("body", "dig", true);
         }

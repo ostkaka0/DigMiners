@@ -45,6 +45,19 @@ var tickNum = 0;
 
 var commands = [];
 
+loadChunk = function (world, x, y) {
+    var chunk = new Chunk();
+    gameData.generator.generate(chunk, x, y);
+    world.set(x, y, chunk);
+}
+
+for (var x = -2; x < 2; ++x) {
+    for (var y = -2; y < 2; ++y) {
+        loadChunk(gameData.tileWorld, x, y);
+    }
+}
+carveCircle(gameData, 0, 0, 12);
+
 update = function () {
     var now = process.hrtime();
 
@@ -69,9 +82,12 @@ tick = function (dt) {
     entityFunctionPhysicsBodySimulate(gameData, dt);
     gameData.entityWorld.update();
 
-    gameData.entityWorld.objectArray.forEach(function(entity) {
-        if (entity.movement && entity.movement.spacebar && entity.physicsBody)
-            io.sockets.emit("command", gameData.commandTypes.serializeCommand(new CommandDig(entity.physicsBody.pos[0], entity.physicsBody.pos[1], 4.0)));
+    gameData.entityWorld.objectArray.forEach(function (entity) {
+        if (entity.movement && entity.movement.spacebar && entity.physicsBody) {
+            var command = new CommandDig(entity.physicsBody.pos[0], entity.physicsBody.pos[1], 4.0);
+            sendCommand(io.sockets, command);
+            commands.push(command);
+        }
     })
 }
 
