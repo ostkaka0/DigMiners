@@ -36,7 +36,7 @@ loadScriptsRecursive("unit_tests");
 runUnitTests();
 
 var idList = new IdList();
-var players = new Array(); // key socketId, value player object
+var connections = new Array(); // key socketId, value player object
 var gameData = new GameData(idList);
 
 var tickDuration = gameData.tickDuration;
@@ -71,36 +71,31 @@ tick = function (dt) {
 }
 
 io.on("connection", function (socket) {
-    players[socket.id] = { 'socket': socket };
+    connections[socket.id] = { 'socket': socket };
 
-    players[socket.id].pingIntervalId = setInterval(function () {
+    connections[socket.id].pingIntervalId = setInterval(function () {
         startTime = Date.now();
         socket.emit('ping');
     }, 2000);
 
-    players[socket.id].name = "Bertil";
+    var template = entityTemplates.player(idList.next(), idList.next(), "karl", gameData);
+    var player = template.player;
+    var entity = template.entity;
+    connections[socket.id].player = player;
+    connections[socket.id].entity = entity;
 
-    players[socket.id].entity = gameData.entityWorld.add({}, idList.next());
-    var entity = players[socket.id].entity;
-
-    players[socket.id].player = gameData.playerWorld.add(new Player("karl", entity.id, socket.id), idList.next());
-    var player = players[socket.id].player;
-
-    entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
-    entity.movement = new Movement(50.0);
-
-    socket.emit("init", [socket.id, player.id, entity.id, players[socket.id].name, Object.keys(players).length - 1]);
-    for (var key in players) {
+    socket.emit("init", [player.id, entity.id, player.name, Object.keys(connections).length - 1]);
+    for (var key in connections) {
         if (key != socket.id) {
-            socket.emit("playerJoin", [key, players[key].entity.id, players[key].name]);
+            socket.emit("playerJoin", [connections[key].player.id, connections[key].entity.id, connections[key].player.name]);
         }
     }
-    socket.broadcast.emit("playerJoin", [socket.id, entity.id, players[socket.id].name]);
+    socket.broadcast.emit("playerJoin", [player.id, entity.id, player.name]);
 
     socket.on("init2", function () {
-        for (var key in players) {
+        for (var key in connections) {
             if (key != socket.id) {
-                sendCommand(socket, new CommandEntityStatus(players[key].entity.id, players[key].entity.physicsBody));
+                sendCommand(socket, new CommandEntityStatus(connections[key].entity.id, connections[key].entity.physicsBody));
             }
         }
         sendCommand(io.sockets, new CommandEntityStatus(entity.id, entity.physicsBody));
@@ -109,11 +104,11 @@ io.on("connection", function (socket) {
     });
 
     socket.on("disconnect", function () {
-        clearInterval(players[socket.id].pingIntervalId);
-        socket.broadcast.emit("playerLeave", players[socket.id].entity.id);
-        gameData.entityWorld.remove(players[socket.id].entity);
-        gameData.playerWorld.remove(players[socket.id].player);
-        delete players[socket.id];
+        clearInterval(connections[socket.id].pingIntervalId);
+        socket.broadcast.emit("playerLeave", [connections[socket.id].player.id, connections[socket.id].entity.id]);
+        gameData.entityWorld.remove(connections[socket.id].entity);
+        gameData.playerWorld.remove(connections[socket.id].player);
+        delete connections[socket.id];
         console.log(socket.id + " disconnected.");
     });
 
@@ -135,7 +130,7 @@ io.on("connection", function (socket) {
     });
 
     socket.on('pong', function (time) {
-        players[socket.id].ping = 2 * (Date.now() - time);
+        connections[socket.id].ping = 2 * (Date.now() - time);
     });
 
     console.log(socket.id + " connected.");

@@ -11,8 +11,8 @@ PlayerMoveDirection = {
     DISABLE_SPACEBAR: 9
 }
 
-CommandPlayerMove = function (entityId, playerMoveDirection) {
-    this.entityId = entityId;
+CommandPlayerMove = function (playerId, playerMoveDirection) {
+    this.playerId = playerId;
     this.playerMoveDirection = playerMoveDirection;
 }
 
@@ -24,7 +24,7 @@ CommandPlayerMove.prototype.execute = function (gameData) {
         return;
     }
 
-    var player = playerWorld.objects[this.entityId];
+    var player = playerWorld.objects[this.playerId];
     if (!player) return;
     var playerEntity = entityWorld.objects[player.entityId];
     if (!playerEntity) return;
@@ -70,16 +70,16 @@ CommandPlayerMove.prototype.getName = function () {
 }
 
 CommandPlayerMove.prototype.getData = function () {
-    return [this.entityId, this.playerMoveDirection];
+    return [this.playerId, this.playerMoveDirection];
 }
 
 CommandPlayerMove.prototype.serialize = function (byteArray, index) {
-    serializeInt32(byteArray, index, this.entityId);
+    serializeInt32(byteArray, index, this.playerId);
     serializeInt32(byteArray, index += 4, this.playerMoveDirection);
 }
 
 CommandPlayerMove.prototype.deserialize = function (byteArray, index) {
-    this.entityId = deserializeInt32(byteArray, index);
+    this.playerId = deserializeInt32(byteArray, index);
     this.playerMoveDirection = deserializeInt32(byteArray, index += 4);
 }
 

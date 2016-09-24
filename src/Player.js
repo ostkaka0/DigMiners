@@ -1,5 +1,5 @@
-Player = function(name, entityId, socketId) {
-    this.name = name;
+Player = function (playerId, entityId, name) {
+    this.playerId = playerId;
     this.entityId = entityId;
-    this.socketId = socketId;
+    this.name = name;
 }
