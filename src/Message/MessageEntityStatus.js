@@ -1,5 +1,5 @@
 
-CommandEntityStatus = function (entityId, physicsBody) {
+MessageEntityStatus = function (entityId, physicsBody) {
     this.entityId = entityId;
     //TODO: PROPER CLONE
     if (!physicsBody)
@@ -8,7 +8,7 @@ CommandEntityStatus = function (entityId, physicsBody) {
     this.physicsBody = physicsBodyClone;
 }
 
-CommandEntityStatus.prototype.execute = function (gameData) {
+MessageEntityStatus.prototype.execute = function (gameData) {
     var entityWorld = gameData.entityWorld;
     if (!entityWorld) {
         console.error("Missing required gameData properties");
@@ -29,15 +29,7 @@ CommandEntityStatus.prototype.execute = function (gameData) {
     physicsBody.rotationSpeed = this.physicsBody.rotationSpeed;
 }
 
-CommandEntityStatus.prototype.getName = function () {
-    return "CommandEntityStatus";
-}
-
-CommandEntityStatus.prototype.getData = function () {
-    return [this.entityId, this.physicsBody];
-}
-
-CommandEntityStatus.prototype.serialize = function (byteArray, index) {
+MessageEntityStatus.prototype.serialize = function (byteArray, index) {
     console.log("serializing physicsbody " + JSON.stringify(this.physicsBody));
     serializeInt32(byteArray, index, this.entityId);
     serializeV2(byteArray, index += 8, this.physicsBody.pos);
@@ -50,7 +42,7 @@ CommandEntityStatus.prototype.serialize = function (byteArray, index) {
     serializeFix(byteArray, index += 4, this.physicsBody.rotationSpeed);
 }
 
-CommandEntityStatus.prototype.deserialize = function (byteArray, index) {
+MessageEntityStatus.prototype.deserialize = function (byteArray, index) {
     this.entityId = deserializeInt32(byteArray, index);
     this.physicsBody.pos = deserializeV2(byteArray, index += 8);
     this.physicsBody.posOld = deserializeV2(byteArray, index += 8);
@@ -62,6 +54,4 @@ CommandEntityStatus.prototype.deserialize = function (byteArray, index) {
     this.physicsBody.rotationSpeed = deserializeFix(byteArray, index += 4);
 }
 
-CommandEntityStatus.prototype.getSerializationSize = function () {
-    return 52;
-}
+MessageEntityStatus.prototype.serializationSize = 52;
