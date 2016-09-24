@@ -1,3 +1,4 @@
+
 CommandsTypes = function(commandList) {
     this.commandList = commandList;
 
