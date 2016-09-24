@@ -42,7 +42,7 @@ loadGame = function () {
             if (char == "d") playerMoveDirection = PlayerMoveDirection.ENABLE_RIGHT;
             if (char == " ") playerMoveDirection = PlayerMoveDirection.ENABLE_SPACEBAR;
             if (playerMoveDirection != null)
-                client.sendCommand(new CommandPlayerMove(player.id, playerMoveDirection));
+                client.sendCommand(new CommandPlayerMove(player.playerId, playerMoveDirection));
         }
     });
     document.addEventListener('keyup', function (event) {
@@ -56,7 +56,7 @@ loadGame = function () {
             if (char == "d") playerMoveDirection = PlayerMoveDirection.DISABLE_RIGHT;
             if (char == " ") playerMoveDirection = PlayerMoveDirection.DISABLE_SPACEBAR;
             if (playerMoveDirection != null)
-                client.sendCommand(new CommandPlayerMove(player.id, playerMoveDirection));
+                client.sendCommand(new CommandPlayerMove(player.playerId, playerMoveDirection));
         }
     });
 

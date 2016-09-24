@@ -23,8 +23,7 @@ Client = function (gameData, ip, port) {
     socket.on('command', function (data) {
         var command = gameData.commandTypes.deserializeCommand(data);
         commands.push(command);
-        if (command.id == 1)
-            console.log("Received " + JSON.stringify(command));
+        //console.log("Received " + JSON.stringify(command));
     });
 
     socket.on('error', function (error) {
@@ -40,41 +39,17 @@ Client = function (gameData, ip, port) {
     });
 
     socket.on("init", function (data) {
-        console.log("init");
-        var socketId = data[0];
-        var playerId = data[1];
-        var entityId = data[2];
-        var playerName = data[3];
-        playersToReceive = data[4];
+        var playerId = data[0];
+        var entityId = data[1];
+        var playerName = data[2];
+        playersToReceive = data[3];
 
         animationManager = new AnimationManager();
         animationManager.load();
 
-        //todo: playerEntity is global
-        playerEntity = gameData.entityWorld.add({}, entityId);
-
-        //todo: player is global
-        player = gameData.playerWorld.add(new Player(playerName, playerEntity.id, socketId), playerId);
-
-        playerEntity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
-        playerEntity.movement = new Movement(50.0);
-        var sprite = new PIXI.Sprite(textures.feet);
-        sprite.anchor.x = 0.5;
-        sprite.anchor.y = 0.5;
-        var bodySprite = new PIXI.Sprite(textures.dig);
-        bodySprite.anchor.x = 0.5;
-        bodySprite.anchor.y = 0.5;
-        var bodyparts = {
-            "feet": {
-                "sprite": sprite
-            },
-            "body": {
-                "sprite": bodySprite
-            }
-        };
-        playerEntity.drawable = new Drawable(stage, bodyparts, animationManager);
-        var text = new PIXI.Text(entityId + "(current)", { fill: '#ffffff' });
-        playerEntity.drawable.addSprite("username", text, v2.create(- text.width / 2, -80), false);
+        var template = entityTemplates.player(playerId, entityId, playerName, gameData);
+        player = template.player;
+        playerEntity = template.entity;
 
         //todo: commands is global
         commands = [];
@@ -88,32 +63,13 @@ Client = function (gameData, ip, port) {
     });
 
     socket.on('playerJoin', function (data) {
-        console.log("playerjoin");
-        var socketId = data[0];
+        var playerId = data[0];
         var entityId = data[1];
         var playerName = data[2];
-        console.log(socketId + " connected with entityId " + entityId);
-        var entity = gameData.entityWorld.add({}, entityId);
-        var player = gameData.playerWorld.add(new Player(playerName, entityId, socketId), entityId);
-        entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
-        entity.movement = new Movement(50.0);
-        var sprite = new PIXI.Sprite(textures.feet);
-        sprite.anchor.x = 0.5;
-        sprite.anchor.y = 0.5;
-        var bodySprite = new PIXI.Sprite(textures.dig);
-        bodySprite.anchor.x = 0.5;
-        bodySprite.anchor.y = 0.5;
-        var bodyparts = {
-            "feet": {
-                "sprite": sprite
-            },
-            "body": {
-                "sprite": bodySprite
-            }
-        };
-        entity.drawable = new Drawable(stage, bodyparts, animationManager);
-        var text = new PIXI.Text(entityId, { fill: '#ffffff' });
-        entity.drawable.addSprite("username", text, v2.create(- text.width / 2, -80), false);
+        console.log(playerName + " connected with playerId " + playerId);
+        var template = entityTemplates.player(playerId, entityId, playerName, gameData);
+        var player = template.player;
+        var entity = template.entity;
 
         if (!sentInit2) {
             playersReceived++;
@@ -126,17 +82,19 @@ Client = function (gameData, ip, port) {
         }
     });
 
-    socket.on('playerLeave', function (id) {
-        var entity = gameData.entityWorld.objects[id];
+    socket.on('playerLeave', function (data) {
+        var playerId = data[0];
+        var entityId = data[1];
+        var player = gameData.playerWorld.objects[playerId];
+        var entity = gameData.entityWorld.objects[entityId];
         entity.drawable.remove();
-        var player = gameData.playerWorld.objects[id];
-        gameData.entityWorld.remove(entity);
         gameData.playerWorld.remove(player);
+        gameData.entityWorld.remove(entity);
         //TODO: Delete more things
     });
 }
 
 Client.prototype.sendCommand = function (command) {
     socket.emit("command", gameData.commandTypes.serializeCommand(command));
-    //console.log("Sent " + command.getName() + " and " + JSON.stringify(command.getData()));
+    //console.log("Sent " + JSON.stringify(command.getData()));
 }
