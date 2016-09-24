@@ -23,13 +23,6 @@ onTexturesLoadComplete = function () {
 var textureManager = new TextureManager();
 
 loadGame = function () {
-    for (var x = -2; x < 2; ++x) {
-        for (var y = -2; y < 2; ++y) {
-            loadChunk(gameData.tileWorld, x, y);
-        }
-    }
-    carveCircle(gameData, 0, 0, 12);
-
     // Player input
     document.addEventListener('keydown', function (event) {
         var char = String.fromCharCode(event.keyCode).toLowerCase();

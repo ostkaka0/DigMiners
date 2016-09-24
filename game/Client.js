@@ -27,8 +27,13 @@ Client = function (gameData, ip, port) {
     });
 
     socket.on('entityStatus', function (data) {
-        var message = new MessageEntityStatus();
-        message.deserialize(data, 0);
+        var message = MessageEntityStatus.receive(data);
+        message.execute(gameData);
+    })
+
+    socket.on('chunk', function (data) {
+        console.log(data);
+        var message = MessageChunk.receive(data);
         message.execute(gameData);
     })
 

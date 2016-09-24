@@ -75,12 +75,12 @@ CommandPlayerMove.prototype.getData = function () {
 
 CommandPlayerMove.prototype.serialize = function (byteArray, index) {
     serializeInt32(byteArray, index, this.playerId);
-    serializeInt32(byteArray, index += 4, this.playerMoveDirection);
+    serializeInt32(byteArray, index, this.playerMoveDirection);
 }
 
 CommandPlayerMove.prototype.deserialize = function (byteArray, index) {
     this.playerId = deserializeInt32(byteArray, index);
-    this.playerMoveDirection = deserializeInt32(byteArray, index += 4);
+    this.playerMoveDirection = deserializeInt32(byteArray, index);
 }
 
 CommandPlayerMove.prototype.getSerializationSize = function () {

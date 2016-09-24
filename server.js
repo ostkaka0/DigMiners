@@ -113,10 +113,19 @@ io.on("connection", function (socket) {
     }
     socket.broadcast.emit("playerJoin", [player.id, entity.id, player.name]);
 
+    for (var x = -2; x < 2; ++x) {
+        for (var y = -2; y < 2; ++y) {
+            var chunk = gameData.tileWorld.get(x, y);
+            var message = new MessageChunk(chunk, x, y);
+            message.send(socket);
+        }
+    }
+
     socket.on("init2", function () {
         for (var socketId in connections) {
             if (socketId != socket.id) {
-                sendMessage(socket, "entityStatus", new MessageEntityStatus(connections[socketId].entity.id, connections[socketId].entity.physicsBody));
+                var message = new MessageEntityStatus(connections[socketId].entity.id, connections[socketId].entity.physicsBody);
+                message.send(socket);
             }
         }
         //sendMessage(io.sockets, "entityStatus", new MessageEntityStatus(entity.id, entity.physicsBody));
@@ -160,12 +169,6 @@ io.on("connection", function (socket) {
 sendCommand = function (socket, command) {
     socket.emit("command", gameData.commandTypes.serializeCommand(command));
     //console.log("Sent " + command.getName() + " and " + JSON.stringify(command.getData()));
-}
-
-sendMessage = function (socket, messageLabel, message) {
-    var byteArray = new Uint8Array(message.serializationSize);
-    message.serialize(byteArray, 0);
-    socket.emit(messageLabel, byteArray);
 }
 
 http.listen(3000, function () {
