@@ -106,21 +106,20 @@ io.on("connection", function (socket) {
     connections[socket.id].entity = entity;
 
     socket.emit("init", [player.id, entity.id, player.name, Object.keys(connections).length - 1]);
-    for (var key in connections) {
-        if (key != socket.id) {
-            socket.emit("playerJoin", [connections[key].player.id, connections[key].entity.id, connections[key].player.name]);
+    for (var socketId in connections) {
+        if (socketId != socket.id) {
+            socket.emit("playerJoin", [connections[socketId].player.id, connections[socketId].entity.id, connections[socketId].player.name]);
         }
     }
     socket.broadcast.emit("playerJoin", [player.id, entity.id, player.name]);
 
     socket.on("init2", function () {
-        for (var key in connections) {
-            if (key != socket.id) {
-                var byte
-                sendMessage(socket, "entityStatus", MessageEntityStatus(connections[key].entity.id, connections[key].entity.physicsBody));
+        for (var socketId in connections) {
+            if (socketId != socket.id) {
+                sendMessage(socket, "entityStatus", new MessageEntityStatus(connections[socketId].entity.id, connections[socketId].entity.physicsBody));
             }
         }
-        sendMessage(io.sockets, "entityStatus", new MessageEntityStatus(entity.id, entity.physicsBody));
+        //sendMessage(io.sockets, "entityStatus", new MessageEntityStatus(entity.id, entity.physicsBody));
         socket.emit("init2");
         console.log("sent init2");
     });
@@ -163,9 +162,9 @@ sendCommand = function (socket, command) {
     //console.log("Sent " + command.getName() + " and " + JSON.stringify(command.getData()));
 }
 
-sendMessage = function(socket, messageLabel, message) {
+sendMessage = function (socket, messageLabel, message) {
     var byteArray = new Uint8Array(message.serializationSize);
-    message.serialize(message, 0);
+    message.serialize(byteArray, 0);
     socket.emit(messageLabel, byteArray);
 }
 
