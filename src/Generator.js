@@ -1,20 +1,22 @@
-Generator = function(seed) {
+Generator = function (seed) {
+    if (!seed)
+        seed = 0;
     this.seed = seed;
     this.noise = this.seed;
-    this.oreNoise1 = this.seed+1;
-    this.oreNoise2 = this.seed+331;
-    this.oreNoise3 = this.seed+71117;
+    this.oreNoise1 = this.seed + 1;
+    this.oreNoise2 = this.seed + 331;
+    this.oreNoise3 = this.seed + 71117;
 }
 
-Generator.prototype.generate = function(chunk, chunkX, chunkY) {
+Generator.prototype.generate = function (chunk, chunkX, chunkY) {
     for (var yy = 0; yy < CHUNK_DIM; ++yy) {
         for (var xx = 0; xx < CHUNK_DIM; ++xx) {
-            var x = xx+chunkX*CHUNK_DIM;
-            var y = yy+chunkY*CHUNK_DIM;
+            var x = xx + chunkX * CHUNK_DIM;
+            var y = yy + chunkY * CHUNK_DIM;
 
-            var distance = Math.sqrt(x * x + y * y)/200.0
+            var distance = Math.sqrt(x * x + y * y) / 200.0
             distance -= 0.25;
-            
+
             noise.seed(this.seed);
             var value = noise.perlin2(x / 20.0, y / 20.0);
             value += distance;
@@ -26,10 +28,10 @@ Generator.prototype.generate = function(chunk, chunkX, chunkY) {
             var oreValue3 = noise.perlin2(x / 4.0, y / 4.0);
 
             var tileId = 0;
-            
+
             if (value > 0.0)
                 tileId = 1;
-                
+
             if (value > 0.5)
                 tileId = 2;
 
@@ -47,7 +49,7 @@ Generator.prototype.generate = function(chunk, chunkX, chunkY) {
                     tileId = 3;
                 }
             }
-                
+
             chunk.setTileId(xx, yy, tileId);
             if (value > 0.0)
                 chunk.setDensity(xx, yy, 0);
