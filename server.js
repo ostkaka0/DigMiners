@@ -69,9 +69,10 @@ tick = function (dt) {
     entityFunctionPhysicsBodySimulate(gameData, dt);
     gameData.entityWorld.update();
 
-    gameData.entityWorld.objectArray.forEach(function(entity) {
-        if (entity.movement && entity.movement.spacebar && entity.physicsBody)
-            io.sockets.emit("command", gameData.commandTypes.serializeCommand(new CommandDig(entity.physicsBody.pos[0], entity.physicsBody.pos[1], 4.0)));
+    gameData.entityWorld.objectArray.forEach(function (entity) {
+        if (entity.movement && entity.movement.spacebar && entity.physicsBody) {
+            sendCommand(io.sockets, new CommandDig(entity.physicsBody.pos[0], entity.physicsBody.pos[1], 4.0));
+        }
     })
 }
 

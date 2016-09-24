@@ -5,7 +5,7 @@ GameData = function(idList) {
     this.tileWorld = new Map2D();
     this.tileRegister = new TileRegister();
     this.generator = new Generator();
-    this.commandTypes = new CommandsTypes([CommandPlayerMove, CommandEntityStatus]);
+    this.commandTypes = new CommandsTypes([CommandPlayerMove, CommandEntityStatus, CommandDig]);
 
     this.tileRegister.register("dirt", true, false, 1.0);
     this.tileRegister.register("stone", true, false, 4.0);

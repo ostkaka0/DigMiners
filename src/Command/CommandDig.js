@@ -1,3 +1,4 @@
+
 CommandDig = function (x, y, radius) {
     this.x = toFix(x);
     this.y = toFix(y);
