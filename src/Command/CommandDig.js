@@ -12,14 +12,14 @@ CommandDig.prototype.execute = function (gameData) {
 
 CommandDig.prototype.serialize = function (byteArray, index) {
     serializeFix(byteArray, index, this.x);
-    serializeFix(byteArray, index += 4, this.y);
-    serializeFix(byteArray, index += 4, this.radius);
+    serializeFix(byteArray, index, this.y);
+    serializeFix(byteArray, index, this.radius);
 }
 
 CommandDig.prototype.deserialize = function (byteArray, index) {
     this.x = deserializeFix(byteArray, index);
-    this.y = deserializeFix(byteArray, index += 4);
-    this.radius = deserializeFix(byteArray, index += 4);
+    this.y = deserializeFix(byteArray, index);
+    this.radius = deserializeFix(byteArray, index);
 }
 
 CommandDig.prototype.getSerializationSize = function () {

@@ -30,28 +30,43 @@ MessageEntityStatus.prototype.execute = function (gameData) {
 }
 
 MessageEntityStatus.prototype.serialize = function (byteArray, index) {
-    console.log("serializing physicsbody " + JSON.stringify(this.physicsBody));
     serializeInt32(byteArray, index, this.entityId);
-    serializeV2(byteArray, index += 8, this.physicsBody.pos);
-    serializeV2(byteArray, index += 8, this.physicsBody.posOld);
-    serializeV2(byteArray, index += 8, this.physicsBody.speed);
-    serializeV2(byteArray, index += 8, this.physicsBody.speedOld);
-    serializeFix(byteArray, index += 4, this.physicsBody.damping);
-    serializeFix(byteArray, index += 4, this.physicsBody.angle);
-    serializeFix(byteArray, index += 4, this.physicsBody.angleOld);
-    serializeFix(byteArray, index += 4, this.physicsBody.rotationSpeed);
+    serializeV2(byteArray, index, this.physicsBody.pos);
+    serializeV2(byteArray, index, this.physicsBody.posOld);
+    serializeV2(byteArray, index, this.physicsBody.speed);
+    serializeV2(byteArray, index, this.physicsBody.speedOld);
+    serializeFix(byteArray, index, this.physicsBody.damping);
+    serializeFix(byteArray, index, this.physicsBody.angle);
+    serializeFix(byteArray, index, this.physicsBody.angleOld);
+    serializeFix(byteArray, index, this.physicsBody.rotationSpeed);
 }
 
 MessageEntityStatus.prototype.deserialize = function (byteArray, index) {
     this.entityId = deserializeInt32(byteArray, index);
-    this.physicsBody.pos = deserializeV2(byteArray, index += 8);
-    this.physicsBody.posOld = deserializeV2(byteArray, index += 8);
-    this.physicsBody.speed = deserializeV2(byteArray, index += 8);
-    this.physicsBody.speedOld = deserializeV2(byteArray, index += 8);
-    this.physicsBody.damping = deserializeFix(byteArray, index += 4);
-    this.physicsBody.angle = deserializeFix(byteArray, index += 4);
-    this.physicsBody.angleOld = deserializeFix(byteArray, index += 4);
-    this.physicsBody.rotationSpeed = deserializeFix(byteArray, index += 4);
+    this.physicsBody.pos = deserializeV2(byteArray, index);
+    this.physicsBody.posOld = deserializeV2(byteArray, index);
+    this.physicsBody.speed = deserializeV2(byteArray, index);
+    this.physicsBody.speedOld = deserializeV2(byteArray, index);
+    this.physicsBody.damping = deserializeFix(byteArray, index);
+    this.physicsBody.angle = deserializeFix(byteArray, index);
+    this.physicsBody.angleOld = deserializeFix(byteArray, index);
+    this.physicsBody.rotationSpeed = deserializeFix(byteArray, index);
 }
 
-MessageEntityStatus.prototype.serializationSize = 52;
+MessageEntityStatus.prototype.getSerializationSize = function () {
+    return 52;
+}
+
+MessageEntityStatus.prototype.send = function (socket) {
+    var byteArray = new Uint8Array(this.getSerializationSize());
+    var counter = new IndexCounter();
+    this.serialize(byteArray, counter);
+    socket.emit("entityStatus", byteArray);
+}
+
+MessageEntityStatus.receive = function (byteArray) {
+    var message = new MessageEntityStatus();
+    var counter = new IndexCounter();
+    message.deserialize(byteArray, counter);
+    return message;
+}
