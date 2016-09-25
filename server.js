@@ -128,10 +128,6 @@ io.on("connection", function(socket) {
         }
     }
 
-    socket.on("init2", function() {
-        //sendMessage(io.sockets, "entityStatus", new MessageEntityStatus(entity.id, entity.physicsBody));
-    });
-
     socket.on("disconnect", function() {
         clearInterval(connections[socket.id].pingIntervalId);
         new MessagePlayerLeave(connections[socket.id].player).send(socket.broadcast);
@@ -174,14 +170,6 @@ io.on("connection", function(socket) {
 
     console.log(socket.id + " connected.");
 });
-
-/*sendCommand = function (socket, command) {
-    var byteArray = new Uint8Array(command.getSerializationSize() + 4);
-    var counter = new IndexCounter();
-    serializeInt32(byteArray, counter, command.id);
-    command.serialize(byteArray, counter);
-    socket.emit("command", byteArray);
-}*/
 
 http.listen(3000, function() {
     console.log("Listening on :3000");

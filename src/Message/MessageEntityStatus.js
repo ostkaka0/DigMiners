@@ -3,9 +3,11 @@ MessageEntityStatus = function(entityId, physicsBody) {
     this.entityId = entityId;
     //TODO: PROPER CLONE
     if(!physicsBody)
-        physicsBody = {};
-    var physicsBodyClone = JSON.parse(JSON.stringify(physicsBody));
-    this.physicsBody = physicsBodyClone;
+        this.physicsBody = new PhysicsBody();
+    else {
+        var physicsBodyClone = JSON.parse(JSON.stringify(physicsBody));
+        this.physicsBody = physicsBodyClone;
+    }
 }
 
 MessageEntityStatus.prototype.execute = function(gameData) {
@@ -51,6 +53,7 @@ MessageEntityStatus.prototype.deserialize = function(byteArray, index) {
     this.physicsBody.angle = deserializeFix(byteArray, index);
     this.physicsBody.angleOld = deserializeFix(byteArray, index);
     this.physicsBody.rotationSpeed = deserializeFix(byteArray, index);
+    console.log("LOOK " + this.physicsBody.rotationSpeed);
 }
 
 MessageEntityStatus.prototype.getSerializationSize = function() {

@@ -30,16 +30,6 @@ Client = function(gameData, ip, port) {
         console.log("Message from server: " + msg);
     });
 
-    gameData.clientMessages.forEach(function(messageType) {
-        socket.on(messageType.prototype.idString, function(data) {
-            var message = new messageType();
-            message.receive(gameData, data);
-            message.execute(gameData);
-            if(messageCallbacks[messageType.prototype.id])
-                messageCallbacks[messageType.prototype.id](message);
-        });
-    });
-
     socket.on('error', function(error) {
         console.log("Connection failed. " + error);
     });
@@ -52,36 +42,15 @@ Client = function(gameData, ip, port) {
         ping = 2 * (Date.now() - time);
     });
 
-    /*socket.on('playerJoin', function (data) {
-        var playerId = data[0];
-        var entityId = data[1];
-        var playerName = data[2];
-        console.log(playerName + " connected with playerId " + playerId);
-        var template = entityTemplates.player(playerId, entityId, playerName, gameData);
-        var player = template.player;
-        var entity = template.entity;
-
-        if (!sentInit2) {
-            playersReceived++;
-            {//if (playersReceived >= playersToReceive) {
-                gameData.entityWorld.update();
-                gameData.playerWorld.update();
-                socket.emit("init2");
-                sentInit2 = true;
-            }
-        }
-    });*/
-
-    /*socket.on('playerLeave', function (data) {
-        var playerId = data[0];
-        var entityId = data[1];
-        var player = gameData.playerWorld.objects[playerId];
-        var entity = gameData.entityWorld.objects[entityId];
-        entity.drawable.remove();
-        gameData.playerWorld.remove(player);
-        gameData.entityWorld.remove(entity);
-        //TODO: Delete more things
-    });*/
+    gameData.clientMessages.forEach(function(messageType) {
+        socket.on(messageType.prototype.idString, function(data) {
+            var message = new messageType();
+            message.receive(gameData, data);
+            message.execute(gameData);
+            if(messageCallbacks[messageType.prototype.id])
+                messageCallbacks[messageType.prototype.id](message);
+        });
+    });
 }
 
 Client.prototype.sendCommand = function(command) {

@@ -25,8 +25,7 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
         };
 
         entity.drawable = new Drawable(stage, bodyparts, animationManager);
-        //player.text = new PIXI.Text("player:" + playerId + "entity:" + entityId, { fill: '#ffffff' });
-        player.text = new PIXI.Text(name, { fill: '#ffffff' });
+        player.text = new PIXI.Text(name + " player:" + playerId + "entity:" + entityId, { fill: '#ffffff' });
         entity.drawable.addSprite("username", player.text, v2.create(- player.text.width / 2, -80), false);
 
         var healthbarSprite = new PIXI.Sprite(textures.healthbar);
