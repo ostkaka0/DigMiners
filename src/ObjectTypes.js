@@ -1,18 +1,14 @@
 ObjectTypes = function(typeList) {
-	this.typeList = typeList || [];
-	this.nextId = typeList.length;
-	for (var i = 0; i < this.typeList.length; i++) {
-		typeList[i].prototype.id = i;
-		typeList[i].prototype.idString = i.toString(36);
+	this.list = typeList || [];
+	this.nextId = this.list.length;
+	for (var i = 0; i < this.list.length; i++) {
+		this.list[i].prototype.id = i;
+		this.list[i].prototype.idString = i.toString(36);
 	}
 }
 
 ObjectTypes.prototype.add = function(type) {
-	this.typeList.push(type);
+	this.list.push(type);
 	type.prototype.id = nextId++;
 	type.prototype.idString = type.prototype.id.toString(36); 
-}
-
-ObjectTypes.get = function(id) {
-	return this.typeList[id];
 }

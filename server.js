@@ -148,7 +148,10 @@ io.on("connection", function (socket) {
 
     socket.on('command', function (data) {
         setTimeout(function () {
-            var command = gameData.commandTypes.deserializeCommand(data);
+            var counter = new IndexCounter();
+			var commandId = deserializeInt32(data, counter);
+			var command = new gameData.commandTypes.list[commandId]();
+			command.deserialize(data, counter);
             commands.push(command);
             sendCommand(io.sockets, command);
         }, 300);
@@ -175,8 +178,11 @@ io.on("connection", function (socket) {
 });
 
 sendCommand = function (socket, command) {
-    socket.emit("command", gameData.commandTypes.serializeCommand(command));
-    //console.log("Sent " + command.getName() + " and " + JSON.stringify(command.getData()));
+    var byteArray = new Uint8Array(command.getSerializationSize() + 4);
+    var counter = new IndexCounter();
+    serializeInt32(byteArray, counter, command.id);
+    command.serialize(byteArray, counter);
+    socket.emit("command", byteArray);
 }
 
 http.listen(3000, function () {
