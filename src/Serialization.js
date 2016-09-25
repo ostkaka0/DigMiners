@@ -17,20 +17,20 @@ deserializeInt32 = function(byteArray, index) {
 }
 
 serializeFix = function(byteArray, index, value) {
-    serializeInt32(byteArray, index, toFix(value));
+    serializeInt32(byteArray, index, Math.floor(value * 65536));
 }
 
 deserializeFix = function(byteArray, index) {
-    return deserializeInt32(byteArray, index);
+    return deserializeInt32(byteArray, index) / 65536.0;
 }
 
 serializeV2 = function(byteArray, index, value) {
-    serializeInt32(byteArray, index, toFix(value[0]));
-    serializeInt32(byteArray, index, toFix(value[1]));
+    serializeInt32(byteArray, index, Math.floor(value[0] * 65536));
+    serializeInt32(byteArray, index, Math.floor(value[1] * 65536));
 }
 
 deserializeV2 = function(byteArray, index) {
-    return v2.create(deserializeInt32(byteArray, index), deserializeInt32(byteArray, index));
+    return v2.create(deserializeInt32(byteArray, index) / 65536.0, deserializeInt32(byteArray, index) / 65536.0);
 }
 
 serializeUint8Array = function(byteArray, index, value) {

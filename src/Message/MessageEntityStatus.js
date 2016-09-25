@@ -53,11 +53,10 @@ MessageEntityStatus.prototype.deserialize = function(byteArray, index) {
     this.physicsBody.angle = deserializeFix(byteArray, index);
     this.physicsBody.angleOld = deserializeFix(byteArray, index);
     this.physicsBody.rotationSpeed = deserializeFix(byteArray, index);
-    console.log("LOOK " + this.physicsBody.rotationSpeed);
 }
 
 MessageEntityStatus.prototype.getSerializationSize = function() {
-    return 52;
+    return 56;
 }
 
 MessageEntityStatus.prototype.send = function(socket) {
