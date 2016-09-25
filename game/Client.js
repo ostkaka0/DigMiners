@@ -32,7 +32,6 @@ Client = function (gameData, ip, port) {
     })
 
     socket.on('chunk', function (data) {
-        console.log(data);
         var message = MessageChunk.receive(data);
         message.execute(gameData);
     })
