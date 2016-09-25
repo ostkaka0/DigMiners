@@ -1,4 +1,3 @@
-
 Client = function (gameData, ip, port) {
 
     console.log("Connecting to " + ip + ":" + port + "...");
@@ -33,15 +32,6 @@ Client = function (gameData, ip, port) {
 			message.execute(gameData);
 		});
 	});
-    /*socket.on('entityStatus', function (data) {
-        var message = MessageEntityStatus.receive(data);
-        message.execute(gameData);
-    })*/
-
-    /*socket.on('chunk', function (data) {
-        var message = MessageChunk.receive(data);
-        message.execute(gameData);
-    })*/
 
     socket.on('error', function (error) {
         console.log("Connection failed. " + error);
