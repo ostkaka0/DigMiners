@@ -2,19 +2,19 @@ v2 = {};
 
 v2.create = function(x, y) {
     var v = [toFix(x), toFix(y)];
-    
-//  // Temporary properties
-//  Object.defineProperties(v, {
-//      x: {
-//          get: function () { return v[0]; },
-//          set: function (value) { v[0] = value; }
-//      },
-//      y: {
-//          get: function () { return v[1]; },
-//          set: function (value) { v[1] = value; }
-//      },
-//  });
-    
+
+    //  // Temporary properties
+    //  Object.defineProperties(v, {
+    //      x: {
+    //          get: function () { return v[0]; },
+    //          set: function (value) { v[0] = value; }
+    //      },
+    //      y: {
+    //          get: function () { return v[1]; },
+    //          set: function (value) { v[1] = value; }
+    //      },
+    //  });
+
     return v;
 }
 
@@ -28,8 +28,8 @@ v2.copy = function(a, out) {
 }
 
 v2.add = function(a, b, out) {
-    out[0] = fix.add(a[0],b[0]);
-    out[1] = fix.add(a[1],b[1]);
+    out[0] = fix.add(a[0], b[0]);
+    out[1] = fix.add(a[1], b[1]);
 }
 
 v2.sub = function(a, b, out) {
@@ -56,9 +56,9 @@ v2.div = function(a, c, out) {
 /* c: constant - float
  * a: v2     - float[2]
  */
-v2.mod = function (a, c, out) {
-    out[0] = a[0]%toFix(c);
-    out[1] = a[1]%toFix(c);
+v2.mod = function(a, c, out) {
+    out[0] = a[0] % toFix(c);
+    out[1] = a[1] % toFix(c);
 }
 
 
@@ -89,10 +89,10 @@ v2.dot = function(a, b) {
 v2.clampF = function(a, min, max) {
     min = toFix(min);
     max = toFix(max);
-    if (min <= max) {
+    if(min <= max) {
         return Math.max(Math.min(a, max), min);
     }
     else {
         return Math.max(Math.min(a, min), max);
-    }   
+    }
 }

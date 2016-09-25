@@ -3,11 +3,11 @@
  * type: a shader type.
  */
 ShaderRequest = function(filePath, type) {
-    
+
     this.shader = null;
     this.source = null;
     this.type = type;
-    
+
     var client = new XMLHttpRequest();
     client.open('GET', filePath);
     client.onreadystatechange = (function() {
@@ -19,14 +19,14 @@ ShaderRequest = function(filePath, type) {
 /* Compiles the shader, but only if the source has been loaded from the server.
  */
 ShaderRequest.prototype.tryCompile = function(gl) {
-    
-    if (this.shader == null && this.source != null) {
+
+    if(this.shader == null && this.source != null) {
         var shader = gl.createShader(this.type);
         gl.shaderSource(shader, this.source);
         gl.compileShader(shader);
-        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-          console.log("ERROR IN "+ " SHADER : " + gl.getShaderInfoLog(shader));
-          return false;
+        if(!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            console.log("ERROR IN " + " SHADER : " + gl.getShaderInfoLog(shader));
+            return false;
         }
         this.shader = shader;
         return true;
@@ -40,20 +40,20 @@ function tryLinkShaderProgram(gl, shaderRequests) {
     // Check all the shaders. Compile them if needed.
     var ready = true;
     //for (shader in shaders) {
-    for (var i = 0; i < shaderRequests.length; ++i) {
-        if (!shaderRequests[i].shader) {
+    for(var i = 0; i < shaderRequests.length; ++i) {
+        if(!shaderRequests[i].shader) {
             ready &= shaderRequests[i].tryCompile(gl);
         }
     }
-    if (!ready)
+    if(!ready)
         return null;
-    
+
     var shaderProgram = gl.createProgram();
     // Attach shaders:
-    for (var i = 0; i < shaderRequests.length; ++i) {
+    for(var i = 0; i < shaderRequests.length; ++i) {
         gl.attachShader(shaderProgram, shaderRequests[i].shader);
     }
-    
+
     gl.linkProgram(shaderProgram);
     return shaderProgram;
 }

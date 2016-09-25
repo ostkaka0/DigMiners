@@ -1,4 +1,4 @@
-ObjectWorld = function () {
+ObjectWorld = function() {
     this.objectArray = [];
     this.objects = {};
     this.objectsToCreate = [];
@@ -6,7 +6,7 @@ ObjectWorld = function () {
     this.onRemove = null;
 }
 
-ObjectWorld.prototype.add = function (object, id) {
+ObjectWorld.prototype.add = function(object, id) {
     object.isActive = false;
     object.id = id;
 
@@ -15,30 +15,30 @@ ObjectWorld.prototype.add = function (object, id) {
     return object;
 }
 
-ObjectWorld.prototype.remove = function (object) {
+ObjectWorld.prototype.remove = function(object) {
     delete this.objects[object.id];
     this.objectsToDestroy.push(object);
 }
 
-ObjectWorld.prototype.update = function () {
+ObjectWorld.prototype.update = function() {
     var that = this;
     // Destroy objects
-    this.objectsToDestroy.forEach(function (object) {
+    this.objectsToDestroy.forEach(function(object) {
         object.isActive = false;
-        if (that.onRemove)
+        if(that.onRemove)
             that.onRemove(object);
     });
     this.objectsToDestroy.length = 0;
 
     // Create objects
-    this.objectsToCreate.forEach(function (object) {
+    this.objectsToCreate.forEach(function(object) {
         object.isActive = true;
     });
     this.objectsToCreate.length = 0;
 
     // Update this.objects
     this.objectArray.length = 0;
-    for (var id in this.objects) {
+    for(var id in this.objects) {
         this.objectArray.push(this.objects[id]);
     }
 }

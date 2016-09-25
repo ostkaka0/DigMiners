@@ -1,11 +1,11 @@
 
-IndexCounter = function (initial) {
-    if (initial)
+IndexCounter = function(initial) {
+    if(initial)
         this.value = initial;
     else
         this.value = 0;
 }
 
-IndexCounter.prototype.add = function (amount) {
+IndexCounter.prototype.add = function(amount) {
     this.value += amount;
 }
