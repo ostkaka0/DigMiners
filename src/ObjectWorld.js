@@ -10,11 +10,13 @@ ObjectWorld.prototype.add = function (object, id) {
     object.isActive = false;
     object.id = id;
 
+    this.objects[object.id] = object;
     this.objectsToCreate.push(object);
     return object;
 }
 
 ObjectWorld.prototype.remove = function (object) {
+    delete this.objects[object.id];
     this.objectsToDestroy.push(object);
 }
 
@@ -22,7 +24,6 @@ ObjectWorld.prototype.update = function () {
     var that = this;
     // Destroy objects
     this.objectsToDestroy.forEach(function (object) {
-        delete that.objects[object.id];
         object.isActive = false;
         if (that.onRemove)
             that.onRemove(object);
@@ -31,7 +32,6 @@ ObjectWorld.prototype.update = function () {
 
     // Create objects
     this.objectsToCreate.forEach(function (object) {
-        that.objects[object.id] = object;
         object.isActive = true;
     });
     this.objectsToCreate.length = 0;

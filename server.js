@@ -106,7 +106,8 @@ io.on("connection", function (socket) {
     connections[socket.id].player = player;
     connections[socket.id].entity = entity;
 
-    socket.emit("init", [player.id, entity.id, player.name, Object.keys(connections).length - 1]);
+    //socket.emit("init", [player.id, entity.id, player.name, Object.keys(connections).length - 1]);
+    new MessageInit(player).send(socket);
     for (var socketId in connections) {
         if (socketId != socket.id) {
             socket.emit("playerJoin", [connections[socketId].player.id, connections[socketId].entity.id, connections[socketId].player.name]);

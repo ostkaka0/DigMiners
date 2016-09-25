@@ -19,19 +19,13 @@ Client = function (gameData, ip, port) {
         console.log("Message from server: " + msg);
     });
 
-    socket.on('command', function (data) {
-        var counter = new IndexCounter();
-		var commandId = deserializeInt32(data, counter);
-		var command = new gameData.commandTypes.list[commandId]();
-		command.deserialize(data, counter);
-        commands.push(command);
-    });
-
 	gameData.clientMessages.forEach(function(messageType) {
 		socket.on(messageType.prototype.idString, function(data) {
 			var message = new messageType();
 			message.receive(gameData, data);
 			message.execute(gameData);
+            if (messageCallbacks[messageType.prototype.id])
+                messageCallbacks[messageType.prototype.id](message);
 		});
 	});
 
@@ -47,7 +41,7 @@ Client = function (gameData, ip, port) {
         ping = 2 * (Date.now() - time);
     });
 
-    socket.on("init", function (data) {
+    /*socket.on("init", function (data) {
         var playerId = data[0];
         var entityId = data[1];
         var playerName = data[2];
@@ -65,7 +59,7 @@ Client = function (gameData, ip, port) {
         keysDown = [];
 
         loadGame();
-    });
+    });*/
 
     socket.on('init2', function () {
         //console.log("test " + gameData.entityWorld.objects[4]);
@@ -82,7 +76,7 @@ Client = function (gameData, ip, port) {
 
         if (!sentInit2) {
             playersReceived++;
-            if (playersReceived >= playersToReceive) {
+            {//if (playersReceived >= playersToReceive) {
                 gameData.entityWorld.update();
                 gameData.playerWorld.update();
                 socket.emit("init2");
