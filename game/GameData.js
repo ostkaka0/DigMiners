@@ -6,8 +6,8 @@ GameData = function(idList) {
     this.tileRegister = new TileRegister();
     this.generator = new Generator();
     this.commandTypes = new ObjectTypes([CommandPlayerMove, CommandDig]);
-    this.messageTypes = new ObjectTypes([MessageInit, MessageCommands, MessageChunk, MessageEntityStatus]);
-    this.clientMessages = [MessageInit, MessageCommands, MessageChunk, MessageEntityStatus];
+    this.messageTypes = new ObjectTypes([MessageInit, MessageCommands, MessageChunk, MessageEntityStatus, MessagePlayerJoin, MessagePlayerLeave]);
+    this.clientMessages = [MessageInit, MessageCommands, MessageChunk, MessageEntityStatus, MessagePlayerJoin, MessagePlayerLeave];
     this.serverMessages = [];
 
     this.tileRegister.register("dirt", true, false, 1.0);

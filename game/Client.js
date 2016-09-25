@@ -65,7 +65,7 @@ Client = function (gameData, ip, port) {
         //console.log("test " + gameData.entityWorld.objects[4]);
     });
 
-    socket.on('playerJoin', function (data) {
+    /*socket.on('playerJoin', function (data) {
         var playerId = data[0];
         var entityId = data[1];
         var playerName = data[2];
@@ -83,9 +83,9 @@ Client = function (gameData, ip, port) {
                 sentInit2 = true;
             }
         }
-    });
+    });*/
 
-    socket.on('playerLeave', function (data) {
+    /*socket.on('playerLeave', function (data) {
         var playerId = data[0];
         var entityId = data[1];
         var player = gameData.playerWorld.objects[playerId];
@@ -94,7 +94,7 @@ Client = function (gameData, ip, port) {
         gameData.playerWorld.remove(player);
         gameData.entityWorld.remove(entity);
         //TODO: Delete more things
-    });
+    });*/
 }
 
 Client.prototype.sendCommand = function (command) {
