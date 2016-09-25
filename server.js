@@ -110,10 +110,10 @@ io.on("connection", function(socket) {
     new MessageInit(player).send(socket);
     for(var socketId in connections) {
         if(socketId != socket.id) {
-            socket.emit("playerJoin", [connections[socketId].player.id, connections[socketId].entity.id, connections[socketId].player.name]);
+            new MessagePlayerJoin(connections[socketId].player).send(socket);
         }
     }
-    socket.broadcast.emit("playerJoin", [player.id, entity.id, player.name]);
+    new MessagePlayerJoin(player).send(socket.broadcast);
 
     for(var x = -2; x < 2; ++x) {
         for(var y = -2; y < 2; ++y) {
@@ -137,7 +137,7 @@ io.on("connection", function(socket) {
 
     socket.on("disconnect", function() {
         clearInterval(connections[socket.id].pingIntervalId);
-        socket.broadcast.emit("playerLeave", [connections[socket.id].player.id, connections[socket.id].entity.id]);
+        new MessagePlayerLeave(connections[socket.id].player).send(socket.broadcast);
         gameData.entityWorld.remove(connections[socket.id].entity);
         gameData.playerWorld.remove(connections[socket.id].player);
         delete connections[socket.id];
