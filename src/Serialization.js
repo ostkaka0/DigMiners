@@ -42,7 +42,6 @@ serializeUint8Array = function (byteArray, index, value) {
 }
 
 deserializeUint8Array = function (byteArray, index, arrayLength) {
-    //console.dir(byteArray);
     var out = byteArray.slice(index.value, arrayLength);
     index.add(arrayLength);
     return out;
