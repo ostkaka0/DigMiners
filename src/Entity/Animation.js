@@ -10,7 +10,7 @@ Animation = function(name, texture, numFrames, frameWidth, frameHeight) {
 
 Animation.prototype.load = function() {
     var currentFrames = 0;
-    
+
     for(var y = 0; y < this.texture.height / this.frameHeight; y++) {
         for(var x = 0; x < this.texture.width / this.frameWidth; x++) {
             if(currentFrames < this.numFrames) {
@@ -21,7 +21,7 @@ Animation.prototype.load = function() {
             else {
                 console.log("Loaded animation with " + currentFrames + " frames.");
                 return;
-            }           
+            }
         }
     }
     this.texture.frame = this.frames[0];
