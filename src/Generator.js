@@ -1,5 +1,5 @@
-Generator = function (seed) {
-    if (!seed)
+Generator = function(seed) {
+    if(!seed)
         seed = 0;
     this.seed = seed;
     this.noise = this.seed;
@@ -8,9 +8,9 @@ Generator = function (seed) {
     this.oreNoise3 = this.seed + 71117;
 }
 
-Generator.prototype.generate = function (chunk, chunkX, chunkY) {
-    for (var yy = 0; yy < CHUNK_DIM; ++yy) {
-        for (var xx = 0; xx < CHUNK_DIM; ++xx) {
+Generator.prototype.generate = function(chunk, chunkX, chunkY) {
+    for(var yy = 0; yy < CHUNK_DIM; ++yy) {
+        for(var xx = 0; xx < CHUNK_DIM; ++xx) {
             var x = xx + chunkX * CHUNK_DIM;
             var y = yy + chunkY * CHUNK_DIM;
 
@@ -29,29 +29,29 @@ Generator.prototype.generate = function (chunk, chunkX, chunkY) {
 
             var tileId = 0;
 
-            if (value > 0.0)
+            if(value > 0.0)
                 tileId = 1;
 
-            if (value > 0.5)
+            if(value > 0.5)
                 tileId = 2;
 
-            if (value > 1.0)
+            if(value > 1.0)
                 tileId = 3;
 
-            if (tileId != 0) {
-                if (oreValue1 > 0.45) {
+            if(tileId != 0) {
+                if(oreValue1 > 0.45) {
                     tileId = 4;
                 }
-                if (oreValue2 > 0.50) {
+                if(oreValue2 > 0.50) {
                     tileId = 5;
                 }
-                if (oreValue3 > 0.25) {
+                if(oreValue3 > 0.25) {
                     tileId = 3;
                 }
             }
 
             chunk.setTileId(xx, yy, tileId);
-            if (value > 0.0)
+            if(value > 0.0)
                 chunk.setDensity(xx, yy, 0);
         }
     }

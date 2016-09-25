@@ -17,34 +17,34 @@ var keysDown = {};
 var messageCallbacks = {};
 var textureManager = new TextureManager();
 
-loadGame = function () {
+loadGame = function() {
     animationManager.load();
     // Player input
-    document.addEventListener('keydown', function (event) {
+    document.addEventListener('keydown', function(event) {
         var char = String.fromCharCode(event.keyCode).toLowerCase();
-        if (!keysDown[char]) {
+        if(!keysDown[char]) {
             keysDown[char] = true;
             var playerMoveDirection = null;
-            if (char == "w") playerMoveDirection = PlayerMoveDirection.ENABLE_UP;
-            if (char == "a") playerMoveDirection = PlayerMoveDirection.ENABLE_LEFT;
-            if (char == "s") playerMoveDirection = PlayerMoveDirection.ENABLE_DOWN;
-            if (char == "d") playerMoveDirection = PlayerMoveDirection.ENABLE_RIGHT;
-            if (char == " ") playerMoveDirection = PlayerMoveDirection.ENABLE_SPACEBAR;
-            if (playerMoveDirection != null)
+            if(char == "w") playerMoveDirection = PlayerMoveDirection.ENABLE_UP;
+            if(char == "a") playerMoveDirection = PlayerMoveDirection.ENABLE_LEFT;
+            if(char == "s") playerMoveDirection = PlayerMoveDirection.ENABLE_DOWN;
+            if(char == "d") playerMoveDirection = PlayerMoveDirection.ENABLE_RIGHT;
+            if(char == " ") playerMoveDirection = PlayerMoveDirection.ENABLE_SPACEBAR;
+            if(playerMoveDirection != null)
                 client.sendCommand(new CommandPlayerMove(player.playerId, playerMoveDirection));
         }
     });
-    document.addEventListener('keyup', function (event) {
+    document.addEventListener('keyup', function(event) {
         var char = String.fromCharCode(event.keyCode).toLowerCase();
-        if (keysDown[char]) {
+        if(keysDown[char]) {
             keysDown[char] = false;
             var playerMoveDirection = null;
-            if (char == "w") playerMoveDirection = PlayerMoveDirection.DISABLE_UP;
-            if (char == "a") playerMoveDirection = PlayerMoveDirection.DISABLE_LEFT;
-            if (char == "s") playerMoveDirection = PlayerMoveDirection.DISABLE_DOWN;
-            if (char == "d") playerMoveDirection = PlayerMoveDirection.DISABLE_RIGHT;
-            if (char == " ") playerMoveDirection = PlayerMoveDirection.DISABLE_SPACEBAR;
-            if (playerMoveDirection != null)
+            if(char == "w") playerMoveDirection = PlayerMoveDirection.DISABLE_UP;
+            if(char == "a") playerMoveDirection = PlayerMoveDirection.DISABLE_LEFT;
+            if(char == "s") playerMoveDirection = PlayerMoveDirection.DISABLE_DOWN;
+            if(char == "d") playerMoveDirection = PlayerMoveDirection.DISABLE_RIGHT;
+            if(char == " ") playerMoveDirection = PlayerMoveDirection.DISABLE_SPACEBAR;
+            if(playerMoveDirection != null)
                 client.sendCommand(new CommandPlayerMove(player.playerId, playerMoveDirection));
         }
     });
@@ -53,14 +53,14 @@ loadGame = function () {
     gameLoop(tick, render, gameData.tickDuration);
 }
 
-tick = function (dt) {
+tick = function(dt) {
     //console.log(dt);
-    gameData.entityWorld.objectArray.forEach(function (entity) {
-        if (entity.physicsBody && entity.physicsBody.angle)
+    gameData.entityWorld.objectArray.forEach(function(entity) {
+        if(entity.physicsBody && entity.physicsBody.angle)
             entity.physicsBody.angleOld = entity.physicsBody.angle;
     });
 
-    commands.forEach(function (command) {
+    commands.forEach(function(command) {
         command.execute(gameData);
     });
     commands.length = 0;
@@ -70,7 +70,7 @@ tick = function (dt) {
     gameData.entityWorld.update();
 }
 
-render = function (tickFracTime) {
+render = function(tickFracTime) {
     canvasUpdateSize(canvas);
     camera.width = canvas.width;
     camera.height = canvas.height;
@@ -86,8 +86,8 @@ render = function (tickFracTime) {
     viewMatrix = viewMatrix.scale(2 / canvas.width, 2 / canvas.height);
     chunkRenderer.render(gameData.tileWorld, projectionMatrix.clone().append(viewMatrix), camera);
 
-    gameData.entityWorld.objectArray.forEach(function (entity) {
-        if (entity.physicsBody && entity.drawable) {
+    gameData.entityWorld.objectArray.forEach(function(entity) {
+        if(entity.physicsBody && entity.drawable) {
             var x = -camera.frustrum.x + canvas.width / 2 + tickFracTime * 32.0 * entity.physicsBody.pos[0] + (1 - tickFracTime) * 32.0 * entity.physicsBody.posOld[0];
             var y = camera.frustrum.y + canvas.height / 2 - (tickFracTime * 32.0 * entity.physicsBody.pos[1] + (1 - tickFracTime) * 32.0 * entity.physicsBody.posOld[1]);
 
@@ -98,7 +98,7 @@ render = function (tickFracTime) {
 
             var entitySpeed = Math.sqrt(entity.physicsBody.speed[0] * entity.physicsBody.speed[0] + entity.physicsBody.speed[1] * entity.physicsBody.speed[1]);
             //console.log(entitySpeed);
-            if (entity.drawable.bodyparts.feet)
+            if(entity.drawable.bodyparts.feet)
                 entity.drawable.animate("feet", "feet", entitySpeed * 16.0, false);
         }
     });
@@ -108,7 +108,7 @@ render = function (tickFracTime) {
     renderer.render(stage);
 }
 
-loadChunk = function (world, x, y) {
+loadChunk = function(world, x, y) {
     var chunk = new Chunk();
     gameData.generator.generate(chunk, x, y);
     world.set(x, y, chunk);
@@ -118,11 +118,11 @@ onMessage = function(messageType, callback) {
     messageCallbacks[messageType.prototype.id] = callback;
 }
 
-onTexturesLoadProgress = function (name, file, progress) {
+onTexturesLoadProgress = function(name, file, progress) {
 
 }
 
-onTexturesLoadComplete = function () {
+onTexturesLoadComplete = function() {
     // Must wait until all textures have loaded to continue! important
 
     client = new Client(gameData, "127.0.0.1", 3000);

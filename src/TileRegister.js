@@ -14,11 +14,11 @@ TileType = function(id, name, isSolid, isOre, hardness) {
 TileRegister.prototype.register = function(name, isSolid, isOre, hardness) {
     var id = this.tileTypes.length;
     var tileType = new TileType(id, name, isSolid, isOre, hardness);
-    
-    if (this.mapNameToType[name]) {
+
+    if(this.mapNameToType[name]) {
         return;
     }
-        
+
     this.tileTypes.push(tileType);
     this.mapNameToType[name] = tileType;
 }

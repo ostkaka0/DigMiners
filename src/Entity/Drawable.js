@@ -1,9 +1,9 @@
-Drawable = function (stage, bodyparts, animationManager) {
+Drawable = function(stage, bodyparts, animationManager) {
     this.bodyparts = bodyparts; // sprite {}
     this.animationManager = animationManager;
     this.sprites = {};
     this.stage = stage;
-    
+
     // Add bodypart sprites to world
     for(var bodypart in this.bodyparts) {
         bodypart = this.bodyparts[bodypart];
@@ -19,7 +19,7 @@ Drawable.prototype.animate = function(bodypartName, animation, fps, runToEnd) {
             bodypart.animInstance = this.animationManager.getAnimation(animation);
             bodypart.sprite.texture = bodypart.animInstance.texture.clone();
         }
-        bodypart.mspf = 1000.0/fps;
+        bodypart.mspf = 1000.0 / fps;
         if(!bodypart.lastFrame || !bodypart.animating)
             bodypart.lastFrame = new Date();
         if(!bodypart.currentFrame)
@@ -71,7 +71,7 @@ Drawable.prototype.positionAll = function(x, y, rotation) {
         bodypart.sprite.position.y = y;
         bodypart.sprite.rotation = rotation;
     }
-    
+
     for(var sprite in this.sprites) {
         sprite = this.sprites[sprite];
         sprite.sprite.position.x = x + sprite.offset[0];
@@ -86,7 +86,7 @@ Drawable.prototype.remove = function() {
         bodypart = this.bodyparts[bodypart];
         this.stage.removeChild(bodypart.sprite);
     }
-    
+
     for(var sprite in this.sprites) {
         sprite = this.sprites[sprite];
         this.stage.removeChild(sprite.sprite);
