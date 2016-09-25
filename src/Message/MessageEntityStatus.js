@@ -61,12 +61,10 @@ MessageEntityStatus.prototype.send = function (socket) {
     var byteArray = new Uint8Array(this.getSerializationSize());
     var counter = new IndexCounter();
     this.serialize(byteArray, counter);
-    socket.emit("entityStatus", byteArray);
+    socket.emit(this.idString, byteArray);
 }
 
-MessageEntityStatus.receive = function (byteArray) {
-    var message = new MessageEntityStatus();
+MessageEntityStatus.prototype.receive = function (byteArray) {
     var counter = new IndexCounter();
-    message.deserialize(byteArray, counter);
-    return message;
+    this.deserialize(byteArray, counter);
 }

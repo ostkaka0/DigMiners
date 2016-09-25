@@ -162,6 +162,14 @@ io.on("connection", function (socket) {
     socket.on('pong', function (time) {
         connections[socket.id].ping = 2 * (Date.now() - time);
     });
+    
+	gameData.serverMessages.forEach(function(messageType) {
+		socket.on(messageType.prototype.idString, function(data) {
+			var message = new messageType();
+			message.receive(data);
+			message.execute(gameData);
+		});
+	});
 
     console.log(socket.id + " connected.");
 });

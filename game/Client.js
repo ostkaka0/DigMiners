@@ -26,15 +26,22 @@ Client = function (gameData, ip, port) {
         //console.log("Received " + JSON.stringify(command));
     });
 
-    socket.on('entityStatus', function (data) {
+	gameData.clientMessages.forEach(function(messageType) {
+		socket.on(messageType.prototype.idString, function(data) {
+			var message = new messageType();
+			message.receive(data);
+			message.execute(gameData);
+		});
+	});
+    /*socket.on('entityStatus', function (data) {
         var message = MessageEntityStatus.receive(data);
         message.execute(gameData);
-    })
+    })*/
 
-    socket.on('chunk', function (data) {
+    /*socket.on('chunk', function (data) {
         var message = MessageChunk.receive(data);
         message.execute(gameData);
-    })
+    })*/
 
     socket.on('error', function (error) {
         console.log("Connection failed. " + error);
