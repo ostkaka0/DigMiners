@@ -106,13 +106,18 @@ io.on("connection", function(socket) {
     connections[socket.id].player = player;
     connections[socket.id].entity = entity;
 
-    //socket.emit("init", [player.id, entity.id, player.name, Object.keys(connections).length - 1]);
-    new MessageInit(player).send(socket);
+    var playerJoinMessages = [];
+    var entityStatusMessages = [];
     for(var socketId in connections) {
         if(socketId != socket.id) {
-            new MessagePlayerJoin(connections[socketId].player).send(socket);
+            playerJoinMessages.push(new MessagePlayerJoin(connections[socketId].player));
+            entityStatusMessages.push(new MessageEntityStatus(connections[socketId].entity.id, connections[socketId].entity.physicsBody));
         }
     }
+
+    // Send init message to player
+    new MessageInit(player, playerJoinMessages, entityStatusMessages).send(socket);
+    // Send playerJoin message to other players
     new MessagePlayerJoin(player).send(socket.broadcast);
 
     for(var x = -2; x < 2; ++x) {
@@ -124,15 +129,7 @@ io.on("connection", function(socket) {
     }
 
     socket.on("init2", function() {
-        for(var socketId in connections) {
-            if(socketId != socket.id) {
-                var message = new MessageEntityStatus(connections[socketId].entity.id, connections[socketId].entity.physicsBody);
-                message.send(socket);
-            }
-        }
         //sendMessage(io.sockets, "entityStatus", new MessageEntityStatus(entity.id, entity.physicsBody));
-        socket.emit("init2");
-        console.log("sent init2");
     });
 
     socket.on("disconnect", function() {

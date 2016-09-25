@@ -1,13 +1,24 @@
-Client = function (gameData, ip, port) {
+Client = function(gameData, ip, port) {
+
+    // This is code to test serialization and deserialization of UTF-8 strings.
+    /*var test = "test1 test2 123 !@,@£€$€734ÅÄÖ";
+    console.log("serializing \"" + test + "\"");
+    var testArray = new Uint8Array(5000);
+    var counter = new IndexCounter();
+    serializeUTF8(testArray, counter, test);
+    console.log("serialized length " + testArray.length);
+    counter = new IndexCounter();
+    var testOut = deserializeUTF8(testArray, counter);
+    console.log("unserialized \"" + testOut + "\"");*/
 
     console.log("Connecting to " + ip + ":" + port + "...");
     socket = io(ip + ":" + port);
     sentInit2 = false;
     playersReceived = 0;
 
-    socket.on('connect', function () {
+    socket.on('connect', function() {
 
-        setInterval(function () {
+        setInterval(function() {
             startTime = Date.now();
             socket.emit('ping');
         }, 2000);
@@ -15,54 +26,30 @@ Client = function (gameData, ip, port) {
         console.log("Connected.");
     });
 
-    socket.on('message', function (msg) {
+    socket.on('message', function(msg) {
         console.log("Message from server: " + msg);
     });
 
-	gameData.clientMessages.forEach(function(messageType) {
-		socket.on(messageType.prototype.idString, function(data) {
-			var message = new messageType();
-			message.receive(gameData, data);
-			message.execute(gameData);
-            if (messageCallbacks[messageType.prototype.id])
+    gameData.clientMessages.forEach(function(messageType) {
+        socket.on(messageType.prototype.idString, function(data) {
+            var message = new messageType();
+            message.receive(gameData, data);
+            message.execute(gameData);
+            if(messageCallbacks[messageType.prototype.id])
                 messageCallbacks[messageType.prototype.id](message);
-		});
-	});
+        });
+    });
 
-    socket.on('error', function (error) {
+    socket.on('error', function(error) {
         console.log("Connection failed. " + error);
     });
 
-    socket.on('ping', function () {
+    socket.on('ping', function() {
         socket.emit('pong', Date.now());
     });
 
-    socket.on('pong', function (time) {
+    socket.on('pong', function(time) {
         ping = 2 * (Date.now() - time);
-    });
-
-    /*socket.on("init", function (data) {
-        var playerId = data[0];
-        var entityId = data[1];
-        var playerName = data[2];
-        playersToReceive = data[3];
-
-        animationManager = new AnimationManager();
-        animationManager.load();
-
-        var template = entityTemplates.player(playerId, entityId, playerName, gameData);
-        player = template.player;
-        playerEntity = template.entity;
-
-        //todo: commands is global
-        commands = [];
-        keysDown = [];
-
-        loadGame();
-    });*/
-
-    socket.on('init2', function () {
-        //console.log("test " + gameData.entityWorld.objects[4]);
     });
 
     /*socket.on('playerJoin', function (data) {
@@ -97,7 +84,7 @@ Client = function (gameData, ip, port) {
     });*/
 }
 
-Client.prototype.sendCommand = function (command) {
+Client.prototype.sendCommand = function(command) {
     var byteArray = new Uint8Array(command.getSerializationSize() + 4);
     var counter = new IndexCounter();
     serializeInt32(byteArray, counter, command.id);

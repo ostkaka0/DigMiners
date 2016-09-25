@@ -16,7 +16,6 @@ MessageCommands.prototype.send = function(socket) {
     var byteArray = new Buffer(serializationSize);
     var counter = new IndexCounter();
     this.commands.forEach(function(command) {
-        console.log("serializing!" + serializationSize);
         serializeInt32(byteArray, counter, command.id);
         command.serialize(byteArray, counter);
     });
