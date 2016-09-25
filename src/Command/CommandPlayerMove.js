@@ -11,27 +11,27 @@ PlayerMoveDirection = {
     DISABLE_SPACEBAR: 9
 }
 
-CommandPlayerMove = function (playerId, playerMoveDirection) {
+CommandPlayerMove = function(playerId, playerMoveDirection) {
     this.playerId = playerId;
     this.playerMoveDirection = playerMoveDirection;
 }
 
-CommandPlayerMove.prototype.execute = function (gameData) {
+CommandPlayerMove.prototype.execute = function(gameData) {
     var playerWorld = gameData.playerWorld;
     var entityWorld = gameData.entityWorld;
-    if (!playerWorld || !entityWorld) {
+    if(!playerWorld || !entityWorld) {
         console.error("Missing required gameData properties");
         return;
     }
 
     var player = playerWorld.objects[this.playerId];
-    if (!player) return;
+    if(!player) return;
     var playerEntity = entityWorld.objects[player.entityId];
-    if (!playerEntity) return;
+    if(!playerEntity) return;
     var movement = playerEntity.movement;
-    if (!movement) return;
+    if(!movement) return;
 
-    switch (this.playerMoveDirection) {
+    switch(this.playerMoveDirection) {
         case PlayerMoveDirection.ENABLE_UP:
             movement.up = true;
             break;
@@ -65,24 +65,24 @@ CommandPlayerMove.prototype.execute = function (gameData) {
     }
 }
 
-CommandPlayerMove.prototype.getName = function () {
+CommandPlayerMove.prototype.getName = function() {
     return "CommandPlayerMove";
 }
 
-CommandPlayerMove.prototype.getData = function () {
+CommandPlayerMove.prototype.getData = function() {
     return [this.playerId, this.playerMoveDirection];
 }
 
-CommandPlayerMove.prototype.serialize = function (byteArray, index) {
+CommandPlayerMove.prototype.serialize = function(byteArray, index) {
     serializeInt32(byteArray, index, this.playerId);
     serializeInt32(byteArray, index, this.playerMoveDirection);
 }
 
-CommandPlayerMove.prototype.deserialize = function (byteArray, index) {
+CommandPlayerMove.prototype.deserialize = function(byteArray, index) {
     this.playerId = deserializeInt32(byteArray, index);
     this.playerMoveDirection = deserializeInt32(byteArray, index);
 }
 
-CommandPlayerMove.prototype.getSerializationSize = function () {
+CommandPlayerMove.prototype.getSerializationSize = function() {
     return 8;
 }

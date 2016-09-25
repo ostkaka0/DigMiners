@@ -1,24 +1,24 @@
 
-MessageEntityStatus = function (entityId, physicsBody) {
+MessageEntityStatus = function(entityId, physicsBody) {
     this.entityId = entityId;
     //TODO: PROPER CLONE
-    if (!physicsBody)
+    if(!physicsBody)
         physicsBody = {};
     var physicsBodyClone = JSON.parse(JSON.stringify(physicsBody));
     this.physicsBody = physicsBodyClone;
 }
 
-MessageEntityStatus.prototype.execute = function (gameData) {
+MessageEntityStatus.prototype.execute = function(gameData) {
     var entityWorld = gameData.entityWorld;
-    if (!entityWorld) {
+    if(!entityWorld) {
         console.error("Missing required gameData properties");
         return;
     }
 
     var entity = entityWorld.objects[this.entityId];
-    if (!entity) return;
+    if(!entity) return;
     var physicsBody = entity.physicsBody;
-    if (!physicsBody) return;
+    if(!physicsBody) return;
     physicsBody.pos = this.physicsBody.pos;
     physicsBody.posOld = this.physicsBody.posOld;
     physicsBody.speed = this.physicsBody.speed;
@@ -29,7 +29,7 @@ MessageEntityStatus.prototype.execute = function (gameData) {
     physicsBody.rotationSpeed = this.physicsBody.rotationSpeed;
 }
 
-MessageEntityStatus.prototype.serialize = function (byteArray, index) {
+MessageEntityStatus.prototype.serialize = function(byteArray, index) {
     serializeInt32(byteArray, index, this.entityId);
     serializeV2(byteArray, index, this.physicsBody.pos);
     serializeV2(byteArray, index, this.physicsBody.posOld);
@@ -41,7 +41,7 @@ MessageEntityStatus.prototype.serialize = function (byteArray, index) {
     serializeFix(byteArray, index, this.physicsBody.rotationSpeed);
 }
 
-MessageEntityStatus.prototype.deserialize = function (byteArray, index) {
+MessageEntityStatus.prototype.deserialize = function(byteArray, index) {
     this.entityId = deserializeInt32(byteArray, index);
     this.physicsBody.pos = deserializeV2(byteArray, index);
     this.physicsBody.posOld = deserializeV2(byteArray, index);
@@ -53,18 +53,18 @@ MessageEntityStatus.prototype.deserialize = function (byteArray, index) {
     this.physicsBody.rotationSpeed = deserializeFix(byteArray, index);
 }
 
-MessageEntityStatus.prototype.getSerializationSize = function () {
+MessageEntityStatus.prototype.getSerializationSize = function() {
     return 52;
 }
 
-MessageEntityStatus.prototype.send = function (socket) {
+MessageEntityStatus.prototype.send = function(socket) {
     var byteArray = new Uint8Array(this.getSerializationSize());
     var counter = new IndexCounter();
     this.serialize(byteArray, counter);
     socket.emit(this.idString, byteArray);
 }
 
-MessageEntityStatus.prototype.receive = function (gameData, byteArray) {
+MessageEntityStatus.prototype.receive = function(gameData, byteArray) {
     var counter = new IndexCounter();
     this.deserialize(byteArray, counter);
 }

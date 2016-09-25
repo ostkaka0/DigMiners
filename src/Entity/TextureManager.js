@@ -1,4 +1,4 @@
-TextureManager = function () {
+TextureManager = function() {
     this.loader = new TextureLoader();
     this.loader.queueTexture("gubbe");
     this.loader.queueTexture("healthbar");
@@ -15,24 +15,24 @@ TextureManager = function () {
     console.log("Loading textures...");
     this.loader.loadTextures();
 
-    this.loader.onProgress(function (name, file, progress) {
+    this.loader.onProgress(function(name, file, progress) {
         console.log(progress + "% complete");
-        if (onTexturesLoadProgress)
+        if(onTexturesLoadProgress)
             onTexturesLoadProgress(name, file, progress);
     });
 
-    this.loader.onComplete(function (texturesLocal) {
+    this.loader.onComplete(function(texturesLocal) {
         console.log("Textures loaded.");
         textures = texturesLocal;
-        if (onTexturesLoadComplete)
+        if(onTexturesLoadComplete)
             onTexturesLoadComplete();
     });
 }
 
-TextureManager.prototype.onComplete = function (func) {
+TextureManager.prototype.onComplete = function(func) {
     this.onCompleteFunc = func;
 }
 
-TextureManager.prototype.onProgress = function (func) {
+TextureManager.prototype.onProgress = function(func) {
     this.onProgressFunc = func;
 }

@@ -2,29 +2,29 @@ fix = {};
 // Convert float to 32 bit fixed point with 16 bit fraction.
 // Must be done after each operation.
 // Example: toFix(toFix(toFix(a*b)/3)+14.3)
-toFix = function (a) {
+toFix = function(a) {
     return (Math.floor(a * 0x10000) % 0x100000000) / 0x10000;
 }
 
-istoFix = function (a) {
+istoFix = function(a) {
     return (toFix(a) == a);
 }
 
-fix.add = function (a, b) { return toFix(a + b); }
-fix.sub = function (a, b) { return toFix(a - b); }
-fix.mul = function (a, b) { return toFix(a * b); }
-fix.div = function (a, b) { return toFix(a / b); }
+fix.add = function(a, b) { return toFix(a + b); }
+fix.sub = function(a, b) { return toFix(a - b); }
+fix.mul = function(a, b) { return toFix(a * b); }
+fix.div = function(a, b) { return toFix(a / b); }
 
 
-fix.exp = function (a) { return toFix(Math.exp(a)); }
-fix.log = function (a) { return toFix(Math.log(a)); }
-fix.pow = function (a, b) { return toFix(Math.pow(a, b)); }
-fix.sqrt = function (a) { return toFix(Math.sqrt(a)); }
+fix.exp = function(a) { return toFix(Math.exp(a)); }
+fix.log = function(a) { return toFix(Math.log(a)); }
+fix.pow = function(a, b) { return toFix(Math.pow(a, b)); }
+fix.sqrt = function(a) { return toFix(Math.sqrt(a)); }
 
-fix.sin = function (a) { return toFix(Math.sin(a)); }
-fix.cos = function (a) { return toFix(Math.cos(a)); }
-fix.tan = function (a) { return toFix(Math.tan(a)); }
-fix.asin = function (a) { return toFix(Math.asin(a)); }
-fix.acos = function (a) { return toFix(Math.acos(a)); }
-fix.atan = function (a) { return toFix(Math.atan(a)); }
-fix.atan2 = function (a, b) { return toFix(Math.atan2(a, b)); }
+fix.sin = function(a) { return toFix(Math.sin(a)); }
+fix.cos = function(a) { return toFix(Math.cos(a)); }
+fix.tan = function(a) { return toFix(Math.tan(a)); }
+fix.asin = function(a) { return toFix(Math.asin(a)); }
+fix.acos = function(a) { return toFix(Math.acos(a)); }
+fix.atan = function(a) { return toFix(Math.atan(a)); }
+fix.atan2 = function(a, b) { return toFix(Math.atan2(a, b)); }

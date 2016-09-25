@@ -9,14 +9,14 @@ runUnitTests = function() {
 	tests.forEach(function(test) {
 		console.log("Testing '" + test + "'...");
 		var result = g_unitTests[test]();
-		if (result) {
+		if(result) {
 			console.log("\tTest succeded! Result: " + result);
 		} else {
 			console.log("\tTest failed! Result: " + result);
 			failedTests.push(test);
 		}
 	});
-	if (failedTests.length > 0)
+	if(failedTests.length > 0)
 		console.log("Failed tests: " + failedTests);
 	console.log((tests.length - failedTests.length) + "/" + tests.length + " unit tests succeeded.")
 	console.log("Unit tests done!")
