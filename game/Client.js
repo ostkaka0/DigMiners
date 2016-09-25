@@ -30,7 +30,7 @@ Client = function (gameData, ip, port) {
 	gameData.clientMessages.forEach(function(messageType) {
 		socket.on(messageType.prototype.idString, function(data) {
 			var message = new messageType();
-			message.receive(data);
+			message.receive(gameData, data);
 			message.execute(gameData);
 		});
 	});

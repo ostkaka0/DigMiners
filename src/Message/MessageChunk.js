@@ -47,7 +47,7 @@ MessageChunk.prototype.send = function (socket) {
     socket.emit(this.idString, byteArray);
 }
 
-MessageChunk.prototype.receive = function (byteArray) {
+MessageChunk.prototype.receive = function (gameData, byteArray) {
     var counter = new IndexCounter();
     this.deserialize(new Uint8Array(byteArray), counter);
 }

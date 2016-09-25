@@ -64,7 +64,7 @@ MessageEntityStatus.prototype.send = function (socket) {
     socket.emit(this.idString, byteArray);
 }
 
-MessageEntityStatus.prototype.receive = function (byteArray) {
+MessageEntityStatus.prototype.receive = function (gameData, byteArray) {
     var counter = new IndexCounter();
     this.deserialize(byteArray, counter);
 }

@@ -71,8 +71,10 @@ update = function () {
 }
 
 tick = function (dt) {
-    //console.log(dt);
-    //console.log("Tick #" + tickNum);
+    // Send commands
+    var messageCommands = new MessageCommands(commands);
+    messageCommands.send(io.sockets);
+    
     commands.forEach(function (command) {
         command.execute(gameData);
     });
@@ -85,7 +87,6 @@ tick = function (dt) {
     gameData.entityWorld.objectArray.forEach(function (entity) {
         if (entity.movement && entity.movement.spacebar && entity.physicsBody) {
             var command = new CommandDig(entity.physicsBody.pos[0], entity.physicsBody.pos[1], 4.0);
-            sendCommand(io.sockets, command);
             commands.push(command);
         }
     })
@@ -153,7 +154,6 @@ io.on("connection", function (socket) {
 			var command = new gameData.commandTypes.list[commandId]();
 			command.deserialize(data, counter);
             commands.push(command);
-            sendCommand(io.sockets, command);
         }, 300);
         //console.log("Received " + data[0] + " and " + JSON.stringify(data[1]));
     });
@@ -169,7 +169,7 @@ io.on("connection", function (socket) {
 	gameData.serverMessages.forEach(function(messageType) {
 		socket.on(messageType.prototype.idString, function(data) {
 			var message = new messageType();
-			message.receive(data);
+			message.receive(gameData, data);
 			message.execute(gameData);
 		});
 	});
@@ -177,13 +177,13 @@ io.on("connection", function (socket) {
     console.log(socket.id + " connected.");
 });
 
-sendCommand = function (socket, command) {
+/*sendCommand = function (socket, command) {
     var byteArray = new Uint8Array(command.getSerializationSize() + 4);
     var counter = new IndexCounter();
     serializeInt32(byteArray, counter, command.id);
     command.serialize(byteArray, counter);
     socket.emit("command", byteArray);
-}
+}*/
 
 http.listen(3000, function () {
     console.log("Listening on :3000");
