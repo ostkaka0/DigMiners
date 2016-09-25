@@ -10,19 +10,15 @@ document.body.appendChild(renderer.view);
 var gameData = new GameData();
 var camera = new Camera();
 var chunkRenderer = new ChunkRenderer(gl, gameData.tileWorld, 32.0);
-
-onTexturesLoadProgress = function (name, file, progress) {
-
-}
-
-onTexturesLoadComplete = function () {
-    // Must wait until all textures have loaded to continue! important
-
-    client = new Client(gameData, "127.0.0.1", 3000);
-}
+var commands = [];
+var playerEntity = null;
+var animationManager = new AnimationManager();
+var keysDown = {};
+var messageCallbacks = {};
 var textureManager = new TextureManager();
 
 loadGame = function () {
+    animationManager.load();
     // Player input
     document.addEventListener('keydown', function (event) {
         var char = String.fromCharCode(event.keyCode).toLowerCase();
@@ -55,12 +51,6 @@ loadGame = function () {
 
     // Start gameLoop
     gameLoop(tick, render, gameData.tickDuration);
-}
-
-loadChunk = function (world, x, y) {
-    var chunk = new Chunk();
-    gameData.generator.generate(chunk, x, y);
-    world.set(x, y, chunk);
 }
 
 tick = function (dt) {
@@ -117,3 +107,29 @@ render = function (tickFracTime) {
     animationManager.update();
     renderer.render(stage);
 }
+
+loadChunk = function (world, x, y) {
+    var chunk = new Chunk();
+    gameData.generator.generate(chunk, x, y);
+    world.set(x, y, chunk);
+}
+
+onMessage = function(messageType, callback) {
+    messageCallbacks[messageType.prototype.id] = callback;
+}
+
+onTexturesLoadProgress = function (name, file, progress) {
+
+}
+
+onTexturesLoadComplete = function () {
+    // Must wait until all textures have loaded to continue! important
+
+    client = new Client(gameData, "127.0.0.1", 3000);
+}
+
+onMessage(MessageInit, function(message) {
+    player = gameData.playerWorld.objects[message.playerId];
+    playerEntity = gameData.entityWorld.objects[message.entityId];
+    loadGame();
+});
