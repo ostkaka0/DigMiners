@@ -1,4 +1,3 @@
-
 MessageChunk = function (chunk, chunkX, chunkY) {
     var chunk = chunk;
     if (!chunk)
@@ -56,12 +55,10 @@ MessageChunk.prototype.send = function (socket) {
     var counter = new IndexCounter();
     this.serialize(byteArray, counter);
     //console.log(JSON.stringify(byteArray));
-    socket.emit("chunk", byteArray);
+    socket.emit(this.idString, byteArray);
 }
 
-MessageChunk.receive = function (byteArray) {
-    var message = new MessageChunk();
+MessageChunk.prototype.receive = function (byteArray) {
     var counter = new IndexCounter();
-    message.deserialize(new Uint8Array(byteArray), counter);
-    return message;
+    this.deserialize(new Uint8Array(byteArray), counter);
 }

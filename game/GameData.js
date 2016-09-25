@@ -6,6 +6,9 @@ GameData = function(idList) {
     this.tileRegister = new TileRegister();
     this.generator = new Generator();
     this.commandTypes = new CommandsTypes([CommandPlayerMove, CommandDig]);
+    this.messageTypes = new ObjectTypes([MessageChunk, MessageEntityStatus])
+    this.clientMessages = [MessageChunk, MessageEntityStatus];
+    this.serverMessages = [];
 
     this.tileRegister.register("dirt", true, false, 1.0);
     this.tileRegister.register("stone", true, false, 4.0);
