@@ -36,14 +36,15 @@ deserializeV2 = function (byteArray, index) {
 }
 
 serializeUint8Array = function (byteArray, index, value) {
-    for (var i = index; i < index + value.length; ++i)
-        byteArray[i] = value[i - index];
+    for (var i = index.value; i < index.value + value.length; ++i)
+        byteArray[i] = value[i - index.value];
     index.add(value.length);
 }
 
 deserializeUint8Array = function (byteArray, index, arrayLength) {
-    //console.dir(byteArray);
-    var out = byteArray.slice(index.value, arrayLength);
+    var out = new Uint8Array(arrayLength);
+    for (var i = index.value; i < index.value + arrayLength; ++i)
+        out[i - index.value] = byteArray[i];
     index.add(arrayLength);
     return out;
 }
