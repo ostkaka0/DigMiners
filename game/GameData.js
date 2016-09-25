@@ -5,8 +5,8 @@ GameData = function(idList) {
     this.tileWorld = new Map2D();
     this.tileRegister = new TileRegister();
     this.generator = new Generator();
-    this.commandTypes = new CommandsTypes([CommandPlayerMove, CommandDig]);
-    this.messageTypes = new ObjectTypes([MessageChunk, MessageEntityStatus])
+    this.commandTypes = new ObjectTypes([CommandPlayerMove, CommandDig]);
+    this.messageTypes = new ObjectTypes([MessageChunk, MessageEntityStatus]);
     this.clientMessages = [MessageChunk, MessageEntityStatus];
     this.serverMessages = [];
 

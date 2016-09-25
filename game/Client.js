@@ -20,9 +20,11 @@ Client = function (gameData, ip, port) {
     });
 
     socket.on('command', function (data) {
-        var command = gameData.commandTypes.deserializeCommand(data);
+        var counter = new IndexCounter();
+		var commandId = deserializeInt32(data, counter);
+		var command = new gameData.commandTypes.list[commandId]();
+		command.deserialize(data, counter);
         commands.push(command);
-        //console.log("Received " + JSON.stringify(command));
     });
 
 	gameData.clientMessages.forEach(function(messageType) {
@@ -102,6 +104,9 @@ Client = function (gameData, ip, port) {
 }
 
 Client.prototype.sendCommand = function (command) {
-    socket.emit("command", gameData.commandTypes.serializeCommand(command));
-    //console.log("Sent " + JSON.stringify(command.getData()));
+    var byteArray = new Uint8Array(command.getSerializationSize() + 4);
+    var counter = new IndexCounter();
+    serializeInt32(byteArray, counter, command.id);
+    command.serialize(byteArray, counter);
+    socket.emit("command", byteArray);
 }
