@@ -25,13 +25,13 @@ MessageChunk.prototype.execute = function (gameData) {
 
 MessageChunk.prototype.serialize = function (byteArray, index) {
     serializeInt32(byteArray, index, this.chunk.densityData.length);
-    console.dir(this.chunk.densityData.length);
+    //console.dir(this.chunk.densityData.length);
     serializeUint8Array(byteArray, index, this.chunk.densityData);
     serializeInt32(byteArray, index, this.chunkX);
     serializeInt32(byteArray, index, this.chunkY);
     //console.dir(byteArray);
-    console.log(this.chunk.densityData.length);
-    console.log(this.chunk.tileData.length);
+    console.log("densityData " + this.chunk.densityData.length);
+    console.log("tileData " + this.chunk.tileData.length);
     console.log(byteArray.length);
 }
 
@@ -41,8 +41,9 @@ MessageChunk.prototype.deserialize = function (byteArray, index) {
     this.chunkX = deserializeInt32(byteArray, index);
     this.chunkY = deserializeInt32(byteArray, index);
     //console.dir(byteArray);
-    console.log(this.chunk.densityData.length);
-    console.log(this.chunk.tileData.length);
+    console.log("densityLength " + densityLength);
+    console.log("densityData " + this.chunk.densityData.length);
+    console.log("tileData " + this.chunk.tileData.length);
     console.log(byteArray.length);
 }
 
