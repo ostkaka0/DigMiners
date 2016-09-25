@@ -1,24 +1,18 @@
 PHYSICS_MAX_STEP_LENGTH = 0.5;
 
 PhysicsBody = function(pos, damping) {
-    this.pos = v2.clone(pos);
-    this.posOld = v2.clone(pos);
+    if(pos) {
+        this.pos = v2.clone(pos);
+        this.posOld = v2.clone(pos);
+    }
     this.speed = v2.create(0, 0);
     this.speedOld = v2.clone(this.speed);
-    this.damping = toFix(damping);
+    if(damping)
+        this.damping = toFix(damping);
     this.angle = 0;
     this.angleOld = 0;
     this.rotationSpeed = toFix(10.0);
 }
-
-/*function physicsBodySimulate(tileWorld, physicsBody, dt) {
-    v2.copy(physicsBody.pos, physicsBody.posOld);
-    v2.copy(physicsBody.speed, physicsBody.speedOld);
-    var deltaPos = v2.create(0, 0);
-    v2.mul(dt, physicsBody.speed, deltaPos);
-    v2.add(deltaPos, physicsBody.pos, physicsBody.pos);
-    v2.mul(fix.pow(physicsBody.damping, dt), physicsBody.speed, physicsBody.speed);
-}*/
 
 physicsBodySimulate = function(tileWorld, physicsBody, dt) {
     // Update posOld, speedOld
@@ -50,7 +44,7 @@ physicsBodySimulate = function(tileWorld, physicsBody, dt) {
         }
         v2.copy(newPos, physicsBody.pos);
     }
-
+    //console.log(JSON.stringify(physicsBody));
     // Rotate
     if(Math.round(physicsBody.speed[1]) != 0 || Math.round(physicsBody.speed[0]) != 0)
         physicsBody.rotateTo(Math.atan2(-physicsBody.speed[1], physicsBody.speed[0]), physicsBody.rotationSpeed, dt);
