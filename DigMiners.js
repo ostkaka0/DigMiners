@@ -134,3 +134,8 @@ onMessage(MessageInit, function(message) {
     playerEntity = gameData.entityWorld.objects[message.entityId];
     loadGame();
 });
+
+onMessage(MessagePlayerInventory, function(message) {
+    player = gameData.playerWorld.objects[message.playerId];
+    player.setName(message.itemName, gameData);
+});
