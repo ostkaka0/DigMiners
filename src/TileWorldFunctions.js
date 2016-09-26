@@ -48,19 +48,19 @@ setDensity = function(tileWorld, x, y, density) {
 }
 
 getTileId = function(tileWorld, x, y) {
-    var localX = x % this._chunkSize;
-    var localY = y % this._chunkSize;
-    var chunkX = (x - localX) / this._chunkSize;
-    var chunkY = (y - localY) / this._chunkSize;
+    var localX = x % CHUNK_DIM;
+    var localY = y % CHUNK_DIM;
+    var chunkX = (x - localX) / CHUNK_DIM;
+    var chunkY = (y - localY) / CHUNK_DIM;
 
     // Fix indexing of negative values:
     if(x < 0) {
         chunkX--;
-        localX = (x - chunkX * this._chunkSize) % this._chunkSize;
+        localX = (x - chunkX * CHUNK_DIM) % CHUNK_DIM;
     }
     if(y < 0) {
         chunkY--;
-        localY = (y - chunkY * this._chunkSize) % this._chunkSize;
+        localY = (y - chunkY * CHUNK_DIM) % CHUNK_DIM;
     }
 
     var chunk = tileWorld.get(chunkX, chunkY);
@@ -71,20 +71,20 @@ getTileId = function(tileWorld, x, y) {
 }
 
 setTileId = function(tileWorld, x, y, value) {
-    var localX = x % this._chunkSize;
-    var localY = y % this._chunkSize;
-    var chunkX = (x - localX) / this._chunkSize;
-    var chunkY = (y - localY) / this._chunkSize;
+    var localX = x % CHUNK_DIM;
+    var localY = y % CHUNK_DIM;
+    var chunkX = (x - localX) / CHUNK_DIM;
+    var chunkY = (y - localY) / CHUNK_DIM;
     var chunk = null;
 
     // Fix indexing of negative values:
     if(x < 0) {
         chunkX--;
-        localX = (x - chunkX * this._chunkSize) % this._chunkSize;
+        localX = (x - chunkX * CHUNK_DIM) % CHUNK_DIM;
     }
     if(y < 0) {
         chunkY--;
-        localY = (y - chunkY * this._chunkSize) % this._chunkSize;
+        localY = (y - chunkY * CHUNK_DIM) % CHUNK_DIM;
     }
 
     chunk = tileWorld.get(chunkX, chunkY);
@@ -159,6 +159,8 @@ carveCircle = function(game, x, y, radius, onDensityChange) {
     var tileWorld = game.tileWorld;
     var tileRegister = game.tileRegister;
 
+    var dug = [];
+
     var intR = parseInt(radius + 0.5);
 
     for(var yy = -intR; yy < intR; ++yy) {
@@ -181,9 +183,14 @@ carveCircle = function(game, x, y, radius, onDensityChange) {
 
             var fillStrength = Math.max(Math.min(radius - dis, 1.0), 0.0) / tile.hardness;
             var newDensity = Math.max(oldDensity - parseInt(255.0 * fillStrength), 0);
+            var densityDiff = oldDensity - newDensity;
+            if(!dug[tileId])
+                dug[tileId] = 0;
+            dug[tileId] += densityDiff;
             setDensity(tileWorld, tileX, tileY, newDensity, true);
             if(onDensityChange)
                 onDensityChange(x, y, tile, oldDensity, newDensity);
         }
     }
+    return dug;
 }

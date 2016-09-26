@@ -84,9 +84,10 @@ tick = function(dt) {
     entityFunctionPhysicsBodySimulate(gameData, dt);
     gameData.entityWorld.update();
 
-    gameData.entityWorld.objectArray.forEach(function(entity) {
+    gameData.playerWorld.objectArray.forEach(function(player) {
+        var entity = gameData.entityWorld.objects[player.entityId];
         if(entity.movement && entity.movement.spacebar && entity.physicsBody) {
-            var command = new CommandDig(entity.physicsBody.pos[0], entity.physicsBody.pos[1], 1.6);
+            var command = new CommandPlayerDig(player.playerId, entity.physicsBody.pos[0], entity.physicsBody.pos[1], 1.6);
             commands.push(command);
         }
     })
@@ -101,6 +102,7 @@ io.on("connection", function(socket) {
     }, 2000);
 
     var template = entityTemplates.player(idList.next(), idList.next(), "karl", gameData);
+    template.player.socket = socket;
     var player = template.player;
     var entity = template.entity;
     connections[socket.id].player = player;
@@ -142,13 +144,13 @@ io.on("connection", function(socket) {
     });
 
     socket.on('command', function(data) {
-        setTimeout(function() {
-            var counter = new IndexCounter();
-            var commandId = deserializeInt32(data, counter);
-            var command = new gameData.commandTypes.list[commandId]();
-            command.deserialize(data, counter);
-            commands.push(command);
-        }, 300);
+        //setTimeout(function() {
+        var counter = new IndexCounter();
+        var commandId = deserializeInt32(data, counter);
+        var command = new gameData.commandTypes.list[commandId]();
+        command.deserialize(data, counter);
+        commands.push(command);
+        //}, 300);
         //console.log("Received " + data[0] + " and " + JSON.stringify(data[1]));
     });
 
