@@ -75,6 +75,7 @@ render = function(tickFracTime) {
     camera.width = canvas.width;
     camera.height = canvas.height;
     gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     camera.frustrum.x = tickFracTime * 32.0 * playerEntity.physicsBody.pos[0] + (1 - tickFracTime) * 32.0 * playerEntity.physicsBody.posOld[0];

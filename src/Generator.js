@@ -51,8 +51,6 @@ Generator.prototype.generate = function(chunk, chunkX, chunkY) {
             }
 
             chunk.setTileId(xx, yy, tileId);
-            if(value > 0.0)
-                chunk.setDensity(xx, yy, 0);
         }
     }
 

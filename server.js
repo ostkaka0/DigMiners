@@ -86,7 +86,7 @@ tick = function(dt) {
 
     gameData.entityWorld.objectArray.forEach(function(entity) {
         if(entity.movement && entity.movement.spacebar && entity.physicsBody) {
-            var command = new CommandDig(entity.physicsBody.pos[0], entity.physicsBody.pos[1], 4.0);
+            var command = new CommandDig(entity.physicsBody.pos[0], entity.physicsBody.pos[1], 1.6);
             commands.push(command);
         }
     })
@@ -165,6 +165,8 @@ io.on("connection", function(socket) {
             var message = new messageType();
             message.receive(gameData, data);
             message.execute(gameData);
+            if(messageCallbacks[messageType.prototype.id])
+                messageCallbacks[messageType.prototype.id](message);
         });
     });
 
