@@ -72,13 +72,17 @@ update = function() {
 tick = function(dt) {
     // Send commands
     new MessageCommands(gameData.commands).send(io.sockets);
-    
+
     gameData.tick(dt);
 
     gameData.playerWorld.objectArray.forEach(function(player) {
         var entity = gameData.entityWorld.objects[player.entityId];
         if(entity.movement && entity.movement.spacebar && entity.physicsBody) {
-            var command = new CommandPlayerDig(player.playerId, entity.physicsBody.pos[0], entity.physicsBody.pos[1], 1.6);
+            var moveDir = entity.movement.getV2Dir();
+            v2.mul(0.3, moveDir, moveDir);
+            var pos = v2.clone(entity.physicsBody.pos);
+            v2.add(moveDir, pos, pos);
+            var command = new CommandPlayerDig(player.playerId, pos[0], pos[1], 1.6);
             gameData.commands.push(command);
         }
     })
