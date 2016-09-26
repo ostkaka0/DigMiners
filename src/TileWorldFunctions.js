@@ -155,7 +155,10 @@ calcNormal = function(terrainWorld, x, y) {
     return vec;
 }
 
-carveCircle = function(game, x, y, radius, onDensityChange) {
+carveCircle = function(game, x, y, radius, strengthModifier, onDensityChange) {
+    if(!strengthModifier)
+        strengthModifier = 1.0;
+
     var tileWorld = game.tileWorld;
     var tileRegister = game.tileRegister;
 
@@ -181,7 +184,7 @@ carveCircle = function(game, x, y, radius, onDensityChange) {
                 continue;
             }
 
-            var fillStrength = Math.max(Math.min(radius - dis, 1.0), 0.0) / tile.hardness;
+            var fillStrength = Math.max(Math.min(radius - dis, 1.0) * strengthModifier, 0.0) / tile.hardness;
             var newDensity = Math.max(oldDensity - parseInt(255.0 * fillStrength), 0);
             var densityDiff = oldDensity - newDensity;
             if(!dug[tileId])

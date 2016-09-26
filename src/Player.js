@@ -13,3 +13,7 @@ Player.prototype.setName = function(name, gameData) {
     this.text = new PIXI.Text(name, { fill: '#ffffff' });
     entity.drawable.addSprite("username", this.text, v2.create(- this.text.width / 2, -80), false);
 }
+
+Player.prototype.getDigStrength = function() {
+    return 0.1;
+}

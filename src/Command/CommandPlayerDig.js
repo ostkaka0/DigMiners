@@ -7,11 +7,11 @@ CommandPlayerDig = function(playerId, x, y, radius) {
 }
 
 CommandPlayerDig.prototype.execute = function(gameData) {
+    var player = gameData.playerWorld.objects[this.playerId];
+    if(!player) return;
     var tileWorld = gameData.tileWorld;
-    var dug = carveCircle(gameData, this.x, this.y, this.radius);
+    var dug = carveCircle(gameData, this.x, this.y, this.radius, player.getDigStrength());
     if(isServer) {
-        var player = gameData.playerWorld.objects[this.playerId];
-        if(!player) return;
         for(var i = 0; i < dug.length; ++i) {
             if(dug[i] != undefined && dug[i] > 0) {
                 //console.log(this.playerId + " dug " + i + ": " + dug[i]);
