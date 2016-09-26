@@ -4,7 +4,6 @@ MessagePlayerMove = function(playerMoveDirection) {
 
 MessagePlayerMove.prototype.execute = function(gameData, player) {
     gameData.commands.push(new CommandPlayerMove(player.id, this.playerMoveDirection));
-    console.log("Playermove! " + this.playerMoveDirection);
 }
 
 MessagePlayerMove.prototype.send = function(socket) {

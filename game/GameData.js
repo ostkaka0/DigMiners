@@ -27,3 +27,21 @@ GameData = function(idList) {
         this.entityWorld.onRemove = onObjectRemove;
     }
 }
+
+GameData.prototype.tick = function(dt) {
+    var that = this;
+    
+    this.entityWorld.objectArray.forEach(function(entity) {
+        if(entity.physicsBody && entity.physicsBody.angle)
+            entity.physicsBody.angleOld = entity.physicsBody.angle;
+    });
+
+    this.commands.forEach(function(command) {
+        command.execute(that);
+    });
+    this.commands.length = 0;
+    this.playerWorld.update();
+    entityFunctionPlayerMovement(this, dt);
+    entityFunctionPhysicsBodySimulate(this, dt);
+    this.entityWorld.update();
+}

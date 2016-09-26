@@ -3,9 +3,7 @@ MessageCommands = function(commands) {
 }
 
 MessageCommands.prototype.execute = function(gameData) {
-    this.commands.forEach(function(command) {
-        command.execute(gameData);
-    });
+    gameData.commands = gameData.commands.concat(this.commands);
 }
 
 MessageCommands.prototype.send = function(socket) {

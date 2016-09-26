@@ -19,10 +19,6 @@ CommandPlayerMove = function(playerId, playerMoveDirection) {
 CommandPlayerMove.prototype.execute = function(gameData) {
     var playerWorld = gameData.playerWorld;
     var entityWorld = gameData.entityWorld;
-    if(!playerWorld || !entityWorld) {
-        console.error("Missing required gameData properties");
-        return;
-    }
 
     var player = playerWorld.objects[this.playerId];
     if(!player) return;

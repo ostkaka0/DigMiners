@@ -12,10 +12,6 @@ MessageEntityStatus = function(entityId, physicsBody) {
 
 MessageEntityStatus.prototype.execute = function(gameData) {
     var entityWorld = gameData.entityWorld;
-    if(!entityWorld) {
-        console.error("Missing required gameData properties");
-        return;
-    }
 
     var entity = entityWorld.objects[this.entityId];
     if(!entity) return;
