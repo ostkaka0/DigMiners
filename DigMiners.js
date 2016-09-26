@@ -55,19 +55,7 @@ loadGame = function() {
 
 tick = function(dt) {
     //console.log(dt);
-    gameData.entityWorld.objectArray.forEach(function(entity) {
-        if(entity.physicsBody && entity.physicsBody.angle)
-            entity.physicsBody.angleOld = entity.physicsBody.angle;
-    });
-
-    commands.forEach(function(command) {
-        command.execute(gameData);
-    });
-    commands.length = 0;
-    gameData.playerWorld.update();
-    entityFunctionPlayerMovement(gameData, dt);
-    entityFunctionPhysicsBodySimulate(gameData, dt);
-    gameData.entityWorld.update();
+    gameData.tick(dt);
 }
 
 render = function(tickFracTime) {

@@ -72,15 +72,8 @@ update = function() {
 tick = function(dt) {
     // Send commands
     new MessageCommands(gameData.commands).send(io.sockets);
-
-    gameData.commands.forEach(function(command) {
-        command.execute(gameData);
-    });
-    gameData.commands.length = 0;
-    gameData.playerWorld.update();
-    entityFunctionPlayerMovement(gameData, dt);
-    entityFunctionPhysicsBodySimulate(gameData, dt);
-    gameData.entityWorld.update();
+    
+    gameData.tick(dt);
 
     gameData.playerWorld.objectArray.forEach(function(player) {
         var entity = gameData.entityWorld.objects[player.entityId];
@@ -161,9 +154,7 @@ io.on("connection", function(socket) {
     });
 
     gameData.messagesToServer.forEach(function(messageType) {
-        console.log("Message id: " + messageType.prototype.idString);
         socket.on(messageType.prototype.idString, function(data) {
-            console.log("Message received!");
             var message = new messageType();
             message.receive(gameData, data);
             message.execute(gameData, connections[socket.id].player);
