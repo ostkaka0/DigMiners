@@ -7,6 +7,19 @@ Movement = function(speed) {
     this.speed = speed;
 }
 
+Movement.prototype.getV2Dir = function() {
+    var pos = v2.create(0, 0);
+    if(this.up && !this.down)
+        pos[1] += 1.0;
+    else if(this.down && !this.up)
+        pos[1] -= 1.0;
+    if(this.right && !this.left)
+        pos[0] += 1.0;
+    else if(this.left && !this.right)
+        pos[0] -= 1.0;
+    return pos;
+}
+
 entityFunctionPlayerMovement = function(gameData, dt) {
     var playerWorld = gameData.playerWorld;
     var entityWorld = gameData.entityWorld;
@@ -30,6 +43,10 @@ entityFunctionPlayerMovement = function(gameData, dt) {
         v2.mul(entity.movement.speed, normalized, normalized);
         v2.mul(dt, normalized, normalized);
         v2.add(normalized, entity.physicsBody.speed, entity.physicsBody.speed);
+
+        var moveDir = entity.movement.getV2Dir();
+        if(moveDir[0] != 0 || moveDir[1] != 0)
+            entity.physicsBody.rotateTo(Math.atan2(-moveDir[1], moveDir[0]), entity.physicsBody.rotationSpeed, dt);
 
         if(entity.drawable) {
             if(entity.movement.spacebar)
