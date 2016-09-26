@@ -8,7 +8,14 @@ ObjectTypes = function(typeList) {
 }
 
 ObjectTypes.prototype.add = function(type) {
+    if (type.prototype.id != undefined) return;
+    
 	this.list.push(type);
-	type.prototype.id = nextId++;
+	type.prototype.id = this.nextId++;
 	type.prototype.idString = type.prototype.id.toString(36);
+}
+
+ObjectTypes.prototype.addArray = function(typeArray) {
+    var that = this;
+    typeArray.forEach(function(type) { that.add(type); });
 }

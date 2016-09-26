@@ -42,7 +42,7 @@ Client = function(gameData, ip, port) {
         ping = 2 * (Date.now() - time);
     });
 
-    gameData.clientMessages.forEach(function(messageType) {
+    gameData.messagesToClient.forEach(function(messageType) {
         socket.on(messageType.prototype.idString, function(data) {
             var message = new messageType();
             message.receive(gameData, data);
@@ -53,7 +53,7 @@ Client = function(gameData, ip, port) {
     });
 }
 
-Client.prototype.sendCommand = function(command) {
+Client.prototype.sendMessage = function(message) {
     var byteArray = new Uint8Array(command.getSerializationSize() + 4);
     var counter = new IndexCounter();
     serializeInt32(byteArray, counter, command.id);

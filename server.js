@@ -42,8 +42,7 @@ var gameData = new GameData(idList);
 var tickDuration = gameData.tickDuration;
 var firstTickTime = process.hrtime();
 var tickNum = 0;
-
-var commands = [];
+var messageCallbacks = {};
 
 loadChunk = function(world, x, y) {
     var chunk = new Chunk();
@@ -72,13 +71,12 @@ update = function() {
 
 tick = function(dt) {
     // Send commands
-    var messageCommands = new MessageCommands(commands);
-    messageCommands.send(io.sockets);
+    new MessageCommands(gameData.commands).send(io.sockets);
 
-    commands.forEach(function(command) {
+    gameData.commands.forEach(function(command) {
         command.execute(gameData);
     });
-    commands.length = 0;
+    gameData.commands.length = 0;
     gameData.playerWorld.update();
     entityFunctionPlayerMovement(gameData, dt);
     entityFunctionPhysicsBodySimulate(gameData, dt);
@@ -88,7 +86,7 @@ tick = function(dt) {
         var entity = gameData.entityWorld.objects[player.entityId];
         if(entity.movement && entity.movement.spacebar && entity.physicsBody) {
             var command = new CommandPlayerDig(player.playerId, entity.physicsBody.pos[0], entity.physicsBody.pos[1], 1.6);
-            commands.push(command);
+            gameData.commands.push(command);
         }
     })
 }
@@ -149,7 +147,7 @@ io.on("connection", function(socket) {
         var commandId = deserializeInt32(data, counter);
         var command = new gameData.commandTypes.list[commandId]();
         command.deserialize(data, counter);
-        commands.push(command);
+        gameData.commands.push(command);
         //}, 300);
         //console.log("Received " + data[0] + " and " + JSON.stringify(data[1]));
     });
@@ -162,11 +160,13 @@ io.on("connection", function(socket) {
         connections[socket.id].ping = 2 * (Date.now() - time);
     });
 
-    gameData.serverMessages.forEach(function(messageType) {
+    gameData.messagesToServer.forEach(function(messageType) {
+        console.log("Message id: " + messageType.prototype.idString);
         socket.on(messageType.prototype.idString, function(data) {
+            console.log("Message received!");
             var message = new messageType();
             message.receive(gameData, data);
-            message.execute(gameData);
+            message.execute(gameData, connections[socket.id].player);
             if(messageCallbacks[messageType.prototype.id])
                 messageCallbacks[messageType.prototype.id](message);
         });

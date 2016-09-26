@@ -5,10 +5,14 @@ GameData = function(idList) {
     this.tileWorld = new Map2D();
     this.tileRegister = new TileRegister();
     this.generator = new Generator();
+    this.commands = [];
     this.commandTypes = new ObjectTypes([CommandPlayerMove, CommandDig, CommandPlayerDig]);
-    this.messageTypes = new ObjectTypes([MessageInit, MessageCommands, MessageChunk, MessageEntityStatus, MessagePlayerJoin, MessagePlayerLeave, MessagePlayerInventory]);
-    this.clientMessages = [MessageInit, MessageCommands, MessageChunk, MessageEntityStatus, MessagePlayerJoin, MessagePlayerLeave, MessagePlayerInventory];
-    this.serverMessages = [];
+    this.messageTypes = new ObjectTypes();
+    this.messagesToClient = [MessageInit, MessageCommands, MessageChunk, MessageEntityStatus, MessagePlayerJoin, MessagePlayerLeave, MessagePlayerInventory];
+    this.messagesToServer = [MessagePlayerMove];
+
+    this.messageTypes.addArray(this.messagesToClient);
+    this.messageTypes.addArray(this.messagesToServer);
 
     this.tileRegister.register("dirt", true, false, 1.0);
     this.tileRegister.register("stone", true, false, 4.0);
