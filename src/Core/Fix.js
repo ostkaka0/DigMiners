@@ -1,9 +1,10 @@
 fix = {};
+fix.denominator = 0x10000;
 // Convert float to 32 bit fixed point with 16 bit fraction.
 // Must be done after each operation.
 // Example: toFix(toFix(toFix(a*b)/3)+14.3)
 toFix = function(a) {
-    return (Math.floor(a * 0x10000) % 0x100000000) / 0x10000;
+    return (a * 0x10000 >> 0) % 0x100000000 / 0x10000;
 }
 
 istoFix = function(a) {

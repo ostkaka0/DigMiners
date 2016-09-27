@@ -31,7 +31,6 @@ GameData = function(idList) {
 }
 
 GameData.prototype.tick = function(dt) {
-    console.log("tick " + this.tickId);
     var that = this;
     
     if (this.pendingCommands[this.tickId])
