@@ -1,4 +1,4 @@
-Client = function(gameData, ip, port) {
+Client = function(gameData, ip) {
 
     // This is code to test serialization and deserialization of UTF-8 strings.
     /*var test = "test1 test2 123 !@,@£€$€734ÅÄÖ";
@@ -11,6 +11,7 @@ Client = function(gameData, ip, port) {
     var testOut = deserializeUTF8(testArray, counter);
     console.log("unserialized \"" + testOut + "\"");*/
 
+    var port = gameData.port;
     console.log("Connecting to " + ip + ":" + port + "...");
     socket = io(ip + ":" + port);
     sentInit2 = false;

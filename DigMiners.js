@@ -58,18 +58,18 @@ loadGame = function() {
 tick = function(dt) {
     //console.log(dt);
     var readyTicks = 0;
-    for (var i = 0; i <= 6 && gameData.pendingCommands[gameData.tickId+i]; i++)
+    for(var i = 0; i <= 6 && gameData.pendingCommands[gameData.tickId + i]; i++)
         readyTicks++;
-        
-    if (readyTicks >= 6) {
+
+    if(readyTicks >= 6) {
         while(skippedTicks > 0 && readyTicks >= 3 && gameData.pendingCommands[gameData.tickId]) {
             gameData.tick(dt);
             skippedTicks--;
             readyTicks--;
         }
     }
-    
-    if (gameData.pendingCommands[gameData.tickId])
+
+    if(gameData.pendingCommands[gameData.tickId])
         gameData.tick(dt);
     else skippedTicks++;
 }
@@ -130,7 +130,7 @@ onTexturesLoadProgress = function(name, file, progress) {
 onTexturesLoadComplete = function() {
     // Must wait until all textures have loaded to continue! important
 
-    client = new Client(gameData, "127.0.0.1", 3000);
+    client = new Client(gameData, "127.0.0.1");
 }
 
 onMessage(MessageInit, function(message) {

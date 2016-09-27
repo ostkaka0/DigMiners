@@ -170,7 +170,7 @@ io.on("connection", function(socket) {
     console.log(socket.id + " connected.");
 });
 
-http.listen(3000, function() {
+http.listen(gameData.port, function() {
     console.log("Listening on :3000");
 });
 
