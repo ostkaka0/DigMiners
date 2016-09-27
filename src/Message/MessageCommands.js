@@ -4,7 +4,10 @@ MessageCommands = function(gameData) {
 }
 
 MessageCommands.prototype.execute = function(gameData) {
-    gameData.pendingCommands[this.tickId] = this.commands;
+    var that = this;
+    setTimeout(function() {
+        gameData.pendingCommands[that.tickId] = that.commands;
+    }, gameData.fakeLag + gameData.fakeJitter*Math.random());
 }
 
 MessageCommands.prototype.send = function(socket) {

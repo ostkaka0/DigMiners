@@ -7,7 +7,7 @@ toFix = function(a) {
     return (a * 0x10000 >> 0) % 0x100000000 / 0x10000;
 }
 
-istoFix = function(a) {
+isFix = function(a) {
     return (toFix(a) == a);
 }
 

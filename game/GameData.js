@@ -1,6 +1,8 @@
 GameData = function(idList) {
     this.tickDuration = 1000 / 20;
     this.tickId = 0;
+    this.fakeLag = 100;
+    this.fakeJitter = 100;
     this.playerWorld = new ObjectWorld();
     this.entityWorld = new ObjectWorld();
     this.tileWorld = new Map2D();
