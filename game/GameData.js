@@ -1,11 +1,13 @@
 GameData = function(idList) {
     this.tickDuration = 1000 / 20;
+    this.tickId = 0;
     this.playerWorld = new ObjectWorld();
     this.entityWorld = new ObjectWorld();
     this.tileWorld = new Map2D();
     this.tileRegister = new TileRegister();
     this.generator = new Generator();
     this.commands = [];
+    this.pendingCommands = {};
     this.commandTypes = new ObjectTypes([CommandPlayerMove, CommandDig, CommandPlayerDig]);
     this.messageTypes = new ObjectTypes();
     this.messagesToClient = [MessageInit, MessageCommands, MessageChunk, MessageEntityStatus, MessagePlayerJoin, MessagePlayerLeave, MessagePlayerInventory];
@@ -29,7 +31,11 @@ GameData = function(idList) {
 }
 
 GameData.prototype.tick = function(dt) {
+    console.log("tick " + this.tickId);
     var that = this;
+    
+    if (this.pendingCommands[this.tickId])
+        this.commands = this.commands.concat(this.pendingCommands[this.tickId]);
     
     this.entityWorld.objectArray.forEach(function(entity) {
         if(entity.physicsBody && entity.physicsBody.angle)
@@ -44,4 +50,5 @@ GameData.prototype.tick = function(dt) {
     entityFunctionPlayerMovement(this, dt);
     entityFunctionPhysicsBodySimulate(this, dt);
     this.entityWorld.update();
+    this.tickId++;
 }
