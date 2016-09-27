@@ -57,9 +57,16 @@ loadGame = function() {
 
 tick = function(dt) {
     //console.log(dt);
-    while(skippedTicks > 0 && gameData.pendingCommands[gameData.tickId]) {
-        gameData.tick(dt);
-        skippedTicks--;
+    var readyTicks = 0;
+    for (var i = 0; i <= 6 && gameData.pendingCommands[gameData.tickId+i]; i++)
+        readyTicks++;
+        
+    if (readyTicks >= 6) {
+        while(skippedTicks > 0 && readyTicks >= 3 && gameData.pendingCommands[gameData.tickId]) {
+            gameData.tick(dt);
+            skippedTicks--;
+            readyTicks--;
+        }
     }
     
     if (gameData.pendingCommands[gameData.tickId])
