@@ -1,4 +1,6 @@
 GameData = function(idList) {
+    this.port = 3000;
+
     this.tickDuration = 1000 / 20;
     this.tickId = 0;
     this.fakeLag = 100;
@@ -34,10 +36,10 @@ GameData = function(idList) {
 
 GameData.prototype.tick = function(dt) {
     var that = this;
-    
-    if (this.pendingCommands[this.tickId])
+
+    if(this.pendingCommands[this.tickId])
         this.commands = this.commands.concat(this.pendingCommands[this.tickId]);
-    
+
     this.entityWorld.objectArray.forEach(function(entity) {
         if(entity.physicsBody && entity.physicsBody.angle)
             entity.physicsBody.angleOld = entity.physicsBody.angle;
