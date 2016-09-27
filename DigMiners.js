@@ -17,6 +17,8 @@ var keysDown = {};
 var messageCallbacks = {};
 var textureManager = new TextureManager();
 
+var skippedTicks = 0;
+
 loadGame = function() {
     animationManager.load();
     // Player input
@@ -55,7 +57,14 @@ loadGame = function() {
 
 tick = function(dt) {
     //console.log(dt);
-    gameData.tick(dt);
+    while(skippedTicks > 0 && gameData.pendingCommands[gameData.tickId]) {
+        gameData.tick(dt);
+        skippedTicks--;
+    }
+    
+    if (gameData.pendingCommands[gameData.tickId])
+        gameData.tick(dt);
+    else skippedTicks++;
 }
 
 render = function(tickFracTime) {

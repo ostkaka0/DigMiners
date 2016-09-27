@@ -71,7 +71,7 @@ update = function() {
 
 tick = function(dt) {
     // Send commands
-    new MessageCommands(gameData.commands).send(io.sockets);
+    new MessageCommands(gameData).send(io.sockets);
 
     gameData.tick(dt);
 
@@ -113,7 +113,7 @@ io.on("connection", function(socket) {
     }
 
     // Send init message to player
-    new MessageInit(player, playerJoinMessages, entityStatusMessages).send(socket);
+    new MessageInit(gameData, player, playerJoinMessages, entityStatusMessages).send(socket);
     // Send playerJoin message to other players
     new MessagePlayerJoin(player).send(socket.broadcast);
 

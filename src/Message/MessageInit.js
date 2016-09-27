@@ -1,5 +1,6 @@
 
-MessageInit = function(player, playerJoinMessages, entityStatusMessages) {
+MessageInit = function(gameData, player, playerJoinMessages, entityStatusMessages) {
+    this.tickId = (gameData)? gameData.tickId : 0;
     if(player) {
         this.playerId = player.id;
         this.entityId = player.entityId;
@@ -13,6 +14,7 @@ MessageInit = function(player, playerJoinMessages, entityStatusMessages) {
 }
 
 MessageInit.prototype.execute = function(gameData) {
+    gameData.tickId = this.tickId;
     entityTemplates.player(this.playerId, this.entityId, this.playerName, gameData);
     for(var i = 0; i < this.playerJoinMessages.length; ++i)
         this.playerJoinMessages[i].execute(gameData);
@@ -21,6 +23,7 @@ MessageInit.prototype.execute = function(gameData) {
 }
 
 MessageInit.prototype.serialize = function(byteArray, index) {
+    serializeInt32(byteArray, index, this.tickId);
     serializeInt32(byteArray, index, this.playerId);
     serializeInt32(byteArray, index, this.entityId);
     serializeUTF8(byteArray, index, this.playerName);
@@ -35,6 +38,7 @@ MessageInit.prototype.serialize = function(byteArray, index) {
 }
 
 MessageInit.prototype.deserialize = function(byteArray, index) {
+    this.tickId = deserializeInt32(byteArray, index);
     this.playerId = deserializeInt32(byteArray, index);
     this.entityId = deserializeInt32(byteArray, index);
     this.playerName = deserializeUTF8(byteArray, index);
@@ -55,7 +59,7 @@ MessageInit.prototype.deserialize = function(byteArray, index) {
 }
 
 MessageInit.prototype.getSerializationSize = function() {
-    var size = 12 + getUTF8SerializationSize(this.playerName);
+    var size = 20 + getUTF8SerializationSize(this.playerName);
     for(var i = 0; i < this.playerJoinMessages.length; ++i)
         size += this.playerJoinMessages[i].getSerializationSize();
     for(var i = 0; i < this.entityStatusMessages.length; ++i)
