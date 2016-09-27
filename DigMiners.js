@@ -11,6 +11,7 @@ var gameData = new GameData();
 var camera = new Camera();
 var chunkRenderer = new ChunkRenderer(gl, gameData.tileWorld, 32.0);
 var commands = [];
+var player = null;
 var playerEntity = null;
 var animationManager = new AnimationManager();
 var keysDown = {};
