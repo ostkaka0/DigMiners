@@ -9,7 +9,11 @@
             var isServer = false;
         </script>
         <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-        <div class="dugItems" id="dugItems"></div>
+        <div class="hud" id="hud">
+            <div class="dugItems" id="dugItems">dug items</div>
+            <div class="inventory" id="inventory">inventory</div>
+            <div class="chat" id="chat">chat</div>
+        </div>
         <?php
             $includedScripts = array();
             function addScript($path) {
