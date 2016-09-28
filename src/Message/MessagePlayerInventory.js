@@ -1,25 +1,20 @@
 
-MessagePlayerInventory = function(playerId, actionId, itemName, amount) {
+MessagePlayerInventory = function(playerId, actionId, itemId, amount) {
     this.playerId = playerId;
     this.actionId = actionId;
-    this.itemName = itemName;
+    this.itemId = itemId;
     this.amount = amount;
 }
 
 MessagePlayerInventory.prototype.execute = function(gameData) {
     var player = gameData.playerWorld.objects[this.playerId];
     if(!player) return;
-    if(!player.inventory[this.itemName])
-        player.inventory[this.itemName] = 0;
     if(this.actionId == 0) { // Add
-        player.inventory[this.itemName] += this.amount;
-        console.log("Inventory added " + this.amount + " " + this.itemName);
-        // todo: fire item add event
+        player.inventory.addItem(gameData, this.itemId, this.amount);
+        //console.log("Inventory added " + this.amount + " " + this.itemId);
     } else if(this.actionId == 0) { // Subtract
-        player.inventory[this.itemName] -= this.amount;
-        if(player.inventory[this.itemName] < 0)
-            player.inventory[this.itemName] = 0;
-        // todo: fire item remove event
+        player.inventory.removeItem(gameData, this.itemId, this.amount);
+        //console.log("Inventory removed " + this.amount + " " + this.itemId);
     }
     if(!isServer)
         updateHUD(gameData);
@@ -28,19 +23,19 @@ MessagePlayerInventory.prototype.execute = function(gameData) {
 MessagePlayerInventory.prototype.serialize = function(byteArray, index) {
     serializeInt32(byteArray, index, this.playerId);
     serializeInt32(byteArray, index, this.actionId);
-    serializeUTF8(byteArray, index, this.itemName);
+    serializeInt32(byteArray, index, this.itemId);
     serializeInt32(byteArray, index, this.amount);
 }
 
 MessagePlayerInventory.prototype.deserialize = function(byteArray, index) {
     this.playerId = deserializeInt32(byteArray, index);
     this.actionId = deserializeInt32(byteArray, index);
-    this.itemName = deserializeUTF8(byteArray, index);
+    this.itemId = deserializeInt32(byteArray, index);
     this.amount = deserializeInt32(byteArray, index);
 }
 
 MessagePlayerInventory.prototype.getSerializationSize = function() {
-    return 12 + getUTF8SerializationSize(this.itemName);
+    return 16;
 }
 
 MessagePlayerInventory.prototype.send = function(socket) {

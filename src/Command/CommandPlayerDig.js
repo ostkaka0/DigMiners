@@ -15,9 +15,15 @@ CommandPlayerDig.prototype.execute = function(gameData) {
         for(var i = 0; i < dug.length; ++i) {
             if(dug[i] != undefined && dug[i] > 0) {
                 //console.log(this.playerId + " dug " + i + ": " + dug[i]);
-                var message = new MessagePlayerInventory(this.playerId, 0, gameData.tileRegister.getById(i).name, dug[i]);
+                var tileName = gameData.tileRegister.getById(i).name;
+                var itemId = gameData.itemRegister.getIdByName(tileName);
+                var message = new MessagePlayerInventory(this.playerId, 0, itemId, dug[i]);
                 message.execute(gameData);
                 message.send(player.socket);
+
+                /*message = new MessagePlayerInventory(this.playerId, 0, "hats/uglyHat", 1);
+                message.execute(gameData);
+                message.send(player.socket);*/
             }
         }
     }
