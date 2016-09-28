@@ -52,7 +52,7 @@ MessageEntityStatus.prototype.deserialize = function(byteArray, index) {
 }
 
 MessageEntityStatus.prototype.getSerializationSize = function() {
-    return 56;
+    return 52;
 }
 
 MessageEntityStatus.prototype.send = function(socket) {

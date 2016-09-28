@@ -11,9 +11,15 @@ PlayerMoveDirection = {
     DISABLE_SPACEBAR: 9
 }
 
-CommandPlayerMove = function(playerId, playerMoveDirection) {
-    this.playerId = playerId;
+CommandPlayerMove = function(player, playerMoveDirection) {
+    if(player)
+        this.playerId = player.id;
     this.playerMoveDirection = playerMoveDirection;
+    if(player)
+        this.message = new MessageEntityStatus(player.entityId, gameData.entityWorld.objects[player.entityId].physicsBody)
+    else
+        this.message = new MessageEntityStatus();
+
 }
 
 CommandPlayerMove.prototype.execute = function(gameData) {
@@ -59,26 +65,23 @@ CommandPlayerMove.prototype.execute = function(gameData) {
             movement.spacebar = false;
             break;
     }
-}
 
-CommandPlayerMove.prototype.getName = function() {
-    return "CommandPlayerMove";
-}
-
-CommandPlayerMove.prototype.getData = function() {
-    return [this.playerId, this.playerMoveDirection];
+    this.message.execute(gameData);
 }
 
 CommandPlayerMove.prototype.serialize = function(byteArray, index) {
     serializeInt32(byteArray, index, this.playerId);
     serializeInt32(byteArray, index, this.playerMoveDirection);
+    this.message.serialize(byteArray, index);
 }
 
 CommandPlayerMove.prototype.deserialize = function(byteArray, index) {
     this.playerId = deserializeInt32(byteArray, index);
     this.playerMoveDirection = deserializeInt32(byteArray, index);
+    this.message = new MessageEntityStatus();
+    this.message.deserialize(byteArray, index);
 }
 
 CommandPlayerMove.prototype.getSerializationSize = function() {
-    return 8;
+    return 8 + this.message.getSerializationSize();
 }

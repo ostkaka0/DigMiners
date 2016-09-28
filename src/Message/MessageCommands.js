@@ -1,13 +1,13 @@
 MessageCommands = function(gameData) {
-    this.tickId = (gameData)? gameData.tickId : 0;
-    this.commands = (gameData)? gameData.commands : [];
+    this.tickId = (gameData) ? gameData.tickId : 0;
+    this.commands = (gameData) ? gameData.commands : [];
 }
 
 MessageCommands.prototype.execute = function(gameData) {
     var that = this;
     setTimeout(function() {
         gameData.pendingCommands[that.tickId] = that.commands;
-    }, gameData.fakeLag + gameData.fakeJitter*Math.random());
+    }, gameData.fakeLag + gameData.fakeJitter * Math.random());
 }
 
 MessageCommands.prototype.send = function(socket) {
