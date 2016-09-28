@@ -63,6 +63,14 @@ canvas {
     background-image: url("data/textures/inventorySlot.png");
 }
 
+.slotContainer {
+    position: relative;
+    left:16px;
+    top:16px;
+    width: 32px;
+    height: 32px;
+}
+
 .chat {
     position: fixed;
     width: 200px;

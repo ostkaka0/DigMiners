@@ -4,7 +4,7 @@ Player = function(playerId, entityId, name) {
     this.entityId = entityId;
     this.name = name;
     this.text = null;
-    this.inventory = {};
+    this.inventory = new Inventory();
 }
 
 Player.prototype.setName = function(name, gameData) {
@@ -16,5 +16,5 @@ Player.prototype.setName = function(name, gameData) {
 }
 
 Player.prototype.getDigStrength = function() {
-    return 0.1;
+    return 1.0;
 }

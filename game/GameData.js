@@ -9,6 +9,7 @@ GameData = function(idList) {
     this.entityWorld = new ObjectWorld();
     this.tileWorld = new Map2D();
     this.tileRegister = new TileRegister();
+    this.itemRegister = new ItemRegister();
     this.generator = new Generator();
     this.commands = [];
     this.pendingCommands = {};
@@ -20,12 +21,15 @@ GameData = function(idList) {
     this.messageTypes.addArray(this.messagesToClient);
     this.messageTypes.addArray(this.messagesToServer);
 
-    this.tileRegister.register("dirt", true, false, 1.0);
-    this.tileRegister.register("stone", true, false, 4.0);
-    this.tileRegister.register("stone2", true, false, 8.0);
-    this.tileRegister.register("stone3", true, false, 16.0);
-    this.tileRegister.register("ore1", true, false, 32.0);
-    this.tileRegister.register("ore2", true, false, 64.0);
+    this.tileRegister.register("Dirt", true, false, 1.0);
+    this.tileRegister.register("Stone", true, false, 4.0);
+    this.tileRegister.register("Hard stone", true, false, 8.0);
+    this.tileRegister.register("Very hard stone", true, false, 16.0);
+    this.tileRegister.register("Blue ore", true, false, 32.0);
+    this.tileRegister.register("Red ore", true, false, 64.0);
+
+    if(isServer)
+        this.itemRegister.load(this);
 
     if(idList) {
         var onObjectRemove = function(object) { idList.remove(object.id); };
