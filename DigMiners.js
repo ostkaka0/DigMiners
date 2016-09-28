@@ -7,6 +7,12 @@ renderer.view.style.left = '0%';
 renderer.view.style.top = '0%';
 document.body.appendChild(renderer.view);
 
+window.addEventListener('resize', function() {
+    this.renderer.resize(window.innerWidth, window.innerHeight);
+    this.camera.width = window.innerWidth;
+    this.camera.height = window.innerHeight;
+}, false);
+
 var gameData = new GameData();
 var camera = new Camera();
 var chunkRenderer = new ChunkRenderer(gl, gameData.tileWorld, 32.0);
@@ -138,6 +144,7 @@ onMessage(MessageInit, function(message) {
     player = gameData.playerWorld.objects[message.playerId];
     playerEntity = gameData.entityWorld.objects[message.entityId];
     loadGame();
+    updateHUD(gameData);
 });
 
 onMessage(MessagePlayerInventory, function(message) {
