@@ -25,13 +25,10 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
         };
 
         entity.drawable = new Drawable(stage, bodyparts, animationManager);
-        player.text = new PIXI.Text(name + " player:" + playerId + "entity:" + entityId, { fill: '#ffffff' });
-        entity.drawable.addSprite("username", player.text, v2.create(- player.text.width / 2, -80), false);
+        player.setName(name + " player:" + playerId + "entity:" + entityId, gameData);
 
         var healthbarSprite = new PIXI.Sprite(textures.healthbar);
-        healthbarSprite.anchor.x = 0.5;
-        healthbarSprite.anchor.y = 0.5;
-        entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -50), false);
+        entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(-32, -50), false);
         player.health = healthbarSprite;
     }
     return { 'player': player, 'entity': entity };
