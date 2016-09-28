@@ -21,6 +21,8 @@ MessagePlayerInventory.prototype.execute = function(gameData) {
             player.inventory[this.itemName] = 0;
         // todo: fire item remove event
     }
+    if(!isServer)
+        updateHUD(gameData);
 }
 
 MessagePlayerInventory.prototype.serialize = function(byteArray, index) {

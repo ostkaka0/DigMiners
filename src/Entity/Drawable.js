@@ -51,7 +51,9 @@ Drawable.prototype.unanimate = function(bodypart, animation, runToEnd) {
 Drawable.prototype.addSprite = function(name, sprite, offset, rotateWithBody) {
     this.sprites[name] = {};
     this.sprites[name].sprite = sprite;
-    this.sprites[name].offset = offset;
+    this.sprites[name].sprite.pivot.x = -offset[0];
+    this.sprites[name].sprite.pivot.y = -offset[1];
+    this.sprites[name].offset = v2.create(0, 0);
     this.sprites[name].rotateWithBody = rotateWithBody;
     this.stage.addChild(sprite);
 }
