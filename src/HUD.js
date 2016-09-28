@@ -8,21 +8,25 @@ updateHUD = function(gameData) {
         var slot = document.createElement("div");
         slot.setAttribute("class", "inventorySlot");
 
-        var slotContainer = document.createElement("div");
-        slotContainer.setAttribute("class", "slotContainer");
-        slotContainer.style.backgroundRepeat = "no-repeat";
+        var slotImageContainer = document.createElement("div");
+        slotImageContainer.setAttribute("class", "slotImageContainer");
+        slotImageContainer.style.backgroundRepeat = "no-repeat";
+
+        var slotTextContainer = document.createElement("div");
+        slotTextContainer.setAttribute("class", "slotTextContainer");
 
         if(player.inventory.items[i]) {
+            slotImageContainer.style.borderStyle = "solid";
+            slotImageContainer.style.borderWidth = "1px";
             var item = player.inventory.items[i];
-            var name = item.name;
             var itemType = gameData.itemRegister.getById(item.id);
             if(itemType.texture)
-                slotContainer.style.backgroundImage = "url('data/textures/" + itemType.texture + ".png')";
-            else slotContainer.innerText = item.amount + " " + name;
-            //slotContainer.innerText = Math.round((amount / 256.0) * 10) / 10 + " " + name;
+                slotImageContainer.style.backgroundImage = "url('data/textures/" + itemType.texture + ".png')";
+            slotTextContainer.innerText = Math.round((item.amount / 256.0) * 10) / 10;
         }
 
-        slot.appendChild(slotContainer);
+        slot.appendChild(slotImageContainer);
+        slot.appendChild(slotTextContainer);
         inventoryContent.appendChild(slot);
     }
     inventory.appendChild(inventoryContent);
