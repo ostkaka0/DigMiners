@@ -24,6 +24,12 @@ CommandPlayerDig.prototype.execute = function(gameData) {
                 /*message = new MessagePlayerInventory(this.playerId, 0, "hats/uglyHat", 1);
                 message.execute(gameData);
                 message.send(player.socket);*/
+
+                var entity = gameData.entityWorld.objects[player.entityId];
+                var physicsBody = entity.physicsBody;
+                message = new MessageItemDrop(idList.next(), itemId, dug[i], physicsBody.pos[0], physicsBody.pos[1], physicsBody.angle);
+                message.execute(gameData);
+                message.send(player.socket);
             }
         }
     }
