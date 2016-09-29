@@ -1,5 +1,6 @@
 GameData = function(idList) {
     this.port = 3000;
+    this.itemPickupDistance = 1.0;
 
     this.tickDuration = 1000 / 20;
     this.tickId = 0;
@@ -15,8 +16,8 @@ GameData = function(idList) {
     this.pendingCommands = {};
     this.commandTypes = new ObjectTypes([CommandPlayerMove, CommandDig, CommandPlayerDig]);
     this.messageTypes = new ObjectTypes();
-    this.messagesToClient = [MessageInit, MessageCommands, MessageChunk, MessageEntityStatus, MessagePlayerJoin, MessagePlayerLeave, MessagePlayerInventory, MessageItemDrop];
-    this.messagesToServer = [MessagePlayerMove];
+    this.messagesToClient = [MessageInit, MessageCommands, MessageChunk, MessageEntityStatus, MessagePlayerJoin, MessagePlayerLeave, MessagePlayerInventory, MessageItemDrop, MessageEntityDestroy];
+    this.messagesToServer = [MessagePlayerMove, MessageRequestItemPickup];
 
     this.messageTypes.addArray(this.messagesToClient);
     this.messageTypes.addArray(this.messagesToServer);
