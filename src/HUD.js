@@ -1,4 +1,6 @@
 
+HUDClosures = [];
+
 createHUD = function(gameData) {
     // create inventory
     var inventory = document.getElementById("inventory");
@@ -9,6 +11,7 @@ createHUD = function(gameData) {
         var slot = document.createElement("div");
         slot.setAttribute("class", "inventorySlot");
         slot.setAttribute("id", "slot" + i);
+        slot.setAttribute("title", "Empty slot");
 
         var slotImageContainer = document.createElement("div");
         slotImageContainer.setAttribute("class", "slotImageContainer");
@@ -50,34 +53,41 @@ createHUD = function(gameData) {
     var dugItemsFooter = document.createElement("div");
     dugItemsFooter.setAttribute("class", "dugItemsFooter");
     dugItems.appendChild(dugItemsFooter);
+
+    var createFunc = function(i) {
+        return function() {
+            var message = new MessageRequestDropStack(i);
+            message.send(socket);
+        };
+    }
+    // Initialize closures
+    for(var i = 0; i < 64; ++i) {
+        HUDClosures[i] = createFunc(i);
+    }
 }
 
 updateHUD = function(gameData) {
     // update inventory
-    var currentItemIndex = 0;
     for(var i = 0; i < 64; ++i) {
         var slot = document.getElementById("slot" + i);
         var slotImageContainer = slot.childNodes[0];
         var slotTextContainer = slot.childNodes[1];
 
-        var item = player.inventory.items[currentItemIndex];
-        if(!item)
-            break;
-        var itemType = gameData.itemRegister.getById(item.id);
-        while(item && itemType.isDigable) {
-            ++currentItemIndex;
-            console.log(currentItemIndex);
-            item = player.inventory.items[currentItemIndex];
-            if(!item)
-                break;
-            itemType = gameData.itemRegister.getById(item.id);
-        }
-        if(item && itemType) {
+        var item = player.inventory.items[i];
+        if(item) {
+            var itemType = gameData.itemRegister.getById(item.id);
             if(itemType.texture)
                 slotImageContainer.style.backgroundImage = "url('data/textures/" + itemType.texture + ".png')";
             if(item.amount > 1)
                 slotTextContainer.innerText = item.amount;
-            ++currentItemIndex;
+            slot.setAttribute("title", itemType.name);
+
+            slot.onclick = HUDClosures[i];
+        } else {
+            slotImageContainer.style.backgroundImage = "";
+            slotTextContainer.innerText = "";
+            slot.setAttribute("title", "Empty slot");
+            slot.onclick = null;
         }
     }
 
@@ -88,7 +98,7 @@ updateHUD = function(gameData) {
         if(itemType.isDigable) {
             var dugItemsEntry = document.getElementById("entry" + current);
             var dugItemsEntryText = dugItemsEntry.childNodes[1];
-            dugItemsEntryText.innerText = parseFloat(Math.floor((player.inventory.getAmountById(itemType.id) / 256.0) * 10) / 10).toFixed(1);
+            dugItemsEntryText.innerText = parseFloat(Math.floor((player.oreInventory.getAmountById(itemType.id) / 256.0) * 10) / 10).toFixed(1);
             ++current;
         }
     }
