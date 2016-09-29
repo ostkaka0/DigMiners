@@ -24,7 +24,7 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
             }
         };
 
-        entity.drawable = new Drawable(stage, bodyparts, animationManager);
+        entity.drawable = new Drawable(bodyparts, animationManager, 1);
         player.setName(name + " player:" + playerId + "entity:" + entityId, gameData);
 
         var healthbarSprite = new PIXI.Sprite(textures.healthbar);
@@ -32,4 +32,26 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
         player.health = healthbarSprite;
     }
     return { 'player': player, 'entity': entity };
+}
+
+entityTemplates.item = function(entityId, itemId, amount, x, y, rotation, gameData) {
+    var entity = gameData.entityWorld.add({}, entityId);
+    entity.physicsBody = new PhysicsBody(v2.create(x, y), 0.01);
+    entity.itemId = itemId;
+    entity.amount = amount;
+
+    if(!isServer) {
+        var itemType = gameData.itemRegister.getById(itemId);
+        var sprite = new PIXI.Sprite(textures[itemType.texture]);
+        sprite.anchor.x = 0.5;
+        sprite.anchor.y = 0.5;
+        sprite.rotation = rotation;
+        var bodyparts = {
+            "body": {
+                "sprite": sprite
+            },
+        };
+        entity.drawable = new Drawable(bodyparts, animationManager, 0);
+    }
+    return entity;
 }
