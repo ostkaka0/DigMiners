@@ -161,7 +161,7 @@ io.on("connection", function(socket) {
         socket.on(messageType.prototype.idString, function(data) {
             var message = new messageType();
             message.receive(gameData, data);
-            message.execute(gameData, connections[socket.id].player);
+            message.execute(gameData, connections[socket.id].player, socket);
             if(messageCallbacks[messageType.prototype.id])
                 messageCallbacks[messageType.prototype.id](message);
         });

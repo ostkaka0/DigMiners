@@ -39,6 +39,7 @@ entityTemplates.item = function(entityId, itemId, amount, x, y, rotation, gameDa
     entity.physicsBody = new PhysicsBody(v2.create(x, y), 0.01);
     entity.itemId = itemId;
     entity.amount = amount;
+    entity.isItem = true;
 
     if(!isServer) {
         var itemType = gameData.itemRegister.getById(itemId);

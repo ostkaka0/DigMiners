@@ -85,6 +85,17 @@ tick = function(dt) {
     if(gameData.pendingCommands[gameData.tickId])
         gameData.tick(dt);
     else skippedTicks++;
+
+    gameData.entityWorld.objectArray.forEach(function(entity) {
+        if(entity.isItem && entity.physicsBody && !entity.destroying) {
+            var dis = v2.distance(entity.physicsBody.pos, playerEntity.physicsBody.pos);
+            //console.log("dis client: " + dis);
+            if(dis <= gameData.itemPickupDistance) {
+                var message = new MessageRequestItemPickup(entity.id);
+                message.send(socket);
+            }
+        }
+    });
 }
 
 render = function(tickFracTime) {
