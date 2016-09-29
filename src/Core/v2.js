@@ -82,6 +82,18 @@ v2.lengthSquared = function(a) {
     return fix.add(fix.mul(a[0], a[0]), fix.mul(a[1], a[1]));
 }
 
+v2.distance = function(a, b) {
+    var diff = {};
+    v2.sub(a, b, diff);
+    return v2.length(diff);
+}
+
+v2.distanceSquared = function(a, b) {
+    var diff = {};
+    v2.sub(a, b, diff);
+    return v2.lengthSquared(diff);
+}
+
 v2.dot = function(a, b) {
     return fix.add(fix.mul(a[0], b[0]), fix.mul(a[1], b[1]));
 }
