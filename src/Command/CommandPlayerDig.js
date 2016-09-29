@@ -17,15 +17,24 @@ CommandPlayerDig.prototype.execute = function(gameData) {
                 //console.log(this.playerId + " dug " + i + ": " + dug[i]);
                 var tileName = gameData.tileRegister.getById(i).name;
                 var itemId = gameData.itemRegister.getIdByName(tileName);
-                /*var message = new MessagePlayerInventory(this.playerId, 0, itemId, dug[i]);
-                message.execute(gameData);
-                message.send(player.socket);*/
-
-                var entity = gameData.entityWorld.objects[player.entityId];
-                var physicsBody = entity.physicsBody;
-                message = new MessageItemDrop(idList.next(), itemId, dug[i], physicsBody.pos[0], physicsBody.pos[1], physicsBody.angle);
+                var message = new MessagePlayerInventory(this.playerId, 0, itemId, dug[i]);
                 message.execute(gameData);
                 message.send(player.socket);
+
+                var hats = [gameData.itemRegister.getIdByName("Ugly hat"), gameData.itemRegister.getIdByName("Broken hat")];
+                var rand = Math.random() * 1000;
+                var itemId = null;
+                if(rand > 995)
+                    itemId = hats[1];
+                else if(rand > 990)
+                    itemId = hats[0];
+                if(itemId) {
+                    var entity = gameData.entityWorld.objects[player.entityId];
+                    var physicsBody = entity.physicsBody;
+                    message = new MessageItemDrop(idList.next(), itemId, 1, physicsBody.pos[0], physicsBody.pos[1], physicsBody.angle);
+                    message.execute(gameData);
+                    message.send(io.sockets);
+                }
             }
         }
     }
