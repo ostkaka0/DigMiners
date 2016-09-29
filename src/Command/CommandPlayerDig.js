@@ -17,11 +17,7 @@ CommandPlayerDig.prototype.execute = function(gameData) {
                 //console.log(this.playerId + " dug " + i + ": " + dug[i]);
                 var tileName = gameData.tileRegister.getById(i).name;
                 var itemId = gameData.itemRegister.getIdByName(tileName);
-                var message = new MessagePlayerInventory(this.playerId, 0, itemId, dug[i]);
-                message.execute(gameData);
-                message.send(player.socket);
-
-                /*message = new MessagePlayerInventory(this.playerId, 0, "hats/uglyHat", 1);
+                /*var message = new MessagePlayerInventory(this.playerId, 0, itemId, dug[i]);
                 message.execute(gameData);
                 message.send(player.socket);*/
 
