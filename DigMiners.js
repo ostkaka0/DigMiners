@@ -2,6 +2,12 @@ var canvas = document.getElementById("canvas");
 var gl = canvasInitGL(canvas);
 var renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight, { 'transparent': true });
 var stage = new PIXI.Container();
+var zindices = new Array();
+zindices[0] = new PIXI.Container();
+zindices[1] = new PIXI.Container();
+zindices[2] = new PIXI.Container();
+for(var i = 0; i < zindices.length; ++i)
+    stage.addChild(zindices[i]);
 renderer.view.style.position = 'absolute';
 renderer.view.style.left = '0%';
 renderer.view.style.top = '0%';
@@ -117,6 +123,7 @@ render = function(tickFracTime) {
 
     //TODO: animationmanager use dt? maybe not needed
     animationManager.update();
+
     renderer.render(stage);
 }
 
@@ -144,7 +151,7 @@ onMessage(MessageInit, function(message) {
     player = gameData.playerWorld.objects[message.playerId];
     playerEntity = gameData.entityWorld.objects[message.entityId];
     loadGame();
-    updateHUD(gameData);
+    createHUD(gameData);
 });
 
 onMessage(MessagePlayerInventory, function(message) {
