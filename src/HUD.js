@@ -16,8 +16,6 @@ updateHUD = function(gameData) {
         slotTextContainer.setAttribute("class", "slotTextContainer");
 
         if(player.inventory.items[i]) {
-            slotImageContainer.style.borderStyle = "solid";
-            slotImageContainer.style.borderWidth = "1px";
             var item = player.inventory.items[i];
             var itemType = gameData.itemRegister.getById(item.id);
             if(itemType.texture)
