@@ -37,6 +37,7 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
 entityTemplates.item = function(entityId, itemId, amount, x, y, rotation, gameData) {
     var entity = gameData.entityWorld.add({}, entityId);
     entity.physicsBody = new PhysicsBody(v2.create(x, y), 0.01);
+    entity.physicsBody.angle = rotation;
     entity.itemId = itemId;
     entity.amount = amount;
     entity.isItem = true;
@@ -46,7 +47,6 @@ entityTemplates.item = function(entityId, itemId, amount, x, y, rotation, gameDa
         var sprite = new PIXI.Sprite(textures[itemType.texture]);
         sprite.anchor.x = 0.5;
         sprite.anchor.y = 0.5;
-        sprite.rotation = rotation;
         var bodyparts = {
             "body": {
                 "sprite": sprite

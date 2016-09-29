@@ -17,7 +17,7 @@ GameData = function(idList) {
     this.commandTypes = new ObjectTypes([CommandPlayerMove, CommandDig, CommandPlayerDig]);
     this.messageTypes = new ObjectTypes();
     this.messagesToClient = [MessageInit, MessageCommands, MessageChunk, MessageEntityStatus, MessagePlayerJoin, MessagePlayerLeave, MessagePlayerInventory, MessageItemDrop, MessageEntityDestroy];
-    this.messagesToServer = [MessagePlayerMove, MessageRequestItemPickup];
+    this.messagesToServer = [MessagePlayerMove, MessageRequestItemPickup, MessageRequestDropStack];
 
     this.messageTypes.addArray(this.messagesToClient);
     this.messageTypes.addArray(this.messagesToServer);

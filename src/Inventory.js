@@ -14,7 +14,7 @@ Inventory.prototype.addItem = function(gameData, id, amount) {
         }
         if(amountToAdd == 0)
             return;
-        if(i >= this.items.length) {
+        if(i >= this.items.length || !this.items[i]) {
             var added = (amountToAdd <= maxStack ? amountToAdd : maxStack);
             this.items.push(gameData.itemRegister.createById(id, added));
             amountToAdd -= added;
@@ -64,4 +64,11 @@ Inventory.prototype.getAmountById = function(id) {
             amount += this.items[i].amount;
     }
     return amount;
+}
+
+Inventory.prototype.removeStack = function(id) {
+    var item = this.items[id];
+    delete this.items[id];
+    this.items.splice(id, 1);
+    return item;
 }
