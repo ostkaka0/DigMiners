@@ -1,13 +1,15 @@
-Drawable = function(stage, bodyparts, animationManager) {
+Drawable = function(bodyparts, animationManager, zindex) {
     this.bodyparts = bodyparts; // sprite {}
     this.animationManager = animationManager;
+    if(!zindex)
+        zindex = 0;
+    this.container = zindices[zindex];
     this.sprites = {};
-    this.stage = stage;
 
     // Add bodypart sprites to world
     for(var bodypart in this.bodyparts) {
         bodypart = this.bodyparts[bodypart];
-        this.stage.addChild(bodypart.sprite);
+        this.container.addChild(bodypart.sprite);
     }
 }
 
@@ -55,13 +57,13 @@ Drawable.prototype.addSprite = function(name, sprite, offset, rotateWithBody) {
     this.sprites[name].sprite.pivot.y = -offset[1];
     this.sprites[name].offset = v2.create(0, 0);
     this.sprites[name].rotateWithBody = rotateWithBody;
-    this.stage.addChild(sprite);
+    this.container.addChild(sprite);
 }
 
 Drawable.prototype.removeSprite = function(name) {
     var sprite = this.sprites[name];
     if(sprite) {
-        this.stage.removeChild(sprite.sprite);
+        this.container.removeChild(sprite.sprite);
         delete this.sprites[name];
     }
 }
@@ -86,11 +88,11 @@ Drawable.prototype.positionAll = function(x, y, rotation) {
 Drawable.prototype.remove = function() {
     for(var bodypart in this.bodyparts) {
         bodypart = this.bodyparts[bodypart];
-        this.stage.removeChild(bodypart.sprite);
+        this.container.removeChild(bodypart.sprite);
     }
 
     for(var sprite in this.sprites) {
         sprite = this.sprites[sprite];
-        this.stage.removeChild(sprite.sprite);
+        this.container.removeChild(sprite.sprite);
     }
 }

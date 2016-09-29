@@ -56,7 +56,7 @@ Inventory.prototype.hasItem = function(id, amount) {
     return false;
 }
 
-Inventory.prototype.getAmountByName = function(id) {
+Inventory.prototype.getAmountById = function(id) {
     var amount = 0;
     for(var i = 0; i < this.items.length; ++i) {
         if(this.items[i].id === id)
