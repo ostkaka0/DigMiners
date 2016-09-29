@@ -24,16 +24,17 @@ canvas {
     width: 200px;
     height: calc(60% - 10px);
     right: 0;
-        background-color:white;
 }
 
 .inventory {
     position: fixed;
-    width: 529px;
-    height: 40%;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, 0);
+    width: 544px;
+    height: 158px;
+    bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
     border-width: 5px;
     border-style: solid;
     border-color: rgb(64, 64, 64);
@@ -45,37 +46,39 @@ canvas {
     height: 22px;
     background-color: rgb(64, 64, 64);
     color: rgb(200,200,200);
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Monospace;
 }
 
 .inventoryContent {
     position: relative;
-    width: 100%;
-    height: calc(100% - 22px);
-    overflow: auto;
+    width: 544px;
+    height: 136px;
 }
 
 .inventorySlot {
     position: relative;
     float: left;
-    width: 64px;
-    height: 64px;
-    background-image: url("data/textures/inventorySlot.png");
+    width: 34px;
+    height: 34px;
+    background-image: url("data/textures/inventorySlotSmall2.png");
 }
 
 .slotImageContainer {
     position: relative;
-    left:16px;
-    margin-top:5px;
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
+    left:1px;
+    margin-top:1px;
 }
 
 .slotTextContainer {
     position: relative;
-    width: 100%;
-    height: 15px;
+    width: 34px;
+    height: 12px;
     text-align: center;
+    top: -23px;
+    color: white;
+    font-family: Monospace;
 }
 
 .chat {

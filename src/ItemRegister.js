@@ -14,19 +14,20 @@ ItemRegister = function() {
 }
 
 ItemRegister.prototype.load = function(gameData) {
-    this.register("Dirt", "items/dirt", false, true);
-    this.register("Stone", "items/stone", false, true);
-    this.register("Hard stone", "items/hardStone", false, true);
-    this.register("Very hard stone", "items/veryHardStone", false, true);
-    this.register("Blue ore", "items/blueOre", false, true);
-    this.register("Red ore", "items/redOre", false, true);
+    var maxDiggableStackSize = 100 * 256;
+    this.register("Dirt", "items/dirt", false, true, maxDiggableStackSize);
+    this.register("Stone", "items/stone", false, true, maxDiggableStackSize);
+    this.register("Hard stone", "items/hardStone", false, true, maxDiggableStackSize);
+    this.register("Very hard stone", "items/veryHardStone", false, true, maxDiggableStackSize);
+    this.register("Blue ore", "items/blueOre", false, true, maxDiggableStackSize);
+    this.register("Red ore", "items/redOre", false, true, maxDiggableStackSize);
     this.register("Ugly hat", "hats/uglyHat", false, true, 1);
     this.register("Broken hat", "hats/brokenHat", false, true, 1);
 }
 
-ItemRegister.prototype.register = function(name, texture, isEquipable, isDropable) {
+ItemRegister.prototype.register = function(name, texture, isEquipable, isDropable, maxStackSize) {
     var id = this.itemTypes.length;
-    var itemType = new ItemType(id, name, texture, isEquipable, isDropable);
+    var itemType = new ItemType(id, name, texture, isEquipable, isDropable, maxStackSize);
 
     if(!isServer && !textures[texture])
         console.log("Item " + name + " texture null.");
