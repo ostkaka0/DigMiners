@@ -1,10 +1,12 @@
 
 updateHUD = function(gameData) {
+    // update inventory
     var inventory = document.getElementById("inventory");
     inventory.innerHTML = '<div class="inventoryHeader">Your amazing inventory</div>';
     var inventoryContent = document.createElement("div");
     inventoryContent.setAttribute("class", "inventoryContent");
-    for(var i = 0; i < 64; ++i) {
+    var total = 64;
+    for(var i = 0; i < total; ++i) {
         var slot = document.createElement("div");
         slot.setAttribute("class", "inventorySlot");
 
@@ -15,9 +17,18 @@ updateHUD = function(gameData) {
         var slotTextContainer = document.createElement("div");
         slotTextContainer.setAttribute("class", "slotTextContainer");
 
-        if(player.inventory.items[i]) {
-            var item = player.inventory.items[i];
-            var itemType = gameData.itemRegister.getById(item.id);
+        var item = player.inventory.items[i];
+        var itemType = null;
+        if(item)
+            itemType = gameData.itemRegister.getById(item.id);
+        while(item && itemType.isDigable) {
+            ++i;
+            ++total;
+            item = player.inventory.items[i];
+            if(item)
+                itemType = gameData.itemRegister.getById(item.id);
+        }
+        if(item && itemType) {
             if(itemType.texture)
                 slotImageContainer.style.backgroundImage = "url('data/textures/" + itemType.texture + ".png')";
             slotTextContainer.innerText = Math.round((item.amount / 256.0) * 10) / 10;
@@ -28,8 +39,32 @@ updateHUD = function(gameData) {
         inventoryContent.appendChild(slot);
     }
     inventory.appendChild(inventoryContent);
-    //var text = new PIXI.Text('12352135235', { fontFamily: 'Arial', fontSize: 24, fill: 0xffffff, align: 'center' });
-    //text.position.x = 10;
-    //text.position.y = 10;
-    //stage.addChild(text);
+
+    // update dugItems
+    var dugItems = document.getElementById("dugItems");
+    dugItems.innerHTML = "";
+    for(var i = 0; i < player.inventory.items.length; ++i) {
+        var item = player.inventory.items[i];
+        var itemType = gameData.itemRegister.getById(item.id);
+        if(itemType.isDigable) {
+            var dugItemsEntry = document.createElement("div");
+            dugItemsEntry.setAttribute("class", "dugItemsEntry");
+
+            var dugItemsEntryImage = document.createElement("div");
+            dugItemsEntryImage.setAttribute("class", "dugItemsEntryImage");
+            dugItemsEntryImage.style.backgroundRepeat = "no-repeat";
+            dugItemsEntryImage.style.backgroundImage = "url('data/textures/" + itemType.texture + ".png')";
+
+            var dugItemsEntryText = document.createElement("div");
+            dugItemsEntryText.setAttribute("class", "dugItemsEntryText");
+            dugItemsEntryText.innerText = Math.round((item.amount / 256.0) * 10) / 10;
+
+            dugItemsEntry.appendChild(dugItemsEntryImage);
+            dugItemsEntry.appendChild(dugItemsEntryText);
+            dugItems.appendChild(dugItemsEntry);
+        }
+    }
+    var dugItemsFooter= document.createElement("div");
+    dugItemsFooter.setAttribute("class", "dugItemsFooter");
+    dugItems.appendChild(dugItemsFooter);
 }
