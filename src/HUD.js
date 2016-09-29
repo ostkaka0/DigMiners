@@ -40,7 +40,7 @@ createHUD = function(gameData) {
 
             var dugItemsEntryText = document.createElement("div");
             dugItemsEntryText.setAttribute("class", "dugItemsEntryText");
-            dugItemsEntryText.innerText = 0;
+            dugItemsEntryText.innerText = "0.0";
 
             dugItemsEntry.appendChild(dugItemsEntryImage);
             dugItemsEntry.appendChild(dugItemsEntryText);
@@ -74,7 +74,7 @@ updateHUD = function(gameData) {
         if(item && itemType) {
             if(itemType.texture)
                 slotImageContainer.style.backgroundImage = "url('data/textures/" + itemType.texture + ".png')";
-            slotTextContainer.innerText = Math.round((item.amount / 256.0) * 10) / 10;
+            slotTextContainer.innerText = item.amount;
         }
     }
 
@@ -85,7 +85,7 @@ updateHUD = function(gameData) {
         if(itemType.isDigable) {
             var dugItemsEntry = document.getElementById("entry" + current);
             var dugItemsEntryText = dugItemsEntry.childNodes[1];
-            dugItemsEntryText.innerText = Math.round((player.inventory.getAmountById(itemType.id) / 256.0) * 10) / 10;
+            dugItemsEntryText.innerText = parseFloat(Math.floor((player.inventory.getAmountById(itemType.id) / 256.0) * 10) / 10).toFixed(1);
             ++current;
         }
     }
