@@ -66,6 +66,7 @@ updateHUD = function(gameData) {
         var itemType = gameData.itemRegister.getById(item.id);
         while(item && itemType.isDigable) {
             ++currentItemIndex;
+            console.log(currentItemIndex);
             item = player.inventory.items[currentItemIndex];
             if(!item)
                 break;
@@ -74,7 +75,9 @@ updateHUD = function(gameData) {
         if(item && itemType) {
             if(itemType.texture)
                 slotImageContainer.style.backgroundImage = "url('data/textures/" + itemType.texture + ".png')";
-            slotTextContainer.innerText = item.amount;
+            if(item.amount > 1)
+                slotTextContainer.innerText = item.amount;
+            ++currentItemIndex;
         }
     }
 
