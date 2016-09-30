@@ -43,7 +43,7 @@ entityTemplates.item = function(entityId, itemId, amount, x, y, rotation, gameDa
     entity.isItem = true;
 
     if(!isServer) {
-        var itemType = gameData.itemRegister.getById(itemId);
+        var itemType = gameData.itemRegister[itemId];
         var sprite = new PIXI.Sprite(textures[itemType.texture]);
         sprite.anchor.x = 0.5;
         sprite.anchor.y = 0.5;

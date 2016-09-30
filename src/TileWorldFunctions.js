@@ -178,7 +178,7 @@ carveCircle = function(game, x, y, radius, strengthModifier, onDensityChange) {
 
             var oldDensity = getDensity(tileWorld, tileX, tileY);
             var tileId = getTileId(tileWorld, tileX, tileY);
-            var tile = tileRegister.getById(tileId);
+            var tile = tileRegister[tileId];
             if(!tile) {
                 console.log("Tile is undefined! TileID: " + tileId);
                 continue;

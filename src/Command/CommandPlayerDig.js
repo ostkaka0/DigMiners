@@ -11,31 +11,27 @@ CommandPlayerDig.prototype.execute = function(gameData) {
     if(!player) return;
     var tileWorld = gameData.tileWorld;
     var dug = carveCircle(gameData, this.x, this.y, this.radius, player.getDigStrength());
-    if(isServer) {
-        for(var i = 0; i < dug.length; ++i) {
-            if(dug[i] != undefined && dug[i] > 0) {
-                //console.log(this.playerId + " dug " + i + ": " + dug[i]);
-                var tileName = gameData.tileRegister.getById(i).name;
-                var itemId = gameData.itemRegister.getIdByName(tileName);
-                var message = new MessagePlayerInventory(this.playerId, InventoryActions.ADD_ORE, itemId, dug[i]);
-                message.execute(gameData);
-                message.send(player.socket);
-
-                var hats = [gameData.itemRegister.getIdByName("Ugly hat"), gameData.itemRegister.getIdByName("Broken hat")];
-                var rand = Math.random() * 1000;
-                var itemId = null;
-                if(rand > 995)
-                    itemId = hats[1];
-                else if(rand > 990)
-                    itemId = hats[0];
-                if(itemId) {
-                    var entity = gameData.entityWorld.objects[player.entityId];
-                    var physicsBody = entity.physicsBody;
-                    message = new MessageItemDrop(idList.next(), itemId, 1, physicsBody.pos[0], physicsBody.pos[1], physicsBody.angle);
-                    message.execute(gameData);
-                    message.send(io.sockets);
-                }
-            }
+    if(!isServer) return;
+    for(var i = 0; i < dug.length; ++i) {
+        if(!dug[i] || dug[i] <= 0) continue;
+        //console.log(this.playerId + " dug " + i + ": " + dug[i]);
+        var tileName = gameData.tileRegister[i].name;
+        var itemId = i;//gameData.itemRegister.getIdByName(tileName);
+        var message = new MessagePlayerInventory(this.playerId, InventoryActions.ADD_ORE, itemId, dug[i]);
+        message.execute(gameData);
+        message.send(player.socket);
+        var rand = Math.random() * 1000;
+        var itemId = null;
+        if(rand > 995)
+            itemId = Item.BrokenHat
+        else if(rand > 990)
+            itemId = Item.UglyHat
+        if(itemId) {
+            var entity = gameData.entityWorld.objects[player.entityId];
+            var physicsBody = entity.physicsBody;
+            message = new MessageItemDrop(idList.next(), itemId, 1, physicsBody.pos[0], physicsBody.pos[1], physicsBody.angle);
+            message.execute(gameData);
+            message.send(io.sockets);
         }
     }
 }
