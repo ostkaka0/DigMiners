@@ -14,10 +14,10 @@ GameData = function(idList) {
     this.generator = new Generator();
     this.commands = [];
     this.pendingCommands = {};
-    this.commandTypes = new ObjectTypes([CommandPlayerMove, CommandDig, CommandPlayerDig]);
+    this.commandTypes = new ObjectTypes([CommandPlayerMove, CommandDig, CommandPlayerDig, CommandPlayerEquipStack]);
     this.messageTypes = new ObjectTypes();
     this.messagesToClient = [MessageInit, MessageCommands, MessageChunk, MessageEntityStatus, MessagePlayerJoin, MessagePlayerLeave, MessagePlayerInventory, MessageItemDrop, MessageEntityDestroy];
-    this.messagesToServer = [MessagePlayerMove, MessageRequestItemPickup, MessageRequestDropStack];
+    this.messagesToServer = [MessagePlayerMove, MessageRequestItemPickup, MessageRequestDropStack, MessageRequestEquipStack];
 
     this.messageTypes.addArray(this.messagesToClient);
     this.messageTypes.addArray(this.messagesToServer);
