@@ -34,10 +34,10 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
     return { 'player': player, 'entity': entity };
 }
 
-entityTemplates.item = function(entityId, itemId, amount, x, y, rotation, gameData) {
+entityTemplates.item = function(entityId, itemId, amount, gameData) {
     var entity = gameData.entityWorld.add({}, entityId);
-    entity.physicsBody = new PhysicsBody(v2.create(x, y), 0.01);
-    entity.physicsBody.angle = rotation;
+    entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
+
     entity.itemId = itemId;
     entity.amount = amount;
     entity.isItem = true;
