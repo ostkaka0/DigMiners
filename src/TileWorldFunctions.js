@@ -1,18 +1,8 @@
 getDensity = function(terrainWorld, x, y) {
-    var localX = x % CHUNK_DIM;
-    var localY = y % CHUNK_DIM;
-    var chunkX = (x - localX) / CHUNK_DIM;
-    var chunkY = (y - localY) / CHUNK_DIM;
-
-    // Fix indexing of negative values:
-    if(x < 0) {
-        chunkX--;
-        localX = (x - chunkX * CHUNK_DIM) % CHUNK_DIM;
-    }
-    if(y < 0) {
-        chunkY--;
-        localY = (y - chunkY * CHUNK_DIM) % CHUNK_DIM;
-    }
+    var chunkX = Math.floor(x / CHUNK_DIM);
+    var chunkY = Math.floor(y / CHUNK_DIM);
+    var localX = x - chunkX*CHUNK_DIM;
+    var localY = y - chunkY*CHUNK_DIM;
 
     var chunk = terrainWorld.get(chunkX, chunkY);
     if(!chunk) {
@@ -23,21 +13,11 @@ getDensity = function(terrainWorld, x, y) {
 }
 
 setDensity = function(tileWorld, x, y, density) {
-    var localX = x % CHUNK_DIM;
-    var localY = y % CHUNK_DIM;
-    var chunkX = (x - localX) / CHUNK_DIM;
-    var chunkY = (y - localY) / CHUNK_DIM;
-
-    // Fix indexing of negative values:
-    if(x < 0) {
-        chunkX--;
-        localX = (x - chunkX * CHUNK_DIM) % CHUNK_DIM;
-    }
-    if(y < 0) {
-        chunkY--;
-        localY = (y - chunkY * CHUNK_DIM) % CHUNK_DIM;
-    }
-
+    var chunkX = Math.floor(x / CHUNK_DIM);
+    var chunkY = Math.floor(y / CHUNK_DIM);
+    var localX = x - chunkX*CHUNK_DIM;
+    var localY = y - chunkY*CHUNK_DIM;
+    
     var chunk = tileWorld.get(chunkX, chunkY);
     if(!chunk) {
         console.log("Density set on missing chunk!");
@@ -48,20 +28,10 @@ setDensity = function(tileWorld, x, y, density) {
 }
 
 getTileId = function(tileWorld, x, y) {
-    var localX = x % CHUNK_DIM;
-    var localY = y % CHUNK_DIM;
-    var chunkX = (x - localX) / CHUNK_DIM;
-    var chunkY = (y - localY) / CHUNK_DIM;
-
-    // Fix indexing of negative values:
-    if(x < 0) {
-        chunkX--;
-        localX = (x - chunkX * CHUNK_DIM) % CHUNK_DIM;
-    }
-    if(y < 0) {
-        chunkY--;
-        localY = (y - chunkY * CHUNK_DIM) % CHUNK_DIM;
-    }
+    var chunkX = Math.floor(x / CHUNK_DIM);
+    var chunkY = Math.floor(y / CHUNK_DIM);
+    var localX = x - chunkX*CHUNK_DIM;
+    var localY = y - chunkY*CHUNK_DIM;
 
     var chunk = tileWorld.get(chunkX, chunkY);
     if(!chunk)
@@ -71,23 +41,12 @@ getTileId = function(tileWorld, x, y) {
 }
 
 setTileId = function(tileWorld, x, y, value) {
-    var localX = x % CHUNK_DIM;
-    var localY = y % CHUNK_DIM;
-    var chunkX = (x - localX) / CHUNK_DIM;
-    var chunkY = (y - localY) / CHUNK_DIM;
-    var chunk = null;
+    var chunkX = Math.floor(x / CHUNK_DIM);
+    var chunkY = Math.floor(y / CHUNK_DIM);
+    var localX = x - chunkX*CHUNK_DIM;
+    var localY = y - chunkY*CHUNK_DIM;
 
-    // Fix indexing of negative values:
-    if(x < 0) {
-        chunkX--;
-        localX = (x - chunkX * CHUNK_DIM) % CHUNK_DIM;
-    }
-    if(y < 0) {
-        chunkY--;
-        localY = (y - chunkY * CHUNK_DIM) % CHUNK_DIM;
-    }
-
-    chunk = tileWorld.get(chunkX, chunkY);
+    var chunk = tileWorld.get(chunkX, chunkY);
     if(!chunk) {
         console.log("Cannot set tile on missing chunk!");
         return;
@@ -166,12 +125,12 @@ carveCircle = function(game, x, y, radius, strengthModifier, onDensityChange) {
 
     var intR = parseInt(radius + 0.5);
 
-    for(var yy = -intR; yy < intR; ++yy) {
-        for(var xx = -intR; xx < intR; ++xx) {
-            var tileX = parseInt(x + ((x > 0) ? 0.5 : -0.5)) + xx;
-            var tileY = parseInt(y + ((y > 0) ? 0.5 : -0.5)) + yy;
-            var xxx = xx + x - Math.floor(x);
-            var yyy = yy + y - Math.floor(y);
+    for(var yy = -4*intR; yy < 4*intR; ++yy) {
+        for(var xx = -4*intR; xx < 4*intR; ++xx) {
+            var tileX = Math.floor(x) + xx;
+            var tileY = Math.floor(y) + yy;
+            var xxx = x - 0.5 - tileX;//xx + x - parseInt(x);//Math.floor(x);
+            var yyy = y - 0.5 - tileY;//yy + y - parseInt(y);//Math.floor(y);
             var dis = Math.sqrt(xxx * xxx + yyy * yyy);
             if(dis > radius)
                 continue;
