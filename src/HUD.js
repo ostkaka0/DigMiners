@@ -54,15 +54,25 @@ createHUD = function(gameData) {
     dugItemsFooter.setAttribute("class", "dugItemsFooter");
     dugItems.appendChild(dugItemsFooter);
 
-    var createFunc = function(i) {
+    var createDropFunc = function(i) {
         return function() {
             var message = new MessageRequestDropStack(i);
             message.send(socket);
         };
     }
+
+    var createEquipFunc = function(i) {
+        return function() {
+            var message = new MessageRequestEquipStack(i);
+            message.send(socket);
+            return false;
+        };
+    }
     // Initialize closures
     for(var i = 0; i < 64; ++i) {
-        HUDClosures[i] = createFunc(i);
+        HUDClosures[i] = [];
+        HUDClosures[i][0] = createDropFunc(i);
+        HUDClosures[i][1] = createEquipFunc(i);
     }
 }
 
@@ -81,8 +91,12 @@ updateHUD = function(gameData) {
             if(item.amount > 1)
                 slotTextContainer.innerText = item.amount;
             slot.setAttribute("title", itemType.name);
+            slot.setAttribute("class", "inventorySlot");
+            if(item.equipped)
+                slot.className += " brightness";
 
-            slot.onclick = HUDClosures[i];
+            slot.onclick = HUDClosures[i][0];
+            slot.oncontextmenu = HUDClosures[i][1];
         } else {
             slotImageContainer.style.backgroundImage = "";
             slotTextContainer.innerText = "";

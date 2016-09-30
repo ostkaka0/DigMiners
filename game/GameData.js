@@ -14,9 +14,9 @@ GameData = function(idList) {
     this.generator = new Generator();
     this.commands = [];
     this.pendingCommands = {};
-    this.commandTypes = typeRegisterAddByArray([], [CommandPlayerMove, CommandDig, CommandPlayerDig]);
+    this.commandTypes = typeRegisterAddByArray([], [CommandPlayerMove, CommandDig, CommandPlayerDig, CommandPlayerEquipStack]);
     this.messagesToClient = [MessageInit, MessageCommands, MessageChunk, MessageEntityStatus, MessagePlayerJoin, MessagePlayerLeave, MessagePlayerInventory, MessageItemDrop, MessageEntityDestroy];
-    this.messagesToServer = [MessagePlayerMove, MessageRequestItemPickup, MessageRequestDropStack];
+    this.messagesToServer = [MessagePlayerMove, MessageRequestItemPickup, MessageRequestDropStack, MessageRequestEquipStack];
     this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
 
     //if(isServer)
