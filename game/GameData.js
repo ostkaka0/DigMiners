@@ -9,28 +9,18 @@ GameData = function(idList) {
     this.playerWorld = new ObjectWorld();
     this.entityWorld = new ObjectWorld();
     this.tileWorld = new Map2D();
-    this.tileRegister = new TileRegister();
-    this.itemRegister = new ItemRegister();
+    this.tileRegister = objectRegisterAddByObject([], Tiles);
+    this.itemRegister = objectRegisterAddByObject([], Item);
     this.generator = new Generator();
     this.commands = [];
     this.pendingCommands = {};
-    this.commandTypes = new ObjectTypes([CommandPlayerMove, CommandDig, CommandPlayerDig]);
-    this.messageTypes = new ObjectTypes();
+    this.commandTypes = typeRegisterAddByArray([], [CommandPlayerMove, CommandDig, CommandPlayerDig]);
     this.messagesToClient = [MessageInit, MessageCommands, MessageChunk, MessageEntityStatus, MessagePlayerJoin, MessagePlayerLeave, MessagePlayerInventory, MessageItemDrop, MessageEntityDestroy];
     this.messagesToServer = [MessagePlayerMove, MessageRequestItemPickup, MessageRequestDropStack];
+    this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
 
-    this.messageTypes.addArray(this.messagesToClient);
-    this.messageTypes.addArray(this.messagesToServer);
-
-    this.tileRegister.register("Dirt", true, false, 1.0);
-    this.tileRegister.register("Stone", true, false, 4.0);
-    this.tileRegister.register("Hard stone", true, false, 8.0);
-    this.tileRegister.register("Very hard stone", true, false, 16.0);
-    this.tileRegister.register("Blue ore", true, false, 32.0);
-    this.tileRegister.register("Red ore", true, false, 64.0);
-
-    if(isServer)
-        this.itemRegister.load(this);
+    //if(isServer)
+    //    this.itemRegister.load(this);
 
     if(idList) {
         var onObjectRemove = function(object) { idList.remove(object.id); };

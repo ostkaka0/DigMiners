@@ -13,6 +13,7 @@ ExprAssign = function(a, b) { this.a = a; this.b = b; }
 ExprDecl = function(a) { this.a = a; }
 ExprDeclAssign = function(a, b) { this.a = a; this.b = b; }
 ExprScope = function(a) { this.a = a; }
+ExprObject = function(array) { this.a = array; }
 
 isspace = function(c) {
     return c == ' ' || c == '\t' || c == '\r';
@@ -145,7 +146,7 @@ scan = function(source) {
  * singleLine(optional) - if true, return at '\n'
  * return value - index
  */
-parse = function(tokens, ast, i, singleExpr, singleLine) {
+parse = function(tokens, ast, i, singleExpr, isRvalue) {
     var i = i || 0;
     while(i < tokens.length) {
         switch(tokens[i].constructor) {
@@ -179,12 +180,21 @@ parse = function(tokens, ast, i, singleExpr, singleLine) {
                 if (singleExpr) return i;
                 break;
             case "\n":
-                if (singleLine) return i;
+                if (isRvalue) return i;
                 break;
             case "{":
-                var scope = [];
-                i = parse(tokens, scope, i+1);
-                ast.push(new ExprScope(scope));
+                if (isRvalue) {
+                    var object = [];
+                    i++;
+                    while(tokens[i] != "}") {
+                        object.push(tokens[i++]);
+                    i++;
+                    ast.push(ExprObject(object));
+                } else {
+                    var scope = [];
+                    i = parse(tokens, scope, i+1);
+                    ast.push(new ExprScope(scope));
+                }
                 break;
             case "=":
                 var rvalue = [];

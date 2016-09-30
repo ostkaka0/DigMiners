@@ -4,33 +4,32 @@ Inventory = function() {
 }
 
 Inventory.prototype.addItem = function(gameData, id, amount) {
+    return;
     //console.log("adding " + amount + " " + id);
-    var amountToAdd = amount;
-    var maxStack = gameData.itemRegister.getById(id).maxStackSize;
+    var maxStack = gameData.itemRegister[id].maxStackSize;
     for(var i = 0; true; ++i) {
-        if(amountToAdd < 0) {
+        if(amount < 0) {
             console.log("inventory bad thing happens!");
             return;
         }
-        if(amountToAdd == 0)
+        if(amount == 0)
             return;
         if(i >= this.items.length || !this.items[i]) {
-            var added = (amountToAdd <= maxStack ? amountToAdd : maxStack);
-            this.items.push(gameData.itemRegister.createById(id, added));
-            amountToAdd -= added;
+            var added = (amount <= maxStack ? amount : maxStack);
+            this.items.push({ 'id': id, 'name': gameData.itemRegister[id].name, 'amount': added });
+            amount -= added;
             continue;
         }
         if(this.items[i].id === id && this.items[i].amount < maxStack) {
             var maxToAdd = maxStack - this.items[i].amount;
-            var added = (amountToAdd <= maxToAdd ? amountToAdd : maxToAdd);
+            var added = (amount <= maxToAdd ? amount : maxToAdd);
             this.items[i].amount += added;
-            amountToAdd -= added;
+            amount -= added;
         }
     }
 }
 
 Inventory.prototype.removeItem = function(gameData, id, amount) {
-    var amountToRemove = amount;
     for(var i = this.items.length - 1; i > 0; --i) {
         var currentAmount = this.items[i].amount;
         if(this.items[i].id === id && currentAmount >= 0) {
@@ -38,9 +37,9 @@ Inventory.prototype.removeItem = function(gameData, id, amount) {
             this.items[i].amount -= removed;
             amountToRemove -= removed;
         }
-        if(amountToAdd < 0)
+        if(amount < 0)
             console.log("inventory bad thing happens!");
-        if(amountToAdd == 0)
+        if(amount == 0)
             return;
     }
 }

@@ -29,8 +29,8 @@ createHUD = function(gameData) {
     // create dugItems
     var dugItems = document.getElementById("dugItems");
     dugItems.innerHTML = "";
-    for(var i = 0; i < gameData.itemRegister.itemTypes.length; ++i) {
-        var itemType = gameData.itemRegister.itemTypes[i];
+    for(var i = 0; i < gameData.itemRegister.length; ++i) {
+        var itemType = gameData.itemRegister[i];
         if(itemType.isDigable) {
             var dugItemsEntry = document.createElement("div");
             dugItemsEntry.setAttribute("class", "dugItemsEntry");
@@ -75,7 +75,7 @@ updateHUD = function(gameData) {
 
         var item = player.inventory.items[i];
         if(item) {
-            var itemType = gameData.itemRegister.getById(item.id);
+            var itemType = gameData.itemRegister[item.id];
             if(itemType.texture)
                 slotImageContainer.style.backgroundImage = "url('data/textures/" + itemType.texture + ".png')";
             if(item.amount > 1)
@@ -93,8 +93,8 @@ updateHUD = function(gameData) {
 
     // update dugItems
     var current = 0;
-    for(var i = 0; i < gameData.itemRegister.itemTypes.length; ++i) {
-        var itemType = gameData.itemRegister.itemTypes[i];
+    for(var i = 0; i < gameData.itemRegister.length; ++i) {
+        var itemType = gameData.itemRegister[i];
         if(itemType.isDigable) {
             var dugItemsEntry = document.getElementById("entry" + current);
             var dugItemsEntryText = dugItemsEntry.childNodes[1];
