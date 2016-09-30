@@ -22,14 +22,14 @@ CommandPlayerDig.prototype.execute = function(gameData) {
         message.send(player.socket);
         var rand = Math.random() * 1000;
         var itemId = null;
-        if(rand > 800)
+        if(rand > 900)
             itemId = Item.BrokenHat.id;
-        else if(rand > 900)
+        else if(rand > 800)
             itemId = Item.UglyHat.id;
         if(itemId) {
             var entity = gameData.entityWorld.objects[player.entityId];
             var physicsBody = entity.physicsBody;
-            message = new MessageItemDrop(idList.next(), itemId, 1, physicsBody.pos[0], physicsBody.pos[1], physicsBody.angle);
+            message = new MessageItemDrop(idList.next(), itemId, 1, physicsBody.pos[0], physicsBody.pos[1], 0, 0, physicsBody.angle);
             message.execute(gameData);
             message.send(io.sockets);
         }
