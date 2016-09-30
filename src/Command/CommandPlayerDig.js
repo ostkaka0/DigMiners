@@ -14,7 +14,7 @@ CommandPlayerDig.prototype.execute = function(gameData) {
     if(!isServer) return;
     for(var i = 0; i < dug.length; ++i) {
         if(!dug[i] || dug[i] <= 0) continue;
-        //console.log(this.playerId + " dug " + i + ": " + dug[i]);
+        console.log(this.playerId + " dug " + dug[i] + " " + i);
         var tileName = gameData.tileRegister[i].name;
         var itemId = i;//gameData.itemRegister.getIdByName(tileName);
         var message = new MessagePlayerInventory(this.playerId, InventoryActions.ADD_ORE, itemId, dug[i]);
@@ -23,9 +23,9 @@ CommandPlayerDig.prototype.execute = function(gameData) {
         var rand = Math.random() * 1000;
         var itemId = null;
         if(rand > 995)
-            itemId = Item.BrokenHat
+            itemId = Item.BrokenHat.id;
         else if(rand > 990)
-            itemId = Item.UglyHat
+            itemId = Item.UglyHat.id;
         if(itemId) {
             var entity = gameData.entityWorld.objects[player.entityId];
             var physicsBody = entity.physicsBody;
