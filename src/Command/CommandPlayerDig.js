@@ -22,9 +22,9 @@ CommandPlayerDig.prototype.execute = function(gameData) {
         message.send(player.socket);
         var rand = Math.random() * 1000;
         var itemId = null;
-        if(rand > 995)
+        if(rand > 800)
             itemId = Item.BrokenHat.id;
-        else if(rand > 990)
+        else if(rand > 900)
             itemId = Item.UglyHat.id;
         if(itemId) {
             var entity = gameData.entityWorld.objects[player.entityId];
