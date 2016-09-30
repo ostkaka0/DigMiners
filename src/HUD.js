@@ -39,7 +39,7 @@ createHUD = function(gameData) {
             var dugItemsEntryImage = document.createElement("div");
             dugItemsEntryImage.setAttribute("class", "dugItemsEntryImage");
             dugItemsEntryImage.style.backgroundRepeat = "no-repeat";
-            dugItemsEntryImage.style.backgroundImage = "url('data/textures/" + itemType.texture + ".png')";
+            dugItemsEntryImage.style.backgroundImage = "url('data/textures/items/" + itemType.texture + ".png')";
 
             var dugItemsEntryText = document.createElement("div");
             dugItemsEntryText.setAttribute("class", "dugItemsEntryText");
@@ -88,7 +88,7 @@ updateHUD = function(gameData) {
         if(item) {
             var itemType = gameData.itemRegister[item.id];
             if(itemType.texture)
-                slotImageContainer.style.backgroundImage = "url('data/textures/" + itemType.texture + ".png')";
+                slotImageContainer.style.backgroundImage = "url('data/textures/" + itemType.texturePath + itemType.texture + ".png')";
             if(item.amount > 1)
                 slotTextContainer.innerText = item.amount;
             slot.setAttribute("title", itemType.name);
