@@ -18,7 +18,9 @@ MessagePlayerInventory.prototype.execute = function(gameData) {
     var player = gameData.playerWorld.objects[this.playerId];
     if(!player) return;
     if(this.actionId == InventoryActions.ADD_ORE) {
-        player.oreInventory.addItem(gameData, this.id, this.amount);
+        if(!player.oreInventory[this.id])
+            player.oreInventory[this.id] = 0;
+        player.oreInventory[this.id] += this.amount;
     } else if(this.actionId == InventoryActions.ADD_ITEM) {
         player.inventory.addItem(gameData, this.id, this.amount);
     } else if(this.actionId == InventoryActions.REMOVE_ITEM) {

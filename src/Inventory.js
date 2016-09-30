@@ -4,7 +4,6 @@ Inventory = function() {
 }
 
 Inventory.prototype.addItem = function(gameData, id, amount) {
-    return;
     //console.log("adding " + amount + " " + id);
     var maxStack = gameData.itemRegister[id].maxStackSize;
     for(var i = 0; true; ++i) {

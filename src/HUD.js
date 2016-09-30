@@ -80,6 +80,7 @@ updateHUD = function(gameData) {
     // update inventory
     for(var i = 0; i < 64; ++i) {
         var slot = document.getElementById("slot" + i);
+        slot.setAttribute("class", "inventorySlot");
         var slotImageContainer = slot.childNodes[0];
         var slotTextContainer = slot.childNodes[1];
 
@@ -91,7 +92,6 @@ updateHUD = function(gameData) {
             if(item.amount > 1)
                 slotTextContainer.innerText = item.amount;
             slot.setAttribute("title", itemType.name);
-            slot.setAttribute("class", "inventorySlot");
             if(item.equipped)
                 slot.className += " brightness";
 
@@ -106,14 +106,11 @@ updateHUD = function(gameData) {
     }
 
     // update dugItems
-    var current = 0;
-    for(var i = 0; i < gameData.itemRegister.length; ++i) {
-        var itemType = gameData.itemRegister[i];
-        if(itemType.isDigable) {
-            var dugItemsEntry = document.getElementById("entry" + current);
-            var dugItemsEntryText = dugItemsEntry.childNodes[1];
-            dugItemsEntryText.innerText = parseFloat(Math.floor((player.oreInventory.getAmountById(itemType.id) / 256.0) * 10) / 10).toFixed(1);
-            ++current;
-        }
+    for(var i = 0; i < gameData.tileRegister.length; ++i) {
+        if(!player.oreInventory[i])
+            continue;
+        var dugItemsEntry = document.getElementById("entry" + i);
+        var dugItemsEntryText = dugItemsEntry.childNodes[1];
+        dugItemsEntryText.innerText = parseFloat(Math.floor((player.oreInventory[i] / 256.0) * 10) / 10).toFixed(1);
     }
 }

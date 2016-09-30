@@ -5,7 +5,7 @@ Player = function(playerId, entityId, name) {
     this.name = name;
     this.text = null;
     this.inventory = new Inventory();
-    this.oreInventory = new Inventory();
+    this.oreInventory = new Array();
 }
 
 Player.prototype.setName = function(name, gameData) {
