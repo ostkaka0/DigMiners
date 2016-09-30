@@ -52,5 +52,5 @@ ItemRegister.prototype.getIdByName = function(name) {
 
 ItemRegister.prototype.createById = function(id, amount) {
     var itemType = this.itemTypes[id];
-    return { 'id': id, 'name': itemType.name, 'amount': amount };
+    return { 'id': id, 'name': itemType.name, 'amount': amount, 'equipped': false };
 }
