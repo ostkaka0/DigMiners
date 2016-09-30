@@ -11,7 +11,7 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
         sprite.anchor.x = 0.5;
         sprite.anchor.y = 0.5;
 
-        var bodySprite = new PIXI.Sprite(textures.dig);
+        var bodySprite = new PIXI.Sprite(textures.tool);
         bodySprite.anchor.x = 0.5;
         bodySprite.anchor.y = 0.5;
 

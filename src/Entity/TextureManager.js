@@ -4,14 +4,15 @@ TextureManager = function() {
     this.loader.queueTexture("healthbar");
     this.loader.queueTexture("feet", "feetSheet");
     this.loader.queueTexture("dig", "digSheet");
-    this.loader.queueTexture("hats/uglyHat");
-    this.loader.queueTexture("hats/brokenHat");
-    this.loader.queueTexture("items/dirt");
-    this.loader.queueTexture("items/stone");
-    this.loader.queueTexture("items/hardStone");
-    this.loader.queueTexture("items/veryHardStone");
-    this.loader.queueTexture("items/blueOre");
-    this.loader.queueTexture("items/redOre");
+    this.loader.queueTexture("tool", "toolSheet");
+    this.loader.queueTexture("uglyHat", "hats/uglyHat");
+    this.loader.queueTexture("brokenHat", "hats/brokenHat");
+    this.loader.queueTexture("dirt", "items/dirt");
+    this.loader.queueTexture("stone", "items/stone");
+    this.loader.queueTexture("hardStone", "items/hardStone");
+    this.loader.queueTexture("veryHardStone", "items/veryHardStone");
+    this.loader.queueTexture("blueOre", "items/blueOre");
+    this.loader.queueTexture("redOre", "items/redOre");
 
     console.log("Loading textures...");
     this.loader.loadTextures();
