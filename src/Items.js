@@ -1,51 +1,58 @@
 Item = {};
 
-Item.Stone = { 
+Item.Stone = {
     name: "Stone",
-    texture: "items/stone",
+    texture: "stone",
+    texturePath: "items/",
     isEquipable: false,
     isDropable: true,
     isDigable: true,
 }
-Item.HardStone = { 
+Item.HardStone = {
     name: "Hard Stone",
-    texture: "items/hardStone", 
+    texture: "hardStone",
+    texturePath: "items/",
     isEquipable: false,
-    isDropable:  true,
+    isDropable: true,
     isDigable: true,
 }
-Item.VeryHardStone = { 
+Item.VeryHardStone = {
     name: "Very Hard Stone",
-    texture: "items/veryHardStone", 
+    texture: "veryHardStone",
+    texturePath: "items/",
     isEquipable: false,
     isDropable: true,
     isDigable: true,
 }
-Item.Sapphire = { 
+Item.Sapphire = {
     name: "Sapphire",
-    texture: "items/blueOre", 
+    texture: "blueOre",
+    texturePath: "items/",
     isEquipable: false,
     isDropable: true,
     isDigable: true,
 }
-Item.Ruby = { 
+Item.Ruby = {
     name: "Ruby",
-    texture: "items/redOre", 
+    texture: "redOre",
+    texturePath: "items/",
     isEquipable: false,
     isDropable: true,
     isDigable: true,
 }
-Item.UglyHat = { 
+Item.UglyHat = {
     name: "Ugly Hat",
-    texture: "hats/uglyHat", 
+    texture: "uglyHat",
+    texturePath: "hats/",
     isEquipable: true,
     isDropable: true,
     isDigable: false,
     maxStackSize: 1,
 }
-Item.BrokenHat = { 
+Item.BrokenHat = {
     name: "Broken Hat",
-    texture: "hats/brokenHat", 
+    texture: "brokenHat",
+    texturePath: "hats/",
     isEquipable: true,
     isDropable: true,
     isDigable: false,

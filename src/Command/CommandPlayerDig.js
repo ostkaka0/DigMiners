@@ -14,7 +14,7 @@ CommandPlayerDig.prototype.execute = function(gameData) {
     if(!isServer) return;
     for(var i = 0; i < dug.length; ++i) {
         if(!dug[i] || dug[i] <= 0) continue;
-        console.log(this.playerId + " dug " + dug[i] + " " + i);
+        //console.log(this.playerId + " dug " + dug[i] + " " + i);
         var tileName = gameData.tileRegister[i].name;
         var itemId = i;//gameData.itemRegister.getIdByName(tileName);
         var message = new MessagePlayerInventory(this.playerId, InventoryActions.ADD_ORE, itemId, dug[i]);
