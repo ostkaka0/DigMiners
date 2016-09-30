@@ -87,7 +87,7 @@ tick = function(dt) {
     else skippedTicks++;
 
     gameData.entityWorld.objectArray.forEach(function(entity) {
-        if(entity.isItem && entity.physicsBody && !entity.destroying) {
+        if(entity.isItem && entity.physicsBody && !entity.destroying && ((new Date()) - entity.dropped) >= 500) {
             var dis = v2.distance(entity.physicsBody.pos, playerEntity.physicsBody.pos);
             //console.log("dis client: " + dis);
             if(dis <= gameData.itemPickupDistance) {

@@ -4,9 +4,21 @@ MessageRequestDropStack = function(id) {
 }
 
 MessageRequestDropStack.prototype.execute = function(gameData, player) {
-    var message = new MessagePlayerInventory(player.playerId, InventoryActions.DROP_STACK, this.id, 0);
-    message.execute(gameData);
-    message.send(player.socket);
+    var item = player.inventory.items[this.id];
+    if(item) {
+        var entity = gameData.entityWorld.objects[player.entityId];
+        var physicsBody = entity.physicsBody;
+        var speed = v2.create(Math.cos(physicsBody.angle), -Math.sin(physicsBody.angle));
+        var speed2 = {};
+        v2.mul(10.0, speed, speed2);
+        var message = new MessageItemDrop(idList.next(), item.id, item.amount, physicsBody.pos[0], physicsBody.pos[1], speed2[0], speed2[1], physicsBody.angle);
+        message.execute(gameData);
+        message.send(io.sockets);
+
+        var message = new MessagePlayerInventory(player.playerId, InventoryActions.DROP_STACK, this.id, 0);
+        message.execute(gameData);
+        message.send(player.socket);
+    }
 }
 
 MessageRequestDropStack.prototype.send = function(socket) {

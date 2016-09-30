@@ -25,18 +25,6 @@ MessagePlayerInventory.prototype.execute = function(gameData) {
         player.inventory.removeItem(gameData, this.id, this.amount);
     } else if(this.actionId == InventoryActions.DROP_STACK) {
         var item = player.inventory.removeStack(this.id);
-        if(isServer) {
-            var entity = gameData.entityWorld.objects[player.entityId];
-            var physicsBody = entity.physicsBody;
-            var pos = v2.create(Math.cos(physicsBody.angle), -Math.sin(physicsBody.angle));
-            var pos2 = {};
-            v2.mul(2.0, pos, pos2);
-            var pos3 = {};
-            v2.add(pos2, physicsBody.pos, pos3);
-            var message = new MessageItemDrop(idList.next(), item.id, item.amount, pos3[0], pos3[1], physicsBody.angle);
-            message.execute(gameData);
-            message.send(io.sockets);
-        }
     }
     if(!isServer)
         updateHUD(gameData);
