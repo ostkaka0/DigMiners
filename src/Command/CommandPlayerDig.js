@@ -11,7 +11,12 @@ CommandPlayerDig.prototype.execute = function(gameData) {
     if(!player) return;
     var tileWorld = gameData.tileWorld;
     var dug = carveCircle(gameData, this.x, this.y, this.radius, player.getDigStrength());
-    if(!isServer) return;
+    if(!isServer) {
+        var entity = gameData.entityWorld.objects[player.entityId];
+        if(entity.drawable)
+            entity.drawable.animate("body", "tool", 256, true);
+        return;
+    }
     for(var i = 0; i < dug.length; ++i) {
         if(!dug[i] || dug[i] <= 0) continue;
         //console.log(this.playerId + " dug " + dug[i] + " " + i);

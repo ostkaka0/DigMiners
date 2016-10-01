@@ -47,12 +47,5 @@ entityFunctionPlayerMovement = function(gameData, dt) {
         var moveDir = entity.movement.getV2Dir();
         if(moveDir[0] != 0 || moveDir[1] != 0)
             entity.physicsBody.rotateTo(Math.atan2(-moveDir[1], moveDir[0]), entity.physicsBody.rotationSpeed, dt);
-
-        if(entity.drawable) {
-            if(entity.movement.spacebar)
-                entity.drawable.animate("body", "tool", 250, false);
-            else
-                entity.drawable.unanimate("body", "tool", true);
-        }
     }
 }
