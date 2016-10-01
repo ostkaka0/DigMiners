@@ -7,6 +7,8 @@ Movement = function(speed) {
     this.speed = speed;
 }
 
+Movement.prototype.name = "movement";
+
 Movement.prototype.getV2Dir = function() {
     var pos = v2.create(0, 0);
     if(this.up && !this.down)
@@ -18,6 +20,28 @@ Movement.prototype.getV2Dir = function() {
     else if(this.left && !this.right)
         pos[0] -= 1.0;
     return pos;
+}
+
+Movement.prototype.serialize = function(byteArray, index) {
+    var bitField = (this.up? 1:0) | (this.left? 2:0) | (this.down? 4:0) | (this.right? 8:0) | (this.spacebar? 16:0);
+    serializeInt8(byteArray, index, bitField);
+    serializeFix(byteArray, index, this.speed);
+    console.log("Movement serialized!");
+}
+
+Movement.prototype.deserialize = function(byteArray, index) {
+    var bitField = deserializeInt8(byteArray, index);
+    this.speed = deserializeFix(byteArray, index);
+    
+    this.up = (bitField & 1 != 0);
+    this.left = (bitField & 2 != 0);
+    this.down = (bitField & 4 != 0);
+    this.right = (bitField & 8 != 0);
+    this.spacebar = (bitField & 16 != 0);
+}
+
+Movement.prototype.getSerializationSize = function() {
+    return 5;
 }
 
 entityFunctionPlayerMovement = function(gameData, dt) {

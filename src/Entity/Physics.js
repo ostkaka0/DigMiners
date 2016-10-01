@@ -14,6 +14,32 @@ PhysicsBody = function(pos, damping) {
     this.rotationSpeed = toFix(10.0);
 }
 
+PhysicsBody.prototype.name = "physicsBody";
+
+PhysicsBody.prototype.serialize = function(byteArray, index) {
+    serializeV2(byteArray, index, this.pos);
+    serializeV2(byteArray, index, this.speed);
+    serializeFix(byteArray, index, this.angle);
+    serializeFix(byteArray, index, this.rotationSpeed);
+    console.log("physics serialized!");
+}
+
+PhysicsBody.prototype.deserialize = function(byteArray, index) {
+    this.pos = deserializeV2(byteArray, index);
+    this.speed = deserializeV2(byteArray, index);
+    this.angle = deserializeFix(byteArray, index);
+    this.rotationSpeed = deserializeFix(byteArray, index);
+    
+    if (!this.posOld) {
+        this.posOld = v2.clone(this.pos);
+        this.speedOld = v2.clone(this.speed);
+    }
+}
+
+PhysicsBody.prototype.getSerializationSize = function() {
+    return 24;
+}
+
 physicsBodySimulate = function(tileWorld, physicsBody, dt) {
     // Update posOld, speedOld
     v2.copy(physicsBody.pos, physicsBody.posOld);

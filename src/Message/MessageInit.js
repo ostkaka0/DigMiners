@@ -11,6 +11,38 @@ MessageInit = function(gameData, player, playerJoinMessages, entityStatusMessage
         this.playerJoinMessages = [];
         this.entityStatusMessages = [];
     }
+    
+    if (!gameData) return;
+    gameData.entityWorld.update();
+    
+    // Calculate serializationSize of entities
+    var size = 0;
+    var entitySizes = {};
+    for (entity of gameData.entityWorld.objectArray) {
+        size += 8; // Entity-id, entitySize
+        var entitySize = 0;
+        for (component in entity) {
+            if (!component.serialize) continue;
+            entitySize += 4 + component.getSerializationSize();
+        }
+        entitySizes[entity.id] = entitySize;
+        size += entitySize;
+    }
+    this.entityData = new Array(size);
+    var index = new IndexCounter();
+    // Serialize entities
+    for (entity of gameData.entityWorld.objectArray) {
+        serializeInt32(this.entityData, index, entity.id);
+        serializeInt32(this.entityData, index, entitySizes[entity.id]);
+        for (key in entity) {
+            var component = entity[key];
+            console.log(component.name);
+            if (!component.serialize) continue;
+            console.log("serializing component: " + component.name);
+            serializeInt32(this.entityData, index, component.id);
+            component.serialize(this.entityData, index);
+        }
+    }
 }
 
 MessageInit.prototype.execute = function(gameData) {
@@ -20,6 +52,26 @@ MessageInit.prototype.execute = function(gameData) {
         this.playerJoinMessages[i].execute(gameData);
     for(var i = 0; i < this.entityStatusMessages.length; ++i)
         this.entityStatusMessages[i].execute(gameData);
+
+    // Deserialize entity data
+    var index = this.index;//new IndexCounter();
+    while(index.value < this.entityData.byteLength) {
+        var entityId = deserializeInt32(this.entityData, index);
+        var entitySize = deserializeInt32(this.entityData, index);
+        var entityEnd = index.value + entitySize;
+        var entity = {};
+        while(index.value < entityEnd) {
+            var componentId = deserializeInt32(this.entityData, index);
+            var ComponentType = gameData.componentTypes[componentId];
+            var componentName = ComponentType.prototype.name;
+            entity[componentName] = new ComponentType();
+            entity[componentName].deserialize(this.entityData, index);
+        }
+        if (!gameData.entityWorld.objects[entityId])
+            gameData.entityWorld.add(entity, entityId);
+        else
+            console.log("Entity does already exist!");
+    }
 }
 
 MessageInit.prototype.serialize = function(byteArray, index) {
@@ -35,6 +87,8 @@ MessageInit.prototype.serialize = function(byteArray, index) {
     serializeInt32(byteArray, index, this.entityStatusMessages.length);
     for(var i = 0; i < this.entityStatusMessages.length; ++i)
         this.entityStatusMessages[i].serialize(byteArray, index);
+        
+    
 }
 
 MessageInit.prototype.deserialize = function(byteArray, index) {
@@ -68,13 +122,17 @@ MessageInit.prototype.getSerializationSize = function() {
 }
 
 MessageInit.prototype.send = function(socket) {
-    var byteArray = new Buffer(this.getSerializationSize());
+    var byteArray = new Array(this.getSerializationSize());//new Buffer(this.getSerializationSize());
     var counter = new IndexCounter();
     this.serialize(byteArray, counter);
-    socket.emit(this.idString, byteArray);
+    byteArray = byteArray.concat(this.entityData);
+    socket.emit(this.idString, new Buffer(byteArray));
+    console.log(this.entityData);
 }
 
 MessageInit.prototype.receive = function(gameData, byteArray) {
     var counter = new IndexCounter();
     this.deserialize(new Uint8Array(byteArray), counter);
+    this.entityData = byteArray;//byteArray.slice(counter.value, byteArray.byteLength);
+    this.index = counter;
 }

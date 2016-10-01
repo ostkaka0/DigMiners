@@ -18,6 +18,7 @@ GameData = function(idList) {
     this.messagesToClient = [MessageInit, MessageCommands, MessageChunk, MessageEntityStatus, MessagePlayerJoin, MessagePlayerLeave, MessagePlayerInventory, MessageItemDrop, MessageEntityDestroy];
     this.messagesToServer = [MessagePlayerMove, MessageRequestItemPickup, MessageRequestDropStack, MessageRequestEquipStack];
     this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
+    this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement]);
 
     //if(isServer)
     //    this.itemRegister.load(this);

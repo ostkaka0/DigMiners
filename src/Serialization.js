@@ -1,4 +1,15 @@
 
+serializeInt8 = function(byteArray, index, value) {
+    byteArray[index.value] = value & 0XFF;
+    index.add(1);
+}
+
+deserializeInt8 = function(byteArray, index) {
+    var value = byteArray[index.value];
+    index.add(4);
+    return value;
+}
+
 serializeInt32 = function(byteArray, index, value) {
     byteArray[index.value] = (value >> 24) & 0xFF;
     byteArray[index.value + 1] = (value >> 16) & 0xFF;
