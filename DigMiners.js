@@ -85,6 +85,16 @@ tick = function(dt) {
     if(gameData.pendingCommands[gameData.tickId])
         gameData.tick(dt);
     else skippedTicks++;
+ 
+    // Fix interpolation after MessagePlayerMove
+    for(var entity of gameData.entityWorld.objectArray) {
+        if (entity.physicsBody) {
+            var physicsBody = entity.physicsBody;
+            if (physicsBody.posClient)
+                physicsBody.posOld = v2.clone(physicsBody.posClient);
+            physicsBody.posClient = v2.clone(physicsBody.pos);
+        }
+    }
 
     gameData.entityWorld.objectArray.forEach(function(entity) {
         if(entity.isItem && entity.physicsBody && !entity.destroying && ((new Date()) - entity.dropped) >= 500) {
