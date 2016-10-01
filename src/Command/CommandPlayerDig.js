@@ -1,8 +1,9 @@
 
-CommandPlayerDig = function(playerId, x, y, radius) {
+CommandPlayerDig = function(playerId, x, y, dir, radius) {
     this.playerId = playerId;
     this.x = toFix(x);
     this.y = toFix(y);
+    this.dir = dir;
     this.radius = toFix(radius);
 }
 
@@ -10,7 +11,17 @@ CommandPlayerDig.prototype.execute = function(gameData) {
     var player = gameData.playerWorld.objects[this.playerId];
     if(!player) return;
     var tileWorld = gameData.tileWorld;
-    var dug = carveCircle(gameData, this.x, this.y, this.radius, player.getDigStrength());
+    var targetTile = gameData.tileRegister[getTileId(gameData.tileWorld, this.x + 1.0*this.dir[0], this.y + 1.0*this.dir[1])];
+    var onDensityChange = null;
+    if (targetTile.isOre) {
+        onDensityChange = function(tileX, tileY, tile, oldDensity, newDensity) { return tile.isOre; };// || tile.id == targetTile.id; };
+        var entityId = gameData.playerWorld.objects[this.playerId].entityId;
+        gameData.entityWorld.objects[entityId].physicsBody.speed = [0, 0];
+    } else {
+        onDensityChange = function(tileX, tileY, tile, oldDensity, newDensity) { return !tile.isOre; };
+    }
+        
+    var dug = carveCircle(gameData, this.x + 0.5*this.dir[0], this.y + 0.5*this.dir[1], this.radius, player.getDigStrength(), onDensityChange);
     if(!isServer) {
         var entity = gameData.entityWorld.objects[player.entityId];
         if(entity.drawable)
@@ -45,6 +56,7 @@ CommandPlayerDig.prototype.serialize = function(byteArray, index) {
     serializeInt32(byteArray, index, this.playerId);
     serializeFix(byteArray, index, this.x);
     serializeFix(byteArray, index, this.y);
+    serializeV2(byteArray, index, this.dir);
     serializeFix(byteArray, index, this.radius);
 }
 
@@ -52,9 +64,10 @@ CommandPlayerDig.prototype.deserialize = function(byteArray, index) {
     this.playerId = deserializeInt32(byteArray, index);
     this.x = deserializeFix(byteArray, index);
     this.y = deserializeFix(byteArray, index);
+    this.dir = deserializeV2(byteArray, index);
     this.radius = deserializeFix(byteArray, index);
 }
 
 CommandPlayerDig.prototype.getSerializationSize = function() {
-    return 16;
+    return 24;
 }
