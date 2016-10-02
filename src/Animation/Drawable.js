@@ -114,7 +114,7 @@ Drawable.prototype.animate = function(bodypartName, animation, fps, runToEnd) {
     if(bodypart) {
         if(!bodypart.animInstance) {
             bodypart.animInstance = this.animationManager.animations[animation];
-            bodypart.sprite.texture = bodypart.animInstance.texture.clone();
+            bodypart.sprite.sprite.texture = bodypart.animInstance.texture.clone();
         }
         bodypart.mspf = 1000.0 / fps;
         if(!bodypart.lastFrame || !bodypart.animating)
