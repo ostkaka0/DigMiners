@@ -9,10 +9,10 @@ TokenString = function(value) { this.value = value; }
 TokenSymbol = function(value) { this.value = value; }
 TokenNumber = function(value) { this.value = value; }
 
-ExprAssign = function(a, b) { this.a = a; this.b = b; }
-ExprDecl = function(a) { this.a = a; }
-ExprDeclAssign = function(a, b) { this.a = a; this.b = b; }
-ExprScope = function(a) { this.a = a; }
+ExprAssign = function(name, symbol, value) { this.name = name; this.symbol = symbol; this.value = value; }
+ExprDecl = function(name) { this.name = name;}
+ExprDeclAssign = function(name, symbol, value) { this.name = name; this.symbol = symbol; this.value = value; }
+ExprScope = function(ast) { this.ast = ast; }
 ExprObject = function(array) { this.a = array; }
 
 isspace = function(c) {
@@ -154,11 +154,11 @@ parse = function(tokens, ast, i, singleExpr, isRvalue) {
             if (tokens[i].value == "var"){
                 var expr = [];
                 i = -1+parse(tokens, expr, i+1, true, true);
-                console.log(expr);
+                console.log("ExprDecl? + " + astToJs(expr));
                 if (expr[0].constructor == TokenLabel)
                     ast.push(new ExprDecl(expr[0].value));
                 else
-                    ast.push(new ExprDeclAssign(expr[0].a, expr[0].b));
+                    ast.push(new ExprDeclAssign(expr[0].name, expr[0].symbol, expr[0].value));
             }
             else
                 ast.push(tokens[i]);
@@ -197,17 +197,29 @@ parse = function(tokens, ast, i, singleExpr, isRvalue) {
                 }
                 break;
             case "=":
+            case "+=":
+            case "-=":
+            case "*=":
+            case "/=":
+            case "%=":
+            case "|=":
+            case "&=":
+            case "^=":
                 var rvalue = [];
+                var symbol = tokens[i].value;
                 i = -1+parse(tokens, rvalue, i+1, true, true);
-                var expr = new ExprAssign(ast.pop().value, rvalue);
+                var expr = new ExprAssign(ast.pop(), symbol, rvalue);
                 ast.push(expr);
                 break;
             default:
+                ast.push(tokens[i]);
                 console.log("Unexpected symbol: '" + tokens[i].value.toString() + "'");
                 break;
             }
             break;
         default:
+            ast.push(tokens[i]);
+        
             console.log("Unexpected token: " + tokens[i].constructor.name + ":" + tokens[i].value.toString());
             break;
         }
@@ -216,30 +228,53 @@ parse = function(tokens, ast, i, singleExpr, isRvalue) {
     return i;
 }
 
-astToJs = function(ast) {
-    var output = "";
+astToJs = function(ast, output) {
+    output = output || "/*code:*/ ";
     
     exprToJs = function(expr) {
         switch(expr.constructor) {
         case TokenLabel:
-            for (label of expr.value)
-                output += label + ".";
-            output.substring(output.length - 1);
+            for (var i = 0; i < expr.value.length; i++) {
+                if (i != 0) output += ".";
+                output += expr.value[i];
+            }
             break;
         case TokenNumber:
             output += expr.value.toString();
             break;
         case TokenString:
-            output += "\"" + expr.value + "\"";
+            output += expr.value;
             break;
         case TokenSymbol:
             output += expr.value;
             break;
+        case ExprAssign:
+            output += " /*ExprAssign:*/";
+            exprToJs(expr.name);
+            output += expr.symbol;
+            output += astToJs(expr.value)
+            output += ";";
+            break;
+        case ExprDeclAssign:
+            console.log("ExprDeclAssign");
+            output += " /*ExprAssign:*/ var";
+            exprToJs(expr.name);
+            output += expr.symbol;
+            output += astToJs(expr.value)
+            output += ";";
+            break;
+        case ExprScope:
+            output += "{" + astToJs(expr.ast) + "}";
+            break;
         }
     }
     
-    for(expr of ast)
+    console.log("ast");
+    for(expr of ast) {
         exprToJs(expr);
+    }
+        
+    return output;
 }
 
 loadExternalScript = function(filePath) {
@@ -280,16 +315,20 @@ loadScript = function(filePath) {
 loadExternalScriptsRecursive = loadRecursive.bind(null, loadExternalScript);
 loadScriptRecursive = loadRecursive.bind(null, loadScript);
 
-var tokens = scan("var a = 1; var b = a; { var c = b; var d = 4; }");
+var tokens = scan("var a = 5; var c = 3;");// c = 1+2+3.14; d = 'hel\"\\'lo'; e = \"hel'\\\"lo2\"");
 //for (var token of tokens)
 //    process.stdout.write(token.value.toString() + " ");
 console.log();
 var ast = [];
 parse(tokens, ast);
+for(var token of tokens)
+    console.log(token);
 console.log(ast.length);
 for (var expr of ast) {
     console.log(expr);
 }
+var jsOutput = astToJs(ast);
+console.log("Final output:\n" + jsOutput);
 
 //loadRecursive("lib", loadExternalScript);
 //loadRecursive("src", loadScript);
