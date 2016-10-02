@@ -13,25 +13,25 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
 
         var rightArmSprite = new PIXI.Sprite(textures.rightArm);
         rightArmSprite.anchor.x = 0.5;
-        rightArmSprite.anchor.y = 0.5;
+        rightArmSprite.anchor.y = 1.0;
 
         var leftArmSprite = new PIXI.Sprite(textures.leftArm);
         leftArmSprite.anchor.x = 0.5;
-        leftArmSprite.anchor.y = 0.5;
+        leftArmSprite.anchor.y = 0.0;
 
         var headSprite = new PIXI.Sprite(textures.head);
         headSprite.anchor.x = 0.5;
         headSprite.anchor.y = 0.5;
 
         var shovelSprite = new PIXI.Sprite(textures.shovel);
-        shovelSprite.anchor.x = 0.5;
+        shovelSprite.anchor.x = 1.0;
         shovelSprite.anchor.y = 0.5;
 
         var bodyparts = {
             "feet": new BodyPart(feetSprite, 0, 0, 0, []),
-            "itemHolder": new BodyPart(shovelSprite, 5, 20, Math.PI / 2, []),
-            "rightArm": new BodyPart(rightArmSprite, 0, 0, 0, []),
-            "leftArm": new BodyPart(leftArmSprite, 0, 0, 0, []),
+            "itemHolder": new BodyPart(shovelSprite, 5, 40, Math.PI / 2, []),
+            "rightArm": new BodyPart(rightArmSprite, 0, 37, 0, []),
+            "leftArm": new BodyPart(leftArmSprite, 0, -37, 0, []),
             "head": new BodyPart(headSprite, 0, 0, 0, [])
         };
 
