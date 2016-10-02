@@ -214,6 +214,6 @@ Drawable.prototype.remove = function() {
     for(var sprite in this.sprites) {
         sprite = this.sprites[sprite];
         if(!isServer)
-            this.container.removeChild(sprite.sprite.sprite);
+            this.container.removeChild(sprite.sprite);
     }
 }
