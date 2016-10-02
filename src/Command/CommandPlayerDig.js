@@ -11,21 +11,24 @@ CommandPlayerDig.prototype.execute = function(gameData) {
     var player = gameData.playerWorld.objects[this.playerId];
     if(!player) return;
     var tileWorld = gameData.tileWorld;
-    var targetTile = gameData.tileRegister[getTileId(gameData.tileWorld, this.x + 1.0*this.dir[0], this.y + 1.0*this.dir[1])];
+    var targetTile = gameData.tileRegister[getTileId(gameData.tileWorld, this.x + 1.0 * this.dir[0], this.y + 1.0 * this.dir[1])];
     var onDensityChange = null;
-    if (targetTile.isOre) {
+    if(targetTile.isOre) {
         onDensityChange = function(tileX, tileY, tile, oldDensity, newDensity) { return tile.isOre; };// || tile.id == targetTile.id; };
         var entityId = gameData.playerWorld.objects[this.playerId].entityId;
         gameData.entityWorld.objects[entityId].physicsBody.speed = [0, 0];
     } else {
         onDensityChange = function(tileX, tileY, tile, oldDensity, newDensity) { return !tile.isOre; };
     }
-        
-    var dug = carveCircle(gameData, this.x + 0.5*this.dir[0], this.y + 0.5*this.dir[1], this.radius, player.getDigStrength(), onDensityChange);
+
+    var dug = carveCircle(gameData, this.x + 0.5 * this.dir[0], this.y + 0.5 * this.dir[1], this.radius, player.getDigStrength(), onDensityChange);
     if(!isServer) {
         var entity = gameData.entityWorld.objects[player.entityId];
-        if(entity.drawable)
-            entity.drawable.animate("body", "tool", 256, true);
+        if(entity.drawable) {
+            // bodypart, cycle name, fps, runToEnd
+            entity.drawable.cycle("rightArm", "rightArm", 256, true);
+            entity.drawable.cycle("itemHolder", "tool", 256, true);
+        }
         return;
     }
     for(var i = 0; i < dug.length; ++i) {

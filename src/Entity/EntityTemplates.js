@@ -7,21 +7,32 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
     entity.movement = new Movement(50.0);
 
     if(!isServer) {
-        var sprite = new PIXI.Sprite(textures.feet);
-        sprite.anchor.x = 0.5;
-        sprite.anchor.y = 0.5;
+        var feetSprite = new PIXI.Sprite(textures.feet);
+        feetSprite.anchor.x = 0.5;
+        feetSprite.anchor.y = 0.5;
 
-        var bodySprite = new PIXI.Sprite(textures.tool);
-        bodySprite.anchor.x = 0.5;
-        bodySprite.anchor.y = 0.5;
+        var rightArmSprite = new PIXI.Sprite(textures.rightArm);
+        rightArmSprite.anchor.x = 0.5;
+        rightArmSprite.anchor.y = 0.5;
+
+        var leftArmSprite = new PIXI.Sprite(textures.leftArm);
+        leftArmSprite.anchor.x = 0.5;
+        leftArmSprite.anchor.y = 0.5;
+
+        var headSprite = new PIXI.Sprite(textures.head);
+        headSprite.anchor.x = 0.5;
+        headSprite.anchor.y = 0.5;
+
+        var shovelSprite = new PIXI.Sprite(textures.shovel);
+        shovelSprite.anchor.x = 0.5;
+        shovelSprite.anchor.y = 0.5;
 
         var bodyparts = {
-            "feet": {
-                "sprite": sprite
-            },
-            "body": {
-                "sprite": bodySprite
-            }
+            "feet": new BodyPart(feetSprite, 0, 0, 0, []),
+            "itemHolder": new BodyPart(shovelSprite, 5, 20, Math.PI / 2, []),
+            "rightArm": new BodyPart(rightArmSprite, 0, 0, 0, []),
+            "leftArm": new BodyPart(leftArmSprite, 0, 0, 0, []),
+            "head": new BodyPart(headSprite, 0, 0, 0, [])
         };
 
         entity.drawable = new Drawable(bodyparts, animationManager, 1);
@@ -44,13 +55,11 @@ entityTemplates.item = function(entityId, itemId, amount, gameData) {
 
     if(!isServer) {
         var itemType = gameData.itemRegister[itemId];
-        var sprite = new PIXI.Sprite(textures[itemType.texture]);
-        sprite.anchor.x = 0.5;
-        sprite.anchor.y = 0.5;
+        var bodySprite = new PIXI.Sprite(textures[itemType.texture]);
+        bodySprite.anchor.x = 0.5;
+        bodySprite.anchor.y = 0.5;
         var bodyparts = {
-            "body": {
-                "sprite": sprite
-            },
+            "body": new BodyPart(bodySprite, 0, 0, 0, [])
         };
         entity.drawable = new Drawable(bodyparts, animationManager, 0);
     }
