@@ -64,22 +64,16 @@ AnimationManager.prototype.update = function() {
             var drawable = entity.drawable;
             for(var bodypart in drawable.bodyparts) {
                 bodypart = drawable.bodyparts[bodypart];
-                //console.log("found animation");
-                //TODO: Sort animations by priority to allow multiple animations per sprite
                 if(bodypart.animating) {
-                    //console.log("nice animation");
                     var diff = now - bodypart.lastFrame;
 
                     while(diff >= bodypart.mspf) {
                         diff -= bodypart.mspf;
                         bodypart.lastFrame = new Date();
-                        //console.log("found animation to animate " + player.text.text);                
                         bodypart.currentFrame += 1;
-                        //console.log("adding 1");
                         if(bodypart.currentFrame >= bodypart.animInstance.numFrames)
                             bodypart.currentFrame = 0;
                         bodypart.sprite.texture.frame = bodypart.animInstance.frames[bodypart.currentFrame];
-                        //console.log("ms since last frame " + (new Date() - bodypart.lastFrame));
 
                         if(bodypart.runToEnd && bodypart.currentFrame == 0) {
                             bodypart.animating = false;
@@ -87,24 +81,17 @@ AnimationManager.prototype.update = function() {
                         }
                     }
                 } else if(bodypart.cycle) {
-                    //console.log("nice animation");
                     var diff = now - bodypart.cycle.lastFrame;
 
                     while(diff >= bodypart.cycle.mspf) {
                         diff -= bodypart.cycle.mspf;
                         bodypart.cycle.lastFrame = new Date();
-                        //console.log("found animation to animate " + player.text.text);                
                         bodypart.cycle.currentFrame += 1;
-                        //console.log("adding 1");
                         if(bodypart.cycle.currentFrame >= bodypart.cycle.cycle.numFrames)
                             bodypart.cycle.currentFrame = 0;
-                        //console.log("frame " + bodypart.cycle.currentFrame);
-                        //console.log("pos " + JSON.stringify(entity.physicsBody.pos));
-                        bodypart.setCycleOffset(bodypart.cycle.cycle.frames[bodypart.cycle.currentFrame][0],
+                        bodypart.cycleOffset = [bodypart.cycle.cycle.frames[bodypart.cycle.currentFrame][0],
                             bodypart.cycle.cycle.frames[bodypart.cycle.currentFrame][1],
-                            bodypart.cycle.cycle.frames[bodypart.cycle.currentFrame][2]);
-                        //bodypart.sprite.texture.frame = bodypart.animInstance.frames[bodypart.currentFrame];
-                        //console.log("ms since last frame " + (new Date() - bodypart.lastFrame));
+                            bodypart.cycle.cycle.frames[bodypart.cycle.currentFrame][2]];
 
                         if(bodypart.cycle.runToEnd && bodypart.cycle.currentFrame == 0) {
                             bodypart.cycle = false;

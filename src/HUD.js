@@ -29,26 +29,24 @@ createHUD = function(gameData) {
     // create dugItems
     var dugItems = document.getElementById("dugItems");
     dugItems.innerHTML = "";
-    for(var i = 0; i < gameData.itemRegister.length; ++i) {
-        var itemType = gameData.itemRegister[i];
-        if(itemType.isDigable) {
-            var dugItemsEntry = document.createElement("div");
-            dugItemsEntry.setAttribute("class", "dugItemsEntry");
-            dugItemsEntry.setAttribute("id", "entry" + i);
+    for(var i = 0; i < gameData.tileRegister.length; ++i) {
+        var tileType = gameData.tileRegister[i];
+        var dugItemsEntry = document.createElement("div");
+        dugItemsEntry.setAttribute("class", "dugItemsEntry");
+        dugItemsEntry.setAttribute("id", "entry" + i);
 
-            var dugItemsEntryImage = document.createElement("div");
-            dugItemsEntryImage.setAttribute("class", "dugItemsEntryImage");
-            dugItemsEntryImage.style.backgroundRepeat = "no-repeat";
-            dugItemsEntryImage.style.backgroundImage = "url('data/textures/items/" + itemType.texture + ".png')";
+        var dugItemsEntryImage = document.createElement("div");
+        dugItemsEntryImage.setAttribute("class", "dugItemsEntryImage");
+        dugItemsEntryImage.style.backgroundRepeat = "no-repeat";
+        dugItemsEntryImage.style.backgroundImage = "url('data/textures/tiles/" + tileType.name + ".png')";
 
-            var dugItemsEntryText = document.createElement("div");
-            dugItemsEntryText.setAttribute("class", "dugItemsEntryText");
-            dugItemsEntryText.innerText = "0.0";
+        var dugItemsEntryText = document.createElement("div");
+        dugItemsEntryText.setAttribute("class", "dugItemsEntryText");
+        dugItemsEntryText.innerText = "0.0";
 
-            dugItemsEntry.appendChild(dugItemsEntryImage);
-            dugItemsEntry.appendChild(dugItemsEntryText);
-            dugItems.appendChild(dugItemsEntry);
-        }
+        dugItemsEntry.appendChild(dugItemsEntryImage);
+        dugItemsEntry.appendChild(dugItemsEntryText);
+        dugItems.appendChild(dugItemsEntry);
     }
     var dugItemsFooter = document.createElement("div");
     dugItemsFooter.setAttribute("class", "dugItemsFooter");

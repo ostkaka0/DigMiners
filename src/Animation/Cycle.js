@@ -18,9 +18,9 @@ Cycle.prototype.load = function(frames) {
             var currentY = startY + (j / numFrames) * (y - startY);
             var currentAngle = startAngle + (j / numFrames) * (angle - startAngle);
             this.frames.push([currentX, currentY, currentAngle]);
-            console.log("created cycle " + currentX + " - " + currentY + " . " + currentAngle);
+            //console.log("created cycle " + currentX + " - " + currentY + " . " + currentAngle);
         }
     }
     this.numFrames = this.frames.length;
-    console.log("Created cycle with " + this.frames.length + " frames.");
+    //console.log("Created cycle with " + this.frames.length + " frames.");
 }
