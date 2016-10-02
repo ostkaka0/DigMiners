@@ -1,7 +1,7 @@
 compressRLE = function(byteArray, outputArray, begin, end) {
     outputArray = outputArray || [];
     begin = begin || 0
-    end = end || byteArray.byteLength;
+    end = end || byteArray.byteLength || byteArray.length;
     var currentByte = byteArray[begin];
     var currentLength = 1;
     for (var i = begin+1; i < end; ++i) {
@@ -14,14 +14,14 @@ compressRLE = function(byteArray, outputArray, begin, end) {
             currentLength = 1;
         }
     }
+    outputArray.push(currentLength, currentByte);
     
     return outputArray;
 }
 
-decompressRLE = function(arrayBuffer, outputSize, begin, end) {
+decompressRLE = function(arrayBuffer, outputArray, begin, end) {
     begin = begin || 0
-    end = end || arrayBuffer.length;
-    var outputArray = new Uint8Array(outputSize);
+    end = end || arrayBuffer.length || arrayBuffer.byteLength;
     var outputIndex = 0;
     var i = begin;
     while(i < end) {

@@ -35,7 +35,7 @@ MessageChunk.prototype.receive = function(gameData, data) {
     var index = new IndexCounter();
     this.chunkX = deserializeInt32(byteArray, index);
     this.chunkY = deserializeInt32(byteArray, index);
-    this.chunk.densityData = decompressRLE(byteArray, CHUNK_SIZE, index.value);
+    decompressRLE(byteArray, this.chunk.densityData, index.value);
     //this.chunk.tileData = byteArray.slice(index.value + CHUNK_SIZE, index.value + 2*CHUNK_SIZE);
     console.log(this.chunk.tileData.byteLength);
 }
