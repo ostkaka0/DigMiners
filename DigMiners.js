@@ -61,7 +61,7 @@ loadGame = function() {
                 new MessagePlayerMove(playerMoveDirection).send(socket);
         }
     });
-    
+
     // Start gameLoop
     gameLoop(tick, render, gameData.tickDuration);
 }
@@ -71,7 +71,7 @@ tick = function(dt) {
     var readyTicks = 0;
     for(var i = 0; i <= 6 && gameData.pendingCommands[gameData.tickId + i]; i++)
         readyTicks++;
-        
+
     console.log("Ready ticks: " + readyTicks);
 
     if(readyTicks >= 3) {
@@ -83,12 +83,7 @@ tick = function(dt) {
 
     if(gameData.pendingCommands[gameData.tickId])
         gameData.tick(dt);
-<<<<<<< HEAD
-    else skippedTicks++;
 
-=======
- 
->>>>>>> origin/master
     // Fix interpolation after MessagePlayerMove
     for(var entity of gameData.entityWorld.objectArray) {
         if(entity.physicsBody) {
