@@ -61,7 +61,7 @@ loadGame = function() {
                 new MessagePlayerMove(playerMoveDirection).send(socket);
         }
     });
-    
+
     // Start gameLoop
     gameLoop(tick, render, gameData.tickDuration);
 }
@@ -71,8 +71,8 @@ tick = function(dt) {
     var readyTicks = 0;
     for(var i = 0; i <= 6 && gameData.pendingCommands[gameData.tickId + i]; i++)
         readyTicks++;
-        
-    console.log("Ready ticks: " + readyTicks);
+
+    //console.log("Ready ticks: " + readyTicks);
 
     if(readyTicks >= 3) {
         while(readyTicks >= 1 && gameData.pendingCommands[gameData.tickId]) {
@@ -83,19 +83,19 @@ tick = function(dt) {
 
     if(gameData.pendingCommands[gameData.tickId])
         gameData.tick(dt);
- 
+
     // Fix interpolation after MessagePlayerMove
     for(var entity of gameData.entityWorld.objectArray) {
-        if (entity.physicsBody) {
+        if(entity.physicsBody) {
             var physicsBody = entity.physicsBody;
-            if (physicsBody.posClient)
+            if(physicsBody.posClient)
                 physicsBody.posOld = v2.clone(physicsBody.posClient);
             physicsBody.posClient = v2.clone(physicsBody.pos);
         }
     }
 
     gameData.entityWorld.objectArray.forEach(function(entity) {
-        if(entity.isItem && entity.physicsBody && !entity.destroying && ((new Date()) - entity.dropped) >= 500) {
+        if(entity.item && entity.physicsBody && !entity.destroying && (!entity.item.dropped || ((new Date()) - entity.item.dropped) >= 500)) {
             var dis = v2.distance(entity.physicsBody.pos, playerEntity.physicsBody.pos);
             //console.log("dis client: " + dis);
             if(dis <= gameData.itemPickupDistance) {
@@ -175,5 +175,5 @@ onMessage(MessageInit, function(message) {
 
 onMessage(MessagePlayerInventory, function(message) {
     player = gameData.playerWorld.objects[message.playerId];
-    player.setName(message.itemName, gameData);
+    player.setName(message.id + ": " + message.amount, gameData);
 });

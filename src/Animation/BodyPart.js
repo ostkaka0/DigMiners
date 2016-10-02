@@ -23,7 +23,7 @@ BodyPart.prototype.position = function(x, y, rotation) {
     var newX = totalOffset[0] * cs - totalOffset[1] * sn;
     var newY = totalOffset[0] * sn + totalOffset[1] * cs;
 
-    this.sprite.position.x = newX + x;
-    this.sprite.position.y = newY + y;
-    this.sprite.rotation = this.offset[2] + this.cycleOffset[2] + rotation;
+    this.sprite.sprite.position.x = newX + x;
+    this.sprite.sprite.position.y = newY + y;
+    this.sprite.sprite.rotation = this.offset[2] + this.cycleOffset[2] + rotation;
 }

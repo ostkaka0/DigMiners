@@ -73,7 +73,7 @@ AnimationManager.prototype.update = function() {
                         bodypart.currentFrame += 1;
                         if(bodypart.currentFrame >= bodypart.animInstance.numFrames)
                             bodypart.currentFrame = 0;
-                        bodypart.sprite.texture.frame = bodypart.animInstance.frames[bodypart.currentFrame];
+                        bodypart.sprite.sprite.texture.frame = bodypart.animInstance.frames[bodypart.currentFrame];
 
                         if(bodypart.runToEnd && bodypart.currentFrame == 0) {
                             bodypart.animating = false;
