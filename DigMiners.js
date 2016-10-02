@@ -72,7 +72,7 @@ tick = function(dt) {
     for(var i = 0; i <= 6 && gameData.pendingCommands[gameData.tickId + i]; i++)
         readyTicks++;
 
-    console.log("Ready ticks: " + readyTicks);
+    //console.log("Ready ticks: " + readyTicks);
 
     if(readyTicks >= 3) {
         while(readyTicks >= 1 && gameData.pendingCommands[gameData.tickId]) {

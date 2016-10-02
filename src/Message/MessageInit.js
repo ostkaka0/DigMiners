@@ -1,5 +1,6 @@
 
 MessageInit = function(gameData, player) {
+    this.players = [];
     this.tickId = (gameData) ? gameData.tickId : 0;
     if(player) {
         this.playerId = player.id;
@@ -16,6 +17,12 @@ MessageInit.prototype.execute = function(gameData) {
     //entityTemplates.player(this.playerId, this.entityId, this.playerName, gameData);
     var player = gameData.playerWorld.add(new Player(this.playerId, this.entityId, this.playerName), this.playerId);
     player.setName(this.playerName, gameData);
+
+    for(var i = 0; i < this.players.length; ++i) {
+        var playerData = this.players[i];
+        var player = gameData.playerWorld.add(new Player(playerData[0], playerData[1], playerData[2]), playerData[0]);
+        player.setName(playerData[2], gameData);
+    }
 }
 
 MessageInit.prototype.serialize = function(gameData, byteArray, index) {
@@ -39,6 +46,16 @@ MessageInit.prototype.serialize = function(gameData, byteArray, index) {
             component.serialize(byteArray, index);
         }
     }
+
+    // Serialize players
+    serializeInt32(byteArray, index, gameData.playerWorld.objectArray.length);
+    for(player of gameData.playerWorld.objectArray) {
+        if(player.id == this.playerId)
+            continue;
+        serializeInt32(byteArray, index, player.id);
+        serializeInt32(byteArray, index, player.entityId);
+        serializeUTF8(byteArray, index, player.name);
+    }
 }
 
 MessageInit.prototype.deserialize = function(gameData, byteArray, index) {
@@ -47,8 +64,7 @@ MessageInit.prototype.deserialize = function(gameData, byteArray, index) {
     this.entityId = deserializeInt32(byteArray, index);
     this.playerName = deserializeUTF8(byteArray, index);
 
-    // Deserialize entity data
-    //console.log("bytelength " + byteArray.byteLength);
+    // Deserialize entities
     var amountOfEntities = deserializeInt32(byteArray, index);
     //console.log("deserializing " + amountOfEntities + " entities");
     for(var i = 0; i < amountOfEntities; ++i) {
@@ -74,10 +90,20 @@ MessageInit.prototype.deserialize = function(gameData, byteArray, index) {
             console.log("Entity does already exist!");
         //console.dir(entity);
     }
+
+    // Deserialize players
+    var amountOfPlayers = deserializeInt32(byteArray, index);
+    for(var i = 0; i < amountOfPlayers; ++i) {
+        var playerId = deserializeInt32(byteArray, index);
+        var entityId = deserializeInt32(byteArray, index);
+        var playerName = deserializeUTF8(byteArray, index);
+        this.players.push([playerId, entityId, playerName]);
+    }
 }
 
 MessageInit.prototype.getSerializationSize = function(gameData) {
     var size = 16 + getUTF8SerializationSize(this.playerName);
+
     // Calculate serializationSize of entities
     var entitySizes = {};
     for(entity of gameData.entityWorld.objectArray) {
@@ -93,7 +119,14 @@ MessageInit.prototype.getSerializationSize = function(gameData) {
         size += entitySize;
     }
     this.entitySizes = entitySizes;
-    //console.log("TOTAL size " + size);
+
+    // Calculate serializationSize of players
+    size += 4;
+    for(player of gameData.playerWorld.objectArray) {
+        if(player.id == this.playerId)
+            continue;
+        size += 8 + getUTF8SerializationSize(player.name);
+    }
     return size;
 }
 
