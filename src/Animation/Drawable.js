@@ -1,9 +1,11 @@
 Drawable = function(bodyparts, animationManager, zindex) {
-    this.bodyparts = bodyparts; // sprite {}
+    this.bodyparts = bodyparts;
     this.animationManager = animationManager;
     if(!zindex)
         zindex = 0;
-    this.container = zindices[zindex];
+    var zindexContainer = zindices[zindex];
+    this.container = new PIXI.Container();
+    zindexContainer.addChild(this.container);
     this.sprites = {};
 
     // Add bodypart sprites to world
@@ -18,7 +20,7 @@ Drawable.prototype.animate = function(bodypartName, animation, fps, runToEnd) {
     var bodypart = this.bodyparts[bodypartName];
     if(bodypart) {
         if(!bodypart.animInstance) {
-            bodypart.animInstance = this.animationManager.getAnimation(animation);
+            bodypart.animInstance = this.animationManager.animations[animation];
             bodypart.sprite.texture = bodypart.animInstance.texture.clone();
         }
         bodypart.mspf = 1000.0 / fps;
@@ -49,6 +51,27 @@ Drawable.prototype.unanimate = function(bodypart, animation, runToEnd) {
     }
 }
 
+Drawable.prototype.cycle = function(bodypartName, cycle, fps, runToEnd) {
+    var bodypart = this.bodyparts[bodypartName];
+    if(bodypart) {
+        if(!bodypart.sprite) {
+            console.log("Cycle sprite null");
+            return;
+        }
+        if(!bodypart.cycle) {
+            bodypart.cycle = {};
+            bodypart.cycle.cycle = this.animationManager.cycles[cycle];
+        }
+        bodypart.cycle.mspf = 1000.0 / fps;
+        if(!bodypart.cycle.lastFrame || !bodypart.cycle)
+            bodypart.cycle.lastFrame = new Date();
+        if(!bodypart.cycle.currentFrame)
+            bodypart.cycle.currentFrame = 0;
+        bodypart.cycle.runToEnd = runToEnd; //If animation is aborted, finish animation and stop at frame 0
+        bodypart.cycle.finishing = false;
+    }
+}
+
 // Add a sprite that follows this drawable. For example, a healthbar.
 Drawable.prototype.addSprite = function(name, sprite, offset, rotateWithBody) {
     this.sprites[name] = {};
@@ -71,9 +94,7 @@ Drawable.prototype.removeSprite = function(name) {
 Drawable.prototype.positionAll = function(x, y, rotation) {
     for(var bodypart in this.bodyparts) {
         bodypart = this.bodyparts[bodypart];
-        bodypart.sprite.position.x = x;
-        bodypart.sprite.position.y = y;
-        bodypart.sprite.rotation = rotation;
+        bodypart.position(x, y, rotation);
     }
 
     for(var sprite in this.sprites) {
