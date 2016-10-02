@@ -6,7 +6,7 @@ MessageRequestItemPickup = function(entityId) {
 MessageRequestItemPickup.prototype.execute = function(gameData, player) {
     var entity = gameData.entityWorld.objects[this.entityId];
     if(!entity) return;
-    if(entity.isItem && !entity.destroying) {
+    if(entity.item && !entity.destroying) {
         var playerEntity = gameData.entityWorld.objects[player.entityId];
         if(!playerEntity) return;
         var physicsBody = entity.physicsBody;
@@ -17,7 +17,7 @@ MessageRequestItemPickup.prototype.execute = function(gameData, player) {
         if(dis <= gameData.itemPickupDistance + 0.1) {
             entity.destroying = true;
             // Add item to player inventory
-            var message = new MessagePlayerInventory(player.id, InventoryActions.ADD_ITEM, entity.itemId, entity.amount);
+            var message = new MessagePlayerInventory(player.id, InventoryActions.ADD_ITEM, entity.item.itemId, entity.item.amount);
             message.execute(gameData);
             message.send(player.socket);
             // Destroy entity

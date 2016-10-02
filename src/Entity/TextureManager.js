@@ -28,6 +28,10 @@ TextureManager = function() {
 
     this.loader.onComplete(function(texturesLocal) {
         console.log("Textures loaded.");
+        for(var key in texturesLocal) {
+            texturesLocal[key].name = key;
+            //console.log("set texture " + key + " name.");
+        }
         textures = texturesLocal;
         if(onTexturesLoadComplete)
             onTexturesLoadComplete();
