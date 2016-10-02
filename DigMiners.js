@@ -30,8 +30,6 @@ var keysDown = {};
 var messageCallbacks = {};
 var textureManager = new TextureManager();
 
-var skippedTicks = 0;
-
 loadGame = function() {
     animationManager.load();
     // Player input
@@ -63,7 +61,7 @@ loadGame = function() {
                 new MessagePlayerMove(playerMoveDirection).send(socket);
         }
     });
-
+    
     // Start gameLoop
     gameLoop(tick, render, gameData.tickDuration);
 }
@@ -73,18 +71,18 @@ tick = function(dt) {
     var readyTicks = 0;
     for(var i = 0; i <= 6 && gameData.pendingCommands[gameData.tickId + i]; i++)
         readyTicks++;
+        
+    console.log("Ready ticks: " + readyTicks);
 
-    if(readyTicks >= 6) {
-        while(skippedTicks > 0 && readyTicks >= 3 && gameData.pendingCommands[gameData.tickId]) {
+    if(readyTicks >= 3) {
+        while(readyTicks >= 1 && gameData.pendingCommands[gameData.tickId]) {
             gameData.tick(dt);
-            skippedTicks--;
             readyTicks--;
         }
     }
 
     if(gameData.pendingCommands[gameData.tickId])
         gameData.tick(dt);
-    else skippedTicks++;
  
     // Fix interpolation after MessagePlayerMove
     for(var entity of gameData.entityWorld.objectArray) {
