@@ -12,7 +12,7 @@ AnimationManager.prototype.load = function() {
     this.addCycle("tool", new Cycle([
         [12,        // x
             -1.5,     // y
-            -0.2,      // angle
+            -0.5,      // angle
             32],    // num frames
         [0,
             0,
@@ -23,7 +23,7 @@ AnimationManager.prototype.load = function() {
     this.addCycle("rightArm", new Cycle([
         [6,        // x
             -1.5,     // y
-            -0.2,      // angle
+            -0.5,      // angle
             32],    // num frames
         [0,
             0,
