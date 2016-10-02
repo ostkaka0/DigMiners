@@ -36,6 +36,11 @@ loadScript("UnitTest.js");
 loadScriptsRecursive("unit_tests");
 runUnitTests();
 
+console.log("compressing!");
+var testArray = new Array(256);
+//testArray.fill(123);
+console.log(compressRLE(testArray));
+
 var idList = new IdList();
 var connections = new Array(); // key socketId, value player object
 var gameData = new GameData(idList);
