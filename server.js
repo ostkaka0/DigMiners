@@ -44,6 +44,8 @@ console.log(compressRLE(testArray));
 var idList = new IdList();
 var connections = new Array(); // key socketId, value player object
 var gameData = new GameData(idList);
+var animationManager = {};
+var zindices = {};
 
 var tickDuration = gameData.tickDuration;
 var firstTickTime = process.hrtime();
@@ -107,17 +109,8 @@ io.on("connection", function(socket) {
     connections[socket.id].player = player;
     connections[socket.id].entity = entity;
 
-    var playerJoinMessages = [];
-    var entityStatusMessages = [];
-    for(var socketId in connections) {
-        if(socketId != socket.id) {
-            playerJoinMessages.push(new MessagePlayerJoin(connections[socketId].player));
-            entityStatusMessages.push(new MessageEntityStatus(connections[socketId].entity.id, connections[socketId].entity.physicsBody));
-        }
-    }
-
     // Send init message to player
-    new MessageInit(gameData, player, playerJoinMessages, entityStatusMessages).send(socket);
+    new MessageInit(gameData, player).send(gameData, socket);
     // Send playerJoin message to other players
     new MessagePlayerJoin(player).send(socket.broadcast);
 

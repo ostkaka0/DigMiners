@@ -6,7 +6,7 @@ serializeInt8 = function(byteArray, index, value) {
 
 deserializeInt8 = function(byteArray, index) {
     var value = byteArray[index.value];
-    index.add(4);
+    index.add(1);
     return value;
 }
 
