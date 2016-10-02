@@ -20,9 +20,6 @@ GameData = function(idList) {
     this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
     this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement]);
 
-    //if(isServer)
-    //    this.itemRegister.load(this);
-
     if(idList) {
         var onObjectRemove = function(object) { idList.remove(object.id); };
         this.playerWorld.onRemove = onObjectRemove;

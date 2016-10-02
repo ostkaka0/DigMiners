@@ -2,16 +2,15 @@ TextureManager = function() {
     this.loader = new TextureLoader();
     this.loader.queueTexture("healthbar");
     this.loader.queueTexture("feet", "feetSheet");
-    //this.loader.queueTexture("dig", "digSheet");
     this.loader.queueTexture("tool", "toolSheet");
     this.loader.queueTexture("uglyHat", "hats/uglyHat");
     this.loader.queueTexture("brokenHat", "hats/brokenHat");
-    this.loader.queueTexture("dirt", "items/dirt");
-    this.loader.queueTexture("stone", "items/stone");
-    this.loader.queueTexture("hardStone", "items/hardStone");
-    this.loader.queueTexture("veryHardStone", "items/veryHardStone");
-    this.loader.queueTexture("blueOre", "items/blueOre");
-    this.loader.queueTexture("redOre", "items/redOre");
+    /*this.loader.queueTexture("dirt", "tiles/dirt");
+    this.loader.queueTexture("stone", "tiles/stone");
+    this.loader.queueTexture("hardStone", "tiles/hardStone");
+    this.loader.queueTexture("veryHardStone", "tiles/veryHardStone");
+    this.loader.queueTexture("blueOre", "tiles/blueOre");
+    this.loader.queueTexture("redOre", "tiles/redOre");*/
     this.loader.queueTexture("shovel", "items/shovel");
     this.loader.queueTexture("body", "body");
     this.loader.queueTexture("head", "head");
