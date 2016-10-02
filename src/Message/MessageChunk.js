@@ -1,13 +1,5 @@
 MessageChunk = function(chunk, chunkX, chunkY) {
-    var chunk = chunk;
-    if(!chunk)
-        chunk = new Chunk();
-    /*var chunkClone = JSON.parse(JSON.stringify(chunk));
-    chunkClone.tileData.length = chunk.tileData.length;
-    chunkClone.densityData.length = chunk.densityData.length;
-    this.chunk = chunkClone;*/
-    //TODO:CLONE!
-    this.chunk = chunk;
+    this.chunk = chunk || new Chunk();
     this.chunkX = chunkX;
     this.chunkY = chunkY;
 }
@@ -22,32 +14,28 @@ MessageChunk.prototype.execute = function(gameData) {
     tileWorld.set(this.chunkX, this.chunkY, this.chunk);
 }
 
-MessageChunk.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.chunk.densityData.length);
-    serializeUint8Array(byteArray, index, this.chunk.densityData);
+MessageChunk.prototype.send = function(socket) {
+    var beginTime = present();
+    
+    var byteArray = [];
+    var index = new IndexCounter();
     serializeInt32(byteArray, index, this.chunkX);
     serializeInt32(byteArray, index, this.chunkY);
+    compressRLE(this.chunk.densityData, byteArray);
+    
+    console.log("MessageChunk duration: " + (present() - beginTime) + " ms");
+    beginTime = present();
+    socket.emit(this.idString, new Buffer(byteArray));
+    console.log("socket.emit of MessageChunk duration: " + (present() - beginTime) + " ms");
+    
 }
 
-MessageChunk.prototype.deserialize = function(byteArray, index) {
-    var densityLength = deserializeInt32(byteArray, index);
-    this.chunk.densityData = deserializeUint8Array(byteArray, index, densityLength);
+MessageChunk.prototype.receive = function(gameData, data) {
+    var byteArray = new Uint8Array(data);
+    var index = new IndexCounter();
     this.chunkX = deserializeInt32(byteArray, index);
     this.chunkY = deserializeInt32(byteArray, index);
-}
-
-MessageChunk.prototype.getSerializationSize = function() {
-    return this.chunk.densityData.length + 12;
-}
-
-MessageChunk.prototype.send = function(socket) {
-    var byteArray = new Buffer(this.getSerializationSize());
-    var counter = new IndexCounter();
-    this.serialize(byteArray, counter);
-    socket.emit(this.idString, byteArray);
-}
-
-MessageChunk.prototype.receive = function(gameData, byteArray) {
-    var counter = new IndexCounter();
-    this.deserialize(new Uint8Array(byteArray), counter);
+    this.chunk.densityData = decompressRLE(byteArray, CHUNK_SIZE, index.value);
+    //this.chunk.tileData = byteArray.slice(index.value + CHUNK_SIZE, index.value + 2*CHUNK_SIZE);
+    console.log(this.chunk.tileData.byteLength);
 }

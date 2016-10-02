@@ -4,7 +4,7 @@ path = require("path");
 
 var outputSrc = "";
 
-TokenLabel = function(value) { this.value = value; }
+TokenLabel = function(labels) { this.value = labels; }
 TokenString = function(value) { this.value = value; }
 TokenSymbol = function(value) { this.value = value; }
 TokenNumber = function(value) { this.value = value; }
@@ -186,7 +186,7 @@ parse = function(tokens, ast, i, singleExpr, isRvalue) {
                 if (isRvalue) {
                     var object = [];
                     i++;
-                    while(tokens[i] != "}") {
+                    while(tokens[i] != "}")
                         object.push(tokens[i++]);
                     i++;
                     ast.push(ExprObject(object));
@@ -214,6 +214,32 @@ parse = function(tokens, ast, i, singleExpr, isRvalue) {
         i++;
     }
     return i;
+}
+
+astToJs = function(ast) {
+    var output = "";
+    
+    exprToJs = function(expr) {
+        switch(expr.constructor) {
+        case TokenLabel:
+            for (label of expr.value)
+                output += label + ".";
+            output.substring(output.length - 1);
+            break;
+        case TokenNumber:
+            output += expr.value.toString();
+            break;
+        case TokenString:
+            output += "\"" + expr.value + "\"";
+            break;
+        case TokenSymbol:
+            output += expr.value;
+            break;
+        }
+    }
+    
+    for(expr of ast)
+        exprToJs(expr);
 }
 
 loadExternalScript = function(filePath) {

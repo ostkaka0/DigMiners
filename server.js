@@ -4,6 +4,7 @@ path = require("path");
 app = require("express")();
 http = require("http").Server(app);
 io = require("socket.io")(http);
+present = require('present');
 
 var isServer = true;
 
@@ -65,7 +66,7 @@ update = function() {
     var delay = -diff_ms + tickNum * tickDuration;
     setTimeout(update, delay);
 
-    tick(1.0 / 20.0);
+    tick(gameData.tickDuration / 1000.0);
     tickNum++;
 }
 
