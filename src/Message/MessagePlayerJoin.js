@@ -9,7 +9,8 @@ MessagePlayerJoin = function(player) {
 
 MessagePlayerJoin.prototype.execute = function(gameData) {
     console.log(this.playerName + " connected with playerId " + this.playerId);
-    entityTemplates.player(this.playerId, this.entityId, this.playerName, gameData);
+    var player = entityTemplates.player(this.playerId, this.entityId, this.playerName, gameData).player;
+    player.setName(this.playerName, gameData);
 }
 
 MessagePlayerJoin.prototype.serialize = function(byteArray, index) {

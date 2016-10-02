@@ -6,42 +6,28 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
     entity.movement = new Movement(50.0);
 
-    if(!isServer) {
-        var feetSprite = new PIXI.Sprite(textures.feet);
-        feetSprite.anchor.x = 0.5;
-        feetSprite.anchor.y = 0.5;
+    var feetSprite = new Sprite("feet");
 
-        var rightArmSprite = new PIXI.Sprite(textures.rightArm);
-        rightArmSprite.anchor.x = 0.5;
-        rightArmSprite.anchor.y = 0.5;
+    var rightArmSprite = new Sprite("rightArm");
 
-        var leftArmSprite = new PIXI.Sprite(textures.leftArm);
-        leftArmSprite.anchor.x = 0.5;
-        leftArmSprite.anchor.y = 0.5;
+    var leftArmSprite = new Sprite("leftArm");
 
-        var headSprite = new PIXI.Sprite(textures.head);
-        headSprite.anchor.x = 0.5;
-        headSprite.anchor.y = 0.5;
+    var headSprite = new Sprite("head");
 
-        var shovelSprite = new PIXI.Sprite(textures.shovel);
-        shovelSprite.anchor.x = 0.5;
-        shovelSprite.anchor.y = 0.5;
+    var shovelSprite = new Sprite("shovel");
 
-        var bodyparts = {
-            "feet": new BodyPart(feetSprite, 0, 0, 0, []),
-            "itemHolder": new BodyPart(shovelSprite, 5, 20, Math.PI / 2, []),
-            "rightArm": new BodyPart(rightArmSprite, 0, 0, 0, []),
-            "leftArm": new BodyPart(leftArmSprite, 0, 0, 0, []),
-            "head": new BodyPart(headSprite, 0, 0, 0, [])
-        };
+    var bodyparts = {
+        "feet": new BodyPart(feetSprite, 0, 0, 0, []),
+        "itemHolder": new BodyPart(shovelSprite, 5, 20, Math.PI / 2, []),
+        "rightArm": new BodyPart(rightArmSprite, 0, 0, 0, []),
+        "leftArm": new BodyPart(leftArmSprite, 0, 0, 0, []),
+        "head": new BodyPart(headSprite, 0, 0, 0, [])
+    };
 
-        entity.drawable = new Drawable(bodyparts, animationManager, 1);
-        player.setName(name + " player:" + playerId + "entity:" + entityId, gameData);
-
-        var healthbarSprite = new PIXI.Sprite(textures.healthbar);
-        entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(-32, -50), false);
-        player.health = healthbarSprite;
-    }
+    entity.drawable = new Drawable(bodyparts, animationManager, 1);
+    var healthbarSprite = new Sprite("healthbar", null, true);
+    entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(-32, -50), false);
+    player.health = healthbarSprite;
     return { 'player': player, 'entity': entity };
 }
 
@@ -49,19 +35,13 @@ entityTemplates.item = function(entityId, itemId, amount, gameData) {
     var entity = gameData.entityWorld.add({}, entityId);
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
 
-    entity.itemId = itemId;
-    entity.amount = amount;
-    entity.isItem = true;
+    entity.item = new ComponentItem(itemId, amount);
 
-    if(!isServer) {
-        var itemType = gameData.itemRegister[itemId];
-        var bodySprite = new PIXI.Sprite(textures[itemType.texture]);
-        bodySprite.anchor.x = 0.5;
-        bodySprite.anchor.y = 0.5;
-        var bodyparts = {
-            "body": new BodyPart(bodySprite, 0, 0, 0, [])
-        };
-        entity.drawable = new Drawable(bodyparts, animationManager, 0);
-    }
+    var itemType = gameData.itemRegister[itemId];
+    var bodySprite = new Sprite(itemType.texture);
+    var bodyparts = {
+        "body": new BodyPart(bodySprite, 0, 0, 0, [])
+    };
+    entity.drawable = new Drawable(bodyparts, animationManager, 0);
     return entity;
 }

@@ -2,6 +2,7 @@
 MessagePlayerLeave = function(player) {
     if(player) {
         this.playerId = player.id;
+        console.log("playerleave " + this.playerId);
         this.entityId = player.entityId;
     }
 }

@@ -19,7 +19,7 @@ MessageItemDrop.prototype.execute = function(gameData) {
     entity.physicsBody.speedOld = v2.create(this.speedX, this.speedY);
     entity.physicsBody.angle = this.rotation;
     entity.physicsBody.angleOld = entity.physicsBody.angle;
-    entity.dropped = new Date();
+    entity.item.dropped = new Date();
 }
 
 MessageItemDrop.prototype.serialize = function(byteArray, index) {
