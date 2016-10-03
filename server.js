@@ -58,8 +58,8 @@ loadChunk = function(world, x, y) {
     world.set(x, y, chunk);
 }
 
-for(var x = -4; x < 4; ++x) {
-    for(var y = -4; y < 4; ++y) {
+for(var x = -1; x < 1; ++x) {
+    for(var y = -1; y < 1; ++y) {
         loadChunk(gameData.tileWorld, x, y);
     }
 }
@@ -114,8 +114,8 @@ io.on("connection", function(socket) {
     // Send playerJoin message to other players
     new MessagePlayerJoin(player).send(socket.broadcast);
 
-    for(var x = -4; x < 4; ++x) {
-        for(var y = -4; y < 4; ++y) {
+    for(var x = -1; x < 1; ++x) {
+        for(var y = -1; y < 1; ++y) {
             var chunk = gameData.tileWorld.get(x, y);
             var message = new MessageChunk(chunk, x, y);
             message.send(socket);
