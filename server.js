@@ -6,6 +6,24 @@ http = require("http").Server(app);
 io = require("socket.io")(http);
 present = require('present');
 
+var rotate = function(x_origin, y_origin, x, y, angle) {
+    var cs = Math.cos(angle);
+    var sn = Math.sin(angle);
+
+    var translated_x = x - x_origin;
+    var translated_y = y - y_origin;
+
+    var result_x = translated_x * cs - translated_y * sn;
+    var result_y = translated_x * sn + translated_y * cs;
+
+    result_x += x_origin;
+    result_y += y_origin;
+
+    return [result_x, result_y];
+}
+
+console.log("rotate " + rotate(0, 10, 0, 0, Math.PI));
+
 var isServer = true;
 
 loadScript = function(filePath) {
