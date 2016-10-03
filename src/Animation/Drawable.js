@@ -11,26 +11,52 @@ Drawable = function(bodyparts, animationManager, zindex) {
     zindexContainer.addChild(this.container);
 
     // Add bodypart sprites to world
-    for(var bodypart in this.bodyparts) {
-        bodypart = this.bodyparts[bodypart];
-        this.container.addChild(bodypart.sprite.sprite);
+    this.addBodyparts(this.bodyparts, this);
+}
+
+Drawable.prototype.addBodyparts = function(bodyparts, that, parent) {
+    if(bodyparts) {
+        for(var key in bodyparts) {
+            bodypart = bodyparts[key];
+            if(parent) {
+                bodypart.isChild = true;
+                bodypart.parent = parent;
+                that.bodyparts[key] = bodypart;
+            }
+            var bodypart2 = bodypart;
+            this.addBodyparts(bodypart.children, that, bodypart);
+            if(!bodypart2.sprite.sprite.fake) {
+                console.log("added " + key + " to container");
+                that.container.addChild(bodypart2.sprite.sprite);
+            }
+        }
     }
 }
 
 Drawable.prototype.name = "drawable";
 
-Drawable.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.zindex);
-    serializeInt32(byteArray, index, Object.keys(this.bodyparts).length);
-    for(var key in this.bodyparts) {
-        var bodypart = this.bodyparts[key];
+Drawable.prototype.serializeBodyparts = function(byteArray, index, bodyparts) {
+    serializeInt32(byteArray, index, Object.keys(bodyparts).length);
+    for(var key in bodyparts) {
+        var bodypart = bodyparts[key];
         var textureName = bodypart.sprite.textureName;
         serializeUTF8(byteArray, index, key);
         serializeUTF8(byteArray, index, textureName);
         serializeFix(byteArray, index, bodypart.offset[0]);
         serializeFix(byteArray, index, bodypart.offset[1]);
         serializeFix(byteArray, index, bodypart.offset[2]);
+        serializeV2(byteArray, index, bodypart.pivot);
+        if(!bodypart.children)
+            serializeInt32(byteArray, index, 0);
+        else {
+            this.serializeBodyparts(byteArray, index, bodypart.children);
+        }
     }
+}
+
+Drawable.prototype.serialize = function(byteArray, index) {
+    serializeInt32(byteArray, index, this.zindex);
+    this.serializeBodyparts(byteArray, index, this.bodyparts);
     serializeInt32(byteArray, index, Object.keys(this.sprites).length);
     console.dir(this.sprites);
     for(var sprite in this.sprites) {
@@ -44,6 +70,21 @@ Drawable.prototype.serialize = function(byteArray, index) {
     console.log("drawable serialized!");
 }
 
+Drawable.prototype.deserializeBodyparts = function(byteArray, index, gameData) {
+    var bodyparts = {};
+    var bodypartsLength = deserializeInt32(byteArray, index);
+    for(var i = 0; i < bodypartsLength; ++i) {
+        var key = deserializeUTF8(byteArray, index);
+        var textureName = deserializeUTF8(byteArray, index);
+        var offset = [deserializeFix(byteArray, index), deserializeFix(byteArray, index), deserializeFix(byteArray, index)];
+        var pivot = deserializeV2(byteArray, index);
+        var sprite = (textureName.length == 0 ? null : new Sprite(textureName));
+        var children = this.deserializeBodyparts(byteArray, index, gameData);
+        bodyparts[key] = new BodyPart(sprite, offset[0], offset[1], offset[2], pivot, children);
+    }
+    return bodyparts;
+}
+
 Drawable.prototype.deserialize = function(byteArray, index, gameData) {
     this.zindex = deserializeInt32(byteArray, index);
     this.animationManager = animationManager;
@@ -54,14 +95,7 @@ Drawable.prototype.deserialize = function(byteArray, index, gameData) {
         this.container = new PIXI.Container();
         zindexContainer.addChild(this.container);
     }
-    this.bodyparts = {};
-    var bodypartsLength = deserializeInt32(byteArray, index);
-    for(var i = 0; i < bodypartsLength; ++i) {
-        var key = deserializeUTF8(byteArray, index);
-        var textureName = deserializeUTF8(byteArray, index);
-        var offset = [deserializeFix(byteArray, index), deserializeFix(byteArray, index), deserializeFix(byteArray, index)];
-        this.bodyparts[key] = new BodyPart(new Sprite(textureName), offset[0], offset[1], offset[2]);
-    }
+    this.bodyparts = this.deserializeBodyparts(byteArray, index, gameData);
     this.sprites = {};
     var spritesLength = deserializeInt32(byteArray, index);
     for(var i = 0; i < spritesLength; ++i) {
@@ -83,22 +117,30 @@ Drawable.prototype.deserialize = function(byteArray, index, gameData) {
     this.animationManager = animationManager;
     if(!isServer) {
         // Add bodypart sprites to world
-        for(var bodypart in this.bodyparts) {
-            bodypart = this.bodyparts[bodypart];
-            this.container.addChild(bodypart.sprite.sprite);
-        }
+        this.addBodyparts(this.bodyparts, this);
     }
 }
 
-Drawable.prototype.getSerializationSize = function() {
-    var size = 13;
-    for(var key in this.bodyparts) {
-        var bodypart = this.bodyparts[key];
+Drawable.prototype.getBodypartsSerializationSize = function(bodyparts) {
+    var size = 4;
+    for(var key in bodyparts) {
+        var bodypart = bodyparts[key];
         var textureName = bodypart.sprite.textureName;
         size += getUTF8SerializationSize(key);
         size += getUTF8SerializationSize(textureName);
-        size += 12;
+        size += 20;
+        if(!bodypart.children)
+            size += 4;
+        else {
+            size += this.getBodypartsSerializationSize(bodypart.children);
+        }
     }
+    return size;
+}
+
+Drawable.prototype.getSerializationSize = function() {
+    var size = 9;
+    size += this.getBodypartsSerializationSize(this.bodyparts);
     for(var sprite in this.sprites) {
         size += getUTF8SerializationSize(sprite);
         sprite = this.sprites[sprite];
@@ -144,27 +186,6 @@ Drawable.prototype.unanimate = function(bodypart, animation, runToEnd) {
     }
 }
 
-Drawable.prototype.cycle = function(bodypartName, cycle, fps, runToEnd) {
-    var bodypart = this.bodyparts[bodypartName];
-    if(bodypart) {
-        if(!bodypart.sprite) {
-            console.log("Cycle sprite null");
-            return;
-        }
-        if(!bodypart.cycle) {
-            bodypart.cycle = {};
-            bodypart.cycle.cycle = this.animationManager.cycles[cycle];
-        }
-        bodypart.cycle.mspf = 1000.0 / fps;
-        if(!bodypart.cycle.lastFrame || !bodypart.cycle)
-            bodypart.cycle.lastFrame = new Date();
-        if(!bodypart.cycle.currentFrame)
-            bodypart.cycle.currentFrame = 0;
-        bodypart.cycle.runToEnd = runToEnd; //If animation is aborted, finish animation and stop at frame 0
-        bodypart.cycle.finishing = false;
-    }
-}
-
 // Add a sprite that follows this drawable. For example, a healthbar.
 Drawable.prototype.addSprite = function(name, sprite, offset, rotateWithBody) {
     this.sprites[name] = sprite;
@@ -192,7 +213,8 @@ Drawable.prototype.positionAll = function(x, y, rotation) {
 
     for(var bodypart in this.bodyparts) {
         bodypart = this.bodyparts[bodypart];
-        bodypart.position(x, y, rotation);
+        if(!bodypart.isChild)
+            bodypart.position(x, y, rotation);
     }
 
     for(var sprite in this.sprites) {
