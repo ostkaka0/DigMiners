@@ -3,6 +3,7 @@ ObjectWorld = function() {
     this.objects = {};
     this.objectsToCreate = [];
     this.objectsToDestroy = [];
+    this.onAdd = null;
     this.onRemove = null;
 }
 
@@ -33,6 +34,8 @@ ObjectWorld.prototype.update = function() {
     // Create objects
     this.objectsToCreate.forEach(function(object) {
         object.isActive = true;
+        if (that.onAdd)
+            that.onAdd(object);
     });
     this.objectsToCreate.length = 0;
 
