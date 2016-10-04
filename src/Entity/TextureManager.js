@@ -12,6 +12,7 @@ TextureManager = function() {
     this.loader.queueTexture("blueOre", "tiles/blueOre");
     this.loader.queueTexture("redOre", "tiles/redOre");*/
     this.loader.queueTexture("shovel", "items/shovel");
+    this.loader.queueTexture("pickaxe", "items/pickaxe");
     this.loader.queueTexture("body", "body");
     this.loader.queueTexture("head", "head");
     this.loader.queueTexture("rightArm", "rightArm");
