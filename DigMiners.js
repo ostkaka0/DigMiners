@@ -133,10 +133,13 @@ render = function(tickFracTime) {
             //console.log("angle " + entity.physicsBody.angle + " old " + entity.physicsBody.angleOld);
             entity.drawable.positionAll(x, y, rotation);
 
-            var entitySpeed = Math.sqrt(entity.physicsBody.speed[0] * entity.physicsBody.speed[0] + entity.physicsBody.speed[1] * entity.physicsBody.speed[1]);
             //console.log(entitySpeed);
-            if(entity.drawable.bodyparts.feet)
-                entity.drawable.animate("feet", "feet", entitySpeed * 16.0, false);
+            if(entity.drawable.bodyparts.feet) {
+                var entitySpeed = Math.sqrt(entity.physicsBody.speed[0] * entity.physicsBody.speed[0] + entity.physicsBody.speed[1] * entity.physicsBody.speed[1]);
+                if(Math.round(entitySpeed) > 0)
+                    entity.drawable.animate("feet", "feet", entitySpeed * 16.0, false);
+                //console.log("entity " + entity.id + " speed " + entitySpeed);
+            }
         }
     });
 

@@ -9,20 +9,9 @@ AnimationManager.prototype.load = function() {
     //this.addAnimation("dig", new Animation("dig", textures.dig, 60, 75, 75));
     this.addAnimation("tool", new Animation("tool", textures.tool, 64, 75, 75));
     //this.addAnimation("octopus-walk", new Animation("octopus-walk", textures.octopus, 60, 256, 256));
-    this.addCycle("tool", new Cycle([
-        [12,        // x
-            -1.5,     // y
-            -0.5,      // angle
-            32],    // num frames
-        [0,
-            0,
-            0,
-            32]
-    ]));
-
     this.addCycle("rightArm", new Cycle([
-        [6,        // x
-            -1.5,     // y
+        [0,        // x
+            0,     // y
             -0.5,      // angle
             32],    // num frames
         [0,
@@ -80,22 +69,22 @@ AnimationManager.prototype.update = function() {
                             bodypart.finishing = false;
                         }
                     }
-                } else if(bodypart.cycle) {
-                    var diff = now - bodypart.cycle.lastFrame;
+                } else if(bodypart.cycleInstance) {
+                    var diff = now - bodypart.cycleInstance.lastFrame;
 
-                    while(diff >= bodypart.cycle.mspf) {
-                        diff -= bodypart.cycle.mspf;
-                        bodypart.cycle.lastFrame = new Date();
-                        bodypart.cycle.currentFrame += 1;
-                        if(bodypart.cycle.currentFrame >= bodypart.cycle.cycle.numFrames)
-                            bodypart.cycle.currentFrame = 0;
-                        bodypart.cycleOffset = [bodypart.cycle.cycle.frames[bodypart.cycle.currentFrame][0],
-                            bodypart.cycle.cycle.frames[bodypart.cycle.currentFrame][1],
-                            bodypart.cycle.cycle.frames[bodypart.cycle.currentFrame][2]];
+                    while(diff >= bodypart.cycleInstance.mspf) {
+                        diff -= bodypart.cycleInstance.mspf;
+                        bodypart.cycleInstance.lastFrame = new Date();
+                        bodypart.cycleInstance.currentFrame += 1;
+                        if(bodypart.cycleInstance.currentFrame >= bodypart.cycleInstance.cycle.numFrames)
+                            bodypart.cycleInstance.currentFrame = 0;
+                        bodypart.cycleOffset = [bodypart.cycleInstance.cycle.frames[bodypart.cycleInstance.currentFrame][0],
+                            bodypart.cycleInstance.cycle.frames[bodypart.cycleInstance.currentFrame][1],
+                            bodypart.cycleInstance.cycle.frames[bodypart.cycleInstance.currentFrame][2]];
 
-                        if(bodypart.cycle.runToEnd && bodypart.cycle.currentFrame == 0) {
-                            bodypart.cycle = false;
-                            bodypart.cycle.finishing = false;
+                        if(bodypart.cycleInstance.runToEnd && bodypart.cycleInstance.currentFrame == 0) {
+                            bodypart.cycleInstance = false;
+                            bodypart.cycleInstance.finishing = false;
                         }
                     }
                 }
