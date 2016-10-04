@@ -62,7 +62,6 @@ console.log(compressRLE(testArray));
 var idList = new IdList();
 var connections = new Array(); // key socketId, value player object
 var gameData = new GameData(idList);
-var animationManager = {};
 var zindices = {};
 
 var tickDuration = gameData.tickDuration;

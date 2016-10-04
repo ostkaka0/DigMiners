@@ -23,7 +23,7 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
         "head": new BodyPart(headSprite, 1, 0, 0)
     };
 
-    entity.drawable = new Drawable(bodyparts, animationManager, 1);
+    entity.drawable = new Drawable(gameData, bodyparts, 1);
     var healthbarSprite = new Sprite("healthbar", null, true);
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(-32, -50), false);
     player.health = healthbarSprite;
@@ -41,6 +41,6 @@ entityTemplates.item = function(entityId, itemId, amount, gameData) {
     var bodyparts = {
         "body": new BodyPart(bodySprite, 0, 0, 0)
     };
-    entity.drawable = new Drawable(bodyparts, animationManager, 0);
+    entity.drawable = new Drawable(gameData, bodyparts, 0);
     return entity;
 }

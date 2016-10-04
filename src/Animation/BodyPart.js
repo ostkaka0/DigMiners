@@ -14,22 +14,15 @@ BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, children) {
         this.sprite.sprite.rotation = {};
     }
     this.offset = [offsetX, offsetY, offsetRotation];
-    //console.log(this.offset);
     this.cycleOffset = [0, 0, 0];
-    //console.dir(pivot);
     if(pivot && (pivot[0] != 0 || pivot[1] != 0)) {
         this.usePivot = true;
         this.pivot = pivot;
         if(!isServer) {
-            //this.sprite.sprite.anchor.x = pivot[0] / this.sprite.sprite.texture.width;
-            //this.sprite.sprite.anchor.y = pivot[1] / this.sprite.sprite.texture.height;
             this.sprite.sprite.anchor.x = 0;
             this.sprite.sprite.anchor.y = 0;
-            //console.log(this.sprite.textureName);
-            //console.log("anchor " + this.sprite.sprite.anchor.x + " " + this.sprite.sprite.anchor.y);
             this.sprite.sprite.pivot.x = pivot[0];
             this.sprite.sprite.pivot.y = pivot[1];
-            //console.log("pivot " + this.sprite.sprite.pivot.x + " " + this.sprite.sprite.pivot.y);
         }
     } else
         this.pivot = [0, 0];
@@ -54,7 +47,6 @@ BodyPart.prototype.position = function(x, y, rotation) {
     if(!this.isChild) {
         for(var key in this.children) {
             var child = this.children[key];
-            // Since child is already positioned, just rotate around their pivot
             var totalOffset = [child.cycleOffset[0], child.cycleOffset[1]];
             var newPos = child.rotate(0, 0, totalOffset[0], totalOffset[1], rotation + child.cycleOffset[2] + child.offset[2]);
             if(totalOffset[0] == 0 && totalOffset[1] == 0)
@@ -89,7 +81,7 @@ BodyPart.prototype.rotateAroundPoint = function(x, y, rotation, parentRotation) 
     this.sprite.sprite.rotation = parentRotation + this.cycleOffset[2] + this.offset[2];
 }
 
-BodyPart.prototype.cycle = function(cycle, fps, runToEnd) {
+BodyPart.prototype.cycle = function(gameData, cycle, fps, runToEnd) {
     if(!this.sprite) {
         console.log("Cycle sprite null");
         return;
@@ -97,7 +89,7 @@ BodyPart.prototype.cycle = function(cycle, fps, runToEnd) {
     if(!this.cycleInstance) {
         this.cycleInstance = {};
         //console.log(cycle);
-        this.cycleInstance.cycle = animationManager.cycles[cycle];
+        this.cycleInstance.cycle = gameData.animationManager.cycles[cycle];
     }
     this.cycleInstance.mspf = 1000.0 / fps;
     if(!this.cycleInstance.lastFrame || !this.cycleInstance)
