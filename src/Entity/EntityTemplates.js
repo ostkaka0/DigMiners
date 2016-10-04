@@ -20,7 +20,7 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
             }),
             "leftArm": new BodyPart(leftArmSprite, 5, -16, 0, [10, 11])
         }),
-        "head": new BodyPart(headSprite, 1, 0, 0, [])
+        "head": new BodyPart(headSprite, 1, 0, 0)
     };
 
     entity.drawable = new Drawable(bodyparts, animationManager, 1);
