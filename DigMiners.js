@@ -165,7 +165,7 @@ onTexturesLoadProgress = function(name, file, progress) {
 onTexturesLoadComplete = function() {
     // Must wait until all textures have loaded to continue! important
     //gameData.itemRegister.load(gameData);
-    client = new Client(gameData, "127.0.0.1");
+    client = new Client(gameData, window.vars.ip);
 }
 
 onMessage(MessageInit, function(message) {
