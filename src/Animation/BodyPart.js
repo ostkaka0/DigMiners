@@ -99,3 +99,10 @@ BodyPart.prototype.cycle = function(gameData, cycle, fps, runToEnd) {
     this.cycleInstance.runToEnd = runToEnd; //If animation is aborted, finish animation and stop at frame 0
     this.cycleInstance.finishing = false;
 }
+
+BodyPart.prototype.finishCycle = function() {
+    if(this.cycleInstance) {
+        this.cycleInstance.runToEnd = true;
+        this.cycleInstance.finishing = false;
+    }
+}

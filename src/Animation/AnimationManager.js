@@ -5,8 +5,6 @@ AnimationManager = function() {
 
 AnimationManager.prototype.load = function() {
     this.animations["feet"] = new Animation("feet", textures.feet, 60, 75, 75);
-    this.animations["tool"] = new Animation("tool", textures.tool, 64, 75, 75);
-
 
     this.cycles["rightArm"] = new Cycle([
         [0,        // x
