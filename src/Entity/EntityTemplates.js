@@ -16,9 +16,9 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
         //"feet": new BodyPart(feetSprite, 0, 0, 0),
         "body": new BodyPart(null, 0, 0, 0, null, {
             "rightArm": new BodyPart(rightArmSprite, 0, 10, 0, [11, 17], {
-                "itemHolder": new BodyPart(shovelSprite, 0, 0, 0)
+                "itemHolder": new BodyPart(shovelSprite, -10, 10, 0, [32, 16])
             }),
-            "leftArm": new BodyPart(leftArmSprite, 0, -10, 0, [11, 17])
+            //"leftArm": new BodyPart(leftArmSprite, 11, -17, 0)
         }),
         //"head": new BodyPart(headSprite, 0, 0, 0, [])
     };
