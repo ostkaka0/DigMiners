@@ -7,6 +7,14 @@
         <canvas class="canvas" id="canvas"></canvas>
         <script type = "text/javascript">
             var isServer = false;
+            window.vars = { 
+            <?php
+                $ip = (isset($_GET["ip"]) ? '"' . $_GET["ip"] . '"' : '"127.0.0.1"');
+                if(empty($ip))
+                    $ip = '"127.0.0.1"';
+                echo ("ip: " . $ip);
+            ?>
+        };
         </script>
         <div class="hud" id="hud">
             <div class="dugItems" id="dugItems"></div>
