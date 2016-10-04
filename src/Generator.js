@@ -40,13 +40,13 @@ Generator.prototype.generate = function(chunk, chunkX, chunkY) {
 
             if(tileId != 0) {
                 if(oreValue1 > 0.45) {
-                    tileId = 4;
+                    tileId = Tiles.Coal.id;
                 }
                 if(oreValue2 > 0.50) {
-                    tileId = 5;
+                    tileId = Tiles.Copper.id;
                 }
                 if(oreValue3 > 0.25) {
-                    tileId = 3;
+                    tileId = Tiles.Iron.id;
                 }
             }
 

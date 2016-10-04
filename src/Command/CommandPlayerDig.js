@@ -18,8 +18,11 @@ CommandPlayerDig.prototype.execute = function(gameData) {
     var targetTile = gameData.tileRegister[getTileId(gameData.tileWorld, this.x + 1.0 * this.dir[0], this.y + 1.0 * this.dir[1])];
     var targetDensity = getDensity(gameData.tileWorld, this.x + 1.0 * this.dir[0], this.y + 1.0 * this.dir[1]);
     var onDensityChange = null;
+    var digDis = 1.5; // Distance to dig
     if(targetTile.isOre && targetDensity > 0) {
         entity.movement.isMining = true;
+        digDis = 1.0;
+        this.radius = 1.0;
         onDensityChange = function(tileX, tileY, tile, oldDensity, newDensity) { 
             if (tile.isOre) {
                 var densityChange = (oldDensity - newDensity) / 2 >> 0;
@@ -40,7 +43,7 @@ CommandPlayerDig.prototype.execute = function(gameData) {
         onDensityChange = function(tileX, tileY, tile, oldDensity, newDensity) { return (tile.isOre)? oldDensity : newDensity; };
     }
 
-    var dug = carveCircle(gameData, this.x + 0.7 * this.dir[0], this.y + 0.7 * this.dir[1], this.radius, player.getDigStrength(), onDensityChange);
+    var dug = carveCircle(gameData, this.x + digDis * this.dir[0], this.y + digDis * this.dir[1], this.radius, player.getDigStrength(), onDensityChange);
     if(!isServer) {
         var entity = gameData.entityWorld.objects[player.entityId];
         if(entity.drawable) {
