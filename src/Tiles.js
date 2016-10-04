@@ -28,6 +28,27 @@ Tiles.VeryHardStone = {
     hardness: 16
 };
 
+Tiles.Coal = {
+    name: "Coal",
+    isSolid: true,
+    isOre: true,
+    hardness: 6
+};
+
+Tiles.Copper = {
+    name: "Copper",
+    isSolid: true,
+    isOre: true,
+    hardness: 8
+};
+
+Tiles.Iron = {
+    name: "Iron",
+    isSolid: true,
+    isOre: true,
+    hardness: 16
+};
+
 Tiles.Sapphire = {
     name: "Sapphire",
     isSolid: true,
