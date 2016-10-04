@@ -4,7 +4,7 @@ Sprite = function(textureName, sprite, noAnchor) {
     this.noAnchor = noAnchor;
     if(!isServer) {
         this.sprite = (textureName ? new PIXI.Sprite(textures[textureName]) : sprite);
-        if(!noAnchor) {
+        if(!noAnchor && this.sprite) {
             this.sprite.anchor.x = 0.5;
             this.sprite.anchor.y = 0.5;
         }

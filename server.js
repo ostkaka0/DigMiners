@@ -6,6 +6,24 @@ http = require("http").Server(app);
 io = require("socket.io")(http);
 present = require('present');
 
+var rotate = function(x_origin, y_origin, x, y, angle) {
+    var cs = Math.cos(angle);
+    var sn = Math.sin(angle);
+
+    var translated_x = x - x_origin;
+    var translated_y = y - y_origin;
+
+    var result_x = translated_x * cs - translated_y * sn;
+    var result_y = translated_x * sn + translated_y * cs;
+
+    result_x += x_origin;
+    result_y += y_origin;
+
+    return [result_x, result_y];
+}
+
+console.log("rotate " + rotate(0, 10, 0, 0, Math.PI));
+
 var isServer = true;
 
 loadScript = function(filePath) {
@@ -58,8 +76,8 @@ loadChunk = function(world, x, y) {
     world.set(x, y, chunk);
 }
 
-for(var x = -4; x < 4; ++x) {
-    for(var y = -4; y < 4; ++y) {
+for(var x = -1; x < 1; ++x) {
+    for(var y = -1; y < 1; ++y) {
         loadChunk(gameData.tileWorld, x, y);
     }
 }
@@ -114,8 +132,8 @@ io.on("connection", function(socket) {
     // Send playerJoin message to other players
     new MessagePlayerJoin(player).send(socket.broadcast);
 
-    for(var x = -4; x < 4; ++x) {
-        for(var y = -4; y < 4; ++y) {
+    for(var x = -1; x < 1; ++x) {
+        for(var y = -1; y < 1; ++y) {
             var chunk = gameData.tileWorld.get(x, y);
             var message = new MessageChunk(chunk, x, y);
             message.send(socket);
