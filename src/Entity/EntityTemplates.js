@@ -10,7 +10,7 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
     var rightArmSprite = new Sprite("rightArm");
     var leftArmSprite = new Sprite("leftArm");
     var headSprite = new Sprite("head");
-    var shovelSprite = new Sprite("shovel");
+    var shovelSprite = new Sprite("pickaxe");
 
     var bodyparts = {
         "feet": new BodyPart(feetSprite, 0, 0, 0),
