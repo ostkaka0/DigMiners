@@ -1,11 +1,13 @@
 Drawable = function(bodyparts, animationManager, zindex) {
     this.bodyparts = bodyparts;
     this.sprites = {};
+    if(!zindex)
+        zindex = 0;
+    this.zindex = zindex;
     if(isServer)
         return;
     this.animationManager = animationManager;
-    if(!zindex)
-        zindex = 0;
+
     var zindexContainer = zindices[zindex];
     this.container = new PIXI.Container();
     zindexContainer.addChild(this.container);
@@ -26,7 +28,7 @@ Drawable.prototype.addBodyparts = function(bodyparts, that, parent) {
             var bodypart2 = bodypart;
             this.addBodyparts(bodypart.children, that, bodypart);
             if(!bodypart2.sprite.sprite.fake) {
-                console.log("added " + key + " to container");
+                //console.log("added " + key + " to container");
                 that.container.addChild(bodypart2.sprite.sprite);
             }
         }

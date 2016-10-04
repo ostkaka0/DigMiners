@@ -14,9 +14,9 @@ BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, children) {
         this.sprite.sprite.rotation = {};
     }
     this.offset = [offsetX, offsetY, offsetRotation];
-    console.log(this.offset);
+    //console.log(this.offset);
     this.cycleOffset = [0, 0, 0];
-    console.dir(pivot);
+    //console.dir(pivot);
     if(pivot && (pivot[0] != 0 || pivot[1] != 0)) {
         this.usePivot = true;
         this.pivot = pivot;
@@ -25,11 +25,11 @@ BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, children) {
             //this.sprite.sprite.anchor.y = pivot[1] / this.sprite.sprite.texture.height;
             this.sprite.sprite.anchor.x = 0;
             this.sprite.sprite.anchor.y = 0;
-            console.log(this.sprite.textureName);
-            console.log("anchor " + this.sprite.sprite.anchor.x + " " + this.sprite.sprite.anchor.y);
+            //console.log(this.sprite.textureName);
+            //console.log("anchor " + this.sprite.sprite.anchor.x + " " + this.sprite.sprite.anchor.y);
             this.sprite.sprite.pivot.x = pivot[0];
             this.sprite.sprite.pivot.y = pivot[1];
-            console.log("pivot " + this.sprite.sprite.pivot.x + " " + this.sprite.sprite.pivot.y);
+            //console.log("pivot " + this.sprite.sprite.pivot.x + " " + this.sprite.sprite.pivot.y);
         }
     } else
         this.pivot = [0, 0];
@@ -96,7 +96,7 @@ BodyPart.prototype.cycle = function(cycle, fps, runToEnd) {
     }
     if(!this.cycleInstance) {
         this.cycleInstance = {};
-        console.log(cycle);
+        //console.log(cycle);
         this.cycleInstance.cycle = animationManager.cycles[cycle];
     }
     this.cycleInstance.mspf = 1000.0 / fps;
