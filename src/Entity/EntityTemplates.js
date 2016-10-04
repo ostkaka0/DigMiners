@@ -15,12 +15,12 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
     var bodyparts = {
         "feet": new BodyPart(feetSprite, 0, 0, 0),
         "body": new BodyPart(null, 0, 0, 0, null, {
-            "rightArm": new BodyPart(rightArmSprite, 0, 13, 0, [11, 17], {
-                "itemHolder": new BodyPart(shovelSprite, -10, 10, 0, [32, 16])
+            "rightArm": new BodyPart(rightArmSprite, 5, 4, 0, [10, 11], {
+                "itemHolder": new BodyPart(shovelSprite, -10, 15, 0, [32, 16])
             }),
-            "leftArm": new BodyPart(leftArmSprite, 0, -13, 0, [11, 17])
+            "leftArm": new BodyPart(leftArmSprite, 5, -16, 0, [10, 11])
         }),
-        "head": new BodyPart(headSprite, 0, 0, 0, [])
+        "head": new BodyPart(headSprite, 1, 0, 0, [])
     };
 
     entity.drawable = new Drawable(bodyparts, animationManager, 1);
