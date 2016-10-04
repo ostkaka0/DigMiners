@@ -21,10 +21,15 @@ BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, children) {
         this.usePivot = true;
         this.pivot = pivot;
         if(!isServer) {
+            //this.sprite.sprite.anchor.x = pivot[0] / this.sprite.sprite.texture.width;
+            //this.sprite.sprite.anchor.y = pivot[1] / this.sprite.sprite.texture.height;
             this.sprite.sprite.anchor.x = 0;
             this.sprite.sprite.anchor.y = 0;
+            console.log(this.sprite.textureName);
+            console.log("anchor " + this.sprite.sprite.anchor.x + " " + this.sprite.sprite.anchor.y);
             this.sprite.sprite.pivot.x = pivot[0];
             this.sprite.sprite.pivot.y = pivot[1];
+            console.log("pivot " + this.sprite.sprite.pivot.x + " " + this.sprite.sprite.pivot.y);
         }
     } else
         this.pivot = [0, 0];
@@ -32,7 +37,7 @@ BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, children) {
 
 BodyPart.prototype.position = function(x, y, rotation) {
     //Begin by initializing all bodyparts in center with same rotation.
-    var rotatedOffset = this.rotate(0, 0, this.offset[0] + this.cycleOffset[0], this.offset[1] + this.cycleOffset[1], rotation);
+    var rotatedOffset = this.rotate(0, 0, this.offset[0] + (this.parent ? this.parent.offset[0] : 0), this.offset[1] + (this.parent ? this.parent.offset[1] : 0), rotation);
 
     this.sprite.sprite.position.x = x + rotatedOffset[0];
     this.sprite.sprite.position.y = y + rotatedOffset[1];
@@ -49,7 +54,20 @@ BodyPart.prototype.position = function(x, y, rotation) {
     if(!this.isChild) {
         for(var key in this.children) {
             var child = this.children[key];
-            child.rotateAroundPoint([0, 0], rotation);
+            // Since child is already positioned, just rotate around their pivot
+            var totalOffset = [child.cycleOffset[0], child.cycleOffset[1]];
+            var newPos = child.rotate(0, 0, totalOffset[0], totalOffset[1], rotation + child.cycleOffset[2] + child.offset[2]);
+            if(totalOffset[0] == 0 && totalOffset[1] == 0)
+                newPos = [0, 0];
+
+            child.sprite.sprite.position.x += newPos[0];
+            child.sprite.sprite.position.y += newPos[1];
+            child.sprite.sprite.rotation = rotation + child.cycleOffset[2] + child.offset[2];
+
+            for(var key in child.children) {
+                var child2 = child.children[key];
+                child2.rotateAroundPoint(x, y, child.sprite.sprite.rotation);
+            }
         }
     }
 }
@@ -62,44 +80,16 @@ BodyPart.prototype.rotate = function(ax, ay, x, y, angle) {
     return [-nx, ny];
 }
 
-BodyPart.prototype.rotateAroundPoint = function(aroundPoint, parentRotation) {
-    if(this.sprite.textureName == "shovel")
-        console.log("rotating around " + aroundPoint + " " + this.sprite.textureName);
-    //console.log(aroundPoint);
-    if(this.sprite.textureName == "shovel")
-        console.log("cycleOffset " + this.cycleOffset);
-    if(this.sprite.textureName == "shovel")
-        console.log("aroundPoint " + aroundPoint);
-    var totalOffset = [this.cycleOffset[0], this.cycleOffset[1]];
-    var newPos = this.rotate(aroundPoint[0], aroundPoint[1], totalOffset[0], totalOffset[1], parentRotation + this.cycleOffset[2] + this.offset[2]);
-    if(totalOffset[0] == 0 && totalOffset[1] == 0)
-        newPos = aroundPoint;
-    //console.log(newPos);
-    if(this.sprite.textureName == "shovel")
-        console.log("totalaOffset " + totalOffset);
-    if(this.sprite.textureName == "shovel")
-        console.log("parent offset " + (this.parent ? this.parent.offset : -1));
+BodyPart.prototype.rotateAroundPoint = function(x, y, parentRotation) {
+    var totalOffset = [this.cycleOffset[0] + this.offset[0] + this.parent.offset[0], this.cycleOffset[1] + this.offset[1] + this.parent.offset[1]];
+    var newPos = this.rotate(this.parent.offset[0], this.parent.offset[1], this.offset[0] + this.parent.offset[0], this.offset[1] + this.parent.offset[1], parentRotation + this.cycleOffset[2] + this.offset[2]);
+    console.log(totalOffset);
 
-    this.sprite.sprite.position.x += newPos[0];
-    this.sprite.sprite.position.y += newPos[1];
+    //var rotatedOffset = this.rotate(0, 0, this.offset[0], this.offset[1], parentRotation + this.cycleOffset[2] + this.offset[2]);
+
+    this.sprite.sprite.position.x = x + newPos[0];// + rotatedOffset[0];
+    this.sprite.sprite.position.y = y + newPos[1];// + rotatedOffset[1];
     this.sprite.sprite.rotation = parentRotation + this.cycleOffset[2] + this.offset[2];
-
-    var rotatedOffsetOffset = [(this.parent ? this.parent.offset[0] : 0) + this.offset[0], (this.parent ? this.parent.offset[1] : 0) + this.offset[1]];
-    var rotatedOffset = this.rotate(0, 0, rotatedOffsetOffset[0], rotatedOffsetOffset[1], this.sprite.sprite.rotation);
-    if(this.sprite.textureName == "shovel")
-        console.log("rotatedoffset " + rotatedOffset);
-    if(this.sprite.textureName == "shovel")
-        console.log("newPos X:" + newPos[0] + " Y:" + newPos[1]);
-    if(this.sprite.textureName == "shovel")
-        console.log("pivt " + this.pivot);
-
-
-    for(var key in this.children) {
-        var child = this.children[key];
-        //var totalCoords = [aroundPoint[0] + this.offset[0], aroundPoint[1] + this.offset[1]];
-        //child.sprite.sprite.pivot = new PIXI.Point(newPos[0], newPos[1]);
-        child.rotateAroundPoint([rotatedOffset[0], rotatedOffset[1]], this.sprite.sprite.rotation);
-    }
 }
 
 BodyPart.prototype.cycle = function(cycle, fps, runToEnd) {
