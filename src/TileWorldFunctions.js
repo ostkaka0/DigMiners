@@ -1,8 +1,8 @@
 getDensity = function(terrainWorld, x, y) {
     var chunkX = Math.floor(x / CHUNK_DIM);
     var chunkY = Math.floor(y / CHUNK_DIM);
-    var localX = x - chunkX * CHUNK_DIM;
-    var localY = y - chunkY * CHUNK_DIM;
+    var localX = Math.floor(x) - chunkX * CHUNK_DIM;
+    var localY = Math.floor(y) - chunkY * CHUNK_DIM;
 
     var chunk = terrainWorld.get(chunkX, chunkY);
     if(!chunk) {
@@ -15,8 +15,8 @@ getDensity = function(terrainWorld, x, y) {
 setDensity = function(tileWorld, x, y, density) {
     var chunkX = Math.floor(x / CHUNK_DIM);
     var chunkY = Math.floor(y / CHUNK_DIM);
-    var localX = x - chunkX * CHUNK_DIM;
-    var localY = y - chunkY * CHUNK_DIM;
+    var localX = Math.floor(x) - chunkX * CHUNK_DIM;
+    var localY = Math.floor(y) - chunkY * CHUNK_DIM;
 
     var chunk = tileWorld.get(chunkX, chunkY);
     if(!chunk) {
@@ -43,8 +43,8 @@ getTileId = function(tileWorld, x, y) {
 setTileId = function(tileWorld, x, y, value) {
     var chunkX = Math.floor(x / CHUNK_DIM);
     var chunkY = Math.floor(y / CHUNK_DIM);
-    var localX = x - chunkX * CHUNK_DIM;
-    var localY = y - chunkY * CHUNK_DIM;
+    var localX = Math.floor(x) - chunkX * CHUNK_DIM;
+    var localY = Math.floor(y) - chunkY * CHUNK_DIM;
 
     var chunk = tileWorld.get(chunkX, chunkY);
     if(!chunk) {
@@ -147,11 +147,9 @@ carveCircle = function(gameData, x, y, radius, strengthModifier, onDensityChange
 
             var fillStrength = Math.max(Math.min(radius - dis, 1.0) * strengthModifier, 0.0) / tile.hardness;
             var newDensity = Math.max(oldDensity - parseInt(255.0 * fillStrength), 0);
+            if(onDensityChange)
+                newDensity = onDensityChange(tileX, tileY, tile, oldDensity, newDensity);
             var densityDiff = oldDensity - newDensity;
-            if(onDensityChange) {
-                if (!onDensityChange(tileX, tileY, tile, oldDensity, newDensity))
-                    continue;
-            }
             
             dug[tileId] += densityDiff;
             setDensity(tileWorld, tileX, tileY, newDensity, true);

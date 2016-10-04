@@ -103,7 +103,8 @@ tick = function(dt) {
 
     gameData.playerWorld.objectArray.forEach(function(player) {
         var entity = gameData.entityWorld.objects[player.entityId];
-        if(entity.movement && entity.movement.spacebar && entity.physicsBody) {
+        if(entity.movement && entity.movement.spacebar && entity.physicsBody && entity.movement.digTickTimeout == 0) {
+            console.log("DIG!!!");
             var angle = entity.physicsBody.angle;
             var moveDir = [Math.cos(-angle), Math.sin(-angle)];
             var command = new CommandPlayerDig(player.playerId, entity.physicsBody.pos[0], entity.physicsBody.pos[1], moveDir, 1.5);
