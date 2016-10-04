@@ -88,7 +88,7 @@ MessageInit.prototype.deserialize = function(gameData, byteArray, index) {
             gameData.entityWorld.add(entity, entityId);
         else
             console.log("Entity does already exist!");
-        console.dir(entity);
+        //console.dir(entity);
     }
 
     // Deserialize players
