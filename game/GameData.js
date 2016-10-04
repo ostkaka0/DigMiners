@@ -12,6 +12,10 @@ GameData = function(idList) {
     this.tileRegister = objectRegisterAddByObject([], Tiles);
     this.itemRegister = objectRegisterAddByObject([], Item);
     this.generator = new Generator();
+    if(!isServer)
+        this.animationManager = new AnimationManager();
+    else
+        this.animationManager = {};
     this.commands = [];
     this.pendingCommands = {};
     this.commandTypes = typeRegisterAddByArray([], [CommandPlayerMove, CommandDig, CommandPlayerDig, CommandPlayerEquipStack]);

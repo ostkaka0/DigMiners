@@ -11,42 +11,41 @@ CommandPlayerDig.prototype.execute = function(gameData) {
     var player = gameData.playerWorld.objects[this.playerId];
     if(!player) return;
     var entity = gameData.entityWorld.objects[player.entityId];
-    if (!entity || !entity.movement) return;
+    if(!entity || !entity.movement) return;
     entity.movement.digTickTimeout = entity.movement.calcDigTickDuration(gameData.tickDuration);
-    
+
     var tileWorld = gameData.tileWorld;
     var targetTile = gameData.tileRegister[getTileId(gameData.tileWorld, this.x + 1.0 * this.dir[0], this.y + 1.0 * this.dir[1])];
     var targetDensity = getDensity(gameData.tileWorld, this.x + 1.0 * this.dir[0], this.y + 1.0 * this.dir[1]);
     var onDensityChange = null;
     if(targetTile.isOre && targetDensity > 0) {
         entity.movement.isMining = true;
-        onDensityChange = function(tileX, tileY, tile, oldDensity, newDensity) { 
-            if (tile.isOre) {
+        onDensityChange = function(tileX, tileY, tile, oldDensity, newDensity) {
+            if(tile.isOre) {
                 var densityChange = (oldDensity - newDensity) / 2 >> 0;
                 var newDensity2 = oldDensity - densityChange;
-                if (newDensity2 < 128)
+                if(newDensity2 < 128)
                     return 0;
-                else  return newDensity2;
+                else return newDensity2;
             }
             else return oldDensity;
-                
+
         };// || tile.id == targetTile.id; };
         var entityId = gameData.playerWorld.objects[this.playerId].entityId;
         var speedRef = gameData.entityWorld.objects[entityId].physicsBody.speed;
         v2.mul(0.5, speedRef, speedRef);
     } else {
-        
+
         entity.movement.isDigging = true;
-        onDensityChange = function(tileX, tileY, tile, oldDensity, newDensity) { return (tile.isOre)? oldDensity : newDensity; };
+        onDensityChange = function(tileX, tileY, tile, oldDensity, newDensity) { return (tile.isOre) ? oldDensity : newDensity; };
     }
 
     var dug = carveCircle(gameData, this.x + 0.7 * this.dir[0], this.y + 0.7 * this.dir[1], this.radius, player.getDigStrength(), onDensityChange);
     if(!isServer) {
         var entity = gameData.entityWorld.objects[player.entityId];
         if(entity.drawable) {
-            // bodypart, cycle name, fps, runToEnd
-            entity.drawable.bodyparts["rightArm"].cycle("rightArm", 256, true);
-            //entity.drawable.cycle("itemHolder", "tool", 256, true);
+            // bodypart, gameData, cycle name, fps, runToEnd
+            entity.drawable.bodyparts["rightArm"].cycle(gameData, "rightArm", 256, true);
         }
         return;
     }

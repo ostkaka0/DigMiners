@@ -1,4 +1,4 @@
-Drawable = function(bodyparts, animationManager, zindex) {
+Drawable = function(gameData, bodyparts, zindex) {
     this.bodyparts = bodyparts;
     this.sprites = {};
     if(!zindex)
@@ -6,7 +6,8 @@ Drawable = function(bodyparts, animationManager, zindex) {
     this.zindex = zindex;
     if(isServer)
         return;
-    this.animationManager = animationManager;
+    if(gameData)
+        this.animationManager = gameData.animationManager;
 
     var zindexContainer = zindices[zindex];
     this.container = new PIXI.Container();
@@ -89,7 +90,7 @@ Drawable.prototype.deserializeBodyparts = function(byteArray, index, gameData) {
 
 Drawable.prototype.deserialize = function(byteArray, index, gameData) {
     this.zindex = deserializeInt32(byteArray, index);
-    this.animationManager = animationManager;
+    this.animationManager = gameData.animationManager;
     if(!isServer) {
         if(!this.zindex)
             this.zindex = 0;
@@ -116,7 +117,6 @@ Drawable.prototype.deserialize = function(byteArray, index, gameData) {
             noAnchor = false;
         this.addSprite(spriteName, new Sprite(textureName, null, noAnchor), offset, rotateWithBody);
     }
-    this.animationManager = animationManager;
     if(!isServer) {
         // Add bodypart sprites to world
         this.addBodyparts(this.bodyparts, this);

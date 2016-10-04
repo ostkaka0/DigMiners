@@ -25,13 +25,12 @@ var chunkRenderer = new ChunkRenderer(gl, gameData.tileWorld, 32.0);
 var commands = [];
 var player = null;
 var playerEntity = null;
-var animationManager = new AnimationManager();
 var keysDown = {};
 var messageCallbacks = {};
 var textureManager = new TextureManager();
 
 loadGame = function() {
-    animationManager.load();
+    gameData.animationManager.load();
     // Player input
     document.addEventListener('keydown', function(event) {
         var char = String.fromCharCode(event.keyCode).toLowerCase();
@@ -143,7 +142,7 @@ render = function(tickFracTime) {
     });
 
     //TODO: animationmanager use dt? maybe not needed
-    animationManager.update();
+    gameData.animationManager.update();
 
     renderer.render(stage);
 }
