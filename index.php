@@ -8,7 +8,11 @@
         <script type = "text/javascript">
             var isServer = false;
         </script>
-
+        <div class="hud" id="hud">
+            <div class="dugItems" id="dugItems"></div>
+            <div class="inventory" id="inventory"></div>
+            <!--<div class="chat" id="chat">chat</div>-->
+        </div>
         <?php
             $includedScripts = array();
             function addScript($path) {

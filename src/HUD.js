@@ -2,7 +2,6 @@
 HUDClosures = [];
 
 createHUD = function(gameData) {
-    return;
     // create inventory
     var inventory = document.getElementById("inventory");
     inventory.innerHTML = '<div class="inventoryHeader">Your amazing inventory</div>';
@@ -76,7 +75,6 @@ createHUD = function(gameData) {
 }
 
 updateHUD = function(gameData) {
-    return;
     // update inventory
     for(var i = 0; i < 64; ++i) {
         var slot = document.getElementById("slot" + i);
