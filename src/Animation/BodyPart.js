@@ -66,7 +66,7 @@ BodyPart.prototype.position = function(x, y, rotation) {
 
             for(var key in child.children) {
                 var child2 = child.children[key];
-                child2.rotateAroundPoint(x, y, child.sprite.sprite.rotation);
+                child2.rotateAroundPoint(x, y, rotation, child.sprite.sprite.rotation);
             }
         }
     }
@@ -80,15 +80,12 @@ BodyPart.prototype.rotate = function(ax, ay, x, y, angle) {
     return [-nx, ny];
 }
 
-BodyPart.prototype.rotateAroundPoint = function(x, y, parentRotation) {
-    var totalOffset = [this.cycleOffset[0] + this.offset[0] + this.parent.offset[0], this.cycleOffset[1] + this.offset[1] + this.parent.offset[1]];
-    var newPos = this.rotate(this.parent.offset[0], this.parent.offset[1], this.offset[0] + this.parent.offset[0], this.offset[1] + this.parent.offset[1], parentRotation + this.cycleOffset[2] + this.offset[2]);
-    console.log(totalOffset);
+BodyPart.prototype.rotateAroundPoint = function(x, y, rotation, parentRotation) {
+    var rotatedParent = this.rotate(0, 0, this.parent.offset[0], this.parent.offset[1], rotation);
+    var rotatedOffset = this.rotate(0, 0, this.offset[0], this.offset[1], parentRotation + this.cycleOffset[2] + this.offset[2]);
 
-    //var rotatedOffset = this.rotate(0, 0, this.offset[0], this.offset[1], parentRotation + this.cycleOffset[2] + this.offset[2]);
-
-    this.sprite.sprite.position.x = x + newPos[0];// + rotatedOffset[0];
-    this.sprite.sprite.position.y = y + newPos[1];// + rotatedOffset[1];
+    this.sprite.sprite.position.x = x + rotatedParent[0] + rotatedOffset[0];
+    this.sprite.sprite.position.y = y + rotatedParent[1] + rotatedOffset[1];
     this.sprite.sprite.rotation = parentRotation + this.cycleOffset[2] + this.offset[2];
 }
 

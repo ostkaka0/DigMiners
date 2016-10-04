@@ -26,7 +26,7 @@ CommandPlayerDig.prototype.execute = function(gameData) {
         var entity = gameData.entityWorld.objects[player.entityId];
         if(entity.drawable) {
             // bodypart, cycle name, fps, runToEnd
-            entity.drawable.bodyparts["rightArm"].cycle("rightArm", 32, true);
+            entity.drawable.bodyparts["rightArm"].cycle("rightArm", 256, true);
             //entity.drawable.cycle("itemHolder", "tool", 256, true);
         }
         return;
