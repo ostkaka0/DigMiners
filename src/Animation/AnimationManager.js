@@ -4,12 +4,11 @@ AnimationManager = function() {
 }
 
 AnimationManager.prototype.load = function() {
-    //this.addAnimation("walk", new Animation("walk", textures.walk, 30, 150, 120));
-    this.addAnimation("feet", new Animation("feet", textures.feet, 60, 75, 75));
-    //this.addAnimation("dig", new Animation("dig", textures.dig, 60, 75, 75));
-    this.addAnimation("tool", new Animation("tool", textures.tool, 64, 75, 75));
-    //this.addAnimation("octopus-walk", new Animation("octopus-walk", textures.octopus, 60, 256, 256));
-    this.addCycle("rightArm", new Cycle([
+    this.animations["feet"] = new Animation("feet", textures.feet, 60, 75, 75);
+    this.animations["tool"] = new Animation("tool", textures.tool, 64, 75, 75);
+
+
+    this.cycles["rightArm"] = new Cycle([
         [0,        // x
             0,     // y
             -0.5,      // angle
@@ -18,29 +17,7 @@ AnimationManager.prototype.load = function() {
             0,
             0,
             32]
-    ]));
-}
-
-AnimationManager.prototype.addAnimation = function(name, animation) {
-    if(name != undefined && animation != undefined) {
-        if(this.animations[name] == undefined)
-            this.animations[name] = animation;
-        else
-            console.log("Tried to add already added animation");
-    }
-    else
-        console.log("Tried to add animation/key null");
-}
-
-AnimationManager.prototype.addCycle = function(name, cycle) {
-    if(name != undefined && cycle != undefined) {
-        if(this.cycles[name] == undefined)
-            this.cycles[name] = cycle;
-        else
-            console.log("Tried to add already added cycle");
-    }
-    else
-        console.log("Tried to add cycle/key null");
+    ]);
 }
 
 AnimationManager.prototype.update = function() {
