@@ -49,6 +49,7 @@ CommandPlayerDig.prototype.execute = function(gameData) {
         if(entity.drawable) {
             // bodypart, gameData, cycle name, fps, runToEnd
             entity.drawable.bodyparts["rightArm"].cycle(gameData, "rightArm", 64 / entity.movement.digDuration, false);
+            entity.drawable.animate("itemHolder", "dynamite", 32, false);
         }
         return;
     }

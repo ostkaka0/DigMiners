@@ -17,6 +17,7 @@ TextureManager = function() {
     this.loader.queueTexture("head", "head");
     this.loader.queueTexture("rightArm", "rightArm");
     this.loader.queueTexture("leftArm", "leftArm");
+    this.loader.queueTexture("dynamite", "items/dynamite");
 
     console.log("Loading textures...");
     this.loader.loadTextures();
