@@ -27,8 +27,12 @@ MessagePlayerInventory.prototype.execute = function(gameData) {
         player.inventory.removeItem(gameData, this.id, this.amount);
     } else if(this.actionId == InventoryActions.DROP_STACK) {
         var item = player.inventory.removeStack(this.id);
+        if(item.onDequip) {
+            item.onDequip(gameData, player.entityId);
+            item.onDequip = null;
+        }
     }
-    if(!isServer)
+    if(!isServer && this.playerId == global.player.playerId)
         updateHUD(gameData);
 }
 

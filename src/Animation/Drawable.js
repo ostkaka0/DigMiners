@@ -189,8 +189,10 @@ Drawable.prototype.unanimate = function(bodypart, animation, runToEnd) {
 
 // Add a sprite that follows this drawable. For example, a healthbar.
 Drawable.prototype.addSprite = function(name, sprite, offset, rotateWithBody) {
+    if(this.sprites[name])
+        this.removeSprite(name);
     this.sprites[name] = sprite;
-    if(!isServer) {
+    if(!isServer && offset) {
         this.sprites[name].sprite.pivot.x = -offset[0];
         this.sprites[name].sprite.pivot.y = -offset[1];
     }
@@ -203,7 +205,8 @@ Drawable.prototype.addSprite = function(name, sprite, offset, rotateWithBody) {
 Drawable.prototype.removeSprite = function(name) {
     var sprite = this.sprites[name];
     if(sprite) {
-        this.container.removeChild(sprite.sprite);
+        if(!isServer)
+            this.container.removeChild(sprite.sprite);
         delete this.sprites[name];
     }
 }
