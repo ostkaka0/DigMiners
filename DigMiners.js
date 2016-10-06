@@ -94,6 +94,7 @@ tick = function(dt) {
     }
 
     gameData.entityWorld.objectArray.forEach(function(entity) {
+        //console.log("item? " + entity.item);
         if(entity.item && entity.physicsBody && !entity.destroying && (!entity.item.dropped || ((new Date()) - entity.item.dropped) >= 500)) {
             var dis = v2.distance(entity.physicsBody.pos, playerEntity.physicsBody.pos);
             //console.log("dis client: " + dis);

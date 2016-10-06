@@ -70,9 +70,15 @@ CommandPlayerDig.prototype.execute = function(gameData) {
         if(itemId) {
             var entity = gameData.entityWorld.objects[player.entityId];
             var physicsBody = entity.physicsBody;
-            message = new MessageItemDrop(idList.next(), itemId, 1, physicsBody.pos[0], physicsBody.pos[1], 0, 0, physicsBody.angle);
-            message.execute(gameData);
-            message.send(io.sockets);
+
+            var itemEntity = entityTemplates.item(idList.next(), itemId, 1, gameData);
+            itemEntity.physicsBody.pos = v2.create(physicsBody.pos[0], physicsBody.pos[1]);
+            itemEntity.physicsBody.posOld = v2.create(physicsBody.pos[0], physicsBody.pos[1]);
+            itemEntity.physicsBody.angle = physicsBody.angle;
+            itemEntity.physicsBody.angleOld = physicsBody.angle;
+            var message = new MessageEntitySpawn(gameData, itemEntity);
+            // Do not execute message, entity is already spawned
+            message.send(gameData, io.sockets);
         }
     }
 }

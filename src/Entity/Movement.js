@@ -37,7 +37,6 @@ Movement.prototype.serialize = function(byteArray, index) {
     var bitField = (this.up ? 1 : 0) | (this.left ? 2 : 0) | (this.down ? 4 : 0) | (this.right ? 8 : 0) | (this.spacebar ? 16 : 0);
     serializeInt8(byteArray, index, bitField);
     serializeFix(byteArray, index, this.speed);
-    console.log("Movement serialized!");
 }
 
 Movement.prototype.deserialize = function(byteArray, index) {
