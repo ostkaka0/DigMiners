@@ -70,3 +70,11 @@ Inventory.prototype.removeStack = function(id) {
     this.items.splice(id, 1);
     return item;
 }
+
+Inventory.prototype.dequipAll = function(gameData, type) {
+    for(var i = 0; i < this.items.length; ++i) {
+        var itemType = gameData.itemRegister[this.items[i].id];
+        if(itemType.type == type)
+            this.items[i].equipped = false;
+    }
+}

@@ -7,6 +7,7 @@ Item.Stone = {
     isEquipable: false,
     isDropable: true,
     isDigable: true,
+    type: "resource"
 }
 Item.HardStone = {
     name: "Hard Stone",
@@ -15,6 +16,7 @@ Item.HardStone = {
     isEquipable: false,
     isDropable: true,
     isDigable: true,
+    type: "resource"
 }
 Item.VeryHardStone = {
     name: "Very Hard Stone",
@@ -23,6 +25,7 @@ Item.VeryHardStone = {
     isEquipable: false,
     isDropable: true,
     isDigable: true,
+    type: "resource"
 }
 Item.Sapphire = {
     name: "Sapphire",
@@ -31,6 +34,7 @@ Item.Sapphire = {
     isEquipable: false,
     isDropable: true,
     isDigable: true,
+    type: "resource"
 }
 Item.Ruby = {
     name: "Ruby",
@@ -39,6 +43,7 @@ Item.Ruby = {
     isEquipable: false,
     isDropable: true,
     isDigable: true,
+    type: "resource"
 }
 Item.UglyHat = {
     name: "Ugly Hat",
@@ -48,6 +53,7 @@ Item.UglyHat = {
     isDropable: true,
     isDigable: false,
     maxStackSize: 1,
+    type: "hat"
 }
 Item.BrokenHat = {
     name: "Broken Hat",
@@ -57,4 +63,5 @@ Item.BrokenHat = {
     isDropable: true,
     isDigable: false,
     maxStackSize: 1,
+    type: "hat"
 }

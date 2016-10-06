@@ -17,9 +17,9 @@ MessageRequestItemPickup.prototype.execute = function(gameData, player) {
         if(dis <= gameData.itemPickupDistance + 0.1) {
             entity.destroying = true;
             // Add item to player inventory
-            var message = new MessagePlayerInventory(player.id, InventoryActions.ADD_ITEM, entity.item.itemId, entity.item.amount);
+            var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, entity.item.itemId, entity.item.amount);
             message.execute(gameData);
-            message.send(player.socket);
+            message.send(io.sockets);
             // Destroy entity
             message = new MessageEntityDestroy(this.entityId);
             message.execute(gameData);
