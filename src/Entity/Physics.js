@@ -22,7 +22,6 @@ PhysicsBody.prototype.serialize = function(byteArray, index) {
     serializeFix(byteArray, index, this.angle);
     serializeFix(byteArray, index, this.rotationSpeed);
     serializeFix(byteArray, index, this.damping);
-    console.log("physics serialized!");
 }
 
 PhysicsBody.prototype.deserialize = function(byteArray, index) {
