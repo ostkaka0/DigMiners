@@ -12,10 +12,17 @@ createHUD = function(gameData) {
         slot.setAttribute("class", "inventorySlot");
         slot.setAttribute("id", "slot" + i);
         slot.setAttribute("title", "Empty slot");
+        var describer = document.createElement("div");
+        describer.setAttribute("class", "slotDescriber");
+        slot.appendChild(describer);
 
         var slotImageContainer = document.createElement("div");
         slotImageContainer.setAttribute("class", "slotImageContainer");
         slotImageContainer.style.backgroundRepeat = "no-repeat";
+
+        var slotImageContainerOverlay = document.createElement("div");
+        slotImageContainerOverlay.setAttribute("class", "slotImageContainerOverlay");
+        slotImageContainer.appendChild(slotImageContainerOverlay);
 
         var slotTextContainer = document.createElement("div");
         slotTextContainer.setAttribute("class", "slotTextContainer");
@@ -66,49 +73,62 @@ createHUD = function(gameData) {
             return false;
         };
     }
+
     // Initialize closures
     for(var i = 0; i < 64; ++i) {
         HUDClosures[i] = [];
         HUDClosures[i][0] = createDropFunc(i);
         HUDClosures[i][1] = createEquipFunc(i);
     }
+
+    // Slot describer
+    $('.inventorySlot').mouseenter(function() {
+        var text = $(this).find('.slotDescriber');
+        text.fadeIn(50);
+    }).mouseleave(function() {
+        var text = $(this).find('.slotDescriber');
+        text.fadeOut(50);
+    });
 }
 
 updateHUD = function(gameData) {
     // update inventory
     for(var i = 0; i < 64; ++i) {
         var slot = document.getElementById("slot" + i);
-        slot.setAttribute("class", "inventorySlot");
-        var slotImageContainer = slot.childNodes[0];
-        var slotTextContainer = slot.childNodes[1];
+        var slotDescriptionContainer = slot.childNodes[0];
+        var slotImageContainer = slot.childNodes[1];
+        var slotTextContainer = slot.childNodes[2];
 
-        var item = player.inventory.items[i];
+        var slotImageContainerOverlay = slotImageContainer.childNodes[0];
+        slotImageContainerOverlay.style.backgroundImage = "";
+
+        var item = global.player.inventory.items[i];
         if(item) {
             var itemType = gameData.itemRegister[item.id];
             if(itemType.texture)
                 slotImageContainer.style.backgroundImage = "url('data/textures/" + itemType.texturePath + itemType.texture + ".png')";
             if(item.amount > 1)
                 slotTextContainer.innerText = item.amount;
-            slot.setAttribute("title", itemType.name);
+            slotDescriptionContainer.innerText = itemType.name;
             if(item.equipped)
-                slot.className += " brightness";
+                slotImageContainerOverlay.style.backgroundImage = "url('data/textures/items/equipped.png')";
 
             slot.onclick = HUDClosures[i][0];
             slot.oncontextmenu = HUDClosures[i][1];
         } else {
             slotImageContainer.style.backgroundImage = "";
             slotTextContainer.innerText = "";
-            slot.setAttribute("title", "Empty slot");
+            slotDescriptionContainer.innerText = "Empty slot";
             slot.onclick = null;
         }
     }
 
     // update dugItems
     for(var i = 0; i < gameData.tileRegister.length; ++i) {
-        if(!player.oreInventory[i])
+        if(!global.player.oreInventory[i])
             continue;
         var dugItemsEntry = document.getElementById("entry" + i);
         var dugItemsEntryText = dugItemsEntry.childNodes[1];
-        dugItemsEntryText.innerText = parseFloat(Math.floor((player.oreInventory[i] / 256.0) * 10) / 10).toFixed(1);
+        dugItemsEntryText.innerText = parseFloat(Math.floor((global.player.oreInventory[i] / 256.0) * 10) / 10).toFixed(1);
     }
 }

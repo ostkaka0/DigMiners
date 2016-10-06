@@ -6,13 +6,28 @@ CommandPlayerEquipStack = function(playerId, stackId) {
 
 CommandPlayerEquipStack.prototype.execute = function(gameData) {
     var player = gameData.playerWorld.objects[this.playerId];
-    if(!player) return;
+    var entity = gameData.entityWorld.objects[player.entityId];
     var item = player.inventory.items[this.stackId];
-    if(!item) return;
+    var itemType = gameData.itemRegister[item.id];
+    if(item.equipped == null || item.equipped == undefined)
+        item.equipped = false;
     item.equipped = !item.equipped;
-    //todo: function to equip item?
-    if(!isServer)
+
+    if(itemType.type == "hat") {
+        if(item.equipped) {
+            player.inventory.dequipAll(gameData, "hat", entity.id);
+            item.equipped = true;
+            item.onDequip = function(gameData, arg) {
+                var entity = gameData.entityWorld.objects[arg];
+                entity.drawable.removeSprite("hat");
+            };
+            entity.drawable.addSprite("hat", new Sprite(itemType.texture), [0, 0], true);
+        }
+    }
+
+    if(!isServer && this.playerId == global.player.playerId)
         updateHUD(gameData);
+
 }
 
 CommandPlayerEquipStack.prototype.serialize = function(byteArray, index) {

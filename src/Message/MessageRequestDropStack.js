@@ -30,7 +30,7 @@ MessageRequestDropStack.prototype.execute = function(gameData, player) {
 
         var message = new MessagePlayerInventory(player.playerId, InventoryActions.DROP_STACK, this.id, 0);
         message.execute(gameData);
-        message.send(player.socket);
+        message.send(io.sockets);
     }
 }
 
