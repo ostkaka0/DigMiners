@@ -33,7 +33,7 @@ CommandPlayerDig.prototype.execute = function(gameData) {
             }
             else return oldDensity;
 
-        };// || tile.id == targetTile.id; };
+        };
         var entityId = gameData.playerWorld.objects[this.playerId].entityId;
         var speedRef = gameData.entityWorld.objects[entityId].physicsBody.speed;
         v2.mul(0.5, speedRef, speedRef);

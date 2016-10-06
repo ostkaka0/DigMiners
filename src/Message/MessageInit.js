@@ -25,7 +25,39 @@ MessageInit.prototype.execute = function(gameData) {
     }
 }
 
-MessageInit.prototype.serialize = function(gameData, byteArray, index) {
+MessageInit.prototype.getSerializationSize = function(gameData) {
+    var size = 16 + getUTF8SerializationSize(this.playerName);
+
+    // Calculate serializationSize of entities
+    var entitySizes = {};
+    for(entity of gameData.entityWorld.objectArray) {
+        size += 8; // Entity-id, entitySize
+        var entitySize = 0;
+        for(var component in entity) {
+            component = entity[component];
+            if(!component.serialize) continue;
+            //console.log("component " + component.id + " serialization size " + component.getSerializationSize());
+            entitySize += 4 + component.getSerializationSize(); // component-id
+        }
+        entitySizes[entity.id] = entitySize;
+        size += entitySize;
+    }
+    this.entitySizes = entitySizes;
+
+    // Calculate serializationSize of players
+    size += 4;
+    for(player of gameData.playerWorld.objectArray) {
+        if(player.id == this.playerId)
+            continue;
+        size += 8 + getUTF8SerializationSize(player.name);
+    }
+    return size;
+}
+
+MessageInit.prototype.send = function(gameData, socket) {
+    var byteArray = new Array(this.getSerializationSize(gameData));//new Buffer(this.getSerializationSize());
+    var index = new IndexCounter();
+    
     serializeInt32(byteArray, index, this.tickId);
     serializeInt32(byteArray, index, this.playerId);
     serializeInt32(byteArray, index, this.entityId);
@@ -56,9 +88,15 @@ MessageInit.prototype.serialize = function(gameData, byteArray, index) {
         serializeInt32(byteArray, index, player.entityId);
         serializeUTF8(byteArray, index, player.name);
     }
+    
+    byteArray = byteArray.concat(this.entityData);
+    socket.emit(this.idString, new Buffer(byteArray));
 }
 
-MessageInit.prototype.deserialize = function(gameData, byteArray, index) {
+MessageInit.prototype.receive = function(gameData, byteArray) {
+    byteArray = new Uint8Array(byteArray);
+    var index = new IndexCounter();
+    
     this.tickId = deserializeInt32(byteArray, index);
     this.playerId = deserializeInt32(byteArray, index);
     this.entityId = deserializeInt32(byteArray, index);
@@ -99,48 +137,7 @@ MessageInit.prototype.deserialize = function(gameData, byteArray, index) {
         var playerName = deserializeUTF8(byteArray, index);
         this.players.push([playerId, entityId, playerName]);
     }
-}
-
-MessageInit.prototype.getSerializationSize = function(gameData) {
-    var size = 16 + getUTF8SerializationSize(this.playerName);
-
-    // Calculate serializationSize of entities
-    var entitySizes = {};
-    for(entity of gameData.entityWorld.objectArray) {
-        size += 8; // Entity-id, entitySize
-        var entitySize = 0;
-        for(var component in entity) {
-            component = entity[component];
-            if(!component.serialize) continue;
-            //console.log("component " + component.id + " serialization size " + component.getSerializationSize());
-            entitySize += 4 + component.getSerializationSize(); // component-id
-        }
-        entitySizes[entity.id] = entitySize;
-        size += entitySize;
-    }
-    this.entitySizes = entitySizes;
-
-    // Calculate serializationSize of players
-    size += 4;
-    for(player of gameData.playerWorld.objectArray) {
-        if(player.id == this.playerId)
-            continue;
-        size += 8 + getUTF8SerializationSize(player.name);
-    }
-    return size;
-}
-
-MessageInit.prototype.send = function(gameData, socket) {
-    var byteArray = new Array(this.getSerializationSize(gameData));//new Buffer(this.getSerializationSize());
-    var counter = new IndexCounter();
-    this.serialize(gameData, byteArray, counter);
-    byteArray = byteArray.concat(this.entityData);
-    socket.emit(this.idString, new Buffer(byteArray));
-}
-
-MessageInit.prototype.receive = function(gameData, byteArray) {
-    var counter = new IndexCounter();
-    this.deserialize(gameData, new Uint8Array(byteArray), counter);
+    
     this.entityData = byteArray;//byteArray.slice(counter.value, byteArray.byteLength);
-    this.index = counter;
+    this.index = index;
 }

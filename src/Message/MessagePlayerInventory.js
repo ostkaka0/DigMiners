@@ -32,32 +32,25 @@ MessagePlayerInventory.prototype.execute = function(gameData) {
         updateHUD(gameData);
 }
 
-MessagePlayerInventory.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.playerId);
-    serializeInt32(byteArray, index, this.actionId);
-    serializeInt32(byteArray, index, this.id);
-    serializeInt32(byteArray, index, this.amount);
-}
-
-MessagePlayerInventory.prototype.deserialize = function(byteArray, index) {
-    this.playerId = deserializeInt32(byteArray, index);
-    this.actionId = deserializeInt32(byteArray, index);
-    this.id = deserializeInt32(byteArray, index);
-    this.amount = deserializeInt32(byteArray, index);
-}
-
 MessagePlayerInventory.prototype.getSerializationSize = function() {
     return 16;
 }
 
 MessagePlayerInventory.prototype.send = function(socket) {
     var byteArray = new Buffer(this.getSerializationSize());
-    var counter = new IndexCounter();
-    this.serialize(byteArray, counter);
+    var index = new IndexCounter();
+    serializeInt32(byteArray, index, this.playerId);
+    serializeInt32(byteArray, index, this.actionId);
+    serializeInt32(byteArray, index, this.id);
+    serializeInt32(byteArray, index, this.amount);
     socket.emit(this.idString, byteArray);
 }
 
 MessagePlayerInventory.prototype.receive = function(gameData, byteArray) {
-    var counter = new IndexCounter();
-    this.deserialize(new Uint8Array(byteArray), counter);
+    byteArray = new Uint8Array(byteArray);
+    var index = new IndexCounter();
+    this.playerId = deserializeInt32(byteArray, index);
+    this.actionId = deserializeInt32(byteArray, index);
+    this.id = deserializeInt32(byteArray, index);
+    this.amount = deserializeInt32(byteArray, index);
 }

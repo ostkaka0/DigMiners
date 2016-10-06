@@ -27,7 +27,13 @@ MessageEntityStatus.prototype.execute = function(gameData) {
     physicsBody.rotationSpeed = this.physicsBody.rotationSpeed;
 }
 
-MessageEntityStatus.prototype.serialize = function(byteArray, index) {
+MessageEntityStatus.prototype.getSerializationSize = function() {
+    return 52;
+}
+
+MessageEntityStatus.prototype.send = function(socket) {
+    var byteArray = new Uint8Array(this.getSerializationSize());
+    var index = new IndexCounter();
     serializeInt32(byteArray, index, this.entityId);
     serializeV2(byteArray, index, this.physicsBody.pos);
     serializeV2(byteArray, index, this.physicsBody.posOld);
@@ -37,9 +43,12 @@ MessageEntityStatus.prototype.serialize = function(byteArray, index) {
     serializeFix(byteArray, index, this.physicsBody.angle);
     serializeFix(byteArray, index, this.physicsBody.angleOld);
     serializeFix(byteArray, index, this.physicsBody.rotationSpeed);
+    socket.emit(this.idString, byteArray);
 }
 
-MessageEntityStatus.prototype.deserialize = function(byteArray, index) {
+MessageEntityStatus.prototype.receive = function(gameData, byteArray) {
+    var index = new IndexCounter();
+    byteArray = new Uint8Array(byteArray);
     this.entityId = deserializeInt32(byteArray, index);
     this.physicsBody.pos = deserializeV2(byteArray, index);
     this.physicsBody.posOld = deserializeV2(byteArray, index);
@@ -49,20 +58,4 @@ MessageEntityStatus.prototype.deserialize = function(byteArray, index) {
     this.physicsBody.angle = deserializeFix(byteArray, index);
     this.physicsBody.angleOld = deserializeFix(byteArray, index);
     this.physicsBody.rotationSpeed = deserializeFix(byteArray, index);
-}
-
-MessageEntityStatus.prototype.getSerializationSize = function() {
-    return 52;
-}
-
-MessageEntityStatus.prototype.send = function(socket) {
-    var byteArray = new Uint8Array(this.getSerializationSize());
-    var counter = new IndexCounter();
-    this.serialize(byteArray, counter);
-    socket.emit(this.idString, byteArray);
-}
-
-MessageEntityStatus.prototype.receive = function(gameData, byteArray) {
-    var counter = new IndexCounter();
-    this.deserialize(byteArray, counter);
 }
