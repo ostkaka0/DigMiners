@@ -15,11 +15,14 @@ CommandPlayerEquipStack.prototype.execute = function(gameData) {
 
     if(itemType.type == "hat") {
         if(item.equipped) {
-            player.inventory.dequipAll(gameData, "hat");
+            player.inventory.dequipAll(gameData, "hat", entity.id);
             item.equipped = true;
+            item.onDequip = function(gameData, arg) {
+                var entity = gameData.entityWorld.objects[arg];
+                entity.drawable.removeSprite("hat");
+            };
             entity.drawable.addSprite("hat", new Sprite(itemType.texture), [0, 0], true);
-        } else
-            entity.drawable.removeSprite("hat");
+        }
     }
 
     if(!isServer && this.playerId == global.player.playerId)

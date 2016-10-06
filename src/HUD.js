@@ -20,6 +20,10 @@ createHUD = function(gameData) {
         slotImageContainer.setAttribute("class", "slotImageContainer");
         slotImageContainer.style.backgroundRepeat = "no-repeat";
 
+        var slotImageContainerOverlay = document.createElement("div");
+        slotImageContainerOverlay.setAttribute("class", "slotImageContainerOverlay");
+        slotImageContainer.appendChild(slotImageContainerOverlay);
+
         var slotTextContainer = document.createElement("div");
         slotTextContainer.setAttribute("class", "slotTextContainer");
 
@@ -91,10 +95,12 @@ updateHUD = function(gameData) {
     // update inventory
     for(var i = 0; i < 64; ++i) {
         var slot = document.getElementById("slot" + i);
-        slot.setAttribute("class", "inventorySlot");
         var slotDescriptionContainer = slot.childNodes[0];
         var slotImageContainer = slot.childNodes[1];
         var slotTextContainer = slot.childNodes[2];
+
+        var slotImageContainerOverlay = slotImageContainer.childNodes[0];
+        slotImageContainerOverlay.style.backgroundImage = "";
 
         var item = global.player.inventory.items[i];
         if(item) {
@@ -105,7 +111,7 @@ updateHUD = function(gameData) {
                 slotTextContainer.innerText = item.amount;
             slotDescriptionContainer.innerText = itemType.name;
             if(item.equipped)
-                slot.className += " brightness";
+                slotImageContainerOverlay.style.backgroundImage = "url('data/textures/items/equipped.png')";
 
             slot.onclick = HUDClosures[i][0];
             slot.oncontextmenu = HUDClosures[i][1];
