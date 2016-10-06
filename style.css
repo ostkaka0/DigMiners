@@ -96,6 +96,15 @@ canvas {
     background-image: url("data/textures/inventorySlotSmall2.png");
 }
 
+.slotDescriber {
+    position: absolute;
+    display: none;
+    z-index: 50;
+    color:white;
+    font-family: Monospace;
+    font-size: 10px;
+}
+
 .slotImageContainer {
     position: relative;
     width: 34px;

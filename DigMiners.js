@@ -28,6 +28,7 @@ var playerEntity = null;
 var keysDown = {};
 var messageCallbacks = {};
 var textureManager = new TextureManager();
+var global = {};
 
 loadGame = function() {
     gameData.animationManager.load();
@@ -96,7 +97,7 @@ tick = function(dt) {
     gameData.entityWorld.objectArray.forEach(function(entity) {
         //console.log("item? " + entity.item);
         if(entity.item && entity.physicsBody && !entity.destroying && (!entity.item.dropped || ((new Date()) - entity.item.dropped) >= 500)) {
-            var dis = v2.distance(entity.physicsBody.pos, playerEntity.physicsBody.pos);
+            var dis = v2.distance(entity.physicsBody.pos, global.playerEntity.physicsBody.pos);
             //console.log("dis client: " + dis);
             if(dis <= gameData.itemPickupDistance) {
                 var message = new MessageRequestItemPickup(entity.id);
@@ -114,8 +115,8 @@ render = function(tickFracTime) {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    camera.frustrum.x = tickFracTime * 32.0 * playerEntity.physicsBody.pos[0] + (1 - tickFracTime) * 32.0 * playerEntity.physicsBody.posOld[0];
-    camera.frustrum.y = tickFracTime * 32.0 * playerEntity.physicsBody.pos[1] + (1 - tickFracTime) * 32.0 * playerEntity.physicsBody.posOld[1];
+    camera.frustrum.x = tickFracTime * 32.0 * global.playerEntity.physicsBody.pos[0] + (1 - tickFracTime) * 32.0 * global.playerEntity.physicsBody.posOld[0];
+    camera.frustrum.y = tickFracTime * 32.0 * global.playerEntity.physicsBody.pos[1] + (1 - tickFracTime) * 32.0 * global.playerEntity.physicsBody.posOld[1];
 
     var projectionMatrix = PIXI.Matrix.IDENTITY.clone();//this.renderer.renderTarget.projectionMatrix.clone();
     var viewMatrix = PIXI.Matrix.IDENTITY.clone();
@@ -169,8 +170,8 @@ onTexturesLoadComplete = function() {
 }
 
 onMessage(MessageInit, function(message) {
-    player = gameData.playerWorld.objects[message.playerId];
-    playerEntity = gameData.entityWorld.objects[message.entityId];
+    global.player = gameData.playerWorld.objects[message.playerId];
+    global.playerEntity = gameData.entityWorld.objects[message.entityId];
     loadGame();
     createHUD(gameData);
 });
