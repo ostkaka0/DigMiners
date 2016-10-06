@@ -57,7 +57,7 @@ MessageInit.prototype.getSerializationSize = function(gameData) {
 MessageInit.prototype.send = function(gameData, socket) {
     var byteArray = new Array(this.getSerializationSize(gameData));//new Buffer(this.getSerializationSize());
     var index = new IndexCounter();
-    
+
     serializeInt32(byteArray, index, this.tickId);
     serializeInt32(byteArray, index, this.playerId);
     serializeInt32(byteArray, index, this.entityId);
@@ -67,12 +67,12 @@ MessageInit.prototype.send = function(gameData, socket) {
     serializeInt32(byteArray, index, gameData.entityWorld.objectArray.length);
     for(entity of gameData.entityWorld.objectArray) {
         serializeInt32(byteArray, index, entity.id);
-        console.log("serializing entity " + entity.id + " size " + this.entitySizes[entity.id]);
+        //console.log("serializing entity " + entity.id + " size " + this.entitySizes[entity.id]);
         serializeInt32(byteArray, index, this.entitySizes[entity.id]);
         for(var key in entity) {
             var component = entity[key];
             if(!component.serialize) continue;
-            console.log("serializing component: " + component.name);
+            //console.log("serializing component: " + component.name);
             serializeInt32(byteArray, index, component.id);
             //console.log("componentId " + component.id);
             component.serialize(byteArray, index);
@@ -88,15 +88,14 @@ MessageInit.prototype.send = function(gameData, socket) {
         serializeInt32(byteArray, index, player.entityId);
         serializeUTF8(byteArray, index, player.name);
     }
-    
-    byteArray = byteArray.concat(this.entityData);
+
     socket.emit(this.idString, new Buffer(byteArray));
 }
 
 MessageInit.prototype.receive = function(gameData, byteArray) {
     byteArray = new Uint8Array(byteArray);
     var index = new IndexCounter();
-    
+
     this.tickId = deserializeInt32(byteArray, index);
     this.playerId = deserializeInt32(byteArray, index);
     this.entityId = deserializeInt32(byteArray, index);
@@ -137,7 +136,6 @@ MessageInit.prototype.receive = function(gameData, byteArray) {
         var playerName = deserializeUTF8(byteArray, index);
         this.players.push([playerId, entityId, playerName]);
     }
-    
-    this.entityData = byteArray;//byteArray.slice(counter.value, byteArray.byteLength);
+
     this.index = index;
 }

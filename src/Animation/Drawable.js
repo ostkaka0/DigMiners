@@ -70,7 +70,6 @@ Drawable.prototype.serialize = function(byteArray, index) {
         serializeInt8(byteArray, index, (sprite.rotateWithBody ? 1 : 0));
         serializeInt8(byteArray, index, (sprite.noAnchor ? 1 : 0));
     }
-    console.log("drawable serialized!");
 }
 
 Drawable.prototype.deserializeBodyparts = function(byteArray, index, gameData) {
