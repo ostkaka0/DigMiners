@@ -21,8 +21,13 @@ MessageItemDrop.prototype.execute = function(gameData) {
     entity.physicsBody.angleOld = entity.physicsBody.angle;
     entity.item.dropped = new Date();
 }
+MessageItemDrop.prototype.getSerializationSize = function() {
+    return 32;
+}
 
-MessageItemDrop.prototype.serialize = function(byteArray, index) {
+MessageItemDrop.prototype.send = function(socket) {
+    var byteArray = new Buffer(this.getSerializationSize());
+    var index = new IndexCounter();
     serializeInt32(byteArray, index, this.entityId);
     serializeInt32(byteArray, index, this.itemId);
     serializeInt32(byteArray, index, this.amount);
@@ -31,9 +36,12 @@ MessageItemDrop.prototype.serialize = function(byteArray, index) {
     serializeFix(byteArray, index, this.speedX);
     serializeFix(byteArray, index, this.speedY);
     serializeFix(byteArray, index, this.rotation);
+    socket.emit(this.idString, byteArray);
 }
 
-MessageItemDrop.prototype.deserialize = function(byteArray, index) {
+MessageItemDrop.prototype.receive = function(gameData, byteArray) {
+    byteArray = new Uint8Array(byteArray);
+    var index = new IndexCounter();
     this.entityId = deserializeInt32(byteArray, index);
     this.itemId = deserializeInt32(byteArray, index);
     this.amount = deserializeInt32(byteArray, index);
@@ -42,20 +50,4 @@ MessageItemDrop.prototype.deserialize = function(byteArray, index) {
     this.speedX = deserializeFix(byteArray, index);
     this.speedY = deserializeFix(byteArray, index);
     this.rotation = deserializeFix(byteArray, index);
-}
-
-MessageItemDrop.prototype.getSerializationSize = function() {
-    return 32;
-}
-
-MessageItemDrop.prototype.send = function(socket) {
-    var byteArray = new Buffer(this.getSerializationSize());
-    var counter = new IndexCounter();
-    this.serialize(byteArray, counter);
-    socket.emit(this.idString, byteArray);
-}
-
-MessageItemDrop.prototype.receive = function(gameData, byteArray) {
-    var counter = new IndexCounter();
-    this.deserialize(new Uint8Array(byteArray), counter);
 }

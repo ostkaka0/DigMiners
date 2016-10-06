@@ -16,28 +16,21 @@ MessagePlayerLeave.prototype.execute = function(gameData) {
     gameData.entityWorld.remove(entity);
 }
 
-MessagePlayerLeave.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.playerId);
-    serializeInt32(byteArray, index, this.entityId);
-}
-
-MessagePlayerLeave.prototype.deserialize = function(byteArray, index) {
-    this.playerId = deserializeInt32(byteArray, index);
-    this.entityId = deserializeInt32(byteArray, index);
-}
-
 MessagePlayerLeave.prototype.getSerializationSize = function() {
     return 8;
 }
 
 MessagePlayerLeave.prototype.send = function(socket) {
     var byteArray = new Buffer(this.getSerializationSize());
-    var counter = new IndexCounter();
-    this.serialize(byteArray, counter);
+    var index = new IndexCounter();
+    serializeInt32(byteArray, index, this.playerId);
+    serializeInt32(byteArray, index, this.entityId);
     socket.emit(this.idString, byteArray);
 }
 
 MessagePlayerLeave.prototype.receive = function(gameData, byteArray) {
-    var counter = new IndexCounter();
-    this.deserialize(new Uint8Array(byteArray), counter);
+    byteArray = new Uint8Array(byteArray);
+    var index = new IndexCounter();
+    this.playerId = deserializeInt32(byteArray, index);
+    this.entityId = deserializeInt32(byteArray, index);
 }

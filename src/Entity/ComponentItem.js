@@ -4,8 +4,6 @@ ComponentItem = function(itemId, amount) {
     this.amount = amount;
 }
 
-ComponentItem.prototype.name = "item";
-
 ComponentItem.prototype.serialize = function(byteArray, index) {
     serializeInt32(byteArray, index, this.itemId);
     serializeInt32(byteArray, index, this.amount);
