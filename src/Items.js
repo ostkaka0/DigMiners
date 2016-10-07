@@ -45,6 +45,9 @@ Item.Ruby = {
     isDigable: true,
     type: "resource"
 }
+
+// hats
+
 Item.UglyHat = {
     name: "Ugly Hat",
     texture: "uglyHat",
@@ -64,4 +67,27 @@ Item.BrokenHat = {
     isDigable: false,
     maxStackSize: 1,
     type: "hat"
+}
+
+// tools
+
+Item.RustyShovel = {
+    name: "Rusty Shovel",
+    texture: "RustyShovel",
+    texturePath: "items/",
+    isEquipable: true,
+    isDropable: true,
+    isDigable: false,
+    maxStackSize: 1,
+    type: "tool"
+}
+Item.Shovel = {
+    name: "Shovel",
+    texture: "Shovel",
+    texturePath: "items/",
+    isEquipable: true,
+    isDropable: true,
+    isDigable: false,
+    maxStackSize: 1,
+    type: "tool"
 }

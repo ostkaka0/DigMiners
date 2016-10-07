@@ -140,6 +140,16 @@ io.on("connection", function(socket) {
         }
     }
 
+    // give player shovel at join
+    var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, 8, 1);
+    message.execute(gameData);
+    message.send(io.sockets);
+
+    // give player shovel at join
+    var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, 7, 1);
+    message.execute(gameData);
+    message.send(io.sockets);
+
     socket.on("disconnect", function() {
         clearInterval(connections[socket.id].pingIntervalId);
         new MessagePlayerLeave(connections[socket.id].player).send(socket.broadcast);

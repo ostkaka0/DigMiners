@@ -118,7 +118,7 @@ updateHUD = function(gameData) {
         } else {
             slotImageContainer.style.backgroundImage = "";
             slotTextContainer.innerText = "";
-            slotDescriptionContainer.innerText = "Empty slot";
+            slotDescriptionContainer.innerText = "";
             slot.onclick = null;
         }
     }

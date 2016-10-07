@@ -27,6 +27,24 @@ CommandPlayerEquipStack.prototype.execute = function(gameData) {
         } else
             item.onDequip(gameData, entity.id);
     }
+    else if(itemType.type == "tool") {
+        if(item.equipped) {
+            player.inventory.dequipAll(gameData, "tool", entity.id);
+            item.equipped = true;
+            if(!isServer) {
+                item.onDequip = function(gameData, arg) {
+                    var entity = gameData.entityWorld.objects[arg];
+                    var sprite = entity.drawable.bodyparts["body"].children["rightArm"].children["itemHolder"].sprite;
+                    if(sprite.sprite)
+                        sprite.sprite.visible = false;
+                };
+                entity.drawable.setBodypartSprite("itemHolder", entity.drawable.bodyparts["body"].children["rightArm"].children["itemHolder"], new Sprite(itemType.texture));
+            }
+        } else {
+            if(!isServer)
+                item.onDequip(gameData, entity.id);
+        }
+    }
 
     if(!isServer && this.playerId == global.player.playerId)
         updateHUD(gameData);

@@ -107,10 +107,12 @@ canvas {
 
 .slotImageContainer {
     position: relative;
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
     left:1px;
     margin-top:1px;
+    background-position:50% 50%;  /* Sets reference point to scale from */
+    background-size:contain;  
 }
 
 .slotImageContainerOverlay {

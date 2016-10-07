@@ -10,13 +10,13 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
     var rightArmSprite = new Sprite("rightArm");
     var leftArmSprite = new Sprite("leftArm");
     var headSprite = new Sprite("head");
-    var shovelSprite = new Sprite("rustyShovel");
+    //var shovelSprite = new Sprite("rustyShovel");
 
     var bodyparts = {
         "feet": new BodyPart(feetSprite, 0, 0, 0),
-        "body": new BodyPart(null, 0, 0, 0, null, {
+        "body": new BodyPart(new Sprite(), 0, 0, 0, null, {
             "rightArm": new BodyPart(rightArmSprite, 5, 4, 0, [10, 11], {
-                "itemHolder": new BodyPart(shovelSprite, -10, 15, 0, [32, 16])
+                "itemHolder": new BodyPart(new Sprite(), -10, 15, 0)
             }),
             "leftArm": new BodyPart(leftArmSprite, 5, -16, 0, [10, 11])
         }),
