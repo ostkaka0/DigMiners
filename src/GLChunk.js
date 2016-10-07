@@ -1,6 +1,3 @@
-// Untested code!
-// TODO: Test GLChunk
-
 GLChunk = function(gl, chunk) {
     this.textureTiles = gl.createTexture();
     this.textureDensity = gl.createTexture();

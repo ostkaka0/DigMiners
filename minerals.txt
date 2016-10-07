@@ -1,0 +1,20 @@
+metals:
+copper
+iron
+steel
+
+gems:
+apatite 5
+lapis lazuli 5.0-5.5
+turquoise gem 5-6
+magnetite 5.5-6.5 
+olivine 6.5-7.0
+quartz 7
+emerald 7.5-8.0
+topaz 8
+ruby 9
+diamond 10
+
+other:
+coal
+sulfur

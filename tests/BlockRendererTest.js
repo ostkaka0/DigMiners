@@ -1,25 +1,19 @@
 var canvas = document.getElementById("canvas");
 var gl = canvasInitGL(canvas);
 
-var world = new Map2D();
-var generator = new Generator(1234);
-var chunkRenderer = new ChunkRenderer(gl, world, 32.0);
+var gameData = new GameData();
+var blockWorld = new Map2D();
+var blockRenderer = new BlockChunkRenderer(gl, blockWorld, 32.0);
 var camera = new Camera();
-var lastFrameTime = Date();
 
 init = function() {
     for (var x = -10; x < 10; ++x) {
         for (var y = -2; y < 2; ++y) {
-            var chunk = new Chunk();
-            generator.generate(chunk, x, y);
-            world.set(x, y, chunk);
+            var chunk = new BlockChunk();
+            blockWorld.set(x, y, chunk);
         }
     }
-    console.log(chunk.getTileId(4, 4));
-    gl.clearColor(0.1, 0.1, 0.1, 1.0);
-    var frameTime = 1000/60;
-    var lastFrameTime = performance.now();
-    var startDate = performance.now();
+    console.log(chunk.getForeground(4, 4));
 }
 
 tick = function() {}
@@ -35,19 +29,19 @@ render = function() {
     var viewMatrix = PIXI.Matrix.IDENTITY.clone();
     viewMatrix = viewMatrix.translate(-camera.frustrum.x, -camera.frustrum.y);
     viewMatrix = viewMatrix.scale(2/canvas.width, 2/canvas.height);
-    chunkRenderer.render(world, projectionMatrix.clone().append(viewMatrix), camera);
+    blockRenderer.render(gameData, blockWorld, projectionMatrix.clone().append(viewMatrix), camera);
 }
 
 canvas.onclick = function(event) {
-    var worldX = event.clientX + camera.pos.x - camera.width/2;
-    var worldY = canvas.height - event.clientY + camera.pos.y - camera.height/2;
-    var tileX = Math.floor(worldX/32);
-    var tileY = Math.floor(worldY/32);
+    var blockWorldX = event.clientX + camera.pos.x - camera.width/2;
+    var blockWorldY = canvas.height - event.clientY + camera.pos.y - camera.height/2;
+    var tileX = Math.floor(blockWorldX/32);
+    var tileY = Math.floor(blockWorldY/32);
     var chunkX = Math.floor(tileX/CHUNK_DIM);
     var chunkY = Math.floor(tileY/CHUNK_DIM);
     var localX = tileX%CHUNK_DIM;
     var localY = tileY%CHUNK_DIM;
-    var chunk = world.get(chunkX, chunkY);
+    var chunk = blockWorld.get(chunkX, chunkY);
     if (chunk)
         chunk.setDensity(localX, localY, 0);
     
