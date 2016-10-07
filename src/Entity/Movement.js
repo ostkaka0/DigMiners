@@ -96,8 +96,8 @@ entityFunctionPlayerMovement = function(gameData, dt) {
         if(entity.movement.digTickTimeout == 0) {
             entity.movement.isDigging = false;
             entity.movement.isMining = false;
-            if(entity.drawable.bodyparts["rightArm"])
-                entity.drawable.bodyparts["rightArm"].finishCycle();
+            if(entity.bodyparts.bodyparts["rightArm"])
+                entity.bodyparts.bodyparts["rightArm"].finishCycle();
         }
     }
 }

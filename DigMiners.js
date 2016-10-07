@@ -132,12 +132,12 @@ render = function(tickFracTime) {
             var a = (entity.physicsBody.angle - entity.physicsBody.angleOld) % (Math.PI * 2);
             var rotation = entity.physicsBody.angleOld + (2 * a % (Math.PI * 2) - a) * tickFracTime;
             //console.log("angle " + entity.physicsBody.angle + " old " + entity.physicsBody.angleOld);
-            entity.drawable.positionAll(x, y, rotation);
+            entity.drawable.positionAll(x, y, rotation, entity.bodyparts);
 
             //console.log(entitySpeed);
-            if(entity.drawable.bodyparts.feet) {
+            if(entity.bodyparts.bodyparts.feet) {
                 var entitySpeed = Math.sqrt(entity.physicsBody.speed[0] * entity.physicsBody.speed[0] + entity.physicsBody.speed[1] * entity.physicsBody.speed[1]);
-                entity.drawable.animate("feet", "feet", entitySpeed * 16.0, false);
+                entity.bodyparts.bodyparts["feet"].animate(gameData, "feet", entitySpeed * 16.0, false);
                 //console.log("entity " + entity.id + " speed " + entitySpeed);
             }
         }
