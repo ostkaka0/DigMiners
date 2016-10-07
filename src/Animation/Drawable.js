@@ -80,7 +80,7 @@ Drawable.prototype.deserializeBodyparts = function(byteArray, index, gameData) {
         var textureName = deserializeUTF8(byteArray, index);
         var offset = [deserializeFix(byteArray, index), deserializeFix(byteArray, index), deserializeFix(byteArray, index)];
         var pivot = deserializeV2(byteArray, index);
-        var sprite = (textureName.length == 0 ? null : new Sprite(textureName));
+        var sprite = new Sprite(textureName);
         var children = this.deserializeBodyparts(byteArray, index, gameData);
         bodyparts[key] = new BodyPart(sprite, offset[0], offset[1], offset[2], pivot, children);
     }
@@ -126,6 +126,7 @@ Drawable.prototype.getBodypartsSerializationSize = function(bodyparts) {
     var size = 4;
     for(var key in bodyparts) {
         var bodypart = bodyparts[key];
+        console.log(key);
         var textureName = bodypart.sprite.textureName;
         size += getUTF8SerializationSize(key);
         size += getUTF8SerializationSize(textureName);
@@ -208,6 +209,23 @@ Drawable.prototype.removeSprite = function(name) {
         if(!isServer)
             this.container.removeChild(sprite.sprite);
         delete this.sprites[name];
+    }
+}
+
+Drawable.prototype.setBodypartSprite = function(name, bodypart, sprite) {
+    var childIndex = -1;
+    if(!isServer && !bodypart.sprite.sprite.fake) {
+        childIndex = this.container.getChildIndex(bodypart.sprite.sprite);
+        this.container.removeChild(bodypart.sprite.sprite);
+    }
+    bodypart.sprite = sprite;
+    this.bodyparts[name].sprite = sprite;
+    //console.dir(bodypart.sprite);
+    if(!isServer) {
+        if(childIndex != -1)
+            this.container.addChildAt(sprite.sprite, childIndex);
+        else
+            this.container.addChild(sprite.sprite);
     }
 }
 

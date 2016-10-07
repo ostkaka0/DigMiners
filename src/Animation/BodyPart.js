@@ -5,14 +5,6 @@ BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, children) {
         this.children = children;
     else
         this.children = {};
-    if(!this.sprite) {
-        this.sprite = {};
-        this.sprite.textureName = "";
-        this.sprite.sprite = {};
-        this.sprite.sprite.fake = true;
-        this.sprite.sprite.position = { x: 0, y: 0 };
-        this.sprite.sprite.rotation = {};
-    }
     this.offset = [offsetX, offsetY, offsetRotation];
     this.cycleOffset = [0, 0, 0];
     if(pivot && (pivot[0] != 0 || pivot[1] != 0)) {
