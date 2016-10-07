@@ -5,8 +5,9 @@ MessageRequestEquipStack = function(id) {
 
 MessageRequestEquipStack.prototype.execute = function(gameData, player) {
     var item = player.inventory.items[this.id];
+    if(!item) return;
     var itemType = gameData.itemRegister[item.id];
-    if(item && itemType && itemType.isEquipable) {
+    if(itemType && itemType.isEquipable) {
         var command = new CommandPlayerEquipStack(player.playerId, this.id);
         gameData.commands.push(command);
     }
