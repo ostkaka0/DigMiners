@@ -7,6 +7,8 @@ MessageEntityDestroy.prototype.execute = function(gameData) {
     var entity = gameData.entityWorld.objects[this.entityId];
     if(entity.drawable)
         entity.drawable.remove();
+    if(entity.drawable)
+        entity.drawable.remove(entity.bodyparts.bodyparts);
     gameData.entityWorld.remove(entity);
 }
 

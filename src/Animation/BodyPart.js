@@ -1,10 +1,6 @@
 
-BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, children) {
+BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, parent) {
     this.sprite = sprite;
-    if(children)
-        this.children = children;
-    else
-        this.children = {};
     this.offset = [offsetX, offsetY, offsetRotation];
     this.cycleOffset = [0, 0, 0];
     if(pivot && (pivot[0] != 0 || pivot[1] != 0)) {
@@ -18,6 +14,8 @@ BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, children) {
         }
     } else
         this.pivot = [0, 0];
+    this.parent = parent;
+    this.children = [];
 }
 
 BodyPart.prototype.position = function(x, y, rotation) {
@@ -28,17 +26,15 @@ BodyPart.prototype.position = function(x, y, rotation) {
     this.sprite.sprite.position.y = y + rotatedOffset[1];
     this.sprite.sprite.rotation = rotation;
 
-    for(var key in this.children) {
-        var child = this.children[key];
+    for(var child of this.children) {
         child.position(this.sprite.sprite.position.x,
             this.sprite.sprite.position.y,
             this.sprite.sprite.rotation);
     }
-
     // Run only on root body parts:
-    if(!this.isChild) {
-        for(var key in this.children) {
-            var child = this.children[key];
+    if(!this.parent) {
+        
+        for(var child of this.children) {
             var totalOffset = [child.cycleOffset[0], child.cycleOffset[1]];
             var newPos = child.rotate(0, 0, totalOffset[0], totalOffset[1], rotation + child.cycleOffset[2] + child.offset[2]);
             if(totalOffset[0] == 0 && totalOffset[1] == 0)
@@ -48,10 +44,8 @@ BodyPart.prototype.position = function(x, y, rotation) {
             child.sprite.sprite.position.y += newPos[1];
             child.sprite.sprite.rotation = rotation + child.cycleOffset[2] + child.offset[2];
 
-            for(var key in child.children) {
-                var child2 = child.children[key];
+            for(var child2 of child.children)
                 child2.rotateAroundPoint(x, y, rotation, child.sprite.sprite.rotation);
-            }
         }
     }
 }
@@ -74,13 +68,8 @@ BodyPart.prototype.rotateAroundPoint = function(x, y, rotation, parentRotation) 
 }
 
 BodyPart.prototype.cycle = function(gameData, cycle, fps, runToEnd) {
-    if(!this.sprite) {
-        console.log("Cycle sprite null");
-        return;
-    }
     if(!this.cycleInstance) {
         this.cycleInstance = {};
-        //console.log(cycle);
         this.cycleInstance.cycle = gameData.animationManager.cycles[cycle];
     }
     this.cycleInstance.mspf = 1000.0 / fps;
@@ -97,4 +86,25 @@ BodyPart.prototype.finishCycle = function() {
         this.cycleInstance.runToEnd = true;
         this.cycleInstance.finishing = false;
     }
+}
+
+BodyPart.prototype.animate = function(gameData, animation, fps, runToEnd) {
+    if(!this.animInstance) {
+        this.animInstance = {};
+        this.animInstance.animation = gameData.animationManager.animations[animation];
+        this.sprite.sprite.texture = this.animInstance.animation.texture.clone();
+    }
+    this.animInstance.mspf = 1000.0 / fps;
+    if(!this.animInstance.lastFrame || !this.animInstance.animating)
+        this.animInstance.lastFrame = new Date();
+    if(!this.animInstance.currentFrame)
+        this.animInstance.currentFrame = 0;
+    this.animInstance.runToEnd = runToEnd; //If animation is aborted, finish animation and stop at frame 0
+    this.animInstance.finishing = false;
+    this.animInstance.animating = true;
+}
+
+BodyPart.prototype.finishAnimation = function() {
+    this.runToEnd = true;
+    this.finishing = true;
 }

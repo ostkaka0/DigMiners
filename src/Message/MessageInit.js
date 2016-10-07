@@ -125,6 +125,9 @@ MessageInit.prototype.receive = function(gameData, byteArray) {
             gameData.entityWorld.add(entity, entityId);
         else
             console.log("Entity does already exist!");
+
+        if(entity.drawable && entity.bodyparts)
+            entity.drawable.initializeBodyparts(entity.bodyparts.bodyparts);
         //console.dir(entity);
     }
 
