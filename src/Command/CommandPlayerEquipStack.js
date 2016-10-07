@@ -34,11 +34,11 @@ CommandPlayerEquipStack.prototype.execute = function(gameData) {
             if(!isServer) {
                 item.onDequip = function(gameData, arg) {
                     var entity = gameData.entityWorld.objects[arg];
-                    var sprite = entity.drawable.bodyparts["itemHolder"].sprite;
+                    var sprite = entity.bodyparts.bodyparts["itemHolder"].sprite;
                     if(sprite.sprite)
                         sprite.sprite.visible = false;
                 };
-                entity.drawable.setBodypartSprite("itemHolder", entity.drawable.bodyparts["itemHolder"], new Sprite(itemType.texture));
+                entity.drawable.setBodypartSprite(entity.bodyparts.bodyparts["itemHolder"], new Sprite(itemType.texture));
             }
         } else {
             if(!isServer)
