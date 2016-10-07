@@ -7,7 +7,9 @@ CommandPlayerEquipStack = function(playerId, stackId) {
 CommandPlayerEquipStack.prototype.execute = function(gameData) {
     var player = gameData.playerWorld.objects[this.playerId];
     var entity = gameData.entityWorld.objects[player.entityId];
+    if(!entity) return;
     var item = player.inventory.items[this.stackId];
+    if(!item) return;
     var itemType = gameData.itemRegister[item.id];
     if(item.equipped == null || item.equipped == undefined)
         item.equipped = false;
@@ -22,7 +24,8 @@ CommandPlayerEquipStack.prototype.execute = function(gameData) {
                 entity.drawable.removeSprite("hat");
             };
             entity.drawable.addSprite("hat", new Sprite(itemType.texture), [0, 0], true);
-        }
+        } else
+            item.onDequip(gameData, entity.id);
     }
 
     if(!isServer && this.playerId == global.player.playerId)
