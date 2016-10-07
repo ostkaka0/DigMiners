@@ -107,8 +107,10 @@ updateHUD = function(gameData) {
             var itemType = gameData.itemRegister[item.id];
             if(itemType.texture)
                 slotImageContainer.style.backgroundImage = "url('data/textures/" + itemType.texturePath + itemType.texture + ".png')";
+            slotTextContainer.innerText = "";
             if(item.amount > 1)
                 slotTextContainer.innerText = item.amount;
+
             slotDescriptionContainer.innerText = itemType.name;
             if(item.equipped)
                 slotImageContainerOverlay.style.backgroundImage = "url('data/textures/items/equipped.png')";

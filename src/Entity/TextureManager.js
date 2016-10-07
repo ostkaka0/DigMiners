@@ -11,14 +11,16 @@ TextureManager = function() {
     this.loader.queueTexture("veryHardStone", "tiles/veryHardStone");
     this.loader.queueTexture("blueOre", "tiles/blueOre");
     this.loader.queueTexture("redOre", "tiles/redOre");*/
-    this.loader.queueTexture("Shovel", "items/shovel");
+    this.loader.queueTexture("Shovel", "items/Shovel");
     this.loader.queueTexture("RustyShovel", "items/RustyShovel");
+    this.loader.queueTexture("Dynamite", "items/Dynamite");
+    this.loader.queueTexture("DynamiteSheet", "items/DynamiteSheet");
+
     this.loader.queueTexture("pickaxe", "items/pickaxe");
     this.loader.queueTexture("body", "body");
     this.loader.queueTexture("head", "head");
     this.loader.queueTexture("rightArm", "rightArm");
     this.loader.queueTexture("leftArm", "leftArm");
-    this.loader.queueTexture("dynamite", "items/dynamite");
 
     console.log("Loading textures...");
     this.loader.loadTextures();
