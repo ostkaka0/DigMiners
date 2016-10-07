@@ -46,11 +46,8 @@ CommandPlayerDig.prototype.execute = function(gameData) {
     var dug = carveCircle(gameData, this.x + digDis * this.dir[0], this.y + digDis * this.dir[1], this.radius, player.getDigStrength(), onDensityChange);
     if(!isServer) {
         var entity = gameData.entityWorld.objects[player.entityId];
-        if(entity.drawable) {
-            // bodypart, gameData, cycle name, fps, runToEnd
+        if(entity.drawable)
             entity.drawable.bodyparts["rightArm"].cycle(gameData, "rightArm", 64 / entity.movement.digDuration, false);
-            //entity.drawable.animate("itemHolder", "dynamite", 32, false);
-        }
         return;
     }
     for(var i = 0; i < dug.length; ++i) {
