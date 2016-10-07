@@ -152,42 +152,6 @@ Drawable.prototype.getSerializationSize = function() {
     return size;
 }
 
-Drawable.prototype.animate = function(bodypartName, animation, fps, runToEnd) {
-    //console.log(bodypartName);
-    var bodypart = this.bodyparts[bodypartName];
-    if(bodypart) {
-        if(!bodypart.animInstance) {
-            bodypart.animInstance = this.animationManager.animations[animation];
-            bodypart.sprite.sprite.texture = bodypart.animInstance.texture.clone();
-        }
-        bodypart.mspf = 1000.0 / fps;
-        if(!bodypart.lastFrame || !bodypart.animating)
-            bodypart.lastFrame = new Date();
-        if(!bodypart.currentFrame)
-            bodypart.currentFrame = 0;
-        bodypart.runToEnd = runToEnd; //If animation is aborted, finish animation and stop at frame 0
-        bodypart.finishing = false;
-        bodypart.animating = true;
-        //console.log(bodypart.currentFrame + " begin");
-    }
-}
-
-Drawable.prototype.unanimate = function(bodypart, animation, runToEnd) {
-    var bodypart = this.bodyparts[bodypart];
-    if(bodypart) {
-        if(runToEnd) {
-            bodypart.runToEnd = true;
-            bodypart.finishing = true;
-        } else if(bodypart.runToEnd && bodypart.currentFrame != 0) {
-            bodypart.finishing = true;
-        }
-        else {
-            bodypart.animating = false;
-        }
-        //console.log(bodypart.currentFrame + " end");
-    }
-}
-
 // Add a sprite that follows this drawable. For example, a healthbar.
 Drawable.prototype.addSprite = function(name, sprite, offset, rotateWithBody) {
     if(this.sprites[name])
@@ -220,7 +184,6 @@ Drawable.prototype.setBodypartSprite = function(name, bodypart, sprite) {
     }
     bodypart.sprite = sprite;
     this.bodyparts[name].sprite = sprite;
-    //console.dir(bodypart.sprite);
     if(!isServer) {
         if(childIndex != -1)
             this.container.addChildAt(sprite.sprite, childIndex);

@@ -29,20 +29,21 @@ AnimationManager.prototype.update = function() {
             var drawable = entity.drawable;
             for(var bodypart in drawable.bodyparts) {
                 bodypart = drawable.bodyparts[bodypart];
-                if(bodypart.animating) {
-                    var diff = now - bodypart.lastFrame;
 
-                    while(diff >= bodypart.mspf) {
-                        diff -= bodypart.mspf;
-                        bodypart.lastFrame = new Date();
-                        bodypart.currentFrame += 1;
-                        if(bodypart.currentFrame >= bodypart.animInstance.numFrames)
-                            bodypart.currentFrame = 0;
-                        bodypart.sprite.sprite.texture.frame = bodypart.animInstance.frames[bodypart.currentFrame];
+                if(bodypart.animInstance && bodypart.animInstance.animating) {
+                    var diff = now - bodypart.animInstance.lastFrame;
 
-                        if(bodypart.runToEnd && bodypart.currentFrame == 0) {
-                            bodypart.animating = false;
-                            bodypart.finishing = false;
+                    while(diff >= bodypart.animInstance.mspf) {
+                        diff -= bodypart.animInstance.mspf;
+                        bodypart.animInstance.lastFrame = new Date();
+                        bodypart.animInstance.currentFrame += 1;
+                        if(bodypart.animInstance.currentFrame >= bodypart.animInstance.animation.numFrames)
+                            bodypart.animInstance.currentFrame = 0;
+                        bodypart.sprite.sprite.texture.frame = bodypart.animInstance.animation.frames[bodypart.animInstance.currentFrame];
+
+                        if(bodypart.animInstance.runToEnd && bodypart.animInstance.currentFrame == 0) {
+                            bodypart.animInstance.animating = false;
+                            bodypart.animInstance.finishing = false;
                         }
                     }
                 } else if(bodypart.cycleInstance) {
