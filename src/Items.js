@@ -91,3 +91,14 @@ Item.Shovel = {
     maxStackSize: 1,
     type: "tool"
 }
+Item.Dynamite = {
+    name: "Dynamite",
+    texture: "Dynamite",
+    texturePath: "items/",
+    isEquipable: true,
+    isDropable: true,
+    isDigable: false,
+    maxStackSize: 8,
+    type: "tool"
+}
+
