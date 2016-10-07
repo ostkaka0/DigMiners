@@ -47,7 +47,7 @@ CommandPlayerDig.prototype.execute = function(gameData) {
     if(!isServer) {
         var entity = gameData.entityWorld.objects[player.entityId];
         if(entity.drawable)
-            entity.drawable.bodyparts["rightArm"].cycle(gameData, "rightArm", 64 / entity.movement.digDuration, false);
+            entity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArm", 64 / entity.movement.digDuration, false);
         return;
     }
     for(var i = 0; i < dug.length; ++i) {

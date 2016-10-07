@@ -31,9 +31,9 @@ BodyPart.prototype.position = function(x, y, rotation) {
             this.sprite.sprite.position.y,
             this.sprite.sprite.rotation);
     }
-
     // Run only on root body parts:
     if(!this.parent) {
+        
         for(var child of this.children) {
             var totalOffset = [child.cycleOffset[0], child.cycleOffset[1]];
             var newPos = child.rotate(0, 0, totalOffset[0], totalOffset[1], rotation + child.cycleOffset[2] + child.offset[2]);

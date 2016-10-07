@@ -25,10 +25,9 @@ AnimationManager.prototype.update = function() {
         console.error("Missing gameData.entityWorld");
     var now = new Date();
     entityWorld.objectArray.forEach(function(entity) {
-        if(entity.drawable) {
-            var drawable = entity.drawable;
-            for(var bodypart in drawable.bodyparts) {
-                bodypart = drawable.bodyparts[bodypart];
+        if(entity.bodyparts) {
+            for(var bodypart in entity.bodyparts.bodyparts) {
+                bodypart = entity.bodyparts.bodyparts[bodypart];
 
                 if(bodypart.animInstance && bodypart.animInstance.animating) {
                     var diff = now - bodypart.animInstance.lastFrame;

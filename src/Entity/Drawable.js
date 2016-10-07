@@ -1,5 +1,4 @@
-Drawable = function(gameData, bodyparts, zindex) {
-    this.bodyparts = bodyparts;
+Drawable = function(zindex) {
     this.sprites = {};
     this.zindex = (!zindex ? 0 : zindex);
     if(isServer)
@@ -7,25 +6,6 @@ Drawable = function(gameData, bodyparts, zindex) {
 
     this.container = new PIXI.Container();
     zindices[this.zindex].addChild(this.container);
-
-    // Set parents
-    for(var key in this.bodyparts) {
-        var bodypart = this.bodyparts[key];
-        bodypart.name = key;
-        if(bodypart.parent) {
-            var name = bodypart.parent;
-            bodypart.parent = this.bodyparts[name];
-        }
-    }
-
-    for(var key in this.bodyparts) {
-        var bodypart = this.bodyparts[key];
-        bodypart.children = this.getChildren(bodypart);
-        if(!bodypart.sprite.sprite.fake) {
-            // Add bodypart sprite to world
-            this.container.addChild(bodypart.sprite.sprite);
-        }
-    }
 }
 
 Drawable.prototype.name = "drawable";
@@ -33,20 +13,6 @@ Drawable.prototype.name = "drawable";
 Drawable.prototype.serialize = function(byteArray, index) {
     serializeInt32(byteArray, index, this.zindex);
 
-    // Bodyparts
-    serializeInt32(byteArray, index, Object.keys(this.bodyparts).length);
-    for(var key in this.bodyparts) {
-        var bodypart = this.bodyparts[key];
-        serializeUTF8(byteArray, index, key);
-        serializeUTF8(byteArray, index, (!bodypart.parent ? "" : bodypart.parent));
-        serializeUTF8(byteArray, index, bodypart.sprite.textureName);
-        serializeFix(byteArray, index, bodypart.offset[0]);
-        serializeFix(byteArray, index, bodypart.offset[1]);
-        serializeFix(byteArray, index, bodypart.offset[2]);
-        serializeV2(byteArray, index, bodypart.pivot);
-    }
-
-    // Sprites
     serializeInt32(byteArray, index, Object.keys(this.sprites).length);
     for(var sprite in this.sprites) {
         serializeUTF8(byteArray, index, sprite);
@@ -64,21 +30,6 @@ Drawable.prototype.deserialize = function(byteArray, index, gameData) {
     if(!isServer) {
         this.container = new PIXI.Container();
         zindices[this.zindex].addChild(this.container);
-    }
-
-    // Bodyparts
-    this.bodyparts = {};
-    var bodypartsLength = deserializeInt32(byteArray, index);
-    for(var i = 0; i < bodypartsLength; ++i) {
-        var key = deserializeUTF8(byteArray, index);
-        var parent = deserializeUTF8(byteArray, index);
-        var textureName = deserializeUTF8(byteArray, index);
-        var offset = [deserializeFix(byteArray, index), deserializeFix(byteArray, index), deserializeFix(byteArray, index)];
-        var pivot = deserializeV2(byteArray, index);
-        var sprite = new Sprite(textureName);
-        this.bodyparts[key] = new BodyPart(sprite, offset[0], offset[1], offset[2], pivot);
-        if(parent && parent.length > 0)
-            this.bodyparts[key].parent = parent;
     }
 
     // Sprites
@@ -100,43 +51,10 @@ Drawable.prototype.deserialize = function(byteArray, index, gameData) {
             noAnchor = false;
         this.addSprite(spriteName, new Sprite(textureName, null, noAnchor), offset, rotateWithBody);
     }
-    if(!isServer) {
-        // Set parents
-        for(var key in this.bodyparts) {
-            var bodypart = this.bodyparts[key];
-            bodypart.name = key;
-            if(bodypart.parent) {
-                var name = bodypart.parent;
-                bodypart.parent = this.bodyparts[name];
-            }
-        }
-
-        for(var key in this.bodyparts) {
-            var bodypart = this.bodyparts[key];
-            bodypart.children = this.getChildren(bodypart);
-            if(!bodypart.sprite.sprite.fake) {
-                // Add bodypart sprite to world
-                this.container.addChild(bodypart.sprite.sprite);
-            }
-        }
-    }
 }
 
 Drawable.prototype.getSerializationSize = function() {
-    var size = 12;
-
-    // Bodyparts
-    for(var key in this.bodyparts) {
-        var bodypart = this.bodyparts[key];
-        var parent = (!bodypart.parent ? "" : bodypart.parent);
-        var textureName = bodypart.sprite.textureName;
-        size += getUTF8SerializationSize(key);
-        size += getUTF8SerializationSize(parent);
-        size += getUTF8SerializationSize(textureName);
-        size += 20;
-    }
-
-    // Sprites
+    var size = 8;
     for(var sprite in this.sprites) {
         size += getUTF8SerializationSize(sprite);
         sprite = this.sprites[sprite];
@@ -144,18 +62,6 @@ Drawable.prototype.getSerializationSize = function() {
         size += 10;
     }
     return size;
-}
-
-Drawable.prototype.getChildren = function(parent) {
-    if(!parent)
-        return [];
-    var output = [];
-    for(var key in this.bodyparts) {
-        var bodypart = this.bodyparts[key];
-        if(bodypart.parent && bodypart.parent.name == parent.name)
-            output.push(bodypart);
-    }
-    return output;
 }
 
 // Add a sprite that follows this drawable. For example, a healthbar.
@@ -182,31 +88,9 @@ Drawable.prototype.removeSprite = function(name) {
     }
 }
 
-Drawable.prototype.setBodypartSprite = function(name, bodypart, sprite) {
-    var childIndex = -1;
-    if(!isServer && !bodypart.sprite.sprite.fake) {
-        childIndex = this.container.getChildIndex(bodypart.sprite.sprite);
-        this.container.removeChild(bodypart.sprite.sprite);
-    }
-    bodypart.sprite = sprite;
-    this.bodyparts[name].sprite = sprite;
-    if(!isServer) {
-        if(childIndex != -1)
-            this.container.addChildAt(sprite.sprite, childIndex);
-        else
-            this.container.addChild(sprite.sprite);
-    }
-}
-
-Drawable.prototype.positionAll = function(x, y, rotation) {
+Drawable.prototype.positionSprites = function(x, y, rotation) {
     if(isServer)
         return;
-
-    for(var bodypart in this.bodyparts) {
-        bodypart = this.bodyparts[bodypart];
-        if(!bodypart.parent)
-            bodypart.position(x, y, rotation);
-    }
 
     for(var sprite in this.sprites) {
         sprite = this.sprites[sprite];
@@ -217,16 +101,46 @@ Drawable.prototype.positionAll = function(x, y, rotation) {
     }
 }
 
-Drawable.prototype.remove = function() {
-    for(var bodypart in this.bodyparts) {
-        bodypart = this.bodyparts[bodypart];
-        if(!isServer)
-            this.container.removeChild(bodypart.sprite.sprite);
-    }
+Drawable.prototype.positionAll = function(x, y, rotation, bodyparts) {
+    this.positionSprites(x, y, rotation);
+    if(bodyparts)
+        bodyparts.positionBodyparts(x, y, rotation);
+}
 
+Drawable.prototype.setBodypartSprite = function(bodypart, sprite) {
+    var childIndex = -1;
+    if(!isServer && !bodypart.sprite.sprite.fake) {
+        childIndex = this.container.getChildIndex(bodypart.sprite.sprite);
+        this.container.removeChild(bodypart.sprite.sprite);
+    }
+    bodypart.sprite = sprite;
+    if(!isServer) {
+        if(childIndex != -1)
+            this.container.addChildAt(sprite.sprite, childIndex);
+        else
+            this.container.addChild(sprite.sprite);
+    }
+}
+
+Drawable.prototype.initializeBodyparts = function(bodyparts) {
+    // Add bodypart sprite to world
+    for(var key in bodyparts) {
+        var bodypart = bodyparts[key];
+        if(!bodypart.sprite.sprite.fake)
+            this.container.addChild(bodypart.sprite.sprite);
+    }
+}
+
+Drawable.prototype.remove = function(bodyparts) {
     for(var sprite in this.sprites) {
         sprite = this.sprites[sprite];
         if(!isServer)
             this.container.removeChild(sprite.sprite);
+    }
+
+    for(var bodypart in bodyparts) {
+        bodypart = bodyparts[bodypart];
+        if(!isServer)
+            this.container.removeChild(bodypart.sprite.sprite);
     }
 }
