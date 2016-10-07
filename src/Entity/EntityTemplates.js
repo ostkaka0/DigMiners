@@ -10,17 +10,15 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
     var rightArmSprite = new Sprite("rightArm");
     var leftArmSprite = new Sprite("leftArm");
     var headSprite = new Sprite("head");
-    //var shovelSprite = new Sprite("rustyShovel");
 
+    // Order of bodyparts is draw order
     var bodyparts = {
-        "feet": new BodyPart(feetSprite, 0, 0, 0),
-        "body": new BodyPart(new Sprite(), 0, 0, 0, null, {
-            "rightArm": new BodyPart(rightArmSprite, 5, 4, 0, [10, 11], {
-                "itemHolder": new BodyPart(new Sprite(), -10, 15, 0)
-            }),
-            "leftArm": new BodyPart(leftArmSprite, 5, -16, 0, [10, 11])
-        }),
-        "head": new BodyPart(headSprite, 1, 0, 0)
+        "feet": new BodyPart(feetSprite, 0, 0, 0, null, null),
+        "itemHolder": new BodyPart(new Sprite(), -10, 15, 0, null, "rightArm"),
+        "rightArm": new BodyPart(rightArmSprite, 5, 4, 0, [10, 11], "body"),
+        "leftArm": new BodyPart(leftArmSprite, 5, -16, 0, [10, 11], "body"),
+        "body": new BodyPart(new Sprite(), 0, 0, 0, null, null),
+        "head": new BodyPart(headSprite, 1, 0, 0, null, null)
     };
 
     entity.drawable = new Drawable(gameData, bodyparts, 1);
