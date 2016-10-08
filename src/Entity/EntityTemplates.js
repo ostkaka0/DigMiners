@@ -26,7 +26,7 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
     entity.bodyparts = new Bodyparts(bodyparts);
     entity.drawable = new Drawable(1);
     var healthbarSprite = new Sprite("healthbar", null, true);
-    entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(-32, -50), false);
+    entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(-32, -40), false);
     player.health = healthbarSprite;
     return { 'player': player, 'entity': entity };
 }
