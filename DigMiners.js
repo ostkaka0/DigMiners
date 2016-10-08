@@ -178,11 +178,6 @@ onMessage(MessageInit, function(message) {
     createHUD(gameData);
 });
 
-onMessage(MessagePlayerInventory, function(message) {
-    player = gameData.playerWorld.objects[message.playerId];
-    player.setName(message.id + ": " + message.amount, gameData);
-});
-
 document.getElementById("hud").onclick = function(event) {
     console.log("click!");
     var worldPos = [(event.clientX + camera.pos.x - camera.width / 2) / 32, (canvas.height - event.clientY + camera.pos.y - camera.height / 2) / 32];
