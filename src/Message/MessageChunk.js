@@ -15,7 +15,7 @@ MessageChunk.prototype.execute = function(gameData) {
 }
 
 MessageChunk.prototype.send = function(socket) {
-    var beginTime = present();
+    //var beginTime = present();
     
     var byteArray = [];
     var index = new IndexCounter();
@@ -23,10 +23,10 @@ MessageChunk.prototype.send = function(socket) {
     serializeInt32(byteArray, index, this.chunkY);
     compressRLE(this.chunk.densityData, byteArray);
     
-    console.log("MessageChunk duration: " + (present() - beginTime) + " ms");
-    beginTime = present();
+    //console.log("MessageChunk duration: " + (present() - beginTime) + " ms");
+    //beginTime = present();
     socket.emit(this.idString, new Buffer(byteArray));
-    console.log("socket.emit of MessageChunk duration: " + (present() - beginTime) + " ms");
+    //console.log("socket.emit of MessageChunk duration: " + (present() - beginTime) + " ms");
     
 }
 
