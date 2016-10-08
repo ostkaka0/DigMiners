@@ -69,6 +69,16 @@ var firstTickTime = process.hrtime();
 var tickNum = 0;
 var messageCallbacks = {};
 
+var names = ["Runny", "Buttercup", "Dinky", "Stinky", "Crusty",
+    "Greasy", "Gidget", "Cheesypoof", "Lumpy", "Wacky", "Tiny", "Flunky",
+    "Fluffy", "Zippy", "Doofus", "Gobsmacked", "Slimy", "Grimy", "Salamander",
+    "Oily", "Burrito", "Bumpy", "Loopy", "Snotty", "Irving", "Egbert"];
+
+var lastnames = ["face", "dip", "nose", "brain", "head", "breath",
+    "pants", "shorts", "lips", "mouth", "muffin", "butt", "bottom", "elbow",
+    "honker", "toes", "buns", "spew", "kisser", "fanny", "squirt", "chunks",
+    "brains", "wit", "juice", "shower"];
+
 loadChunk = function(world, x, y) {
     var chunk = new Chunk();
     gameData.generator.generate(chunk, x, y);
@@ -120,7 +130,8 @@ io.on("connection", function(socket) {
         socket.emit('ping');
     }, 2000);
 
-    var template = entityTemplates.player(idList.next(), idList.next(), "karl", gameData);
+    var name = names[Math.round(Math.random() * names.length)] + " " + lastnames[Math.round(Math.random() * lastnames.length)];
+    var template = entityTemplates.player(idList.next(), idList.next(), name, gameData);
     template.player.socket = socket;
     var player = template.player;
     var entity = template.entity;
