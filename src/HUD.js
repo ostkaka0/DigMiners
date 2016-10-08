@@ -115,7 +115,7 @@ updateHUD = function(gameData) {
 
             slotDescriptionContainer.innerText = itemType.name;
             if(item.equipped)
-                slotImageContainerOverlay.style.backgroundImage = "url('data/textures/items/equipped.png')";
+                slotImageContainerOverlay.style.backgroundImage = "url('data/textures/items/Equipped.png')";
 
             slot.onclick = HUDClosures[i][0];
             slot.oncontextmenu = HUDClosures[i][1];

@@ -15,6 +15,7 @@ TextureManager = function() {
     this.loader.queueTexture("RustyShovel", "items/RustyShovel");
     this.loader.queueTexture("Dynamite", "items/Dynamite");
     this.loader.queueTexture("DynamiteSheet", "items/DynamiteSheet");
+    this.loader.queueTexture("ShovelAtlas", "items/ShovelAtlas");
 
     this.loader.queueTexture("pickaxe", "items/pickaxe");
     this.loader.queueTexture("body", "body");
@@ -35,12 +36,34 @@ TextureManager = function() {
         console.log("Textures loaded.");
         for(var key in texturesLocal) {
             texturesLocal[key].name = key;
-            //console.log("set texture " + key + " name.");
+
+            if(texturesLocal[key].name == "ShovelAtlas") {
+
+            }
         }
         textures = texturesLocal;
         if(onTexturesLoadComplete)
             onTexturesLoadComplete();
     });
+}
+
+TextureManager.prototype.getTextures = function(texture, frameWidth, frameHeight, numFrames) {
+    var output = [];
+    var currentFrames = 0;
+    for(var y = 0; y < texture.height / frameHeight; y++) {
+        for(var x = 0; x < texture.width / frameWidth; x++) {
+            if(currentFrames < numFrames) {
+                var rect = new PIXI.Rectangle(x * frameWidth, y * frameHeight, this.frameWidth, this.frameHeight)
+                output.push(new PIXI.Texture(texture, rect));
+                currentFrames++;
+            }
+            else {
+                console.log("Loaded animation with " + currentFrames + " frames.");
+                return;
+            }
+        }
+    }
+    return output;
 }
 
 TextureManager.prototype.onComplete = function(func) {
