@@ -81,9 +81,129 @@ Item.RustyShovel = {
     maxStackSize: 1,
     type: "tool"
 }
-Item.Shovel = {
-    name: "Shovel",
-    texture: "Shovel",
+Item.CopperShovel = {
+    name: "Copper Shovel",
+    texture: "CopperShovel",
+    texturePath: "items/",
+    isEquipable: true,
+    isDropable: true,
+    isDigable: false,
+    maxStackSize: 1,
+    type: "tool"
+}
+Item.IronShovel = {
+    name: "Iron Shovel",
+    texture: "IronShovel",
+    texturePath: "items/",
+    isEquipable: true,
+    isDropable: true,
+    isDigable: false,
+    maxStackSize: 1,
+    type: "tool"
+}
+Item.SteelShovel = {
+    name: "Steel Shovel",
+    texture: "SteelShovel",
+    texturePath: "items/",
+    isEquipable: true,
+    isDropable: true,
+    isDigable: false,
+    maxStackSize: 1,
+    type: "tool"
+}
+Item.ApatiteShovel = {
+    name: "Apatite Shovel",
+    texture: "ApatiteShovel",
+    texturePath: "items/",
+    isEquipable: true,
+    isDropable: true,
+    isDigable: false,
+    maxStackSize: 1,
+    type: "tool"
+}
+Item.LapisLazuliShovel = {
+    name: "LapisLazuli Shovel",
+    texture: "LapisLazuliShovel",
+    texturePath: "items/",
+    isEquipable: true,
+    isDropable: true,
+    isDigable: false,
+    maxStackSize: 1,
+    type: "tool"
+}
+Item.TurquoiseShovel = {
+    name: "Turquoise Shovel",
+    texture: "TurquoiseShovel",
+    texturePath: "items/",
+    isEquipable: true,
+    isDropable: true,
+    isDigable: false,
+    maxStackSize: 1,
+    type: "tool"
+}
+Item.MagnetiteShovel = {
+    name: "Magnetite Shovel",
+    texture: "MagnetiteShovel",
+    texturePath: "items/",
+    isEquipable: true,
+    isDropable: true,
+    isDigable: false,
+    maxStackSize: 1,
+    type: "tool"
+}
+Item.OlivineShovel = {
+    name: "Olivine Shovel",
+    texture: "OlivineShovel",
+    texturePath: "items/",
+    isEquipable: true,
+    isDropable: true,
+    isDigable: false,
+    maxStackSize: 1,
+    type: "tool"
+}
+Item.QuartzShovel = {
+    name: "Quartz Shovel",
+    texture: "QuartzShovel",
+    texturePath: "items/",
+    isEquipable: true,
+    isDropable: true,
+    isDigable: false,
+    maxStackSize: 1,
+    type: "tool"
+}
+Item.EmeraldShovel = {
+    name: "Emerald Shovel",
+    texture: "EmeraldShovel",
+    texturePath: "items/",
+    isEquipable: true,
+    isDropable: true,
+    isDigable: false,
+    maxStackSize: 1,
+    type: "tool"
+}
+Item.TopazShovel = {
+    name: "Topaz Shovel",
+    texture: "TopazShovel",
+    texturePath: "items/",
+    isEquipable: true,
+    isDropable: true,
+    isDigable: false,
+    maxStackSize: 1,
+    type: "tool"
+}
+Item.RubyShovel = {
+    name: "Ruby Shovel",
+    texture: "RubyShovel",
+    texturePath: "items/",
+    isEquipable: true,
+    isDropable: true,
+    isDigable: false,
+    maxStackSize: 1,
+    type: "tool"
+}
+Item.DiamondShovel = {
+    name: "Diamond Shovel",
+    texture: "DiamondShovel",
     texturePath: "items/",
     isEquipable: true,
     isDropable: true,

@@ -3,21 +3,28 @@ TextureManager = function() {
     this.loader.queueTexture("healthbar");
     this.loader.queueTexture("feet", "feetSheet");
     this.loader.queueTexture("tool", "toolSheet");
+
     this.loader.queueTexture("uglyHat", "hats/uglyHat");
     this.loader.queueTexture("brokenHat", "hats/brokenHat");
-    /*this.loader.queueTexture("dirt", "tiles/dirt");
-    this.loader.queueTexture("stone", "tiles/stone");
-    this.loader.queueTexture("hardStone", "tiles/hardStone");
-    this.loader.queueTexture("veryHardStone", "tiles/veryHardStone");
-    this.loader.queueTexture("blueOre", "tiles/blueOre");
-    this.loader.queueTexture("redOre", "tiles/redOre");*/
-    this.loader.queueTexture("Shovel", "items/Shovel");
+
     this.loader.queueTexture("RustyShovel", "items/RustyShovel");
+    this.loader.queueTexture("CopperShovel", "items/CopperShovel");
+    this.loader.queueTexture("IronShovel", "items/IronShovel");
+    this.loader.queueTexture("SteelShovel", "items/SteelShovel");
+    this.loader.queueTexture("ApatiteShovel", "items/SteelShovel");
+    this.loader.queueTexture("LapisLazuliShovel", "items/SteelShovel");
+    this.loader.queueTexture("TurquoiseShovel", "items/SteelShovel");
+    this.loader.queueTexture("MagnetiteShovel", "items/SteelShovel");
+    this.loader.queueTexture("OlivineShovel", "items/SteelShovel");
+    this.loader.queueTexture("QuartzShovel", "items/SteelShovel");
+    this.loader.queueTexture("EmeraldShovel", "items/SteelShovel");
+    this.loader.queueTexture("TopazShovel", "items/SteelShovel");
+    this.loader.queueTexture("RubyShovel", "items/SteelShovel");
+    this.loader.queueTexture("DiamondShovel", "items/SteelShovel");
+
     this.loader.queueTexture("Dynamite", "items/Dynamite");
     this.loader.queueTexture("DynamiteSheet", "items/DynamiteSheet");
-    this.loader.queueTexture("ShovelAtlas", "items/ShovelAtlas");
 
-    this.loader.queueTexture("pickaxe", "items/pickaxe");
     this.loader.queueTexture("body", "body");
     this.loader.queueTexture("head", "head");
     this.loader.queueTexture("rightArm", "rightArm");

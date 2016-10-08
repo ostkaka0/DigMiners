@@ -139,13 +139,107 @@ canvas {
     left: 0;
 }
 
-/*Filter styles*/
-.saturate {-webkit-filter: saturate(3); filter: saturate(3);}
-.grayscale {-webkit-filter: grayscale(100%); filter: grayscale(100%);}
-.contrast {-webkit-filter: contrast(160%); filter: contrast(160%);}
-.brightness {-webkit-filter: brightness(1.9); filter: brightness(1.9);}
-.blur {-webkit-filter: blur(3px); filter: blur(3px);}
-.invert {-webkit-filter: invert(100%); filter: invert(100%);}
-.sepia {-webkit-filter: sepia(100%); filter: sepia(100%);}
-.huerotate {-webkit-filter: hue-rotate(180deg); filter: hue-rotate(180deg);}
-.rss.opacity {-webkit-filter: opacity(50%); filter: opacity(50%);}
+.crafting {
+    position: fixed;
+    width: 544px;
+    height: 158px;
+    bottom: 180px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    border-width: 4px;
+    border-style: solid;
+    border-color: rgb(64, 64, 64);
+    background-color: rgba(64, 64, 64, 0.3);
+}
+
+.craftingLeft {
+    position: relative;
+    float: left;
+    width: 400px;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.craftingEntry {
+    position: relative;
+    width: 100%;
+    height: 40px;
+}
+
+.craftingEntrySeparator {
+    position: relative;
+    width: 100%;
+    height: 2px;
+    background-color: rgb(64, 64, 64);
+}
+
+.craftingEntryContent {
+    position: relative;
+    width: calc(100% - 8px);
+    height: 32px;
+    top: 4px;
+    left: 4px;
+}
+
+.craftingEntryContentOperator {
+    position: relative;
+    float: left;
+    width: 32px;
+    height: 32px;
+    font-family: Monospace;
+    font-size: 30px;
+    line-height: 30px;
+    color: white;
+}
+
+.craftingImageHolder {
+    position: relative;
+    float: left;
+    height: 32px;
+    background-position:50% 50%;  /* Sets reference point to scale from */
+    background-size:contain;  
+    background-repeat: no-repeat;
+    text-align: center;
+    color: white;
+    font-family: Monospace;
+    font-size: 15px;
+    line-height: 32px;
+}
+
+.craftingRight {
+    position: relative;
+    float: left;
+    width: 140px;
+    height: 100%;
+    border-left-style: solid;
+    border-left-width: 4px;
+    border-color: rgb(64, 64, 64);
+}
+
+.craftingRightPreview {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin-left: 25px;
+    margin-top: 25px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: rgb(64, 64, 64);
+}
+
+.craftButton {
+    position: relative;
+    width: 80px;
+    height: 20px;
+    margin-left: 25px;
+    margin-top: 10px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: rgb(64, 64, 64);
+    font-family: Monospace;
+    font-size: 13px;
+    line-height: 20px;
+    color: white;
+}
