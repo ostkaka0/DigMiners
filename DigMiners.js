@@ -185,12 +185,20 @@ onMessage(MessagePlayerInventory, function(message) {
 
 document.getElementById("hud").onclick = function(event) {
     console.log("click!");
-    var worldPos = [(event.clientX + camera.pos.x - camera.width/2)/32, (canvas.height - event.clientY + camera.pos.y - camera.height/2)/32];
-    var chunkPos = [0,0];
-    var localPos = [0,0];
+    var worldPos = [(event.clientX + camera.pos.x - camera.width / 2) / 32, (canvas.height - event.clientY + camera.pos.y - camera.height / 2) / 32];
+    var chunkPos = [0, 0];
+    var localPos = [0, 0];
     v2WorldToBlockChunk(worldPos, chunkPos, localPos);
     setForeground(gameData.blockWorld, worldPos[0], worldPos[1], 1);
     console.log("worldPos " + worldPos);
     console.log("chunkPos " + chunkPos);
     console.log("localPos " + localPos);
 };
+
+gameData.entityWorld.onAdd = function(entity) {
+    if(entity.item && entity.item.amount > 1) {
+        var text = new PIXI.Text(entity.item.amount, { fontFamily: 'Monospace', fontSize: 15, fill: 0xffffff, align: 'center' });
+        var textSprite = new Sprite(null, text, false);
+        entity.drawable.addSprite("textAmount", textSprite, null, false);
+    }
+}
