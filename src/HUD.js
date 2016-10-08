@@ -38,22 +38,24 @@ createHUD = function(gameData) {
     dugItems.innerHTML = "";
     for(var i = 0; i < gameData.tileRegister.length; ++i) {
         var tileType = gameData.tileRegister[i];
-        var dugItemsEntry = document.createElement("div");
-        dugItemsEntry.setAttribute("class", "dugItemsEntry");
-        dugItemsEntry.setAttribute("id", "entry" + i);
+        if(tileType.isOre) {
+            var dugItemsEntry = document.createElement("div");
+            dugItemsEntry.setAttribute("class", "dugItemsEntry");
+            dugItemsEntry.setAttribute("id", "entry" + i);
 
-        var dugItemsEntryImage = document.createElement("div");
-        dugItemsEntryImage.setAttribute("class", "dugItemsEntryImage");
-        dugItemsEntryImage.style.backgroundRepeat = "no-repeat";
-        dugItemsEntryImage.style.backgroundImage = "url('data/textures/tiles/" + tileType.name + ".png')";
+            var dugItemsEntryImage = document.createElement("div");
+            dugItemsEntryImage.setAttribute("class", "dugItemsEntryImage");
+            dugItemsEntryImage.style.backgroundRepeat = "no-repeat";
+            dugItemsEntryImage.style.backgroundImage = "url('data/textures/tiles/" + tileType.name + ".png')";
 
-        var dugItemsEntryText = document.createElement("div");
-        dugItemsEntryText.setAttribute("class", "dugItemsEntryText");
-        dugItemsEntryText.innerText = "0.0";
+            var dugItemsEntryText = document.createElement("div");
+            dugItemsEntryText.setAttribute("class", "dugItemsEntryText");
+            dugItemsEntryText.innerText = "0.0";
 
-        dugItemsEntry.appendChild(dugItemsEntryImage);
-        dugItemsEntry.appendChild(dugItemsEntryText);
-        dugItems.appendChild(dugItemsEntry);
+            dugItemsEntry.appendChild(dugItemsEntryImage);
+            dugItemsEntry.appendChild(dugItemsEntryText);
+            dugItems.appendChild(dugItemsEntry);
+        }
     }
     var dugItemsFooter = document.createElement("div");
     dugItemsFooter.setAttribute("class", "dugItemsFooter");
@@ -127,7 +129,8 @@ updateHUD = function(gameData) {
 
     // update dugItems
     for(var i = 0; i < gameData.tileRegister.length; ++i) {
-        if(!global.player.oreInventory[i])
+        var tileType = gameData.tileRegister[i];
+        if(!tileType.isOre || !global.player.oreInventory[i])
             continue;
         var dugItemsEntry = document.getElementById("entry" + i);
         var dugItemsEntryText = dugItemsEntry.childNodes[1];
