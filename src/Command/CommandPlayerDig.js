@@ -57,7 +57,7 @@ CommandPlayerDig.prototype.execute = function(gameData) {
         var itemId = i;//gameData.itemRegister.getIdByName(tileName);
         var message = new MessagePlayerInventory(this.playerId, InventoryActions.ADD_ORE, itemId, dug[i]);
         message.execute(gameData);
-        message.send(io.sockets);
+        message.send(player.socket);
         var rand = Math.random() * 1000;
         var itemId = null;
         if(rand > 900)

@@ -57,6 +57,7 @@ MessageEntitySpawn.prototype.receive = function(gameData, byteArray) {
         var componentName = ComponentType.prototype.name;
         entity[componentName] = new ComponentType();
         entity[componentName].deserialize(byteArray, index, gameData);
+        //console.dir(entity[componentName]);
     }
     this.entityId = entityId;
     this.entity = entity;
