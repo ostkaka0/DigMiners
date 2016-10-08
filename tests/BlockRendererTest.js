@@ -7,9 +7,10 @@ var blockRenderer = new BlockChunkRenderer(gl, blockWorld, 32.0);
 var camera = new Camera();
 
 init = function() {
-    for (var x = -10; x < 10; ++x) {
-        for (var y = -2; y < 2; ++y) {
+    for (var x = -4; x < 4; ++x) {
+        for (var y = -4; y < 4; ++y) {
             var chunk = new BlockChunk();
+            chunk.setForeground(0, 0, 1);
             blockWorld.set(x, y, chunk);
         }
     }
@@ -33,18 +34,17 @@ render = function() {
 }
 
 canvas.onclick = function(event) {
-    var blockWorldX = event.clientX + camera.pos.x - camera.width/2;
-    var blockWorldY = canvas.height - event.clientY + camera.pos.y - camera.height/2;
-    var tileX = Math.floor(blockWorldX/32);
-    var tileY = Math.floor(blockWorldY/32);
-    var chunkX = Math.floor(tileX/CHUNK_DIM);
-    var chunkY = Math.floor(tileY/CHUNK_DIM);
-    var localX = tileX%CHUNK_DIM;
-    var localY = tileY%CHUNK_DIM;
-    var chunk = blockWorld.get(chunkX, chunkY);
-    if (chunk)
-        chunk.setDensity(localX, localY, 0);
-    
+    console.log("click!");
+    var worldPos = [(event.clientX + camera.pos.x - camera.width/2)/32, (canvas.height - event.clientY + camera.pos.y - camera.height/2)/32];
+    var chunkPos = [0,0];
+    var localPos = [0,0];
+    v2WorldToBlockChunk(worldPos, chunkPos, localPos);
+    var blockChunk = blockWorld.get(chunkPos[0], chunkPos[1]);
+    if (blockChunk)
+        blockChunk.setForeground(localPos[0], localPos[1], 1);
+    console.log("worldPos " + worldPos);
+    console.log("chunkPos " + chunkPos);
+    console.log("localPos " + localPos);
 };
 
 init();
