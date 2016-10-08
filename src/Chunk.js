@@ -34,3 +34,19 @@ Chunk.prototype.setTileId = function(x, y, value) {
     this.tileData[x + y * CHUNK_DIM] = value;
     this.isChanged = true;
 }
+
+v2WorldToChunk = function(worldPos, outChunkPos, outLocalPos) {
+    v2.div(worldPos, CHUNK_DIM, outChunkPos);
+    v2.floor(outChunkPos, outChunkPos);
+    if (!outLocalPos) return;
+    chunkWorldPos = v2.clone(outChunkPos);
+    v2.mul(CHUNK_DIM, chunkWorldPos, chunkWorldPos);
+    v2.floor(worldPos, outLocalPos);
+    v2.sub(outLocalPos, chunkWorldPos, outLocalPos);
+}
+
+v2WorldFromChunk = function(outWorldPos, chunkPos, localPos)  {
+    v2.mul(CHUNK_DIM, chunkPos, outWorldPos);
+    if (!localPos) return;
+    v2.add(localPos, outWorldPos, outWorldPos);
+}
