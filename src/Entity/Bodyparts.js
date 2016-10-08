@@ -76,7 +76,7 @@ Bodyparts.prototype.getSerializationSize = function() {
         var textureName = bodypart.sprite.textureName;
         size += getUTF8SerializationSize(key);
         size += getUTF8SerializationSize(parent);
-        size += getUTF8SerializationSize(textureName);
+        size += getUTF8SerializationSize((!textureName ? "" : textureName));
         size += 20;
     }
     return size;

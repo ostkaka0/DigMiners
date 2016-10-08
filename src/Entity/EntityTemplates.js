@@ -15,11 +15,12 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
     // Parameters: sprite, offsetX, offsetY, offsetAngle, pivot(v2), parent name
     var bodyparts = {
         "feet": new BodyPart(feetSprite, 0, 0, 0, null, null),
-        "itemHolder": new BodyPart(new Sprite(), -10, 15, 0, null, "rightArm"),
+        "tool": new BodyPart(new Sprite(), -10, 15, 0, null, "rightArm"),
         "rightArm": new BodyPart(rightArmSprite, 5, 4, 0, [10, 11], "body"),
         "leftArm": new BodyPart(leftArmSprite, 5, -16, 0, [10, 11], "body"),
         "body": new BodyPart(new Sprite(), 0, 0, 0, null, null),
-        "head": new BodyPart(headSprite, 1, 0, 0, null, null)
+        "head": new BodyPart(headSprite, 1, 0, 0, null, null),
+        "hat": new BodyPart(new Sprite(), 1, 0, 0, null, null)
     };
 
     entity.bodyparts = new Bodyparts(bodyparts);

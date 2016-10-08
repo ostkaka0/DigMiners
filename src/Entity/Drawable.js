@@ -58,7 +58,7 @@ Drawable.prototype.getSerializationSize = function() {
     for(var sprite in this.sprites) {
         size += getUTF8SerializationSize(sprite);
         sprite = this.sprites[sprite];
-        size += getUTF8SerializationSize(sprite.textureName);
+        size += getUTF8SerializationSize((!sprite.textureName ? "" : sprite.textureName));
         size += 10;
     }
     return size;
@@ -126,8 +126,7 @@ Drawable.prototype.initializeBodyparts = function(bodyparts) {
     // Add bodypart sprite to world
     for(var key in bodyparts) {
         var bodypart = bodyparts[key];
-        if(!bodypart.sprite.sprite.fake)
-            this.container.addChild(bodypart.sprite.sprite);
+        this.container.addChild(bodypart.sprite.sprite);
     }
 }
 

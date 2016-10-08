@@ -19,7 +19,7 @@ MessageRequestItemPickup.prototype.execute = function(gameData, player) {
             // Add item to player inventory
             var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, entity.item.itemId, entity.item.amount);
             message.execute(gameData);
-            message.send(io.sockets);
+            message.send(player.socket);
             // Destroy entity
             message = new MessageEntityDestroy(this.entityId);
             message.execute(gameData);
