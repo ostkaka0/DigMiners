@@ -9,6 +9,7 @@ GameData = function(idList) {
     this.playerWorld = new ObjectWorld();
     this.entityWorld = new ObjectWorld();
     this.tileWorld = new Map2D();
+    this.blockWorld = new Map2D();
     this.tileRegister = objectRegisterAddByObject([], Tiles);
     this.itemRegister = objectRegisterAddByObject([], Item);
     this.generator = new Generator();

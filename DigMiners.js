@@ -22,6 +22,7 @@ window.addEventListener('resize', function() {
 var gameData = new GameData();
 var camera = new Camera();
 var chunkRenderer = new ChunkRenderer(gl, gameData.tileWorld, 32.0);
+var blockChunkRenderer = new BlockChunkRenderer(gl, gameData.blockWorld, 32.0);
 var commands = [];
 var player = null;
 var playerEntity = null;
@@ -123,6 +124,7 @@ render = function(tickFracTime) {
     viewMatrix = viewMatrix.translate(-camera.frustrum.x, -camera.frustrum.y);
     viewMatrix = viewMatrix.scale(2 / canvas.width, 2 / canvas.height);
     chunkRenderer.render(gameData.tileWorld, projectionMatrix.clone().append(viewMatrix), camera);
+    blockChunkRenderer.render(gameData, gameData.blockWorld, projectionMatrix.clone().append(viewMatrix), camera);
 
     gameData.entityWorld.objectArray.forEach(function(entity) {
         if(entity.physicsBody && entity.drawable) {
@@ -180,3 +182,15 @@ onMessage(MessagePlayerInventory, function(message) {
     player = gameData.playerWorld.objects[message.playerId];
     player.setName(message.id + ": " + message.amount, gameData);
 });
+
+document.getElementById("hud").onclick = function(event) {
+    console.log("click!");
+    var worldPos = [(event.clientX + camera.pos.x - camera.width/2)/32, (canvas.height - event.clientY + camera.pos.y - camera.height/2)/32];
+    var chunkPos = [0,0];
+    var localPos = [0,0];
+    v2WorldToBlockChunk(worldPos, chunkPos, localPos);
+    setForeground(gameData.blockWorld, worldPos[0], worldPos[1], 1);
+    console.log("worldPos " + worldPos);
+    console.log("chunkPos " + chunkPos);
+    console.log("localPos " + localPos);
+};

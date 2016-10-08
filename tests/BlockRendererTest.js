@@ -33,7 +33,7 @@ render = function() {
     blockRenderer.render(gameData, blockWorld, projectionMatrix.clone().append(viewMatrix), camera);
 }
 
-canvas.onclick = function(event) {
+document.getElementById("hud").onclick = function(event) {
     console.log("click!");
     var worldPos = [(event.clientX + camera.pos.x - camera.width/2)/32, (canvas.height - event.clientY + camera.pos.y - camera.height/2)/32];
     var chunkPos = [0,0];
