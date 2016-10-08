@@ -28,12 +28,12 @@ GLBlockChunk.prototype.update = function(gl, gameData, blockChunk) {
             verticesPos.push((x+1)*tileSize, (y+1)*tileSize);
             verticesPos.push(x*tileSize, (y+1)*tileSize);
             
-            verticesUV.push((textureX + 0) / textureTileDim, (textureY + 0) / textureTileDim);
-            verticesUV.push((textureX + 1) / textureTileDim, (textureY + 0) / textureTileDim);
-            verticesUV.push((textureX + 1) / textureTileDim, (textureY + 1) / textureTileDim);
-            verticesUV.push((textureX + 0) / textureTileDim, (textureY + 0) / textureTileDim);
-            verticesUV.push((textureX + 1) / textureTileDim, (textureY + 1) / textureTileDim);
-            verticesUV.push((textureX + 0) / textureTileDim, (textureY + 1) / textureTileDim);
+            verticesUV.push((textureX + 0) / textureTileDim, 1 - (textureY + 1 + 0/tileSize/2) / textureTileDim);
+            verticesUV.push((textureX + 1) / textureTileDim, 1 - (textureY + 1 + 0/tileSize/2) / textureTileDim);
+            verticesUV.push((textureX + 1) / textureTileDim, 1 - (textureY + 0 + 0/tileSize/2) / textureTileDim);
+            verticesUV.push((textureX + 0) / textureTileDim, 1 - (textureY + 1 + 0/tileSize/2) / textureTileDim);
+            verticesUV.push((textureX + 1) / textureTileDim, 1 - (textureY + 0 + 0/tileSize/2) / textureTileDim);
+            verticesUV.push((textureX + 0) / textureTileDim, 1 - (textureY + 0 + 0/tileSize/2) / textureTileDim);
         }
     }
 
