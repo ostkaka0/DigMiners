@@ -32,10 +32,10 @@ MessageRequestDropStack.prototype.execute = function(gameData, player) {
         message.execute(gameData);
         message.send(player.socket);
 
-        var command = new CommandPlayerEquipItem(player.playerId, this.id, item.id, false);
-        gameData.commands.push(command);
-
-
+        if(item.equipped) {
+            var command = new CommandPlayerEquipItem(player.playerId, this.id, item.id, false);
+            gameData.commands.push(command);
+        }
     }
 }
 

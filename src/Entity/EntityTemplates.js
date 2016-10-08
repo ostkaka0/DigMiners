@@ -32,7 +32,7 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
 }
 
 entityTemplates.item = function(entityId, itemId, amount, gameData) {
-    var entity = gameData.entityWorld.add({}, entityId);
+    var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
 
     entity.item = new ComponentItem(itemId, amount);
@@ -40,9 +40,11 @@ entityTemplates.item = function(entityId, itemId, amount, gameData) {
     var itemType = gameData.itemRegister[itemId];
     var bodySprite = new Sprite(itemType.texture);
     var bodyparts = {
-        "body": new BodyPart(bodySprite, 0, 0, 0)
+        "body": new BodyPart(bodySprite, 0, 0, 0),
+        "text": new BodyPart(bodySprite, 0, 0, 0)
     };
     entity.bodyparts = new Bodyparts(bodyparts);
     entity.drawable = new Drawable(0);
+    gameData.entityWorld.add(entity, entityId);
     return entity;
 }
