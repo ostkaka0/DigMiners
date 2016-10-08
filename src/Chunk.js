@@ -13,9 +13,6 @@ Chunk = function() {
             this.densityData[y * CHUNK_DIM + x] = 255;
         }
     }
-
-    this.tileData[4 * CHUNK_DIM + 4] = 1;
-
 }
 Chunk.prototype.getDensity = function(x, y) {
     return this.densityData[x + y * CHUNK_DIM];

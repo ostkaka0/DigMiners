@@ -6,8 +6,6 @@ BlockChunk = function() {
     this.background = new Uint8Array(BLOCK_CHUNK_SIZE);
     this.strength = new Uint8Array(BLOCK_CHUNK_SIZE);
     var isChanged = true;
-
-    this.foreground[4 * BLOCK_CHUNK_DIM + 4] = 1;
 }
 
 BlockChunk.prototype.getForeground = function(x, y) {
