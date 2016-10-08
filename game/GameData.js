@@ -25,6 +25,39 @@ GameData = function(idList) {
     this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
     this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ComponentItem]);
 
+    Recipes = [];
+
+    Recipes.push({
+        item: [[Item.CopperShovel, 1]],
+        requiredOres: [[Tiles.Copper, 10]],
+        requiredItems: [],
+    });
+
+    Recipes.push({
+        item: [[Item.IronShovel, 1]],
+        requiredOres: [[Tiles.Iron, 10]],
+        requiredItems: [],
+    });
+
+    Recipes.push({
+        item: [[Item.SteelShovel, 1]],
+        requiredOres: [[Tiles.Iron, 10], [Tiles.Coal, 10]],
+        requiredItems: [],
+    });
+
+    Recipes.push({
+        item: [[Item.ApatiteShovel, 1]],
+        requiredOres: [[Tiles.Iron, 10], [Tiles.Coal, 10]],
+        requiredItems: [],
+    });
+
+    Recipes.push({
+        item: [[Item.LapisLazuliShovel, 1]],
+        requiredOres: [[Tiles.Iron, 10], [Tiles.Coal, 10], [Tiles.Coal, 10], [Tiles.Coal, 10]],
+        requiredItems: [],
+    });
+
+
     if(idList) {
         var onObjectRemove = function(object) { idList.remove(object.id); };
         this.playerWorld.onRemove = onObjectRemove;

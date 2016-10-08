@@ -83,6 +83,121 @@ createHUD = function(gameData) {
         HUDClosures[i][1] = createEquipFunc(i);
     }
 
+    // Create crafting window
+    var crafting = document.getElementById("crafting");
+    var craftingLeft = document.createElement("div");
+    craftingLeft.setAttribute("class", "craftingLeft");
+    crafting.appendChild(craftingLeft);
+
+    var craftingRight = document.createElement("div");
+    craftingRight.setAttribute("class", "craftingRight");
+    crafting.appendChild(craftingRight);
+
+    var craftingRightPreview = document.createElement("div");
+    craftingRightPreview.setAttribute("class", "craftingRightPreview");
+    craftingRight.appendChild(craftingRightPreview);
+
+    var craftButton = document.createElement("div");
+    craftButton.setAttribute("class", "craftButton");
+    craftButton.innerText = "Craft";
+    craftingRight.appendChild(craftButton);
+
+    for(var i = 0; i < Recipes.length; ++i) {
+        var recipe = Recipes[i];
+
+        var craftingEntry = document.createElement("div");
+        craftingEntry.setAttribute("class", "craftingEntry");
+        craftingLeft.appendChild(craftingEntry);
+
+        var craftingEntryContent = document.createElement("div");
+        craftingEntryContent.setAttribute("class", "craftingEntryContent");
+        craftingEntry.appendChild(craftingEntryContent);
+
+        // Required ores
+        for(var j = 0; j < recipe.requiredOres.length; ++j) {
+            var tileType = recipe.requiredOres[j][0];
+            var amount = recipe.requiredOres[j][1];
+
+            var imageHolder = document.createElement("div");
+            imageHolder.setAttribute("class", "craftingImageHolder");
+            imageHolder.style.backgroundImage = "url('data/textures/tiles/" + tileType.name + ".png')";
+            imageHolder.style.width = 32;
+            imageHolder.innerText = amount;
+            craftingEntryContent.appendChild(imageHolder);
+
+            // Plus
+            if(j < recipe.requiredOres.length - 1) {
+                var plus = document.createElement("div");
+                plus.setAttribute("class", "craftingEntryContentOperator");
+                plus.innerText = "+";
+                craftingEntryContent.appendChild(plus);
+            }
+        }
+
+        // Required items
+        for(var j = 0; j < recipe.requiredItems.length; ++j) {
+            var itemType = recipe.requiredItems[j][0];
+            var amount = recipe.requiredItems[j][1];
+
+            var imageWidth = textures[itemType.texture].width;
+            console.log(imageWidth);
+
+            var imageHolder = document.createElement("div");
+            imageHolder.setAttribute("class", "craftingImageHolder");
+            imageHolder.style.backgroundImage = "url('data/textures/items/" + itemType.texture + ".png')";
+            imageHolder.style.width = imageWidth;
+            imageHolder.innerText = amount;
+            craftingEntryContent.appendChild(imageHolder);
+
+            // Plus
+            if(j < recipe.requiredItems.length - 1) {
+                var plus = document.createElement("div");
+                plus.setAttribute("class", "craftingEntryContentOperator");
+                plus.innerText = "+";
+                craftingEntryContent.appendChild(plus);
+            }
+        }
+
+        // Equals
+        var equals = document.createElement("div");
+        equals.setAttribute("class", "craftingEntryContentOperator");
+        equals.innerText = "=";
+        //equals.style.cssFloat = "right";
+        craftingEntryContent.appendChild(equals);
+
+        // Result items
+        for(var j = 0; j < recipe.item.length; ++j) {
+            var resultItemType = recipe.item[j][0];
+            var resultAmount = recipe.item[j][1];
+
+            var imageWidth = textures[resultItemType.texture].width;
+            console.log(imageWidth);
+
+            var imageHolder = document.createElement("div");
+            imageHolder.setAttribute("class", "craftingImageHolder");
+            imageHolder.style.backgroundImage = "url('data/textures/items/" + resultItemType.texture + ".png')";
+            imageHolder.style.width = imageWidth;
+            if(resultAmount > 1)
+                imageHolder.innerText = resultAmount;
+            //imageHolder.style.cssFloat = "right";
+            craftingEntryContent.appendChild(imageHolder);
+
+            // Plus
+            if(j < recipe.item.length - 1) {
+                var plus = document.createElement("div");
+                plus.setAttribute("class", "craftingEntryContentOperator");
+                plus.innerText = "+";
+                craftingEntryContent.appendChild(plus);
+            }
+        }
+
+        if(i < Recipes.length - 1) {
+            var separator = document.createElement("div");
+            separator.setAttribute("class", "craftingEntrySeparator");
+            craftingLeft.appendChild(separator);
+        }
+    }
+
     // Slot describer
     $('.inventorySlot').mouseenter(function() {
         var text = $(this).find('.slotDescriber');
