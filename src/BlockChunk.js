@@ -36,3 +36,19 @@ BlockChunk.prototype.setStrength = function(x, y, value) {
     this.strength[x + y * CHUNK_DIM] = value;
     this.isChanged = true;
 }
+
+v2WorldToBlockChunk = function(worldPos, outBlockChunkPos, outLocalPos) {
+    v2.div(worldPos, CHUNK_DIM, outBlockChunkPos);
+    v2.floor(outBlockChunkPos, outBlockChunkPos);
+    if (!outLocalPos) return;
+    blockChunkWorldPos = v2.clone(outBlockChunkPos);
+    v2.mul(CHUNK_DIM, blockChunkWorldPos, blockChunkWorldPos);
+    v2.floor(worldPos, outLocalPos);
+    v2.sub(outLocalPos, blockChunkWorldPos, outLocalPos);
+}
+
+v2WorldFromBlockChunk = function(outWorldPos, blockChunkPos, localPos)  {
+    v2.mul(CHUNK_DIM, blockChunkPos, outWorldPos);
+    if (!localPos) return;
+    v2.add(localPos, outWorldPos, outWorldPos);
+}
