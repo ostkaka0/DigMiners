@@ -179,15 +179,11 @@ onMessage(MessageInit, function(message) {
 });
 
 document.getElementById("hud").onclick = function(event) {
-    console.log("click!");
     var worldPos = [(event.clientX + camera.pos.x - camera.width / 2) / 32, (canvas.height - event.clientY + camera.pos.y - camera.height / 2) / 32];
     var chunkPos = [0, 0];
     var localPos = [0, 0];
     v2WorldToBlockChunk(worldPos, chunkPos, localPos);
     setForeground(gameData.blockWorld, worldPos[0], worldPos[1], 1);
-    console.log("worldPos " + worldPos);
-    console.log("chunkPos " + chunkPos);
-    console.log("localPos " + localPos);
 };
 
 gameData.entityWorld.onAdd = function(entity) {
