@@ -108,3 +108,13 @@ v2.clampF = function(a, min, max) {
         return Math.max(Math.min(a, min), max);
     }
 }
+
+v2.floor = function(a, out) {
+    out[0] = Math.floor(a[0]);
+    out[1] = Math.floor(a[1]);
+}
+
+v2.ceil = function(a, out) {
+    out[0] = Math.ceil(a[0]);
+    out[1] = Math.ceil(a[1]);
+}

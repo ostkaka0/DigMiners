@@ -7,48 +7,48 @@ BlockChunk = function() {
     this.strength = new Uint8Array(BLOCK_CHUNK_SIZE);
     var isChanged = true;
 
-    this.foreground[4 * CHUNK_DIM + 4] = 1;
+    this.foreground[4 * BLOCK_CHUNK_DIM + 4] = 1;
 }
 
 BlockChunk.prototype.getForeground = function(x, y) {
-    return this.foreground[x + y * CHUNK_DIM];
+    return this.foreground[x + y * BLOCK_CHUNK_DIM];
 }
 
 BlockChunk.prototype.setForeground = function(x, y, value) {
-    this.foreground[x + y * CHUNK_DIM] = value;
+    this.foreground[x + y * BLOCK_CHUNK_DIM] = value;
     this.isChanged = true;
 }
 
 BlockChunk.prototype.getBackground = function(x, y) {
-    return this.background[x + y * CHUNK_DIM];
+    return this.background[x + y * BLOCK_CHUNK_DIM];
 }
 
 BlockChunk.prototype.setBackground = function(x, y, value) {
-    this.background[x + y * CHUNK_DIM] = value;
+    this.background[x + y * BLOCK_CHUNK_DIM] = value;
     this.isChanged = true;
 }
 
 BlockChunk.prototype.getStrength = function(x, y) {
-    return this.strength[x + y * CHUNK_DIM];
+    return this.strength[x + y * BLOCK_CHUNK_DIM];
 }
 
 BlockChunk.prototype.setStrength = function(x, y, value) {
-    this.strength[x + y * CHUNK_DIM] = value;
+    this.strength[x + y * BLOCK_CHUNK_DIM] = value;
     this.isChanged = true;
 }
 
 v2WorldToBlockChunk = function(worldPos, outBlockChunkPos, outLocalPos) {
-    v2.div(worldPos, CHUNK_DIM, outBlockChunkPos);
+    v2.div(worldPos, BLOCK_CHUNK_DIM, outBlockChunkPos);
     v2.floor(outBlockChunkPos, outBlockChunkPos);
     if (!outLocalPos) return;
     blockChunkWorldPos = v2.clone(outBlockChunkPos);
-    v2.mul(CHUNK_DIM, blockChunkWorldPos, blockChunkWorldPos);
+    v2.mul(BLOCK_CHUNK_DIM, blockChunkWorldPos, blockChunkWorldPos);
     v2.floor(worldPos, outLocalPos);
     v2.sub(outLocalPos, blockChunkWorldPos, outLocalPos);
 }
 
 v2WorldFromBlockChunk = function(outWorldPos, blockChunkPos, localPos)  {
-    v2.mul(CHUNK_DIM, blockChunkPos, outWorldPos);
+    v2.mul(BLOCK_CHUNK_DIM, blockChunkPos, outWorldPos);
     if (!localPos) return;
     v2.add(localPos, outWorldPos, outWorldPos);
 }
