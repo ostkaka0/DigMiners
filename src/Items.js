@@ -1,53 +1,6 @@
 Items = {};
 
-Items.Stone = {
-    name: "Stone",
-    texture: "stone",
-    texturePath: "items/",
-    isEquipable: false,
-    isDropable: true,
-    isDigable: true,
-    type: "resource"
-}
-Items.HardStone = {
-    name: "Hard Stone",
-    texture: "hardStone",
-    texturePath: "items/",
-    isEquipable: false,
-    isDropable: true,
-    isDigable: true,
-    type: "resource"
-}
-Items.VeryHardStone = {
-    name: "Very Hard Stone",
-    texture: "veryHardStone",
-    texturePath: "items/",
-    isEquipable: false,
-    isDropable: true,
-    isDigable: true,
-    type: "resource"
-}
-Items.Sapphire = {
-    name: "Sapphire",
-    texture: "blueOre",
-    texturePath: "items/",
-    isEquipable: false,
-    isDropable: true,
-    isDigable: true,
-    type: "resource"
-}
-Items.Ruby = {
-    name: "Ruby",
-    texture: "redOre",
-    texturePath: "items/",
-    isEquipable: false,
-    isDropable: true,
-    isDigable: true,
-    type: "resource"
-}
-
-// hats
-
+// Hats
 Items.UglyHat = {
     name: "Ugly Hat",
     texture: "uglyHat",
@@ -69,8 +22,7 @@ Items.BrokenHat = {
     type: "hat"
 }
 
-// tools
-
+// Shovels
 Items.RustyShovel = {
     name: "Rusty Shovel",
     texture: "RustyShovel",
@@ -79,7 +31,10 @@ Items.RustyShovel = {
     isDropable: true,
     isDigable: false,
     maxStackSize: 1,
-    type: "tool"
+    type: "tool",
+    typeOfType: "shovel",
+    digSpeed: 0.1,
+    maxDigHardness: 4
 }
 Items.CopperShovel = {
     name: "Copper Shovel",
@@ -89,7 +44,10 @@ Items.CopperShovel = {
     isDropable: true,
     isDigable: false,
     maxStackSize: 1,
-    type: "tool"
+    type: "tool",
+    typeOfType: "shovel",
+    digSpeed: 0.2,
+    maxDigHardness: 8
 }
 Items.IronShovel = {
     name: "Iron Shovel",
@@ -99,7 +57,10 @@ Items.IronShovel = {
     isDropable: true,
     isDigable: false,
     maxStackSize: 1,
-    type: "tool"
+    type: "tool",
+    typeOfType: "shovel",
+    digSpeed: 0.3,
+    maxDigHardness: 16
 }
 Items.SteelShovel = {
     name: "Steel Shovel",
@@ -109,7 +70,10 @@ Items.SteelShovel = {
     isDropable: true,
     isDigable: false,
     maxStackSize: 1,
-    type: "tool"
+    type: "tool",
+    typeOfType: "shovel",
+    digSpeed: 0.4,
+    maxDigHardness: 64
 }
 Items.ApatiteShovel = {
     name: "Apatite Shovel",
@@ -119,7 +83,10 @@ Items.ApatiteShovel = {
     isDropable: true,
     isDigable: false,
     maxStackSize: 1,
-    type: "tool"
+    type: "tool",
+    typeOfType: "shovel",
+    digSpeed: 0.5,
+    maxDigHardness: 64
 }
 Items.LapisLazuliShovel = {
     name: "Lapis Lazuli Shovel",
@@ -129,7 +96,10 @@ Items.LapisLazuliShovel = {
     isDropable: true,
     isDigable: false,
     maxStackSize: 1,
-    type: "tool"
+    type: "tool",
+    typeOfType: "shovel",
+    digSpeed: 0.6,
+    maxDigHardness: 64
 }
 Items.TurquoiseShovel = {
     name: "Turquoise Shovel",
@@ -139,7 +109,10 @@ Items.TurquoiseShovel = {
     isDropable: true,
     isDigable: false,
     maxStackSize: 1,
-    type: "tool"
+    type: "tool",
+    typeOfType: "shovel",
+    digSpeed: 0.7,
+    maxDigHardness: 64
 }
 Items.MagnetiteShovel = {
     name: "Magnetite Shovel",
@@ -149,7 +122,10 @@ Items.MagnetiteShovel = {
     isDropable: true,
     isDigable: false,
     maxStackSize: 1,
-    type: "tool"
+    type: "tool",
+    typeOfType: "shovel",
+    digSpeed: 0.8,
+    maxDigHardness: 64
 }
 Items.OlivineShovel = {
     name: "Olivine Shovel",
@@ -159,7 +135,10 @@ Items.OlivineShovel = {
     isDropable: true,
     isDigable: false,
     maxStackSize: 1,
-    type: "tool"
+    type: "tool",
+    typeOfType: "shovel",
+    digSpeed: 0.9,
+    maxDigHardness: 64
 }
 Items.QuartzShovel = {
     name: "Quartz Shovel",
@@ -169,7 +148,10 @@ Items.QuartzShovel = {
     isDropable: true,
     isDigable: false,
     maxStackSize: 1,
-    type: "tool"
+    type: "tool",
+    typeOfType: "shovel",
+    digSpeed: 1.0,
+    maxDigHardness: 64
 }
 Items.EmeraldShovel = {
     name: "Emerald Shovel",
@@ -179,7 +161,10 @@ Items.EmeraldShovel = {
     isDropable: true,
     isDigable: false,
     maxStackSize: 1,
-    type: "tool"
+    type: "tool",
+    typeOfType: "shovel",
+    digSpeed: 1.1,
+    maxDigHardness: 64
 }
 Items.TopazShovel = {
     name: "Topaz Shovel",
@@ -189,7 +174,10 @@ Items.TopazShovel = {
     isDropable: true,
     isDigable: false,
     maxStackSize: 1,
-    type: "tool"
+    type: "tool",
+    typeOfType: "shovel",
+    digSpeed: 1.2,
+    maxDigHardness: 64
 }
 Items.RubyShovel = {
     name: "Ruby Shovel",
@@ -199,7 +187,10 @@ Items.RubyShovel = {
     isDropable: true,
     isDigable: false,
     maxStackSize: 1,
-    type: "tool"
+    type: "tool",
+    typeOfType: "shovel",
+    digSpeed: 1.3,
+    maxDigHardness: 64
 }
 Items.DiamondShovel = {
     name: "Diamond Shovel",
@@ -209,8 +200,13 @@ Items.DiamondShovel = {
     isDropable: true,
     isDigable: false,
     maxStackSize: 1,
-    type: "tool"
+    type: "tool",
+    typeOfType: "shovel",
+    digSpeed: 1.4,
+    maxDigHardness: 64
 }
+
+// Other items
 Items.Dynamite = {
     name: "Dynamite",
     texture: "Dynamite",
@@ -219,6 +215,9 @@ Items.Dynamite = {
     isDropable: true,
     isDigable: false,
     maxStackSize: 8,
-    type: "tool"
+    type: "tool",
+    typeOfType: "explosive",
+    digSpeed: 0.0,
+    maxDigHardness: 0.0
 }
 
