@@ -1,9 +1,14 @@
 
+var HUD = {};
+
 HUDClosures = [];
 
 createHUD = function(gameData) {
     // create inventory
     var inventory = document.getElementById("inventory");
+    $(inventory).click(function(e) {
+        e.stopPropagation();
+    });
     inventory.innerHTML = '<div class="inventoryHeader">Your amazing inventory</div>';
     var inventoryContent = document.createElement("div");
     inventoryContent.setAttribute("class", "inventoryContent");
@@ -161,6 +166,11 @@ openCraftingWindow = function(gameData) {
     // Create crafting window
     var crafting = document.getElementById("crafting");
     crafting.style.display = "block";
+
+    $(crafting).click(function(e) {
+        e.stopPropagation();
+    });
+
     var craftingLeft = document.createElement("div");
     craftingLeft.setAttribute("class", "craftingLeft");
     crafting.appendChild(craftingLeft);
@@ -171,6 +181,7 @@ openCraftingWindow = function(gameData) {
 
     var craftingRightTextContainer = document.createElement("div");
     craftingRightTextContainer.setAttribute("class", "craftingRightTextContainer");
+    craftingRightTextContainer.setAttribute("id", "craftingRightTextContainer");
     craftingRight.appendChild(craftingRightTextContainer);
 
     var craftingRightPreview = document.createElement("div");
@@ -186,6 +197,14 @@ openCraftingWindow = function(gameData) {
     craftButton.innerText = "Craft";
     craftingRight.appendChild(craftButton);
 
+    $(craftButton).click(function(e) {
+        var recipeId = HUD.selectedRecipeId;
+        if(recipeId == null || recipeId == undefined)
+            return;
+        var message = new MessageRequestCraft(recipeId);
+        message.send(socket);
+    });
+
     for(var i = 0; i < Recipes.length; ++i) {
         var recipe = Recipes[i];
 
@@ -197,6 +216,7 @@ openCraftingWindow = function(gameData) {
         // Slot describer
         $(craftingEntry).click(function() {
             var recipeId = $(this).attr("recipeId");
+            HUD.selectedRecipeId = recipeId;
             var recipe = Recipes[recipeId];
 
             for(var j = 0; j < recipe.item.length; ++j) {
@@ -206,11 +226,7 @@ openCraftingWindow = function(gameData) {
                 craftingRightPreviewTextContainer.innerText = resultItemType.name;
             }
 
-            if(global.player.hasRequiredRecipeResources(recipe) === false)
-                craftingRightTextContainer.innerText = "Not enough resources";
-            else
-                craftingRightTextContainer.innerText = "";
-
+            checkCanAffordRecipe();
         });
 
         var craftingEntryContent = document.createElement("div");
@@ -306,4 +322,18 @@ closeCraftingWindow = function() {
     var crafting = document.getElementById("crafting");
     crafting.innerHTML = "";
     crafting.style.display = "none";
+}
+
+checkCanAffordRecipe = function() {
+    var recipeId = HUD.selectedRecipeId;
+    if(recipeId == null || recipeId == undefined)
+        return;
+    var recipe = Recipes[recipeId];
+    var craftingRightTextContainer = document.getElementById("craftingRightTextContainer");
+    if(craftingRightTextContainer) {
+        if(global.player.hasRequiredRecipeResources(recipe) === false)
+            craftingRightTextContainer.innerText = "Not enough resources";
+        else
+            craftingRightTextContainer.innerText = "";
+    }
 }

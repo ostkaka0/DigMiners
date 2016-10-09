@@ -21,7 +21,7 @@ GameData = function(idList) {
     this.pendingCommands = {};
     this.commandTypes = typeRegisterAddByArray([], [CommandPlayerMove, CommandDig, CommandPlayerDig, CommandPlayerEquipItem]);
     this.messagesToClient = [MessageInit, MessageCommands, MessageChunk, MessagePlayerJoin, MessagePlayerLeave, MessagePlayerInventory, MessageEntitySpawn, MessageEntityDestroy];
-    this.messagesToServer = [MessagePlayerMove, MessageRequestItemPickup, MessageRequestDropStack, MessageRequestEquipStack];
+    this.messagesToServer = [MessagePlayerMove, MessageRequestItemPickup, MessageRequestDropStack, MessageRequestEquipStack, MessageRequestCraft];
     this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
     this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ComponentItem]);
 
@@ -29,7 +29,7 @@ GameData = function(idList) {
 
     Recipes.push({
         item: [[Item.CopperShovel, 1]],
-        requiredOres: [[Tiles.Copper, 3]],
+        requiredOres: [[Tiles.Copper, 1]],
         requiredItems: [],
     });
 
