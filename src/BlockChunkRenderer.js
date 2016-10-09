@@ -50,10 +50,10 @@ BlockChunkRenderer.prototype.lazyInit = function() {
 BlockChunkRenderer.prototype.render = function(gameData, world, matVP, camera) {
     var blockChunksToRender = [];
 
-    var x1 = Math.floor((camera.pos.x - camera.width / 2) / this.tileSize / BLOCK_CHUNK_DIM);
-    var y1 = Math.floor((camera.pos.y - camera.height / 2) / this.tileSize / BLOCK_CHUNK_DIM);
-    var x2 = Math.floor((camera.pos.x + camera.width / 2) / this.tileSize / BLOCK_CHUNK_DIM);
-    var y2 = Math.floor((camera.pos.y + camera.height / 2) / this.tileSize / BLOCK_CHUNK_DIM);
+    var x1 = Math.floor((camera.pos[0] - camera.width / 2) / this.tileSize / BLOCK_CHUNK_DIM);
+    var y1 = Math.floor((camera.pos[1] - camera.height / 2) / this.tileSize / BLOCK_CHUNK_DIM);
+    var x2 = Math.floor((camera.pos[0] + camera.width / 2) / this.tileSize / BLOCK_CHUNK_DIM);
+    var y2 = Math.floor((camera.pos[1] + camera.height / 2) / this.tileSize / BLOCK_CHUNK_DIM);
 
     for(var y = y1; y <= y2; ++y) {
         for(var x = x1; x <= x2; ++x) {
