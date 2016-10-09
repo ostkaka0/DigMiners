@@ -83,3 +83,14 @@ Inventory.prototype.dequipAll = function(gameData, type, arg) {
         }
     }
 }
+
+Inventory.prototype.getEquippedItemType = function(type) {
+    for(var i = 0; i < this.items.length; ++i) {
+        var item = this.items[i];
+        if(item.equipped) {
+            var itemType = gameData.itemRegister[item.id];
+            if(itemType.type == type)
+                return itemType;
+        }
+    }
+}

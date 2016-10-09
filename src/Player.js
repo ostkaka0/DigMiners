@@ -17,8 +17,18 @@ Player.prototype.setName = function(name, gameData) {
     entity.drawable.addSprite("username", sprite, v2.create(- this.text.width / 2, -60), false);
 }
 
-Player.prototype.getDigStrength = function() {
-    return 1.0;
+Player.prototype.getDigSpeed = function() {
+    var defaultDigSpeed = 0.0;
+    var itemType = this.inventory.getEquippedItemType("tool");
+    if(!itemType || itemType.typeOfType != "shovel") return defaultDigSpeed;
+    return itemType.digSpeed;
+}
+
+Player.prototype.getMaxDigHardness = function() {
+    var defaultMaxDigHardness = 0.0;
+    var itemType = this.inventory.getEquippedItemType("tool");
+    if(!itemType || itemType.typeOfType != "shovel") return defaultMaxDigHardness;
+    return itemType.maxDigHardness;
 }
 
 Player.prototype.hasRequiredRecipeResources = function(recipe) {

@@ -116,7 +116,7 @@ tick = function(dt) {
             //console.log("DIG!!!");
             var angle = entity.physicsBody.angle;
             var moveDir = [Math.cos(-angle), Math.sin(-angle)];
-            var command = new CommandPlayerDig(player.playerId, entity.physicsBody.pos[0], entity.physicsBody.pos[1], moveDir, 1.5);
+            var command = new CommandPlayerDig(player.playerId, entity.physicsBody.pos[0], entity.physicsBody.pos[1], moveDir, 1.5, player.getDigSpeed(), player.getMaxDigHardness());
             gameData.commands.push(command);
         }
     })
@@ -153,6 +153,22 @@ io.on("connection", function(socket) {
 
     // give player shovel at join
     var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.RustyShovel.id, 1);
+    message.execute(gameData);
+    message.send(socket);
+
+    var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.CopperShovel.id, 1);
+    message.execute(gameData);
+    message.send(socket);
+
+    var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.IronShovel.id, 1);
+    message.execute(gameData);
+    message.send(socket);
+
+    var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.SteelShovel.id, 1);
+    message.execute(gameData);
+    message.send(socket);
+
+    var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.ApatiteShovel.id, 1);
     message.execute(gameData);
     message.send(socket);
 

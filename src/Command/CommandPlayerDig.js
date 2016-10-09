@@ -1,13 +1,17 @@
 
-CommandPlayerDig = function(playerId, x, y, dir, radius) {
+CommandPlayerDig = function(playerId, x, y, dir, radius, digSpeed, maxDigHardness) {
     this.playerId = playerId;
     this.x = toFix(x);
     this.y = toFix(y);
     this.dir = dir;
     this.radius = toFix(radius);
+    this.digSpeed = digSpeed;
+    this.maxDigHardness = maxDigHardness;
 }
 
 CommandPlayerDig.prototype.execute = function(gameData) {
+    //console.log("digSpeed " + this.digSpeed + " maxHardness " + this.maxDigHardness);
+
     var player = gameData.playerWorld.objects[this.playerId];
     if(!player) return;
     var entity = gameData.entityWorld.objects[player.entityId];
@@ -43,7 +47,7 @@ CommandPlayerDig.prototype.execute = function(gameData) {
         onDensityChange = function(tileX, tileY, tile, oldDensity, newDensity) { return (tile.isOre) ? oldDensity : newDensity; };
     }
 
-    var dug = carveCircle(gameData, this.x + digDis * this.dir[0], this.y + digDis * this.dir[1], this.radius, player.getDigStrength(), onDensityChange);
+    var dug = carveCircle(gameData, this.x + digDis * this.dir[0], this.y + digDis * this.dir[1], this.radius, this.digSpeed, this.maxDigHardness, onDensityChange);
     if(!isServer) {
         var entity = gameData.entityWorld.objects[player.entityId];
         if(entity.drawable)
@@ -86,6 +90,8 @@ CommandPlayerDig.prototype.serialize = function(byteArray, index) {
     serializeFix(byteArray, index, this.y);
     serializeV2(byteArray, index, this.dir);
     serializeFix(byteArray, index, this.radius);
+    serializeFix(byteArray, index, this.digSpeed);
+    serializeFix(byteArray, index, this.maxDigHardness);
 }
 
 CommandPlayerDig.prototype.deserialize = function(byteArray, index) {
@@ -94,8 +100,10 @@ CommandPlayerDig.prototype.deserialize = function(byteArray, index) {
     this.y = deserializeFix(byteArray, index);
     this.dir = deserializeV2(byteArray, index);
     this.radius = deserializeFix(byteArray, index);
+    this.digSpeed = deserializeFix(byteArray, index);
+    this.maxDigHardness = deserializeFix(byteArray, index);
 }
 
 CommandPlayerDig.prototype.getSerializationSize = function() {
-    return 24;
+    return 32;
 }
