@@ -178,7 +178,7 @@ onMessage(MessageInit, function(message) {
     createHUD(gameData);
 });
 
-$("#hud").click(function(event) {
+$(document).click(function(event) {
     var worldPos = [(event.clientX + camera.pos.x - camera.width / 2) / 32, (canvas.height - event.clientY + camera.pos.y - camera.height / 2) / 32];
     var chunkPos = [0, 0];
     var localPos = [0, 0];

@@ -21,6 +21,10 @@ MessagePlayerInventory.prototype.execute = function(gameData) {
         if(!player.oreInventory[this.id])
             player.oreInventory[this.id] = 0;
         player.oreInventory[this.id] += this.amount;
+    } else if(this.actionId == InventoryActions.REMOVE_ORE) {
+        if(!player.oreInventory[this.id])
+            player.oreInventory[this.id] = 0;
+        player.oreInventory[this.id] -= this.amount;
     } else if(this.actionId == InventoryActions.ADD_ITEM) {
         player.inventory.addItem(gameData, this.id, this.amount);
     } else if(this.actionId == InventoryActions.REMOVE_ITEM) {
@@ -28,8 +32,10 @@ MessagePlayerInventory.prototype.execute = function(gameData) {
     } else if(this.actionId == InventoryActions.DROP_STACK) {
         var item = player.inventory.removeStack(this.id);
     }
-    if(!isServer && this.playerId == global.player.playerId)
+    if(!isServer && this.playerId == global.player.playerId) {
         updateHUD(gameData);
+        checkCanAffordRecipe();
+    }
 }
 
 MessagePlayerInventory.prototype.getSerializationSize = function() {

@@ -30,7 +30,7 @@ Player.prototype.hasRequiredRecipeResources = function(recipe) {
     }
     for(var j = 0; j < recipe.requiredOres.length; ++j) {
         var tileType = recipe.requiredOres[j][0];
-        var amount = recipe.requiredOres[j][1];
+        var amount = recipe.requiredOres[j][1] * 256.0;
         if(!this.oreInventory[tileType.id] || this.oreInventory[tileType.id] < amount)
             return false;
     }
