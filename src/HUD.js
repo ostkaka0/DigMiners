@@ -105,6 +105,11 @@ createHUD = function(gameData) {
         }
         return true;
     });
+
+    $('*').keydown(function(e) {
+        if(e.keyCode == 32)
+            e.preventDefault();
+    });
 }
 
 updateHUD = function(gameData) {
@@ -203,6 +208,9 @@ openCraftingWindow = function(gameData) {
 
             if(global.player.hasRequiredRecipeResources(recipe) === false)
                 craftingRightTextContainer.innerText = "Not enough resources";
+            else
+                craftingRightTextContainer.innerText = "";
+
         });
 
         var craftingEntryContent = document.createElement("div");

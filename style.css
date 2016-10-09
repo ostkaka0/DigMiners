@@ -211,8 +211,8 @@ canvas {
 
 .craftingRight {
     position: relative;
-    float: left;
-    width: 140px;
+    float: right;
+    width: 138px;
     height: 100%;
     border-left-style: solid;
     border-left-width: 4px;
