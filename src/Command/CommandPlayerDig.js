@@ -61,9 +61,9 @@ CommandPlayerDig.prototype.execute = function(gameData) {
         var rand = Math.random() * 1000;
         var itemId = null;
         if(rand > 900)
-            itemId = Item.BrokenHat.id;
+            itemId = Items.BrokenHat.id;
         else if(rand > 800)
-            itemId = Item.UglyHat.id;
+            itemId = Items.UglyHat.id;
         if(itemId) {
             var entity = gameData.entityWorld.objects[player.entityId];
             var physicsBody = entity.physicsBody;

@@ -1,6 +1,6 @@
-Item = {};
+Items = {};
 
-Item.Stone = {
+Items.Stone = {
     name: "Stone",
     texture: "stone",
     texturePath: "items/",
@@ -9,7 +9,7 @@ Item.Stone = {
     isDigable: true,
     type: "resource"
 }
-Item.HardStone = {
+Items.HardStone = {
     name: "Hard Stone",
     texture: "hardStone",
     texturePath: "items/",
@@ -18,7 +18,7 @@ Item.HardStone = {
     isDigable: true,
     type: "resource"
 }
-Item.VeryHardStone = {
+Items.VeryHardStone = {
     name: "Very Hard Stone",
     texture: "veryHardStone",
     texturePath: "items/",
@@ -27,7 +27,7 @@ Item.VeryHardStone = {
     isDigable: true,
     type: "resource"
 }
-Item.Sapphire = {
+Items.Sapphire = {
     name: "Sapphire",
     texture: "blueOre",
     texturePath: "items/",
@@ -36,7 +36,7 @@ Item.Sapphire = {
     isDigable: true,
     type: "resource"
 }
-Item.Ruby = {
+Items.Ruby = {
     name: "Ruby",
     texture: "redOre",
     texturePath: "items/",
@@ -48,7 +48,7 @@ Item.Ruby = {
 
 // hats
 
-Item.UglyHat = {
+Items.UglyHat = {
     name: "Ugly Hat",
     texture: "uglyHat",
     texturePath: "hats/",
@@ -58,7 +58,7 @@ Item.UglyHat = {
     maxStackSize: 1,
     type: "hat"
 }
-Item.BrokenHat = {
+Items.BrokenHat = {
     name: "Broken Hat",
     texture: "brokenHat",
     texturePath: "hats/",
@@ -71,7 +71,7 @@ Item.BrokenHat = {
 
 // tools
 
-Item.RustyShovel = {
+Items.RustyShovel = {
     name: "Rusty Shovel",
     texture: "RustyShovel",
     texturePath: "items/",
@@ -81,7 +81,7 @@ Item.RustyShovel = {
     maxStackSize: 1,
     type: "tool"
 }
-Item.CopperShovel = {
+Items.CopperShovel = {
     name: "Copper Shovel",
     texture: "CopperShovel",
     texturePath: "items/",
@@ -91,7 +91,7 @@ Item.CopperShovel = {
     maxStackSize: 1,
     type: "tool"
 }
-Item.IronShovel = {
+Items.IronShovel = {
     name: "Iron Shovel",
     texture: "IronShovel",
     texturePath: "items/",
@@ -101,7 +101,7 @@ Item.IronShovel = {
     maxStackSize: 1,
     type: "tool"
 }
-Item.SteelShovel = {
+Items.SteelShovel = {
     name: "Steel Shovel",
     texture: "SteelShovel",
     texturePath: "items/",
@@ -111,7 +111,7 @@ Item.SteelShovel = {
     maxStackSize: 1,
     type: "tool"
 }
-Item.ApatiteShovel = {
+Items.ApatiteShovel = {
     name: "Apatite Shovel",
     texture: "ApatiteShovel",
     texturePath: "items/",
@@ -121,7 +121,7 @@ Item.ApatiteShovel = {
     maxStackSize: 1,
     type: "tool"
 }
-Item.LapisLazuliShovel = {
+Items.LapisLazuliShovel = {
     name: "Lapis Lazuli Shovel",
     texture: "LapisLazuliShovel",
     texturePath: "items/",
@@ -131,7 +131,7 @@ Item.LapisLazuliShovel = {
     maxStackSize: 1,
     type: "tool"
 }
-Item.TurquoiseShovel = {
+Items.TurquoiseShovel = {
     name: "Turquoise Shovel",
     texture: "TurquoiseShovel",
     texturePath: "items/",
@@ -141,7 +141,7 @@ Item.TurquoiseShovel = {
     maxStackSize: 1,
     type: "tool"
 }
-Item.MagnetiteShovel = {
+Items.MagnetiteShovel = {
     name: "Magnetite Shovel",
     texture: "MagnetiteShovel",
     texturePath: "items/",
@@ -151,7 +151,7 @@ Item.MagnetiteShovel = {
     maxStackSize: 1,
     type: "tool"
 }
-Item.OlivineShovel = {
+Items.OlivineShovel = {
     name: "Olivine Shovel",
     texture: "OlivineShovel",
     texturePath: "items/",
@@ -161,7 +161,7 @@ Item.OlivineShovel = {
     maxStackSize: 1,
     type: "tool"
 }
-Item.QuartzShovel = {
+Items.QuartzShovel = {
     name: "Quartz Shovel",
     texture: "QuartzShovel",
     texturePath: "items/",
@@ -171,7 +171,7 @@ Item.QuartzShovel = {
     maxStackSize: 1,
     type: "tool"
 }
-Item.EmeraldShovel = {
+Items.EmeraldShovel = {
     name: "Emerald Shovel",
     texture: "EmeraldShovel",
     texturePath: "items/",
@@ -181,7 +181,7 @@ Item.EmeraldShovel = {
     maxStackSize: 1,
     type: "tool"
 }
-Item.TopazShovel = {
+Items.TopazShovel = {
     name: "Topaz Shovel",
     texture: "TopazShovel",
     texturePath: "items/",
@@ -191,7 +191,7 @@ Item.TopazShovel = {
     maxStackSize: 1,
     type: "tool"
 }
-Item.RubyShovel = {
+Items.RubyShovel = {
     name: "Ruby Shovel",
     texture: "RubyShovel",
     texturePath: "items/",
@@ -201,7 +201,7 @@ Item.RubyShovel = {
     maxStackSize: 1,
     type: "tool"
 }
-Item.DiamondShovel = {
+Items.DiamondShovel = {
     name: "Diamond Shovel",
     texture: "DiamondShovel",
     texturePath: "items/",
@@ -211,7 +211,7 @@ Item.DiamondShovel = {
     maxStackSize: 1,
     type: "tool"
 }
-Item.Dynamite = {
+Items.Dynamite = {
     name: "Dynamite",
     texture: "Dynamite",
     texturePath: "items/",
