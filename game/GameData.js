@@ -29,13 +29,13 @@ GameData = function(idList) {
 
     Recipes.push({
         item: [[Item.CopperShovel, 1]],
-        requiredOres: [[Tiles.Copper, 10]],
+        requiredOres: [[Tiles.Copper, 3]],
         requiredItems: [],
     });
 
     Recipes.push({
         item: [[Item.IronShovel, 1]],
-        requiredOres: [[Tiles.Iron, 10]],
+        requiredOres: [[Tiles.Iron, 4]],
         requiredItems: [],
     });
 
