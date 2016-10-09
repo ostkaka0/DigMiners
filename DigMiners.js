@@ -152,9 +152,11 @@ render = function(tickFracTime) {
 }
 
 loadChunk = function(world, x, y) {
-    var chunk = new Chunk();
-    gameData.generator.generate(chunk, x, y);
-    world.set(x, y, chunk);
+    if(gameData.generator) {
+        var chunk = new Chunk();
+        gameData.generator.generate(chunk, x, y);
+        world.set(x, y, chunk);
+    }
 }
 
 onMessage = function(messageType, callback) {
