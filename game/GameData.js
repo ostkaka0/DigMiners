@@ -11,7 +11,7 @@ GameData = function(idList) {
     this.tileWorld = new Map2D();
     this.blockWorld = new Map2D();
     this.tileRegister = objectRegisterAddByObject([], Tiles);
-    this.itemRegister = objectRegisterAddByObject([], Item);
+    this.itemRegister = objectRegisterAddByObject([], Items);
     this.generator = new Generator();
     if(!isServer)
         this.animationManager = new AnimationManager();
@@ -28,31 +28,31 @@ GameData = function(idList) {
     Recipes = [];
 
     Recipes.push({
-        item: [[Item.CopperShovel, 1]],
+        item: [[Items.CopperShovel, 1]],
         requiredOres: [[Tiles.Copper, 1]],
         requiredItems: [],
     });
 
     Recipes.push({
-        item: [[Item.IronShovel, 1]],
+        item: [[Items.IronShovel, 1]],
         requiredOres: [[Tiles.Iron, 4]],
         requiredItems: [],
     });
 
     Recipes.push({
-        item: [[Item.SteelShovel, 1]],
+        item: [[Items.SteelShovel, 1]],
         requiredOres: [[Tiles.Iron, 10], [Tiles.Coal, 10]],
         requiredItems: [],
     });
 
     Recipes.push({
-        item: [[Item.ApatiteShovel, 1]],
+        item: [[Items.ApatiteShovel, 1]],
         requiredOres: [[Tiles.Iron, 10], [Tiles.Coal, 10]],
         requiredItems: [],
     });
 
     Recipes.push({
-        item: [[Item.LapisLazuliShovel, 1]],
+        item: [[Items.LapisLazuliShovel, 1]],
         requiredOres: [[Tiles.Iron, 10], [Tiles.Coal, 10], [Tiles.Coal, 10], [Tiles.Coal, 10]],
         requiredItems: [],
     });
