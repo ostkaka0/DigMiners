@@ -11,16 +11,16 @@ TextureManager = function() {
     this.loader.queueTexture("CopperShovel", "items/CopperShovel");
     this.loader.queueTexture("IronShovel", "items/IronShovel");
     this.loader.queueTexture("SteelShovel", "items/SteelShovel");
-    this.loader.queueTexture("ApatiteShovel", "items/SteelShovel");
-    this.loader.queueTexture("LapisLazuliShovel", "items/SteelShovel");
-    this.loader.queueTexture("TurquoiseShovel", "items/SteelShovel");
-    this.loader.queueTexture("MagnetiteShovel", "items/SteelShovel");
-    this.loader.queueTexture("OlivineShovel", "items/SteelShovel");
-    this.loader.queueTexture("QuartzShovel", "items/SteelShovel");
-    this.loader.queueTexture("EmeraldShovel", "items/SteelShovel");
-    this.loader.queueTexture("TopazShovel", "items/SteelShovel");
-    this.loader.queueTexture("RubyShovel", "items/SteelShovel");
-    this.loader.queueTexture("DiamondShovel", "items/SteelShovel");
+    this.loader.queueTexture("ApatiteShovel", "items/ApatiteShovel");
+    this.loader.queueTexture("LapisLazuliShovel", "items/LapisLazuliShovel");
+    this.loader.queueTexture("TurquoiseShovel", "items/TurquoiseShovel");
+    this.loader.queueTexture("MagnetiteShovel", "items/MagnetiteShovel");
+    this.loader.queueTexture("OlivineShovel", "items/OlivineShovel");
+    this.loader.queueTexture("QuartzShovel", "items/QuartzShovel");
+    this.loader.queueTexture("EmeraldShovel", "items/EmeraldShovel");
+    this.loader.queueTexture("TopazShovel", "items/TopazShovel");
+    this.loader.queueTexture("RubyShovel", "items/RubyShovel");
+    this.loader.queueTexture("DiamondShovel", "items/DiamondShovel");
 
     this.loader.queueTexture("Dynamite", "items/Dynamite");
     this.loader.queueTexture("DynamiteSheet", "items/DynamiteSheet");
