@@ -26,15 +26,13 @@ PhysicsBody.prototype.serialize = function(byteArray, index) {
 
 PhysicsBody.prototype.deserialize = function(byteArray, index) {
     this.pos = deserializeV2(byteArray, index);
+    this.posOld = v2.clone(this.pos);
     this.speed = deserializeV2(byteArray, index);
+    this.speedOld = v2.clone(this.speed);
     this.angle = deserializeFix(byteArray, index);
+    this.angleOld = this.angle;
     this.rotationSpeed = deserializeFix(byteArray, index);
     this.damping = deserializeFix(byteArray, index);
-
-    if(!this.posOld) {
-        this.posOld = v2.clone(this.pos);
-        this.speedOld = v2.clone(this.speed);
-    }
 }
 
 PhysicsBody.prototype.getSerializationSize = function() {
