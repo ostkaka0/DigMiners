@@ -122,7 +122,7 @@ Item.ApatiteShovel = {
     type: "tool"
 }
 Item.LapisLazuliShovel = {
-    name: "LapisLazuli Shovel",
+    name: "Lapis Lazuli Shovel",
     texture: "LapisLazuliShovel",
     texturePath: "items/",
     isEquipable: true,

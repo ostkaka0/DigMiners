@@ -20,3 +20,19 @@ Player.prototype.setName = function(name, gameData) {
 Player.prototype.getDigStrength = function() {
     return 1.0;
 }
+
+Player.prototype.hasRequiredRecipeResources = function(recipe) {
+    for(var j = 0; j < recipe.requiredItems.length; ++j) {
+        var itemType = recipe.requiredItems[j][0];
+        var amount = recipe.requiredItems[j][1];
+        if(this.inventory.hasItem(itemType.id, amount) === false)
+            return false;
+    }
+    for(var j = 0; j < recipe.requiredOres.length; ++j) {
+        var tileType = recipe.requiredOres[j][0];
+        var amount = recipe.requiredOres[j][1];
+        if(!this.oreInventory[tileType.id] || this.oreInventory[tileType.id] < amount)
+            return false;
+    }
+    return true;
+}

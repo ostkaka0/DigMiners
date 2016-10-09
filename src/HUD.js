@@ -83,8 +83,79 @@ createHUD = function(gameData) {
         HUDClosures[i][1] = createEquipFunc(i);
     }
 
+    // Slot describer
+    $('.inventorySlot').mouseenter(function() {
+        var text = $(this).find('.slotDescriber');
+        text.fadeIn(50);
+    }).mouseleave(function() {
+        var text = $(this).find('.slotDescriber');
+        text.fadeOut(50);
+    });
+
+    $('*').keydown(function(e) {
+        e.stopPropagation();
+        var key = e.which;
+        if(key == 67) { // c
+            var crafting = document.getElementById("crafting");
+            if(!crafting.style.display || crafting.style.display == "none")
+                openCraftingWindow(gameData);
+            else
+                closeCraftingWindow();
+            return true;
+        }
+        return true;
+    });
+}
+
+updateHUD = function(gameData) {
+    // update inventory
+    for(var i = 0; i < 64; ++i) {
+        var slot = document.getElementById("slot" + i);
+        var slotDescriptionContainer = slot.childNodes[0];
+        var slotImageContainer = slot.childNodes[1];
+        var slotTextContainer = slot.childNodes[2];
+
+        var slotImageContainerOverlay = slotImageContainer.childNodes[0];
+        slotImageContainerOverlay.style.backgroundImage = "";
+
+        var item = global.player.inventory.items[i];
+        if(item) {
+            var itemType = gameData.itemRegister[item.id];
+            if(itemType.texture)
+                slotImageContainer.style.backgroundImage = "url('data/textures/" + itemType.texturePath + itemType.texture + ".png')";
+            slotTextContainer.innerText = "";
+            if(item.amount > 1)
+                slotTextContainer.innerText = item.amount;
+
+            slotDescriptionContainer.innerText = itemType.name;
+            if(item.equipped)
+                slotImageContainerOverlay.style.backgroundImage = "url('data/textures/items/Equipped.png')";
+
+            slot.onclick = HUDClosures[i][0];
+            slot.oncontextmenu = HUDClosures[i][1];
+        } else {
+            slotImageContainer.style.backgroundImage = "";
+            slotTextContainer.innerText = "";
+            slotDescriptionContainer.innerText = "";
+            slot.onclick = null;
+        }
+    }
+
+    // update dugItems
+    for(var i = 0; i < gameData.tileRegister.length; ++i) {
+        var tileType = gameData.tileRegister[i];
+        if(!tileType.isOre || !global.player.oreInventory[i])
+            continue;
+        var dugItemsEntry = document.getElementById("entry" + i);
+        var dugItemsEntryText = dugItemsEntry.childNodes[1];
+        dugItemsEntryText.innerText = parseFloat(Math.floor((global.player.oreInventory[i] / 256.0) * 10) / 10).toFixed(1);
+    }
+}
+
+openCraftingWindow = function(gameData) {
     // Create crafting window
     var crafting = document.getElementById("crafting");
+    crafting.style.display = "block";
     var craftingLeft = document.createElement("div");
     craftingLeft.setAttribute("class", "craftingLeft");
     crafting.appendChild(craftingLeft);
@@ -93,9 +164,17 @@ createHUD = function(gameData) {
     craftingRight.setAttribute("class", "craftingRight");
     crafting.appendChild(craftingRight);
 
+    var craftingRightTextContainer = document.createElement("div");
+    craftingRightTextContainer.setAttribute("class", "craftingRightTextContainer");
+    craftingRight.appendChild(craftingRightTextContainer);
+
     var craftingRightPreview = document.createElement("div");
     craftingRightPreview.setAttribute("class", "craftingRightPreview");
     craftingRight.appendChild(craftingRightPreview);
+
+    var craftingRightPreviewTextContainer = document.createElement("div");
+    craftingRightPreviewTextContainer.setAttribute("class", "craftingRightPreviewTextContainer");
+    craftingRightPreview.appendChild(craftingRightPreviewTextContainer);
 
     var craftButton = document.createElement("div");
     craftButton.setAttribute("class", "craftButton");
@@ -107,7 +186,24 @@ createHUD = function(gameData) {
 
         var craftingEntry = document.createElement("div");
         craftingEntry.setAttribute("class", "craftingEntry");
+        craftingEntry.setAttribute("recipeId", i);
         craftingLeft.appendChild(craftingEntry);
+
+        // Slot describer
+        $(craftingEntry).click(function() {
+            var recipeId = $(this).attr("recipeId");
+            var recipe = Recipes[recipeId];
+
+            for(var j = 0; j < recipe.item.length; ++j) {
+                var resultItemType = recipe.item[j][0];
+                var resultAmount = recipe.item[j][1];
+                craftingRightPreview.style.backgroundImage = "url('data/textures/items/" + resultItemType.texture + ".png')";
+                craftingRightPreviewTextContainer.innerText = resultItemType.name;
+            }
+
+            if(global.player.hasRequiredRecipeResources(recipe) === false)
+                craftingRightTextContainer.innerText = "Not enough resources";
+        });
 
         var craftingEntryContent = document.createElement("div");
         craftingEntryContent.setAttribute("class", "craftingEntryContent");
@@ -171,7 +267,6 @@ createHUD = function(gameData) {
             var resultAmount = recipe.item[j][1];
 
             var imageWidth = textures[resultItemType.texture].width;
-            console.log(imageWidth);
 
             var imageHolder = document.createElement("div");
             imageHolder.setAttribute("class", "craftingImageHolder");
@@ -197,58 +292,10 @@ createHUD = function(gameData) {
             craftingLeft.appendChild(separator);
         }
     }
-
-    // Slot describer
-    $('.inventorySlot').mouseenter(function() {
-        var text = $(this).find('.slotDescriber');
-        text.fadeIn(50);
-    }).mouseleave(function() {
-        var text = $(this).find('.slotDescriber');
-        text.fadeOut(50);
-    });
 }
 
-updateHUD = function(gameData) {
-    // update inventory
-    for(var i = 0; i < 64; ++i) {
-        var slot = document.getElementById("slot" + i);
-        var slotDescriptionContainer = slot.childNodes[0];
-        var slotImageContainer = slot.childNodes[1];
-        var slotTextContainer = slot.childNodes[2];
-
-        var slotImageContainerOverlay = slotImageContainer.childNodes[0];
-        slotImageContainerOverlay.style.backgroundImage = "";
-
-        var item = global.player.inventory.items[i];
-        if(item) {
-            var itemType = gameData.itemRegister[item.id];
-            if(itemType.texture)
-                slotImageContainer.style.backgroundImage = "url('data/textures/" + itemType.texturePath + itemType.texture + ".png')";
-            slotTextContainer.innerText = "";
-            if(item.amount > 1)
-                slotTextContainer.innerText = item.amount;
-
-            slotDescriptionContainer.innerText = itemType.name;
-            if(item.equipped)
-                slotImageContainerOverlay.style.backgroundImage = "url('data/textures/items/Equipped.png')";
-
-            slot.onclick = HUDClosures[i][0];
-            slot.oncontextmenu = HUDClosures[i][1];
-        } else {
-            slotImageContainer.style.backgroundImage = "";
-            slotTextContainer.innerText = "";
-            slotDescriptionContainer.innerText = "";
-            slot.onclick = null;
-        }
-    }
-
-    // update dugItems
-    for(var i = 0; i < gameData.tileRegister.length; ++i) {
-        var tileType = gameData.tileRegister[i];
-        if(!tileType.isOre || !global.player.oreInventory[i])
-            continue;
-        var dugItemsEntry = document.getElementById("entry" + i);
-        var dugItemsEntryText = dugItemsEntry.childNodes[1];
-        dugItemsEntryText.innerText = parseFloat(Math.floor((global.player.oreInventory[i] / 256.0) * 10) / 10).toFixed(1);
-    }
+closeCraftingWindow = function() {
+    var crafting = document.getElementById("crafting");
+    crafting.innerHTML = "";
+    crafting.style.display = "none";
 }

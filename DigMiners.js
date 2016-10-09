@@ -34,7 +34,7 @@ var global = {};
 loadGame = function() {
     gameData.animationManager.load();
     // Player input
-    document.addEventListener('keydown', function(event) {
+    $('*').keydown(function(event) {
         var char = String.fromCharCode(event.keyCode).toLowerCase();
         if(!keysDown[char]) {
             keysDown[char] = true;
@@ -48,7 +48,7 @@ loadGame = function() {
                 new MessagePlayerMove(playerMoveDirection).send(socket);
         }
     });
-    document.addEventListener('keyup', function(event) {
+    $('*').keyup(function(event) {
         var char = String.fromCharCode(event.keyCode).toLowerCase();
         if(keysDown[char]) {
             keysDown[char] = false;
@@ -178,13 +178,13 @@ onMessage(MessageInit, function(message) {
     createHUD(gameData);
 });
 
-document.getElementById("hud").onclick = function(event) {
+$("#hud").click(function(event) {
     var worldPos = [(event.clientX + camera.pos.x - camera.width / 2) / 32, (canvas.height - event.clientY + camera.pos.y - camera.height / 2) / 32];
     var chunkPos = [0, 0];
     var localPos = [0, 0];
     v2WorldToBlockChunk(worldPos, chunkPos, localPos);
     setForeground(gameData.blockWorld, worldPos[0], worldPos[1], 1);
-};
+});
 
 gameData.entityWorld.onAdd = function(entity) {
     if(entity.item && entity.item.amount > 1) {
