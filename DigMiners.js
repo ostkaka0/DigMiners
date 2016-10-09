@@ -121,7 +121,7 @@ render = function(tickFracTime) {
 
     var projectionMatrix = PIXI.Matrix.IDENTITY.clone();//this.renderer.renderTarget.projectionMatrix.clone();
     var viewMatrix = PIXI.Matrix.IDENTITY.clone();
-    viewMatrix = viewMatrix.translate(-camera.frustrum.x, -camera.frustrum.y);
+    viewMatrix = viewMatrix.translate(-Math.floor(camera.frustrum.x), -Math.floor(camera.frustrum.y));
     viewMatrix = viewMatrix.scale(2 / canvas.width, 2 / canvas.height);
     chunkRenderer.render(gameData.tileWorld, projectionMatrix.clone().append(viewMatrix), camera);
     blockChunkRenderer.render(gameData, gameData.blockWorld, projectionMatrix.clone().append(viewMatrix), camera);
