@@ -34,7 +34,9 @@ Inventory.prototype.removeItem = function(gameData, id, amount) {
         if(this.items[i].id === id && currentAmount >= 0) {
             var removed = (amount <= currentAmount ? amount : currentAmount);
             this.items[i].amount -= removed;
-            amountToRemove -= removed;
+            if(this.items[i].amount <= 0)
+                this.items.splice(i, 1);
+            amount -= removed;
         }
         if(amount < 0)
             console.log("inventory bad thing happens!");
