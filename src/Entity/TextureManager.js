@@ -25,6 +25,9 @@ TextureManager = function() {
     this.loader.queueTexture("Dynamite", "items/Dynamite");
     this.loader.queueTexture("DynamiteSheet", "items/DynamiteSheet");
 
+    this.loader.queueTexture("RottenRoot", "items/RottenRoot");
+    this.loader.queueTexture("SmallSticks", "items/SmallSticks");
+
     this.loader.queueTexture("body", "body");
     this.loader.queueTexture("head", "head");
     this.loader.queueTexture("rightArm", "rightArm");

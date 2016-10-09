@@ -220,4 +220,27 @@ Items.Dynamite = {
     digSpeed: 0.0,
     maxDigHardness: 0.0
 }
+Items.RottenRoot = {
+    name: "Rotten Root",
+    texture: "RottenRoot",
+    texturePath: "items/",
+    isEquipable: false,
+    isDropable: true,
+    isDigable: false,
+    maxStackSize: 2,
+    type: "resource"
+}
+Items.SmallSticks = {
+    name: "Small Sticks",
+    texture: "SmallSticks",
+    texturePath: "items/",
+    isEquipable: false,
+    isDropable: true,
+    isDigable: false,
+    maxStackSize: 64,
+    type: "resource"
+}
+
+
+
 
