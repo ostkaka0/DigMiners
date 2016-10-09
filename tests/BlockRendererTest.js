@@ -28,14 +28,14 @@ render = function() {
 
     var projectionMatrix = PIXI.Matrix.IDENTITY.clone();//this.renderer.renderTarget.projectionMatrix.clone();
     var viewMatrix = PIXI.Matrix.IDENTITY.clone();
-    viewMatrix = viewMatrix.translate(-camera.frustrum.x, -camera.frustrum.y);
+    viewMatrix = viewMatrix.translate(-camera.pos[0], -camera.pos[1]);
     viewMatrix = viewMatrix.scale(2 / canvas.width, 2 / canvas.height);
     blockRenderer.render(gameData, blockWorld, projectionMatrix.clone().append(viewMatrix), camera);
 }
 
 $("#hud").click(function(event) {
     console.log("click!");
-    var worldPos = [(event.clientX + camera.pos.x - camera.width / 2) / 32, (canvas.height - event.clientY + camera.pos.y - camera.height / 2) / 32];
+    var worldPos = [(event.clientX + camera.pos[0] - camera.width / 2) / 32, (canvas.height - event.clientY + camera.pos[1] - camera.height / 2) / 32];
     var chunkPos = [0, 0];
     var localPos = [0, 0];
     v2WorldToBlockChunk(worldPos, chunkPos, localPos);
