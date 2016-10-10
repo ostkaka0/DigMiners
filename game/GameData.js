@@ -1,4 +1,5 @@
 GameData = function(idList) {
+    initItems();
     this.port = 3000;
     this.itemPickupDistance = 1.0;
 
@@ -28,22 +29,30 @@ GameData = function(idList) {
     Recipes = [];
 
     Recipes.push({
-        item: [[Items.CopperShovel, 1]],
-        requiredOres: [[Tiles.Copper, 1]],
-        requiredItems: [],
-    });
-
-    Recipes.push({
-        item: [[Items.IronShovel, 1]],
-        requiredOres: [[Tiles.Iron, 4]],
-        requiredItems: [],
-    });
-
-    Recipes.push({
         item: [[Items.SmallSticks, 1]],
         requiredOres: [],
         requiredItems: [[Items.RottenRoot, 1]],
     });
+
+    Recipes.push({
+        item: [[Items.CopperShovel, 1]],
+        requiredOres: [[Tiles.Copper, 10]],
+        requiredItems: [[Items.SmallSticks, 10], [Items.RottenRoot, 4]],
+    });
+
+    Recipes.push({
+        item: [[Items.IronShovel, 1]],
+        requiredOres: [[Tiles.Iron, 10]],
+        requiredItems: [[Items.SmallSticks, 10], [Items.RottenRoot, 4]],
+    }); 
+    
+    Recipes.push({
+        item: [[Items.ApatiteShovel, 1]],
+        requiredOres: [[Tiles.Apatite, 10]],
+        requiredItems: [[Items.SmallSticks, 10], [Items.RottenRoot, 4]],
+    });
+
+
 
 
     if(idList) {

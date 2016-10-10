@@ -253,6 +253,14 @@ openCraftingWindow = function(gameData) {
                 craftingEntryContent.appendChild(plus);
             }
         }
+        
+        // Plus between ores and items
+        if(recipe.requiredOres.length > 0 && recipe.requiredItems.length > 0) {
+                var plus = document.createElement("div");
+                plus.setAttribute("class", "craftingEntryContentOperator");
+                plus.innerText = "+";
+                craftingEntryContent.appendChild(plus);
+        }
 
         // Required items
         for(var j = 0; j < recipe.requiredItems.length; ++j) {
