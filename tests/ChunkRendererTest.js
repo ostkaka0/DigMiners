@@ -33,14 +33,14 @@ render = function() {
 
     var projectionMatrix = PIXI.Matrix.IDENTITY.clone();//this.renderer.renderTarget.projectionMatrix.clone();
     var viewMatrix = PIXI.Matrix.IDENTITY.clone();
-    viewMatrix = viewMatrix.translate(-camera.frustrum.x, -camera.frustrum.y);
+    viewMatrix = viewMatrix.translate(-camera.pos[0], -camera.pos[1]);
     viewMatrix = viewMatrix.scale(2 / canvas.width, 2 / canvas.height);
     chunkRenderer.render(world, projectionMatrix.clone().append(viewMatrix), camera);
 }
 
 $(canvas).click(function(event) {
-    var worldX = event.clientX + camera.pos.x - camera.width / 2;
-    var worldY = canvas.height - event.clientY + camera.pos.y - camera.height / 2;
+    var worldX = event.clientX + camera.pos[0] - camera.width / 2;
+    var worldY = canvas.height - event.clientY + camera.pos[1] - camera.height / 2;
     var tileX = Math.floor(worldX / 32);
     var tileY = Math.floor(worldY / 32);
     var chunkX = Math.floor(tileX / CHUNK_DIM);
