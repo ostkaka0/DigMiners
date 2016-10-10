@@ -99,6 +99,7 @@ canvas {
 }
 
 .inventorySlot {
+    margin-left:0px;
     position: relative;
     float: left;
     width: 34px;

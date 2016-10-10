@@ -172,6 +172,10 @@ io.on("connection", function(socket) {
     var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.ApatiteShovel.id, 1);
     message.execute(gameData);
     message.send(socket);
+    
+    var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.DiamondShovel.id, 1);
+    message.execute(gameData);
+    message.send(socket);
 
     // give player dynamite at join
     var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.Dynamite.id, 4);

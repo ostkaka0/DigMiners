@@ -33,6 +33,12 @@ GameData = function(idList) {
         requiredOres: [],
         requiredItems: [[Items.RottenRoot, 1]],
     });
+    
+    Recipes.push({
+        item: [[Items.Torch, 1]],
+        requiredOres: [[Tiles.Coal, 1]],
+        requiredItems: [[Items.SmallSticks, 1]],
+    });
 
     Recipes.push({
         item: [[Items.CopperShovel, 1]],
@@ -43,6 +49,12 @@ GameData = function(idList) {
     Recipes.push({
         item: [[Items.IronShovel, 1]],
         requiredOres: [[Tiles.Iron, 10]],
+        requiredItems: [[Items.SmallSticks, 10], [Items.RottenRoot, 4]],
+    });
+    
+    Recipes.push({
+        item: [[Items.SteelShovel, 1]],
+        requiredOres: [[Tiles.Coal, 10], [Tiles.Iron, 10]],
         requiredItems: [[Items.SmallSticks, 10], [Items.RottenRoot, 4]],
     }); 
     

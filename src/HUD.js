@@ -131,6 +131,10 @@ updateHUD = function(gameData) {
         var item = global.player.inventory.items[i];
         if(item) {
             var itemType = gameData.itemRegister[item.id];
+            var textureScale = 32.0/Math.max(itemType.textureWidth, itemType.textureHeight);
+            slotImageContainer.style.width = (itemType.textureWidth).toString() + "px";
+            slotImageContainer.style.height = (itemType.textureHeight).toString() +"px";
+            slotImageContainer.style.transform = "scale(" + textureScale.toString() + ") translate(" + (-64 + 64*textureScale).toString() + "px," + (-32 + 32*textureScale + 0.5*itemType.textureWidth - 0.5*itemType.textureHeight).toString() + "px)";
             if(itemType.texture)
                 slotImageContainer.style.backgroundImage = "url('data/textures/" + itemType.texturePath + itemType.texture + ".png')";
             slotTextContainer.innerText = "";
@@ -139,7 +143,7 @@ updateHUD = function(gameData) {
 
             slotDescriptionContainer.innerText = itemType.name;
             if(item.equipped)
-                slotImageContainerOverlay.style.backgroundImage = "url('data/textures/items/Equipped.png')";
+                slotImageContainerOverlay.style.background = "url('data/textures/items/Equipped.png') 0px 0px";
 
             slot.onclick = HUDClosures[i][0];
             slot.oncontextmenu = HUDClosures[i][1];

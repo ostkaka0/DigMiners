@@ -10,7 +10,10 @@ initItems = function() {
         isDropable: true,
         isDigable: false,
         maxStackSize: 1,
-        type: "hat"
+        type: "hat",
+        textureWidth: 32,
+        textureHeight: 32,
+        textureId: 0,
     }
     Items.BrokenHat = {
         name: "Broken Hat",
@@ -20,7 +23,10 @@ initItems = function() {
         isDropable: true,
         isDigable: false,
         maxStackSize: 1,
-        type: "hat"
+        type: "hat",
+        textureWidth: 32,
+        textureHeight: 32,
+        textureId: 0,
     }
 
     // Shovels
@@ -35,7 +41,10 @@ initItems = function() {
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 1.0,
-        maxDigHardness: Tiles.Copper.hardness
+        maxDigHardness: Tiles.Copper.hardness,
+        textureWidth: 64,
+        textureHeight: 32,
+        textureId: 0,
     }
     Items.CopperShovel = {
         name: "Copper Shovel",
@@ -48,7 +57,10 @@ initItems = function() {
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 1.2,
-        maxDigHardness: Tiles.Iron.hardness
+        maxDigHardness: Tiles.Iron.hardness,
+        textureWidth: 64,
+        textureHeight: 32,
+        textureId: 0,
     }
     Items.IronShovel = {
         name: "Iron Shovel",
@@ -61,7 +73,10 @@ initItems = function() {
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 1.6,
-        maxDigHardness: Tiles.Iron.hardness
+        maxDigHardness: Tiles.Iron.hardness,
+        textureWidth: 64,
+        textureHeight: 32,
+        textureId: 0,
     }
     Items.SteelShovel = {
         name: "Steel Shovel",
@@ -74,7 +89,10 @@ initItems = function() {
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 1.8,
-        maxDigHardness: Tiles.Apatite.hardness
+        maxDigHardness: Tiles.Apatite.hardness,
+        textureWidth: 64,
+        textureHeight: 32,
+        textureId: 0,
     }
     Items.ApatiteShovel = {
         name: "Apatite Shovel",
@@ -87,7 +105,10 @@ initItems = function() {
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 2.0,
-        maxDigHardness: 64
+        maxDigHardness: 64,
+        textureWidth: 64,
+        textureHeight: 32,
+        textureId: 0,
     }
     Items.LapisLazuliShovel = {
         name: "Lapis Lazuli Shovel",
@@ -100,7 +121,10 @@ initItems = function() {
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 2.2,
-        maxDigHardness: 64
+        maxDigHardness: 64,
+        textureWidth: 64,
+        textureHeight: 32,
+        textureId: 0,
     }
     Items.TurquoiseShovel = {
         name: "Turquoise Shovel",
@@ -113,7 +137,10 @@ initItems = function() {
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 2.3,
-        maxDigHardness: 64
+        maxDigHardness: 64,
+        textureWidth: 64,
+        textureHeight: 32,
+        textureId: 0,
     }
     Items.MagnetiteShovel = {
         name: "Magnetite Shovel",
@@ -126,7 +153,10 @@ initItems = function() {
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 2.4,
-        maxDigHardness: 64
+        maxDigHardness: 64,
+        textureWidth: 64,
+        textureHeight: 32,
+        textureId: 0,
     }
     Items.OlivineShovel = {
         name: "Olivine Shovel",
@@ -139,7 +169,10 @@ initItems = function() {
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 2.6,
-        maxDigHardness: 64
+        maxDigHardness: 64,
+        textureWidth: 64,
+        textureHeight: 32,
+        textureId: 0,
     }
     Items.QuartzShovel = {
         name: "Quartz Shovel",
@@ -152,7 +185,10 @@ initItems = function() {
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 2.8,
-        maxDigHardness: 64
+        maxDigHardness: 64,
+        textureWidth: 64,
+        textureHeight: 32,
+        textureId: 0,
     }
     Items.EmeraldShovel = {
         name: "Emerald Shovel",
@@ -165,7 +201,10 @@ initItems = function() {
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 3.0,
-        maxDigHardness: 64
+        maxDigHardness: 64,
+        textureWidth: 64,
+        textureHeight: 32,
+        textureId: 0,
     }
     Items.TopazShovel = {
         name: "Topaz Shovel",
@@ -178,7 +217,10 @@ initItems = function() {
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 3.2,
-        maxDigHardness: 64
+        maxDigHardness: 64,
+        textureWidth: 64,
+        textureHeight: 32,
+        textureId: 0,
     }
     Items.RubyShovel = {
         name: "Ruby Shovel",
@@ -191,7 +233,10 @@ initItems = function() {
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 3.6,
-        maxDigHardness: 64
+        maxDigHardness: 64,
+        textureWidth: 64,
+        textureHeight: 32,
+        textureId: 0,
     }
     Items.DiamondShovel = {
         name: "Diamond Shovel",
@@ -204,7 +249,10 @@ initItems = function() {
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 4.0,
-        maxDigHardness: 64
+        maxDigHardness: 64,
+        textureWidth: 64,
+        textureHeight: 32,
+        textureId: 0,
     }
 
     // Other items
@@ -219,7 +267,10 @@ initItems = function() {
         type: "tool",
         typeOfType: "explosive",
         digSpeed: 0.0,
-        maxDigHardness: 0.0
+        maxDigHardness: 0.0,
+        textureWidth: 32,
+        textureHeight: 32,
+        textureId: 0,
     }
     Items.RottenRoot = {
         name: "Rotten Root",
@@ -229,7 +280,10 @@ initItems = function() {
         isDropable: true,
         isDigable: false,
         maxStackSize: 4,
-        type: "resource"
+        type: "resource",
+        textureWidth: 32,
+        textureHeight: 32,
+        textureId: 0,
     }
     Items.SmallSticks = {
         name: "Small Sticks",
@@ -239,6 +293,22 @@ initItems = function() {
         isDropable: true,
         isDigable: false,
         maxStackSize: 100,
-        type: "resource"
+        type: "resource",
+        textureWidth: 32,
+        textureHeight: 32,
+        textureId: 0,
+    }
+    Items.Torch = {
+        name: "Torch",
+        texture: "SmallSticks",
+        texturePath: "items/",
+        isEquipable: false,
+        isDropable: true,
+        isDigable: false,
+        maxStackSize: 10,
+        type: "resource",
+        textureWidth: 32,
+        textureHeight: 32,
+        textureId: 0,
     }
 }
