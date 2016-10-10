@@ -20,7 +20,11 @@ window.addEventListener('resize', function() {
 }, false);
 
 var gameData = new GameData();
-var camera = new Camera();
+var camera = {
+    width: window.innerWidth,
+    height: window.innerHeight,
+    pos: v2.create(0, 0)
+};
 var chunkRenderer = new ChunkRenderer(gl, gameData.tileWorld, 32.0);
 var blockChunkRenderer = new BlockChunkRenderer(gl, gameData.blockWorld, 32.0);
 var commands = [];
@@ -116,20 +120,20 @@ render = function(tickFracTime) {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    camera.frustrum.x = tickFracTime * 32.0 * global.playerEntity.physicsBody.pos[0] + (1 - tickFracTime) * 32.0 * global.playerEntity.physicsBody.posOld[0];
-    camera.frustrum.y = tickFracTime * 32.0 * global.playerEntity.physicsBody.pos[1] + (1 - tickFracTime) * 32.0 * global.playerEntity.physicsBody.posOld[1];
+    camera.pos[0] = tickFracTime * 32.0 * global.playerEntity.physicsBody.pos[0] + (1 - tickFracTime) * 32.0 * global.playerEntity.physicsBody.posOld[0];
+    camera.pos[1] = tickFracTime * 32.0 * global.playerEntity.physicsBody.pos[1] + (1 - tickFracTime) * 32.0 * global.playerEntity.physicsBody.posOld[1];
 
     var projectionMatrix = PIXI.Matrix.IDENTITY.clone();//this.renderer.renderTarget.projectionMatrix.clone();
     var viewMatrix = PIXI.Matrix.IDENTITY.clone();
-    viewMatrix = viewMatrix.translate(-Math.floor(camera.frustrum.x), -Math.floor(camera.frustrum.y));
+    viewMatrix = viewMatrix.translate(-Math.floor(camera.pos[0]), -Math.floor(camera.pos[1]));
     viewMatrix = viewMatrix.scale(2 / canvas.width, 2 / canvas.height);
     chunkRenderer.render(gameData.tileWorld, projectionMatrix.clone().append(viewMatrix), camera);
     blockChunkRenderer.render(gameData, gameData.blockWorld, projectionMatrix.clone().append(viewMatrix), camera);
 
     gameData.entityWorld.objectArray.forEach(function(entity) {
         if(entity.physicsBody && entity.drawable) {
-            var x = -camera.frustrum.x + canvas.width / 2 + tickFracTime * 32.0 * entity.physicsBody.pos[0] + (1 - tickFracTime) * 32.0 * entity.physicsBody.posOld[0];
-            var y = camera.frustrum.y + canvas.height / 2 - (tickFracTime * 32.0 * entity.physicsBody.pos[1] + (1 - tickFracTime) * 32.0 * entity.physicsBody.posOld[1]);
+            var x = -camera.pos[0] + canvas.width / 2 + tickFracTime * 32.0 * entity.physicsBody.pos[0] + (1 - tickFracTime) * 32.0 * entity.physicsBody.posOld[0];
+            var y = camera.pos[1] + canvas.height / 2 - (tickFracTime * 32.0 * entity.physicsBody.pos[1] + (1 - tickFracTime) * 32.0 * entity.physicsBody.posOld[1]);
 
             var a = (entity.physicsBody.angle - entity.physicsBody.angleOld) % (Math.PI * 2);
             var rotation = entity.physicsBody.angleOld + (2 * a % (Math.PI * 2) - a) * tickFracTime;
@@ -181,7 +185,7 @@ onMessage(MessageInit, function(message) {
 });
 
 $(document).click(function(event) {
-    var worldPos = [(event.clientX + camera.pos.x - camera.width / 2) / 32, (canvas.height - event.clientY + camera.pos.y - camera.height / 2) / 32];
+    var worldPos = [(event.clientX + camera.pos[0] - camera.width / 2) / 32, (canvas.height - event.clientY + camera.pos[1] - camera.height / 2) / 32];
     var chunkPos = [0, 0];
     var localPos = [0, 0];
     v2WorldToBlockChunk(worldPos, chunkPos, localPos);
