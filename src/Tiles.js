@@ -49,16 +49,65 @@ Tiles.Iron = {
     hardness: 16
 };
 
-Tiles.Sapphire = {
-    name: "Sapphire",
+Tiles.Apatite = {
+    name: "Apatite",
     isSolid: true,
     isOre: true,
-    hardness: 32
+    hardness: 20
+};
+
+Tiles.LapisLazuli = {
+    name: "Lapis Lazuli",
+    isSolid: true,
+    isOre: true,
+    hardness: 26//22
+};
+
+Tiles.Magnetite = {
+    name: "Iron",
+    isSolid: true,
+    isOre: true,
+    hardness: 34//24
+};
+
+Tiles.Olivine = {
+    name: "Olivine",
+    isSolid: true,
+    isOre: true,
+    hardness: 44//26
+};
+
+Tiles.Quartz = {
+    name: "Quartz",
+    isSolid: true,
+    isOre: true,
+    hardness: 56//28
+};
+
+Tiles.Emerald = {
+    name: "Emerald",
+    isSolid: true,
+    isOre: true,
+    hardness: 70//30
+};
+
+Tiles.Topaz = {
+    name: "Topaz",
+    isSolid: true,
+    isOre: true,
+    hardness: 86//32
 };
 
 Tiles.Ruby = {
     name: "Ruby",
     isSolid: true,
     isOre: true,
-    hardness: 64
+    hardness: 96//36
+};
+
+Tiles.Diamond = {
+    name: "Diamond",
+    isSolid: true,
+    isOre: true,
+    hardness: 120
 };

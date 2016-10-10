@@ -3,16 +3,31 @@ Inventory = function() {
     this.items = [];
 }
 
+Inventory.prototype.sortItems = function() {
+    this.items.sort(function(a, b) {
+        if (a.id < b.id)
+            return -1;
+            
+        if (a.id > b.id)
+            return 1;
+            
+        return 0;
+    });
+}
+
 Inventory.prototype.addItem = function(gameData, id, amount) {
     //console.log("adding " + amount + " " + id);
     var maxStack = gameData.itemRegister[id].maxStackSize;
     for(var i = 0; true; ++i) {
         if(amount < 0) {
             console.log("inventory bad thing happens!");
+            this.sortItems();
             return;
         }
-        if(amount == 0)
+        if(amount == 0) {
+            this.sortItems();
             return;
+        }
         if(i >= this.items.length || !this.items[i]) {
             var added = (amount <= maxStack ? amount : maxStack);
             this.items.push({ 'id': id, 'name': gameData.itemRegister[id].name, 'amount': added });
@@ -26,6 +41,7 @@ Inventory.prototype.addItem = function(gameData, id, amount) {
             amount -= added;
         }
     }
+    this.sortItems();
 }
 
 Inventory.prototype.removeItem = function(gameData, id, amount) {
@@ -40,9 +56,12 @@ Inventory.prototype.removeItem = function(gameData, id, amount) {
         }
         if(amount < 0)
             console.log("inventory bad thing happens!");
-        if(amount == 0)
+        if(amount == 0) {
+            this.sortItems();
             return;
+        }
     }
+    this.sortItems();
 }
 
 Inventory.prototype.hasItem = function(id, amount) {
@@ -70,6 +89,7 @@ Inventory.prototype.removeStack = function(id) {
     var item = this.items[id];
     delete this.items[id];
     this.items.splice(id, 1);
+    this.sortItems(gameData);
     return item;
 }
 
@@ -84,6 +104,7 @@ Inventory.prototype.dequipAll = function(gameData, type, arg) {
             }
         }
     }
+    this.sortItems(gameData);
 }
 
 Inventory.prototype.getEquippedItemType = function(type) {
