@@ -131,18 +131,18 @@ updateHUD = function(gameData) {
         var item = global.player.inventory.items[i];
         if(item) {
             var itemType = gameData.itemRegister[item.id];
-            var backgroundScale = 32/(itemType.textureSize || Math.max(itemType.textureWidth, itemType.textureHeight));
-            slotImageContainer.style.width = 34;//(itemType.textureWidth).toString() + "px";
-            slotImageContainer.style.height = 34;//(itemType.textureHeight).toString() +"px";
-            //slotImageContainer.style.transform = "scale(" + textureScale.toString() + ") translate(" + (-64 + 64*textureScale).toString() + "px," + (-32 + 32*textureScale + 0.5*itemType.textureWidth - 0.5*itemType.textureHeight).toString() + "px)";
-            slotImageContainer.style.backgroundSize = (backgroundScale*itemType.textureWidth*(itemType.textureDimX || 1)).toString() + "px " + (backgroundScale*itemType.textureHeight*(itemType.textureDimY || 1)).toString() + "px ";//Math.floor(100*textureScale).toString() + "%";
-            slotImageContainer.style.borderWidth = Math.floor(Math.max(0, 34/2 - backgroundScale*itemType.textureHeight/2)).toString() + "px " + Math.floor(Math.max(0, 34/2 - backgroundScale*itemType.textureWidth/2)).toString() + "px";
+            var backgroundScale = 32/(itemType.texture.spriteSize || Math.max(itemType.texture.spriteWidth, itemType.texture.spriteHeight));
+            slotImageContainer.style.width = 34;//(itemType.texture.spriteWidth).toString() + "px";
+            slotImageContainer.style.height = 34;//(itemType.texture.spriteHeight).toString() +"px";
+            //slotImageContainer.style.transform = "scale(" + textureScale.toString() + ") translate(" + (-64 + 64*textureScale).toString() + "px," + (-32 + 32*textureScale + 0.5*itemType.texture.spriteWidth - 0.5*itemType.texture.spriteHeight).toString() + "px)";
+            slotImageContainer.style.backgroundSize = (backgroundScale*itemType.texture.spriteWidth*(itemType.texture.dimX || 1)).toString() + "px " + (backgroundScale*itemType.texture.spriteHeight*(itemType.texture.dimY || 1)).toString() + "px ";//Math.floor(100*textureScale).toString() + "%";
+            slotImageContainer.style.borderWidth = Math.floor(Math.max(0, 34/2 - backgroundScale*itemType.texture.spriteHeight/2)).toString() + "px " + Math.floor(Math.max(0, 34/2 - backgroundScale*itemType.texture.spriteWidth/2)).toString() + "px";
             slotImageContainer.style.borderStyle = "solid";
             slotImageContainer.style.borderColor = "black";
             if(itemType.texture) {
-                slotImageContainer.style.backgroundImage = "url('data/textures/" + itemType.texturePath + itemType.texture + ".png')";
-                slotImageContainer.style.backgroundPosition = (-1*backgroundScale*itemType.textureId%(itemType.textureDimX || 1)*itemType.textureWidth).toString() + "px " + (-1*backgroundScale*(itemType.textureId/(itemType.textureDimX || 1) >> 0)%(itemType.textureDimY || 1)*itemType.textureWidth).toString() + "px";
-                slotImageContainerOverlay.style.margin = Math.min(0, -Math.floor(34/2 - backgroundScale*itemType.textureHeight/2)).toString() + "px " + Math.min(0, -Math.floor(34/2 - backgroundScale*itemType.textureWidth/2)).toString() + "px";
+                slotImageContainer.style.backgroundImage = "url('data/textures/" + itemType.texture.path + "')";
+                slotImageContainer.style.backgroundPosition = (-1*backgroundScale*(itemType.spriteId%(itemType.texture.dimX || 1))*itemType.texture.spriteWidth).toString() + "px " + (-1*backgroundScale*((itemType.spriteId/(itemType.texture.dimX || 1) >> 0)%(itemType.texture.dimY || 1))*itemType.texture.spriteHeight).toString() + "px";
+                slotImageContainerOverlay.style.margin = Math.min(0, -Math.floor(34/2 - backgroundScale*itemType.texture.spriteHeight/2)).toString() + "px " + Math.min(0, -Math.floor(34/2 - backgroundScale*itemType.texture.spriteWidth/2)).toString() + "px";
             }
             slotTextContainer.innerText = "";
             if(item.amount > 1)
