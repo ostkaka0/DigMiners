@@ -124,10 +124,13 @@ canvas {
     margin-top:1px;
     background-position:50% 50%;  /* Sets reference point to scale from */
     background-size:contain;  
+    border-color: red;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 }
 
 .slotImageContainerOverlay {
-    position: relative;
     width: 32px;
     height: 32px;
 }
