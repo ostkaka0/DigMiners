@@ -13,15 +13,34 @@ ItemTextures.ShovelAtlas = {
     dimY: 8,
 }
 
+ItemTextures.ItemAtlas = {
+    path: "itemAtlas.png",
+    spriteWidth: 32,
+    spriteHeight: 32,
+    inventorySize: 1.0,
+    inventoryAngle: 0,
+    inventoryOffset: [0, 0],
+    dimX: 16,
+    dimY: 16,
+}
+
+ItemTextures.HatAtlas = {
+    path: "hatAtlas.png",
+    spriteWidth: 32,
+    spriteHeight: 32,
+    inventorySize: 1.0,
+    inventoryAngle: 0,
+    inventoryOffset: [0, 0],
+    dimX: 16,
+    dimY: 16,
+}
+
 initItems = function() {
     // Hats
     Items.UglyHat = {
         name: "Ugly Hat",
-        texture: {
-            path: "hats/uglyHat.png",
-            spriteWidth: 32,
-            spriteHeight: 32,
-        },
+        texture: ItemTextures.HatAtlas,
+        spriteId: 3,
         isEquipable: true,
         isDropable: true,
         isDigable: false,
@@ -30,11 +49,8 @@ initItems = function() {
     }
     Items.BrokenHat = {
         name: "Broken Hat",
-        texture: {
-            path: "hats/brokenHat.png",
-            spriteWidth: 32,
-            spriteHeight: 32,
-        },
+        texture: ItemTextures.HatAtlas,
+        spriteId: 0,
         isEquipable: true,
         isDropable: true,
         isDigable: false,
@@ -226,13 +242,30 @@ initItems = function() {
     }
 
     // Other items
+    Items.RottenRoot = {
+        name: "Rotten Root",
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 0,
+        isEquipable: false,
+        isDropable: true,
+        isDigable: false,
+        maxStackSize: 4,
+        type: "resource",
+    }
+    Items.SmallSticks = {
+        name: "Small Sticks",
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 1,
+        isEquipable: false,
+        isDropable: true,
+        isDigable: false,
+        maxStackSize: 100,
+        type: "resource"
+    }
     Items.Dynamite = {
         name: "Dynamite",
-        texture: {
-            path: "items/Dynamite.png",
-            spriteWidth: 32,
-            spriteHeight: 32,
-        },
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 2,
         isEquipable: true,
         isDropable: true,
         isDigable: false,
@@ -242,46 +275,14 @@ initItems = function() {
         digSpeed: 0.0,
         maxDigHardness: 0.0,
     }
-    Items.RottenRoot = {
-        name: "Rotten Root",
-        texture: {
-            path: "items/RottenRoot.png",
-            spriteWidth: 32,
-            spriteHeight: 32,
-        },
-        isEquipable: false,
-        isDropable: true,
-        isDigable: false,
-        maxStackSize: 4,
-        type: "resource",
-    }
-    Items.SmallSticks = {
-        name: "Small Sticks",
-        texture: {
-            path: "hats/uglyHat.png",
-            spriteWidth: 32,
-            spriteHeight: 32,
-        },
-        isEquipable: false,
-        isDropable: true,
-        isDigable: false,
-        maxStackSize: 100,
-        type: "resource",
-        textureWidth: 32,
-        textureHeight: 32,
-        textureId: 0,
-    }
     Items.Torch = {
         name: "Torch",
-        texture: "SmallSticks",
-        texturePath: "items/",
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 3,
         isEquipable: false,
         isDropable: true,
         isDigable: false,
         maxStackSize: 10,
-        type: "resource",
-        textureWidth: 32,
-        textureHeight: 32,
-        textureId: 0,
+        type: "resource"
     }
 }

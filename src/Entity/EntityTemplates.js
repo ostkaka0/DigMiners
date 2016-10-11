@@ -38,7 +38,7 @@ entityTemplates.item = function(entityId, itemId, amount, gameData) {
     entity.item = new ComponentItem(itemId, amount);
 
     var itemType = gameData.itemRegister[itemId];
-    var bodySprite = new Sprite(itemType.texture);
+    var bodySprite = new Sprite(itemType.name);
     var bodyparts = {
         "body": new BodyPart(bodySprite, 0, 0, 0),
         "text": new BodyPart(bodySprite, 0, 0, 0)

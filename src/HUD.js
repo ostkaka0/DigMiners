@@ -286,12 +286,11 @@ openCraftingWindow = function(gameData) {
             var itemType = recipe.requiredItems[j][0];
             var amount = recipe.requiredItems[j][1];
 
-            var imageWidth = textures[itemType.texture].width;
-            console.log(imageWidth);
+            var imageWidth = gameData.textures[itemType.name].width;
 
             var imageHolder = document.createElement("div");
             imageHolder.setAttribute("class", "craftingImageHolder");
-            imageHolder.style.backgroundImage = "url('data/textures/items/" + itemType.texture + ".png')";
+            imageHolder.style.backgroundImage = "url('data/textures/items/" + itemType.name + ".png')";
             imageHolder.style.width = imageWidth;
             imageHolder.innerText = amount;
             craftingEntryContent.appendChild(imageHolder);
@@ -317,11 +316,11 @@ openCraftingWindow = function(gameData) {
             var resultItemType = recipe.item[j][0];
             var resultAmount = recipe.item[j][1];
 
-            var imageWidth = textures[resultItemType.texture].width;
+            var imageWidth = gameData.textures[resultItemType.name].width;
 
             var imageHolder = document.createElement("div");
             imageHolder.setAttribute("class", "craftingImageHolder");
-            imageHolder.style.backgroundImage = "url('data/textures/items/" + resultItemType.texture + ".png')";
+            imageHolder.style.backgroundImage = "url('data/textures/items/" + resultItemType.name + ".png')";
             imageHolder.style.width = imageWidth;
             if(resultAmount > 1)
                 imageHolder.innerText = resultAmount;

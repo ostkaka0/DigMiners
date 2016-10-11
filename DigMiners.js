@@ -32,7 +32,7 @@ var player = null;
 var playerEntity = null;
 var keysDown = {};
 var messageCallbacks = {};
-var textureManager = new TextureManager();
+var textureManager = new TextureManager(gameData);
 var global = {};
 
 loadGame = function() {
