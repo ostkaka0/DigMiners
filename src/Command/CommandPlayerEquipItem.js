@@ -16,7 +16,7 @@ CommandPlayerEquipItem.prototype.execute = function(gameData) {
     if(!isServer && sprite.sprite && !this.equipped)
         sprite.sprite.visible = false;
     else if(this.equipped)
-        entity.drawable.setBodypartSprite(entity.bodyparts.bodyparts[itemType.type], new Sprite(itemType.texture));
+        entity.drawable.setBodypartSprite(entity.bodyparts.bodyparts[itemType.type], new Sprite(itemType.name));
 
     if(isServer || this.playerId == global.player.playerId) {
         var item = player.inventory.items[this.stackId];

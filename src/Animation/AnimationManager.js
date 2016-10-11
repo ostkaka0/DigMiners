@@ -4,8 +4,8 @@ AnimationManager = function() {
 }
 
 AnimationManager.prototype.load = function() {
-    this.animations["feet"] = new Animation("feet", textures.feet, 60, 75, 75);
-    this.animations["dynamite"] = new Animation("dynamite", textures.DynamiteSheet, 64, 32, 32);
+    this.animations["feet"] = new Animation("feet", gameData.textures.feet, 60, 75, 75);
+    //this.animations["dynamite"] = new Animation("dynamite", textures.DynamiteSheet, 64, 32, 32);
 
     this.cycles["rightArm"] = new Cycle([
         [0,        // x

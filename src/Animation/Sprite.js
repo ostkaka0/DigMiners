@@ -3,7 +3,7 @@ Sprite = function(textureName, sprite, noAnchor) {
     this.textureName = (textureName ? textureName : "");
     this.noAnchor = noAnchor;
     if(!isServer) {
-        this.setPIXISprite((textureName && textureName.length > 0 ? new PIXI.Sprite(textures[textureName]) : sprite));
+        this.setPIXISprite((textureName && textureName.length > 0 ? new PIXI.Sprite(gameData.textures[textureName]) : sprite));
     }
 }
 
