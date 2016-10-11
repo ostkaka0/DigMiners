@@ -6,16 +6,18 @@ ItemTextures.ShovelAtlas = {
     path: "shovelAtlas.png",
     spriteWidth: 64,
     spriteHeight: 32,
-    spriteSize: 64,
+    inventorySize: 1.5,
+    inventoryAngle: -Math.PI / 4,
+    inventoryOffset: [-8, 0],
     dimX: 4,
     dimY: 8,
 }
 
-initItems = function() { 
+initItems = function() {
     // Hats
     Items.UglyHat = {
         name: "Ugly Hat",
-        texture: { 
+        texture: {
             path: "hats/uglyHat.png",
             spriteWidth: 32,
             spriteHeight: 32,
@@ -28,7 +30,7 @@ initItems = function() {
     }
     Items.BrokenHat = {
         name: "Broken Hat",
-        texture: { 
+        texture: {
             path: "hats/brokenHat.png",
             spriteWidth: 32,
             spriteHeight: 32,
@@ -226,7 +228,7 @@ initItems = function() {
     // Other items
     Items.Dynamite = {
         name: "Dynamite",
-        texture: { 
+        texture: {
             path: "items/Dynamite.png",
             spriteWidth: 32,
             spriteHeight: 32,
@@ -242,7 +244,7 @@ initItems = function() {
     }
     Items.RottenRoot = {
         name: "Rotten Root",
-        texture: { 
+        texture: {
             path: "items/RottenRoot.png",
             spriteWidth: 32,
             spriteHeight: 32,
@@ -255,7 +257,7 @@ initItems = function() {
     }
     Items.SmallSticks = {
         name: "Small Sticks",
-        texture: { 
+        texture: {
             path: "hats/uglyHat.png",
             spriteWidth: 32,
             spriteHeight: 32,

@@ -24,16 +24,16 @@ createHUD = function(gameData) {
         var slotImageContainer = document.createElement("div");
         slotImageContainer.setAttribute("class", "slotImageContainer");
         slotImageContainer.style.backgroundRepeat = "no-repeat";
+        slot.appendChild(slotImageContainer);
 
         var slotImageContainerOverlay = document.createElement("div");
         slotImageContainerOverlay.setAttribute("class", "slotImageContainerOverlay");
-        slotImageContainer.appendChild(slotImageContainerOverlay);
+        slot.appendChild(slotImageContainerOverlay);
 
         var slotTextContainer = document.createElement("div");
         slotTextContainer.setAttribute("class", "slotTextContainer");
-
-        slot.appendChild(slotImageContainer);
         slot.appendChild(slotTextContainer);
+
         inventoryContent.appendChild(slot);
     }
     inventory.appendChild(inventoryContent);
@@ -123,27 +123,35 @@ updateHUD = function(gameData) {
         var slot = document.getElementById("slot" + i);
         var slotDescriptionContainer = slot.childNodes[0];
         var slotImageContainer = slot.childNodes[1];
-        var slotTextContainer = slot.childNodes[2];
+        var slotImageContainerOverlay = slot.childNodes[2];
+        var slotTextContainer = slot.childNodes[3];
 
-        var slotImageContainerOverlay = slotImageContainer.childNodes[0];
         slotImageContainerOverlay.style.backgroundImage = "";
 
         var item = global.player.inventory.items[i];
         if(item) {
             var itemType = gameData.itemRegister[item.id];
-            var backgroundScale = 32/(itemType.texture.spriteSize || Math.max(itemType.texture.spriteWidth, itemType.texture.spriteHeight));
-            slotImageContainer.style.width = 34;//(itemType.texture.spriteWidth).toString() + "px";
-            slotImageContainer.style.height = 34;//(itemType.texture.spriteHeight).toString() +"px";
-            //slotImageContainer.style.transform = "scale(" + textureScale.toString() + ") translate(" + (-64 + 64*textureScale).toString() + "px," + (-32 + 32*textureScale + 0.5*itemType.texture.spriteWidth - 0.5*itemType.texture.spriteHeight).toString() + "px)";
-            slotImageContainer.style.backgroundSize = (backgroundScale*itemType.texture.spriteWidth*(itemType.texture.dimX || 1)).toString() + "px " + (backgroundScale*itemType.texture.spriteHeight*(itemType.texture.dimY || 1)).toString() + "px ";//Math.floor(100*textureScale).toString() + "%";
-            slotImageContainer.style.borderWidth = Math.floor(Math.max(0, 34/2 - backgroundScale*itemType.texture.spriteHeight/2)).toString() + "px " + Math.floor(Math.max(0, 34/2 - backgroundScale*itemType.texture.spriteWidth/2)).toString() + "px";
+            var backgroundScale = 32 / Math.max(itemType.texture.spriteWidth, itemType.texture.spriteHeight);
+            if(itemType.texture.inventorySize)
+                backgroundScale *= itemType.texture.inventorySize;
+            slotImageContainer.style.width = 34;
+            slotImageContainer.style.height = 34;
+            var sizeX = backgroundScale * itemType.texture.spriteWidth * (itemType.texture.dimX || 1);
+            var sizeY = backgroundScale * itemType.texture.spriteHeight * (itemType.texture.dimY || 1);
+            slotImageContainer.style.backgroundSize = sizeX.toString() + "px " + sizeY.toString() + "px ";
+            slotImageContainer.style.borderWidth = Math.floor(Math.max(0, 34 / 2 - backgroundScale * itemType.texture.spriteHeight / 2)).toString() + "px "
+                + Math.floor(Math.max(0, 34 / 2 - backgroundScale * itemType.texture.spriteWidth / 2)).toString() + "px";
             slotImageContainer.style.borderStyle = "solid";
-            slotImageContainer.style.borderColor = "black";
-            if(itemType.texture) {
-                slotImageContainer.style.backgroundImage = "url('data/textures/" + itemType.texture.path + "')";
-                slotImageContainer.style.backgroundPosition = (-1*backgroundScale*(itemType.spriteId%(itemType.texture.dimX || 1))*itemType.texture.spriteWidth).toString() + "px " + (-1*backgroundScale*((itemType.spriteId/(itemType.texture.dimX || 1) >> 0)%(itemType.texture.dimY || 1))*itemType.texture.spriteHeight).toString() + "px";
-                slotImageContainerOverlay.style.margin = Math.min(0, -Math.floor(34/2 - backgroundScale*itemType.texture.spriteHeight/2)).toString() + "px " + Math.min(0, -Math.floor(34/2 - backgroundScale*itemType.texture.spriteWidth/2)).toString() + "px";
-            }
+            slotImageContainer.style.borderColor = "rgba(0,0,0,0)";
+            slotImageContainer.style.backgroundImage = "url('data/textures/" + itemType.texture.path + "')";
+            var offset = (itemType.texture.inventoryOffset ? itemType.texture.inventoryOffset : v2.create(0, 0));
+            var posX = -1 * backgroundScale * ((itemType.spriteId ? itemType.spriteId : 0) % (itemType.texture.dimX || 1)) * itemType.texture.spriteWidth + offset[0];
+            var posY = -1 * backgroundScale * (((itemType.spriteId ? itemType.spriteId : 0) / (itemType.texture.dimX || 1) >> 0) % (itemType.texture.dimY || 1)) * itemType.texture.spriteHeight + offset[1];
+            slotImageContainer.style.backgroundPosition = posX.toString() + "px " + posY.toString() + "px";
+            slotImageContainer.style.transform = "";
+            if(itemType.texture.inventoryAngle)
+                slotImageContainer.style.transform = "rotate(" + (itemType.texture.inventoryAngle * 180 / Math.PI) + "deg)";
+
             slotTextContainer.innerText = "";
             if(item.amount > 1)
                 slotTextContainer.innerText = item.amount;
@@ -264,13 +272,13 @@ openCraftingWindow = function(gameData) {
                 craftingEntryContent.appendChild(plus);
             }
         }
-        
+
         // Plus between ores and items
         if(recipe.requiredOres.length > 0 && recipe.requiredItems.length > 0) {
-                var plus = document.createElement("div");
-                plus.setAttribute("class", "craftingEntryContentOperator");
-                plus.innerText = "+";
-                craftingEntryContent.appendChild(plus);
+            var plus = document.createElement("div");
+            plus.setAttribute("class", "craftingEntryContentOperator");
+            plus.innerText = "+";
+            craftingEntryContent.appendChild(plus);
         }
 
         // Required items
