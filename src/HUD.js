@@ -130,27 +130,11 @@ updateHUD = function(gameData) {
 
         var item = global.player.inventory.items[i];
         if(item) {
-            var itemType = gameData.itemRegister[item.id];
-            var backgroundScale = 32 / Math.max(itemType.texture.spriteWidth, itemType.texture.spriteHeight);
-            if(itemType.texture.inventorySize)
-                backgroundScale *= itemType.texture.inventorySize;
             slotImageContainer.style.width = 34;
             slotImageContainer.style.height = 34;
-            var sizeX = backgroundScale * itemType.texture.spriteWidth * (itemType.texture.dimX || 1);
-            var sizeY = backgroundScale * itemType.texture.spriteHeight * (itemType.texture.dimY || 1);
-            slotImageContainer.style.backgroundSize = sizeX.toString() + "px " + sizeY.toString() + "px ";
-            slotImageContainer.style.borderWidth = Math.floor(Math.max(0, 34 / 2 - backgroundScale * itemType.texture.spriteHeight / 2)).toString() + "px "
-                + Math.floor(Math.max(0, 34 / 2 - backgroundScale * itemType.texture.spriteWidth / 2)).toString() + "px";
-            slotImageContainer.style.borderStyle = "solid";
-            slotImageContainer.style.borderColor = "rgba(0,0,0,0)";
-            slotImageContainer.style.backgroundImage = "url('data/textures/" + itemType.texture.path + "')";
-            var offset = (itemType.texture.inventoryOffset ? itemType.texture.inventoryOffset : v2.create(0, 0));
-            var posX = -1 * backgroundScale * ((itemType.spriteId ? itemType.spriteId : 0) % (itemType.texture.dimX || 1)) * itemType.texture.spriteWidth + offset[0];
-            var posY = -1 * backgroundScale * (((itemType.spriteId ? itemType.spriteId : 0) / (itemType.texture.dimX || 1) >> 0) % (itemType.texture.dimY || 1)) * itemType.texture.spriteHeight + offset[1];
-            slotImageContainer.style.backgroundPosition = posX.toString() + "px " + posY.toString() + "px";
-            slotImageContainer.style.transform = "";
-            if(itemType.texture.inventoryAngle)
-                slotImageContainer.style.transform = "rotate(" + (itemType.texture.inventoryAngle * 180 / Math.PI) + "deg)";
+
+            var itemType = gameData.itemRegister[item.id];
+            putItemImage(slotImageContainer, itemType, 32, true, true);
 
             slotTextContainer.innerText = "";
             if(item.amount > 1)
@@ -241,7 +225,7 @@ openCraftingWindow = function(gameData) {
             for(var j = 0; j < recipe.item.length; ++j) {
                 var resultItemType = recipe.item[j][0];
                 var resultAmount = recipe.item[j][1];
-                craftingRightPreview.style.backgroundImage = "url('data/textures/items/" + resultItemType.texture + ".png')";
+                putItemImage(craftingRightPreview, resultItemType, 80, false, false);
                 craftingRightPreviewTextContainer.innerText = resultItemType.name;
             }
 
@@ -290,8 +274,8 @@ openCraftingWindow = function(gameData) {
 
             var imageHolder = document.createElement("div");
             imageHolder.setAttribute("class", "craftingImageHolder");
-            imageHolder.style.backgroundImage = "url('data/textures/items/" + itemType.name + ".png')";
             imageHolder.style.width = imageWidth;
+            putItemImage(imageHolder, itemType, imageWidth, false, false);
             imageHolder.innerText = amount;
             craftingEntryContent.appendChild(imageHolder);
 
@@ -320,11 +304,10 @@ openCraftingWindow = function(gameData) {
 
             var imageHolder = document.createElement("div");
             imageHolder.setAttribute("class", "craftingImageHolder");
-            imageHolder.style.backgroundImage = "url('data/textures/items/" + resultItemType.name + ".png')";
             imageHolder.style.width = imageWidth;
+            putItemImage(imageHolder, resultItemType, imageWidth, false, false);
             if(resultAmount > 1)
                 imageHolder.innerText = resultAmount;
-            //imageHolder.style.cssFloat = "right";
             craftingEntryContent.appendChild(imageHolder);
 
             // Plus
@@ -362,4 +345,27 @@ checkCanAffordRecipe = function() {
         else
             craftingRightTextContainer.innerText = "";
     }
+}
+
+putItemImage = function(container, itemType, width, doRotate, doOffset) {
+    var backgroundScale = width / Math.max(itemType.texture.spriteWidth, itemType.texture.spriteHeight);
+    if(!width)
+        backgroundScale = 1.0;
+    if(doOffset && itemType.texture.inventorySize)
+        backgroundScale *= itemType.texture.inventorySize;
+    var sizeX = backgroundScale * itemType.texture.spriteWidth * (itemType.texture.dimX || 1);
+    var sizeY = backgroundScale * itemType.texture.spriteHeight * (itemType.texture.dimY || 1);
+    container.style.backgroundSize = sizeX.toString() + "px " + sizeY.toString() + "px ";
+    container.style.borderWidth = Math.floor(Math.max(0, 34 / 2 - backgroundScale * itemType.texture.spriteHeight / 2)).toString() + "px "
+        + Math.floor(Math.max(0, 34 / 2 - backgroundScale * itemType.texture.spriteWidth / 2)).toString() + "px";
+    container.style.borderStyle = "solid";
+    container.style.borderColor = "rgba(0,0,0,0)";
+    container.style.backgroundImage = "url('data/textures/" + itemType.texture.path + "')";
+    var offset = (itemType.texture.inventoryOffset ? itemType.texture.inventoryOffset : v2.create(0, 0));
+    var posX = -1 * backgroundScale * ((itemType.spriteId ? itemType.spriteId : 0) % (itemType.texture.dimX || 1)) * itemType.texture.spriteWidth + (doOffset ? offset[0] : 0);
+    var posY = -1 * backgroundScale * (((itemType.spriteId ? itemType.spriteId : 0) / (itemType.texture.dimX || 1) >> 0) % (itemType.texture.dimY || 1)) * itemType.texture.spriteHeight + (doOffset ? offset[1] : 0);
+    container.style.backgroundPosition = posX.toString() + "px " + posY.toString() + "px";
+    container.style.transform = "";
+    if(doRotate && itemType.texture.inventoryAngle)
+        container.style.transform = "rotate(" + (itemType.texture.inventoryAngle * 180 / Math.PI) + "deg)";
 }
