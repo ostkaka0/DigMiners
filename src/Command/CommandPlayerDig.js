@@ -62,22 +62,24 @@ CommandPlayerDig.prototype.execute = function(gameData) {
         var message = new MessagePlayerInventory(this.playerId, InventoryActions.ADD_ORE, itemId, dug[i]);
         message.execute(gameData);
         message.send(player.socket);
-        var rand = Math.random() * 1000;
-        var itemId = null;
-        if(rand > 990)
-            itemId = Items.RottenRoot.id;
-        if(itemId != null) {
-            var entity = gameData.entityWorld.objects[player.entityId];
-            var physicsBody = entity.physicsBody;
+        if(tileName == Tiles.Dirt.name) {
+            var rand = Math.random() * 1000;
+            var itemId = null;
+            if(rand > 990)
+                itemId = Items.RottenRoot.id;
+            if(itemId != null) {
+                var entity = gameData.entityWorld.objects[player.entityId];
+                var physicsBody = entity.physicsBody;
 
-            var itemEntity = entityTemplates.item(idList.next(), itemId, 1, gameData);
-            itemEntity.physicsBody.pos = v2.create(physicsBody.pos[0], physicsBody.pos[1]);
-            itemEntity.physicsBody.posOld = v2.create(physicsBody.pos[0], physicsBody.pos[1]);
-            itemEntity.physicsBody.angle = physicsBody.angle;
-            itemEntity.physicsBody.angleOld = physicsBody.angle;
-            var message = new MessageEntitySpawn(gameData, itemEntity);
-            // Do not execute message, entity is already spawned
-            message.send(gameData, io.sockets);
+                var itemEntity = entityTemplates.item(idList.next(), itemId, 1, gameData);
+                itemEntity.physicsBody.pos = v2.create(physicsBody.pos[0], physicsBody.pos[1]);
+                itemEntity.physicsBody.posOld = v2.create(physicsBody.pos[0], physicsBody.pos[1]);
+                itemEntity.physicsBody.angle = physicsBody.angle;
+                itemEntity.physicsBody.angleOld = physicsBody.angle;
+                var message = new MessageEntitySpawn(gameData, itemEntity);
+                // Do not execute message, entity is already spawned
+                message.send(gameData, io.sockets);
+            }
         }
     }
 }
