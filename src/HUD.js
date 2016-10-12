@@ -38,6 +38,15 @@ createHUD = function(gameData) {
     }
     inventory.appendChild(inventoryContent);
 
+    // Slot item name text visible on mouse hover
+    $('.inventorySlot').mouseenter(function() {
+        var text = $(this).find('.slotDescriber');
+        text.fadeIn(50);
+    }).mouseleave(function() {
+        var text = $(this).find('.slotDescriber');
+        text.fadeOut(50);
+    });
+
     // create dugItems
     var dugItems = document.getElementById("dugItems");
     dugItems.innerHTML = "";
@@ -52,13 +61,13 @@ createHUD = function(gameData) {
             dugItemsEntryImage.setAttribute("class", "dugItemsEntryImage");
             dugItemsEntryImage.style.backgroundRepeat = "no-repeat";
             dugItemsEntryImage.style.backgroundImage = "url('data/textures/tiles/" + tileType.name + ".png')";
+            dugItemsEntry.appendChild(dugItemsEntryImage);
 
             var dugItemsEntryText = document.createElement("div");
             dugItemsEntryText.setAttribute("class", "dugItemsEntryText");
             dugItemsEntryText.innerText = "0.0";
-
-            dugItemsEntry.appendChild(dugItemsEntryImage);
             dugItemsEntry.appendChild(dugItemsEntryText);
+
             dugItems.appendChild(dugItemsEntry);
         }
     }
@@ -88,15 +97,16 @@ createHUD = function(gameData) {
         HUDClosures[i][1] = createEquipFunc(i);
     }
 
-    // Slot describer
-    $('.inventorySlot').mouseenter(function() {
-        var text = $(this).find('.slotDescriber');
-        text.fadeIn(50);
+    $('.dugItemsEntryImage').mouseenter(function() {
+        var text = $(this).parent().find('.dugItemsEntryText');
+        var id = $(this).parent().attr("id").substr($(this).parent().attr("id").length - 1);
+        var tileType = gameData.tileRegister[id];
+        text.text(tileType.name);
     }).mouseleave(function() {
-        var text = $(this).find('.slotDescriber');
-        text.fadeOut(50);
+        updateHUD(gameData);
     });
 
+    // Open/close crafting window when "C" is clicked
     $('*').keydown(function(e) {
         e.stopPropagation();
         var key = e.which;
@@ -111,6 +121,7 @@ createHUD = function(gameData) {
         return true;
     });
 
+    // Stop scroll to bottom when spacebar is used
     $('*').keydown(function(e) {
         if(e.keyCode == 32)
             e.preventDefault();
@@ -157,11 +168,13 @@ updateHUD = function(gameData) {
     // update dugItems
     for(var i = 0; i < gameData.tileRegister.length; ++i) {
         var tileType = gameData.tileRegister[i];
-        if(!tileType.isOre || !global.player.oreInventory[i])
-            continue;
+        if(!tileType.isOre) continue;
+        var amount = 0;
+        if(global.player.oreInventory[i])
+            amount = global.player.oreInventory[i];
         var dugItemsEntry = document.getElementById("entry" + i);
         var dugItemsEntryText = dugItemsEntry.childNodes[1];
-        dugItemsEntryText.innerText = parseFloat(Math.floor((global.player.oreInventory[i] / 256.0) * 10) / 10).toFixed(1);
+        dugItemsEntryText.innerText = parseFloat(Math.floor((amount / 256.0) * 10) / 10).toFixed(1);
     }
 }
 
