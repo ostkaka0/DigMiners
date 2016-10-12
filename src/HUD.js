@@ -134,7 +134,7 @@ updateHUD = function(gameData) {
             slotImageContainer.style.height = 34;
 
             var itemType = gameData.itemRegister[item.id];
-            putItemImage(slotImageContainer, itemType, 32, true, true);
+            putItemImage(slotImageContainer, itemType, 32, 32, itemType.texture.inventoryAngle, itemType.texture.inventoryOffset, itemType.texture.inventorySize);
 
             slotTextContainer.innerText = "";
             if(item.amount > 1)
@@ -191,6 +191,10 @@ openCraftingWindow = function(gameData) {
     craftingRightPreview.setAttribute("class", "craftingRightPreview");
     craftingRight.appendChild(craftingRightPreview);
 
+    var craftingRightPreviewImageHolder = document.createElement("div");
+    craftingRightPreviewImageHolder.setAttribute("class", "craftingRightPreviewImageHolder");
+    craftingRightPreview.appendChild(craftingRightPreviewImageHolder);
+
     var craftingRightPreviewTextContainer = document.createElement("div");
     craftingRightPreviewTextContainer.setAttribute("class", "craftingRightPreviewTextContainer");
     craftingRightPreview.appendChild(craftingRightPreviewTextContainer);
@@ -225,7 +229,11 @@ openCraftingWindow = function(gameData) {
             for(var j = 0; j < recipe.item.length; ++j) {
                 var resultItemType = recipe.item[j][0];
                 var resultAmount = recipe.item[j][1];
-                putItemImage(craftingRightPreview, resultItemType, 80, false, false);
+                var imageWidth = gameData.textures[resultItemType.name].width;
+                var imageHeight = gameData.textures[resultItemType.name].height;
+                craftingRightPreviewImageHolder.style.width = imageWidth;
+                craftingRightPreviewImageHolder.style.height = imageHeight;
+                putItemImage(craftingRightPreviewImageHolder, resultItemType, 80, 80);
                 craftingRightPreviewTextContainer.innerText = resultItemType.name;
             }
 
@@ -271,11 +279,13 @@ openCraftingWindow = function(gameData) {
             var amount = recipe.requiredItems[j][1];
 
             var imageWidth = gameData.textures[itemType.name].width;
+            var imageHeight = gameData.textures[itemType.name].height;
 
             var imageHolder = document.createElement("div");
             imageHolder.setAttribute("class", "craftingImageHolder");
             imageHolder.style.width = imageWidth;
-            putItemImage(imageHolder, itemType, imageWidth, false, false);
+            imageHolder.style.height = imageHeight;
+            putItemImage(imageHolder, itemType, imageWidth, imageHeight, false, false);
             imageHolder.innerText = amount;
             craftingEntryContent.appendChild(imageHolder);
 
@@ -301,11 +311,13 @@ openCraftingWindow = function(gameData) {
             var resultAmount = recipe.item[j][1];
 
             var imageWidth = gameData.textures[resultItemType.name].width;
+            var imageHeight = gameData.textures[resultItemType.name].height;
 
             var imageHolder = document.createElement("div");
             imageHolder.setAttribute("class", "craftingImageHolder");
             imageHolder.style.width = imageWidth;
-            putItemImage(imageHolder, resultItemType, imageWidth, false, false);
+            imageHolder.style.height = imageHeight;
+            putItemImage(imageHolder, resultItemType, imageWidth, imageHeight, false, false);
             if(resultAmount > 1)
                 imageHolder.innerText = resultAmount;
             craftingEntryContent.appendChild(imageHolder);
@@ -347,25 +359,29 @@ checkCanAffordRecipe = function() {
     }
 }
 
-putItemImage = function(container, itemType, width, doRotate, doOffset) {
-    var backgroundScale = width / Math.max(itemType.texture.spriteWidth, itemType.texture.spriteHeight);
-    if(!width)
+putItemImage = function(container, itemType, containerWidth, containerHeight, angle, offset, scale) {
+    var backgroundScale = containerWidth / Math.max(itemType.texture.spriteWidth, itemType.texture.spriteHeight);
+    if(!containerWidth || !scale)
         backgroundScale = 1.0;
-    if(doOffset && itemType.texture.inventorySize)
-        backgroundScale *= itemType.texture.inventorySize;
+    if(scale)
+        backgroundScale *= scale;
     var sizeX = backgroundScale * itemType.texture.spriteWidth * (itemType.texture.dimX || 1);
     var sizeY = backgroundScale * itemType.texture.spriteHeight * (itemType.texture.dimY || 1);
     container.style.backgroundSize = sizeX.toString() + "px " + sizeY.toString() + "px ";
-    container.style.borderWidth = Math.floor(Math.max(0, 34 / 2 - backgroundScale * itemType.texture.spriteHeight / 2)).toString() + "px "
-        + Math.floor(Math.max(0, 34 / 2 - backgroundScale * itemType.texture.spriteWidth / 2)).toString() + "px";
+    var borderWidth = Math.floor(Math.max(0, containerWidth / 2 - backgroundScale * itemType.texture.spriteWidth / 2));
+    var borderHeight = Math.floor(Math.max(0, containerHeight / 2 - backgroundScale * itemType.texture.spriteHeight / 2));
+    container.style.borderLeftWidth = borderWidth.toString() + "px";
+    container.style.borderRightWidth = borderWidth.toString() + "px";
+    container.style.borderTopWidth = borderHeight.toString() + "px";
+    container.style.borderBottomWidth = borderHeight.toString() + "px";
     container.style.borderStyle = "solid";
     container.style.borderColor = "rgba(0,0,0,0)";
     container.style.backgroundImage = "url('data/textures/" + itemType.texture.path + "')";
-    var offset = (itemType.texture.inventoryOffset ? itemType.texture.inventoryOffset : v2.create(0, 0));
-    var posX = -1 * backgroundScale * ((itemType.spriteId ? itemType.spriteId : 0) % (itemType.texture.dimX || 1)) * itemType.texture.spriteWidth + (doOffset ? offset[0] : 0);
-    var posY = -1 * backgroundScale * (((itemType.spriteId ? itemType.spriteId : 0) / (itemType.texture.dimX || 1) >> 0) % (itemType.texture.dimY || 1)) * itemType.texture.spriteHeight + (doOffset ? offset[1] : 0);
+    var offset = (offset ? offset : v2.create(0, 0));
+    var posX = -1 * backgroundScale * ((itemType.spriteId ? itemType.spriteId : 0) % (itemType.texture.dimX || 1)) * itemType.texture.spriteWidth + offset[0];
+    var posY = -1 * backgroundScale * (((itemType.spriteId ? itemType.spriteId : 0) / (itemType.texture.dimX || 1) >> 0) % (itemType.texture.dimY || 1)) * itemType.texture.spriteHeight + offset[1];
     container.style.backgroundPosition = posX.toString() + "px " + posY.toString() + "px";
     container.style.transform = "";
-    if(doRotate && itemType.texture.inventoryAngle)
-        container.style.transform = "rotate(" + (itemType.texture.inventoryAngle * 180 / Math.PI) + "deg)";
+    if(angle)
+        container.style.transform = "rotate(" + (angle * 180 / Math.PI) + "deg)";
 }
