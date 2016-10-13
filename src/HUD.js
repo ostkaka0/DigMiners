@@ -181,6 +181,8 @@ updateHUD = function(gameData) {
 }
 
 openCraftingWindow = function(gameData) {
+    HUD.selectedRecipeId = null;
+
     // Create crafting window
     var crafting = document.getElementById("crafting");
     crafting.style.display = "block";
