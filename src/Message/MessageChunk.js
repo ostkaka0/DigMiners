@@ -1,6 +1,7 @@
 MessageChunk = function(chunk, blockChunk, x, y) {
     this.chunk = chunk || new Chunk();
     this.blockChunk = blockChunk || new BlockChunk();
+    this.blockChunkEmpty = true;
     this.x = x;
     this.y = y;
 }
@@ -8,7 +9,8 @@ MessageChunk = function(chunk, blockChunk, x, y) {
 MessageChunk.prototype.execute = function(gameData) {
     gameData.generator.generate(this.chunk, this.x, this.y);
     gameData.tileWorld.set(this.x, this.y, this.chunk);
-    gameData.blockWorld.set(this.x, this.y, this.blockChunk);
+    if(!this.blockChunkEmpty)
+        gameData.blockWorld.set(this.x, this.y, this.blockChunk);
 }
 
 MessageChunk.prototype.send = function(socket) {
@@ -53,16 +55,22 @@ MessageChunk.prototype.receive = function(gameData, data) {
 
     // BlockChunk foreground
     length = deserializeInt32(byteArray, index);
+    if(length > 8)
+        this.blockChunkEmpty = false;
     decompressRLE(byteArray, this.blockChunk.foreground, index.value, index.value + length);
     index.add(length);
 
     // BlockChunk background
     length = deserializeInt32(byteArray, index);
+    if(length > 8)
+        this.blockChunkEmpty = false;
     decompressRLE(byteArray, this.blockChunk.background, index.value, index.value + length);
     index.add(length);
 
     // BlockChunk strength
     length = deserializeInt32(byteArray, index);
+    if(length > 8)
+        this.blockChunkEmpty = false;
     decompressRLE(byteArray, this.blockChunk.strength, index.value, index.value + length);
     index.add(length);
 }
