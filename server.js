@@ -123,7 +123,7 @@ tick = function(dt) {
                 //v2.div(pos, 32.0, pos2);
                 var message = new MessageSetBlock(pos[0], pos[1], itemType.blockId, BlockTypes.FOREGROUND);
                 message.execute(gameData);
-                message.send(player.socket);
+                message.send(io.sockets);
             } else {
                 var angle = entity.physicsBody.angle;
                 var moveDir = [Math.cos(-angle), Math.sin(-angle)];
