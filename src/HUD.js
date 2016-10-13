@@ -42,9 +42,13 @@ createHUD = function(gameData) {
     $('.inventorySlot').mouseenter(function() {
         var text = $(this).find('.slotDescriber');
         text.fadeIn(50);
+        var amount = $(this).find('.slotTextContainer');
+        amount.fadeOut(50);
     }).mouseleave(function() {
         var text = $(this).find('.slotDescriber');
         text.fadeOut(50);
+        var amount = $(this).find('.slotTextContainer');
+        amount.fadeIn(50);
     });
 
     // create dugItems
