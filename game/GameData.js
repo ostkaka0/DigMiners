@@ -21,7 +21,7 @@ GameData = function(idList) {
     this.commands = [];
     this.pendingCommands = {};
     this.commandTypes = typeRegisterAddByArray([], [CommandPlayerMove, CommandDig, CommandPlayerDig, CommandPlayerEquipItem]);
-    this.messagesToClient = [MessageInit, MessageCommands, MessageChunk, MessagePlayerJoin, MessagePlayerLeave, MessagePlayerInventory, MessageEntitySpawn, MessageEntityDestroy];
+    this.messagesToClient = [MessageInit, MessageCommands, MessageChunk, MessagePlayerJoin, MessagePlayerLeave, MessagePlayerInventory, MessageEntitySpawn, MessageEntityDestroy, MessageSetBlock];
     this.messagesToServer = [MessagePlayerMove, MessageRequestItemPickup, MessageRequestDropStack, MessageRequestEquipStack, MessageRequestCraft];
     this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
     this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ComponentItem]);
@@ -33,7 +33,7 @@ GameData = function(idList) {
         requiredOres: [],
         requiredItems: [[Items.RottenRoot, 1]],
     });
-    
+
     Recipes.push({
         item: [[Items.Torch, 1]],
         requiredOres: [[Tiles.Coal, 1]],
@@ -51,13 +51,13 @@ GameData = function(idList) {
         requiredOres: [[Tiles.Iron, 10]],
         requiredItems: [[Items.SmallSticks, 10], [Items.RottenRoot, 4]],
     });
-    
+
     Recipes.push({
         item: [[Items.SteelShovel, 1]],
         requiredOres: [[Tiles.Coal, 10], [Tiles.Iron, 10]],
         requiredItems: [[Items.SmallSticks, 10], [Items.RottenRoot, 4]],
-    }); 
-    
+    });
+
     Recipes.push({
         item: [[Items.ApatiteShovel, 1]],
         requiredOres: [[Tiles.Apatite, 10]],

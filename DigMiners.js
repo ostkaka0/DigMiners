@@ -183,14 +183,6 @@ onMessage(MessageInit, function(message) {
     createHUD(gameData);
 });
 
-$(document).click(function(event) {
-    var worldPos = [(event.clientX + camera.pos[0] - camera.width / 2) / 32, (canvas.height - event.clientY + camera.pos[1] - camera.height / 2) / 32];
-    var chunkPos = [0, 0];
-    var localPos = [0, 0];
-    v2WorldToBlockChunk(worldPos, chunkPos, localPos);
-    setForeground(gameData.blockWorld, worldPos[0], worldPos[1], 1);
-});
-
 gameData.entityWorld.onAdd = function(entity) {
     if(entity.item && entity.item.amount > 1) {
         var text = new PIXI.Text(entity.item.amount, { fontFamily: 'Monospace', fontSize: 15, fill: 0xffffff, align: 'center' });
