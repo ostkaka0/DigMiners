@@ -30,6 +30,9 @@ Bodyparts.prototype.serialize = function(byteArray, index) {
         serializeFix(byteArray, index, bodypart.offset[0]);
         serializeFix(byteArray, index, bodypart.offset[1]);
         serializeFix(byteArray, index, bodypart.offset[2]);
+        serializeFix(byteArray, index, bodypart.defaultOffset[0]);
+        serializeFix(byteArray, index, bodypart.defaultOffset[1]);
+        serializeFix(byteArray, index, bodypart.defaultOffset[2]);
         serializeV2(byteArray, index, bodypart.pivot);
     }
 }
@@ -42,9 +45,11 @@ Bodyparts.prototype.deserialize = function(byteArray, index, gameData) {
         var parent = deserializeUTF8(byteArray, index);
         var textureName = deserializeUTF8(byteArray, index);
         var offset = [deserializeFix(byteArray, index), deserializeFix(byteArray, index), deserializeFix(byteArray, index)];
+        var defaultOffset = [deserializeFix(byteArray, index), deserializeFix(byteArray, index), deserializeFix(byteArray, index)];
         var pivot = deserializeV2(byteArray, index);
         var sprite = new Sprite(textureName);
-        this.bodyparts[key] = new BodyPart(sprite, offset[0], offset[1], offset[2], pivot);
+        this.bodyparts[key] = new BodyPart(sprite, defaultOffset[0], defaultOffset[1], defaultOffset[2], pivot);
+        this.bodyparts[key].offset = offset;
         if(parent && parent.length > 0)
             this.bodyparts[key].parent = parent;
     }
@@ -77,7 +82,7 @@ Bodyparts.prototype.getSerializationSize = function() {
         size += getUTF8SerializationSize(key);
         size += getUTF8SerializationSize(parent);
         size += getUTF8SerializationSize((!textureName ? "" : textureName));
-        size += 20;
+        size += 32;
     }
     return size;
 }

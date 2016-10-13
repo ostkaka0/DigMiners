@@ -2,6 +2,7 @@
 BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, parent) {
     this.sprite = sprite;
     this.offset = [offsetX, offsetY, offsetRotation];
+    this.defaultOffset = [offsetX, offsetY, offsetRotation];
     this.cycleOffset = [0, 0, 0];
     if(pivot && (pivot[0] != 0 || pivot[1] != 0)) {
         this.usePivot = true;
@@ -33,7 +34,7 @@ BodyPart.prototype.position = function(x, y, rotation) {
     }
     // Run only on root body parts:
     if(!this.parent) {
-        
+
         for(var child of this.children) {
             var totalOffset = [child.cycleOffset[0], child.cycleOffset[1]];
             var newPos = child.rotate(0, 0, totalOffset[0], totalOffset[1], rotation + child.cycleOffset[2] + child.offset[2]);
