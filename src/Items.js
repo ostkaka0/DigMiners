@@ -64,7 +64,8 @@ initItems = function(gameData) {
             isDropable: true,
             maxStackSize: 100,
             type: "tool",
-            typeOfType: "block"
+            typeOfType: "block",
+            blockId: num
         }
         ++num;
     }

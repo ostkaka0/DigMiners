@@ -114,11 +114,22 @@ tick = function(dt) {
     gameData.playerWorld.objectArray.forEach(function(player) {
         var entity = gameData.entityWorld.objects[player.entityId];
         if(entity.movement && entity.movement.spacebar && entity.physicsBody && entity.movement.digTickTimeout == 0) {
-            //console.log("DIG!!!");
-            var angle = entity.physicsBody.angle;
-            var moveDir = [Math.cos(-angle), Math.sin(-angle)];
-            var command = new CommandPlayerDig(player.playerId, entity.physicsBody.pos[0], entity.physicsBody.pos[1], moveDir, 1.5, player.getDigSpeed(), player.getMaxDigHardness());
-            gameData.commands.push(command);
+            var itemType = player.inventory.getEquippedItemType("tool");
+            if(itemType && itemType.typeOfType == "block") {
+                //TODO: remove from inventory
+
+                var pos = entity.physicsBody.pos;
+                var pos2 = [];
+                //v2.div(pos, 32.0, pos2);
+                var message = new MessageSetBlock(pos[0], pos[1], itemType.blockId, BlockTypes.FOREGROUND);
+                message.execute(gameData);
+                message.send(player.socket);
+            } else {
+                var angle = entity.physicsBody.angle;
+                var moveDir = [Math.cos(-angle), Math.sin(-angle)];
+                var command = new CommandPlayerDig(player.playerId, entity.physicsBody.pos[0], entity.physicsBody.pos[1], moveDir, 1.5, player.getDigSpeed(), player.getMaxDigHardness());
+                gameData.commands.push(command);
+            }
         }
     })
 }
