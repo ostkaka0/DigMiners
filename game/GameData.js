@@ -1,5 +1,5 @@
 GameData = function(idList) {
-    initItems();
+    initItems(this);
     this.port = 3000;
     this.itemPickupDistance = 1.0;
 
