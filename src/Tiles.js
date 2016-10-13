@@ -35,6 +35,13 @@ Tiles.Coal = {
     hardness: 6
 };
 
+Tiles.Sulfur = {
+    name: "Sulfur",
+    isSolid: true,
+    isOre: true,
+    hardness: 20
+};
+
 Tiles.Copper = {
     name: "Copper",
     isSolid: true,
