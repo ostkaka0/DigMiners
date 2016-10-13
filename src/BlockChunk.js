@@ -1,5 +1,5 @@
-BLOCK_CHUNK_DIM = 32;
-BLOCK_CHUNK_SIZE = 32 * 32;
+BLOCK_CHUNK_DIM = 30;
+BLOCK_CHUNK_SIZE = 30 * 30;
 
 BlockChunk = function() {
     this.foreground = new Uint8Array(BLOCK_CHUNK_SIZE);
