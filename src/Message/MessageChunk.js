@@ -1,39 +1,68 @@
-MessageChunk = function(chunk, chunkX, chunkY) {
+MessageChunk = function(chunk, blockChunk, x, y) {
     this.chunk = chunk || new Chunk();
-    this.chunkX = chunkX;
-    this.chunkY = chunkY;
+    this.blockChunk = blockChunk || new BlockChunk();
+    this.x = x;
+    this.y = y;
 }
 
 MessageChunk.prototype.execute = function(gameData) {
-    var tileWorld = gameData.tileWorld;
-    if(!tileWorld) {
-        console.error("Missing required gameData properties");
-        return;
-    }
-    gameData.generator.generate(this.chunk, this.chunkX, this.chunkY);
-    tileWorld.set(this.chunkX, this.chunkY, this.chunk);
+    gameData.generator.generate(this.chunk, this.x, this.y);
+    gameData.tileWorld.set(this.x, this.y, this.chunk);
+    gameData.blockWorld.set(this.x, this.y, this.blockChunk);
 }
 
 MessageChunk.prototype.send = function(socket) {
-    //var beginTime = present();
-    
     var byteArray = [];
     var index = new IndexCounter();
-    serializeInt32(byteArray, index, this.chunkX);
-    serializeInt32(byteArray, index, this.chunkY);
-    compressRLE(this.chunk.densityData, byteArray);
-    
-    //console.log("MessageChunk duration: " + (present() - beginTime) + " ms");
-    //beginTime = present();
+    serializeInt32(byteArray, index, this.x);
+    serializeInt32(byteArray, index, this.y);
+
+    // Chunk
+    var compressed = compressRLE(this.chunk.densityData);
+    serializeInt32(byteArray, index, compressed.length);
+    serializeUint8Array(byteArray, index, compressed);
+
+    // BlockChunk foreground
+    compressed = compressRLE(this.blockChunk.foreground);
+    serializeInt32(byteArray, index, compressed.length);
+    serializeUint8Array(byteArray, index, compressed);
+
+    // BlockChunk background
+    compressed = compressRLE(this.blockChunk.background);
+    serializeInt32(byteArray, index, compressed.length);
+    serializeUint8Array(byteArray, index, compressed);
+
+    // BlockChunk strength
+    compressed = compressRLE(this.blockChunk.strength);
+    serializeInt32(byteArray, index, compressed.length);
+    serializeUint8Array(byteArray, index, compressed);
+
     socket.emit(this.idString, new Buffer(byteArray));
-    //console.log("socket.emit of MessageChunk duration: " + (present() - beginTime) + " ms");
-    
 }
 
 MessageChunk.prototype.receive = function(gameData, data) {
     var byteArray = new Uint8Array(data);
     var index = new IndexCounter();
-    this.chunkX = deserializeInt32(byteArray, index);
-    this.chunkY = deserializeInt32(byteArray, index);
-    decompressRLE(byteArray, this.chunk.densityData, index.value);
+    this.x = deserializeInt32(byteArray, index);
+    this.y = deserializeInt32(byteArray, index);
+
+    // Chunk
+    var length = deserializeInt32(byteArray, index);
+    decompressRLE(byteArray, this.chunk.densityData, index.value, index.value + length);
+    index.add(length);
+
+    // BlockChunk foreground
+    length = deserializeInt32(byteArray, index);
+    decompressRLE(byteArray, this.blockChunk.foreground, index.value, index.value + length);
+    index.add(length);
+
+    // BlockChunk background
+    length = deserializeInt32(byteArray, index);
+    decompressRLE(byteArray, this.blockChunk.background, index.value, index.value + length);
+    index.add(length);
+
+    // BlockChunk strength
+    length = deserializeInt32(byteArray, index);
+    decompressRLE(byteArray, this.blockChunk.strength, index.value, index.value + length);
+    index.add(length);
 }

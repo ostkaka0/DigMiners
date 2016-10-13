@@ -54,10 +54,10 @@ loadScript("UnitTest.js");
 loadScriptsRecursive("unit_tests");
 runUnitTests();
 
-console.log("compressing!");
-var testArray = new Array(256);
+//console.log("compressing!");
+//var testArray = new Array(256);
 //testArray.fill(123);
-console.log(compressRLE(testArray));
+//console.log(compressRLE(testArray));
 
 var idList = new IdList();
 var connections = new Array(); // key socketId, value player object
@@ -147,7 +147,8 @@ io.on("connection", function(socket) {
     for(var x = -1; x < 1; ++x) {
         for(var y = -1; y < 1; ++y) {
             var chunk = gameData.tileWorld.get(x, y);
-            var message = new MessageChunk(chunk, x, y);
+            var blockChunk = gameData.blockWorld.get(x, y);
+            var message = new MessageChunk(chunk, blockChunk, x, y);
             message.send(socket);
         }
     }
@@ -172,7 +173,7 @@ io.on("connection", function(socket) {
     var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.ApatiteShovel.id, 1);
     message.execute(gameData);
     message.send(socket);
-    
+
     var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.DiamondShovel.id, 1);
     message.execute(gameData);
     message.send(socket);
