@@ -114,6 +114,9 @@ Drawable.prototype.setBodypartSprite = function(bodypart, sprite) {
         this.container.removeChild(bodypart.sprite.sprite);
     }
     bodypart.sprite = sprite;
+    bodypart.offset[0] = bodypart.defaultOffset[0];
+    bodypart.offset[1] = bodypart.defaultOffset[1];
+    bodypart.offset[2] = bodypart.defaultOffset[2];
     if(!isServer) {
         if(childIndex != -1)
             this.container.addChildAt(sprite.sprite, childIndex);

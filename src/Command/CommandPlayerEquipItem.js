@@ -15,8 +15,12 @@ CommandPlayerEquipItem.prototype.execute = function(gameData) {
     var sprite = entity.bodyparts.bodyparts[itemType.type].sprite;
     if(!isServer && sprite.sprite && !this.equipped)
         sprite.sprite.visible = false;
-    else if(this.equipped)
+    else if(this.equipped) {
         entity.drawable.setBodypartSprite(entity.bodyparts.bodyparts[itemType.type], new Sprite(itemType.name));
+        var equippedOffset = (itemType.texture.equippedOffset ? itemType.texture.equippedOffset : [0, 0]);
+        entity.bodyparts.bodyparts[itemType.type].offset[0] += equippedOffset[0];
+        entity.bodyparts.bodyparts[itemType.type].offset[1] += equippedOffset[1];
+    }
 
     if(isServer || this.playerId == global.player.playerId) {
         var item = player.inventory.items[this.stackId];

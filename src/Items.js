@@ -46,6 +46,7 @@ ItemTextures.BlockAtlas = {
     inventorySize: 1.0,
     inventoryAngle: 0,
     inventoryOffset: [0, 0],
+    equippedOffset: [0, 10],
     dimX: 16,
     dimY: 16,
 }
