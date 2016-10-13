@@ -183,6 +183,15 @@ io.on("connection", function(socket) {
     message.execute(gameData);
     message.send(socket);
 
+    // give player blocks at join
+    var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.StoneWall.id, 10);
+    message.execute(gameData);
+    message.send(socket);
+
+    var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.StoneFloor.id, 10);
+    message.execute(gameData);
+    message.send(socket);
+
     socket.on("disconnect", function() {
         clearInterval(connections[socket.id].pingIntervalId);
         new MessagePlayerLeave(connections[socket.id].player).send(socket.broadcast);

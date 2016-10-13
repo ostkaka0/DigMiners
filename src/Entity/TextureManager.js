@@ -12,6 +12,7 @@ TextureManager = function(gameData) {
     this.loader.queueTexture("shovelAtlas.png", "shovelAtlas");
     this.loader.queueTexture("itemAtlas.png", "itemAtlas");
     this.loader.queueTexture("hatAtlas.png", "hatAtlas");
+    this.loader.queueTexture("blockAtlas.png", "blockAtlas");
 
     console.log("Loading textures...");
     this.loader.loadTextures();
@@ -32,8 +33,10 @@ TextureManager = function(gameData) {
             if(!itemType.texture.dimX)
                 texturesLocal[itemType.name] = texturesLocal[itemType.texture.path];
             else {
-                var rect = new PIXI.Rectangle((itemType.spriteId % itemType.texture.dimX) * itemType.texture.spriteWidth,
-                    Math.floor(itemType.spriteId / itemType.texture.dimX) * itemType.texture.spriteHeight,
+                var offsetWidth = (itemType.texture.offsetWidth ? itemType.texture.offsetWidth : 0);
+                var offsetHeight = (itemType.texture.offsetHeight ? itemType.texture.offsetHeight : 0);
+                var rect = new PIXI.Rectangle((itemType.spriteId % itemType.texture.dimX) * (itemType.texture.spriteWidth + offsetWidth),
+                    Math.floor(itemType.spriteId / itemType.texture.dimX) * (itemType.texture.spriteHeight * offsetHeight),
                     itemType.texture.spriteWidth,
                     itemType.texture.spriteHeight);
                 texturesLocal[itemType.name] = new PIXI.Texture(texturesLocal[itemType.texture.path], rect);
@@ -42,7 +45,7 @@ TextureManager = function(gameData) {
 
         this.gameData.textures = texturesLocal;
         if(onTexturesLoadComplete)
-            onTexturesLoadComplete();
+            onTexturesLoadComplete(texturesLocal);
     }.bind(this));
 }
 

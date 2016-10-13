@@ -35,7 +35,39 @@ ItemTextures.HatAtlas = {
     dimY: 16,
 }
 
-initItems = function() {
+ItemTextures.BlockAtlas = {
+    path: "blockAtlas.png",
+    spriteWidth: 32,
+    spriteHeight: 32,
+    offsetWidth: 32,
+    offsetHeight: 0,
+    initialOffsetWidth: 0,
+    initialOffsetHeight: 0,
+    inventorySize: 1.0,
+    inventoryAngle: 0,
+    inventoryOffset: [0, 0],
+    dimX: 16,
+    dimY: 16,
+}
+
+initItems = function(gameData) {
+    // Blocks
+    var num = 0;
+    for(var name in Blocks) {
+        var block = Blocks[name];
+        Items[name] = {
+            name: block.name,
+            texture: ItemTextures.BlockAtlas,
+            spriteId: num,
+            isEquipable: true,
+            isDropable: true,
+            maxStackSize: 100,
+            type: "tool",
+            typeOfType: "block"
+        }
+        ++num;
+    }
+
     // Hats
     Items.UglyHat = {
         name: "Ugly Hat",
@@ -43,7 +75,6 @@ initItems = function() {
         spriteId: 3,
         isEquipable: true,
         isDropable: true,
-        isDigable: false,
         maxStackSize: 1,
         type: "hat",
     }
@@ -53,7 +84,6 @@ initItems = function() {
         spriteId: 0,
         isEquipable: true,
         isDropable: true,
-        isDigable: false,
         maxStackSize: 1,
         type: "hat",
     }
@@ -65,7 +95,6 @@ initItems = function() {
         spriteId: 0,
         isEquipable: true,
         isDropable: true,
-        isDigable: false,
         maxStackSize: 1,
         type: "tool",
         typeOfType: "shovel",
@@ -78,7 +107,6 @@ initItems = function() {
         spriteId: 1,
         isEquipable: true,
         isDropable: true,
-        isDigable: false,
         maxStackSize: 1,
         type: "tool",
         typeOfType: "shovel",
@@ -91,7 +119,6 @@ initItems = function() {
         spriteId: 2,
         isEquipable: true,
         isDropable: true,
-        isDigable: false,
         maxStackSize: 1,
         type: "tool",
         typeOfType: "shovel",
@@ -104,7 +131,6 @@ initItems = function() {
         spriteId: 3,
         isEquipable: true,
         isDropable: true,
-        isDigable: false,
         maxStackSize: 1,
         type: "tool",
         typeOfType: "shovel",
@@ -117,7 +143,6 @@ initItems = function() {
         spriteId: 4,
         isEquipable: true,
         isDropable: true,
-        isDigable: false,
         maxStackSize: 1,
         type: "tool",
         typeOfType: "shovel",
@@ -130,7 +155,6 @@ initItems = function() {
         spriteId: 5,
         isEquipable: true,
         isDropable: true,
-        isDigable: false,
         maxStackSize: 1,
         type: "tool",
         typeOfType: "shovel",
@@ -143,7 +167,6 @@ initItems = function() {
         spriteId: 6,
         isEquipable: true,
         isDropable: true,
-        isDigable: false,
         maxStackSize: 1,
         type: "tool",
         typeOfType: "shovel",
@@ -156,7 +179,6 @@ initItems = function() {
         spriteId: 7,
         isEquipable: true,
         isDropable: true,
-        isDigable: false,
         maxStackSize: 1,
         type: "tool",
         typeOfType: "shovel",
@@ -169,7 +191,6 @@ initItems = function() {
         spriteId: 8,
         isEquipable: true,
         isDropable: true,
-        isDigable: false,
         maxStackSize: 1,
         type: "tool",
         typeOfType: "shovel",
@@ -182,7 +203,6 @@ initItems = function() {
         spriteId: 9,
         isEquipable: true,
         isDropable: true,
-        isDigable: false,
         maxStackSize: 1,
         type: "tool",
         typeOfType: "shovel",
@@ -195,7 +215,6 @@ initItems = function() {
         spriteId: 10,
         isEquipable: true,
         isDropable: true,
-        isDigable: false,
         maxStackSize: 1,
         type: "tool",
         typeOfType: "shovel",
@@ -208,7 +227,6 @@ initItems = function() {
         spriteId: 11,
         isEquipable: true,
         isDropable: true,
-        isDigable: false,
         maxStackSize: 1,
         type: "tool",
         typeOfType: "shovel",
@@ -221,7 +239,6 @@ initItems = function() {
         spriteId: 12,
         isEquipable: true,
         isDropable: true,
-        isDigable: false,
         maxStackSize: 1,
         type: "tool",
         typeOfType: "shovel",
@@ -234,7 +251,6 @@ initItems = function() {
         spriteId: 13,
         isEquipable: true,
         isDropable: true,
-        isDigable: false,
         maxStackSize: 1,
         type: "tool",
         typeOfType: "shovel",
@@ -248,7 +264,6 @@ initItems = function() {
         spriteId: 0,
         isEquipable: false,
         isDropable: true,
-        isDigable: false,
         maxStackSize: 4,
         type: "resource",
     }
@@ -258,7 +273,6 @@ initItems = function() {
         spriteId: 1,
         isEquipable: false,
         isDropable: true,
-        isDigable: false,
         maxStackSize: 100,
         type: "resource"
     }
@@ -268,7 +282,6 @@ initItems = function() {
         spriteId: 2,
         isEquipable: true,
         isDropable: true,
-        isDigable: false,
         maxStackSize: 8,
         type: "tool",
         typeOfType: "explosive",
@@ -281,7 +294,6 @@ initItems = function() {
         spriteId: 3,
         isEquipable: false,
         isDropable: true,
-        isDigable: false,
         maxStackSize: 10,
         type: "resource"
     }

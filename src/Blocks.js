@@ -6,13 +6,13 @@ Blocks.Null = {
     hardness: 0
 }
 
-Blocks.StonWall = {
+Blocks.StoneWall = {
     name: "Stone Wall",
     isSolid: true,
     hardness: 1
 };
 
-Blocks.StonFloor = {
+Blocks.StoneFloor = {
     name: "Stone Floor",
     isSolid: false,
     hardness: 1
