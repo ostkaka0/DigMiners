@@ -36,7 +36,7 @@ TextureManager = function(gameData) {
                 var offsetWidth = (itemType.texture.offsetWidth ? itemType.texture.offsetWidth : 0);
                 var offsetHeight = (itemType.texture.offsetHeight ? itemType.texture.offsetHeight : 0);
                 var rect = new PIXI.Rectangle((itemType.spriteId % itemType.texture.dimX) * (itemType.texture.spriteWidth + offsetWidth),
-                    Math.floor(itemType.spriteId / itemType.texture.dimX) * (itemType.texture.spriteHeight * offsetHeight),
+                    Math.floor(itemType.spriteId / itemType.texture.dimX) * (itemType.texture.spriteHeight + offsetHeight),
                     itemType.texture.spriteWidth,
                     itemType.texture.spriteHeight);
                 texturesLocal[itemType.name] = new PIXI.Texture(texturesLocal[itemType.texture.path], rect);
