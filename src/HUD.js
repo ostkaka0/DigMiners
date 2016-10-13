@@ -152,8 +152,10 @@ updateHUD = function(gameData) {
                 slotTextContainer.innerText = item.amount;
 
             slotDescriptionContainer.innerText = itemType.name;
+
+            slotImageContainerOverlay.style.display = "none";
             if(item.equipped)
-                slotImageContainerOverlay.style.background = "url('data/textures/items/Equipped.png')";
+                slotImageContainerOverlay.style.display = "block";
 
             slot.onclick = HUDClosures[i][0];
             slot.oncontextmenu = HUDClosures[i][1];
@@ -233,8 +235,18 @@ openCraftingWindow = function(gameData) {
         craftingEntry.setAttribute("recipeId", i);
         craftingLeft.appendChild(craftingEntry);
 
+        var craftingEntryOverlay = document.createElement("div");
+        craftingEntryOverlay.setAttribute("class", "craftingEntryOverlay");
+        craftingEntry.appendChild(craftingEntryOverlay);
+
         // Slot describer
         $(craftingEntry).click(function() {
+            $('.craftingEntry > .craftingEntryOverlay').each(function() {
+                this.style.display = "none";
+            });
+            var overlay = this.childNodes[0];
+            overlay.style.display = "block";
+
             var recipeId = $(this).attr("recipeId");
             HUD.selectedRecipeId = recipeId;
             var recipe = Recipes[recipeId];
