@@ -183,6 +183,18 @@ onMessage(MessageInit, function(message) {
     createHUD(gameData);
 });
 
+$(document).click(function(event) {
+    var worldPos = [(event.clientX + camera.pos[0] - camera.width / 2) / 32, (canvas.height - event.clientY + camera.pos[1] - camera.height / 2) / 32];
+    var itemType = global.player.inventory.getEquippedItemType("tool");
+    if(itemType && itemType.typeOfType == "block") {
+        var stackId = global.player.inventory.getEquippedStackId("tool");
+        if(stackId != null) {
+            var message = new MessageRequestPlaceBlock(stackId, worldPos[0], worldPos[1]);
+            message.send(socket);
+        }
+    }
+});
+
 gameData.entityWorld.onAdd = function(entity) {
     if(entity.item && entity.item.amount > 1) {
         var text = new PIXI.Text(entity.item.amount, { fontFamily: 'Monospace', fontSize: 15, fill: 0xffffff, align: 'center' });
