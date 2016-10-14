@@ -1,6 +1,6 @@
 var canvas = document.getElementById("canvas");
 var gl = canvasInitGL(canvas);
-var renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight, { 'transparent': true });
+var renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight, { 'transparent': true, 'antialias': true });
 var stage = new PIXI.Container();
 var zindices = new Array();
 zindices[0] = new PIXI.Container();
