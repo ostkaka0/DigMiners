@@ -30,8 +30,13 @@ CommandPlayerEquipItem.prototype.execute = function(gameData) {
     if(isServer || this.playerId == global.player.playerId) {
         var item = player.inventory.items[this.stackId];
         if(item && item.id == this.itemId) {
-            if(this.equipped)
-                player.inventory.dequipAll(gameData, itemType.type, entity.id);
+            if(this.equipped) {
+                var dequippedItems = player.inventory.dequipAll(gameData, itemType.type, entity.id);
+                for(var i = 0; i < dequippedItems.length; ++i) {
+                    var entry = dequippedItems[i];
+                    player.onDequip(entry[0], gameData.itemRegister[entry[1]]);
+                };
+            }
             item.equipped = this.equipped;
             if(!isServer)
                 updateHUD(gameData);

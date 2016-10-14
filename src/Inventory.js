@@ -98,17 +98,16 @@ Inventory.prototype.removeStack = function(id) {
 }
 
 Inventory.prototype.dequipAll = function(gameData, type, arg) {
+    var dequippedItems = [];
     for(var i = 0; i < this.items.length; ++i) {
         var itemType = gameData.itemRegister[this.items[i].id];
-        if(itemType.type == type) {
+        if(itemType.type == type && this.items[i].equipped) {
             this.items[i].equipped = false;
-            if(this.items[i].onDequip) {
-                this.items[i].onDequip(gameData, arg);
-                this.items[i].onDequip = null;
-            }
+            dequippedItems.push([i, this.items[i].id]);
         }
     }
     this.sortItems(gameData);
+    return dequippedItems;
 }
 
 Inventory.prototype.getEquippedItemType = function(type) {
