@@ -22,11 +22,6 @@ CommandPlayerEquipItem.prototype.execute = function(gameData) {
         entity.bodyparts.bodyparts[itemType.type].offset[1] += equippedOffset[1];
     }
 
-    if(this.equipped)
-        player.onEquip(this.stackId, itemType);
-    else
-        player.onDequip(this.stackId, itemType);
-
     if(isServer || this.playerId == global.player.playerId) {
         var item = player.inventory.items[this.stackId];
         if(item && item.id == this.itemId) {
@@ -42,6 +37,11 @@ CommandPlayerEquipItem.prototype.execute = function(gameData) {
                 updateHUD(gameData);
         }
     }
+
+    if(this.equipped)
+        player.onEquip(this.stackId, itemType);
+    else
+        player.onDequip(this.stackId, itemType);
 }
 
 CommandPlayerEquipItem.prototype.serialize = function(byteArray, index) {
