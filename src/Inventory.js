@@ -45,23 +45,27 @@ Inventory.prototype.addItem = function(gameData, id, amount) {
 }
 
 Inventory.prototype.removeItem = function(gameData, id, amount) {
+    var removedItems = [];
     for(var i = this.items.length - 1; i >= 0; --i) {
         var currentAmount = this.items[i].amount;
         if(this.items[i].id === id && currentAmount >= 0) {
             var removed = (amount <= currentAmount ? amount : currentAmount);
             this.items[i].amount -= removed;
-            if(this.items[i].amount <= 0)
+            if(this.items[i].amount <= 0) {
+                removedItems.push([i, this.items[i].id]);
                 this.items.splice(i, 1);
+            }
             amount -= removed;
         }
         if(amount < 0)
             console.log("inventory bad thing happens!");
         if(amount == 0) {
             this.sortItems();
-            return;
+            return removedItems;
         }
     }
     this.sortItems();
+    return removedItems;
 }
 
 Inventory.prototype.hasItem = function(id, amount) {

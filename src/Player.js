@@ -46,3 +46,13 @@ Player.prototype.hasRequiredRecipeResources = function(recipe) {
     }
     return true;
 }
+
+Player.prototype.onEquip = function(stackId, itemType) {
+    if(itemType.typeOfType == "block")
+        this.isBuilding = true;
+}
+
+Player.prototype.onDequip = function(stackId, itemType) {
+    if(itemType.typeOfType == "block")
+        this.isBuilding = false;
+}

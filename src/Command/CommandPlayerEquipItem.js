@@ -22,9 +22,14 @@ CommandPlayerEquipItem.prototype.execute = function(gameData) {
         entity.bodyparts.bodyparts[itemType.type].offset[1] += equippedOffset[1];
     }
 
+    if(this.equipped)
+        player.onEquip(this.stackId, itemType);
+    else
+        player.onDequip(this.stackId, itemType);
+
     if(isServer || this.playerId == global.player.playerId) {
         var item = player.inventory.items[this.stackId];
-        if(item) {
+        if(item && item.id == this.itemId) {
             if(this.equipped)
                 player.inventory.dequipAll(gameData, itemType.type, entity.id);
             item.equipped = this.equipped;
