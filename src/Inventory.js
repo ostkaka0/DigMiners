@@ -5,12 +5,12 @@ Inventory = function() {
 
 Inventory.prototype.sortItems = function() {
     this.items.sort(function(a, b) {
-        if (a.id < b.id)
+        if(a.id < b.id)
             return -1;
-            
-        if (a.id > b.id)
+
+        if(a.id > b.id)
             return 1;
-            
+
         return 0;
     });
 }
@@ -45,7 +45,7 @@ Inventory.prototype.addItem = function(gameData, id, amount) {
 }
 
 Inventory.prototype.removeItem = function(gameData, id, amount) {
-    for(var i = this.items.length - 1; i > 0; --i) {
+    for(var i = this.items.length - 1; i >= 0; --i) {
         var currentAmount = this.items[i].amount;
         if(this.items[i].id === id && currentAmount >= 0) {
             var removed = (amount <= currentAmount ? amount : currentAmount);
@@ -114,6 +114,17 @@ Inventory.prototype.getEquippedItemType = function(type) {
             var itemType = gameData.itemRegister[item.id];
             if(itemType.type == type)
                 return itemType;
+        }
+    }
+}
+
+Inventory.prototype.getEquippedStackId = function(type) {
+    for(var i = 0; i < this.items.length; ++i) {
+        var item = this.items[i];
+        if(item.equipped) {
+            var itemType = gameData.itemRegister[item.id];
+            if(itemType.type == type)
+                return i;
         }
     }
 }
