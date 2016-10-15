@@ -349,10 +349,18 @@ var result = UglifyJS.minify(externalSourceFiles.concat(sourceFiles), {
         dead_code: true,
     }
 });
+result = UglifyJS.minify("(function(){" + result.code + "})();", {
+    fromString: true,
+    mangleProperties: true,
+    mangle: {toplevel:true},
+    compress: {
+        dead_code: true,
+    }
+});
 console.log(result.code);
 console.log("done!");
 
-fs.writeFile("html/src.js", result.code, function(err){
+fs.writeFile("html/src.js", "(function(){" + result.code + "})();", function(err){
     if (err)
         console.log(err);
 })
