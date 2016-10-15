@@ -85,7 +85,6 @@ v2.length = function(a) {
 v2.distance = function(a, b) {
     var diff = {};
     v2.sub(a, b, diff);
-    console.log(diff);
     return v2.length(diff);
 }
 
