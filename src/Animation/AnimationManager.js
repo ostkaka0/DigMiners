@@ -26,7 +26,7 @@ AnimationManager.prototype.update = function() {
     var now = new Date();
     entityWorld.objectArray.forEach(function(entity) {
         if(entity.bodyparts) {
-            for(var bodypart in entity.bodyparts.bodyparts) {
+            forIn(this, entity.bodyparts.bodyparts, function(bodypart) {
                 bodypart = entity.bodyparts.bodyparts[bodypart];
 
                 if(bodypart.animInstance && bodypart.animInstance.animating) {
@@ -64,7 +64,7 @@ AnimationManager.prototype.update = function() {
                         }
                     }
                 }
-            }
+            });
         }
     });
 }

@@ -90,14 +90,14 @@ tick = function(dt) {
         gameData.tick(dt);
 
     // Fix interpolation after MessagePlayerMove
-    for(var entity of gameData.entityWorld.objectArray) {
+    forOf(this, gameData.entityWorld.objectArray, function(entity) {
         if(entity.physicsBody) {
             var physicsBody = entity.physicsBody;
             if(physicsBody.posClient)
                 physicsBody.posOld = v2.clone(physicsBody.posClient);
             physicsBody.posClient = v2.clone(physicsBody.pos);
         }
-    }
+    });
 
     gameData.entityWorld.objectArray.forEach(function(entity) {
         //console.log("item? " + entity.item);

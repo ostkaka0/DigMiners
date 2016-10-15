@@ -3,9 +3,10 @@ fs = require("fs");
 path = require("path");
 yuicompressor = require('yuicompressor');
 UglifyJS = require("uglify-js");
+util = require("util");
 
-var externalOutputSrc;
-var outputSrc = "";
+var externalSourceFiles = [];
+var sourceFiles = [];
 
 TokenLabel = function(labels) { this.value = labels; }
 TokenString = function(value) { this.value = value; }
@@ -281,8 +282,7 @@ astToJs = function(ast, output) {
 
 loadExternalScript = function(filePath) {
     console.log("Loading(external) " + filePath + "...");
-    var content = fs.readFileSync(filePath, "utf8");
-    externalOutputSrc += content;
+    externalSourceFiles.push(filePath);
 }
 
 loadRecursive = function(dir, load) {
@@ -300,11 +300,7 @@ loadRecursive = function(dir, load) {
 
 loadScript = function(filePath) {
     console.log("Loading " + filePath + "...");
-    var content = fs.readFileSync(filePath, "utf8");
-    var tokens = scan(content);
-    
-    if (content)
-        outputSrc += content + "\n;\n";
+    sourceFiles.push(filePath);
     
     //for (var token of tokens) {
     //    process.stdout.write(token.value.toString() + " ");
@@ -337,52 +333,29 @@ var jsOutput = astToJs(ast);
 console.log("Final output:\n" + jsOutput);
 
 
-//loadRecursive("lib", loadExternalScript);
-//loadRecursive("src/Message", loadScript);
-loadScript("src/Message/MessageInit.js");
-/*loadScript("src/Message/MessagePlayerInventory.js");
-loadScript("src/Message/MessagePlayerJoin.js");
-loadScript("src/Message/MessagePlayerLeave.js");
-loadScript("src/Message/MessagePlayerMove.js");*/
-/*loadScript("src/Animation/Animation.js");
-loadScript("src/Animation/AnimationManager.js");
-loadScript("src/Animation/BodyPart.js");
-loadScript("src/Animation/Cycle.js");
-loadScript("src/Animation/Sprite.js");
-loadScript("src/BlockChunk.js");
-loadScript("src/BlockChunkRenderer.js");
-loadScript("src/Blocks.js");
-loadScript("src/BlockWorldFunctions.js");
-loadScript("src/Canvas.js");
-loadScript("src/Chunk.js");
-loadScript("src/ChunkRenderer.js");
-loadScript("src/Command/CommandDig.js");
-loadScript("src/Command/CommandPlayerDig.js");
-loadScript("src/Command/CommandPlayerEquipItem.js");
-loadScript("src/core/Fix.js");
-loadScript("src/core/Map2D.js");
-loadScript("src/core/Noise.js");
-loadScript("src/core/PagedArray2D.js");
-loadScript("src/core/v2.js");
-loadScript("src/.js");
-loadScript("src/.js");
-loadScript("src/.js");
-loadScript("src/.js");
-loadScript("src/.js");
-loadScript("src/.js");
-loadScript("src/.js");
-loadScript("src/.js");
-loadScript("src/.js");*/
+loadRecursive("lib", loadScript);
+loadRecursive("lib_front_end", loadScript);
+loadRecursive("src", loadScript);
+loadRecursive("game", loadScript);
+loadScript("DigMiners.js");
+//loadRecursive("src", loadScript);
 
 //loadRecursive("game", loadScript);
 
-//outputSrc = "var $$$ = function(){" + outputSrc + "}; $$$()";
-
-var result = UglifyJS.minify(outputSrc, {fromString: true, mangleProperties: true, mangle: {toplevel:true}});
+var result = UglifyJS.minify(externalSourceFiles.concat(sourceFiles), {
+    mangleProperties: true,
+    mangle: {toplevel:true},
+    compress: {
+        dead_code: true,
+    }
+});
 console.log(result.code);
-console.log("\n\nEvaluating code:");
-eval(result.code);
 console.log("done!");
+
+fs.writeFile("html/src.js", result.code, function(err){
+    if (err)
+        console.log(err);
+})
 
 /*yuicompressor.compress(outputSrc, {
     charset: "utf8",

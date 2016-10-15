@@ -30,27 +30,30 @@ MessageInit.prototype.getSerializationSize = function(gameData) {
 
     // Calculate serializationSize of entities
     var entitySizes = {};
-    gameData.entityWorld.objectArray.forEach(function(entity) {
+    console.log("forof of");
+    console.log(gameData.entityWorld.objectArray);
+    forOf(this, gameData.entityWorld.objectArray, function(entity) {
         size += 8; // Entity-id, entitySize
         var entitySize = 0;
-        for(var component in entity) {
-            component = entity[component];
-            if(!component.serialize) continue;
-            //console.log("component " + component.id + " serialization size " + component.getSerializationSize());
+        console.log("forin of ");
+        console.log(entity);
+        forIn(this, entity, function(componentKey) {
+            component = entity[componentKey];
+            if(component.serialize == undefined) return;
+            console.log("component " + component.id + " serialization size " + component.getSerializationSize());
             entitySize += 4 + component.getSerializationSize(); // component-id
-        }
+        });
         entitySizes[entity.id] = entitySize;
         size += entitySize;
-    }.bind(this));
+    });
     this.entitySizes = entitySizes;
 
     // Calculate serializationSize of players
     size += 4;
-    for(player of gameData.playerWorld.objectArray) {
-        if(player.id == this.playerId)
-            continue;
+    gameData.playerWorld.objectArray.forEach(function(player) {
+        if(player.id == this.playerId) return;
         size += 8 + getUTF8SerializationSize(player.name);
-    }
+    }.bind(this));
     return size;
 }
 
@@ -66,29 +69,28 @@ MessageInit.prototype.send = function(gameData, socket) {
 
     // Serialize entities
     serializeInt32(byteArray, index, gameData.entityWorld.objectArray.length);
-    for(entity of gameData.entityWorld.objectArray) {
+    gameData.entityWorld.objectArray.forEach(function(entity) {
         serializeInt32(byteArray, index, entity.id);
         //console.log("serializing entity " + entity.id + " size " + this.entitySizes[entity.id]);
         serializeInt32(byteArray, index, this.entitySizes[entity.id]);
-        for(var key in entity) {
+        Object.keys(entity).forEach(function(key) {
             var component = entity[key];
-            if(!component.serialize) continue;
+            if(!component.serialize) return;
             //console.log("serializing component: " + component.name);
             serializeInt32(byteArray, index, component.id);
             //console.log("componentId " + component.id);
             component.serialize(byteArray, index);
-        }
-    }
+        }.bind(this));
+    }.bind(this));
 
     // Serialize players
     serializeInt32(byteArray, index, gameData.playerWorld.objectArray.length);
-    for(player of gameData.playerWorld.objectArray) {
-        if(player.id == this.playerId)
-            continue;
+    gameData.playerWorld.objectArray.forEach(function(player) {
+        if(player.id == this.playerId) return;
         serializeInt32(byteArray, index, player.id);
         serializeInt32(byteArray, index, player.entityId);
         serializeUTF8(byteArray, index, player.name);
-    }
+    }.bind(this));
 
     socket.emit(this.idString, new Buffer(byteArray));
 }

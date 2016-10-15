@@ -8,7 +8,8 @@ typeRegisterAdd = function(array, type) {
 }
 
 typeRegisterAddByArray = function(array, typeArray) {
-    for (type of typeArray)
+    forOf(this, typeArray, function(type) {
         typeRegisterAdd(array, type); 
+    });
     return array;
 }
