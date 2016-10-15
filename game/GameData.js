@@ -2,6 +2,7 @@ GameData = function(idList) {
     initItems(this);
     this.port = 3000;
     this.itemPickupDistance = 1.0;
+    this.blockPlaceDistance = 96; //Pixels
 
     this.tickDuration = 1000 / 20;
     this.tickId = 0;
