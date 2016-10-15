@@ -13,7 +13,7 @@ function gameLoop(tick, render, tickDuration) {
         var newTickNum = Math.floor((now - firstTickTime) / tickDuration);
         var tickFracTime = (now - firstTickTime) / tickDuration - newTickNum;
         for(; tickNum < newTickNum; ++tickNum) {
-            tick(toFix(tickDuration / 1000.0));
+            tick(tickDuration / 1000.0);
         }
         // Render:
         render(tickFracTime);
