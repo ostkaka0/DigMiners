@@ -5,7 +5,7 @@ ComponentItem = function(itemId, amount) {
     this.dropped = new Date();
 }
 
-ComponentItem.prototype.name = "item";
+ComponentItem.prototype.name = item.name; function item(){};
 
 ComponentItem.prototype.serialize = function(byteArray, index) {
     serializeInt32(byteArray, index, this.itemId);

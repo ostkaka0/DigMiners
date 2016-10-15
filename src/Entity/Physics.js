@@ -14,7 +14,7 @@ PhysicsBody = function(pos, damping) {
     this.rotationSpeed = toFix(10.0);
 }
 
-PhysicsBody.prototype.name = "physicsBody";
+PhysicsBody.prototype.name = physicsBody.name; function physicsBody(){};
 
 PhysicsBody.prototype.serialize = function(byteArray, index) {
     serializeV2(byteArray, index, this.pos);
