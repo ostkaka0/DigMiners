@@ -5,8 +5,9 @@ objectRegisterAdd = function(array, object) {
 }
 
 objectRegisterAddByArray = function(array, objectArray) {
-    for (object of objectArray)
+    forOf(this, objectArray, function(object) {
         registerObject(array, object);
+    });
     return array;
 }
 

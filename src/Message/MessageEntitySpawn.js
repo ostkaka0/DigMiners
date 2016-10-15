@@ -18,12 +18,12 @@ MessageEntitySpawn.prototype.execute = function(gameData) {
 MessageEntitySpawn.prototype.getSerializationSize = function() {
     var size = 8; // Entity-id, numComponents
     this.numComponents = 0;
-    for(var component in this.entity) {
+    forIn(this, this.entity, function(component) {
         component = this.entity[component];
-        if(!component.serialize) continue;
+        if(!component.serialize) return;
         size += 4 + component.getSerializationSize(); // component-id
         ++this.numComponents;
-    }
+    });
     return size;
 }
 
@@ -34,12 +34,12 @@ MessageEntitySpawn.prototype.send = function(gameData, socket) {
     // Serialize entity
     serializeInt32(byteArray, index, this.entity.id);
     serializeInt32(byteArray, index, this.numComponents);
-    for(var key in this.entity) {
+    forIn(this, this.entity, function(key) {
         var component = this.entity[key];
-        if(!component.serialize) continue;
+        if(!component.serialize) return;
         serializeInt32(byteArray, index, component.id);
         component.serialize(byteArray, index);
-    }
+    });
     socket.emit(this.idString, new Buffer(byteArray));
 }
 
