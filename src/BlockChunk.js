@@ -1,5 +1,5 @@
 BLOCK_CHUNK_DIM = 30;
-BLOCK_CHUNK_SIZE = 30 * 30;
+BLOCK_CHUNK_SIZE = BLOCK_CHUNK_DIM * BLOCK_CHUNK_DIM;
 
 BlockChunk = function() {
     this.foreground = new Uint8Array(BLOCK_CHUNK_SIZE);
@@ -38,15 +38,15 @@ BlockChunk.prototype.setStrength = function(x, y, value) {
 v2WorldToBlockChunk = function(worldPos, outBlockChunkPos, outLocalPos) {
     v2.div(worldPos, BLOCK_CHUNK_DIM, outBlockChunkPos);
     v2.floor(outBlockChunkPos, outBlockChunkPos);
-    if (!outLocalPos) return;
+    if(!outLocalPos) return;
     blockChunkWorldPos = v2.clone(outBlockChunkPos);
     v2.mul(BLOCK_CHUNK_DIM, blockChunkWorldPos, blockChunkWorldPos);
     v2.floor(worldPos, outLocalPos);
     v2.sub(outLocalPos, blockChunkWorldPos, outLocalPos);
 }
 
-v2WorldFromBlockChunk = function(outWorldPos, blockChunkPos, localPos)  {
+v2WorldFromBlockChunk = function(outWorldPos, blockChunkPos, localPos) {
     v2.mul(BLOCK_CHUNK_DIM, blockChunkPos, outWorldPos);
-    if (!localPos) return;
+    if(!localPos) return;
     v2.add(localPos, outWorldPos, outWorldPos);
 }

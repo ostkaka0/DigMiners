@@ -63,7 +63,7 @@ v2.mod = function(a, c, out) {
 
 
 v2.normalize = function(a, out) {
-    var length = v2.length(a);
+    var length = v2.lengthSquared(a);
     if(length == 0)
         return;
     out[0] = fix.div(a[0], length);
@@ -74,11 +74,11 @@ v2.normalize = function(a, out) {
 /*****************************************
  * Float output functions:
  *****************************************/
-v2.length = function(a) {
-    return fix.sqrt(fix.add(fix.mul(a[0], a[0]), fix.mul(a[1], a[1])));
+v2.lengthSquared = function(a) {
+    return fix.sqrt(v2.length(a));
 }
 
-v2.lengthSquared = function(a) {
+v2.length = function(a) {
     return fix.add(fix.mul(a[0], a[0]), fix.mul(a[1], a[1]));
 }
 
