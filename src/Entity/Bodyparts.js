@@ -18,7 +18,7 @@ Bodyparts = function(bodyparts) {
     }
 }
 
-Bodyparts.prototype.name = "bodyparts";
+Bodyparts.prototype.name = bodyparts.name; function bodyparts(){};
 
 Bodyparts.prototype.serialize = function(byteArray, index) {
     serializeInt32(byteArray, index, Object.keys(this.bodyparts).length);

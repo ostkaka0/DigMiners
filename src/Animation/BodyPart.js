@@ -17,6 +17,7 @@ BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, parent) {
         this.pivot = [0, 0];
     this.parent = parent;
     this.children = [];
+    this.animInstance = null;
 }
 
 BodyPart.prototype.position = function(x, y, rotation) {
@@ -27,7 +28,7 @@ BodyPart.prototype.position = function(x, y, rotation) {
     this.sprite.sprite.position.y = y + rotatedOffset[1];
     this.sprite.sprite.rotation = rotation;
 
-    for(var child of this.children) {
+    for (var child of this.children) {
         child.position(this.sprite.sprite.position.x,
             this.sprite.sprite.position.y,
             this.sprite.sprite.rotation);
@@ -35,7 +36,7 @@ BodyPart.prototype.position = function(x, y, rotation) {
     // Run only on root body parts:
     if(!this.parent) {
 
-        for(var child of this.children) {
+        for (var child of this.children) {
             var totalOffset = [child.cycleOffset[0], child.cycleOffset[1]];
             var newPos = child.rotate(0, 0, totalOffset[0], totalOffset[1], rotation + child.cycleOffset[2] + child.offset[2]);
             if(totalOffset[0] == 0 && totalOffset[1] == 0)
@@ -45,7 +46,7 @@ BodyPart.prototype.position = function(x, y, rotation) {
             child.sprite.sprite.position.y += newPos[1];
             child.sprite.sprite.rotation = rotation + child.cycleOffset[2] + child.offset[2];
 
-            for(var child2 of child.children)
+            for (var child2 of child.children)
                 child2.rotateAroundPoint(x, y, rotation, child.sprite.sprite.rotation);
         }
     }

@@ -8,7 +8,7 @@ Drawable = function(zindex) {
     zindices[this.zindex].addChild(this.container);
 }
 
-Drawable.prototype.name = "drawable";
+Drawable.prototype.name = drawable.name; function drawable(){};
 
 Drawable.prototype.serialize = function(byteArray, index) {
     serializeInt32(byteArray, index, this.zindex);

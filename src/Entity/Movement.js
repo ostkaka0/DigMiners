@@ -1,3 +1,4 @@
+
 Movement = function(speed, digDuration) {
     this.up = false;
     this.left = false;
@@ -14,7 +15,7 @@ Movement = function(speed, digDuration) {
     this.isMining = false;
 }
 
-Movement.prototype.name = "movement";
+Movement.prototype.name = movement.name; function movement(){};
 
 Movement.prototype.calcDigTickDuration = function(dt) {
     return Math.round(1000.0 * this.digDuration / dt);
@@ -101,3 +102,6 @@ entityFunctionPlayerMovement = function(gameData, dt) {
         }
     }
 }
+var movement2 = 4;
+var movement3 = 3;
+var movement = new Movement();

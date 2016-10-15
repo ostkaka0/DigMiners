@@ -1,7 +1,10 @@
 console = require("console");
 fs = require("fs");
 path = require("path");
+yuicompressor = require('yuicompressor');
+UglifyJS = require("uglify-js");
 
+var externalOutputSrc;
 var outputSrc = "";
 
 TokenLabel = function(labels) { this.value = labels; }
@@ -10,10 +13,9 @@ TokenSymbol = function(value) { this.value = value; }
 TokenNumber = function(value) { this.value = value; }
 
 ExprAssign = function(name, symbol, value) { this.name = name; this.symbol = symbol; this.value = value; }
-ExprDecl = function(name) { this.name = name;}
+ExprDecl = function(name) { this.name = name; }
 ExprDeclAssign = function(name, symbol, value) { this.name = name; this.symbol = symbol; this.value = value; }
-ExprScope = function(ast) { this.ast = ast; }
-ExprObject = function(array) { this.a = array; }
+ExprTokenArray = function(tokens) { this.tokens = tokens; }
 
 isspace = function(c) {
     return c == ' ' || c == '\t' || c == '\r';
@@ -189,11 +191,11 @@ parse = function(tokens, ast, i, singleExpr, isRvalue) {
                     while(tokens[i] != "}")
                         object.push(tokens[i++]);
                     i++;
-                    ast.push(ExprObject(object));
+                    ast.push(new ExprTokenArray(object));
                 } else {
                     var scope = [];
                     i = parse(tokens, scope, i+1);
-                    ast.push(new ExprScope(scope));
+                    ast.push(new ExprTokenArray(scope));
                 }
                 break;
             case "=":
@@ -263,8 +265,8 @@ astToJs = function(ast, output) {
             output += astToJs(expr.value)
             output += ";";
             break;
-        case ExprScope:
-            output += "{" + astToJs(expr.ast) + "}";
+        case ExprTokenArray:
+            output += "{" + expr.tokens + "}";
             break;
         }
     }
@@ -280,7 +282,7 @@ astToJs = function(ast, output) {
 loadExternalScript = function(filePath) {
     console.log("Loading(external) " + filePath + "...");
     var content = fs.readFileSync(filePath, "utf8");
-    outputSrc = outputSrc.concat(content);
+    externalOutputSrc += content;
 }
 
 loadRecursive = function(dir, load) {
@@ -300,6 +302,10 @@ loadScript = function(filePath) {
     console.log("Loading " + filePath + "...");
     var content = fs.readFileSync(filePath, "utf8");
     var tokens = scan(content);
+    
+    if (content)
+        outputSrc += content + "\n;\n";
+    
     //for (var token of tokens) {
     //    process.stdout.write(token.value.toString() + " ");
     //var ast = parse(tokens);
@@ -330,8 +336,63 @@ for (var expr of ast) {
 var jsOutput = astToJs(ast);
 console.log("Final output:\n" + jsOutput);
 
+
 //loadRecursive("lib", loadExternalScript);
-//loadRecursive("src", loadScript);
+//loadRecursive("src/Message", loadScript);
+loadScript("src/Message/MessageInit.js");
+/*loadScript("src/Message/MessagePlayerInventory.js");
+loadScript("src/Message/MessagePlayerJoin.js");
+loadScript("src/Message/MessagePlayerLeave.js");
+loadScript("src/Message/MessagePlayerMove.js");*/
+/*loadScript("src/Animation/Animation.js");
+loadScript("src/Animation/AnimationManager.js");
+loadScript("src/Animation/BodyPart.js");
+loadScript("src/Animation/Cycle.js");
+loadScript("src/Animation/Sprite.js");
+loadScript("src/BlockChunk.js");
+loadScript("src/BlockChunkRenderer.js");
+loadScript("src/Blocks.js");
+loadScript("src/BlockWorldFunctions.js");
+loadScript("src/Canvas.js");
+loadScript("src/Chunk.js");
+loadScript("src/ChunkRenderer.js");
+loadScript("src/Command/CommandDig.js");
+loadScript("src/Command/CommandPlayerDig.js");
+loadScript("src/Command/CommandPlayerEquipItem.js");
+loadScript("src/core/Fix.js");
+loadScript("src/core/Map2D.js");
+loadScript("src/core/Noise.js");
+loadScript("src/core/PagedArray2D.js");
+loadScript("src/core/v2.js");
+loadScript("src/.js");
+loadScript("src/.js");
+loadScript("src/.js");
+loadScript("src/.js");
+loadScript("src/.js");
+loadScript("src/.js");
+loadScript("src/.js");
+loadScript("src/.js");
+loadScript("src/.js");*/
+
 //loadRecursive("game", loadScript);
+
+//outputSrc = "var $$$ = function(){" + outputSrc + "}; $$$()";
+
+var result = UglifyJS.minify(outputSrc, {fromString: true, mangleProperties: true, mangle: {toplevel:true}});
+console.log(result.code);
+console.log("\n\nEvaluating code:");
+eval(result.code);
+console.log("done!");
+
+/*yuicompressor.compress(outputSrc, {
+    charset: "utf8",
+    type: "js",
+    //nomunge: false,
+    "line-break": 80,
+}, function(err, data, extra) {
+    console.log(err);
+    console.log(data);
+    console.log(extra);
+});*/
 
 //console.log(outputSrc);
