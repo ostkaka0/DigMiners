@@ -14,6 +14,9 @@ MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
         if(!player.inventory.hasItem(item.id, 1))
             return;
 
+        if(!player.canPlaceBlock(gameData, this.x, this.y))
+            return;
+
         var blockChunkX = Math.floor(this.x / BLOCK_CHUNK_DIM);
         var blockChunkY = Math.floor(this.y / BLOCK_CHUNK_DIM);
         var localX = Math.floor(this.x) - blockChunkX * BLOCK_CHUNK_DIM;

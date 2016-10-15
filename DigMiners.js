@@ -150,16 +150,26 @@ render = function(tickFracTime) {
     });
 
     if(global.player.isBuilding) { // isBuilding is set in Player.js line 50+
-        this.blockPosGood.visible = true;
-        var worldPos = [(this.mouseX + camera.pos[0] - camera.width / 2) / 32, (canvas.height - this.mouseY + camera.pos[1] - camera.height / 2) / 32 + 1];
+        var worldCursorPos = [Math.floor((this.mouseX + camera.pos[0] - camera.width / 2) / 32), Math.floor((canvas.height - this.mouseY + camera.pos[1] - camera.height / 2) / 32 + 1)];
         var chunkPos = [0, 0];
         var localPos = [0, 0];
-        v2WorldToBlockChunk(worldPos, chunkPos, localPos);
+        v2WorldToBlockChunk(worldCursorPos, chunkPos, localPos);
         var blockPos = [chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0], chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1]];
-        this.blockPosGood.position.x = blockPos[0] * 32 - camera.pos[0] + camera.width / 2;
-        this.blockPosGood.position.y = canvas.height - (blockPos[1] * 32 - camera.pos[1] + camera.height / 2);
-    } else
+        if(global.player.canPlaceBlock(gameData, blockPos[0], blockPos[1])) {
+            this.blockPosBad.visible = false;
+            this.blockPosGood.visible = true;
+            this.blockPosGood.position.x = blockPos[0] * 32 - camera.pos[0] + camera.width / 2;
+            this.blockPosGood.position.y = canvas.height - (blockPos[1] * 32 - camera.pos[1] + camera.height / 2);
+        } else {
+            this.blockPosGood.visible = false;
+            this.blockPosBad.visible = true;
+            this.blockPosBad.position.x = blockPos[0] * 32 - camera.pos[0] + camera.width / 2;
+            this.blockPosBad.position.y = canvas.height - (blockPos[1] * 32 - camera.pos[1] + camera.height / 2);
+        }
+    } else {
         this.blockPosGood.visible = false;
+        this.blockPosBad.visible = false;
+    }
 
     //TODO: animationmanager use dt? maybe not needed
     gameData.animationManager.update();
@@ -187,6 +197,8 @@ onTexturesLoadComplete = function(textures) {
     // Must wait until all textures have loaded to continue! important
     this.blockPosGood = new PIXI.Sprite(textures["blockPosGood.png"]);
     this.stage.addChild(this.blockPosGood);
+    this.blockPosBad = new PIXI.Sprite(textures["blockPosBad.png"]);
+    this.stage.addChild(this.blockPosBad);
     $("*").mousemove(function(event) {
         //console.log(event.pageX + ", " + event.pageY);
         //console.log(worldPos);
@@ -205,8 +217,7 @@ onMessage(MessageInit, function(message) {
 
 $(document).click(function(event) {
     var worldPos = [(event.clientX + camera.pos[0] - camera.width / 2) / 32, (canvas.height - event.clientY + camera.pos[1] - camera.height / 2) / 32];
-    var itemType = global.player.inventory.getEquippedItemType("tool");
-    if(itemType && itemType.typeOfType == "block") {
+    if(global.player.isBuilding) {
         var stackId = global.player.inventory.getEquippedStackId("tool");
         if(stackId != null) {
             var message = new MessageRequestPlaceBlock(stackId, worldPos[0], worldPos[1]);

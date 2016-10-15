@@ -46,7 +46,7 @@ physicsBodySimulate = function(tileWorld, physicsBody, dt) {
     // Calculate deltaPos and number of steps
     var deltaPos = v2.create(0, 0);
     v2.mul(dt, physicsBody.speed, deltaPos);
-    var deltaPosLength = v2.length(deltaPos);
+    var deltaPosLength = v2.lengthSquared(deltaPos);
     var numSteps = Math.ceil(deltaPosLength / PHYSICS_MAX_STEP_LENGTH);
     v2.div(deltaPos, numSteps, deltaPos);
     deltaPosLength /= numSteps;

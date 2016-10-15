@@ -15,6 +15,7 @@ TextureManager = function(gameData) {
     this.loader.queueTexture("blockAtlas.png", "blockAtlas");
 
     this.loader.queueTexture("blockPosGood.png", "blockPosGood");
+    this.loader.queueTexture("blockPosBad.png", "blockPosBad");
 
     console.log("Loading textures...");
     this.loader.loadTextures();
