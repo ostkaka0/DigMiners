@@ -155,6 +155,7 @@ render = function(tickFracTime) {
         var localPos = [0, 0];
         v2WorldToBlockChunk(worldCursorPos, chunkPos, localPos);
         var blockPos = [chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0], chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1]];
+        global.player.buildPos = blockPos;
         if(global.player.canPlaceBlock(gameData, blockPos[0], blockPos[1])) {
             this.blockPosBad.visible = false;
             this.blockPosGood.visible = true;
@@ -216,11 +217,10 @@ onMessage(MessageInit, function(message) {
 });
 
 $(document).click(function(event) {
-    var worldCursorPos = [Math.floor((event.clientX + camera.pos[0] - camera.width / 2) / 32), Math.floor((canvas.height - event.clientY + camera.pos[1] - camera.height / 2) / 32)];
     if(global.player.isBuilding) {
         var stackId = global.player.inventory.getEquippedStackId("tool");
         if(stackId != null) {
-            var message = new MessageRequestPlaceBlock(stackId, worldCursorPos[0], worldCursorPos[1]);
+            var message = new MessageRequestPlaceBlock(stackId, global.player.buildPos[0], global.player.buildPos[1]);
             message.send(socket);
         }
     }
