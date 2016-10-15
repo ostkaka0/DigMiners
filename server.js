@@ -76,8 +76,8 @@ var names = ["Runny", "Buttercup", "Dinky", "Stinky", "Crusty",
     "Oily", "Burrito", "Bumpy", "Loopy", "Snotty", "Irving", "Egbert"];
 
 var lastnames = ["face", "dip", "nose", "brain", "head", "breath",
-    "pants", "shorts", "lips", "mouth", "muffin", "butt", "bottom", "elbow",
-    "honker", "toes", "buns", "spew", "kisser", "fanny", "squirt", "chunks",
+    "pants", "shorts", "ears", "mouth", "muffin", "butter", "bottom", "elbow",
+    "honker", "toes", "buns", "mister", "fanny", "squirt", "chunks",
     "brains", "wit", "juice", "shower"];
 
 loadChunk = function(world, x, y) {
@@ -86,8 +86,8 @@ loadChunk = function(world, x, y) {
     world.set(x, y, chunk);
 }
 
-for(var x = -1; x < 1; ++x) {
-    for(var y = -1; y < 1; ++y) {
+for(var x = -3; x < 3; ++x) {
+    for(var y = -3; y < 3; ++y) {
         loadChunk(gameData.tileWorld, x, y);
     }
 }
@@ -144,8 +144,8 @@ io.on("connection", function(socket) {
     // Send playerJoin message to other players
     new MessagePlayerJoin(player).send(socket.broadcast);
 
-    for(var x = -1; x < 1; ++x) {
-        for(var y = -1; y < 1; ++y) {
+    for(var x = -3; x < 3; ++x) {
+        for(var y = -3; y < 3; ++y) {
             var chunk = gameData.tileWorld.get(x, y);
             var blockChunk = gameData.blockWorld.get(x, y);
             var message = new MessageChunk(chunk, blockChunk, x, y);

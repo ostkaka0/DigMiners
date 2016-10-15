@@ -58,7 +58,7 @@ Player.prototype.onDequip = function(stackId, itemType) {
 }
 
 Player.prototype.canPlaceBlock = function(gameData, x, y) {
-    var distBlockPos = [x * 32 + 16, y * 32 - 16];
+    var distBlockPos = [x * 32 + 16, y * 32 + 16];
     var entity = gameData.entityWorld.objects[this.entityId];
     if(!entity) return false;
     var distPlayerPos = [entity.physicsBody.pos[0] * 32, entity.physicsBody.pos[1] * 32];
