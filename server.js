@@ -89,6 +89,7 @@ loadChunk = function(world, x, y) {
 for(var x = -3; x < 3; ++x) {
     for(var y = -3; y < 3; ++y) {
         loadChunk(gameData.tileWorld, x, y);
+        setForeground(gameData.blockWorld, x, y, 1);
     }
 }
 carveCircle(gameData, 0, 0, 12);

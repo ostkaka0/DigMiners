@@ -14,6 +14,7 @@ GameData = function(idList) {
     this.blockWorld = new Map2D();
     this.tileRegister = objectRegisterAddByObject([], Tiles);
     this.itemRegister = objectRegisterAddByObject([], Items);
+    this.blockRegister = objectRegisterAddByObject([], Blocks);
     this.generator = {};
     if(!isServer)
         this.animationManager = new AnimationManager();

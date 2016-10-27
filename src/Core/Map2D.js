@@ -1,8 +1,8 @@
-Map2D = function(defaultValue) {
+Map2D = function() {
     this.map = {};
 }
 
-Map2D.prototype.get = function(x, y, value) {
+Map2D.prototype.get = function(x, y) {
     return this.map[x + "|" + y];
 }
 
