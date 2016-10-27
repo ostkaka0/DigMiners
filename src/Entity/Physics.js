@@ -57,8 +57,8 @@ physicsBodySimulate = function(tileWorld, physicsBody, dt) {
         v2.add(deltaPos, physicsBody.pos, newPos);
         var density = calcDensity(tileWorld, newPos[0], newPos[1]);
         if(density > 0) {
-            var dir = calcDir(tileWorld, newPos[0], newPos[1])
-            v2.div(dir, 2.0, dir);
+            var dir = calcDir(tileWorld, newPos[0], newPos[1]);
+            //v2.div(dir, 2.0, dir);
             v2.add(newPos, dir, newPos);
             var normal = v2.create(0, 0);
             v2.normalize(dir, normal);
