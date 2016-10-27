@@ -1,5 +1,17 @@
 PHYSICS_MAX_STEP_LENGTH = 0.5;
 
+COLLISION_BLOCKS = [
+    [0, 0],
+    [0, -1],
+    [0, 1],
+    [-1, 0],
+    [1, 0],
+    [1, -1],
+    [-1, 1],
+    [1, 1],
+    [-1, -1]
+];
+
 PhysicsBody = function(pos, damping) {
     if(pos) {
         this.pos = v2.clone(pos);
@@ -14,7 +26,7 @@ PhysicsBody = function(pos, damping) {
     this.rotationSpeed = toFix(10.0);
 }
 
-PhysicsBody.prototype.name = physicsBody.name; function physicsBody(){};
+PhysicsBody.prototype.name = physicsBody.name; function physicsBody() { };
 
 PhysicsBody.prototype.serialize = function(byteArray, index) {
     serializeV2(byteArray, index, this.pos);
@@ -39,7 +51,7 @@ PhysicsBody.prototype.getSerializationSize = function() {
     return 24;
 }
 
-physicsBodySimulate = function(tileWorld, physicsBody, dt) {
+physicsBodySimulate = function(gameData, physicsBody, dt) {
     // Update posOld, speedOld
     v2.copy(physicsBody.pos, physicsBody.posOld);
     v2.copy(physicsBody.speed, physicsBody.speedOld);
@@ -53,11 +65,62 @@ physicsBodySimulate = function(tileWorld, physicsBody, dt) {
     v2.mul(fix.pow(physicsBody.damping, dt), physicsBody.speed, physicsBody.speed);
     var newPos = v2.create(0, 0);
     // Simulate steps
-    for(i = 0; i < numSteps; i++) {
+    for(var i = 0; i < numSteps; i++) {
         v2.add(deltaPos, physicsBody.pos, newPos);
-        var density = calcDensity(tileWorld, newPos[0], newPos[1]);
+
+        // Block collision
+        for(var j = 0; j < COLLISION_BLOCKS.length; ++j) {
+            var chunkPos = v2.create(0, 0);
+            var localPos = v2.create(0, 0);
+            var worldPos = v2.clone(newPos);
+            worldPos[0] += COLLISION_BLOCKS[j][0];
+            worldPos[1] += COLLISION_BLOCKS[j][1];
+            v2WorldToBlockChunk(worldPos, chunkPos, localPos);
+            var blockChunk = gameData.blockWorld.get(chunkPos[0], chunkPos[1]);
+            if(!blockChunk) continue;
+            var blockId = blockChunk.getForeground(localPos[0], localPos[1]);
+            if(!blockId) continue; // Air
+            var block = gameData.blockRegister[blockId];
+            if(!block || !block.isSolid) continue;
+
+            var playerFatness = 1; // player is 1 block wide
+
+            var dx = newPos[0] - (chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0] + 0.5);
+            var dy = newPos[1] - (chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1] + 0.5);
+
+            if(Math.abs(dx) < playerFatness && Math.abs(dy) < playerFatness) {
+
+                var blockLeft = chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0];
+                var blockRight = chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0] + 1.0
+                var blockTop = chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1] + 1.0;
+                var blockBottom = chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1]
+
+                if(dy > dx) {
+                    if(dy > -dx) {
+                        //console.log("top");
+                        newPos[1] = blockTop + playerFatness / 2;
+                        physicsBody.speed[1] = 0;
+                    } else {
+                        //console.log("left");
+                        newPos[0] = blockLeft - playerFatness / 2;
+                        physicsBody.speed[0] = 0;
+                    }
+                } else if(dy > -dx) {
+                    //console.log("right");
+                    newPos[0] = blockRight + playerFatness / 2;
+                    physicsBody.speed[0] = 0;
+                } else {
+                    //console.log("bottom");
+                    newPos[1] = blockBottom - playerFatness / 2;
+                    physicsBody.speed[1] = 0;
+                }
+            }
+        }
+
+        // Terrain collision
+        var density = calcDensity(gameData.tileWorld, newPos[0], newPos[1]);
         if(density > 0) {
-            var dir = calcDir(tileWorld, newPos[0], newPos[1]);
+            var dir = calcDir(gameData.tileWorld, newPos[0], newPos[1]);
             //v2.div(dir, 2.0, dir);
             v2.add(newPos, dir, newPos);
             var normal = v2.create(0, 0);
@@ -76,12 +139,9 @@ physicsBodySimulate = function(tileWorld, physicsBody, dt) {
 
 entityFunctionPhysicsBodySimulate = function(gameData, dt) {
     var entityWorld = gameData.entityWorld;
-    var tileWorld = gameData.tileWorld;
-    if(!entityWorld || !tileWorld)
-        console.error("Missing gameData properties");
     entityWorld.objectArray.forEach(function(entity) {
         if(entity.physicsBody)
-            physicsBodySimulate(tileWorld, entity.physicsBody, dt);
+            physicsBodySimulate(gameData, entity.physicsBody, dt);
     });
 }
 

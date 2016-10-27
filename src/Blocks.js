@@ -14,6 +14,6 @@ Blocks.StoneWall = {
 
 Blocks.StoneFloor = {
     name: "Stone Floor",
-    isSolid: false,
+    isSolid: true,
     hardness: 1
 };
