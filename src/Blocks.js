@@ -12,8 +12,14 @@ Blocks.StoneWall = {
     hardness: 1
 };
 
+Blocks.WoodCrate = {
+    name: "Wood Crate",
+    isSolid: true,
+    hardness: 1
+};
+
 Blocks.StoneFloor = {
     name: "Stone Floor",
-    isSolid: true,
+    isSolid: false,
     hardness: 1
 };

@@ -51,12 +51,41 @@ Generator.prototype.generate = function(chunk, chunkX, chunkY) {
                 if(oreValue3 < -0.25) {
                     tileId = Tiles.Apatite.id;
                 }
-                
+
             }
 
             chunk.setTileId(xx, yy, tileId);
         }
     }
-
-    chunk.setDensity(4, 4, 0);
 }
+
+Generator.prototype.generateDungeons = function(blockWorld, chunk, chunkX, chunkY) {
+    var blockChunk = blockWorld.get(chunkX, chunkY);
+    if(!blockChunk) {
+        blockChunk = new BlockChunk();
+        blockWorld.set(chunkX, chunkY, blockChunk);
+    }
+
+    var width = Math.floor(Math.random() * 15 + 5);
+    var height = Math.floor(Math.random() * 10 + 5);
+    var openingX = Math.floor(Math.random() * width);
+    var openingY = (Math.random() < 0.5 ? 0 : height - 1);
+    var tileId = 1;
+    var backgroundTileId = 3;
+    for(var yy = 0; yy < height; ++yy) {
+        for(var xx = 0; xx < width; ++xx) {
+            if(yy == 0 || yy == height - 1)
+                blockChunk.setForeground(xx, yy, tileId);
+            if(xx == 0 || xx == width - 1)
+                blockChunk.setForeground(xx, yy, tileId);
+            if(xx == openingX && yy == openingY)
+                blockChunk.setForeground(xx, yy, 0);
+
+            if(yy != 0 && yy != height - 1 && xx != 0 && xx != width - 1) {
+                blockChunk.setForeground(xx, yy, backgroundTileId);
+                chunk.setDensity(xx, yy, 0);
+            }
+        }
+    }
+}
+
