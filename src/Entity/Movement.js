@@ -1,5 +1,5 @@
 
-Movement = function(speed, digDuration) {
+Movement = function(speed, toolUseDuration) {
     this.up = false;
     this.left = false;
     this.down = false;
@@ -7,18 +7,19 @@ Movement = function(speed, digDuration) {
     this.spacebar = false;
     this.speed = speed;
     // The number of ticks until next dig. Will decrease by 1 each tick. Player can only dig at 0. Only used by server
-    this.digTickTimeout = 0;
-    this.digDuration = digDuration || 0.25; // Seconds between each dig
+    this.toolUseTickTimeout = 0;
+    this.toolUseDuration = toolUseDuration || 0.25; // Seconds between each dig
     this.digMovementSpeed = 0.65;
     this.mineMovementSpeed = 0.05;
+    this.isUsingTool = false;
     this.isDigging = false;
     this.isMining = false;
 }
 
-Movement.prototype.name = movement.name; function movement(){};
+Movement.prototype.name = movement.name; function movement() { };
 
 Movement.prototype.calcDigTickDuration = function(dt) {
-    return Math.round(1000.0 * this.digDuration / dt);
+    return Math.round(1000.0 * this.toolUseDuration / dt);
 }
 
 Movement.prototype.getV2Dir = function() {
@@ -49,6 +50,7 @@ Movement.prototype.deserialize = function(byteArray, index) {
     this.down = (bitField & 4 != 0);
     this.right = (bitField & 8 != 0);
     this.spacebar = (bitField & 16 != 0);
+    this.isUsingTool = this.spacebar;
 }
 
 Movement.prototype.getSerializationSize = function() {
@@ -79,6 +81,7 @@ entityFunctionPlayerMovement = function(gameData, dt) {
         var normalized = v2.create(0, 0);
         v2.normalize(deltaSpeed, normalized);
         v2.mul(entity.movement.speed, normalized, normalized);
+
         // Slow down at dig:
         if(entity.movement.isMining)
             v2.mul(entity.movement.mineMovementSpeed, normalized, normalized);
@@ -87,14 +90,18 @@ entityFunctionPlayerMovement = function(gameData, dt) {
         v2.mul(dt, normalized, normalized);
         v2.add(normalized, entity.physicsBody.speed, entity.physicsBody.speed);
 
+        if(entity.movement.isUsingTool && !isServer)
+            entity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArm", 64 / entity.movement.toolUseDuration, false);
+
         var moveDir = entity.movement.getV2Dir();
         if(moveDir[0] != 0 || moveDir[1] != 0)
             entity.physicsBody.rotateTo(Math.atan2(-moveDir[1], moveDir[0]), entity.physicsBody.rotationSpeed, dt);
 
         // Dig update:
-        entity.movement.digTickTimeout = (entity.movement.digTickTimeout <= 0) ? 0 : entity.movement.digTickTimeout - 1;
+        entity.movement.toolUseTickTimeout = (entity.movement.toolUseTickTimeout <= 0) ? 0 : entity.movement.toolUseTickTimeout - 1;
         // Reset dig state
-        if(entity.movement.digTickTimeout == 0) {
+        if(entity.movement.toolUseTickTimeout == 0) {
+            entity.movement.isUsingTool = false;
             entity.movement.isDigging = false;
             entity.movement.isMining = false;
             if(entity.bodyparts.bodyparts["rightArm"])
@@ -102,6 +109,3 @@ entityFunctionPlayerMovement = function(gameData, dt) {
         }
     }
 }
-var movement2 = 4;
-var movement3 = 3;
-var movement = new Movement();

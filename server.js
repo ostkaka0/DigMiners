@@ -36,11 +36,6 @@ loadScript("UnitTest.js");
 loadScriptsRecursive("unit_tests");
 runUnitTests();
 
-//console.log("compressing!");
-//var testArray = new Array(256);
-//testArray.fill(123);
-//console.log(compressRLE(testArray));
-
 var idList = new IdList();
 var connections = new Array(); // key socketId, value player object
 var gameData = new GameData(idList);
@@ -97,7 +92,7 @@ tick = function(dt) {
 
     gameData.playerWorld.objectArray.forEach(function(player) {
         var entity = gameData.entityWorld.objects[player.entityId];
-        if(entity.movement && entity.movement.spacebar && entity.physicsBody && entity.movement.digTickTimeout == 0) {
+        if(entity.movement && entity.movement.spacebar && entity.physicsBody && entity.movement.toolUseTickTimeout == 0) {
             var itemType = player.inventory.getEquippedItemType("tool");
             var angle = entity.physicsBody.angle;
             var moveDir = [Math.cos(-angle), Math.sin(-angle)];

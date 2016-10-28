@@ -1,3 +1,4 @@
+
 MessagePlayerMove = function(playerMoveDirection) {
     this.playerMoveDirection = playerMoveDirection;
 }
