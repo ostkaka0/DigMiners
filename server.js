@@ -6,24 +6,6 @@ http = require("http").Server(app);
 io = require("socket.io")(http);
 present = require('present');
 
-var rotate = function(x_origin, y_origin, x, y, angle) {
-    var cs = Math.cos(angle);
-    var sn = Math.sin(angle);
-
-    var translated_x = x - x_origin;
-    var translated_y = y - y_origin;
-
-    var result_x = translated_x * cs - translated_y * sn;
-    var result_y = translated_x * sn + translated_y * cs;
-
-    result_x += x_origin;
-    result_y += y_origin;
-
-    return [result_x, result_y];
-}
-
-console.log("rotate " + rotate(0, 10, 0, 0, Math.PI));
-
 var isServer = true;
 
 loadScript = function(filePath) {
@@ -84,12 +66,13 @@ loadChunk = function(world, x, y) {
     var chunk = new Chunk();
     gameData.generator.generate(chunk, x, y);
     world.set(x, y, chunk);
+
+    gameData.generator.generateDungeons(gameData.blockWorld, chunk, x, y);
 }
 
 for(var x = -3; x < 3; ++x) {
     for(var y = -3; y < 3; ++y) {
         loadChunk(gameData.tileWorld, x, y);
-        setForeground(gameData.blockWorld, x, y, 1);
     }
 }
 carveCircle(gameData, 0, 0, 12);
