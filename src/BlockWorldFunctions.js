@@ -23,4 +23,14 @@ setForeground = function(blockWorld, x, y, value) {
         blockWorld.set(blockChunkX, blockChunkY, blockChunk);
     }
     blockChunk.setForeground(localX, localY, value);
+
+    if(!value) {
+        for(var x = 0; x < BLOCK_CHUNK_DIM; ++x) {
+            for(var y = 0; y < BLOCK_CHUNK_DIM; ++y) {
+                if(blockChunk.getForeground(x, y) || blockChunk.getBackground(x, y))
+                    return;
+            }
+        }
+        blockWorld.set(blockChunkX, blockChunkY, null);
+    }
 }

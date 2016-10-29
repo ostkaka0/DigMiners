@@ -41,7 +41,7 @@ Movement.prototype.serialize = function(byteArray, index) {
     serializeFix(byteArray, index, this.speed);
 }
 
-Movement.prototype.deserialize = function(byteArray, index) {
+Movement.prototype.deserialize = function(byteArray, index, gameData) {
     var bitField = deserializeInt8(byteArray, index);
     this.speed = deserializeFix(byteArray, index);
 
@@ -50,7 +50,6 @@ Movement.prototype.deserialize = function(byteArray, index) {
     this.down = (bitField & 4 != 0);
     this.right = (bitField & 8 != 0);
     this.spacebar = (bitField & 16 != 0);
-    this.isUsingTool = this.spacebar;
 }
 
 Movement.prototype.getSerializationSize = function() {
@@ -90,8 +89,10 @@ entityFunctionPlayerMovement = function(gameData, dt) {
         v2.mul(dt, normalized, normalized);
         v2.add(normalized, entity.physicsBody.speed, entity.physicsBody.speed);
 
-        if(entity.movement.isUsingTool && !isServer)
-            entity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArm", 64 / entity.movement.toolUseDuration, false);
+        if(entity.movement.spacebar && !entity.movement.isUsingTool)
+            entity.movement.isUsingTool = true;
+        if(entity.movement.isUsingTool && entity.movement.toolUseTickTimeout <= 0)
+            onPlayerUseTool(gameData, player, entity);
 
         var moveDir = entity.movement.getV2Dir();
         if(moveDir[0] != 0 || moveDir[1] != 0)
@@ -100,12 +101,46 @@ entityFunctionPlayerMovement = function(gameData, dt) {
         // Dig update:
         entity.movement.toolUseTickTimeout = (entity.movement.toolUseTickTimeout <= 0) ? 0 : entity.movement.toolUseTickTimeout - 1;
         // Reset dig state
-        if(entity.movement.toolUseTickTimeout == 0) {
+        if(entity.movement.toolUseTickTimeout == 0 || (!entity.movement.spacebar && entity.movement.isUsingTool)) {
             entity.movement.isUsingTool = false;
             entity.movement.isDigging = false;
             entity.movement.isMining = false;
             if(entity.bodyparts.bodyparts["rightArm"])
                 entity.bodyparts.bodyparts["rightArm"].finishCycle();
         }
+    }
+}
+
+onPlayerUseTool = function(gameData, player, entity) {
+    entity.movement.toolUseTickTimeout = entity.movement.calcDigTickDuration(gameData.tickDuration);
+    if(!isServer)
+        entity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArm", 64 / entity.movement.toolUseDuration, false);
+    else {
+        //var itemType = player.inventory.getEquippedItemType("tool");
+        var angle = entity.physicsBody.angle;
+        var moveDir = [Math.cos(-angle), Math.sin(-angle)];
+        var toolUsePos = [toFix(entity.physicsBody.pos[0] + 1.0 * moveDir[0]), toFix(entity.physicsBody.pos[1] + 1.0 * moveDir[1])];
+        var chunkPos = [];
+        var localPos = [];
+        v2WorldToBlockChunk(toolUsePos, chunkPos, localPos);
+        var blockChunk = gameData.blockWorld.get(chunkPos[0], chunkPos[1]);
+        if(blockChunk) {
+            var blockId = blockChunk.getForeground(localPos[0], localPos[1]);
+            if(blockId) {
+                var strength = blockChunk.getStrength(localPos[0], localPos[1]);
+                strength -= 64;
+                if(strength <= 0) {
+                    var x = chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0];
+                    var y = chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1];
+                    var command = new CommandPlayerBuild(player.playerId, x, y, 0, BlockTypes.FOREGROUND);
+                    gameData.commands.push(command);
+                } else
+                    blockChunk.setStrength(localPos[0], localPos[1], strength);
+                return;
+            }
+        }
+
+        var command = new CommandPlayerDig(player.playerId, entity.physicsBody.pos[0], entity.physicsBody.pos[1], moveDir, 1.5, player.getDigSpeed(), player.getMaxDigHardness());
+        gameData.commands.push(command);
     }
 }

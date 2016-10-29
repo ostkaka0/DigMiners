@@ -32,10 +32,8 @@ MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
         message.send(player.socket);
 
         // Send block change
-        //var blockType = gameData.blockRegister[itemType.blockId];
-        var message = new MessagePlayerBuild(player.playerId, this.x, this.y, itemType.blockId, BlockTypes.FOREGROUND);
-        message.execute(gameData);
-        message.send(io.sockets);
+        var command = new CommandPlayerBuild(player.playerId, this.x, this.y, itemType.blockId, BlockTypes.FOREGROUND);
+        gameData.commands.push(command);
     }
 }
 

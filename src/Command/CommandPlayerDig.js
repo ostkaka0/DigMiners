@@ -10,20 +10,16 @@ CommandPlayerDig = function(playerId, x, y, dir, radius, digSpeed, maxDigHardnes
 }
 
 CommandPlayerDig.prototype.execute = function(gameData) {
-    //console.log("digSpeed " + this.digSpeed + " maxHardness " + this.maxDigHardness);
-
     var player = gameData.playerWorld.objects[this.playerId];
     if(!player) return;
     var entity = gameData.entityWorld.objects[player.entityId];
     if(!entity || !entity.movement) return;
-    entity.movement.isUsingTool = true;
-    entity.movement.toolUseTickTimeout = entity.movement.calcDigTickDuration(gameData.tickDuration);
 
     var tileWorld = gameData.tileWorld;
     var targetTile = gameData.tileRegister[getTileId(gameData.tileWorld, this.x + 1.0 * this.dir[0], this.y + 1.0 * this.dir[1])];
     var targetDensity = getDensity(gameData.tileWorld, this.x + 1.0 * this.dir[0], this.y + 1.0 * this.dir[1]);
     var onDensityChange = null;
-    var digDis = 1.5; // Distance to dig
+    var digDis = 1.5;
 
     if(targetTile.isOre && targetDensity > 0) {
         entity.movement.isMining = true;

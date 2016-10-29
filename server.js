@@ -89,17 +89,6 @@ tick = function(dt) {
     new MessageCommands(gameData).send(io.sockets);
 
     gameData.tick(dt);
-
-    gameData.playerWorld.objectArray.forEach(function(player) {
-        var entity = gameData.entityWorld.objects[player.entityId];
-        if(entity.movement && entity.movement.spacebar && entity.physicsBody && entity.movement.toolUseTickTimeout == 0) {
-            var itemType = player.inventory.getEquippedItemType("tool");
-            var angle = entity.physicsBody.angle;
-            var moveDir = [Math.cos(-angle), Math.sin(-angle)];
-            var command = new CommandPlayerDig(player.playerId, entity.physicsBody.pos[0], entity.physicsBody.pos[1], moveDir, 1.5, player.getDigSpeed(), player.getMaxDigHardness());
-            gameData.commands.push(command);
-        }
-    })
 }
 
 io.on("connection", function(socket) {

@@ -9,17 +9,17 @@ Blocks.Null = {
 Blocks.StoneWall = {
     name: "Stone Wall",
     isSolid: true,
-    hardness: 1
+    hardness: 1.0
 };
 
 Blocks.WoodCrate = {
     name: "Wood Crate",
     isSolid: true,
-    hardness: 1
+    hardness: 1.0
 };
 
 Blocks.StoneFloor = {
     name: "Stone Floor",
     isSolid: false,
-    hardness: 1
+    hardness: 1.0
 };

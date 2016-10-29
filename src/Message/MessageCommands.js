@@ -32,6 +32,7 @@ MessageCommands.prototype.receive = function(gameData, byteArray) {
     this.tickId = deserializeInt32(byteArray, counter);
     while(counter.value < byteArray.byteLength) {
         var commandId = deserializeInt32(byteArray, counter);
+
         var command = new gameData.commandTypes[commandId]();
         command.deserialize(byteArray, counter);
         this.commands.push(command);
