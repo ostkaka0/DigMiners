@@ -232,4 +232,6 @@ gameData.entityWorld.onAdd = function(entity) {
         var textSprite = new Sprite(null, text, false);
         entity.drawable.addSprite("textAmount", textSprite, null, false);
     }
+    if(!isServer && entity.health && entity.drawable)
+        onHealthChange(entity);
 }

@@ -8,7 +8,7 @@ Drawable = function(zindex) {
     zindices[this.zindex].addChild(this.container);
 }
 
-Drawable.prototype.name = drawable.name; function drawable(){};
+Drawable.prototype.name = drawable.name; function drawable() { };
 
 Drawable.prototype.serialize = function(byteArray, index) {
     serializeInt32(byteArray, index, this.zindex);
@@ -69,10 +69,10 @@ Drawable.prototype.addSprite = function(name, sprite, offset, rotateWithBody) {
     if(this.sprites[name])
         this.removeSprite(name);
     this.sprites[name] = sprite;
-    if(!isServer && offset) {
-        this.sprites[name].sprite.pivot.x = -offset[0];
-        this.sprites[name].sprite.pivot.y = -offset[1];
-    }
+    //if(!isServer && offset) {
+    //this.sprites[name].sprite.pivot.x = -offset[0];
+    //this.sprites[name].sprite.pivot.y = -offset[1];
+    //}
     this.sprites[name].offset = offset;
     this.sprites[name].rotateWithBody = rotateWithBody;
     if(!isServer)
@@ -94,8 +94,8 @@ Drawable.prototype.positionSprites = function(x, y, rotation) {
 
     for(var sprite in this.sprites) {
         sprite = this.sprites[sprite];
-        sprite.sprite.position.x = x;
-        sprite.sprite.position.y = y;
+        sprite.sprite.position.x = x + sprite.offset[0];
+        sprite.sprite.position.y = y + sprite.offset[1];
         if(sprite.rotateWithBody)
             sprite.sprite.rotation = rotation;
     }
