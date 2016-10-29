@@ -6,8 +6,8 @@ GameData = function(idList) {
 
     this.tickDuration = 1000 / 20;
     this.tickId = 0;
-    this.fakeLag = 100;
-    this.fakeJitter = 8;
+    this.fakeLag = 0;
+    this.fakeJitter = 0;
     this.playerWorld = new ObjectWorld();
     this.entityWorld = new ObjectWorld();
     this.tileWorld = new Map2D();
@@ -22,11 +22,11 @@ GameData = function(idList) {
         this.animationManager = {};
     this.commands = [];
     this.pendingCommands = {};
-    this.commandTypes = typeRegisterAddByArray([], [CommandPlayerMove, CommandDig, CommandPlayerDig, CommandPlayerEquipItem, CommandPlayerBuild]);
+    this.commandTypes = typeRegisterAddByArray([], [CommandPlayerMove, CommandDig, CommandPlayerDig, CommandPlayerEquipItem, CommandPlayerBuild, CommandEntityHurtEntity]);
     this.messagesToClient = [MessageInit, MessageCommands, MessageChunk, MessagePlayerJoin, MessagePlayerLeave, MessagePlayerInventory, MessageEntitySpawn, MessageEntityDestroy];
     this.messagesToServer = [MessagePlayerMove, MessageRequestItemPickup, MessageRequestDropStack, MessageRequestEquipStack, MessageRequestCraft, MessageRequestPlaceBlock];
     this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
-    this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ComponentItem]);
+    this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ComponentItem, Health]);
 
     Recipes = [];
 
