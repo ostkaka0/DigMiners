@@ -29,16 +29,15 @@ MessagePlayerInventory.prototype.execute = function(gameData) {
         player.inventory.addItem(gameData, this.id, this.amount);
     } else if(this.actionId == InventoryActions.REMOVE_ITEM) {
         var removed = player.inventory.removeItem(gameData, this.id, this.amount);
-        if(isServer) {
-            for(var i = 0; i < removed.length; ++i) {
-                // Dequip item when removed from inventory
-                var entry = removed[i];
-                if(gameData.itemRegister[entry[0]].equippable) {
-                    var command = new CommandPlayerEquipItem(player.playerId, entry[0], entry[1], false);
-                    gameData.commands.push(command);
-                }
-            };
-        }
+        for(var i = 0; i < removed.length; ++i) {
+            // Dequip item when removed from inventory
+            var entry = removed[i];
+            var stackId = entry[0];
+            var item = entry[1];
+            var itemType = gameData.itemRegister[item.id];
+            if(item.equipped)
+                player.onDequip(stackId, itemType);
+        };
     } else if(this.actionId == InventoryActions.DROP_STACK) {
         var item = player.inventory.removeStack(this.id);
     }
