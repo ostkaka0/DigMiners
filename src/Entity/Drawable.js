@@ -94,8 +94,8 @@ Drawable.prototype.positionSprites = function(x, y, rotation) {
 
     for(var sprite in this.sprites) {
         sprite = this.sprites[sprite];
-        sprite.sprite.position.x = x + sprite.offset[0];
-        sprite.sprite.position.y = y + sprite.offset[1];
+        sprite.sprite.position.x = x + (sprite.offset ? sprite.offset[0] : 0);
+        sprite.sprite.position.y = y + (sprite.offset ? sprite.offset[1] : 0);
         if(sprite.rotateWithBody)
             sprite.sprite.rotation = rotation;
     }
