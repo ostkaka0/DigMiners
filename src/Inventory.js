@@ -52,7 +52,7 @@ Inventory.prototype.removeItem = function(gameData, id, amount) {
             var removed = (amount <= currentAmount ? amount : currentAmount);
             this.items[i].amount -= removed;
             if(this.items[i].amount <= 0) {
-                removedItems.push([i, this.items[i].id]);
+                removedItems.push([i, this.items[i]]);
                 this.items.splice(i, 1);
             }
             amount -= removed;

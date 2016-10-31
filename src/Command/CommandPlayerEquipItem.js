@@ -11,6 +11,7 @@ CommandPlayerEquipItem.prototype.execute = function(gameData) {
     var entity = gameData.entityWorld.objects[player.entityId];
 
     var itemType = gameData.itemRegister[this.itemId];
+    if(!itemType.isEquipable) return;
 
     var sprite = entity.bodyparts.bodyparts[itemType.type].sprite;
     if(!isServer && sprite.sprite && !this.equipped)
