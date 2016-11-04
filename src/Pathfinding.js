@@ -26,17 +26,17 @@ aStarFlowField = function(disField, expandList, tileWorld, blockWorld, start, go
         var pageAndIndex = getPageAndIndex(pos);
         var page = pageAndIndex[0];
         var index = pageAndIndex[1];
-        return page[index] + v2.distance(pos, start);
+        return page[index]/10.0 + v2.distance(pos, start);
     }
     var expandListCompare = function(a, b) {
-        return calcPathCost([a & 0xFFFF, a >> 16]) - calcPathCost([b & 0xFFFF, b >> 16]);
+        return calcPathCost([a << 16 >> 16, a >> 16]) - calcPathCost([b << 16 >> 16, b >> 16]);
     }
     expandList.sort(expandListCompare);
     
 
     
     if (expandList.length == 0) {
-        expandList.push(goal[0] & 0xFFFF) | ((goal[1] & 0xFFFF) << 16);
+        expandList.push((goal[0] & 0xFFFF) | ((goal[1] & 0xFFFF) << 16));
         var basePageAndIndex = getPageAndIndex(goal);
         var basePage = basePageAndIndex[0];
         var baseIndex = basePageAndIndex[1]
@@ -44,7 +44,7 @@ aStarFlowField = function(disField, expandList, tileWorld, blockWorld, start, go
     }
     
     while(expandList.length != 0) {
-        var basePos = [expandList[0] & 0xFFFF, expandList[0] >> 16];
+        var basePos = [expandList[0] << 16 >> 16, expandList[0] >> 16];
         expandList.shift();
         var basePageAndIndex = getPageAndIndex(basePos);
         var basePage = basePageAndIndex[0];
@@ -60,7 +60,7 @@ aStarFlowField = function(disField, expandList, tileWorld, blockWorld, start, go
             var dis = baseDis + childDirWeights[i];
             if (page[index] > dis) {
                 page[index] = dis;
-                var insertIndex = binarySearch(expandList, dis + v2.distance(pos, start), function(a, b) { return calcPathCost([a & 0xFFFF, a >> 16]) - b; } );
+                var insertIndex = binarySearch(expandList, dis/10.0 + v2.distance(pos, start), function(a, b) { return calcPathCost([a << 16 >> 16, a >> 16]) - b; } );
                 expandList.splice(insertIndex, 0, (pos[0] & 0xFFFF) | ((pos[1] & 0xFFFF) << 16));
             }
         }
