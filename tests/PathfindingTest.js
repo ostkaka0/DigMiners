@@ -54,18 +54,21 @@ render = function() {
 
     var stage = new PIXI.Container();
     var graphics = new PIXI.Graphics();
-    for (var xx = -2; xx <= 5; xx++) {
-        for (var yy = -2; yy <= 5; yy++) {
+    for (var xx = -20; xx <= 20; xx++) {
+        for (var yy = -20; yy <= 20; yy++) {
             var page = flowField.get(xx, yy);
             if (!page) continue;
             for (var x = 0; x < PATH_PAGE_DIM; x++) {
                 for (var y = 0; y < PATH_PAGE_DIM; y++) {
                     var dis = page[x + y * PATH_PAGE_DIM];
-                    if (dis == 65535) continue;
                     
-                    graphics.beginFill(PIXI.utils.rgb2hex([0/255, 1/255, 0/255]), 0xFF);
-                    graphics.lineStyle(5, 0xFF0000);
-                    graphics.drawRect((x + (xx)*PATH_PAGE_DIM)*16 + canvas.width/2, canvas.height/2 -(y + (yy)*PATH_PAGE_DIM)*16, 16, 16);
+                    
+                    if (dis == 65535)
+                        graphics.beginFill(0x000000, 0x00);
+                    else
+                        graphics.beginFill(PIXI.utils.rgb2hex([0/255, 1/255, 0/255]), 0xFF);
+                    graphics.lineStyle(1, 0xFF0000);
+                    graphics.drawRect((x + (xx)*PATH_PAGE_DIM)*4 + canvas.width/2, canvas.height/2 -(y + (yy)*PATH_PAGE_DIM)*4, 4, 4);
                 }
             }
         }
@@ -86,7 +89,7 @@ $(document.getElementById("hud")).click(function(event) {
     carveCircle(gameData, tileX, tileY, 1.0, 10.0, 10.0);
     //flowField = new Map2D();
     //expandList = [];
-    aStarFlowField(flowField, expandList, null, null, [10*tileX, 10*tileY], [0, 0]);
+    aStarFlowField(flowField, expandList, null, null, [8*tileX, 8*tileY], [0, 0]);
 });
 
 init();
