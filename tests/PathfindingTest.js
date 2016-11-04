@@ -64,7 +64,7 @@ render = function() {
                     
                     graphics.beginFill(PIXI.utils.rgb2hex([0/255, 1/255, 0/255]), 0xFF);
                     graphics.lineStyle(5, 0xFF0000);
-                    graphics.drawRect((x + (xx+1)*PATH_PAGE_DIM)*16, (y + (yy+1)*PATH_PAGE_DIM)*16, 16, 16);
+                    graphics.drawRect((x + (xx)*PATH_PAGE_DIM)*16 + canvas.width/2, canvas.height/2 -(y + (yy)*PATH_PAGE_DIM)*16, 16, 16);
                 }
             }
         }
