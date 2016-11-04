@@ -25,6 +25,7 @@ aStarFlowField = function(disField, expandList, tileWorld, blockWorld, start, go
     var calcDis = function(a, b) {
         var deltaX = Math.abs(a[0] - b[0]);
         var deltaY = Math.abs(a[1] - b[1]);
+        return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
         return deltaX + deltaY - Math.abs(deltaX - deltaY);
     }
     
@@ -32,18 +33,12 @@ aStarFlowField = function(disField, expandList, tileWorld, blockWorld, start, go
         var pageAndIndex = getPageAndIndex(pos);
         var page = pageAndIndex[0];
         var index = pageAndIndex[1];
-        return calcDis(pos, start);
+        return page[index] / 12.0 + calcDis(pos, start);
     }
     var expandListCompare = function(a, b) {
         return calcPathCost([a << 16 >> 16, a >> 16]) - calcPathCost([b << 16 >> 16, b >> 16]);
     }
     expandList.sort(expandListCompare);
-    
-    console.log("list sorted:");
-    for(var i = 0; i < expandList.length; i++) {
-        console.log(calcPathCost([expandList[i] << 16 >> 16, expandList[i] >> 16]));
-    }
-    console.log("done!");
     
     // Check if path already exists!
     {
@@ -82,7 +77,7 @@ aStarFlowField = function(disField, expandList, tileWorld, blockWorld, start, go
             var dis = baseDis + childDirWeights[i];
             if (page[index] > dis) {
                 page[index] = dis;
-                var insertIndex = binarySearch(expandList, calcDis(pos, start), function(a, b) { return calcPathCost([a << 16 >> 16, a >> 16]) - b; } );
+                var insertIndex = binarySearch(expandList, dis/12.0 + calcDis(pos, start), function(a, b) { return calcPathCost([a << 16 >> 16, a >> 16]) - b; } );
                 expandList.splice(insertIndex, 0, (pos[0] & 0xFFFF) | ((pos[1] & 0xFFFF) << 16));
             }
         }
