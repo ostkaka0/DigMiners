@@ -36,7 +36,7 @@ aStarFlowField = function(disField, expandList, tileWorld, blockWorld, start, go
 
     
     if (expandList.length == 0) {
-        expandList.push(goal[0] | (goal[1] << 16));
+        expandList.push(goal[0] & 0xFFFF) | ((goal[1] & 0xFFFF) << 16);
         var basePageAndIndex = getPageAndIndex(goal);
         var basePage = basePageAndIndex[0];
         var baseIndex = basePageAndIndex[1]
@@ -45,7 +45,6 @@ aStarFlowField = function(disField, expandList, tileWorld, blockWorld, start, go
     
     while(expandList.length != 0) {
         var basePos = [expandList[0] & 0xFFFF, expandList[0] >> 16];
-        expandList.shift();
         expandList.shift();
         var basePageAndIndex = getPageAndIndex(basePos);
         var basePage = basePageAndIndex[0];
@@ -62,7 +61,7 @@ aStarFlowField = function(disField, expandList, tileWorld, blockWorld, start, go
             if (page[index] > dis) {
                 page[index] = dis;
                 var insertIndex = binarySearch(expandList, dis + v2.distance(pos, start), function(a, b) { return calcPathCost([a & 0xFFFF, a >> 16]) - b; } );
-                expandList.splice(insertIndex, 0, pos[0] | (pos[1] << 16));
+                expandList.splice(insertIndex, 0, (pos[0] & 0xFFFF) | ((pos[1] & 0xFFFF) << 16));
             }
         }
         if (basePos[0] == start[0] && basePos[1] == start[1])
