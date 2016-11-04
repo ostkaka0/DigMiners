@@ -47,15 +47,26 @@ render = function() {
     chunkRenderer.render(world, projectionMatrix.clone().append(viewMatrix), camera);
     
     var page = flowField.get(0, 0);
+    var stage = new PIXI.Container();
+    var graphics = new PIXI.Graphics();
     if (page) {
         for (var x = 0; x < PATH_PAGE_DIM; x++) {
             for (var y = 0; y < PATH_PAGE_DIM; y++) {
                 var dis = page[x + y * PATH_PAGE_DIM];
-                if (dis != 65535)
-                    console.log(dis);
+                if (dis == 65535) continue;
+                
+                
+                graphics.beginFill(0xFFFF00);
+                graphics.lineStyle(5, 0xFF0000);
+                graphics.drawRect(0, 0, 300, 200);
             }
         }
     }
+    graphics.beginFill(0xFFFF00);
+    graphics.lineStyle(5, 0xFF0000);
+    graphics.drawRect(0, 0, 300, 200);
+    stage.addChild(graphics);
+    renderer.render(stage);
     
 }
 
