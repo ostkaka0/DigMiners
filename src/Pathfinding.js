@@ -33,8 +33,22 @@ aStarFlowField = function(disField, expandList, tileWorld, blockWorld, start, go
     }
     expandList.sort(expandListCompare);
     
-
+    console.log("list sorted:");
+    for(var i = 0; i < expandList.length; i++) {
+        console.log(calcPathCost([expandList[i] << 16 >> 16, expandList[i] >> 16]));
+    }
+    console.log("done!");
     
+    // Check if path already exists!
+    {
+        var startPageAndIndex = getPageAndIndex(start);
+        var startPage = startPageAndIndex[0];
+        var startIndex = startPageAndIndex[1];
+        if (startPage[startIndex] != 65535)
+            return;
+    }
+    
+    // Create first node at goal
     if (expandList.length == 0) {
         expandList.push((goal[0] & 0xFFFF) | ((goal[1] & 0xFFFF) << 16));
         var basePageAndIndex = getPageAndIndex(goal);
@@ -42,6 +56,8 @@ aStarFlowField = function(disField, expandList, tileWorld, blockWorld, start, go
         var baseIndex = basePageAndIndex[1]
         basePage[baseIndex] = 0;
     }
+    
+
     
     while(expandList.length != 0) {
         var basePos = [expandList[0] << 16 >> 16, expandList[0] >> 16];

@@ -19,6 +19,7 @@ renderer.view.style.top = '0%';
 document.body.appendChild(renderer.view);
 
 var flowField = new Map2D();
+var expandList = [];
 
 init = function() {
     for(var x = -10; x < 10; ++x) {
@@ -83,8 +84,9 @@ $(document.getElementById("hud")).click(function(event) {
     var tileX = Math.floor(worldX / 32);
     var tileY = Math.floor(worldY / 32);
     carveCircle(gameData, tileX, tileY, 1.0, 10.0, 10.0);
-    flowField = new Map2D();
-    aStarFlowField(flowField, [], null, null, [0,0], [2*tileX, 2*tileY]);
+    //flowField = new Map2D();
+    //expandList = [];
+    aStarFlowField(flowField, expandList, null, null, [10*tileX, 10*tileY], [0, 0]);
 });
 
 init();
