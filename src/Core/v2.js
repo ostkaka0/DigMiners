@@ -83,13 +83,13 @@ v2.length = function(a) {
 }
 
 v2.distance = function(a, b) {
-    var diff = {};
+    var diff = [0, 0];
     v2.sub(a, b, diff);
     return v2.length(diff);
 }
 
 v2.distanceSquared = function(a, b) {
-    var diff = {};
+    var diff = [0, 0];
     v2.sub(a, b, diff);
     return v2.lengthSquared(diff);
 }
