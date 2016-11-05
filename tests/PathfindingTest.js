@@ -55,8 +55,8 @@ render = function() {
     var stage = new PIXI.Container();
     var graphics = new PIXI.Graphics();
     if (flowField) {
-        for (var x = 0; x < flowFieldSize[0]; x++) {
-            for (var y = 0; y < flowFieldSize[1]; y++) {
+        for (var x = 0; x < 32; x++) {
+            for (var y = 0; y < 32; y++) {
                 var dis = flowField[x + y * flowFieldSize[0]];
                 
                 
@@ -83,7 +83,7 @@ $(document.getElementById("hud")).click(function(event) {
     var tileX = Math.floor(worldX / 32);
     var tileY = Math.floor(worldY / 32);
     carveCircle(gameData, tileX, tileY, 1.0, 10.0, 10.0);
-    flowField = genFlowField(flowField, flowFieldSize, null, null, [8*tileX, 8*tileY]);
+    flowField = genFlowField(flowField, flowFieldSize, world, null, [8*tileX, 8*tileY]);
 });
 
 init();
