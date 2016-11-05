@@ -87,39 +87,35 @@ aStarFlowField = function(disField, expandList, tileWorld, blockWorld, start, go
     
 }
 
-genFlowField = function(flowField, worldSize, tileWorld, blockWorld, goal) {
+genFlowField = function(flowField, worldRect, tileWorld, blockWorld, goal, maxDistance) {
+    maxDistance = maxDistance | 0xF000;
     if (!flowField)
-        flowField = new Uint16Array(worldSize[0] * worldSize[1]);
+        flowField = new Uint16Array(worldRect[2] * worldRect[3]);
     flowField.fill(0xFFFF);
     
-    var expandList = [];
-    
-    // Create first node at goal
-    expandList.push((goal[0] & 0xFFFF) | ((goal[1] & 0xFFFF) << 16));
-    flowField[goal[0] + goal[1] * worldSize[0]] = 0;
+    // Init expandList with first node at goal
+    var expandList = [(goal[0] & 0xFFFF) | ((goal[1] & 0xFFFF) << 16)];
+    flowField[goal[0] - worldRect[0] + (goal[1] - worldRect[1]) * worldRect[2]] = 0;
     
     while(expandList.length != 0) {
         var basePos = [expandList[0] << 16 >> 16, expandList[0] >> 16];
         expandList.shift();
-        var baseIndex = basePos[0] + basePos[1] * worldSize[0];
-        var baseDis = flowField[baseIndex];
+        var baseDis = flowField[basePos[0] - worldRect[0] + (basePos[1] - worldRect[1]) * worldRect[2]];
         
         for (var i = 0; i < 4; i++) {
             var pos = [basePos[0] + (i & 1) - (i >> 1), basePos[1] + (i & 1 ^ 1) - (i >> 1)];
-            var index = pos[0] + pos[1] * worldSize[0];
+            if (pos[0] < worldRect[0] || pos [1] < worldRect[0] || pos[0] >= worldRect[2] + worldRect[0] || pos[1] >= worldRect[3] + worldRect[1])
+                continue;
+            var index = pos[0] - worldRect[0] + (pos[1] - worldRect[1]) * worldRect[2];
             var dis = baseDis + 1;
             if (getDensity(tileWorld, pos[0], pos[1]) > 127) 
                 dis += 20;
-            if (flowField[index] > dis) {
+            if (flowField[index] > dis && dis < maxDistance) {
                 flowField[index] = dis;
-                expandList.push((pos[0] & 0xFFFF) | ((pos[1] & 0xFFFF) << 16));
+                var insertIndex = binarySearch(expandList, dis, function(a, b) { return flowField[(a << 16 >> 16) - worldRect[0] + ((a >> 16) - worldRect[1]) * worldRect[2]] - b; } );
+                expandList.splice(insertIndex, 0, (pos[0] & 0xFFFF) | ((pos[1] & 0xFFFF) << 16));
             }
         }
     }
     return flowField;
 }
-
-/*genFlowField = function(tileWorld, blockWorld, flowfield, start, goal) {
-    aStar(tileWorld, blockWorld, goal, start);
-    // TODO: Gen flowfield
-}*/
