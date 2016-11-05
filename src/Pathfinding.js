@@ -109,7 +109,7 @@ genFlowField = function(flowField, worldRect, tileWorld, blockWorld, goal, maxDi
             var index = pos[0] - worldRect[0] + (pos[1] - worldRect[1]) * worldRect[2];
             var dis = baseDis + 1;
             if (getDensity(tileWorld, pos[0], pos[1]) > 127) 
-                dis += 20;
+                continue;
             if (flowField[index] > dis && dis < maxDistance) {
                 flowField[index] = dis;
                 var insertIndex = binarySearch(expandList, dis, function(a, b) { return flowField[(a << 16 >> 16) - worldRect[0] + ((a >> 16) - worldRect[1]) * worldRect[2]] - b; } );
