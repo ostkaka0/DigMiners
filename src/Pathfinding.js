@@ -87,26 +87,26 @@ aStarFlowField = function(disField, expandList, tileWorld, blockWorld, start, go
     
 }
 
-genFlowField = function(tileWorld, blockWorld, worldSize, goal) {
+genFlowField = function(flowField, worldSize, tileWorld, blockWorld, goal) {
     var childDirs = [ [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1]];
     var childDirWeights = [10, 14, 10, 14, 10, 14, 10, 14];
     
-    
-    var flowField = new Uint16Array(worldSize[0] * worldSize[1]);
-    var expandList = [];
-    
+    if (!flowField)
+        flowField = new Uint16Array(worldSize[0] * worldSize[1]);
     flowField.fill(0xFFFF);
     
-    var calcDis = function(a, b) {
+    var expandList = [];
+    
+    /*var calcDis = function(a, b) {
         var deltaX = Math.abs(a[0] - b[0]);
         var deltaY = Math.abs(a[1] - b[1]);
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
         return deltaX + deltaY - Math.abs(deltaX - deltaY);
-    }
+    }*/
     
     var calcPathCost = function(pos) {
         var index = pos[0] + pos[1] * worldSize[0];
-        return flowField[index] / 10.0 + calcDis(pos, start);
+        return flowField[index];
     }
     
     // Create first node at goal
@@ -123,10 +123,10 @@ genFlowField = function(tileWorld, blockWorld, worldSize, goal) {
             var pos = [0, 0];
             v2.add(basePos, childDirs[i], pos);;
             var index = pos[0] + pos[1] * worldSize[0];
-            var dis = flowField[index];
+            var dis = baseDis + childDirWeights[i];
             if (flowField[index] > dis) {
                 flowField[index] = dis;
-                var insertIndex = binarySearch(expandList, dis/10.0 + calcDis(pos, start), function(a, b) { return calcPathCost([a << 16 >> 16, a >> 16]) - b; } );
+                var insertIndex = binarySearch(expandList, dis, function(a, b) { return calcPathCost([a << 16 >> 16, a >> 16]) - b; } );
                 expandList.splice(insertIndex, 0, (pos[0] & 0xFFFF) | ((pos[1] & 0xFFFF) << 16));
             }
         }

@@ -83,7 +83,7 @@ $(document.getElementById("hud")).click(function(event) {
     var tileX = Math.floor(worldX / 32);
     var tileY = Math.floor(worldY / 32);
     carveCircle(gameData, tileX, tileY, 1.0, 10.0, 10.0);
-    flowField = genFlowField(null, null, flowFieldSize, [8*tileX, 8*tileY]);
+    flowField = genFlowField(flowField, flowFieldSize, null, null, [8*tileX, 8*tileY]);
 });
 
 init();
