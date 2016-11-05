@@ -87,6 +87,54 @@ aStarFlowField = function(disField, expandList, tileWorld, blockWorld, start, go
     
 }
 
+genFlowField = function(tileWorld, blockWorld, worldSize, goal) {
+    var childDirs = [ [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1]];
+    var childDirWeights = [10, 14, 10, 14, 10, 14, 10, 14];
+    
+    
+    var flowField = new Uint16Array(worldSize[0] * worldSize[1]);
+    var expandList = [];
+    
+    flowField.fill(0xFFFF);
+    
+    var calcDis = function(a, b) {
+        var deltaX = Math.abs(a[0] - b[0]);
+        var deltaY = Math.abs(a[1] - b[1]);
+        return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        return deltaX + deltaY - Math.abs(deltaX - deltaY);
+    }
+    
+    var calcPathCost = function(pos) {
+        var index = pos[0] + pos[1] * worldSize[0];
+        return flowField[index] / 10.0 + calcDis(pos, start);
+    }
+    
+    // Create first node at goal
+    expandList.push((goal[0] & 0xFFFF) | ((goal[1] & 0xFFFF) << 16));
+    flowField[goal[0] + goal[1] * worldSize[0]] = 0;
+    
+    while(expandList.length != 0) {
+        var basePos = [expandList[0] << 16 >> 16, expandList[0] >> 16];
+        expandList.shift();
+        var baseIndex = basePos[0] + basePos[1] * worldSize[0];
+        var baseDis = flowField[baseIndex];
+        
+        for (var i = 0; i < 8; i++) {
+            var pos = [0, 0];
+            v2.add(basePos, childDirs[i], pos);;
+            var index = pos[0] + pos[1] * worldSize[0];
+            var dis = flowField[index];
+            if (flowField[index] > dis) {
+                flowField[index] = dis;
+                var insertIndex = binarySearch(expandList, dis/10.0 + calcDis(pos, start), function(a, b) { return calcPathCost([a << 16 >> 16, a >> 16]) - b; } );
+                expandList.splice(insertIndex, 0, (pos[0] & 0xFFFF) | ((pos[1] & 0xFFFF) << 16));
+            }
+        }
+    }
+    
+    return flowField;
+}
+
 /*genFlowField = function(tileWorld, blockWorld, flowfield, start, goal) {
     aStar(tileWorld, blockWorld, goal, start);
     // TODO: Gen flowfield
