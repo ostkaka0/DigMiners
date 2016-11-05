@@ -18,8 +18,8 @@ renderer.view.style.left = '0%';
 renderer.view.style.top = '0%';
 document.body.appendChild(renderer.view);
 
-var flowField = new Map2D();
-var expandList = [];
+var flowFieldSize = [256, 256];
+var flowField = null;
 
 init = function() {
     for(var x = -10; x < 10; ++x) {
@@ -54,22 +54,18 @@ render = function() {
 
     var stage = new PIXI.Container();
     var graphics = new PIXI.Graphics();
-    for (var xx = -20; xx <= 20; xx++) {
-        for (var yy = -20; yy <= 20; yy++) {
-            var page = flowField.get(xx, yy);
-            if (!page) continue;
-            for (var x = 0; x < PATH_PAGE_DIM; x++) {
-                for (var y = 0; y < PATH_PAGE_DIM; y++) {
-                    var dis = page[x + y * PATH_PAGE_DIM];
-                    
-                    
-                    if (dis == 65535)
-                        graphics.beginFill(0x000000, 0x00);
-                    else
-                        graphics.beginFill(PIXI.utils.rgb2hex([0/255, 1/255, 0/255]), 0xFF);
-                    graphics.lineStyle(1, 0xFF0000);
-                    graphics.drawRect((x + (xx)*PATH_PAGE_DIM)*4 + canvas.width/2, canvas.height/2 -(y + (yy)*PATH_PAGE_DIM)*4, 4, 4);
-                }
+    if (flowField) {
+        for (var x = 0; x < flowFieldSize[0]; x++) {
+            for (var y = 0; y < flowFieldSize[1]; y++) {
+                var dis = flowField[x + y * flowFieldSize[0]];
+                
+                
+                if (dis == 65535)
+                    graphics.beginFill(0x000000, 0x00);
+                else
+                    graphics.beginFill(PIXI.utils.rgb2hex([0/255, 1/255, 0/255]), 0xFF);
+                graphics.lineStyle(1, 0xFF0000);
+                graphics.drawRect(x*4 + canvas.width/2, canvas.height/2 -y*4, 4, 4);
             }
         }
     }
@@ -87,9 +83,7 @@ $(document.getElementById("hud")).click(function(event) {
     var tileX = Math.floor(worldX / 32);
     var tileY = Math.floor(worldY / 32);
     carveCircle(gameData, tileX, tileY, 1.0, 10.0, 10.0);
-    //flowField = new Map2D();
-    //expandList = [];
-    aStarFlowField(flowField, expandList, null, null, [8*tileX, 8*tileY], [0, 0]);
+    flowField = genFlowField(null, null, flowFieldSize, [8*tileX, 8*tileY]);
 });
 
 init();
