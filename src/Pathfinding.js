@@ -110,7 +110,7 @@ genFlowField = function(flowField, worldSize, tileWorld, blockWorld, goal) {
             var dis = baseDis + 1;
             if (getDensity(tileWorld, pos[0], pos[1]) > 127) 
                 dis += 20;
-            if (flowField[index] > dis && dis < 320) {
+            if (flowField[index] > dis) {
                 flowField[index] = dis;
                 expandList.push((pos[0] & 0xFFFF) | ((pos[1] & 0xFFFF) << 16));
             }
