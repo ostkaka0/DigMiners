@@ -105,12 +105,12 @@ genFlowField = function(flowField, worldSize, tileWorld, blockWorld, goal) {
         var baseDis = flowField[baseIndex];
         
         for (var i = 0; i < 4; i++) {
-            var pos = [basePos[0] + (i & 1), basePos[1] + (i & 1 ^ 1)];
+            var pos = [basePos[0] + (i & 1) - (i >> 1), basePos[1] + (i & 1 ^ 1) - (i >> 1)];
             var index = pos[0] + pos[1] * worldSize[0];
             var dis = baseDis + 1;
             if (getDensity(tileWorld, pos[0], pos[1]) > 127) 
                 dis += 20;
-            if (flowField[index] > dis && dis < 0xF000) {
+            if (flowField[index] > dis && dis < 320) {
                 flowField[index] = dis;
                 expandList.push((pos[0] & 0xFFFF) | ((pos[1] & 0xFFFF) << 16));
             }
