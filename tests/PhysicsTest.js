@@ -52,11 +52,14 @@ render = function() {
 $(document.getElementById("hud")).click(function(event) {
     var worldX = event.clientX + camera.pos[0] - camera.width / 2;
     var worldY = canvas.height - event.clientY + camera.pos[1] - camera.height / 2;
-    var bodyId = physicsWorld.getBodyAtPoint([worldX/32, worldY/32]);
-    if (bodyId != undefined)
-        physicsWorld.remove(bodyId);
-    else
+    var bodies = [];
+    physicsWorld.getBodiesInRadius(bodies, [worldX/32, worldY/32]);
+    if (bodies.length != 0) {
+        for (var i = 0; i < bodies.length; i++)
+            physicsWorld.remove(bodies[i]);
+    } else {
         physicsWorld.add([worldX/32, worldY/32], [1*(worldX % 10 - 5), 1*(worldY % 10 - 5)]);
+    }
 });
 
 init();
