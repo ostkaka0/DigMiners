@@ -219,6 +219,9 @@ onMessage(MessageInit, function(message) {
 $(document).click(function(event) {
     if(global.player.isBuilding) {
         var stackId = global.player.inventory.getEquippedStackId("tool");
+        var bodies = [];
+        if (!global.player.canPlaceBlock(gameData, global.player.buildPos[0], global.player.buildPos[1]))
+            return false;
         if(stackId != null) {
             var message = new MessageRequestPlaceBlock(stackId, global.player.buildPos[0], global.player.buildPos[1]);
             message.send(socket);
