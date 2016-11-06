@@ -63,8 +63,7 @@ CommandPlayerMove.prototype.execute = function(gameData) {
             break;
     }
 
-    playerEntity.physicsBody.pos[0] = this.x;
-    playerEntity.physicsBody.pos[1] = this.y;
+    playerEntity.physicsBody.setPos([this.x, this.y]);
 }
 
 CommandPlayerMove.prototype.serialize = function(byteArray, index) {
