@@ -15,6 +15,7 @@ GameData = function(idList) {
     this.tileRegister = objectRegisterAddByObject([], Tiles);
     this.itemRegister = objectRegisterAddByObject([], Items);
     this.blockRegister = objectRegisterAddByObject([], Blocks);
+    this.physicsWorld = new PhysicsWorld();
     this.generator = {};
     if(!isServer)
         this.animationManager = new AnimationManager();
@@ -92,6 +93,7 @@ GameData.prototype.tick = function(dt) {
     });
     this.commands.length = 0;
     this.playerWorld.update();
+    this.physicsWorld.update(dt);
     entityFunctionPlayerMovement(this, dt);
     entityFunctionPhysicsBodySimulate(this, dt);
     this.entityWorld.update();

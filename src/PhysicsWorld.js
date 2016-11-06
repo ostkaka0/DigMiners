@@ -15,8 +15,8 @@ PhysicsWorld.prototype.update = function(dt) {
         
         this.pos[2*id] += dt*this.velocity[2*id] >> 0;
         this.pos[2*id+1] += dt*this.velocity[2*id+1] >> 0;
-        this.velocity[2*id] = fix.pow(0.25, dt) * this.velocity[2*id] >> 0;
-        this.velocity[2*id+1] = fix.pow(0.25, dt) * this.velocity[2*id+1] >> 0;
+        this.velocity[2*id] = fix.pow(0.01, dt) * this.velocity[2*id] >> 0;
+        this.velocity[2*id+1] = fix.pow(0.01, dt) * this.velocity[2*id+1] >> 0;
         
         var pagePos = [fixFromInt32(this.pos[2*id]) / pageDim >> 0, fixFromInt32(this.pos[2*id+1]) / pageDim >> 0];
         // Update pages:

@@ -87,7 +87,9 @@ entityFunctionPlayerMovement = function(gameData, dt) {
         else if(entity.movement.isDigging)
             v2.mul(entity.movement.digMovementSpeed, normalized, normalized);
         v2.mul(dt, normalized, normalized);
-        v2.add(normalized, entity.physicsBody.speed, entity.physicsBody.speed);
+        var velocity = entity.physicsBody.getVelocity();
+        v2.add(normalized, velocity, velocity);
+        entity.physicsBody.setVelocity(velocity);
 
         if(entity.movement.spacebar && !entity.movement.isUsingTool)
             entity.movement.isUsingTool = true;
