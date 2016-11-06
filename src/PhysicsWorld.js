@@ -9,15 +9,8 @@ PhysicsWorld = function() {
 }
 
 PhysicsWorld.prototype.update = function(dt) {
-    var freeId = this.freeIds[0];
-    var freeIdIndex = 0;
-    for (var id = 0; id < this.numBodies; id++) {
-        if (id == freeId) {
-            freeIdIndex++;
-            freeId = this.freeIds[freeIdIndex];
-            continue;
-        }
-        
+    // Update positions, velocity, and pages
+    this.forEach(this, function(id) {
         var pagePosOld = [fixFromInt32(this.pos[2*id]) / pageDim >> 0, fixFromInt32(this.pos[2*id+1]) / pageDim >> 0];
         
         this.pos[2*id] += dt*this.velocity[2*id] >> 0;
@@ -45,7 +38,35 @@ PhysicsWorld.prototype.update = function(dt) {
                 page.splice(index, 0, id);
             }
         }
-    }
+    });
+    
+    // Collision:
+    this.forEach(this, function(id) {
+        var pos = this.getPos(id);
+        var bodies = [];
+        this.getBodiesInRadius(bodies, pos, 0.5); 
+        forOf(this, bodies, function(otherId) {
+            // No self collision
+            if (otherId == id) return;
+            // Only do collision once
+            if (otherId > id) return;
+            
+            var otherPos = this.getPos(otherId);
+            var dir = [0, 0];
+            v2.sub(otherPos, pos, dir);
+            var dis = v2.length(dir);
+            v2.normalize(dir, dir);
+            if (dis == 0)
+                dir = [1, 0];
+                
+            var deltaPos = [0, 0];
+            v2.mul((1.0 - dis)/2, dir, deltaPos);
+            v2.sub(pos, deltaPos, pos);
+            v2.add(otherPos, deltaPos, otherPos);
+            this.setPos(id, pos);
+            this.setPos(otherId, otherPos);
+        });
+    });
 }
 
 PhysicsWorld.prototype.add = function(pos, velocity) {
@@ -93,7 +114,8 @@ PhysicsWorld.prototype.remove = function(id) {
     }
 }
 
-PhysicsWorld.prototype.getBodyAtPoint = function(point) {
+PhysicsWorld.prototype.getBodiesInRadius = function(bodies, point, radius) {
+    if (radius == undefined) radius = 0.0;
     var pagePos = [point[0] / pageDim - 0.5 >> 0, point[1] / pageDim - 0.5 >> 0];
     for (var i = 0; i < 4; i++) {
         var page = this.pages.get(pagePos[0] + i%2, pagePos[1] + i/2 >> 0);
@@ -102,8 +124,8 @@ PhysicsWorld.prototype.getBodyAtPoint = function(point) {
             var id = page[j];
             var pos = [fixFromInt32(this.pos[2*id]), fixFromInt32(this.pos[2*id+1])];
             var length = v2.distanceSquared(pos, point);
-            if (length < 0.5)
-                return id;
+            if (length-0.5 < radius)
+                bodies.push(id);
         }
     }
     return null;
