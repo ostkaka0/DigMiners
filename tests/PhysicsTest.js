@@ -42,7 +42,7 @@ render = function() {
         
         graphics.beginFill(0xA0A0A0, 0xFF);
         graphics.lineStyle(1, 0xFF0000);
-        graphics.drawRect(pos[0] + canvas.width/2, -pos[1] + canvas.height/2, 32, 32);
+        graphics.drawRect(32*pos[0] + canvas.width/2, -32*pos[1] + canvas.height/2, 32, 32);
     }
     stage.addChild(graphics);
     renderer.render(stage);
@@ -52,7 +52,7 @@ render = function() {
 $(document.getElementById("hud")).click(function(event) {
     var worldX = event.clientX + camera.pos[0] - camera.width / 2;
     var worldY = canvas.height - event.clientY + camera.pos[1] - camera.height / 2;
-    physicsWorld.add([worldX, worldY], [40*(worldX % 10 - 5), 40*(worldY % 10 - 5)]);
+    physicsWorld.add([worldX/32, worldY/32], [1*(worldX % 10 - 5), 1*(worldY % 10 - 5)]);
 });
 
 init();
