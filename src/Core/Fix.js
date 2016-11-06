@@ -7,6 +7,14 @@ toFix = function(a) {
     return (a * 0x10000 >> 0) % 0x100000000 / 0x10000;
 }
 
+fixToInt32 = function(a) {
+    return a * 0x10000 >> 0;
+}
+
+fixFromInt32 = function(a) {
+    return a / 0x10000;
+}
+
 isFix = function(a) {
     return (toFix(a) == a);
 }
