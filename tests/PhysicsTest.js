@@ -37,13 +37,13 @@ render = function() {
 
     var stage = new PIXI.Container();
     var graphics = new PIXI.Graphics();
-    for(var id = 0; id < physicsWorld.numBodies; id++) {
+    physicsWorld.forEach(this, function(id) {
         var pos = physicsWorld.getPos(id);
         
         graphics.beginFill(0xA0A0A0, 0xFF);
         graphics.lineStyle(1, 0xFF0000);
-        graphics.drawRect(32*pos[0] + canvas.width/2, -32*pos[1] + canvas.height/2, 32, 32);
-    }
+        graphics.drawCircle(32*pos[0] + canvas.width/2, -32*pos[1] + canvas.height/2, 16);
+    });
     stage.addChild(graphics);
     renderer.render(stage);
     
@@ -52,7 +52,11 @@ render = function() {
 $(document.getElementById("hud")).click(function(event) {
     var worldX = event.clientX + camera.pos[0] - camera.width / 2;
     var worldY = canvas.height - event.clientY + camera.pos[1] - camera.height / 2;
-    physicsWorld.add([worldX/32, worldY/32], [1*(worldX % 10 - 5), 1*(worldY % 10 - 5)]);
+    var bodyId = physicsWorld.getBodyAtPoint([worldX/32, worldY/32]);
+    if (bodyId != undefined)
+        physicsWorld.remove(bodyId);
+    else
+        physicsWorld.add([worldX/32, worldY/32], [1*(worldX % 10 - 5), 1*(worldY % 10 - 5)]);
 });
 
 init();
