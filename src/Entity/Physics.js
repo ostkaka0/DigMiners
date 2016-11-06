@@ -48,17 +48,17 @@ PhysicsBody.prototype.setVelocity = function(velocity) { gameData.physicsWorld.s
 
 
 PhysicsBody.prototype.serialize = function(byteArray, index) {
-    serializeV2(byteArray, index, this.pos);
-    serializeV2(byteArray, index, this.speed);
+    serializeV2(byteArray, index, this.getPos());
+    serializeV2(byteArray, index, this.getVelocity());
     serializeFix(byteArray, index, this.angle);
     serializeFix(byteArray, index, this.rotationSpeed);
     serializeFix(byteArray, index, this.damping);
 }
 
 PhysicsBody.prototype.deserialize = function(byteArray, index) {
-    this.pos = deserializeV2(byteArray, index);
+    this.setPos(deserializeV2(byteArray, index));
     this.posOld = v2.clone(this.pos);
-    this.speed = deserializeV2(byteArray, index);
+    this.setVelocity(deserializeV2(byteArray, index));
     this.speedOld = v2.clone(this.speed);
     this.angle = deserializeFix(byteArray, index);
     this.angleOld = this.angle;
