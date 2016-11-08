@@ -1,24 +1,28 @@
-var pageDim = 1;
+var pageDim = 2;
 
 PhysicsWorld = function() {
     this.numBodies = 0;
     this.pos = [];
+    this.posOld = [];
     this.velocity = [];
     this.freeIds = [];
     this.pages = new Map2D();
 }
 
 PhysicsWorld.prototype.update = function(dt) {
-    // Update positions, velocity, and pages
+    // Update pos, velocity, posOld and pages
     this.forEach(this, function(id) {
-        var pagePosOld = [Math.floor(fixFromInt32(this.pos[2*id]) / pageDim), Math.floor(fixFromInt32(this.pos[2*id+1]) / pageDim)];
-        
+        // Update pos, velocity
         this.pos[2*id] += dt*this.velocity[2*id] >> 0;
         this.pos[2*id+1] += dt*this.velocity[2*id+1] >> 0;
         this.velocity[2*id] = fix.pow(0.01, dt) * this.velocity[2*id] >> 0;
         this.velocity[2*id+1] = fix.pow(0.01, dt) * this.velocity[2*id+1] >> 0;
         
-        var pagePos = [Math.floor(fixFromInt32(this.pos[2*id]) / pageDim), Math.floor(fixFromInt32(this.pos[2*id+1]) / pageDim)];
+        var pos = this.getPos(id);
+        var posOld = this.getPosOld(id);
+        var pagePos = [Math.floor(pos[0] / pageDim), Math.floor(pos[1] / pageDim)];
+        var pagePosOld = [Math.floor(posOld[0] / pageDim), Math.floor(posOld[1] / pageDim)];
+        
         // Update pages:
         if (pagePos[0] != pagePosOld[0] || pagePos[1] != pagePosOld[1]) {
             var pageOld = this.pages.get(pagePosOld[0], pagePosOld[1]);
@@ -38,15 +42,20 @@ PhysicsWorld.prototype.update = function(dt) {
                 page.splice(index, 0, id);
             }
         }
+        
+        // Update posOld
+        this.posOld[2*id] = this.pos[2*id];
+        this.posOld[2*id+1] = this.pos[2*id+1];
     });
     
     // Collision:
     this.forEach(this, function(id) {
         var velocity = this.getVelocity(id);
         var pos = this.getPos(id);
+        var posOld = this.getPosOld(id);
         var mass = 1.0;
         var bodies = [];
-        this.getBodiesInRadius(bodies, pos, 0.5); 
+        this.getBodiesInRadius(bodies, posOld, 0.5); 
         forOf(this, bodies, function(otherId) {
             // No self collision
             if (otherId == id) return;
@@ -54,17 +63,17 @@ PhysicsWorld.prototype.update = function(dt) {
             if (otherId > id) return;
             
             var otherPos = this.getPos(otherId);
+            var otherPosOld = this.getPosOld(otherId);
             var otherVelocity = this.getVelocity(otherId);
             var otherMass = 1.0;
             
             // Calc position
             var dir = [0, 0];
-            v2.sub(otherPos, pos, dir);
+            v2.sub(otherPosOld, posOld, dir);
             var dis = v2.length(dir);
             v2.normalize(dir, dir);
             if (dis == 0)
                 dir = [1, 0];
-                
             var deltaPos = [0, 0];
             v2.mul((1.0 - dis)/2, dir, deltaPos);
             v2.sub(pos, deltaPos, pos);
@@ -96,12 +105,15 @@ PhysicsWorld.prototype.add = function(pos, velocity) {
     
     if (this.freeIds.length == 0) {
         this.pos.push(fixToInt32(pos[0]), fixToInt32(pos[1]));
+        this.posOld.push(fixToInt32(pos[0]), fixToInt32(pos[1]));
         this.velocity.push(fixToInt32(velocity[0]), fixToInt32(velocity[1]));
         id = this.numBodies++;
     } else {
         id = this.freeIds.pop();
         this.pos[2*id] = fixToInt32(pos[0]);
         this.pos[2*id+1] = fixToInt32(pos[1]);
+        this.posOld[2*id] = fixToInt32(pos[0]);
+        this.posOld[2*id+1] = fixToInt32(pos[1]);
         this.velocity[2*id] = fixToInt32(velocity[0]);
         this.velocity[2*id+1] = fixToInt32(velocity[1]);
     }
@@ -122,7 +134,7 @@ PhysicsWorld.prototype.remove = function(id) {
     var index = binarySearch(this.freeIds, id, function(a, b) { return a-b; });
     this.freeIds.splice(index, 0, id);
     
-    var pagePos = [Math.floor(fixFromInt32(this.pos[2*id]) / pageDim), Math.floor(fixFromInt32(this.pos[2*id+1]) / pageDim)];
+    var pagePos = [Math.floor(fixFromInt32(this.posOld[2*id]) / pageDim), Math.floor(fixFromInt32(this.posOld[2*id+1]) / pageDim)];
     var page = this.pages.get(pagePos[0], pagePos[1]);
     if (page) {
         var index = binarySearch(page, id, function(a, b) { return a-b; });
@@ -145,7 +157,7 @@ PhysicsWorld.prototype.getBodiesInRadius = function(bodies, point, radius) {
         if (!page) continue;
         for (var j = 0; j < page.length; j++) {
             var id = page[j];
-            var pos = [fixFromInt32(this.pos[2*id]), fixFromInt32(this.pos[2*id+1])];
+            var pos = [fixFromInt32(this.posOld[2*id]), fixFromInt32(this.posOld[2*id+1])];
             var delta = [pos[0] - point[0], pos[1] - point[1]];
             var lengthSquared = delta[0] * delta[0] + delta[1] * delta[1];
             if (lengthSquared < (radius + 0.5) * (radius + 0.5))
@@ -175,6 +187,10 @@ PhysicsWorld.prototype.getPos = function(id) {
 PhysicsWorld.prototype.setPos = function(id, pos) {
     this.pos[2*id] = fixToInt32(pos[0]);
     this.pos[2*id+1] = fixToInt32(pos[1]);
+}
+
+PhysicsWorld.prototype.getPosOld = function(id) {
+    return [fixFromInt32(this.posOld[2*id]), fixFromInt32(this.posOld[2*id+1])];
 }
 
 PhysicsWorld.prototype.getVelocity = function(id) {
