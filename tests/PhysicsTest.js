@@ -24,7 +24,8 @@ init = function() {
 }
 
 tick = function(dt) {
-    console.log("tick!");
+    console.log("TPS: " + 1000 / (performance.now() - lastFrameTime));
+    lastFrameTime = performance.now();
     physicsWorld.update(dt);
 }
 
@@ -37,30 +38,30 @@ render = function() {
 
     var stage = new PIXI.Container();
     var graphics = new PIXI.Graphics();
+    var i = 0;
     physicsWorld.forEach(this, function(id) {
-        var pos = physicsWorld.getPos(id);
-        
-        graphics.beginFill(0xA0A0A0, 0xFF);
-        graphics.lineStyle(1, 0xFF0000);
-        graphics.drawCircle(32*pos[0] + canvas.width/2, -32*pos[1] + canvas.height/2, 16);
+        if(i < 5) {
+            var pos = physicsWorld.getPos(id);
+
+            graphics.beginFill(0xA0A0A0, 0xFF);
+            graphics.lineStyle(1, 0xFF0000);
+            graphics.drawCircle(32 * pos[0] + canvas.width / 2, -32 * pos[1] + canvas.height / 2, 16);
+            ++i;
+        }
     });
     stage.addChild(graphics);
     renderer.render(stage);
-    
+
 }
 
 $(document.getElementById("hud")).click(function(event) {
     var worldX = event.clientX + camera.pos[0] - camera.width / 2;
     var worldY = canvas.height - event.clientY + camera.pos[1] - camera.height / 2;
-    var bodies = [];
-    physicsWorld.getBodiesInRadius(bodies, [worldX/32, worldY/32]);
-    if (bodies.length != 0) {
-        for (var i = 0; i < bodies.length; i++)
-            physicsWorld.remove(bodies[i]);
-    } else {
-        physicsWorld.add([worldX/32, worldY/32], [1*(worldX % 10 - 5), 1*(worldY % 10 - 5)]);
-    }
+    for(var i = 0; i < 500; ++i)
+        physicsWorld.add([worldX / 32, worldY / 32], [1 * (worldX % 10 - 5) + Math.floor(Math.random() * 20), 1 * (worldY % 10 - 5) + Math.floor(Math.random() * 20)]);
+
+    console.log("Body count: " + (physicsWorld.numBodies - physicsWorld.freeIds.length));
 });
 
 init();
-gameLoop(tick, render, 1000/60);
+gameLoop(tick, render, 1000 / 60);
