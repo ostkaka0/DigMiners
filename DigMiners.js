@@ -43,11 +43,11 @@ loadGame = function() {
         if(!keysDown[char]) {
             keysDown[char] = true;
             var playerMoveDirection = null;
-            if(char == "w") playerMoveDirection = PlayerMoveDirection.ENABLE_UP;
-            if(char == "a") playerMoveDirection = PlayerMoveDirection.ENABLE_LEFT;
-            if(char == "s") playerMoveDirection = PlayerMoveDirection.ENABLE_DOWN;
-            if(char == "d") playerMoveDirection = PlayerMoveDirection.ENABLE_RIGHT;
-            if(char == " ") playerMoveDirection = PlayerMoveDirection.ENABLE_SPACEBAR;
+            if(char == "w") playerMoveDirection = EntityMoveDirection.ENABLE_UP;
+            if(char == "a") playerMoveDirection = EntityMoveDirection.ENABLE_LEFT;
+            if(char == "s") playerMoveDirection = EntityMoveDirection.ENABLE_DOWN;
+            if(char == "d") playerMoveDirection = EntityMoveDirection.ENABLE_RIGHT;
+            if(char == " ") playerMoveDirection = EntityMoveDirection.ENABLE_SPACEBAR;
             if(playerMoveDirection != null)
                 new MessagePlayerMove(playerMoveDirection).send(socket);
         }
@@ -57,11 +57,11 @@ loadGame = function() {
         if(keysDown[char]) {
             keysDown[char] = false;
             var playerMoveDirection = null;
-            if(char == "w") playerMoveDirection = PlayerMoveDirection.DISABLE_UP;
-            if(char == "a") playerMoveDirection = PlayerMoveDirection.DISABLE_LEFT;
-            if(char == "s") playerMoveDirection = PlayerMoveDirection.DISABLE_DOWN;
-            if(char == "d") playerMoveDirection = PlayerMoveDirection.DISABLE_RIGHT;
-            if(char == " ") playerMoveDirection = PlayerMoveDirection.DISABLE_SPACEBAR;
+            if(char == "w") playerMoveDirection = EntityMoveDirection.DISABLE_UP;
+            if(char == "a") playerMoveDirection = EntityMoveDirection.DISABLE_LEFT;
+            if(char == "s") playerMoveDirection = EntityMoveDirection.DISABLE_DOWN;
+            if(char == "d") playerMoveDirection = EntityMoveDirection.DISABLE_RIGHT;
+            if(char == " ") playerMoveDirection = EntityMoveDirection.DISABLE_SPACEBAR;
             if(playerMoveDirection != null)
                 new MessagePlayerMove(playerMoveDirection).send(socket);
         }
