@@ -56,18 +56,10 @@ Movement.prototype.getSerializationSize = function() {
     return 5;
 }
 
-entityFunctionPlayerMovement = function(gameData, dt) {
-    var playerWorld = gameData.playerWorld;
-    var entityWorld = gameData.entityWorld;
-
-    if(!playerWorld || !entityWorld)
-        console.error("Missing gameData properties");
-    var numPlayers = playerWorld.objectArray.length;
-    for(var i = 0; i < numPlayers; ++i) {
-        var player = playerWorld.objectArray[i];
-        if(!player.entityId)
-            continue;
-        var entity = entityWorld.objects[player.entityId];
+entityFunctionEntityMovement = function(gameData, dt) {
+    var numEntities = gameData.entityWorld.objectArray.length;
+    for(var i = 0; i < numEntities; ++i) {
+        var entity = gameData.entityWorld.objectArray[i];
         if(!entity || !entity.movement || !entity.physicsBody)
             continue;
 
@@ -91,14 +83,14 @@ entityFunctionPlayerMovement = function(gameData, dt) {
         v2.add(normalized, velocity, velocity);
         entity.physicsBody.setVelocity(velocity);
 
-        if(entity.movement.spacebar && !entity.movement.isUsingTool)
-            entity.movement.isUsingTool = true;
-        if(entity.movement.isUsingTool && entity.movement.toolUseTickTimeout <= 0)
-            onPlayerUseTool(gameData, player, entity);
-
         var moveDir = entity.movement.getV2Dir();
         if(moveDir[0] != 0 || moveDir[1] != 0)
             entity.physicsBody.rotateTo(Math.atan2(-moveDir[1], moveDir[0]), entity.physicsBody.rotationSpeed, dt);
+
+        /*if(entity.movement.spacebar && !entity.movement.isUsingTool)
+            entity.movement.isUsingTool = true;
+        if(entity.movement.isUsingTool && entity.movement.toolUseTickTimeout <= 0)
+            onPlayerUseTool(gameData, player, entity);
 
         // Dig update:
         entity.movement.toolUseTickTimeout = (entity.movement.toolUseTickTimeout <= 0) ? 0 : entity.movement.toolUseTickTimeout - 1;
@@ -109,7 +101,7 @@ entityFunctionPlayerMovement = function(gameData, dt) {
             entity.movement.isMining = false;
             if(entity.bodyparts.bodyparts["rightArm"])
                 entity.bodyparts.bodyparts["rightArm"].finishCycle();
-        }
+        }*/
     }
 }
 

@@ -23,7 +23,7 @@ GameData = function(idList) {
         this.animationManager = {};
     this.commands = [];
     this.pendingCommands = {};
-    this.commandTypes = typeRegisterAddByArray([], [CommandPlayerMove, CommandDig, CommandPlayerDig, CommandPlayerEquipItem, CommandPlayerBuild, CommandEntityHurtEntity]);
+    this.commandTypes = typeRegisterAddByArray([], [CommandEntityMove, CommandDig, CommandPlayerDig, CommandPlayerEquipItem, CommandPlayerBuild, CommandEntityHurtEntity]);
     this.messagesToClient = [MessageInit, MessageCommands, MessageChunk, MessagePlayerJoin, MessagePlayerLeave, MessagePlayerInventory, MessageEntitySpawn, MessageEntityDestroy];
     this.messagesToServer = [MessagePlayerMove, MessageRequestItemPickup, MessageRequestDropStack, MessageRequestEquipStack, MessageRequestCraft, MessageRequestPlaceBlock];
     this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
@@ -94,7 +94,7 @@ GameData.prototype.tick = function(dt) {
     this.commands.length = 0;
     this.playerWorld.update();
     this.physicsWorld.update(dt);
-    entityFunctionPlayerMovement(this, dt);
+    entityFunctionEntityMovement(this, dt);
     entityFunctionPhysicsBodySimulate(this, dt);
     this.entityWorld.update();
     this.tickId++;

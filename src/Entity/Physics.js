@@ -149,8 +149,8 @@ physicsBodySimulate = function(gameData, physicsBody, dt) {
             }
         }
         physicsBody.setPos(pos);
-        
-        
+
+
         // Update posOld, speedOld
         v2.copy(physicsBody.getPos(), physicsBody.posOld);
         v2.copy(physicsBody.getPos(), physicsBody.speedOld);
