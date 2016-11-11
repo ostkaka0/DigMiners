@@ -72,8 +72,8 @@ GameData = function(idList) {
 
     if(idList) {
         var onObjectRemove = function(object) { idList.remove(object.id); };
-        this.playerWorld.onRemove = onObjectRemove;
-        this.entityWorld.onRemove = onObjectRemove;
+        this.playerWorld.onRemove.push(onObjectRemove);
+        this.entityWorld.onRemove.push(onObjectRemove);
     }
 }
 

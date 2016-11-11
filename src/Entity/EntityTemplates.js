@@ -54,7 +54,7 @@ entityTemplates.item = function(entityId, itemId, amount, gameData) {
 entityTemplates.testMonster = function(entityId, pos, gameData) {
     var entity = gameData.entityWorld.add({}, entityId);
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01);
-    entity.movement = new Movement(50.0);
+    entity.movement = new Movement(5.0);
 
     var feetSprite = new Sprite("feet");
     var rightArmSprite = new Sprite("rightArm");

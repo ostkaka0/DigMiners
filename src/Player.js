@@ -63,7 +63,7 @@ Player.prototype.canPlaceBlock = function(gameData, x, y) {
     if(!entity) return false;
     var bodies = [];
     gameData.physicsWorld.getBodiesInRadius(bodies, [x + 0.5, y + 0.5], 0.25);
-    if (bodies.length != 0) return false;
+    if(bodies.length != 0) return false;
     var distPlayerPos = [entity.physicsBody.pos[0] * 32, entity.physicsBody.pos[1] * 32];
     var dist = Math.sqrt((distPlayerPos[0] - distBlockPos[0]) * (distPlayerPos[0] - distBlockPos[0]) + (distPlayerPos[1] - distBlockPos[1]) * (distPlayerPos[1] - distBlockPos[1]));
     var blockChunkX = Math.floor(x / BLOCK_CHUNK_DIM);
@@ -74,4 +74,8 @@ Player.prototype.canPlaceBlock = function(gameData, x, y) {
     if(dist < gameData.blockPlaceDistance && (!blockChunk || !blockChunk.getForeground(localX, localY)))
         return true;
     return false;
+}
+
+Player.prototype.destroy = function(player) {
+
 }
