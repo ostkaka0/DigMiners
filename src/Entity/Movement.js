@@ -36,24 +36,27 @@ Movement.prototype.getV2Dir = function() {
 }
 
 Movement.prototype.serialize = function(byteArray, index) {
-    var bitField = (this.up ? 1 : 0) | (this.left ? 2 : 0) | (this.down ? 4 : 0) | (this.right ? 8 : 0) | (this.spacebar ? 16 : 0);
-    serializeInt8(byteArray, index, bitField);
+    var bitField1 = (this.up ? 1 : 0) | (this.left ? 2 : 0) | (this.down ? 4 : 0) | (this.right ? 8 : 0);
+    var bitField2 = (this.spacebar ? 1 : 0);
+    serializeInt8(byteArray, index, bitField1);
+    serializeInt8(byteArray, index, bitField2);
     serializeFix(byteArray, index, this.speed);
 }
 
 Movement.prototype.deserialize = function(byteArray, index, gameData) {
     var bitField = deserializeInt8(byteArray, index);
+    var bitField2 = deserializeInt8(byteArray, index);
     this.speed = deserializeFix(byteArray, index);
 
     this.up = (bitField & 1 != 0);
     this.left = (bitField & 2 != 0);
     this.down = (bitField & 4 != 0);
     this.right = (bitField & 8 != 0);
-    this.spacebar = (bitField & 16 != 0);
+    this.spacebar = (bitField2 & 1 != 0);
 }
 
 Movement.prototype.getSerializationSize = function() {
-    return 5;
+    return 6;
 }
 
 Movement.prototype.destroy = function(entity) {

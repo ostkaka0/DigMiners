@@ -1,4 +1,4 @@
-EntityMoveDirection = {
+MoveDir = {
     ENABLE_UP: 0,
     ENABLE_LEFT: 1,
     ENABLE_DOWN: 2,
@@ -11,9 +11,9 @@ EntityMoveDirection = {
     DISABLE_SPACEBAR: 9
 }
 
-CommandEntityMove = function(entityId, moveDirection, x, y) {
+CommandEntityMove = function(entityId, moveDirections, x, y) {
     this.entityId = entityId;
-    this.moveDirection = moveDirection;
+    this.moveDirections = moveDirections;
     this.x = x;
     this.y = y;
 }
@@ -26,37 +26,39 @@ CommandEntityMove.prototype.execute = function(gameData) {
     var physicsBody = entity.physicsBody;
     if(!physicsBody) return;
 
-    switch(this.moveDirection) {
-        case EntityMoveDirection.ENABLE_UP:
-            movement.up = true;
-            break;
-        case EntityMoveDirection.ENABLE_LEFT:
-            movement.left = true;
-            break;
-        case EntityMoveDirection.ENABLE_DOWN:
-            movement.down = true;
-            break;
-        case EntityMoveDirection.ENABLE_RIGHT:
-            movement.right = true;
-            break;
-        case EntityMoveDirection.ENABLE_SPACEBAR:
-            movement.spacebar = true;
-            break;
-        case EntityMoveDirection.DISABLE_UP:
-            movement.up = false;
-            break;
-        case EntityMoveDirection.DISABLE_LEFT:
-            movement.left = false;
-            break;
-        case EntityMoveDirection.DISABLE_DOWN:
-            movement.down = false;
-            break;
-        case EntityMoveDirection.DISABLE_RIGHT:
-            movement.right = false;
-            break;
-        case EntityMoveDirection.DISABLE_SPACEBAR:
-            movement.spacebar = false;
-            break;
+    for(var i = 0; i < this.moveDirections.length; ++i) {
+        switch(this.moveDirections[i]) {
+            case MoveDir.ENABLE_UP:
+                movement.up = true;
+                break;
+            case MoveDir.ENABLE_LEFT:
+                movement.left = true;
+                break;
+            case MoveDir.ENABLE_DOWN:
+                movement.down = true;
+                break;
+            case MoveDir.ENABLE_RIGHT:
+                movement.right = true;
+                break;
+            case MoveDir.ENABLE_SPACEBAR:
+                movement.spacebar = true;
+                break;
+            case MoveDir.DISABLE_UP:
+                movement.up = false;
+                break;
+            case MoveDir.DISABLE_LEFT:
+                movement.left = false;
+                break;
+            case MoveDir.DISABLE_DOWN:
+                movement.down = false;
+                break;
+            case MoveDir.DISABLE_RIGHT:
+                movement.right = false;
+                break;
+            case MoveDir.DISABLE_SPACEBAR:
+                movement.spacebar = false;
+                break;
+        }
     }
 
     physicsBody.setPos([this.x, this.y]);
@@ -64,18 +66,23 @@ CommandEntityMove.prototype.execute = function(gameData) {
 
 CommandEntityMove.prototype.serialize = function(byteArray, index) {
     serializeInt32(byteArray, index, this.entityId);
-    serializeInt32(byteArray, index, this.moveDirection);
+    serializeInt32(byteArray, index, this.moveDirections.length);
+    for(var i = 0; i < this.moveDirections.length; ++i)
+        serializeInt32(byteArray, index, this.moveDirections[i]);
     serializeFix(byteArray, index, this.x);
     serializeFix(byteArray, index, this.y);
 }
 
 CommandEntityMove.prototype.deserialize = function(byteArray, index) {
     this.entityId = deserializeInt32(byteArray, index);
-    this.moveDirection = deserializeInt32(byteArray, index);
+    var moveDirectionsLength = deserializeInt32(byteArray, index);
+    this.moveDirections = [];
+    for(var i = 0; i < moveDirectionsLength; ++i)
+        this.moveDirections[i] = deserializeInt32(byteArray, index);
     this.x = deserializeFix(byteArray, index);
     this.y = deserializeFix(byteArray, index);
 }
 
 CommandEntityMove.prototype.getSerializationSize = function() {
-    return 16;
+    return 16 + 4 * this.moveDirections.length;
 }

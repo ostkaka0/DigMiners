@@ -91,14 +91,8 @@ tick = function(dt) {
     gameData.tick(dt);
 
     gameData.entityWorld.objectArray.forEach(function(entity) {
-        if(entity.monster) {
-            var physicsBody = entity.physicsBody;
-            if(Math.random() > 0.5) {
-                var dir = Math.floor(Math.random() * 10);
-
-                gameData.commands.push(new CommandEntityMove(entity.id, dir, physicsBody.pos[0], physicsBody.pos[1]));
-            }
-        }
+        if(entity.behaviourContainer)
+            entity.behaviourContainer.update();
     });
 }
 
@@ -118,7 +112,7 @@ io.on("connection", function(socket) {
     connections[socket.id].player = player;
     connections[socket.id].entity = entity;
 
-    for(var i = 0; i < 10; ++i) {
+    for(var i = 0; i < 2; ++i) {
         // (TEMPORARY) spawn monster on player join
         var monster = entityTemplates.testMonster(idList.next(), [0, 0], gameData);
         new MessageEntitySpawn(gameData, monster).send(gameData, io.sockets);

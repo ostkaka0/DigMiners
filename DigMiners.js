@@ -43,11 +43,11 @@ loadGame = function() {
         if(!keysDown[char]) {
             keysDown[char] = true;
             var playerMoveDirection = null;
-            if(char == "w") playerMoveDirection = EntityMoveDirection.ENABLE_UP;
-            if(char == "a") playerMoveDirection = EntityMoveDirection.ENABLE_LEFT;
-            if(char == "s") playerMoveDirection = EntityMoveDirection.ENABLE_DOWN;
-            if(char == "d") playerMoveDirection = EntityMoveDirection.ENABLE_RIGHT;
-            if(char == " ") playerMoveDirection = EntityMoveDirection.ENABLE_SPACEBAR;
+            if(char == "w") playerMoveDirection = MoveDir.ENABLE_UP;
+            if(char == "a") playerMoveDirection = MoveDir.ENABLE_LEFT;
+            if(char == "s") playerMoveDirection = MoveDir.ENABLE_DOWN;
+            if(char == "d") playerMoveDirection = MoveDir.ENABLE_RIGHT;
+            if(char == " ") playerMoveDirection = MoveDir.ENABLE_SPACEBAR;
             if(playerMoveDirection != null)
                 new MessageRequestPlayerMove(playerMoveDirection).send(socket);
         }
@@ -57,11 +57,11 @@ loadGame = function() {
         if(keysDown[char]) {
             keysDown[char] = false;
             var playerMoveDirection = null;
-            if(char == "w") playerMoveDirection = EntityMoveDirection.DISABLE_UP;
-            if(char == "a") playerMoveDirection = EntityMoveDirection.DISABLE_LEFT;
-            if(char == "s") playerMoveDirection = EntityMoveDirection.DISABLE_DOWN;
-            if(char == "d") playerMoveDirection = EntityMoveDirection.DISABLE_RIGHT;
-            if(char == " ") playerMoveDirection = EntityMoveDirection.DISABLE_SPACEBAR;
+            if(char == "w") playerMoveDirection = MoveDir.DISABLE_UP;
+            if(char == "a") playerMoveDirection = MoveDir.DISABLE_LEFT;
+            if(char == "s") playerMoveDirection = MoveDir.DISABLE_DOWN;
+            if(char == "d") playerMoveDirection = MoveDir.DISABLE_RIGHT;
+            if(char == " ") playerMoveDirection = MoveDir.DISABLE_SPACEBAR;
             if(playerMoveDirection != null)
                 new MessageRequestPlayerMove(playerMoveDirection).send(socket);
         }

@@ -8,7 +8,7 @@ MessageRequestPlayerMove.prototype.execute = function(gameData, player) {
     if(!entity) return;
     var physicsBody = entity.physicsBody;
     if(!physicsBody) return;
-    gameData.commands.push(new CommandEntityMove(player.entityId, this.moveDirection, physicsBody.pos[0], physicsBody.pos[1]));
+    gameData.commands.push(new CommandEntityMove(player.entityId, [this.moveDirection], physicsBody.pos[0], physicsBody.pos[1]));
 }
 
 MessageRequestPlayerMove.prototype.send = function(socket) {
