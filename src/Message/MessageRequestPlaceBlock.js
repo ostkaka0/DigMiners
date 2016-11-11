@@ -32,7 +32,7 @@ MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
         message.send(player.socket);
 
         // Send block change
-        var command = new CommandPlayerBuild(player.playerId, this.x, this.y, itemType.blockId, BlockTypes.FOREGROUND);
+        var command = new CommandEntityBuild(player.entityId, this.x, this.y, itemType.blockId, BlockTypes.FOREGROUND);
         gameData.commands.push(command);
     }
 }
