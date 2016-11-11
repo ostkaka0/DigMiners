@@ -184,7 +184,7 @@ io.on("connection", function(socket) {
         gameData.entityWorld.remove(connections[socket.id].entity);
         gameData.playerWorld.remove(connections[socket.id].player);
         if(connections[socket.id].player)
-            console.log(connections[socket.id].player.name + " disconnected.");
+            console.log(connections[socket.id].entity.name.name + " disconnected.");
         delete connections[socket.id];
     });
 
@@ -221,7 +221,7 @@ io.on("connection", function(socket) {
         });
     });
 
-    console.log(player.name + " connected.");
+    console.log(entity.name.name + " connected.");
 });
 
 http.listen(gameData.port, function() {

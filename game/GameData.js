@@ -67,22 +67,23 @@ GameData = function(idList) {
         requiredOres: [[Tiles.Apatite, 10]],
         requiredItems: [[Items.SmallSticks, 10], [Items.RottenRoot, 4]],
     });
-    
+
     // Update physicsEntities
     this.entityWorld.onAdd.push((function(entity) {
-        if (entity.physicsBody)
+        if(entity.physicsBody)
             this.physicsEntities[entity.physicsBody.bodyId] = entity;
     }).bind(this));
     this.entityWorld.onRemove.push((function(entity) {
-        if (entity.physicsBody)
+        if(entity.physicsBody)
             this.physicsEntities[entity.physicsBody.bodyId] = undefined;
     }).bind(this));
-    
-    if (idList) {
+
+    //Do not re-use ids for now! causes bugs
+    /*if(idList) {
         var onObjectRemove = function(object) { idList.remove(object.id); };
         this.playerWorld.onRemove.push(onObjectRemove);
         this.entityWorld.onRemove.push(onObjectRemove);
-    }
+    }*/
 }
 
 GameData.prototype.tick = function(dt) {
