@@ -16,6 +16,7 @@ GameData = function(idList) {
     this.itemRegister = objectRegisterAddByObject([], Items);
     this.blockRegister = objectRegisterAddByObject([], Blocks);
     this.physicsWorld = new PhysicsWorld();
+    this.physicsEntities = {};
     this.generator = {};
     if (!isServer)
         this.animationManager = new AnimationManager();
@@ -66,10 +67,17 @@ GameData = function(idList) {
         requiredOres: [[Tiles.Apatite, 10]],
         requiredItems: [[Items.SmallSticks, 10], [Items.RottenRoot, 4]],
     });
-
-
-
-
+    
+    // Update physicsEntities
+    this.entityWorld.onAdd.push((function(entity) {
+        if (entity.physicsBody)
+            this.physicsEntities[entity.physicsBody.bodyId] = entity;
+    }).bind(this));
+    this.entityWorld.onRemove.push((function(entity) {
+        if (entity.physicsBody)
+            this.physicsEntities[entity.physicsBody.bodyId] = undefined;
+    }).bind(this));
+    
     if (idList) {
         var onObjectRemove = function(object) { idList.remove(object.id); };
         this.playerWorld.onRemove.push(onObjectRemove);
