@@ -14,7 +14,6 @@ MessageInit = function(gameData, player) {
 
 MessageInit.prototype.execute = function(gameData) {
     gameData.tickId = this.tickId;
-    //entityTemplates.player(this.playerId, this.entityId, this.playerName, gameData);
     var player = gameData.playerWorld.add(new Player(this.playerId, this.entityId, this.playerName), this.playerId);
     player.setName(this.playerName, gameData);
 
@@ -130,10 +129,6 @@ MessageInit.prototype.receive = function(gameData, byteArray) {
             console.log("replaced entity " + entityId);
         }
         gameData.entityWorld.add(entity, entityId);
-
-        if (entity.drawable && entity.bodyparts)
-            entity.drawable.initializeBodyparts(entity.bodyparts.bodyparts);
-        //console.dir(entity);
     }
 
     // Deserialize players
