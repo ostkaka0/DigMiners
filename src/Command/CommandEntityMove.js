@@ -60,8 +60,6 @@ CommandEntityMove.prototype.execute = function(gameData) {
     }
 
     physicsBody.setPos([this.x, this.y]);
-
-    console.log(this.entityId + " move: " + this.moveDirection);
 }
 
 CommandEntityMove.prototype.serialize = function(byteArray, index) {
