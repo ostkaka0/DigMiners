@@ -1,16 +1,15 @@
 
-MessagePlayerJoin = function(player) {
+MessagePlayerJoin = function(player, name) {
     if(player) {
         this.playerId = player.id;
         this.entityId = player.entityId;
-        this.playerName = player.name;
+        this.playerName = name;
     }
 }
 
 MessagePlayerJoin.prototype.execute = function(gameData) {
     console.log(this.playerName + " connected with playerId " + this.playerId);
     var player = entityTemplates.player(this.playerId, this.entityId, this.playerName, gameData).player;
-    player.setName(this.playerName, gameData);
 }
 
 MessagePlayerJoin.prototype.getSerializationSize = function() {

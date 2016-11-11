@@ -128,7 +128,7 @@ io.on("connection", function(socket) {
     // Send init message to player
     new MessageInit(gameData, player).send(gameData, socket);
     // Send playerJoin message to other players
-    new MessagePlayerJoin(player).send(socket.broadcast);
+    new MessagePlayerJoin(player, name).send(socket.broadcast);
 
     for(var x = -3; x < 3; ++x) {
         for(var y = -3; y < 3; ++y) {

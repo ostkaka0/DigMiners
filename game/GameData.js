@@ -28,7 +28,7 @@ GameData = function(idList) {
     this.messagesToClient = [MessageInit, MessageCommands, MessageChunk, MessagePlayerJoin, MessagePlayerLeave, MessagePlayerInventory, MessageEntitySpawn, MessageEntityDestroy];
     this.messagesToServer = [MessageRequestPlayerMove, MessageRequestItemPickup, MessageRequestDropStack, MessageRequestEquipStack, MessageRequestCraft, MessageRequestPlaceBlock];
     this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
-    this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ComponentItem, Health, ControlledByPlayer]);
+    this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ComponentItem, Health, ControlledByPlayer, Name]);
 
     Recipes = [];
 
