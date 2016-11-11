@@ -94,7 +94,7 @@ tick = function(dt) {
         if(entity.monster) {
             var physicsBody = entity.physicsBody;
             if(Math.random() > 0.5) {
-                var dir = Math.floor(Math.random() * 9);
+                var dir = Math.floor(Math.random() * 10);
                 
                 gameData.commands.push(new CommandEntityMove(entity.id, dir, physicsBody.pos[0], physicsBody.pos[1]));
             }
