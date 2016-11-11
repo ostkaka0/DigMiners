@@ -28,7 +28,7 @@ loadScriptsRecursive = function(dir) {
 }
 
 loadScriptsRecursive("lib");
-loadScriptsRecursive("src");
+loadScriptsRecursive("engine");
 loadScriptsRecursive("game");
 
 //Unit testing
