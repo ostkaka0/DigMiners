@@ -64,6 +64,10 @@ Drawable.prototype.getSerializationSize = function() {
     return size;
 }
 
+Drawable.prototype.destroy = function(entity) {
+    this.remove(entity.bodyparts.bodyparts);
+}
+
 // Add a sprite that follows this drawable. For example, a healthbar.
 Drawable.prototype.addSprite = function(name, sprite, offset, rotateWithBody) {
     if(this.sprites[name])
@@ -140,9 +144,11 @@ Drawable.prototype.remove = function(bodyparts) {
             this.container.removeChild(sprite.sprite);
     }
 
-    for(var bodypart in bodyparts) {
-        bodypart = bodyparts[bodypart];
-        if(!isServer)
-            this.container.removeChild(bodypart.sprite.sprite);
+    if(bodyparts) {
+        for(var bodypart in bodyparts) {
+            bodypart = bodyparts[bodypart];
+            if(!isServer)
+                this.container.removeChild(bodypart.sprite.sprite);
+        }
     }
 }

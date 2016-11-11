@@ -87,6 +87,10 @@ Bodyparts.prototype.getSerializationSize = function() {
     return size;
 }
 
+Bodyparts.prototype.destroy = function(entity) {
+    
+}
+
 Bodyparts.prototype.getChildren = function(parentName) {
     var output = [];
     for(var key in this.bodyparts) {

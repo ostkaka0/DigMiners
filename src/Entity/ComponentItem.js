@@ -21,3 +21,7 @@ ComponentItem.prototype.deserialize = function(byteArray, index) {
 ComponentItem.prototype.getSerializationSize = function() {
     return 8;
 }
+
+ComponentItem.prototype.destroy = function(entity) {
+    
+}

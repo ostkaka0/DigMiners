@@ -95,7 +95,7 @@ tick = function(dt) {
             var physicsBody = entity.physicsBody;
             if(Math.random() > 0.5) {
                 var dir = Math.floor(Math.random() * 10);
-                
+
                 gameData.commands.push(new CommandEntityMove(entity.id, dir, physicsBody.pos[0], physicsBody.pos[1]));
             }
         }
@@ -118,10 +118,12 @@ io.on("connection", function(socket) {
     connections[socket.id].player = player;
     connections[socket.id].entity = entity;
 
-    // (TEMPORARY) spawn monster on player join
-    var monster = entityTemplates.testMonster(idList.next(), [0, 0], gameData);
-    new MessageEntitySpawn(gameData, monster).send(gameData, io.sockets);
-    // Do not execute message, entity is already spawned
+    for(var i = 0; i < 10; ++i) {
+        // (TEMPORARY) spawn monster on player join
+        var monster = entityTemplates.testMonster(idList.next(), [0, 0], gameData);
+        new MessageEntitySpawn(gameData, monster).send(gameData, io.sockets);
+        // Do not execute message, entity is already spawned
+    }
 
     // Send init message to player
     new MessageInit(gameData, player).send(gameData, socket);
@@ -227,5 +229,3 @@ http.listen(gameData.port, function() {
 });
 
 update();
-console.log("\nTODO: Implement server\n");
-

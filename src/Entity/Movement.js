@@ -56,6 +56,10 @@ Movement.prototype.getSerializationSize = function() {
     return 5;
 }
 
+Movement.prototype.destroy = function(entity) {
+    
+}
+
 entityFunctionEntityMovement = function(gameData, dt) {
     gameData.entityWorld.objectArray.forEach(function(entity) {
         if(!entity || !entity.movement || !entity.physicsBody)

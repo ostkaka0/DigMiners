@@ -12,6 +12,8 @@ CommandEntityHurtEntity.prototype.execute = function(gameData) {
     if(!otherEntity || !otherEntity.health) return;
     otherEntity.health.health = (otherEntity.health.health + this.healthChange < 0 ? 0 : otherEntity.health.health + this.healthChange);
     onHealthChange(otherEntity);
+    if(otherEntity.health.health == 0)
+        onEntityDeath(otherEntity);
 }
 
 CommandEntityHurtEntity.prototype.serialize = function(byteArray, index) {

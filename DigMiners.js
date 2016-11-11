@@ -220,7 +220,7 @@ $(document).click(function(event) {
     if(global.player.isBuilding) {
         var stackId = global.player.inventory.getEquippedStackId("tool");
         var bodies = [];
-        if (!global.player.canPlaceBlock(gameData, global.player.buildPos[0], global.player.buildPos[1]))
+        if(!global.player.canPlaceBlock(gameData, global.player.buildPos[0], global.player.buildPos[1]))
             return false;
         if(stackId != null) {
             var message = new MessageRequestPlaceBlock(stackId, global.player.buildPos[0], global.player.buildPos[1]);
@@ -229,7 +229,7 @@ $(document).click(function(event) {
     }
 });
 
-gameData.entityWorld.onAdd = function(entity) {
+gameData.entityWorld.onAdd.push(function(entity) {
     if(entity.item && entity.item.amount > 1) {
         var text = new PIXI.Text(entity.item.amount, { fontFamily: 'Monospace', fontSize: 15, fill: 0xffffff, align: 'center' });
         var textSprite = new Sprite(null, text, false);
@@ -237,4 +237,4 @@ gameData.entityWorld.onAdd = function(entity) {
     }
     if(!isServer && entity.health && entity.drawable)
         onHealthChange(entity);
-}
+});
