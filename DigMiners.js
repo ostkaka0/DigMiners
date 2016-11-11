@@ -49,7 +49,7 @@ loadGame = function() {
             if(char == "d") playerMoveDirection = EntityMoveDirection.ENABLE_RIGHT;
             if(char == " ") playerMoveDirection = EntityMoveDirection.ENABLE_SPACEBAR;
             if(playerMoveDirection != null)
-                new MessagePlayerMove(playerMoveDirection).send(socket);
+                new MessageRequestPlayerMove(playerMoveDirection).send(socket);
         }
     });
     $('*').keyup(function(event) {
@@ -63,7 +63,7 @@ loadGame = function() {
             if(char == "d") playerMoveDirection = EntityMoveDirection.DISABLE_RIGHT;
             if(char == " ") playerMoveDirection = EntityMoveDirection.DISABLE_SPACEBAR;
             if(playerMoveDirection != null)
-                new MessagePlayerMove(playerMoveDirection).send(socket);
+                new MessageRequestPlayerMove(playerMoveDirection).send(socket);
         }
     });
 
@@ -237,4 +237,6 @@ gameData.entityWorld.onAdd.push(function(entity) {
     }
     if(!isServer && entity.health && entity.drawable)
         onHealthChange(entity);
+    if(entity.drawable && entity.bodyparts)
+        entity.drawable.initializeBodyparts(entity.bodyparts.bodyparts);
 });

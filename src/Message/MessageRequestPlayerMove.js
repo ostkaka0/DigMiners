@@ -1,9 +1,9 @@
 
-MessagePlayerMove = function(moveDirection) {
+MessageRequestPlayerMove = function(moveDirection) {
     this.moveDirection = moveDirection;
 }
 
-MessagePlayerMove.prototype.execute = function(gameData, player) {
+MessageRequestPlayerMove.prototype.execute = function(gameData, player) {
     var entity = gameData.entityWorld.objects[player.entityId];
     if(!entity) return;
     var physicsBody = entity.physicsBody;
@@ -11,10 +11,10 @@ MessagePlayerMove.prototype.execute = function(gameData, player) {
     gameData.commands.push(new CommandEntityMove(player.entityId, this.moveDirection, physicsBody.pos[0], physicsBody.pos[1]));
 }
 
-MessagePlayerMove.prototype.send = function(socket) {
+MessageRequestPlayerMove.prototype.send = function(socket) {
     socket.emit(this.idString, this.moveDirection);
 }
 
-MessagePlayerMove.prototype.receive = function(gameData, data) {
+MessageRequestPlayerMove.prototype.receive = function(gameData, data) {
     this.moveDirection = data;
 }

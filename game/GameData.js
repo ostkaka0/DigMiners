@@ -17,7 +17,7 @@ GameData = function(idList) {
     this.blockRegister = objectRegisterAddByObject([], Blocks);
     this.physicsWorld = new PhysicsWorld();
     this.generator = {};
-    if (!isServer)
+    if(!isServer)
         this.animationManager = new AnimationManager();
     else
         this.animationManager = {};
@@ -25,7 +25,7 @@ GameData = function(idList) {
     this.pendingCommands = {};
     this.commandTypes = typeRegisterAddByArray([], [CommandEntityMove, CommandDig, CommandPlayerDig, CommandPlayerEquipItem, CommandEntityBuild, CommandEntityHurtEntity]);
     this.messagesToClient = [MessageInit, MessageCommands, MessageChunk, MessagePlayerJoin, MessagePlayerLeave, MessagePlayerInventory, MessageEntitySpawn, MessageEntityDestroy];
-    this.messagesToServer = [MessagePlayerMove, MessageRequestItemPickup, MessageRequestDropStack, MessageRequestEquipStack, MessageRequestCraft, MessageRequestPlaceBlock];
+    this.messagesToServer = [MessageRequestPlayerMove, MessageRequestItemPickup, MessageRequestDropStack, MessageRequestEquipStack, MessageRequestCraft, MessageRequestPlaceBlock];
     this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
     this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ComponentItem, Health, ControlledByPlayer]);
 
@@ -70,7 +70,7 @@ GameData = function(idList) {
 
 
 
-    if (idList) {
+    if(idList) {
         var onObjectRemove = function(object) { idList.remove(object.id); };
         this.playerWorld.onRemove.push(onObjectRemove);
         this.entityWorld.onRemove.push(onObjectRemove);
@@ -80,11 +80,11 @@ GameData = function(idList) {
 GameData.prototype.tick = function(dt) {
     var that = this;
 
-    if (this.pendingCommands[this.tickId])
+    if(this.pendingCommands[this.tickId])
         this.commands = this.commands.concat(this.pendingCommands[this.tickId]);
 
     this.entityWorld.objectArray.forEach(function(entity) {
-        if (entity.physicsBody && entity.physicsBody.angle)
+        if(entity.physicsBody && entity.physicsBody.angle)
             entity.physicsBody.angleOld = entity.physicsBody.angle;
     });
 

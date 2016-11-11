@@ -10,9 +10,6 @@ MessageEntitySpawn.prototype.execute = function(gameData) {
         gameData.entityWorld.add(this.entity, this.entityId);
     else
         console.log("Entity already exists!");
-        
-    if(this.entity.drawable && this.entity.bodyparts)
-        this.entity.drawable.initializeBodyparts(this.entity.bodyparts.bodyparts);
 }
 
 MessageEntitySpawn.prototype.getSerializationSize = function() {
