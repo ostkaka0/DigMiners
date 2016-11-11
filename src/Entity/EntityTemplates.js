@@ -1,11 +1,12 @@
 entityTemplates = {};
 
 entityTemplates.player = function(playerId, entityId, name, gameData) {
-    var player = gameData.playerWorld.add(new Player(playerId, entityId, name), playerId);
+    var player = gameData.playerWorld.add(new Player(playerId, entityId), playerId);
     var entity = gameData.entityWorld.add({}, entityId);
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
     entity.movement = new Movement(50.0);
+    entity.name = new Name(name);
 
     var feetSprite = new Sprite("feet");
     var rightArmSprite = new Sprite("rightArm");

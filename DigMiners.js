@@ -239,4 +239,6 @@ gameData.entityWorld.onAdd.push(function(entity) {
         onHealthChange(entity);
     if(entity.drawable && entity.bodyparts)
         entity.drawable.initializeBodyparts(entity.bodyparts.bodyparts);
+    if(entity.name && entity.drawable)
+        entity.name.applyName(entity);
 });
