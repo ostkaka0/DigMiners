@@ -79,7 +79,10 @@ entityTemplates.testMonster = function(entityId, pos, gameData) {
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
 
     entity.health = new Health(100, 100);
-    entity.monster = true;
+
+    entity.behaviourContainer = new BehaviourContainer();
+    entity.behaviourContainer.behaviours.push(new TargetPlayerBehaviour(entity, 256.0));
+    entity.behaviourContainer.behaviours.push(new RandomWalkBehaviour(entity));
 
     return entity;
 }
