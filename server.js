@@ -105,19 +105,22 @@ io.on("connection", function(socket) {
     }, 2000);
 
     var name = names[Math.round(Math.random() * names.length)] + " " + lastnames[Math.round(Math.random() * lastnames.length)];
+    var playerId = idList.next();
     var entityId = idList.next();
-    var template = entityTemplates.player(idList.next(), entityId, entityId, gameData);
+    var template = entityTemplates.player(playerId, entityId, entityId, gameData);
     template.player.socket = socket;
     var player = template.player;
     var entity = template.entity;
     connections[socket.id].player = player;
     connections[socket.id].entity = entity;
+    gameData.playerWorld.add(player, playerId);
+    gameData.entityWorld.add(entity, entityId);
 
-    for(var i = 0; i < 2; ++i) {
+    for(var i = 0; i < 3; ++i) {
         // (TEMPORARY) spawn monster on player join
-        var monster = entityTemplates.testMonster(idList.next(), [0, 0], gameData);
-        new MessageEntitySpawn(gameData, monster).send(gameData, io.sockets);
-        // Do not execute message, entity is already spawned
+        var monsterEntityId = idList.next();
+        var monster = entityTemplates.testMonster(monsterEntityId, [0, 0], gameData);
+        gameData.commands.push(new CommandEntitySpawn(gameData, monster, monsterEntityId));
     }
 
     // Send init message to player
@@ -179,7 +182,7 @@ io.on("connection", function(socket) {
         gameData.entityWorld.remove(connections[socket.id].entity);
         gameData.playerWorld.remove(connections[socket.id].player);
         if(connections[socket.id].player)
-            console.log(connections[socket.id].entity.nameComponent.name + " disconnected.");
+            console.log(connections[socket.id].entity.nameComponent.entityName + " disconnected.");
         delete connections[socket.id];
     });
 
@@ -216,7 +219,7 @@ io.on("connection", function(socket) {
         });
     });
 
-    console.log(entity.nameComponent.name + " connected.");
+    console.log(entity.nameComponent.entityName + " connected.");
 });
 
 http.listen(gameData.port, function() {

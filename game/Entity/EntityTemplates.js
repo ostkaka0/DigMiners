@@ -32,12 +32,10 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
 
     entity.health = new Health(100, 100);
 
-    gameData.playerWorld.add(player, playerId);
-    gameData.entityWorld.add(entity, entityId);
     return { 'player': player, 'entity': entity };
 }
 
-entityTemplates.item = function(entityId, itemId, amount, gameData) {
+entityTemplates.item = function(itemId, amount, gameData) {
     var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
 
@@ -52,7 +50,6 @@ entityTemplates.item = function(entityId, itemId, amount, gameData) {
     entity.bodyparts = new Bodyparts(bodyparts);
     entity.drawable = new Drawable(0);
 
-    gameData.entityWorld.add(entity, entityId);
     return entity;
 }
 
@@ -84,10 +81,9 @@ entityTemplates.testMonster = function(entityId, pos, gameData) {
 
     entity.health = new Health(100, 100);
 
-    entity.behaviourContainer = new BehaviourContainer();
-    entity.behaviourContainer.behaviours.push(new TargetPlayerBehaviour(entity, 256.0));
-    entity.behaviourContainer.behaviours.push(new RandomWalkBehaviour(entity));
+    //entity.behaviourContainer = new BehaviourContainer();
+    //entity.behaviourContainer.behaviours.push(new TargetPlayerBehaviour(entity, 256.0));
+    //entity.behaviourContainer.behaviours.push(new RandomWalkBehaviour(entity));
 
-    gameData.entityWorld.add(entity, entityId);
     return entity;
 }
