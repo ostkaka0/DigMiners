@@ -65,14 +65,13 @@ CommandPlayerDig.prototype.execute = function(gameData) {
                     var entity = gameData.entityWorld.objects[player.entityId];
                     var physicsBody = entity.physicsBody;
 
-                    var itemEntity = entityTemplates.item(idList.next(), itemId, 1, gameData);
+                    var itemEntityId = idList.next();
+                    var itemEntity = entityTemplates.item(itemId, 1, gameData);
                     itemEntity.physicsBody.pos = v2.create(physicsBody.pos[0], physicsBody.pos[1]);
                     itemEntity.physicsBody.posOld = v2.create(physicsBody.pos[0], physicsBody.pos[1]);
                     itemEntity.physicsBody.angle = physicsBody.angle;
                     itemEntity.physicsBody.angleOld = physicsBody.angle;
-                    var message = new MessageEntitySpawn(gameData, itemEntity);
-                    // Do not execute message, entity is already spawned
-                    message.send(gameData, io.sockets);
+                    gameData.commands.push(new CommandEntitySpawn(gameData, itemEntity, itemEntityId));
                 }
             }
         }

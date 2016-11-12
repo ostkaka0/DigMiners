@@ -18,7 +18,8 @@ MessageRequestDropStack.prototype.execute = function(gameData, player) {
         var speed2 = {};
         v2.mul(10.0 * displacement3, speed, speed2);
 
-        var itemEntity = entityTemplates.item(idList.next(), item.id, item.amount, gameData);
+        var itemEntityId = idList.next();
+        var itemEntity = entityTemplates.item(item.id, item.amount, gameData);
         itemEntity.physicsBody.setPos(physicsBody.getPos());
         itemEntity.physicsBody.posOld = v2.create(physicsBody.pos[0], physicsBody.pos[1]);
         itemEntity.physicsBody.setVelocity([speed2[0], speed2[1]]);
@@ -26,18 +27,14 @@ MessageRequestDropStack.prototype.execute = function(gameData, player) {
         itemEntity.physicsBody.angle = physicsBody.angle;
         itemEntity.physicsBody.angleOld = physicsBody.angle;
         itemEntity.item.dropped = new Date();
-        var message = new MessageEntitySpawn(gameData, itemEntity);
-        // Do not execute message, entity is already spawned
-        message.send(gameData, io.sockets);
+        gameData.commands.push(new CommandEntitySpawn(gameData, itemEntity, itemEntityId));
 
         var message = new MessagePlayerInventory(player.playerId, InventoryActions.DROP_STACK, this.id, 0);
         message.execute(gameData);
         message.send(player.socket);
 
-        if(item.equipped) {
-            var command = new CommandPlayerEquipItem(player.playerId, this.id, item.id, false);
-            gameData.commands.push(command);
-        }
+        if(item.equipped)
+            gameData.commands.push(new CommandPlayerEquipItem(player.playerId, this.id, item.id, false));
     }
 }
 
