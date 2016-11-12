@@ -120,8 +120,11 @@ render = function(tickFracTime) {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    camera.pos[0] = tickFracTime * 32.0 * global.playerEntity.physicsBody.pos[0] + (1 - tickFracTime) * 32.0 * global.playerEntity.physicsBody.posOld[0];
-    camera.pos[1] = tickFracTime * 32.0 * global.playerEntity.physicsBody.pos[1] + (1 - tickFracTime) * 32.0 * global.playerEntity.physicsBody.posOld[1];
+    if(global.playerEntity && global.playerEntity.isActive) {
+        camera.pos[0] = tickFracTime * 32.0 * global.playerEntity.physicsBody.pos[0] + (1 - tickFracTime) * 32.0 * global.playerEntity.physicsBody.posOld[0];
+        camera.pos[1] = tickFracTime * 32.0 * global.playerEntity.physicsBody.pos[1] + (1 - tickFracTime) * 32.0 * global.playerEntity.physicsBody.posOld[1];
+    } else // TODO: do something else instead of centering camera at 0,0?
+        camera.pos = [0, 0];
 
     var projectionMatrix = PIXI.Matrix.IDENTITY.clone();//this.renderer.renderTarget.projectionMatrix.clone();
     var viewMatrix = PIXI.Matrix.IDENTITY.clone();
@@ -239,6 +242,6 @@ gameData.entityWorld.onAdd.push(function(entity) {
         onHealthChange(entity);
     if(entity.drawable && entity.bodyparts)
         entity.drawable.initializeBodyparts(entity.bodyparts.bodyparts);
-    if(entity.name && entity.drawable)
-        entity.name.applyName(entity);
+    if(entity.nameComponent && entity.drawable)
+        entity.nameComponent.applyName(entity);
 });

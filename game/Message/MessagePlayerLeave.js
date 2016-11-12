@@ -11,7 +11,7 @@ MessagePlayerLeave.prototype.execute = function(gameData) {
     var entity = gameData.entityWorld.objects[this.entityId];
     gameData.playerWorld.remove(player);
     gameData.entityWorld.remove(entity);
-    console.log(entity.name.name + " disconnected with playerId " + this.playerId);
+    console.log(entity.nameComponent.name + " disconnected with playerId " + this.playerId);
 }
 
 MessagePlayerLeave.prototype.getSerializationSize = function() {

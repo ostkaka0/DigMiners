@@ -105,7 +105,8 @@ io.on("connection", function(socket) {
     }, 2000);
 
     var name = names[Math.round(Math.random() * names.length)] + " " + lastnames[Math.round(Math.random() * lastnames.length)];
-    var template = entityTemplates.player(idList.next(), idList.next(), name, gameData);
+    var entityId = idList.next();
+    var template = entityTemplates.player(idList.next(), entityId, entityId, gameData);
     template.player.socket = socket;
     var player = template.player;
     var entity = template.entity;
@@ -178,7 +179,7 @@ io.on("connection", function(socket) {
         gameData.entityWorld.remove(connections[socket.id].entity);
         gameData.playerWorld.remove(connections[socket.id].player);
         if(connections[socket.id].player)
-            console.log(connections[socket.id].entity.name.name + " disconnected.");
+            console.log(connections[socket.id].entity.nameComponent.name + " disconnected.");
         delete connections[socket.id];
     });
 
@@ -215,7 +216,7 @@ io.on("connection", function(socket) {
         });
     });
 
-    console.log(entity.name.name + " connected.");
+    console.log(entity.nameComponent.name + " connected.");
 });
 
 http.listen(gameData.port, function() {
