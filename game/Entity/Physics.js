@@ -1,4 +1,4 @@
-PHYSICS_MAX_STEP_LENGTH = 0.05;
+PHYSICS_MAX_STEP_LENGTH = 0.125;
 
 COLLISION_BLOCKS = [
     [0, 0],
@@ -121,23 +121,19 @@ physicsBodySimulate = function(gameData, physicsBody, dt) {
                         pos[1] = blockTop + playerFatness / 2;
                         //console.log("top, set ypos to " + pos[1]);
                         physicsBody.speed[1] = 0;
-                        break;
                     } else {
                         pos[0] = blockLeft - playerFatness / 2;
                         //console.log("left, set xpos to " + pos[0]);
                         physicsBody.speed[0] = 0;
-                        break;
                     }
                 } else if(dy > -dx) {
                     pos[0] = blockRight + playerFatness / 2;
                     //console.log("right, set xpos to " + pos[0]);
                     physicsBody.speed[0] = 0;
-                    break;
                 } else {
                     pos[1] = blockBottom - playerFatness / 2;
                     //console.log("bottom, set ypos to " + pos[1]);
                     physicsBody.speed[1] = 0;
-                    break;
                 }
             }
         }
