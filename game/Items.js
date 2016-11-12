@@ -13,6 +13,17 @@ ItemTextures.ShovelAtlas = {
     dimY: 8,
 }
 
+ItemTextures.SwordAtlas = {
+    path: "swordAtlas.png",
+    spriteWidth: 64,
+    spriteHeight: 32,
+    inventorySize: 1.5,
+    inventoryAngle: -Math.PI / 4,
+    inventoryOffset: [-8, 0],
+    dimX: 4,
+    dimY: 8,
+}
+
 ItemTextures.ItemAtlas = {
     path: "itemAtlas.png",
     spriteWidth: 32,
@@ -139,18 +150,6 @@ initItems = function(gameData) {
         digSpeed: 1.8,
         maxDigHardness: Tiles.Apatite.hardness,
     }
-    Items.ApatiteShovel = {
-        name: "Apatite Shovel",
-        texture: ItemTextures.ShovelAtlas,
-        spriteId: 4,
-        isEquipable: true,
-        isDropable: true,
-        maxStackSize: 1,
-        type: "tool",
-        typeOfType: "shovel",
-        digSpeed: 2.0,
-        maxDigHardness: 64,
-    }
     Items.LapisLazuliShovel = {
         name: "Lapis Lazuli Shovel",
         texture: ItemTextures.ShovelAtlas,
@@ -163,18 +162,6 @@ initItems = function(gameData) {
         digSpeed: 2.2,
         maxDigHardness: 64,
     }
-    Items.TurquoiseShovel = {
-        name: "Turquoise Shovel",
-        texture: ItemTextures.ShovelAtlas,
-        spriteId: 6,
-        isEquipable: true,
-        isDropable: true,
-        maxStackSize: 1,
-        type: "tool",
-        typeOfType: "shovel",
-        digSpeed: 2.3,
-        maxDigHardness: 64,
-    }
     Items.MagnetiteShovel = {
         name: "Magnetite Shovel",
         texture: ItemTextures.ShovelAtlas,
@@ -185,18 +172,6 @@ initItems = function(gameData) {
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 2.4,
-        maxDigHardness: 64,
-    }
-    Items.OlivineShovel = {
-        name: "Olivine Shovel",
-        texture: ItemTextures.ShovelAtlas,
-        spriteId: 8,
-        isEquipable: true,
-        isDropable: true,
-        maxStackSize: 1,
-        type: "tool",
-        typeOfType: "shovel",
-        digSpeed: 2.6,
         maxDigHardness: 64,
     }
     Items.QuartzShovel = {
@@ -223,18 +198,6 @@ initItems = function(gameData) {
         digSpeed: 3.0,
         maxDigHardness: 64,
     }
-    Items.TopazShovel = {
-        name: "Topaz Shovel",
-        texture: ItemTextures.ShovelAtlas,
-        spriteId: 11,
-        isEquipable: true,
-        isDropable: true,
-        maxStackSize: 1,
-        type: "tool",
-        typeOfType: "shovel",
-        digSpeed: 3.2,
-        maxDigHardness: 64,
-    }
     Items.RubyShovel = {
         name: "Ruby Shovel",
         texture: ItemTextures.ShovelAtlas,
@@ -257,6 +220,52 @@ initItems = function(gameData) {
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 4.0,
+    }
+    
+    // Swords
+    Items.RustySword = {
+        name: "Rusty Sword",
+        texture: ItemTextures.SwordAtlas,
+        spriteId: 0,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        type: "tool",
+        typeOfType: "sword",
+        damage: 20
+    }
+    Items.CopperSword = {
+        name: "Copper Sword",
+        texture: ItemTextures.SwordAtlas,
+        spriteId: 1,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        type: "tool",
+        typeOfType: "sword",
+        damage: 30
+    }
+    Items.IronSword = {
+        name: "Iron Sword",
+        texture: ItemTextures.SwordAtlas,
+        spriteId: 2,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        type: "tool",
+        typeOfType: "sword",
+        damage: 40
+    }
+    Items.SteelSword = {
+        name: "Steel Sword",
+        texture: ItemTextures.SwordAtlas,
+        spriteId: 3,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        type: "tool",
+        typeOfType: "sword",
+        damage: 50
     }
 
     // Other items

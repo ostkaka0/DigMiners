@@ -63,8 +63,8 @@ GameData = function(idList) {
     });
 
     Recipes.push({
-        item: [[Items.ApatiteShovel, 1]],
-        requiredOres: [[Tiles.Apatite, 10]],
+        item: [[Items.CopperSword, 1]],
+        requiredOres: [[Tiles.Copper, 10]],
         requiredItems: [[Items.SmallSticks, 10], [Items.RottenRoot, 4]],
     });
 
