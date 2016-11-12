@@ -24,6 +24,9 @@ PhysicsBody = function(pos, damping) {
     this.angle = 0;
     this.angleOld = 0;
     this.rotationSpeed = toFix(10.0);
+
+    this.posClient = [0, 0];
+    this.posClientOld = [0, 0];
 }
 
 PhysicsBody.prototype.name = physicsBody.name; function physicsBody() { };
