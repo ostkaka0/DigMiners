@@ -6,10 +6,9 @@ MessageEntitySpawn = function(gameData, entity) {
 }
 
 MessageEntitySpawn.prototype.execute = function(gameData) {
-    if(!gameData.entityWorld.objects[this.entityId])
-        gameData.entityWorld.add(this.entity, this.entityId);
-    else
-        console.log("Entity already exists!");
+    if(gameData.entityWorld.objects[this.entityId])
+        gameData.entityWorld.remove(gameData.entityWorld.objects[this.entityId]);
+    gameData.entityWorld.add(this.entity, this.entityId);
 }
 
 MessageEntitySpawn.prototype.getSerializationSize = function() {
