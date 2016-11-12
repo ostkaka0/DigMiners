@@ -46,10 +46,10 @@ TargetPlayerBehaviour.prototype.run = function() {
     }
 
     var dist = v2.distance(this.entity.physicsBody.pos, this.target.physicsBody.pos);
-    if(dist < 1.5) // 1.0 limit for punch
+    /*if(dist < 1.5) // 1.0 limit for punch
         dirs.push(MoveDir.ENABLE_SPACEBAR);
     else
-        dirs.push(MoveDir.DISABLE_SPACEBAR);
+        dirs.push(MoveDir.DISABLE_SPACEBAR);*/
 
     gameData.commands.push(new CommandEntityMove(this.entity.id, dirs, this.entity.physicsBody.pos[0], this.entity.physicsBody.pos[1]));
     if(dist > this.maxRadius)

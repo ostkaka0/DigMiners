@@ -5,7 +5,7 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
     var entity = {};
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
-    entity.movement = new Movement(30.0);
+    entity.movement = new Movement(50.0);
     entity.nameComponent = new NameComponent(name);
 
     var feetSprite = new Sprite("feet");
