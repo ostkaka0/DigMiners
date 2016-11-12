@@ -143,8 +143,8 @@ PhysicsWorld.prototype.add = function(pos, velocity) {
 
 PhysicsWorld.prototype.remove = function(id) {
     // Do not re-use IDs, causes bugs and glitches(FIX!)
-    //var index = binarySearch(this.freeIds, id, function(a, b) { return a-b; });
-    //this.freeIds.splice(index, 0, id);
+    var index = binarySearch(this.freeIds, id, function(a, b) { return a-b; });
+    this.freeIds.splice(index, 0, id);
 
     var pagePos = [Math.floor(fixFromInt32(this.posOld[2 * id]) / pageDim), Math.floor(fixFromInt32(this.posOld[2 * id + 1]) / pageDim)];
     var page = this.pages.get(pagePos[0], pagePos[1]);

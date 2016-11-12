@@ -94,7 +94,7 @@ tick = function(dt) {
         if(entity.physicsBody) {
             var physicsBody = entity.physicsBody;
             if(physicsBody.posClient)
-                physicsBody.posOld = v2.clone(physicsBody.posClient);
+                physicsBody.posClientOld = v2.clone(physicsBody.posClient);
             physicsBody.posClient = v2.clone(physicsBody.pos);
         }
     });
@@ -121,8 +121,8 @@ render = function(tickFracTime) {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     if(global.playerEntity && global.playerEntity.isActive) {
-        camera.pos[0] = tickFracTime * 32.0 * global.playerEntity.physicsBody.pos[0] + (1 - tickFracTime) * 32.0 * global.playerEntity.physicsBody.posOld[0];
-        camera.pos[1] = tickFracTime * 32.0 * global.playerEntity.physicsBody.pos[1] + (1 - tickFracTime) * 32.0 * global.playerEntity.physicsBody.posOld[1];
+        camera.pos[0] = tickFracTime * 32.0 * global.playerEntity.physicsBody.posClient[0] + (1 - tickFracTime) * 32.0 * global.playerEntity.physicsBody.posClientOld[0];
+        camera.pos[1] = tickFracTime * 32.0 * global.playerEntity.physicsBody.posClient[1] + (1 - tickFracTime) * 32.0 * global.playerEntity.physicsBody.posClientOld[1];
     } else // TODO: do something else instead of centering camera at 0,0?
         camera.pos = [0, 0];
 
@@ -135,8 +135,8 @@ render = function(tickFracTime) {
 
     gameData.entityWorld.objectArray.forEach(function(entity) {
         if(entity.physicsBody && entity.drawable) {
-            var x = -camera.pos[0] + canvas.width / 2 + tickFracTime * 32.0 * entity.physicsBody.pos[0] + (1 - tickFracTime) * 32.0 * entity.physicsBody.posOld[0];
-            var y = camera.pos[1] + canvas.height / 2 - (tickFracTime * 32.0 * entity.physicsBody.pos[1] + (1 - tickFracTime) * 32.0 * entity.physicsBody.posOld[1]);
+            var x = -camera.pos[0] + canvas.width / 2 + tickFracTime * 32.0 * entity.physicsBody.posClient[0] + (1 - tickFracTime) * 32.0 * entity.physicsBody.posClientOld[0];
+            var y = camera.pos[1] + canvas.height / 2 - (tickFracTime * 32.0 * entity.physicsBody.posClient[1] + (1 - tickFracTime) * 32.0 * entity.physicsBody.posClientOld[1]);
 
             var a = (entity.physicsBody.angle - entity.physicsBody.angleOld) % (Math.PI * 2);
             var rotation = entity.physicsBody.angleOld + (2 * a % (Math.PI * 2) - a) * tickFracTime;
