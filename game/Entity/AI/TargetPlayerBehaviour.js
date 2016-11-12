@@ -21,8 +21,8 @@ TargetPlayerBehaviour.prototype.run = function() {
             return false;
     }
     
-    var tilePos = [this.entity.physicsBody.pos[0] + 0.5 >> 0, this.entity.physicsBody.pos[1] + 0.5 >> 0];
-    var tilePosTarget = [this.target.physicsBody.pos[0] + 0.5 >> 0, this.target.physicsBody.pos[1] + 0.5 >> 0];
+    var tilePos = [Math.floor(this.entity.physicsBody.pos[0]), Math.floor(this.entity.physicsBody.pos[1])];
+    var tilePosTarget = [Math.floor(this.target.physicsBody.pos[0]), Math.floor(this.target.physicsBody.pos[1])];
     
     //if (!this.flowField) {
         this.flowField = new Map2D();
@@ -57,7 +57,7 @@ TargetPlayerBehaviour.prototype.run = function() {
     var diffY = (getDis([tilePos[0], tilePos[1]-1]) - getDis([tilePos[0], tilePos[1]+1]))/10;
         
     //var diffX = this.target.physicsBody.pos[0] - this.entity.physicsBody.pos[0];
-    var walkConstant = 0.5;
+    var walkConstant = 1.0;
     var dirs = [];
     if(diffX > walkConstant) {
         dirs.push(MoveDir.ENABLE_RIGHT);

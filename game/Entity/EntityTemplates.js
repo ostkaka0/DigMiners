@@ -82,7 +82,7 @@ entityTemplates.testMonster = function(entityId, pos, gameData) {
     entity.health = new Health(100, 100);
 
     entity.behaviourContainer = new BehaviourContainer();
-    entity.behaviourContainer.behaviours.push(new TargetPlayerBehaviour(entity, 256.0));
+    entity.behaviourContainer.behaviours.push(new TargetPlayerBehaviour(entity, 2048.0));
     entity.behaviourContainer.behaviours.push(new RandomWalkBehaviour(entity));
 
     return entity;
