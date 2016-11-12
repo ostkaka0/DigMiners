@@ -74,8 +74,9 @@ aStarFlowField = function(disField, expandList, tileWorld, blockWorld, start, go
             var pageAndIndex = getPageAndIndex(pos);
             var page = pageAndIndex[0];
             var index = pageAndIndex[1];
-            var dis = baseDis + childDirWeights[i];
-            if (getDensity(tileWorld, pos[0], pos[1]) > 127) 
+            var density = getDensity(tileWorld, pos[0], pos[1]);
+            var dis = baseDis + childDirWeights[i] + 20*density/255;
+            if (density > 127) 
                 continue;
             if (getForeground(blockWorld, pos[0], pos[1]) != 0)
                 continue;
