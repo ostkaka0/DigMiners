@@ -93,8 +93,7 @@ tick = function(dt) {
     forOf(this, gameData.entityWorld.objectArray, function(entity) {
         if(entity.physicsBody) {
             var physicsBody = entity.physicsBody;
-            if(physicsBody.posClient)
-                physicsBody.posClientOld = v2.clone(physicsBody.posClient);
+            physicsBody.posClientOld = v2.clone(physicsBody.posClient);
             physicsBody.posClient = v2.clone(physicsBody.pos);
         }
     });
@@ -145,8 +144,8 @@ render = function(tickFracTime) {
 
             //console.log(entitySpeed);
             if(entity.bodyparts.bodyparts.feet) {
-                var entitySpeed = Math.sqrt(entity.physicsBody.speed[0] * entity.physicsBody.speed[0] + entity.physicsBody.speed[1] * entity.physicsBody.speed[1]);
-                entity.bodyparts.bodyparts["feet"].animate(gameData, "feet", entitySpeed * 16.0, false);
+                var speed = v2.distanceSquared(entity.physicsBody.posClient, entity.physicsBody.posClientOld);
+                entity.bodyparts.bodyparts["feet"].animate(gameData, "feet", speed * 450.0, false);
                 //console.log("entity " + entity.id + " speed " + entitySpeed);
             }
         }
