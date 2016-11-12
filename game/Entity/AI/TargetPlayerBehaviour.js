@@ -3,6 +3,7 @@ TargetPlayerBehaviour = function(entity, maxRadius) {
     this.entity = entity;
     this.maxRadius = maxRadius;
     this.target = null;
+    this.flowField = null;
 }
 
 TargetPlayerBehaviour.prototype.canRun = function() {
@@ -19,8 +20,44 @@ TargetPlayerBehaviour.prototype.run = function() {
         if(this.target == null)
             return false;
     }
-    var diffX = this.target.physicsBody.pos[0] - this.entity.physicsBody.pos[0];
-    var walkConstant = 1.0;
+    
+    var tilePos = [this.entity.physicsBody.pos[0] + 0.5 >> 0, this.entity.physicsBody.pos[1] + 0.5 >> 0];
+    var tilePosTarget = [this.target.physicsBody.pos[0] + 0.5 >> 0, this.target.physicsBody.pos[1] + 0.5 >> 0];
+    
+    //if (!this.flowField) {
+        this.flowField = new Map2D();
+        aStarFlowField(this.flowField, [], gameData.tileWorld, gameData.blockWorld, tilePos, tilePosTarget);
+    //}
+    
+    var getPageAndIndex = (function(pos) {
+        var pageX = Math.floor(pos[0] / PATH_PAGE_DIM);
+        var pageY = Math.floor(pos[1] / PATH_PAGE_DIM);
+        var localX = Math.floor(pos[0]) - pageX * PATH_PAGE_DIM;
+        var localY = Math.floor(pos[1]) - pageY * PATH_PAGE_DIM;
+        var page = this.flowField.get(pageX, pageY);
+        if (!page) {
+            page = new Uint16Array(PATH_PAGE_DIM * PATH_PAGE_DIM);
+            page.fill(65535);
+            this.flowField.set(pageX, pageY, page);
+        }
+        return [page, localX + localY * PATH_PAGE_DIM];
+    }).bind(this);
+    
+    var getDis = (function(pos) {
+        var pageAndIndex = getPageAndIndex(pos);
+        var page = pageAndIndex[0];
+        var index = pageAndIndex[1];
+        if (page)
+            return page[index];
+        else
+            return 65535;
+    }).bind(this);
+    
+    var diffX = (getDis([tilePos[0]-1, tilePos[1]]) - getDis([tilePos[0]+1, tilePos[1]]))/10;
+    var diffY = (getDis([tilePos[0], tilePos[1]-1]) - getDis([tilePos[0], tilePos[1]+1]))/10;
+        
+    //var diffX = this.target.physicsBody.pos[0] - this.entity.physicsBody.pos[0];
+    var walkConstant = 0.5;
     var dirs = [];
     if(diffX > walkConstant) {
         dirs.push(MoveDir.ENABLE_RIGHT);
@@ -33,7 +70,7 @@ TargetPlayerBehaviour.prototype.run = function() {
         dirs.push(MoveDir.DISABLE_RIGHT);
     }
 
-    var diffY = this.target.physicsBody.pos[1] - this.entity.physicsBody.pos[1];
+    //var diffY = this.target.physicsBody.pos[1] - this.entity.physicsBody.pos[1];
     if(diffY > walkConstant) {
         dirs.push(MoveDir.ENABLE_UP);
         dirs.push(MoveDir.DISABLE_DOWN);
