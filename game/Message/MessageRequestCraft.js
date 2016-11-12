@@ -4,6 +4,8 @@ MessageRequestCraft = function(recipeId) {
 }
 
 MessageRequestCraft.prototype.execute = function(gameData, player) {
+    var playerEntity = gameData.entityWorld.objects[player.entityId];
+    if(!playerEntity) return;
     var recipe = Recipes[this.recipeId];
     if(!recipe) return;
     if(!player.hasRequiredRecipeResources(recipe)) return;

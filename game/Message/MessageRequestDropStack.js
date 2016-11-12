@@ -7,7 +7,9 @@ MessageRequestDropStack.prototype.execute = function(gameData, player) {
     var item = player.inventory.items[this.id];
     if(item) {
         var playerEntity = gameData.entityWorld.objects[player.entityId];
+        if(!playerEntity) return;
         var physicsBody = playerEntity.physicsBody;
+        if(!physicsBody) return;
         var displacement1 = Math.random() / 5 - 0.1;
         var displacement2 = Math.random() / 5 - 0.1;
         var displacement3 = Math.random() / 5 - 0.1 + 1;
