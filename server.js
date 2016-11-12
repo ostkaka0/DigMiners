@@ -72,6 +72,10 @@ for(var x = -3; x < 3; ++x) {
 }
 carveCircle(gameData, 0, 0, 12);
 
+gameData.physicsWorld.onCollision.push(function(collisions) {
+    gameData.commands.push(new CommandCollisions(collisions));
+});
+
 update = function() {
     var now = process.hrtime();
 
