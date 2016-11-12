@@ -67,7 +67,7 @@ PhysicsBody.prototype.deserialize = function(byteArray, index) {
 }
 
 PhysicsBody.prototype.getSerializationSize = function() {
-    return 24;
+    return 28;
 }
 
 PhysicsBody.prototype.destroy = function(entity) {
