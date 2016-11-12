@@ -1,4 +1,4 @@
-var PATH_PAGE_DIM = 8;
+PATH_PAGE_DIM = 8;
 
 
 // Generate flowfield using backward a-star(from goal to start)
@@ -75,6 +75,10 @@ aStarFlowField = function(disField, expandList, tileWorld, blockWorld, start, go
             var page = pageAndIndex[0];
             var index = pageAndIndex[1];
             var dis = baseDis + childDirWeights[i];
+            if (getDensity(tileWorld, pos[0], pos[1]) > 127) 
+                continue;
+            if (getForeground(blockWorld, pos[0], pos[1]) != 0)
+                continue;
             if (page[index] > dis) {
                 page[index] = dis;
                 var insertIndex = binarySearch(expandList, dis/12.0 + calcDis(pos, start), function(a, b) { return calcPathCost([a << 16 >> 16, a >> 16]) - b; } );
@@ -109,6 +113,8 @@ genFlowField = function(flowField, worldRect, tileWorld, blockWorld, goal, maxDi
             var index = pos[0] - worldRect[0] + (pos[1] - worldRect[1]) * worldRect[2];
             var dis = baseDis + 1;
             if (getDensity(tileWorld, pos[0], pos[1]) > 127) 
+                continue;
+            if (getForeground(blockWorld, pos[0], pos[1]) != 0)
                 continue;
             if (flowField[index] > dis && dis < maxDistance) {
                 flowField[index] = dis;
