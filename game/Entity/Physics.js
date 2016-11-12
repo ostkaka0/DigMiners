@@ -142,7 +142,7 @@ physicsBodySimulate = function(gameData, physicsBody, dt) {
         var density = calcDensity(gameData.tileWorld, pos[0], pos[1]);
         if(density > 0) {
             var dir = calcDir(gameData.tileWorld, pos[0], pos[1]);
-            //v2.div(dir, 2.0, dir);
+            v2.div(dir, 2.0, dir);
             v2.add(pos, dir, pos);
             var normal = v2.create(0, 0);
             v2.normalize(dir, normal);
@@ -150,8 +150,7 @@ physicsBodySimulate = function(gameData, physicsBody, dt) {
                 var dot = v2.dot(normal, physicsBody.speed);
                 var deltaSpeed = [0, 0];
                 v2.mul(-dot, normal, deltaSpeed);
-                //deltaPos = [(1.0 - Math.abs(normal[0])) * deltaPos[0], (1.0 - Math.abs(normal[1])) * deltaPos[1]];
-                v2.add(deltaSpeed, physicsBody.speed, physicsBody.speed);//physicsBody.speed = [(1.0 - Math.abs(normal[0])) * physicsBody.speed[0], (1.0 - Math.abs(normal[1])) * physicsBody.speed[1]];
+                v2.add(deltaSpeed, physicsBody.speed, physicsBody.speed);
             }
         }
     }
