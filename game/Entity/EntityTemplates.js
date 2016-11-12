@@ -1,12 +1,12 @@
 entityTemplates = {};
 
 entityTemplates.player = function(playerId, entityId, name, gameData) {
-    var player = gameData.playerWorld.add(new Player(playerId, entityId), playerId);
-    var entity = gameData.entityWorld.add({}, entityId);
+    var player = new Player(playerId, entityId);
+    var entity = {};
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
     entity.movement = new Movement(50.0);
-    entity.name = new Name(name);
+    entity.nameComponent = new NameComponent(name);
 
     var feetSprite = new Sprite("feet");
     var rightArmSprite = new Sprite("rightArm");
@@ -32,6 +32,8 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
 
     entity.health = new Health(100, 100);
 
+    gameData.playerWorld.add(player, playerId);
+    gameData.entityWorld.add(entity, entityId);
     return { 'player': player, 'entity': entity };
 }
 
@@ -39,7 +41,7 @@ entityTemplates.item = function(entityId, itemId, amount, gameData) {
     var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
 
-    entity.item = new ComponentItem(itemId, amount);
+    entity.item = new ItemComponent(itemId, amount);
 
     var itemType = gameData.itemRegister[itemId];
     var bodySprite = new Sprite(itemType.name);
@@ -49,14 +51,16 @@ entityTemplates.item = function(entityId, itemId, amount, gameData) {
     };
     entity.bodyparts = new Bodyparts(bodyparts);
     entity.drawable = new Drawable(0);
+
     gameData.entityWorld.add(entity, entityId);
     return entity;
 }
 
 entityTemplates.testMonster = function(entityId, pos, gameData) {
-    var entity = gameData.entityWorld.add({}, entityId);
+    var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01);
     entity.movement = new Movement(5.0);
+    entity.nameComponent = new NameComponent(entityId);
 
     var feetSprite = new Sprite("feet");
     var rightArmSprite = new Sprite("rightArm");
@@ -84,5 +88,6 @@ entityTemplates.testMonster = function(entityId, pos, gameData) {
     entity.behaviourContainer.behaviours.push(new TargetPlayerBehaviour(entity, 256.0));
     entity.behaviourContainer.behaviours.push(new RandomWalkBehaviour(entity));
 
+    gameData.entityWorld.add(entity, entityId);
     return entity;
 }

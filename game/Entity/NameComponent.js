@@ -1,27 +1,28 @@
 
-Name = function(name) {
-    this.name = name;
+NameComponent = function(name) {
+    this.name = name + "";
 }
 
-Name.prototype.name = name.name; function name() { };
+NameComponent.prototype.name = nameComponent.name; function nameComponent() { };
 
-Name.prototype.serialize = function(byteArray, index) {
+NameComponent.prototype.serialize = function(byteArray, index) {
     serializeUTF8(byteArray, index, this.name);
 }
 
-Name.prototype.deserialize = function(byteArray, index) {
+NameComponent.prototype.deserialize = function(byteArray, index) {
     this.name = deserializeUTF8(byteArray, index);
 }
 
-Name.prototype.getSerializationSize = function() {
+NameComponent.prototype.getSerializationSize = function() {
     return getUTF8SerializationSize(this.name);
 }
 
-Name.prototype.destroy = function(entity) {
+NameComponent.prototype.destroy = function(entity) {
 
 }
 
-Name.prototype.applyName = function(entity) {
+NameComponent.prototype.applyName = function(entity) {
+    if(!entity.drawable) return;
     if(entity.pixiText)
         entity.drawable.removeSprite("name");
     entity.pixiText = new PIXI.Text(this.name, { fontFamily: 'Monospace', fontSize: 15, fill: 0xffffff, align: 'center' });

@@ -35,5 +35,6 @@ onEntityDeath = function(entity) {
     if(!entity.isDead) {
         entity.isDead = true;
         gameData.entityWorld.remove(entity);
+        console.log(entity.id + " died!");
     }
 }

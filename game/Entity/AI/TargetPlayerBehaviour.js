@@ -6,32 +6,21 @@ TargetPlayerBehaviour = function(entity, maxRadius) {
 }
 
 TargetPlayerBehaviour.prototype.canRun = function() {
-    var shortestDistance = Number.MAX_VALUE;
-    var shortestDistanceEntity = null;
-    gameData.playerWorld.objectArray.forEach(function(otherPlayer) {
-        if(otherPlayer.entityId == -1) return;
-        var otherEntity = gameData.entityWorld.objects[otherPlayer.entityId];
-        if(!otherEntity) return;
-        if(this.entity.id != otherEntity.id && otherEntity.physicsBody && otherEntity.health) {
-            var dist = v2.distance(this.entity.physicsBody.pos, otherEntity.physicsBody.pos);
-            if(dist < shortestDistance) {
-                shortestDistance = dist;
-                shortestDistanceEntity = otherEntity;
-            }
-        }
-    }.bind(this));
-    if(shortestDistance <= this.maxRadius) {
-        this.target = shortestDistanceEntity;
+    this.target = this.getTarget();
+    if(this.target != null)
         return true;
-    }
     return false;
 }
 
 TargetPlayerBehaviour.prototype.run = function() {
-    if(this.target.isDead || this.entity.isDead)
-        return false;
+    if(!this.target || this.target.isDead || !this.target.isActive) {
+        this.target = this.getTarget();
+        // If it can't find a new target we must stop this behaviour
+        if(this.target == null)
+            return false;
+    }
     var diffX = this.target.physicsBody.pos[0] - this.entity.physicsBody.pos[0];
-    var walkConstant = 0.5;
+    var walkConstant = 1.0;
     var dirs = [];
     if(diffX > walkConstant) {
         dirs.push(MoveDir.ENABLE_RIGHT);
@@ -69,7 +58,28 @@ TargetPlayerBehaviour.prototype.run = function() {
 }
 
 TargetPlayerBehaviour.prototype.finish = function() {
+    this.target = null;
     // Disable all keys
     if(!this.entity.isDead)
         gameData.commands.push(new CommandEntityMove(this.entity.id, [5, 6, 7, 8, 9], this.entity.physicsBody.pos[0], this.entity.physicsBody.pos[1]));
+}
+
+TargetPlayerBehaviour.prototype.getTarget = function() {
+    var shortestDistance = Number.MAX_VALUE;
+    var shortestDistanceEntity = null;
+    gameData.playerWorld.objectArray.forEach(function(otherPlayer) {
+        if(otherPlayer.entityId == -1) return;
+        var otherEntity = gameData.entityWorld.objects[otherPlayer.entityId];
+        if(!otherEntity || otherEntity.isDead || !otherEntity.isActive) return;
+        if(this.entity.id != otherEntity.id && otherEntity.physicsBody && otherEntity.health) {
+            var dist = v2.distance(this.entity.physicsBody.pos, otherEntity.physicsBody.pos);
+            if(dist < shortestDistance) {
+                shortestDistance = dist;
+                shortestDistanceEntity = otherEntity;
+            }
+        }
+    }.bind(this));
+    if(shortestDistance <= this.maxRadius)
+        return shortestDistanceEntity;
+    return null;
 }
