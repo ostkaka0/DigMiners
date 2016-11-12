@@ -7,13 +7,13 @@ Health = function(health, maxHealth) {
 Health.prototype.name = health.name; function health() { };
 
 Health.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.health);
-    serializeInt32(byteArray, index, this.maxHealth);
+    serializeFix(byteArray, index, this.health);
+    serializeFix(byteArray, index, this.maxHealth);
 }
 
 Health.prototype.deserialize = function(byteArray, index) {
-    this.health = deserializeInt32(byteArray, index);
-    this.maxHealth = deserializeInt32(byteArray, index);
+    this.health = deserializeFix(byteArray, index);
+    this.maxHealth = deserializeFix(byteArray, index);
 }
 
 Health.prototype.getSerializationSize = function() {
