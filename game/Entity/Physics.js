@@ -1,4 +1,4 @@
-PHYSICS_MAX_STEP_LENGTH = 0.5;
+PHYSICS_MAX_STEP_LENGTH = 0.125;
 
 COLLISION_BLOCKS = [
     [0, 0],
@@ -84,9 +84,10 @@ physicsBodySimulate = function(gameData, physicsBody, dt) {
     v2.div(deltaPos, numSteps, deltaPos);
     deltaPosLength /= numSteps;
     v2.mul(fix.pow(physicsBody.damping, dt), physicsBody.speed, physicsBody.speed);
+    pos = v2.clone(physicsBody.posOld);
     // Simulate steps
     for (var i = 0; i < numSteps; i++) {
-
+        v2.add(deltaPos, pos, pos);
         // Block collision
         for (var j = 0; j < COLLISION_BLOCKS.length; ++j) {
             var chunkPos = v2.create(0, 0);
@@ -148,17 +149,18 @@ physicsBodySimulate = function(gameData, physicsBody, dt) {
                 var dot = v2.dot(normal, physicsBody.speed);
                 var deltaSpeed = [0, 0];
                 v2.mul(-dot, normal, deltaSpeed);
-                deltaPos = [(1.0 - Math.abs(normal[0])) * deltaPos[0], (1.0 - Math.abs(normal[1])) * deltaPos[1]];
+                //deltaPos = [(1.0 - Math.abs(normal[0])) * deltaPos[0], (1.0 - Math.abs(normal[1])) * deltaPos[1]];
                 v2.add(deltaSpeed, physicsBody.speed, physicsBody.speed);//physicsBody.speed = [(1.0 - Math.abs(normal[0])) * physicsBody.speed[0], (1.0 - Math.abs(normal[1])) * physicsBody.speed[1]];
             }
         }
-        physicsBody.setPos(pos);
-
-
-        // Update posOld, speedOld
-        v2.copy(physicsBody.getPos(), physicsBody.posOld);
-        v2.copy(physicsBody.getPos(), physicsBody.speedOld);
     }
+
+    physicsBody.setPos(pos);
+
+
+    // Update posOld, speedOld
+    v2.copy(physicsBody.getPos(), physicsBody.posOld);
+    v2.copy(physicsBody.getVelocity(), physicsBody.speedOld);
 }
 
 entityFunctionPhysicsBodySimulate = function(gameData, dt) {
