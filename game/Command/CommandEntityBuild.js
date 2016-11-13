@@ -1,10 +1,4 @@
 
-BlockTypes = {
-    FOREGROUND: 0,
-    BACKGROUND: 1,
-    STRENGTH: 2
-}
-
 CommandEntityBuild = function(entityId, x, y, blockId, type) {
     this.entityId = entityId;
     this.x = x;
@@ -14,8 +8,10 @@ CommandEntityBuild = function(entityId, x, y, blockId, type) {
 }
 
 CommandEntityBuild.prototype.execute = function(gameData) {
-    //TODO: Support other types
-    setForeground(gameData.blockWorld, this.x, this.y, this.blockId);
+    if(this.type == BlockTypes.FOREGROUND)
+        setForeground(gameData.blockWorld, this.x, this.y, this.blockId);
+    else if(this.type == BlockTypes.BACKGROUND)
+        setBackground(gameData.blockWorld, this.x, this.y, this.blockId);
 
     var entity = gameData.entityWorld.objects[this.entityId];
     if(!entity) return;
