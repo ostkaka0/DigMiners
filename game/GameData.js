@@ -18,15 +18,15 @@ GameData = function(idList) {
     this.physicsWorld = new PhysicsWorld();
     this.physicsEntities = {};
     this.generator = null;
-    if(!isServer)
+    if (!isServer)
         this.animationManager = new AnimationManager();
     else
         this.animationManager = {};
     this.commands = [];
     this.pendingCommands = {};
-    this.commandTypes = typeRegisterAddByArray([], [CommandEntityMove, CommandDig, CommandPlayerDig, CommandPlayerEquipItem, CommandEntityBuild, CommandEntityHurtEntity, CommandEntitySpawn, CommandCollisions, CommandEntityDestroy, CommandPlayerJoin,  CommandPlayerLeave]);
+    this.commandTypes = typeRegisterAddByArray([], [CommandEntityMove, CommandDig, CommandPlayerDig, CommandPlayerEquipItem, CommandEntityBuild, CommandEntityHurtEntity, CommandEntitySpawn, CommandCollisions, CommandEntityDestroy, CommandPlayerJoin, CommandPlayerLeave]);
     this.messagesToClient = [MessageInit, MessageCommands, MessageChunk, MessagePlayerInventory];
-    this.messagesToServer = [MessageRequestPlayerMove, MessageRequestItemPickup, MessageRequestDropStack, MessageRequestEquipStack, MessageRequestCraft, MessageRequestPlaceBlock];
+    this.messagesToServer = [MessageRequestKeyStatusUpdate, MessageRequestItemPickup, MessageRequestDropStack, MessageRequestEquipStack, MessageRequestCraft, MessageRequestPlaceBlock];
     this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
     this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent]);
 
@@ -70,15 +70,15 @@ GameData = function(idList) {
 
     // Update physicsEntities
     this.entityWorld.onAdd.push((function(entity) {
-        if(entity.physicsBody)
+        if (entity.physicsBody)
             this.physicsEntities[entity.physicsBody.bodyId] = entity;
     }).bind(this));
     this.entityWorld.onRemove.push((function(entity) {
-        if(entity.physicsBody)
+        if (entity.physicsBody)
             this.physicsEntities[entity.physicsBody.bodyId] = undefined;
     }).bind(this));
 
-    if(idList) {
+    if (idList) {
         var onObjectRemove = function(object) { idList.remove(object.id); };
         this.playerWorld.onRemove.push(onObjectRemove);
         this.entityWorld.onRemove.push(onObjectRemove);
@@ -88,11 +88,11 @@ GameData = function(idList) {
 GameData.prototype.tick = function(dt) {
     var that = this;
 
-    if(this.pendingCommands[this.tickId])
+    if (this.pendingCommands[this.tickId])
         this.commands = this.commands.concat(this.pendingCommands[this.tickId]);
 
     this.entityWorld.objectArray.forEach(function(entity) {
-        if(entity.physicsBody && entity.physicsBody.angle)
+        if (entity.physicsBody && entity.physicsBody.angle)
             entity.physicsBody.angleOld = entity.physicsBody.angle;
     });
     this.commands.forEach(function(command) {

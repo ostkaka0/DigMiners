@@ -64,7 +64,7 @@ v2.mod = function(a, c, out) {
 
 v2.normalize = function(a, out) {
     var length = v2.lengthSquared(a);
-    if(length == 0)
+    if (length == 0)
         return;
     out[0] = fix.div(a[0], length);
     out[1] = fix.div(a[1], length);
@@ -101,7 +101,7 @@ v2.dot = function(a, b) {
 v2.clampF = function(a, min, max) {
     min = toFix(min);
     max = toFix(max);
-    if(min <= max) {
+    if (min <= max) {
         return Math.max(Math.min(a, max), min);
     }
     else {
