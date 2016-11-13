@@ -125,13 +125,8 @@ io.on("connection", function(socket) {
 
     socket.on("disconnect", function() {
         clearInterval(connections[socket.id].pingIntervalId);
-        new MessagePlayerLeave(connections[socket.id].player).send(socket.broadcast);
-        if(connections[socket.id].entity)
-            gameData.entityWorld.remove(connections[socket.id].entity);
-        if(connections[socket.id].player) {
-            gameData.playerWorld.remove(connections[socket.id].player);
-            console.log(connections[socket.id].entity.nameComponent.entityName + " disconnected.");
-        }
+        var player = connections[socket.id].player;
+        sendCommand(new CommandPlayerLeave(player.playerId, player.entityId));
         delete connections[socket.id];
     });
 
