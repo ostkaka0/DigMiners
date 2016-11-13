@@ -7,11 +7,9 @@ CommandPlayerJoin = function(playerId, entityId, playerName, socketId) {
 }
 
 CommandPlayerJoin.prototype.execute = function(gameData) {
-
-    if(isServer || this.playerId != global.player.id) {  
-        var player = new Player(this.playerId, this.entityId);
+    var player = new Player(this.playerId, this.entityId);
+    if(isServer || this.playerId != global.player.id)
         gameData.playerWorld.add(player, this.playerId);    
-    }
 
     if(isServer) {
         var socket = connections[this.socketId].socket;

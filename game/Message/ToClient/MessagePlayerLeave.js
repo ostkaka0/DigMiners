@@ -1,12 +1,10 @@
 
-MessagePlayerLeave = function(player) {
-    if(player) {
-        this.playerId = player.id;
-        this.entityId = player.entityId;
-    }
+CommandPlayerLeave = function(playerId, entityId) {
+    this.playerId = playerId;
+    this.entityId = entityId;
 }
 
-MessagePlayerLeave.prototype.execute = function(gameData) {
+CommandPlayerLeave.prototype.execute = function(gameData) {
     var player = gameData.playerWorld.objects[this.playerId];
     var entity = gameData.entityWorld.objects[this.entityId];
     gameData.playerWorld.remove(player);
@@ -14,21 +12,16 @@ MessagePlayerLeave.prototype.execute = function(gameData) {
     console.log(entity.nameComponent.entityName + " disconnected with playerId " + this.playerId);
 }
 
-MessagePlayerLeave.prototype.getSerializationSize = function() {
-    return 8;
-}
-
-MessagePlayerLeave.prototype.send = function(socket) {
-    var byteArray = new Buffer(this.getSerializationSize());
-    var index = new IndexCounter();
+CommandPlayerLeave.prototype.serialize = function(byteArray, index) {
     serializeInt32(byteArray, index, this.playerId);
     serializeInt32(byteArray, index, this.entityId);
-    socket.emit(this.idString, byteArray);
 }
 
-MessagePlayerLeave.prototype.receive = function(gameData, byteArray) {
-    byteArray = new Uint8Array(byteArray);
-    var index = new IndexCounter();
+CommandPlayerLeave.prototype.deserialize = function(byteArray, index) {
     this.playerId = deserializeInt32(byteArray, index);
     this.entityId = deserializeInt32(byteArray, index);
+}
+
+CommandPlayerLeave.prototype.getSerializationSize = function() {
+    return 8;
 }
