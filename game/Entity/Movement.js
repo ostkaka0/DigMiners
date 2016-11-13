@@ -1,10 +1,7 @@
 
 Movement = function(speed, toolUseDuration) {
-    this.up = false;
-    this.left = false;
-    this.down = false;
-    this.right = false;
-    this.spacebar = false;
+    this.keyStatuses = {};
+    this.direction = v2.create(0, 0);
     this.speed = speed;
     // The number of ticks until next dig. Will decrease by 1 each tick. Player can only dig at 0. Only used by server
     this.toolUseTickTimeout = 0;
@@ -22,41 +19,33 @@ Movement.prototype.calcDigTickDuration = function(dt) {
     return Math.round(1000.0 * this.toolUseDuration / dt);
 }
 
-Movement.prototype.getV2Dir = function() {
-    var pos = v2.create(0, 0);
-    if(this.up && !this.down)
-        pos[1] += 1.0;
-    else if(this.down && !this.up)
-        pos[1] -= 1.0;
-    if(this.right && !this.left)
-        pos[0] += 1.0;
-    else if(this.left && !this.right)
-        pos[0] -= 1.0;
-    return pos;
-}
-
 Movement.prototype.serialize = function(byteArray, index) {
-    var bitField1 = (this.up ? 1 : 0) | (this.left ? 2 : 0) | (this.down ? 4 : 0) | (this.right ? 8 : 0);
-    var bitField2 = (this.spacebar ? 1 : 0);
-    serializeInt8(byteArray, index, bitField1);
-    serializeInt8(byteArray, index, bitField2);
+    serializeV2(byteArray, index, this.direction);
+    var keys = Object.keys(this.keyStatuses);
+    serializeInt32(byteArray, index, keys.length);
+    keys.forEach(function(key) {
+        var value = this.keyStatuses[key];
+        serializeInt8(byteArray, index, key);
+        serializeInt8(byteArray, index, (value == true ? 1 : 0));
+    }.bind(this));
     serializeFix(byteArray, index, this.speed);
 }
 
 Movement.prototype.deserialize = function(byteArray, index, gameData) {
-    var bitField = deserializeInt8(byteArray, index);
-    var bitField2 = deserializeInt8(byteArray, index);
+    this.direction = deserializeV2(byteArray, index);
+    var keyStatusesLength = deserializeInt32(byteArray, index);
+    this.keyStatuses = {};
+    for (var i = 0; i < keyStatusesLength; ++i) {
+        var key = deserializeInt8(byteArray, index);
+        var pressed = deserializeInt8(byteArray, index);
+        pressed = (pressed == 1 ? true : false);
+        this.keyStatuses[i] = pressed;
+    }
     this.speed = deserializeFix(byteArray, index);
-
-    this.up = (bitField & 1 != 0);
-    this.left = (bitField & 2 != 0);
-    this.down = (bitField & 4 != 0);
-    this.right = (bitField & 8 != 0);
-    this.spacebar = (bitField2 & 1 != 0);
 }
 
 Movement.prototype.getSerializationSize = function() {
-    return 6;
+    return 16 + 2 * Object.keys(this.keyStatuses).length;
 }
 
 Movement.prototype.destroy = function(entity) {
@@ -65,46 +54,41 @@ Movement.prototype.destroy = function(entity) {
 
 entityFunctionEntityMovement = function(gameData, dt) {
     gameData.entityWorld.objectArray.forEach(function(entity) {
-        if(!entity || !entity.movement || !entity.physicsBody)
+        if (!entity || !entity.movement || !entity.physicsBody)
             return;
 
         // Movement:
-        var deltaSpeed = v2.create(0, 0);
-        if(entity.movement.up) deltaSpeed[1] += 1.0;
-        if(entity.movement.down) deltaSpeed[1] -= 1.0;
-        if(entity.movement.left) deltaSpeed[0] -= 1.0;
-        if(entity.movement.right) deltaSpeed[0] += 1.0;
         var normalized = v2.create(0, 0);
-        v2.normalize(deltaSpeed, normalized);
+        v2.normalize(entity.movement.direction, normalized);
         v2.mul(entity.movement.speed, normalized, normalized);
 
         // Slow down at dig:
-        if(entity.movement.isMining)
+        if (entity.movement.isMining)
             v2.mul(entity.movement.mineMovementSpeed, normalized, normalized);
-        else if(entity.movement.isDigging)
+        else if (entity.movement.isDigging)
             v2.mul(entity.movement.digMovementSpeed, normalized, normalized);
         v2.mul(dt, normalized, normalized);
         var velocity = entity.physicsBody.getVelocity();
         v2.add(normalized, velocity, velocity);
         entity.physicsBody.setVelocity(velocity);
 
-        var moveDir = entity.movement.getV2Dir();
-        if(moveDir[0] != 0 || moveDir[1] != 0)
+        var moveDir = entity.movement.direction;
+        if (moveDir[0] != 0 || moveDir[1] != 0)
             entity.physicsBody.rotateTo(Math.atan2(-moveDir[1], moveDir[0]), entity.physicsBody.rotationSpeed, dt);
 
-        if(entity.movement.spacebar && !entity.movement.isUsingTool)
+        if (entity.movement.keyStatuses[Keys.SPACEBAR] && !entity.movement.isUsingTool)
             entity.movement.isUsingTool = true;
-        if(entity.movement.isUsingTool && entity.movement.toolUseTickTimeout <= 0)
+        if (entity.movement.isUsingTool && entity.movement.toolUseTickTimeout <= 0)
             onEntityUseTool(gameData, entity);
 
         // Dig update:
         entity.movement.toolUseTickTimeout = (entity.movement.toolUseTickTimeout <= 0) ? 0 : entity.movement.toolUseTickTimeout - 1;
         // Reset dig state
-        if(entity.movement.toolUseTickTimeout == 0 || (!entity.movement.spacebar && entity.movement.isUsingTool)) {
+        if (entity.movement.toolUseTickTimeout == 0 || (!entity.movement.keyStatuses[Keys.SPACEBAR] && entity.movement.isUsingTool)) {
             entity.movement.isUsingTool = false;
             entity.movement.isDigging = false;
             entity.movement.isMining = false;
-            if(entity.bodyparts.bodyparts["rightArm"])
+            if (entity.bodyparts.bodyparts["rightArm"])
                 entity.bodyparts.bodyparts["rightArm"].finishCycle();
         }
     });
@@ -112,7 +96,8 @@ entityFunctionEntityMovement = function(gameData, dt) {
 
 onEntityUseTool = function(gameData, entity) {
     entity.movement.toolUseTickTimeout = entity.movement.calcDigTickDuration(gameData.tickDuration);
-    if(!isServer)
+    console.log("arm cycle");
+    if (!isServer)
         entity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArm", 64 / entity.movement.toolUseDuration, false);
     else {
         var angle = entity.physicsBody.angle;
@@ -123,15 +108,15 @@ onEntityUseTool = function(gameData, entity) {
         var shortestDistance = Number.MAX_VALUE;
         var shortestDistanceEntity = null;
         gameData.entityWorld.objectArray.forEach(function(otherEntity) {
-            if(entity.id != otherEntity.id && otherEntity.physicsBody && otherEntity.health) {
+            if (entity.id != otherEntity.id && otherEntity.physicsBody && otherEntity.health) {
                 var dist = v2.distance(toolUsePos, otherEntity.physicsBody.pos);
-                if(dist < shortestDistance) {
+                if (dist < shortestDistance) {
                     shortestDistance = dist;
                     shortestDistanceEntity = otherEntity;
                 }
             }
         });
-        if(shortestDistance <= 1.0) {
+        if (shortestDistance <= 1.0) {
             var command = new CommandEntityHurtEntity(entity.id, shortestDistanceEntity.id, -10);
             sendCommand(command);
             return;
@@ -142,12 +127,12 @@ onEntityUseTool = function(gameData, entity) {
         var localPos = [];
         v2WorldToBlockChunk(toolUsePos, chunkPos, localPos);
         var blockChunk = gameData.blockWorld.get(chunkPos[0], chunkPos[1]);
-        if(blockChunk) {
+        if (blockChunk) {
             var blockId = blockChunk.getForeground(localPos[0], localPos[1]);
-            if(blockId) {
+            if (blockId) {
                 var strength = blockChunk.getStrength(localPos[0], localPos[1]);
                 strength -= 64;
-                if(strength <= 0) {
+                if (strength <= 0) {
                     var x = chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0];
                     var y = chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1];
                     var command = new CommandEntityBuild(entity.id, x, y, 0, BlockTypes.FOREGROUND);
@@ -159,10 +144,10 @@ onEntityUseTool = function(gameData, entity) {
         }
 
         // If no block at dig position, dig terrain instead
-        if(entity.controlledByPlayer) {
+        if (entity.controlledByPlayer) {
             var playerId = entity.controlledByPlayer.playerId;
             var player = gameData.playerWorld.objects[playerId];
-            if(player) {
+            if (player) {
                 var command = new CommandPlayerDig(playerId, entity.physicsBody.pos[0], entity.physicsBody.pos[1], moveDir, 1.5, player.getDigSpeed(), player.getMaxDigHardness());
                 sendCommand(command);
             }

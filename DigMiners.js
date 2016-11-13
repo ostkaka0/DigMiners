@@ -6,7 +6,7 @@ var zindices = new Array();
 zindices[0] = new PIXI.Container();
 zindices[1] = new PIXI.Container();
 zindices[2] = new PIXI.Container();
-for(var i = 0; i < zindices.length; ++i)
+for (var i = 0; i < zindices.length; ++i)
     stage.addChild(zindices[i]);
 renderer.view.style.position = 'absolute';
 renderer.view.style.left = '0%';
@@ -40,30 +40,30 @@ loadGame = function() {
     // Player input
     $('*').keydown(function(event) {
         var char = String.fromCharCode(event.keyCode).toLowerCase();
-        if(!keysDown[char]) {
+        if (!keysDown[char]) {
             keysDown[char] = true;
-            var playerMoveDirection = null;
-            if(char == "w") playerMoveDirection = MoveDir.ENABLE_UP;
-            if(char == "a") playerMoveDirection = MoveDir.ENABLE_LEFT;
-            if(char == "s") playerMoveDirection = MoveDir.ENABLE_DOWN;
-            if(char == "d") playerMoveDirection = MoveDir.ENABLE_RIGHT;
-            if(char == " ") playerMoveDirection = MoveDir.ENABLE_SPACEBAR;
-            if(playerMoveDirection != null)
-                new MessageRequestPlayerMove(playerMoveDirection).send(socket);
+            var key = null;
+            if (char == "w") key = Keys.UP;
+            if (char == "a") key = Keys.LEFT;
+            if (char == "s") key = Keys.DOWN;
+            if (char == "d") key = Keys.RIGHT;
+            if (char == " ") key = Keys.SPACEBAR;
+            if (key != null)
+                new MessageRequestKeyStatusUpdate(key, true).send(socket);
         }
     });
     $('*').keyup(function(event) {
         var char = String.fromCharCode(event.keyCode).toLowerCase();
-        if(keysDown[char]) {
+        if (keysDown[char]) {
             keysDown[char] = false;
-            var playerMoveDirection = null;
-            if(char == "w") playerMoveDirection = MoveDir.DISABLE_UP;
-            if(char == "a") playerMoveDirection = MoveDir.DISABLE_LEFT;
-            if(char == "s") playerMoveDirection = MoveDir.DISABLE_DOWN;
-            if(char == "d") playerMoveDirection = MoveDir.DISABLE_RIGHT;
-            if(char == " ") playerMoveDirection = MoveDir.DISABLE_SPACEBAR;
-            if(playerMoveDirection != null)
-                new MessageRequestPlayerMove(playerMoveDirection).send(socket);
+            var key = null;
+            if (char == "w") key = Keys.UP;
+            if (char == "a") key = Keys.LEFT;
+            if (char == "s") key = Keys.DOWN;
+            if (char == "d") key = Keys.RIGHT;
+            if (char == " ") key = Keys.SPACEBAR;
+            if (key != null)
+                new MessageRequestKeyStatusUpdate(key, false).send(socket);
         }
     });
 
@@ -73,22 +73,22 @@ loadGame = function() {
 
 tick = function(dt) {
     var readyTicks = 0;
-    for(var i = 0; i <= 6 && gameData.pendingCommands[gameData.tickId + i]; i++)
+    for (var i = 0; i <= 6 && gameData.pendingCommands[gameData.tickId + i]; i++)
         readyTicks++;
 
-    if(readyTicks >= 3) {
-        while(readyTicks >= 1 && gameData.pendingCommands[gameData.tickId]) {
+    if (readyTicks >= 3) {
+        while (readyTicks >= 1 && gameData.pendingCommands[gameData.tickId]) {
             gameData.tick(dt);
             readyTicks--;
         }
     }
 
-    if(gameData.pendingCommands[gameData.tickId])
+    if (gameData.pendingCommands[gameData.tickId])
         gameData.tick(dt);
 
     // Fix interpolation after MessagePlayerMove
     forOf(this, gameData.entityWorld.objectArray, function(entity) {
-        if(entity.physicsBody) {
+        if (entity.physicsBody) {
             var physicsBody = entity.physicsBody;
             physicsBody.posClientOld = v2.clone(physicsBody.posClient);
             physicsBody.posClient = v2.clone(physicsBody.pos);
@@ -104,7 +104,7 @@ render = function(tickFracTime) {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    if(global.playerEntity && global.playerEntity.isActive) {
+    if (global.playerEntity && global.playerEntity.isActive) {
         camera.pos[0] = tickFracTime * 32.0 * global.playerEntity.physicsBody.posClient[0] + (1 - tickFracTime) * 32.0 * global.playerEntity.physicsBody.posClientOld[0];
         camera.pos[1] = tickFracTime * 32.0 * global.playerEntity.physicsBody.posClient[1] + (1 - tickFracTime) * 32.0 * global.playerEntity.physicsBody.posClientOld[1];
     } else // TODO: do something else instead of centering camera at 0,0?
@@ -118,7 +118,7 @@ render = function(tickFracTime) {
     blockChunkRenderer.render(gameData, gameData.blockWorld, projectionMatrix.clone().append(viewMatrix), camera);
 
     gameData.entityWorld.objectArray.forEach(function(entity) {
-        if(entity.physicsBody && entity.drawable) {
+        if (entity.physicsBody && entity.drawable) {
             var x = -camera.pos[0] + canvas.width / 2 + tickFracTime * 32.0 * entity.physicsBody.posClient[0] + (1 - tickFracTime) * 32.0 * entity.physicsBody.posClientOld[0];
             var y = camera.pos[1] + canvas.height / 2 - (tickFracTime * 32.0 * entity.physicsBody.posClient[1] + (1 - tickFracTime) * 32.0 * entity.physicsBody.posClientOld[1]);
 
@@ -128,7 +128,7 @@ render = function(tickFracTime) {
             entity.drawable.positionAll(x, y, rotation, entity.bodyparts);
 
             //console.log(entitySpeed);
-            if(entity.bodyparts.bodyparts.feet) {
+            if (entity.bodyparts.bodyparts.feet) {
                 var speed = v2.distanceSquared(entity.physicsBody.posClient, entity.physicsBody.posClientOld);
                 entity.bodyparts.bodyparts["feet"].animate(gameData, "feet", speed * 450.0, false);
                 //console.log("entity " + entity.id + " speed " + entitySpeed);
@@ -136,14 +136,14 @@ render = function(tickFracTime) {
         }
     });
 
-    if(global.player && global.player.isBuilding) { // isBuilding is set in Player.js line 50+
+    if (global.player && global.player.isBuilding) { // isBuilding is set in Player.js line 50+
         var worldCursorPos = [Math.floor((this.mouseX + camera.pos[0] - camera.width / 2) / 32), Math.floor((canvas.height - this.mouseY + camera.pos[1] - camera.height / 2) / 32)];
         var chunkPos = [0, 0];
         var localPos = [0, 0];
         v2WorldToBlockChunk(worldCursorPos, chunkPos, localPos);
         var blockPos = [chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0], chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1]];
         global.player.buildPos = blockPos;
-        if(global.player.canPlaceBlock(gameData, blockPos[0], blockPos[1])) {
+        if (global.player.canPlaceBlock(gameData, blockPos[0], blockPos[1])) {
             this.blockPosBad.visible = false;
             this.blockPosGood.visible = true;
             this.blockPosGood.position.x = blockPos[0] * 32 - camera.pos[0] + camera.width / 2;
@@ -166,7 +166,7 @@ render = function(tickFracTime) {
 }
 
 loadChunk = function(world, x, y) {
-    if(gameData.generator) {
+    if (gameData.generator) {
         var chunk = new Chunk();
         gameData.generator.generate(chunk, x, y);
         world.set(x, y, chunk);
@@ -197,12 +197,12 @@ onTexturesLoadComplete = function(textures) {
 }
 
 $(document).click(function(event) {
-    if(global.player && global.player.isBuilding) {
+    if (global.player && global.player.isBuilding) {
         var stackId = global.player.inventory.getEquippedStackId("tool");
         var bodies = [];
-        if(!global.player.canPlaceBlock(gameData, global.player.buildPos[0], global.player.buildPos[1]))
+        if (!global.player.canPlaceBlock(gameData, global.player.buildPos[0], global.player.buildPos[1]))
             return false;
-        if(stackId != null) {
+        if (stackId != null) {
             var message = new MessageRequestPlaceBlock(stackId, global.player.buildPos[0], global.player.buildPos[1]);
             message.send(socket);
         }
@@ -210,42 +210,42 @@ $(document).click(function(event) {
 });
 
 gameData.entityWorld.onAdd.push(function(entity) {
-    if(!global.playerEntity && entity.id == global.playerEntityId)
+    if (!global.playerEntity && entity.id == global.playerEntityId)
         global.playerEntity = entity;
 
-    if(entity.item && entity.item.amount > 1) {
+    if (entity.item && entity.item.amount > 1) {
         var text = new PIXI.Text(entity.item.amount, { fontFamily: 'Monospace', fontSize: 15, fill: 0xffffff, align: 'center' });
         var textSprite = new Sprite(null, text, false);
         entity.drawable.addSprite("textAmount", textSprite, null, false);
     }
-    
-    if(!isServer && entity.health && entity.drawable)
+
+    if (!isServer && entity.health && entity.drawable)
         onHealthChange(entity);
 
-    if(entity.drawable && entity.bodyparts)
+    if (entity.drawable && entity.bodyparts)
         entity.drawable.initializeBodyparts(entity.bodyparts.bodyparts);
-        
-    if(entity.nameComponent && entity.drawable)
+
+    if (entity.nameComponent && entity.drawable)
         entity.nameComponent.applyName(entity);
 });
 
 gameData.physicsWorld.onCollision.push(function(collisions) {
-    if(global.playerEntity && collisions) {
+    if (global.playerEntity && collisions) {
         collisions.forEach(function(collision) {
             var aEntity = gameData.physicsEntities[collision[0]];
             var bEntity = gameData.physicsEntities[collision[1]];
-            if(aEntity == undefined || bEntity == undefined) return;
+            if (aEntity == undefined || bEntity == undefined) return;
             var playerEntity = null;
             var itemEntity = null;
-            if(aEntity.id == global.playerEntity.id) {
+            if (aEntity.id == global.playerEntity.id) {
                 playerEntity = aEntity;
                 itemEntity = bEntity;
-            } else if(bEntity.id == global.playerEntity.id) {
+            } else if (bEntity.id == global.playerEntity.id) {
                 playerEntity = bEntity;
                 itemEntity = aEntity;
             } else
                 return;
-            if(itemEntity.item && itemEntity.physicsBody && (!itemEntity.item.dropped || ((new Date()) - itemEntity.item.dropped) >= 500)) {
+            if (itemEntity.item && itemEntity.physicsBody && (!itemEntity.item.dropped || ((new Date()) - itemEntity.item.dropped) >= 500)) {
                 var message = new MessageRequestItemPickup(itemEntity.id);
                 message.send(socket);
             }
