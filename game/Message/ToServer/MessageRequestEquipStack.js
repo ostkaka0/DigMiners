@@ -14,7 +14,7 @@ MessageRequestEquipStack.prototype.execute = function(gameData, player) {
             item.equipped = false;
         var equipped = !item.equipped;
         var command = new CommandPlayerEquipItem(player.playerId, this.id, item.id, equipped);
-        gameData.commands.push(command);
+        sendCommand(command);
     }
 }
 

@@ -14,11 +14,16 @@ MessageInit = function(gameData, player) {
 MessageInit.prototype.execute = function(gameData) {
     gameData.tickId = this.tickId;
     var player = gameData.playerWorld.add(new Player(this.playerId, this.entityId), this.playerId);
+    global.player = player;
+    global.playerEntityId = this.entityId;
 
     for(var i = 0; i < this.players.length; ++i) {
         var playerData = this.players[i];
         var player = gameData.playerWorld.add(new Player(playerData[0], playerData[1]), playerData[0]);
     }
+
+    loadGame();
+    createHUD(gameData);
 }
 
 MessageInit.prototype.getSerializationSize = function(gameData) {
@@ -61,14 +66,11 @@ MessageInit.prototype.send = function(gameData, socket) {
     serializeInt32(byteArray, index, gameData.entityWorld.objectArray.length);
     gameData.entityWorld.objectArray.forEach(function(entity) {
         serializeInt32(byteArray, index, entity.id);
-        //console.log("serializing entity " + entity.id + " size " + this.entitySizes[entity.id]);
         serializeInt32(byteArray, index, this.entitySizes[entity.id]);
         Object.keys(entity).forEach(function(key) {
             var component = entity[key];
             if(!component.serialize) return;
-            //console.log("serializing component: " + component.name);
             serializeInt32(byteArray, index, component.id);
-            //console.log("componentId " + component.id);
             component.serialize(byteArray, index);
         }.bind(this));
     }.bind(this));
@@ -95,24 +97,18 @@ MessageInit.prototype.receive = function(gameData, byteArray) {
 
     // Deserialize entities
     var amountOfEntities = deserializeInt32(byteArray, index);
-    //console.log("deserializing " + amountOfEntities + " entities");
     for(var i = 0; i < amountOfEntities; ++i) {
         var entityId = deserializeInt32(byteArray, index);
 
         var entitySize = deserializeInt32(byteArray, index);
         var entityEnd = index.value + entitySize;
-        //console.log(entityId + " begin " + index.value + " end " + entityEnd);
         var entity = {};
         while(index.value < entityEnd) {
-            //console.log("index.value " + index.value + " of " + entityEnd);
             var componentId = deserializeInt32(byteArray, index);
-            //console.log("componentId " + componentId);
             var ComponentType = gameData.componentTypes[componentId];
             var componentName = ComponentType.prototype.name;
             entity[componentName] = new ComponentType();
             entity[componentName].deserialize(byteArray, index, gameData);
-            //console.log("deserialized component " + componentName);
-            //console.log("now at " + index.value);
         }
 
         // If entity received already exists, remove existing(convenience)

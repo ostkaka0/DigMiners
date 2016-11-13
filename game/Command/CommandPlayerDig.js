@@ -71,7 +71,7 @@ CommandPlayerDig.prototype.execute = function(gameData) {
                     itemEntity.physicsBody.posOld = v2.create(physicsBody.pos[0], physicsBody.pos[1]);
                     itemEntity.physicsBody.angle = physicsBody.angle;
                     itemEntity.physicsBody.angleOld = physicsBody.angle;
-                    gameData.commands.push(new CommandEntitySpawn(gameData, itemEntity, itemEntityId));
+                    sendCommand(new CommandEntitySpawn(gameData, itemEntity, itemEntityId));
                 }
             }
         }

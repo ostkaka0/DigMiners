@@ -20,7 +20,7 @@ MessageRequestItemPickup.prototype.execute = function(gameData, player) {
             message.execute(gameData);
             message.send(player.socket);
             // Destroy entity
-            gameData.commands.push(new CommandEntityDestroy(this.entityId));
+            sendCommand(new CommandEntityDestroy(this.entityId));
         }
     }
 }

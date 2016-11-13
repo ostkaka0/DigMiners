@@ -136,7 +136,7 @@ render = function(tickFracTime) {
         }
     });
 
-    if(global.player.isBuilding) { // isBuilding is set in Player.js line 50+
+    if(global.player && global.player.isBuilding) { // isBuilding is set in Player.js line 50+
         var worldCursorPos = [Math.floor((this.mouseX + camera.pos[0] - camera.width / 2) / 32), Math.floor((canvas.height - this.mouseY + camera.pos[1] - camera.height / 2) / 32)];
         var chunkPos = [0, 0];
         var localPos = [0, 0];
@@ -196,15 +196,8 @@ onTexturesLoadComplete = function(textures) {
     client = new Client(gameData, window.vars.ip);
 }
 
-onMessage(MessageInit, function(message) {
-    global.player = gameData.playerWorld.objects[message.playerId];
-    global.playerEntity = gameData.entityWorld.objects[message.entityId];
-    loadGame();
-    createHUD(gameData);
-});
-
 $(document).click(function(event) {
-    if(global.player.isBuilding) {
+    if(global.player && global.player.isBuilding) {
         var stackId = global.player.inventory.getEquippedStackId("tool");
         var bodies = [];
         if(!global.player.canPlaceBlock(gameData, global.player.buildPos[0], global.player.buildPos[1]))
@@ -217,15 +210,21 @@ $(document).click(function(event) {
 });
 
 gameData.entityWorld.onAdd.push(function(entity) {
+    if(!global.playerEntity && entity.id == global.playerEntityId)
+        global.playerEntity = entity;
+
     if(entity.item && entity.item.amount > 1) {
         var text = new PIXI.Text(entity.item.amount, { fontFamily: 'Monospace', fontSize: 15, fill: 0xffffff, align: 'center' });
         var textSprite = new Sprite(null, text, false);
         entity.drawable.addSprite("textAmount", textSprite, null, false);
     }
+    
     if(!isServer && entity.health && entity.drawable)
         onHealthChange(entity);
+
     if(entity.drawable && entity.bodyparts)
         entity.drawable.initializeBodyparts(entity.bodyparts.bodyparts);
+        
     if(entity.nameComponent && entity.drawable)
         entity.nameComponent.applyName(entity);
 });

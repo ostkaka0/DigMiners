@@ -41,7 +41,7 @@ MessagePlayerInventory.prototype.execute = function(gameData) {
     } else if(this.actionId == InventoryActions.DROP_STACK) {
         var item = player.inventory.removeStack(this.id);
     }
-    if(!isServer && this.playerId == global.player.playerId) {
+    if(!isServer && global.player && this.playerId == global.player.playerId) {
         updateHUD(gameData);
         checkCanAffordRecipe();
     }

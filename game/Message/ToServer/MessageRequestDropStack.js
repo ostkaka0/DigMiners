@@ -27,14 +27,14 @@ MessageRequestDropStack.prototype.execute = function(gameData, player) {
         itemEntity.physicsBody.angle = physicsBody.angle;
         itemEntity.physicsBody.angleOld = physicsBody.angle;
         itemEntity.item.dropped = new Date();
-        gameData.commands.push(new CommandEntitySpawn(gameData, itemEntity, itemEntityId));
+        sendCommand(new CommandEntitySpawn(gameData, itemEntity, itemEntityId));
 
         var message = new MessagePlayerInventory(player.playerId, InventoryActions.DROP_STACK, this.id, 0);
         message.execute(gameData);
         message.send(player.socket);
 
         if(item.equipped)
-            gameData.commands.push(new CommandPlayerEquipItem(player.playerId, this.id, item.id, false));
+            sendCommand(new CommandPlayerEquipItem(player.playerId, this.id, item.id, false));
     }
 }
 

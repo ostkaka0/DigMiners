@@ -1,7 +1,6 @@
 entityTemplates = {};
 
 entityTemplates.player = function(playerId, entityId, name, gameData) {
-    var player = new Player(playerId, entityId);
     var entity = {};
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
@@ -32,7 +31,7 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
 
     entity.health = new Health(1000, 1000);
 
-    return { 'player': player, 'entity': entity };
+    return entity;
 }
 
 entityTemplates.item = function(itemId, amount, gameData) {

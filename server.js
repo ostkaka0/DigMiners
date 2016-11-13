@@ -46,6 +46,10 @@ var tickDuration = gameData.tickDuration;
 var firstTickTime = process.hrtime();
 var tickNum = 0;
 var messageCallbacks = {};
+var commandsToSend = [];
+sendCommand = function(command) {
+    commandsToSend.push(command);
+}
 
 var names = ["Runny", "Buttercup", "Dinky", "Stinky", "Crusty",
     "Greasy", "Gidget", "Cheesypoof", "Lumpy", "Wacky", "Tiny", "Flunky",
@@ -73,7 +77,7 @@ for(var x = -3; x < 3; ++x) {
 carveCircle(gameData, 0, 0, 12);
 
 gameData.physicsWorld.onCollision.push(function(collisions) {
-    gameData.commands.push(new CommandCollisions(collisions));
+    sendCommand(new CommandCollisions(collisions));
 });
 
 update = function() {
@@ -89,6 +93,10 @@ update = function() {
 }
 
 tick = function(dt) {
+    gameData.commands = gameData.commands.concat(commandsToSend);
+    //console.log("sheduled " + commandsToSend.length + " commands to be sent in tick " + gameData.tickId);
+    commandsToSend.length = 0;
+
     // Send commands
     new MessageCommands(gameData).send(io.sockets);
 
@@ -108,85 +116,22 @@ io.on("connection", function(socket) {
         socket.emit('ping');
     }, 2000);
 
-    var name = names[Math.round(Math.random() * names.length)] + " " + lastnames[Math.round(Math.random() * lastnames.length)];
     var playerId = idList.next();
     var entityId = idList.next();
-    var template = entityTemplates.player(playerId, entityId, entityId, gameData);
-    template.player.socket = socket;
-    var player = template.player;
-    var entity = template.entity;
-    connections[socket.id].player = player;
-    connections[socket.id].entity = entity;
-    gameData.playerWorld.add(player, playerId);
-    gameData.entityWorld.add(entity, entityId);
+    var name = names[Math.round(Math.random() * names.length)] + " " + lastnames[Math.round(Math.random() * lastnames.length)];
 
-    for(var i = 0; i < 3; ++i) {
-        // (TEMPORARY) spawn monster on player join
-        var monsterEntityId = idList.next();
-        var monster = entityTemplates.testMonster(monsterEntityId, [0, 0], gameData);
-        gameData.commands.push(new CommandEntitySpawn(gameData, monster, monsterEntityId));
-    }
-
-    // Send init message to player
-    new MessageInit(gameData, player).send(gameData, socket);
-    // Send playerJoin message to other players
-    new MessagePlayerJoin(player, name).send(socket.broadcast);
-
-    for(var x = -3; x < 3; ++x) {
-        for(var y = -3; y < 3; ++y) {
-            var chunk = gameData.tileWorld.get(x, y);
-            var blockChunk = gameData.blockWorld.get(x, y);
-            var message = new MessageChunk(chunk, blockChunk, x, y);
-            message.send(socket);
-        }
-    }
-
-    // give player shovel at join
-    var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.RustyShovel.id, 1);
-    message.execute(gameData);
-    message.send(socket);
-
-    var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.CopperShovel.id, 1);
-    message.execute(gameData);
-    message.send(socket);
-
-    var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.IronShovel.id, 1);
-    message.execute(gameData);
-    message.send(socket);
-
-    var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.SteelShovel.id, 1);
-    message.execute(gameData);
-    message.send(socket);
-
-    var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.DiamondShovel.id, 1);
-    message.execute(gameData);
-    message.send(socket);
-
-    var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.CopperSword.id, 1);
-    message.execute(gameData);
-    message.send(socket);
-
-    // give player dynamite at join
-    var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.Dynamite.id, 4);
-    message.execute(gameData);
-    message.send(socket);
-
-    // give player blocks at join
-    var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.StoneWall.id, 10);
-    message.execute(gameData);
-    message.send(socket);
-
-    var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.StoneFloor.id, 10);
-    message.execute(gameData);
-    message.send(socket);
+    // Send playerJoin message
+    sendCommand(new CommandPlayerJoin(playerId, entityId, name, socket.id));
 
     socket.on("disconnect", function() {
         clearInterval(connections[socket.id].pingIntervalId);
         new MessagePlayerLeave(connections[socket.id].player).send(socket.broadcast);
-        gameData.entityWorld.remove(connections[socket.id].entity);
-        gameData.playerWorld.remove(connections[socket.id].player);
-        if(connections[socket.id].player)
+        if(connections[socket.id].entity)
+            gameData.entityWorld.remove(connections[socket.id].entity);
+        if(connections[socket.id].player) {
+            gameData.playerWorld.remove(connections[socket.id].player);
             console.log(connections[socket.id].entity.nameComponent.entityName + " disconnected.");
+        }
         delete connections[socket.id];
     });
 
@@ -200,7 +145,7 @@ io.on("connection", function(socket) {
         var commandId = deserializeInt32(data, counter);
         var command = new gameData.commandTypes.list[commandId]();
         command.deserialize(data, counter);
-        gameData.commands.push(command);
+        sendCommand(command);
         //}, 300);
         //console.log("Received " + data[0] + " and " + JSON.stringify(data[1]));
     });
@@ -222,8 +167,6 @@ io.on("connection", function(socket) {
                 messageCallbacks[messageType.prototype.id](message);
         });
     });
-
-    console.log(entity.nameComponent.entityName + " connected.");
 });
 
 http.listen(gameData.port, function() {
