@@ -3,7 +3,7 @@ ItemFunctions = {};
 ItemTextures = {};
 
 ItemFunctions.Shovel = function(entity, item) {
-    var player = gameData.playerWorld.objects[entity.controlledByPlayer.id];
+    var player = gameData.playerWorld.objects[entity.controlledByPlayer.playerId];
     if (isServer) {
         var pos = entity.physicsBody.getPos();
         var angle = entity.physicsBody.angle;
@@ -15,13 +15,13 @@ ItemFunctions.Shovel = function(entity, item) {
 ItemFunctions.Sword = function(entity, item) {
     var physicsWorld = gameData.physicsWorld;
     var bodies = [];
-    var entityBodyId = entity.physicsWorld.bodyId;
-    var entityPos = entity.physicsWorld.getPos();
+    var entityBodyId = entity.physicsBody.bodyId;
+    var entityPos = entity.physicsBody.getPos();
     var angle = entity.physicsBody.angle;
     var dir = [Math.cos(-angle), Math.sin(-angle)];
     var hitPos = [0, 0];
     v2.mul(item.hitRange, dir, hitPos);
-    v2.add(entityPos, hitPos, hitPoss);
+    v2.add(entityPos, hitPos, hitPos);
     physicsWorld.getBodiesInRadius(bodies, hitPos, item.hitRadius);
     
     var hitEntities = [];
