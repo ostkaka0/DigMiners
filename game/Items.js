@@ -1,6 +1,45 @@
 Items = {};
-
+ItemFunctions = {};
 ItemTextures = {};
+
+ItemFunctions.Shovel = function(entity, item) {
+    var player = gameData.playerWorld.objects[entity.controlledByPlayer.id];
+    if (isServer) {
+        var pos = entity.physicsBody.getPos();
+        var angle = entity.physicsBody.angle;
+        var dir = [Math.cos(-angle), Math.sin(-angle)];
+        gameData.commands.push(new CommandPlayerDig(player.id, pos[0], pos[1], dir, 1.5, player.getDigSpeed(), player.getMaxDigHardness()));
+    }
+}
+
+ItemFunctions.Sword = function(entity, item) {
+    var physicsWorld = gameData.physicsWorld;
+    var bodies = [];
+    var entityBodyId = entity.physicsWorld.bodyId;
+    var entityPos = entity.physicsWorld.getPos();
+    var angle = entity.physicsBody.angle;
+    var dir = [Math.cos(-angle), Math.sin(-angle)];
+    var hitPos = [0, 0];
+    v2.mul(item.hitRange, dir, hitPos);
+    v2.add(entityPos, hitPos, hitPoss);
+    physicsWorld.getBodiesInRadius(bodies, hitPos, item.hitRadius);
+    
+    var hitEntities = [];
+    
+    bodies.forEach(function(bodyId){
+        if (bodyId == entityBodyId) return;
+        var entity = gameData.physicsEntities[bodyId];
+        if (!entity) return;
+        
+        console.log("Entity hit!");
+        hitEntities.push(entity.id);
+    });
+    
+    // TODO: CommandEntityHit
+    //if (isServer) {
+    //    gameData.commands.push(new CommandEntityHit(entity, hitEntities));
+    //}
+}
 
 ItemTextures.ShovelAtlas = {
     path: "shovelAtlas.png",
@@ -109,6 +148,10 @@ initItems = function(gameData) {
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
+        itemFunction: ItemFunctions.Shovel,
+        // TODO: 
+        // useDelay: 4,
+        // useDuration: 10,
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 1.0,
@@ -121,6 +164,7 @@ initItems = function(gameData) {
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
+        itemFunction: ItemFunctions.Shovel,
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 1.2,
@@ -133,6 +177,7 @@ initItems = function(gameData) {
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
+        itemFunction: ItemFunctions.Shovel,
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 1.6,
@@ -145,6 +190,7 @@ initItems = function(gameData) {
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
+        itemFunction: ItemFunctions.Shovel,
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 1.8,
@@ -157,6 +203,7 @@ initItems = function(gameData) {
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
+        itemFunction: ItemFunctions.Shovel,
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 2.2,
@@ -169,6 +216,7 @@ initItems = function(gameData) {
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
+        itemFunction: ItemFunctions.Shovel,
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 2.4,
@@ -181,6 +229,7 @@ initItems = function(gameData) {
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
+        itemFunction: ItemFunctions.Shovel,
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 2.8,
@@ -193,6 +242,7 @@ initItems = function(gameData) {
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
+        itemFunction: ItemFunctions.Shovel,
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 3.0,
@@ -205,6 +255,7 @@ initItems = function(gameData) {
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
+        itemFunction: ItemFunctions.Shovel,
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 3.6,
@@ -217,6 +268,7 @@ initItems = function(gameData) {
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
+        itemFunction: ItemFunctions.Shovel,
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 4.0,
@@ -230,8 +282,11 @@ initItems = function(gameData) {
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
+        itemFunction: ItemFunctions.Sword,
         type: "tool",
         typeOfType: "sword",
+        hitRange: 0.5,
+        hitRadius: 0.5,
         damage: 20
     }
     Items.CopperSword = {
@@ -241,8 +296,11 @@ initItems = function(gameData) {
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
+        itemFunction: ItemFunctions.Sword,
         type: "tool",
         typeOfType: "sword",
+        hitRange: 0.5,
+        hitRadius: 0.5,
         damage: 30
     }
     Items.IronSword = {
@@ -252,8 +310,11 @@ initItems = function(gameData) {
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
+        itemFunction: ItemFunctions.Sword,
         type: "tool",
         typeOfType: "sword",
+        hitRange: 0.5,
+        hitRadius: 0.5,
         damage: 40
     }
     Items.SteelSword = {
@@ -263,8 +324,11 @@ initItems = function(gameData) {
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
+        itemFunction: ItemFunctions.Sword,
         type: "tool",
         typeOfType: "sword",
+        hitRange: 0.5,
+        hitRadius: 0.5,
         damage: 50
     }
 
