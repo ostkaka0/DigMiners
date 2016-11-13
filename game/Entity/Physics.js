@@ -49,6 +49,7 @@ Object.defineProperties(PhysicsBody.prototype, {
 });
 
 PhysicsBody.prototype.getPos = function() { return gameData.physicsWorld.getPos(this.bodyId); }
+PhysicsBody.prototype.getPosOld = function() { return gameData.physicsWorld.getPosOld(this.bodyId); }
 PhysicsBody.prototype.setPos = function(pos) { gameData.physicsWorld.setPos(this.bodyId, pos); }
 PhysicsBody.prototype.getVelocity = function() { return gameData.physicsWorld.getVelocity(this.bodyId); }
 PhysicsBody.prototype.setVelocity = function(velocity) { gameData.physicsWorld.setVelocity(this.bodyId, velocity); }
