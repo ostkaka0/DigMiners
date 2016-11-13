@@ -28,37 +28,15 @@ TargetPlayerBehaviour.prototype.run = function() {
     this.flowField = new Map2D();
     aStarFlowField(this.flowField, [], gameData.tileWorld, gameData.blockWorld, tilePos, tilePosTarget);
     //}
+    
+    var dir = DisField.calcDir(this.flowField, [this.entity.physicsBody.pos[0], this.entity.physicsBody.pos[1]]);
 
-    var getPageAndIndex = (function(pos) {
-        var pageX = Math.floor(pos[0] / PATH_PAGE_DIM);
-        var pageY = Math.floor(pos[1] / PATH_PAGE_DIM);
-        var localX = Math.floor(pos[0]) - pageX * PATH_PAGE_DIM;
-        var localY = Math.floor(pos[1]) - pageY * PATH_PAGE_DIM;
-        var page = this.flowField.get(pageX, pageY);
-        if (!page) {
-            page = new Uint16Array(PATH_PAGE_DIM * PATH_PAGE_DIM);
-            page.fill(65535);
-            this.flowField.set(pageX, pageY, page);
-        }
-        return [page, localX + localY * PATH_PAGE_DIM];
-    }).bind(this);
+    //var diffX = dir[0];//(getDis([tilePos[0] - 1, tilePos[1]]) - getDis([tilePos[0] + 1, tilePos[1]])) / 10;
+    //var diffY = dir[1];//(getDis([tilePos[0], tilePos[1] - 1]) - getDis([tilePos[0], tilePos[1] + 1])) / 10;
 
-    var getDis = (function(pos) {
-        var pageAndIndex = getPageAndIndex(pos);
-        var page = pageAndIndex[0];
-        var index = pageAndIndex[1];
-        if (page)
-            return page[index];
-        else
-            return 65535;
-    }).bind(this);
-
-    var diffX = (getDis([tilePos[0] - 1, tilePos[1]]) - getDis([tilePos[0] + 1, tilePos[1]])) / 10;
-    var diffY = (getDis([tilePos[0], tilePos[1] - 1]) - getDis([tilePos[0], tilePos[1] + 1])) / 10;
-
-    var dir = v2.create(diffX, diffY);
-    var normalized = v2.create(0, 0);
-    v2.normalize(dir, normalized);
+    //var dir = v2.create(diffX, diffY);
+    //var normalized = v2.create(0, 0);
+    //v2.normalize(dir, normalized);
 
     var dist = v2.distance(this.entity.physicsBody.pos, this.target.physicsBody.pos);
     /*if(dist < 1.5) // 1.0 limit for punch
@@ -66,7 +44,7 @@ TargetPlayerBehaviour.prototype.run = function() {
     else
         dirs.push(MoveDir.DISABLE_SPACEBAR);*/
 
-    sendCommand(new CommandEntityMove(this.entity.id, normalized, this.entity.physicsBody.pos[0], this.entity.physicsBody.pos[1]));
+    sendCommand(new CommandEntityMove(this.entity.id, dir, this.entity.physicsBody.pos[0], this.entity.physicsBody.pos[1]));
     if (dist > this.maxRadius)
         return false;
     return true;
