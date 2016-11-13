@@ -72,12 +72,9 @@ loadGame = function() {
 }
 
 tick = function(dt) {
-    //console.log(dt);
     var readyTicks = 0;
     for(var i = 0; i <= 6 && gameData.pendingCommands[gameData.tickId + i]; i++)
         readyTicks++;
-
-    //console.log("Ready ticks: " + readyTicks);
 
     if(readyTicks >= 3) {
         while(readyTicks >= 1 && gameData.pendingCommands[gameData.tickId]) {
@@ -95,18 +92,6 @@ tick = function(dt) {
             var physicsBody = entity.physicsBody;
             physicsBody.posClientOld = v2.clone(physicsBody.posClient);
             physicsBody.posClient = v2.clone(physicsBody.pos);
-        }
-    });
-
-    gameData.entityWorld.objectArray.forEach(function(entity) {
-        //console.log("item? " + entity.item);
-        if(entity.item && entity.physicsBody && !entity.destroying && (!entity.item.dropped || ((new Date()) - entity.item.dropped) >= 500)) {
-            var dis = v2.distance(entity.physicsBody.pos, global.playerEntity.physicsBody.pos);
-            //console.log("dis client: " + dis);
-            if(dis <= gameData.itemPickupDistance) {
-                var message = new MessageRequestItemPickup(entity.id);
-                message.send(socket);
-            }
         }
     });
 }
@@ -243,4 +228,28 @@ gameData.entityWorld.onAdd.push(function(entity) {
         entity.drawable.initializeBodyparts(entity.bodyparts.bodyparts);
     if(entity.nameComponent && entity.drawable)
         entity.nameComponent.applyName(entity);
+});
+
+gameData.physicsWorld.onCollision.push(function(collisions) {
+    if(global.playerEntity && collisions) {
+        collisions.forEach(function(collision) {
+            var aEntity = gameData.physicsEntities[collision[0]];
+            var bEntity = gameData.physicsEntities[collision[1]];
+            if(aEntity == undefined || bEntity == undefined) return;
+            var playerEntity = null;
+            var itemEntity = null;
+            if(aEntity.id == global.playerEntity.id) {
+                playerEntity = aEntity;
+                itemEntity = bEntity;
+            } else if(bEntity.id == global.playerEntity.id) {
+                playerEntity = bEntity;
+                itemEntity = aEntity;
+            } else
+                return;
+            if(itemEntity.item && itemEntity.physicsBody && (!itemEntity.item.dropped || ((new Date()) - itemEntity.item.dropped) >= 500)) {
+                var message = new MessageRequestItemPickup(itemEntity.id);
+                message.send(socket);
+            }
+        });
+    }
 });
