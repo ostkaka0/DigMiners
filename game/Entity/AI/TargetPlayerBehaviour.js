@@ -3,7 +3,8 @@ TargetPlayerBehaviour = function(entity, maxRadius) {
     this.entity = entity;
     this.maxRadius = maxRadius;
     this.target = null;
-    this.flowField = null;
+    this.flowField = new Map2D();
+    this.nextUpdateTick = gameData.tickId;
 }
 
 TargetPlayerBehaviour.prototype.canRun = function() {
@@ -24,12 +25,15 @@ TargetPlayerBehaviour.prototype.run = function() {
     var tilePos = [Math.floor(this.entity.physicsBody.pos[0]), Math.floor(this.entity.physicsBody.pos[1])];
     var tilePosTarget = [Math.floor(this.target.physicsBody.pos[0]), Math.floor(this.target.physicsBody.pos[1])];
 
-    //if (!this.flowField) {
-    this.flowField = new Map2D();
-    aStarFlowField(this.flowField, [], gameData.tileWorld, gameData.blockWorld, tilePos, tilePosTarget);
-    //}
+    if (gameData.tickId >= this.nextUpdateTick) {
+        this.nextUpdateTick = gameData.tickId + (2000 / gameData.tickDuration >> 0);
+        this.flowField = new Map2D();
+        aStarFlowField(this.flowField, [], gameData.tileWorld, gameData.blockWorld, tilePos, tilePosTarget, 20480);
+    }
     
     var dir = DisField.calcTileDir(this.flowField, tilePos);
+    if (dir[0] == 0 && dir[1] == 0)
+        return false;
 
     //var diffX = dir[0];//(getDis([tilePos[0] - 1, tilePos[1]]) - getDis([tilePos[0] + 1, tilePos[1]])) / 10;
     //var diffY = dir[1];//(getDis([tilePos[0], tilePos[1] - 1]) - getDis([tilePos[0], tilePos[1] + 1])) / 10;

@@ -2,7 +2,7 @@ PATH_PAGE_DIM = 8;
 
 
 // Generate flowfield using backward a-star(from goal to start)
-aStarFlowField = function(disField, expandList, tileWorld, blockWorld, start, goal) {
+aStarFlowField = function(disField, expandList, tileWorld, blockWorld, start, goal, maxDistance) {
     expandList = expandList || [];
     
     var childDirs = [ [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1]];
@@ -76,6 +76,8 @@ aStarFlowField = function(disField, expandList, tileWorld, blockWorld, start, go
             var index = pageAndIndex[1];
             var density = getDensity(tileWorld, pos[0], pos[1]);
             var dis = baseDis + childDirWeights[i] + 20*density/255;
+            if (dis > maxDistance)
+                continue;
             if (density > 127) 
                 continue;
             if (getForeground(blockWorld, pos[0], pos[1]) != 0)
