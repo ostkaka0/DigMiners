@@ -14,10 +14,16 @@ COLLISION_BLOCKS = [
 
 PhysicsBody = function(pos, damping) {
     this.bodyId = gameData.physicsWorld.add(pos);
-    if(pos)
+    if(pos) {
         this.posOld = v2.clone(pos);
-    else
+        this.posClient = v2.clone(pos);
+        this.posClientOld = v2.clone(pos);
+    }
+    else {
         this.posOld = [0, 0];
+        this.posClient = [0, 0];
+        this.posClientOld = [0, 0];
+    }
     this.speedOld = [0, 0];
     if(damping)
         this.damping = toFix(damping);
@@ -25,8 +31,6 @@ PhysicsBody = function(pos, damping) {
     this.angleOld = 0;
     this.rotationSpeed = toFix(10.0);
 
-    this.posClient = [0, 0];
-    this.posClientOld = [0, 0];
 }
 
 PhysicsBody.prototype.name = physicsBody.name; function physicsBody() { };
@@ -67,6 +71,9 @@ PhysicsBody.prototype.deserialize = function(byteArray, index) {
     this.angleOld = this.angle;
     this.rotationSpeed = deserializeFix(byteArray, index);
     this.damping = deserializeFix(byteArray, index);
+
+    this.posClient = v2.clone(this.pos);
+    this.posClientOld = v2.clone(this.pos);
 }
 
 PhysicsBody.prototype.getSerializationSize = function() {
