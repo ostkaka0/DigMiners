@@ -26,9 +26,11 @@ TargetPlayerBehaviour.prototype.run = function() {
     var tilePosTarget = [Math.floor(this.target.physicsBody.pos[0]), Math.floor(this.target.physicsBody.pos[1])];
 
     if (gameData.tickId >= this.nextUpdateTick) {
-        this.nextUpdateTick = gameData.tickId + (2000 / gameData.tickDuration >> 0);
         this.flowField = new Map2D();
-        aStarFlowField(this.flowField, [], gameData.tileWorld, gameData.blockWorld, tilePos, tilePosTarget, 20480);
+        var expandList = [];
+        aStarFlowField(this.flowField, expandList, gameData.tileWorld, gameData.blockWorld, tilePos, tilePosTarget, 10240);
+        var delay = Math.min(2000, expandList.length*5);
+        this.nextUpdateTick = gameData.tickId + (delay / gameData.tickDuration >> 0);
     }
     
     var dir = DisField.calcTileDir(this.flowField, tilePos);
@@ -48,7 +50,9 @@ TargetPlayerBehaviour.prototype.run = function() {
     else
         dirs.push(MoveDir.DISABLE_SPACEBAR);*/
 
-    sendCommand(new CommandEntityMove(this.entity.id, dir, this.entity.physicsBody.pos[0], this.entity.physicsBody.pos[1]));
+    var currentDir = this.entity.movement.direction;
+    if (dir[0] != currentDir[0] || dir[1] != currentDir[1])
+        sendCommand(new CommandEntityMove(this.entity.id, dir, this.entity.physicsBody.pos[0], this.entity.physicsBody.pos[1]));
     if (dist > this.maxRadius)
         return false;
     return true;
