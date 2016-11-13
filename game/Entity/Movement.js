@@ -96,7 +96,6 @@ entityFunctionEntityMovement = function(gameData, dt) {
 
 onEntityUseTool = function(gameData, entity) {
     entity.movement.toolUseTickTimeout = entity.movement.calcDigTickDuration(gameData.tickDuration);
-    console.log("arm cycle");
     if (!isServer)
         entity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArm", 64 / entity.movement.toolUseDuration, false);
     else {
