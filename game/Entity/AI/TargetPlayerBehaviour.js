@@ -29,7 +29,7 @@ TargetPlayerBehaviour.prototype.run = function() {
     aStarFlowField(this.flowField, [], gameData.tileWorld, gameData.blockWorld, tilePos, tilePosTarget);
     //}
     
-    var dir = DisField.calcDir(this.flowField, [this.entity.physicsBody.pos[0], this.entity.physicsBody.pos[1]]);
+    var dir = DisField.calcTileDir(this.flowField, tilePos);
 
     //var diffX = dir[0];//(getDis([tilePos[0] - 1, tilePos[1]]) - getDis([tilePos[0] + 1, tilePos[1]])) / 10;
     //var diffY = dir[1];//(getDis([tilePos[0], tilePos[1] - 1]) - getDis([tilePos[0], tilePos[1] + 1])) / 10;
