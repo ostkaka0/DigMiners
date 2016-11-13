@@ -13,6 +13,8 @@ GLBlockChunk.prototype.update = function(gl, gameData, blockChunk) {
     for(var x = 0; x < BLOCK_CHUNK_DIM; x++) {
         for(var y = 0; y < BLOCK_CHUNK_DIM; y++) {
             var blockId = blockChunk.getForeground(x, y);
+            if(blockId == 0)
+                blockId = blockChunk.getBackground(x, y);
             if(blockId == 0) continue;
             var tile = gameData.blockRegister[blockId];
 

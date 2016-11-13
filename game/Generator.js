@@ -82,7 +82,7 @@ Generator.prototype.generateDungeons = function(blockWorld, chunk, chunkX, chunk
                 blockChunk.setForeground(xx, yy, 0);
 
             if(yy != 0 && yy != height - 1 && xx != 0 && xx != width - 1) {
-                blockChunk.setForeground(xx, yy, backgroundTileId);
+                blockChunk.setBackground(xx, yy, backgroundTileId);
                 chunk.setDensity(xx, yy, 0);
             }
         }

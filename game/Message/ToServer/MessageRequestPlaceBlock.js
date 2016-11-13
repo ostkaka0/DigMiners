@@ -22,9 +22,17 @@ MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
         var localX = Math.floor(this.x) - blockChunkX * BLOCK_CHUNK_DIM;
         var localY = Math.floor(this.y) - blockChunkY * BLOCK_CHUNK_DIM;
 
+        var blockType = gameData.blockRegister[itemType.blockId];
+        var type = blockType.type;
+
         var blockChunk = gameData.blockWorld.get(blockChunkX, blockChunkY);
-        if(blockChunk && blockChunk.getForeground(localX, localY) > 0)
-            return;
+        if(type == BlockTypes.FOREGROUND) {
+            if(blockChunk && blockChunk.getForeground(localX, localY) > 0)
+                return;
+        } else if(type == BlockTypes.BACKGROUND) {
+            if(blockChunk && blockChunk.getBackground(localX, localY) > 0)
+                return;
+        }
 
         // Remove from inventory
         var message = new MessagePlayerInventory(player.playerId, InventoryActions.REMOVE_ITEM, item.id, 1);
@@ -32,7 +40,7 @@ MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
         message.send(player.socket);
 
         // Send block change
-        var command = new CommandEntityBuild(player.entityId, this.x, this.y, itemType.blockId, BlockTypes.FOREGROUND);
+        var command = new CommandEntityBuild(player.entityId, this.x, this.y, itemType.blockId, type);
         sendCommand(command);
     }
 }
