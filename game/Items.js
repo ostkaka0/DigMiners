@@ -28,11 +28,12 @@ ItemFunctions.Sword = function(entity, item) {
     
     bodies.forEach(function(bodyId){
         if (bodyId == entityBodyId) return;
-        var entity = gameData.physicsEntities[bodyId];
-        if (!entity) return;
+        var targetEntity = gameData.physicsEntities[bodyId];
+        if (!targetEntity) return;
         
         console.log("Entity hit!");
-        hitEntities.push(entity.id);
+        hitEntities.push(targetEntity.id);
+        gameData.commands.push(new CommandEntityHurtEntity(entity.id, targetEntity.id, -10));
     });
     
     // TODO: CommandEntityHit
