@@ -2,6 +2,7 @@
 Movement = function(speed, toolUseDuration) {
     this.keyStatuses = {};
     this.direction = v2.create(0, 0);
+    this.rotationDirection = v2.create(0, 0);
     this.speed = speed;
     // The number of ticks until next dig. Will decrease by 1 each tick. Player can only dig at 0. Only used by server
     this.toolUseTickTimeout = 0;
@@ -72,9 +73,10 @@ entityFunctionEntityMovement = function(gameData, dt) {
         v2.add(normalized, velocity, velocity);
         entity.physicsBody.setVelocity(velocity);
 
-        var moveDir = entity.movement.direction;
-        if (moveDir[0] != 0 || moveDir[1] != 0)
-            entity.physicsBody.rotateTo(Math.atan2(-moveDir[1], moveDir[0]), entity.physicsBody.rotationSpeed, dt);
+
+        var direction = entity.movement.rotationDirection;
+        if (direction[0] != 0 || direction[1] != 0)
+            entity.physicsBody.rotateTo(Math.atan2(-direction[1], direction[0]), entity.physicsBody.rotationSpeed, dt);
 
         if (entity.movement.keyStatuses[Keys.SPACEBAR] && !entity.movement.isUsingTool)
             entity.movement.isUsingTool = true;

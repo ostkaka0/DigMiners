@@ -14,6 +14,7 @@ CommandEntityMove.prototype.execute = function(gameData) {
     var physicsBody = entity.physicsBody;
     if (!physicsBody) return;
     movement.direction = this.direction;
+    movement.rotationDirection = this.direction;
     physicsBody.setPos([this.x, this.y]);
 }
 

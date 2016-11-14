@@ -14,6 +14,10 @@ TargetPlayerBehaviour.prototype.canRun = function() {
     return false;
 }
 
+TargetPlayerBehaviour.prototype.initialize = function() {
+
+}
+
 TargetPlayerBehaviour.prototype.run = function() {
     if (!this.target || this.target.isDead || !this.target.isActive) {
         this.target = this.getTarget();
@@ -29,10 +33,10 @@ TargetPlayerBehaviour.prototype.run = function() {
         this.flowField = new Map2D();
         var expandList = [];
         aStarFlowField(this.flowField, expandList, gameData.tileWorld, gameData.blockWorld, tilePos, tilePosTarget, 10240);
-        var delay = Math.min(2000, expandList.length*5);
+        var delay = Math.min(2000, expandList.length * 5);
         this.nextUpdateTick = gameData.tickId + (delay / gameData.tickDuration >> 0);
     }
-    
+
     var dir = DisField.calcTileDir(this.flowField, tilePos);
     if (dir[0] == 0 && dir[1] == 0)
         return false;
