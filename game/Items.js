@@ -8,7 +8,7 @@ ItemFunctions.Shovel = function(entity, item) {
         var pos = entity.physicsBody.getPos();
         var angle = entity.physicsBody.angle;
         var dir = [Math.cos(-angle), Math.sin(-angle)];
-        gameData.commands.push(new CommandPlayerDig(player.id, pos[0], pos[1], dir, 1.5, player.getDigSpeed(), player.getMaxDigHardness()));
+        gameData.commands.push(new CommandPlayerDig(player.id, pos[0], pos[1], dir, 1.5, Entity.getDigSpeed(entity), Entity.getMaxDigHardness(entity)));
     }
 }
 
@@ -23,19 +23,19 @@ ItemFunctions.Sword = function(entity, item) {
     v2.mul(item.hitRange, dir, hitPos);
     v2.add(entityPos, hitPos, hitPos);
     physicsWorld.getBodiesInRadius(bodies, hitPos, item.hitRadius);
-    
+
     var hitEntities = [];
-    
-    bodies.forEach(function(bodyId){
+
+    bodies.forEach(function(bodyId) {
         if (bodyId == entityBodyId) return;
         var targetEntity = gameData.physicsEntities[bodyId];
         if (!targetEntity) return;
-        
+
         console.log("Entity hit!");
         hitEntities.push(targetEntity.id);
         gameData.commands.push(new CommandEntityHurtEntity(entity.id, targetEntity.id, -10));
     });
-    
+
     // TODO: CommandEntityHit
     //if (isServer) {
     //    gameData.commands.push(new CommandEntityHit(entity, hitEntities));
@@ -105,7 +105,7 @@ ItemTextures.BlockAtlas = {
 initItems = function(gameData) {
     // Blocks
     var num = 0;
-    for(var name in Blocks) {
+    for (var name in Blocks) {
         var block = Blocks[name];
         Items[name] = {
             name: block.name,
@@ -274,7 +274,7 @@ initItems = function(gameData) {
         typeOfType: "shovel",
         digSpeed: 4.0,
     }
-    
+
     // Swords
     Items.RustySword = {
         name: "Rusty Sword",

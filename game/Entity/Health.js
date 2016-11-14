@@ -7,13 +7,13 @@ Health = function(health, maxHealth) {
 Health.prototype.name = health.name; function health() { };
 
 Health.prototype.serialize = function(byteArray, index) {
-    serializeFix(byteArray, index, this.health);
-    serializeFix(byteArray, index, this.maxHealth);
+    serializeInt32(byteArray, index, this.health);
+    serializeInt32(byteArray, index, this.maxHealth);
 }
 
 Health.prototype.deserialize = function(byteArray, index) {
-    this.health = deserializeFix(byteArray, index);
-    this.maxHealth = deserializeFix(byteArray, index);
+    this.health = deserializeInt32(byteArray, index);
+    this.maxHealth = deserializeInt32(byteArray, index);
 }
 
 Health.prototype.getSerializationSize = function() {
@@ -26,13 +26,13 @@ Health.prototype.destroy = function(entity) {
 
 onHealthChange = function(entity) {
     var sprite = entity.drawable.sprites["healthbar"];
-    if(!sprite || !sprite.sprite) return;
+    if (!sprite || !sprite.sprite) return;
     var defaultHealthbarWidth = 64;
     sprite.sprite.width = (entity.health.health / entity.health.maxHealth) * defaultHealthbarWidth;
 }
 
 onEntityDeath = function(entity) {
-    if(!entity.isDead) {
+    if (!entity.isDead) {
         entity.isDead = true;
         gameData.entityWorld.remove(entity);
         console.log(entity.id + " died!");

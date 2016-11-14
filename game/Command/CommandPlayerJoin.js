@@ -35,52 +35,6 @@ CommandPlayerJoin.prototype.execute = function(gameData) {
                 message.send(socket);
             }
         }
-
-        // give player shovel at join
-        var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.RustyShovel.id, 1);
-        message.execute(gameData);
-        message.send(socket);
-
-        var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.CopperShovel.id, 1);
-        message.execute(gameData);
-        message.send(socket);
-
-        var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.IronShovel.id, 1);
-        message.execute(gameData);
-        message.send(socket);
-
-        var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.SteelShovel.id, 1);
-        message.execute(gameData);
-        message.send(socket);
-
-        var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.DiamondShovel.id, 1);
-        message.execute(gameData);
-        message.send(socket);
-
-        var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.CopperSword.id, 1);
-        message.execute(gameData);
-        message.send(socket);
-
-        // give player dynamite at join
-        var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.Dynamite.id, 4);
-        message.execute(gameData);
-        message.send(socket);
-
-        // give player blocks at join
-        var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.StoneWall.id, 10);
-        message.execute(gameData);
-        message.send(socket);
-
-        var message = new MessagePlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.StoneFloor.id, 10);
-        message.execute(gameData);
-        message.send(socket);
-
-        // (TEMPORARY) spawn monsters on player join
-        for(var i = 0; i < 3; ++i) {       
-            var monsterEntityId = idList.next();
-            var monster = entityTemplates.testMonster(monsterEntityId, [0, 0], gameData);
-            sendCommand(new CommandEntitySpawn(gameData, monster, monsterEntityId));
-        }
     }
     console.log(this.playerName + " connected with playerId " + this.playerId);
 }

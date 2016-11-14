@@ -142,8 +142,8 @@ updateHUD = function(gameData) {
         var slotTextContainer = slot.childNodes[3];
 
         slotImageContainerOverlay.style.backgroundImage = "";
-        if(!global.player) return;
-        var item = global.player.inventory.items[i];
+        if(!global.playerEntity) return;
+        var item = global.playerEntity.inventory.items[i];
         if(item) {
             slotImageContainer.style.width = 34;
             slotImageContainer.style.height = 34;

@@ -16,13 +16,13 @@ loadScript = function(filePath) {
 
 loadScriptsRecursive = function(dir) {
     var files = fs.readdirSync(dir);
-    for(var i = 0; i < files.length; ++i) {
+    for (var i = 0; i < files.length; ++i) {
         var filePath = dir + "/" + files[i];
         var stat = fs.statSync(filePath);
 
-        if(stat.isDirectory())
+        if (stat.isDirectory())
             loadScriptsRecursive(filePath);
-        else if(stat.isFile() && path.extname(filePath) == ".js")
+        else if (stat.isFile() && path.extname(filePath) == ".js")
             loadScript(filePath)
     }
 }
@@ -69,8 +69,8 @@ loadChunk = function(world, x, y) {
     gameData.generator.generateDungeons(gameData.blockWorld, chunk, x, y);
 }
 
-for(var x = -3; x < 3; ++x) {
-    for(var y = -3; y < 3; ++y) {
+for (var x = -3; x < 3; ++x) {
+    for (var y = -3; y < 3; ++y) {
         loadChunk(gameData.tileWorld, x, y);
     }
 }
@@ -78,6 +78,43 @@ carveCircle(gameData, 0, 0, 12);
 
 gameData.physicsWorld.onCollision.push(function(collisions) {
     sendCommand(new CommandCollisions(collisions));
+});
+
+gameData.entityWorld.onAdd.push(function(entity) {
+    if (entity.controlledByPlayer) {
+        //TODO: remove "player"
+        var player = gameData.playerWorld.objects[entity.controlledByPlayer.playerId];
+        if (!player) return;
+        var socket = player.socket;
+
+        // give player shovel at join
+        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.RustyShovel.id, 1));
+
+        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.CopperShovel.id, 1));
+
+        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.IronShovel.id, 1));
+
+        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.SteelShovel.id, 1));
+
+        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.DiamondShovel.id, 1));
+
+        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.CopperSword.id, 1));
+
+        // give player dynamite at join
+        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.Dynamite.id, 4));
+
+        // give player blocks at join
+        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.StoneWall.id, 10));
+
+        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.StoneFloor.id, 10));
+
+        // (TEMPORARY) spawn monsters on player join
+        for (var i = 0; i < 1; ++i) {
+            var monsterEntityId = idList.next();
+            var monster = entityTemplates.testMonster(monsterEntityId, [0, 0], gameData);
+            sendCommand(new CommandEntitySpawn(gameData, monster, monsterEntityId));
+        }
+    }
 });
 
 update = function() {
@@ -103,7 +140,7 @@ tick = function(dt) {
     gameData.tick(dt);
 
     gameData.entityWorld.objectArray.forEach(function(entity) {
-        if(entity.behaviourContainer)
+        if (entity.behaviourContainer)
             entity.behaviourContainer.update();
     });
 }
@@ -158,7 +195,7 @@ io.on("connection", function(socket) {
             var message = new messageType();
             message.receive(gameData, data);
             message.execute(gameData, connections[socket.id].player);
-            if(messageCallbacks[messageType.prototype.id])
+            if (messageCallbacks[messageType.prototype.id])
                 messageCallbacks[messageType.prototype.id](message);
         });
     });
