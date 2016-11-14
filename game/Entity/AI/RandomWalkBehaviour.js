@@ -30,6 +30,8 @@ RandomWalkBehaviour.prototype.run = function() {
         this.isWalking = true;
         this.dir = dir;
     } else {
+        var velocity = this.entity.physicsBody.getVelocity();
+        if (v2.length(velocity) < 0.2 && v2.length(velocity) != 0) return false;
         if (Math.random() > 0.96) {
             // Stop walking
             sendCommand(new CommandEntityMove(this.entity.id, [0, 0], physicsBody.pos[0], physicsBody.pos[1]));
