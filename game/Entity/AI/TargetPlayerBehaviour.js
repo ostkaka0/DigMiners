@@ -32,7 +32,7 @@ TargetPlayerBehaviour.prototype.run = function() {
     var dist = v2.distance(this.entity.physicsBody.pos, this.target.physicsBody.pos);
 
     if (gameData.tickId >= this.nextUpdateTick) {
-            if (dist < 1000.0) {
+        if (dist < 1000.0) {
             this.flowField = new Map2D();
             var expandList = [];
             aStarFlowField(this.flowField, expandList, gameData.tileWorld, gameData.blockWorld, tilePos, tilePosTarget, 5120);

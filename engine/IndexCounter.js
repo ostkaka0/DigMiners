@@ -1,6 +1,6 @@
 
 IndexCounter = function(initial) {
-    if(initial)
+    if (initial)
         this.value = initial;
     else
         this.value = 0;

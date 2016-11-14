@@ -22,8 +22,8 @@ NameComponent.prototype.destroy = function(entity) {
 }
 
 NameComponent.prototype.applyName = function(entity) {
-    if(!entity.drawable) return;
-    if(entity.pixiText)
+    if (!entity.drawable) return;
+    if (entity.pixiText)
         entity.drawable.removeSprite("name");
     entity.pixiText = new PIXI.Text(this.entityName, { fontFamily: 'Monospace', fontSize: 15, fill: 0xffffff, align: 'center' });
     var sprite = new Sprite(null, entity.pixiText, true);

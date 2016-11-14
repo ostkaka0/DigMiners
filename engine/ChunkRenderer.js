@@ -30,13 +30,13 @@ ChunkRenderer = function(gl, world, tileSize) {
 }
 
 ChunkRenderer.prototype.lazyInit = function() {
-    if(this.isReady)
+    if (this.isReady)
         return;
 
-    if(!this.shaderProgram)
+    if (!this.shaderProgram)
         this.shaderProgram = tryLinkShaderProgram(this.gl, this.shaderRequests);
 
-    if(this.shaderProgram && !this.buffer) {
+    if (this.shaderProgram && !this.buffer) {
         var size = this.tileSize * CHUNK_DIM;
         var vertices = [
             0, 0,
@@ -88,10 +88,10 @@ ChunkRenderer.prototype.render = function(world, matVP, camera) {
     var x2 = Math.floor((camera.pos[0] + camera.width / 2) / this.tileSize / CHUNK_DIM);
     var y2 = Math.floor((camera.pos[1] + camera.height / 2) / this.tileSize / CHUNK_DIM);
 
-    for(var y = y1; y <= y2; ++y) {
-        for(var x = x1; x <= x2; ++x) {
+    for (var y = y1; y <= y2; ++y) {
+        for (var x = x1; x <= x2; ++x) {
             var chunk = world.get(x, y);
-            if(!chunk)
+            if (!chunk)
                 continue;
             chunksToRender.push({ x: x, y: y, chunk: chunk });
         }
@@ -101,9 +101,9 @@ ChunkRenderer.prototype.render = function(world, matVP, camera) {
 }
 
 ChunkRenderer.prototype.renderChunks = function(matVP, chunksToRender) {
-    if(!this.isReady)
+    if (!this.isReady)
         this.lazyInit();
-    if(!this.isReady || !this.textureTerrain)
+    if (!this.isReady || !this.textureTerrain)
         return;
 
     gl.useProgram(this.shaderProgram);
@@ -116,28 +116,28 @@ ChunkRenderer.prototype.renderChunks = function(matVP, chunksToRender) {
     gl.uniform1i(this.uniformTextureTiles, 1);
     gl.uniform1i(this.uniformTextureDensity, 2);
 
-    for(var i = 0; i < chunksToRender.length; ++i) {
+    for (var i = 0; i < chunksToRender.length; ++i) {
         var x = chunksToRender[i].x;
         var y = chunksToRender[i].y;
         var chunk = chunksToRender[i].chunk;
-        if(!chunk)
+        if (!chunk)
             continue;
 
         var glChunk = this.chunkGLWorld.get(x, y);
         // Load glChunk
-        if(!glChunk) {
+        if (!glChunk) {
             glChunk = new GLChunk(this.gl, chunk);
             this.chunkGLWorld.set(x, y, glChunk);
             chunk.isChanged = false;
             this.handleChunkChange(chunk, x, y);
         }
         // Update glChunk
-        if(chunk.isChanged) {
+        if (chunk.isChanged) {
             glChunk.update(this.gl, chunk);
             chunk.isChanged = false;
             this.handleChunkChange(chunk, x, y);
         }
-        if(!glChunk.textureTiles || !glChunk.textureDensity)
+        if (!glChunk.textureTiles || !glChunk.textureDensity)
             continue;
 
         // Render the chunk
@@ -196,13 +196,13 @@ ChunkRenderer.prototype.handleChunkChange = function(chunk, x, y) {
     var that = this;
     var glChunk = that.chunkGLWorld.get(x, y);
 
-    if(!chunk || !glChunk)
+    if (!chunk || !glChunk)
         return;
 
     var notifyNeighbor = function(x2, y2) {
         var glChunk2 = that.chunkGLWorld.get(x2, y2);
         var chunk2 = that.world.get(x2, y2);
-        if(chunk2 && glChunk2) {
+        if (chunk2 && glChunk2) {
             glChunk.updateBorder(gl, chunk2, x, y, x2, y2);
             glChunk2.updateBorder(gl, chunk, x2, y2, x, y);
             //that.onChunkChange2(gl, ex, ey, x2, y2, chunk, chunk2);

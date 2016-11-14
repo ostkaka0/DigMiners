@@ -11,7 +11,7 @@ ObjectWorld.prototype.add = function(object, id) {
     object.destroy = function() {
         Object.keys(this).forEach(function(key) {
             var component = this[key];
-            if(!component || !component.destroy) return;
+            if (!component || !component.destroy) return;
             component.destroy(this);
         }.bind(this));
     }.bind(object);
@@ -36,7 +36,7 @@ ObjectWorld.prototype.remove = function(object) {
 ObjectWorld.prototype.update = function() {
     // Update this.objects
     this.objectArray.length = 0;
-    for(var id in this.objects) {
+    for (var id in this.objects) {
         this.objectArray.push(this.objects[id]);
     }
 }

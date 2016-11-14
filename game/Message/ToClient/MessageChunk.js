@@ -7,10 +7,10 @@ MessageChunk = function(chunk, blockChunk, x, y) {
 }
 
 MessageChunk.prototype.execute = function(gameData) {
-    if(gameData.generator)
+    if (gameData.generator)
         gameData.generator.generate(this.chunk, this.x, this.y);
     gameData.tileWorld.set(this.x, this.y, this.chunk);
-    if(!this.blockChunkEmpty)
+    if (!this.blockChunkEmpty)
         gameData.blockWorld.set(this.x, this.y, this.blockChunk);
 }
 
@@ -56,21 +56,21 @@ MessageChunk.prototype.receive = function(gameData, data) {
 
     // BlockChunk foreground
     length = deserializeInt32(byteArray, index);
-    if(length > 8)
+    if (length > 8)
         this.blockChunkEmpty = false;
     decompressRLE(byteArray, this.blockChunk.foreground, index.value, index.value + length);
     index.add(length);
 
     // BlockChunk background
     length = deserializeInt32(byteArray, index);
-    if(length > 8)
+    if (length > 8)
         this.blockChunkEmpty = false;
     decompressRLE(byteArray, this.blockChunk.background, index.value, index.value + length);
     index.add(length);
 
     // BlockChunk strength
     length = deserializeInt32(byteArray, index);
-    if(length > 8)
+    if (length > 8)
         this.blockChunkEmpty = false;
     decompressRLE(byteArray, this.blockChunk.strength, index.value, index.value + length);
     index.add(length);

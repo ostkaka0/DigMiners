@@ -1,7 +1,7 @@
 
 serializeBooleans = function(byteArray, index, booleans) {
-    for(var i = 0; i < 8; ++i) {
-        if(booleans[i] == null || booleans[i] == undefined)
+    for (var i = 0; i < 8; ++i) {
+        if (booleans[i] == null || booleans[i] == undefined)
             booleans[i] = false;
     }
     var bitField = (booleans[0] ? 1 : 0) |
@@ -75,14 +75,14 @@ deserializeV2 = function(byteArray, index) {
 }
 
 serializeUint8Array = function(byteArray, index, value) {
-    for(var i = index.value; i < index.value + value.length; ++i)
+    for (var i = index.value; i < index.value + value.length; ++i)
         byteArray[i] = value[i - index.value];
     index.add(value.length);
 }
 
 deserializeUint8Array = function(byteArray, index, arrayLength) {
     var out = new Uint8Array(arrayLength);
-    for(var i = index.value; i < index.value + arrayLength; ++i)
+    for (var i = index.value; i < index.value + arrayLength; ++i)
         out[i - index.value] = byteArray[i];
     index.add(arrayLength);
     return out;
@@ -90,14 +90,14 @@ deserializeUint8Array = function(byteArray, index, arrayLength) {
 
 getUTF8SerializationSize = function(value) {
     var out = [], p = 0;
-    for(var i = 0; i < value.length; i++) {
+    for (var i = 0; i < value.length; i++) {
         var c = value.charCodeAt(i);
-        if(c < 128) {
+        if (c < 128) {
             out[p++] = c;
-        } else if(c < 2048) {
+        } else if (c < 2048) {
             out[p++] = (c >> 6) | 192;
             out[p++] = (c & 63) | 128;
-        } else if(
+        } else if (
             ((c & 0xFC00) == 0xD800) && (i + 1) < value.length &&
             ((value.charCodeAt(i + 1) & 0xFC00) == 0xDC00)) {
             c = 0x10000 + ((c & 0x03FF) << 10) + (value.charCodeAt(++i) & 0x03FF);
@@ -117,14 +117,14 @@ getUTF8SerializationSize = function(value) {
 
 serializeUTF8 = function(byteArray, index, value) {
     var out = [], p = 0;
-    for(var i = 0; i < value.length; i++) {
+    for (var i = 0; i < value.length; i++) {
         var c = value.charCodeAt(i);
-        if(c < 128) {
+        if (c < 128) {
             out[p++] = c;
-        } else if(c < 2048) {
+        } else if (c < 2048) {
             out[p++] = (c >> 6) | 192;
             out[p++] = (c & 63) | 128;
-        } else if(
+        } else if (
             ((c & 0xFC00) == 0xD800) && (i + 1) < value.length &&
             ((value.charCodeAt(i + 1) & 0xFC00) == 0xDC00)) {
             c = 0x10000 + ((c & 0x03FF) << 10) + (value.charCodeAt(++i) & 0x03FF);
@@ -147,14 +147,14 @@ deserializeUTF8 = function(byteArray, index) {
     var bytes = deserializeUint8Array(byteArray, index, length);
 
     var out = [], pos = 0, c = 0;
-    while(pos < bytes.length) {
+    while (pos < bytes.length) {
         var c1 = bytes[pos++];
-        if(c1 < 128) {
+        if (c1 < 128) {
             out[c++] = String.fromCharCode(c1);
-        } else if(c1 > 191 && c1 < 224) {
+        } else if (c1 > 191 && c1 < 224) {
             var c2 = bytes[pos++];
             out[c++] = String.fromCharCode((c1 & 31) << 6 | c2 & 63);
-        } else if(c1 > 239 && c1 < 365) {
+        } else if (c1 > 239 && c1 < 365) {
             var c2 = bytes[pos++];
             var c3 = bytes[pos++];
             var c4 = bytes[pos++];

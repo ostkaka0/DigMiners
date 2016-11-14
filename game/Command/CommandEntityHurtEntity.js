@@ -7,12 +7,12 @@ CommandEntityHurtEntity = function(entityId, otherEntityId, healthChange) {
 
 CommandEntityHurtEntity.prototype.execute = function(gameData) {
     var entity = gameData.entityWorld.objects[this.entityId];
-    if(!entity) return;
+    if (!entity) return;
     var otherEntity = gameData.entityWorld.objects[this.otherEntityId];
-    if(!otherEntity || !otherEntity.health) return;
+    if (!otherEntity || !otherEntity.health) return;
     otherEntity.health.health = (otherEntity.health.health + this.healthChange < 0 ? 0 : otherEntity.health.health + this.healthChange);
     onHealthChange(otherEntity);
-    if(otherEntity.health.health == 0)
+    if (otherEntity.health.health == 0)
         onEntityDeath(otherEntity);
 }
 

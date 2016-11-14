@@ -7,8 +7,8 @@ Chunk = function() {
     this.densityData = new Uint8Array(CHUNK_SIZE);
     var isChanged = true;
 
-    for(var y = 0; y < CHUNK_DIM; ++y) {
-        for(var x = 0; x < CHUNK_DIM; ++x) {
+    for (var y = 0; y < CHUNK_DIM; ++y) {
+        for (var x = 0; x < CHUNK_DIM; ++x) {
             this.tileData[y * CHUNK_DIM + x] = (x * 2 + x / 16 + y * 2 + y / 16) % 4;
             this.densityData[y * CHUNK_DIM + x] = 255;
         }
@@ -42,7 +42,7 @@ v2WorldToChunk = function(worldPos, outChunkPos, outLocalPos) {
     v2.sub(outLocalPos, chunkWorldPos, outLocalPos);
 }
 
-v2WorldFromChunk = function(outWorldPos, chunkPos, localPos)  {
+v2WorldFromChunk = function(outWorldPos, chunkPos, localPos) {
     v2.mul(CHUNK_DIM, chunkPos, outWorldPos);
     if (!localPos) return;
     v2.add(localPos, outWorldPos, outWorldPos);

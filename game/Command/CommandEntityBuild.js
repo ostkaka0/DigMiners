@@ -8,14 +8,14 @@ CommandEntityBuild = function(entityId, x, y, blockId, type) {
 }
 
 CommandEntityBuild.prototype.execute = function(gameData) {
-    if(this.type == BlockTypes.FOREGROUND)
+    if (this.type == BlockTypes.FOREGROUND)
         setForeground(gameData.blockWorld, this.x, this.y, this.blockId);
-    else if(this.type == BlockTypes.BACKGROUND)
+    else if (this.type == BlockTypes.BACKGROUND)
         setBackground(gameData.blockWorld, this.x, this.y, this.blockId);
 
     var entity = gameData.entityWorld.objects[this.entityId];
-    if(!entity) return;
-    if(!isServer && this.blockId)
+    if (!entity) return;
+    if (!isServer && this.blockId)
         entity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArm", 256, false);
 }
 

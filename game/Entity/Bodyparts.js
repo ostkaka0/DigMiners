@@ -3,26 +3,26 @@ Bodyparts = function(bodyparts) {
     this.bodyparts = bodyparts;
 
     // Set parents
-    for(var key in this.bodyparts) {
+    for (var key in this.bodyparts) {
         var bodypart = this.bodyparts[key];
         bodypart.name = key;
-        if(bodypart.parent) {
+        if (bodypart.parent) {
             var name = bodypart.parent;
             bodypart.parent = this.bodyparts[name];
         }
     }
 
-    for(var key in this.bodyparts) {
+    for (var key in this.bodyparts) {
         var bodypart = this.bodyparts[key];
         bodypart.children = this.getChildren(bodypart.name);
     }
 }
 
-Bodyparts.prototype.name = bodyparts.name; function bodyparts(){};
+Bodyparts.prototype.name = bodyparts.name; function bodyparts() { };
 
 Bodyparts.prototype.serialize = function(byteArray, index) {
     serializeInt32(byteArray, index, Object.keys(this.bodyparts).length);
-    for(var key in this.bodyparts) {
+    for (var key in this.bodyparts) {
         var bodypart = this.bodyparts[key];
         serializeUTF8(byteArray, index, key);
         serializeUTF8(byteArray, index, (!bodypart.parent ? "" : bodypart.parent.name));
@@ -40,7 +40,7 @@ Bodyparts.prototype.serialize = function(byteArray, index) {
 Bodyparts.prototype.deserialize = function(byteArray, index, gameData) {
     this.bodyparts = {};
     var bodypartsLength = deserializeInt32(byteArray, index);
-    for(var i = 0; i < bodypartsLength; ++i) {
+    for (var i = 0; i < bodypartsLength; ++i) {
         var key = deserializeUTF8(byteArray, index);
         var parent = deserializeUTF8(byteArray, index);
         var textureName = deserializeUTF8(byteArray, index);
@@ -50,22 +50,22 @@ Bodyparts.prototype.deserialize = function(byteArray, index, gameData) {
         var sprite = new Sprite(textureName);
         this.bodyparts[key] = new BodyPart(sprite, defaultOffset[0], defaultOffset[1], defaultOffset[2], pivot);
         this.bodyparts[key].offset = offset;
-        if(parent && parent.length > 0)
+        if (parent && parent.length > 0)
             this.bodyparts[key].parent = parent;
     }
 
-    if(!isServer) {
+    if (!isServer) {
         // Set parents
-        for(var key in this.bodyparts) {
+        for (var key in this.bodyparts) {
             var bodypart = this.bodyparts[key];
             bodypart.name = key;
-            if(bodypart.parent) {
+            if (bodypart.parent) {
                 var name = bodypart.parent;
                 bodypart.parent = this.bodyparts[name];
             }
         }
 
-        for(var key in this.bodyparts) {
+        for (var key in this.bodyparts) {
             var bodypart = this.bodyparts[key];
             bodypart.children = this.getChildren(bodypart.name);
         }
@@ -75,7 +75,7 @@ Bodyparts.prototype.deserialize = function(byteArray, index, gameData) {
 Bodyparts.prototype.getSerializationSize = function() {
     var size = 4;
 
-    for(var key in this.bodyparts) {
+    for (var key in this.bodyparts) {
         var bodypart = this.bodyparts[key];
         var parent = (!bodypart.parent ? "" : bodypart.parent.name);
         var textureName = bodypart.sprite.textureName;
@@ -88,26 +88,26 @@ Bodyparts.prototype.getSerializationSize = function() {
 }
 
 Bodyparts.prototype.destroy = function(entity) {
-    
+
 }
 
 Bodyparts.prototype.getChildren = function(parentName) {
     var output = [];
-    for(var key in this.bodyparts) {
+    for (var key in this.bodyparts) {
         var bodypart = this.bodyparts[key];
-        if(bodypart.parent && bodypart.parent.name == parentName)
+        if (bodypart.parent && bodypart.parent.name == parentName)
             output.push(bodypart);
     }
     return output;
 }
 
 Bodyparts.prototype.positionBodyparts = function(x, y, rotation) {
-    if(isServer)
+    if (isServer)
         return;
 
-    for(var bodypart in this.bodyparts) {
+    for (var bodypart in this.bodyparts) {
         bodypart = this.bodyparts[bodypart];
-        if(!bodypart.parent)
+        if (!bodypart.parent)
             bodypart.position(x, y, rotation);
     }
 }

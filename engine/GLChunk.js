@@ -35,7 +35,7 @@ GLChunk.prototype.update = function(gl, chunk) {
 }
 
 GLChunk.prototype.updateBorder = function(gl, chunkNeighbor, x1, y1, x2, y2) {
-    if(!chunkNeighbor)
+    if (!chunkNeighbor)
         return;
 
     // Calculate intersecting rectangle.
@@ -57,15 +57,15 @@ GLChunk.prototype.updateBorder = function(gl, chunkNeighbor, x1, y1, x2, y2) {
     var height = textureY2 - textureY1 + 1;
 
     var densityData = new Uint8Array(width * height);
-    for(var xx = 0; xx < width; ++xx) {
-        for(var yy = 0; yy < height; ++yy) {
+    for (var xx = 0; xx < width; ++xx) {
+        for (var yy = 0; yy < height; ++yy) {
             densityData[xx + yy * width] = chunkNeighbor.densityData[dataX + xx + (dataY + yy) * CHUNK_DIM];
         }
     }
 
     var tileData = new Uint8Array(width * height);
-    for(var xx = 0; xx < width; ++xx) {
-        for(var yy = 0; yy < height; ++yy) {
+    for (var xx = 0; xx < width; ++xx) {
+        for (var yy = 0; yy < height; ++yy) {
             tileData[xx + yy * width] = chunkNeighbor.tileData[dataX + xx + (dataY + yy) * CHUNK_DIM];
         }
     }

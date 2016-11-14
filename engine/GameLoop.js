@@ -12,7 +12,7 @@ function gameLoop(tick, render, tickDuration) {
         // Simulate ticks:
         var newTickNum = Math.floor((now - firstTickTime) / tickDuration);
         var tickFracTime = (now - firstTickTime) / tickDuration - newTickNum;
-        for(; tickNum < newTickNum; ++tickNum) {
+        for (; tickNum < newTickNum; ++tickNum) {
             tick(tickDuration / 1000.0);
         }
         // Render:
@@ -21,7 +21,7 @@ function gameLoop(tick, render, tickDuration) {
         // Skip frames:
         var now = performance.now();
         var delay = lastFrameTime - now + frameTime;
-        while(delay < 0.0 * frameTime) {
+        while (delay < 0.0 * frameTime) {
             delay += frameTime;
             lastFrameTime += frameTime;
             //console.log("Skipping frame");
