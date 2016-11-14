@@ -7,9 +7,11 @@ DigObstacleBehaviour = function(entity) {
 
 DigObstacleBehaviour.prototype.canRun = function() {
     var velocity = this.entity.physicsBody.getVelocity();
-    if (v2.length(velocity) > 0.3) return false;
+    var moveDir = this.entity.movement.direction;
+    if (v2.dot(moveDir, velocity) > 0.8)
+        return false;
     var pos = this.entity.physicsBody.getPos();
-    var tilePos = [Math.floor(pos[0]), Math.floor(pos[1])];
+    var tilePos = [Math.floor(pos[0]+moveDir[0]), Math.floor(pos[1]+moveDir[1])];
     for (var i = 0; i < 9; i++) {
         var itPos = [tilePos[0] + i % 3 - 1, tilePos[1] + (i / 3 >> 0) - 1];
         var blockId = getForeground(gameData.blockWorld, itPos[0], itPos[1]);
@@ -24,6 +26,7 @@ DigObstacleBehaviour.prototype.canRun = function() {
 
 DigObstacleBehaviour.prototype.initialize = function() {
     sendCommand(new CommandKeyStatusUpdate(this.entity.id, Keys.SPACEBAR, true, this.entity.physicsBody.pos));
+    sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.pos[0], this.entity.physicsBody.pos[1]));
     var pos = this.entity.physicsBody.getPos();
     var tilePos = [Math.floor(pos[0]), Math.floor(pos[1])];
     var diff = [this.targetTilePos[0] - tilePos[0], this.targetTilePos[1] - tilePos[1]];

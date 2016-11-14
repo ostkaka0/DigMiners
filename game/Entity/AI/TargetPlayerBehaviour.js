@@ -29,15 +29,25 @@ TargetPlayerBehaviour.prototype.run = function() {
     var tilePos = [Math.floor(this.entity.physicsBody.pos[0]), Math.floor(this.entity.physicsBody.pos[1])];
     var tilePosTarget = [Math.floor(this.target.physicsBody.pos[0]), Math.floor(this.target.physicsBody.pos[1])];
 
+    var dist = v2.distance(this.entity.physicsBody.pos, this.target.physicsBody.pos);
+
     if (gameData.tickId >= this.nextUpdateTick) {
-        this.flowField = new Map2D();
-        var expandList = [];
-        aStarFlowField(this.flowField, expandList, gameData.tileWorld, gameData.blockWorld, tilePos, tilePosTarget, 10240);
-        var delay = Math.min(2000, expandList.length * 5);
-        this.nextUpdateTick = gameData.tickId + (delay / gameData.tickDuration >> 0);
+            if (dist < 1000.0) {
+            this.flowField = new Map2D();
+            var expandList = [];
+            aStarFlowField(this.flowField, expandList, gameData.tileWorld, gameData.blockWorld, tilePos, tilePosTarget, 5120);
+            var delay = Math.min(2000, expandList.length * 10);
+            this.nextUpdateTick = gameData.tickId + (delay / gameData.tickDuration >> 0);
+        }
+        else
+            this.flowField = new Map2D();
     }
 
     var dir = DisField.calcTileDir(this.flowField, tilePos);
+    if (dir[0] == 0 && dir[1] == 0) {
+        v2.sub(this.target.physicsBody.getPos(), this.entity.physicsBody.getPos(), dir);
+        v2.normalize(dir, dir);
+    }
     if (dir[0] == 0 && dir[1] == 0)
         return false;
 
@@ -48,7 +58,6 @@ TargetPlayerBehaviour.prototype.run = function() {
     //var normalized = v2.create(0, 0);
     //v2.normalize(dir, normalized);
 
-    var dist = v2.distance(this.entity.physicsBody.pos, this.target.physicsBody.pos);
     if (dist < 1.5 && !this.spacebar) {// 1.0 limit for punch 
         sendCommand(new CommandKeyStatusUpdate(this.entity.id, Keys.SPACEBAR, true, this.entity.physicsBody.pos));
         this.spacebar = true;
@@ -66,6 +75,7 @@ TargetPlayerBehaviour.prototype.run = function() {
 }
 
 TargetPlayerBehaviour.prototype.finish = function() {
+    sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.pos[0], this.entity.physicsBody.pos[1]));
     this.target = null;
 }
 
