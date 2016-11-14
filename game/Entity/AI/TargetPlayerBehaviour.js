@@ -3,7 +3,8 @@ TargetPlayerBehaviour = function(entity, maxRadius) {
     this.entity = entity;
     this.maxRadius = maxRadius;
     this.target = null;
-    this.flowField = null;
+    this.flowField = new Map2D();
+    this.nextUpdateTick = gameData.tickId;
 }
 
 TargetPlayerBehaviour.prototype.canRun = function() {
@@ -24,12 +25,17 @@ TargetPlayerBehaviour.prototype.run = function() {
     var tilePos = [Math.floor(this.entity.physicsBody.pos[0]), Math.floor(this.entity.physicsBody.pos[1])];
     var tilePosTarget = [Math.floor(this.target.physicsBody.pos[0]), Math.floor(this.target.physicsBody.pos[1])];
 
-    //if (!this.flowField) {
-    this.flowField = new Map2D();
-    aStarFlowField(this.flowField, [], gameData.tileWorld, gameData.blockWorld, tilePos, tilePosTarget);
-    //}
+    if (gameData.tickId >= this.nextUpdateTick) {
+        this.flowField = new Map2D();
+        var expandList = [];
+        aStarFlowField(this.flowField, expandList, gameData.tileWorld, gameData.blockWorld, tilePos, tilePosTarget, 10240);
+        var delay = Math.min(2000, expandList.length*5);
+        this.nextUpdateTick = gameData.tickId + (delay / gameData.tickDuration >> 0);
+    }
     
-    var dir = DisField.calcDir(this.flowField, [this.entity.physicsBody.pos[0], this.entity.physicsBody.pos[1]]);
+    var dir = DisField.calcTileDir(this.flowField, tilePos);
+    if (dir[0] == 0 && dir[1] == 0)
+        return false;
 
     //var diffX = dir[0];//(getDis([tilePos[0] - 1, tilePos[1]]) - getDis([tilePos[0] + 1, tilePos[1]])) / 10;
     //var diffY = dir[1];//(getDis([tilePos[0], tilePos[1] - 1]) - getDis([tilePos[0], tilePos[1] + 1])) / 10;
@@ -44,7 +50,9 @@ TargetPlayerBehaviour.prototype.run = function() {
     else
         dirs.push(MoveDir.DISABLE_SPACEBAR);*/
 
-    sendCommand(new CommandEntityMove(this.entity.id, dir, this.entity.physicsBody.pos[0], this.entity.physicsBody.pos[1]));
+    var currentDir = this.entity.movement.direction;
+    if (dir[0] != currentDir[0] || dir[1] != currentDir[1])
+        sendCommand(new CommandEntityMove(this.entity.id, dir, this.entity.physicsBody.pos[0], this.entity.physicsBody.pos[1]));
     if (dist > this.maxRadius)
         return false;
     return true;

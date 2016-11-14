@@ -49,6 +49,7 @@ Object.defineProperties(PhysicsBody.prototype, {
 });
 
 PhysicsBody.prototype.getPos = function() { return gameData.physicsWorld.getPos(this.bodyId); }
+PhysicsBody.prototype.getPosOld = function() { return gameData.physicsWorld.getPosOld(this.bodyId); }
 PhysicsBody.prototype.setPos = function(pos) { gameData.physicsWorld.setPos(this.bodyId, pos); }
 PhysicsBody.prototype.getVelocity = function() { return gameData.physicsWorld.getVelocity(this.bodyId); }
 PhysicsBody.prototype.setVelocity = function(velocity) { gameData.physicsWorld.setVelocity(this.bodyId, velocity); }
@@ -94,8 +95,8 @@ physicsBodySimulate = function(gameData, physicsBody, dt) {
     var numSteps = Math.ceil(deltaPosLength / PHYSICS_MAX_STEP_LENGTH);
     v2.div(deltaPos, numSteps, deltaPos);
     deltaPosLength /= numSteps;
-    v2.mul(fix.pow(physicsBody.damping, dt), physicsBody.speed, physicsBody.speed);
     pos = v2.clone(physicsBody.posOld);
+    var velocity = physicsBody.getVelocity();
     // Simulate steps
     for(var i = 0; i < numSteps; i++) {
         v2.add(deltaPos, pos, pos);
@@ -130,20 +131,20 @@ physicsBodySimulate = function(gameData, physicsBody, dt) {
                     if(dy > -dx) {
                         pos[1] = blockTop + playerFatness / 2;
                         //console.log("top, set ypos to " + pos[1]);
-                        physicsBody.speed[1] = 0;
+                        velocity[1] = 0;
                     } else {
                         pos[0] = blockLeft - playerFatness / 2;
                         //console.log("left, set xpos to " + pos[0]);
-                        physicsBody.speed[0] = 0;
+                        velocity[0] = 0;
                     }
                 } else if(dy > -dx) {
                     pos[0] = blockRight + playerFatness / 2;
                     //console.log("right, set xpos to " + pos[0]);
-                    physicsBody.speed[0] = 0;
+                    velocity[0] = 0;
                 } else {
                     pos[1] = blockBottom - playerFatness / 2;
                     //console.log("bottom, set ypos to " + pos[1]);
-                    physicsBody.speed[1] = 0;
+                    velocity[1] = 0;
                 }
             }
         }
@@ -160,13 +161,15 @@ physicsBodySimulate = function(gameData, physicsBody, dt) {
                 var dot = v2.dot(normal, physicsBody.speed);
                 var deltaSpeed = [0, 0];
                 v2.mul(-dot, normal, deltaSpeed);
+                v2.div(deltaSpeed, 4*numSteps, deltaSpeed);
                 //deltaPos = [(1.0 - Math.abs(normal[0])) * deltaPos[0], (1.0 - Math.abs(normal[1])) * deltaPos[1]];
-                v2.add(deltaSpeed, physicsBody.speed, physicsBody.speed);//physicsBody.speed = [(1.0 - Math.abs(normal[0])) * physicsBody.speed[0], (1.0 - Math.abs(normal[1])) * physicsBody.speed[1]];
+                v2.add(deltaSpeed, velocity, velocity);//physicsBody.speed = [(1.0 - Math.abs(normal[0])) * physicsBody.speed[0], (1.0 - Math.abs(normal[1])) * physicsBody.speed[1]];
             }
         }
     }
 
     physicsBody.setPos(pos);
+    physicsBody.setVelocity(velocity);
     v2.copy(pos, physicsBody.posOld);
     v2.copy(physicsBody.getVelocity(), physicsBody.speedOld);
 }
