@@ -112,7 +112,8 @@ gameData.entityWorld.onAdd.push(function(entity) {
         for (var i = 0; i < 1; ++i) {
             var monsterEntityId = idList.next();
             var monster = entityTemplates.testMonster(monsterEntityId, [0, 0], gameData);
-            sendCommand(new CommandEntitySpawn(gameData, monster, monsterEntityId));
+            sendCommand(new CommandEntitySpawn(gameData, monster, monsterEntityId));      
+            sendCommand(new CommandEntityEquipItem(monsterEntityId, 0, Items.SteelShovel.id, true));
         }
     }
 });

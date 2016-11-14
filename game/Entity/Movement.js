@@ -99,72 +99,8 @@ onEntityUseTool = function(gameData, entity) {
     if (!isServer)
         entity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArm", 64 / entity.movement.toolUseDuration, false);
     else {
-        var angle = entity.physicsBody.angle;
-        var moveDir = [Math.cos(-angle), Math.sin(-angle)];
-        var toolUsePos = [entity.physicsBody.pos[0] + 1.0 * moveDir[0], entity.physicsBody.pos[1] + 1.0 * moveDir[1]];
-
-        if (!entity.controlledByPlayer) {
-            var pos = entity.physicsBody.getPos();
-            sendCommand(new CommandDig(pos[0], pos[1], 2.0));
-        }
-
-        var tool = entity.inventory.getEquippedItemType("tool");
+        var tool = entity.equippedItems.items["tool"];
         if (!tool || !tool.itemFunction) return;
         tool.itemFunction(entity, tool);
-
-
-
-        /*// Check if any player/monster at dig position, hit it
-        var shortestDistance = Number.MAX_VALUE;
-        var shortestDistanceEntity = null;
-        gameData.entityWorld.objectArray.forEach(function(otherEntity) {
-            if (entity.id != otherEntity.id && otherEntity.physicsBody && otherEntity.health) {
-                var dist = v2.distance(toolUsePos, otherEntity.physicsBody.pos);
-                if (dist < shortestDistance) {
-                    shortestDistance = dist;
-                    shortestDistanceEntity = otherEntity;
-                }
-            }
-        });
-        if (shortestDistance <= 1.0) {
-            var command = new CommandEntityHurtEntity(entity.id, shortestDistanceEntity.id, -10);
-            sendCommand(command);
-            return;
-        }
-
-        // Check if block at dig position, damage that
-        var chunkPos = [];
-        var localPos = [];
-        v2WorldToBlockChunk(toolUsePos, chunkPos, localPos);
-        var blockChunk = gameData.blockWorld.get(chunkPos[0], chunkPos[1]);
-        if (blockChunk) {
-            var blockId = blockChunk.getForeground(localPos[0], localPos[1]);
-            if (blockId) {
-                var strength = blockChunk.getStrength(localPos[0], localPos[1]);
-                strength -= 64;
-                if (strength <= 0) {
-                    var x = chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0];
-                    var y = chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1];
-                    var command = new CommandEntityBuild(entity.id, x, y, 0, BlockTypes.FOREGROUND);
-                    sendCommand(command);
-                } else
-                    blockChunk.setStrength(localPos[0], localPos[1], strength);
-                return;
-            }
-        }
-
-        // If no block at dig position, dig terrain instead
-        if (entity.controlledByPlayer) {
-            var playerId = entity.controlledByPlayer.playerId;
-            var player = gameData.playerWorld.objects[playerId];
-            if (player) {
-                var command = new CommandPlayerDig(playerId, entity.physicsBody.pos[0], entity.physicsBody.pos[1], moveDir, 1.5, player.getDigSpeed(), player.getMaxDigHardness());
-                sendCommand(command);
-            }
-        } else {
-            //TODO: store monster dig radius constant somewhere
-            var command = new CommandDig(entity.physicsBody.pos[0], entity.physicsBody.pos[1], 5.0);
-            sendCommand(command);
-        }*/
     }
 }

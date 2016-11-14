@@ -8,9 +8,16 @@ CommandEntityEquipItem = function(entityId, stackId, itemId, equipped) {
 
 CommandEntityEquipItem.prototype.execute = function(gameData) {
     var entity = gameData.entityWorld.objects[this.entityId];
+    if (!entity) return;
 
     var itemType = gameData.itemRegister[this.itemId];
     if (!itemType.isEquipable) return;
+
+    if (!entity.equippedItems) return;
+    if (this.equipped)
+        entity.equippedItems.items[itemType.type] = itemType;
+    else
+        entity.equippedItems.items[itemType.type] = null;
 
     var sprite = entity.bodyparts.bodyparts[itemType.type].sprite;
     if (!isServer && sprite.sprite && !this.equipped)
@@ -23,18 +30,20 @@ CommandEntityEquipItem.prototype.execute = function(gameData) {
     }
 
     if (isServer || (global.playerEntity && this.entityId == global.playerEntity.id)) {
-        var item = entity.inventory.items[this.stackId];
-        if (item && item.id == this.itemId) {
-            if (this.equipped) {
-                var dequippedItems = entity.inventory.dequipAll(gameData, itemType.type, entity.id);
-                for (var i = 0; i < dequippedItems.length; ++i) {
-                    var entry = dequippedItems[i];
-                    Entity.onDequip(entity, entry[0], gameData.itemRegister[entry[1]]);
-                };
+        if (entity.inventory) {
+            var item = entity.inventory.items[this.stackId];
+            if (item && item.id == this.itemId) {
+                if (this.equipped) {
+                    var dequippedItems = entity.inventory.dequipAll(gameData, itemType.type, entity.id);
+                    for (var i = 0; i < dequippedItems.length; ++i) {
+                        var entry = dequippedItems[i];
+                        Entity.onDequip(entity, entry[0], gameData.itemRegister[entry[1]]);
+                    };
+                }
+                item.equipped = this.equipped;
+                if (!isServer)
+                    updateHUD(gameData);
             }
-            item.equipped = this.equipped;
-            if (!isServer)
-                updateHUD(gameData);
         }
     }
 

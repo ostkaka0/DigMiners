@@ -1,6 +1,6 @@
 
-CommandPlayerDig = function(playerId, x, y, dir, radius, digSpeed, maxDigHardness) {
-    this.playerId = playerId;
+CommandEntityDig = function(entityId, x, y, dir, radius, digSpeed, maxDigHardness) {
+    this.entityId = entityId;
     this.x = toFix(x);
     this.y = toFix(y);
     this.dir = dir;
@@ -9,10 +9,8 @@ CommandPlayerDig = function(playerId, x, y, dir, radius, digSpeed, maxDigHardnes
     this.maxDigHardness = maxDigHardness;
 }
 
-CommandPlayerDig.prototype.execute = function(gameData) {
-    var player = gameData.playerWorld.objects[this.playerId];
-    if (!player) return;
-    var entity = gameData.entityWorld.objects[player.entityId];
+CommandEntityDig.prototype.execute = function(gameData) {
+    var entity = gameData.entityWorld.objects[this.entityId];
     if (!entity || !entity.movement) return;
 
     var tileWorld = gameData.tileWorld;
@@ -36,9 +34,7 @@ CommandPlayerDig.prototype.execute = function(gameData) {
             else return oldDensity;
 
         };
-        var entityId = gameData.playerWorld.objects[this.playerId].entityId;
-        var speedRef = gameData.entityWorld.objects[entityId].physicsBody.speed;
-        v2.mul(0.5, speedRef, speedRef);
+        v2.mul(0.5, entity.physicsBody.speed, entity.physicsBody.speed);
     } else {
 
         entity.movement.isDigging = true;
@@ -46,7 +42,7 @@ CommandPlayerDig.prototype.execute = function(gameData) {
     }
 
     var dug = carveCircle(gameData, this.x + digDis * this.dir[0], this.y + digDis * this.dir[1], this.radius, this.digSpeed, this.maxDigHardness, onDensityChange);
-    if (isServer) {
+    if (isServer && entity.inventory && entity.controlledByPlayer) {
         // Only process dug ores on server
         for (var i = 0; i < dug.length; ++i) {
             if (!dug[i] || dug[i] <= 0) continue;
@@ -60,7 +56,6 @@ CommandPlayerDig.prototype.execute = function(gameData) {
                 if (rand > 990)
                     itemId = Items.RottenRoot.id;
                 if (itemId != null) {
-                    var entity = gameData.entityWorld.objects[player.entityId];
                     var physicsBody = entity.physicsBody;
 
                     var itemEntityId = idList.next();
@@ -76,8 +71,8 @@ CommandPlayerDig.prototype.execute = function(gameData) {
     }
 }
 
-CommandPlayerDig.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.playerId);
+CommandEntityDig.prototype.serialize = function(byteArray, index) {
+    serializeInt32(byteArray, index, this.entityId);
     serializeFix(byteArray, index, this.x);
     serializeFix(byteArray, index, this.y);
     serializeV2(byteArray, index, this.dir);
@@ -86,8 +81,8 @@ CommandPlayerDig.prototype.serialize = function(byteArray, index) {
     serializeFix(byteArray, index, this.maxDigHardness);
 }
 
-CommandPlayerDig.prototype.deserialize = function(byteArray, index) {
-    this.playerId = deserializeInt32(byteArray, index);
+CommandEntityDig.prototype.deserialize = function(byteArray, index) {
+    this.entityId = deserializeInt32(byteArray, index);
     this.x = deserializeFix(byteArray, index);
     this.y = deserializeFix(byteArray, index);
     this.dir = deserializeV2(byteArray, index);
@@ -96,6 +91,6 @@ CommandPlayerDig.prototype.deserialize = function(byteArray, index) {
     this.maxDigHardness = deserializeFix(byteArray, index);
 }
 
-CommandPlayerDig.prototype.getSerializationSize = function() {
+CommandEntityDig.prototype.getSerializationSize = function() {
     return 32;
 }
