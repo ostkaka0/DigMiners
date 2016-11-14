@@ -17,6 +17,10 @@ RandomWalkBehaviour.prototype.canRun = function() {
     return true;
 }
 
+RandomWalkBehaviour.prototype.initialize = function() {
+
+}
+
 RandomWalkBehaviour.prototype.run = function() {
     var physicsBody = this.entity.physicsBody;
     if (!this.isWalking) {
