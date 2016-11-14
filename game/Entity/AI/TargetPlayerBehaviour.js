@@ -49,10 +49,13 @@ TargetPlayerBehaviour.prototype.run = function() {
     //v2.normalize(dir, normalized);
 
     var dist = v2.distance(this.entity.physicsBody.pos, this.target.physicsBody.pos);
-    /*if(dist < 1.5) // 1.0 limit for punch
-        dirs.push(MoveDir.ENABLE_SPACEBAR);
-    else
-        dirs.push(MoveDir.DISABLE_SPACEBAR);*/
+    if (dist < 1.5 && !this.spacebar) {// 1.0 limit for punch 
+        sendCommand(new CommandKeyStatusUpdate(this.entity.id, Keys.SPACEBAR, true, this.entity.physicsBody.pos));
+        this.spacebar = true;
+    } else if (dist >= 1.5 && this.spacebar) {
+        sendCommand(new CommandKeyStatusUpdate(this.entity.id, Keys.SPACEBAR, false, this.entity.physicsBody.pos));
+        this.spacebar = false;
+    }
 
     var currentDir = this.entity.movement.direction;
     if (dir[0] != currentDir[0] || dir[1] != currentDir[1])
