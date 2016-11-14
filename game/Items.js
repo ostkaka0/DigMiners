@@ -3,12 +3,35 @@ ItemFunctions = {};
 ItemTextures = {};
 
 ItemFunctions.Shovel = function(entity, item) {
-    var player = gameData.playerWorld.objects[entity.controlledByPlayer.playerId];
     if (isServer) {
-        var pos = entity.physicsBody.getPos();
         var angle = entity.physicsBody.angle;
         var dir = [Math.cos(-angle), Math.sin(-angle)];
-        gameData.commands.push(new CommandPlayerDig(player.id, pos[0], pos[1], dir, 1.5, Entity.getDigSpeed(entity), Entity.getMaxDigHardness(entity)));
+        var toolUsePos = [entity.physicsBody.pos[0] + 1.0 * dir[0], entity.physicsBody.pos[1] + 1.0 * dir[1]];
+
+        // Break block
+        var chunkPos = [];
+        var localPos = [];
+        v2WorldToBlockChunk(toolUsePos, chunkPos, localPos);
+        var blockChunk = gameData.blockWorld.get(chunkPos[0], chunkPos[1]);
+        if (blockChunk) {
+            var blockId = blockChunk.getForeground(localPos[0], localPos[1]);
+            if (blockId) {
+                var strength = blockChunk.getStrength(localPos[0], localPos[1]);
+                strength -= 64;
+                if (strength <= 0) {
+                    var x = chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0];
+                    var y = chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1];
+                    var command = new CommandEntityBuild(entity.id, x, y, 0, BlockTypes.FOREGROUND);
+                    sendCommand(command);
+                } else
+                    blockChunk.setStrength(localPos[0], localPos[1], strength);
+                return;
+            }
+        }
+
+        // Dig terrain
+        var pos = entity.physicsBody.getPos();
+        gameData.commands.push(new CommandEntityDig(entity.id, pos[0], pos[1], dir, 1.5, Entity.getDigSpeed(entity), Entity.getMaxDigHardness(entity)));
     }
 }
 

@@ -13,14 +13,14 @@ Entity.onDequip = function(entity, stackId, itemType) {
 
 Entity.getDigSpeed = function(entity) {
     var defaultDigSpeed = 0.0;
-    var itemType = entity.inventory.getEquippedItemType("tool");
+    var itemType = entity.equippedItems.items["tool"];
     if (!itemType || itemType.typeOfType != "shovel") return defaultDigSpeed;
     return itemType.digSpeed;
 }
 
 Entity.getMaxDigHardness = function(entity) {
     var defaultMaxDigHardness = 0.0;
-    var itemType = entity.inventory.getEquippedItemType("tool");
+    var itemType = entity.equippedItems.items["tool"];
     if (!itemType || itemType.typeOfType != "shovel") return defaultMaxDigHardness;
     return itemType.maxDigHardness;
 }

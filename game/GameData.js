@@ -24,11 +24,11 @@ GameData = function(idList) {
         this.animationManager = {};
     this.commands = [];
     this.pendingCommands = {};
-    this.commandTypes = typeRegisterAddByArray([], [CommandEntityMove, CommandDig, CommandPlayerDig, CommandEntityEquipItem, CommandEntityBuild, CommandEntityHurtEntity, CommandEntitySpawn, CommandCollisions, CommandEntityDestroy, CommandPlayerJoin, CommandPlayerLeave, CommandKeyStatusUpdate, CommandPlayerInventory]);
+    this.commandTypes = typeRegisterAddByArray([], [CommandEntityMove, CommandDig, CommandEntityDig, CommandEntityEquipItem, CommandEntityBuild, CommandEntityHurtEntity, CommandEntitySpawn, CommandCollisions, CommandEntityDestroy, CommandPlayerJoin, CommandPlayerLeave, CommandKeyStatusUpdate, CommandPlayerInventory]);
     this.messagesToClient = [MessageInit, MessageCommands, MessageChunk];
     this.messagesToServer = [MessageRequestKeyStatusUpdate, MessageRequestItemPickup, MessageRequestDropStack, MessageRequestEquipStack, MessageRequestCraft, MessageRequestPlaceBlock];
     this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
-    this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent]);
+    this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent, EquippedItems]);
 
     Recipes = [];
 

@@ -7,6 +7,7 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
     entity.movement = new Movement(50.0);
     entity.nameComponent = new NameComponent(name);
     entity.inventory = new Inventory();
+    entity.equippedItems = new EquippedItems();
 
     var feetSprite = new Sprite("feet");
     var rightArmSprite = new Sprite("rightArm");
@@ -59,6 +60,7 @@ entityTemplates.testMonster = function(entityId, pos, gameData) {
     entity.movement = new Movement(20.0);
     entity.nameComponent = new NameComponent(entityId);
     entity.inventory = new Inventory();
+    entity.equippedItems = new EquippedItems();
 
     var feetSprite = new Sprite("feet");
     var rightArmSprite = new Sprite("rightArm");
