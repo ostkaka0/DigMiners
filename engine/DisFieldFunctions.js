@@ -27,8 +27,8 @@ DisField.calcDis = function(disField, pos) {
 	var x2 = x1 + 1;
 	var y2 = y1 + 1;
 		
-	var fractX = pos[0] - x1;
-	var fractY = pos[1] - y1;
+	var fractX = pos[0]-0.5 - x1;
+	var fractY = pos[1]-0.5 - y1;
 	
 	var a = [
 		1.0 - fractX,
@@ -69,4 +69,24 @@ DisField.calcDir = function(disField, pos) {
 	v2.normalize(vec, vec);
 	
 	return vec;
+}
+
+DisField.calcTileDir = function(disField, pos) {
+    var dis = DisField.getTileDis(disField, [pos[0], pos[1]]);
+	var a = DisField.getTileDis(disField, [pos[0]+1, pos[1]]);
+	var b = DisField.getTileDis(disField, [pos[0]-1, pos[1]]);
+	var c = DisField.getTileDis(disField, [pos[0], pos[1]+1]);
+	var d = DisField.getTileDis(disField, [pos[0], pos[1]-1]);
+	
+	var dir = [0, 0];
+    if (a < dis && b > dis)
+        dir[0] = 1;
+    else if (b < dis && a > dis)
+        dir[0] = -1;
+    if (c < dis && d > dis)
+        dir[1] = 1;
+    else if (d < dis && c > dis)
+        dir[1] = -1;
+	
+	return dir;
 }

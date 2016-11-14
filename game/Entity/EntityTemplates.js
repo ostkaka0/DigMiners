@@ -56,7 +56,7 @@ entityTemplates.item = function(itemId, amount, gameData) {
 entityTemplates.testMonster = function(entityId, pos, gameData) {
     var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01);
-    entity.movement = new Movement(5.0);
+    entity.movement = new Movement(20.0);
     entity.nameComponent = new NameComponent(entityId);
     entity.inventory = new Inventory();
 
@@ -83,6 +83,7 @@ entityTemplates.testMonster = function(entityId, pos, gameData) {
     entity.health = new Health(100, 100);
 
     entity.behaviourContainer = new BehaviourContainer();
+    entity.behaviourContainer.behaviours.push(new DigObstacleBehaviour(entity));
     entity.behaviourContainer.behaviours.push(new TargetPlayerBehaviour(entity, 2048.0));
     entity.behaviourContainer.behaviours.push(new RandomWalkBehaviour(entity));
 
