@@ -13,6 +13,14 @@ MessageRequestEquipStack.prototype.execute = function(gameData, player) {
         if (item.equipped == null || item.equipped == undefined)
             item.equipped = false;
         var equipped = !item.equipped;
+        if (equipped && entity.inventory) {
+            // Dequip all other items of the same type
+            var dequippedItems = entity.inventory.dequipAll(gameData, itemType.type, entity.id);
+            for (var i = 0; i < dequippedItems.length; ++i) {
+                var entry = dequippedItems[i];
+                sendCommand(new CommandEntityEquipItem(player.entityId, entry[0], entry[1], false));
+            };
+        }
         sendCommand(new CommandEntityEquipItem(player.entityId, this.id, item.id, equipped));
     }
 }
