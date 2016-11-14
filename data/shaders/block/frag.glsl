@@ -11,7 +11,7 @@ varying highp vec2 breakUV;
 #define TILE_DIM_F 4.0
 
 void main() {
-    highp vec4 color = texture2D(textureTiles, fragUV).rgba;
-    highp vec4 breakColor = texture2D(textureBlockBreak, breakUV).rgba;
+    highp vec4 color = texture2D(textureTiles, fragUV);
+    highp vec4 breakColor = texture2D(textureBlockBreak, breakUV);
 	gl_FragColor = mix(color, breakColor, breakColor.a);
 }
