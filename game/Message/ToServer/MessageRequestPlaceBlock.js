@@ -6,15 +6,17 @@ MessageRequestPlaceBlock = function(stackId, x, y) {
 }
 
 MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
-    var item = player.inventory.items[this.stackId];
-    if(!item) return;
+    var entity = gameData.entityWorld.objects[player.entityId];
+    if (!entity) return;
+    var item = entity.inventory.items[this.stackId];
+    if (!item) return;
     var itemType = gameData.itemRegister[item.id];
-    if(itemType && itemType.typeOfType == "block") {
+    if (itemType && itemType.typeOfType == "block") {
 
-        if(!player.inventory.hasItem(item.id, 1))
+        if (!entity.inventory.hasItem(item.id, 1))
             return;
 
-        if(!player.canPlaceBlock(gameData, this.x, this.y))
+        if (!player.canPlaceBlock(gameData, this.x, this.y))
             return;
 
         var blockChunkX = Math.floor(this.x / BLOCK_CHUNK_DIM);
@@ -26,18 +28,16 @@ MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
         var type = blockType.type;
 
         var blockChunk = gameData.blockWorld.get(blockChunkX, blockChunkY);
-        if(type == BlockTypes.FOREGROUND) {
-            if(blockChunk && blockChunk.getForeground(localX, localY) > 0)
+        if (type == BlockTypes.FOREGROUND) {
+            if (blockChunk && blockChunk.getForeground(localX, localY) > 0)
                 return;
-        } else if(type == BlockTypes.BACKGROUND) {
-            if(blockChunk && blockChunk.getBackground(localX, localY) > 0)
+        } else if (type == BlockTypes.BACKGROUND) {
+            if (blockChunk && blockChunk.getBackground(localX, localY) > 0)
                 return;
         }
 
         // Remove from inventory
-        var message = new MessagePlayerInventory(player.playerId, InventoryActions.REMOVE_ITEM, item.id, 1);
-        message.execute(gameData);
-        message.send(player.socket);
+        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.REMOVE_ITEM, item.id, 1));
 
         // Send block change
         var command = new CommandEntityBuild(player.entityId, this.x, this.y, itemType.blockId, type);

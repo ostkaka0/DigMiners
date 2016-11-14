@@ -4,12 +4,12 @@ MessageRequestDropStack = function(id) {
 }
 
 MessageRequestDropStack.prototype.execute = function(gameData, player) {
-    var item = player.inventory.items[this.id];
-    if(item) {
-        var playerEntity = gameData.entityWorld.objects[player.entityId];
-        if(!playerEntity) return;
-        var physicsBody = playerEntity.physicsBody;
-        if(!physicsBody) return;
+    var entity = gameData.entityWorld.objects[player.entityId];
+    if (!entity) return;
+    var item = entity.inventory.items[this.id];
+    if (item) {
+        var physicsBody = entity.physicsBody;
+        if (!physicsBody) return;
         var displacement1 = Math.random() / 5 - 0.1;
         var displacement2 = Math.random() / 5 - 0.1;
         var displacement3 = Math.random() / 5 - 0.1 + 1;
@@ -29,12 +29,10 @@ MessageRequestDropStack.prototype.execute = function(gameData, player) {
         itemEntity.item.dropped = new Date();
         sendCommand(new CommandEntitySpawn(gameData, itemEntity, itemEntityId));
 
-        var message = new MessagePlayerInventory(player.playerId, InventoryActions.DROP_STACK, this.id, 0);
-        message.execute(gameData);
-        message.send(player.socket);
+        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.DROP_STACK, this.id, 0));
 
-        if(item.equipped)
-            sendCommand(new CommandPlayerEquipItem(player.playerId, this.id, item.id, false));
+        if (item.equipped)
+            sendCommand(new CommandEntityEquipItem(player.entityId, this.id, item.id, false));
     }
 }
 

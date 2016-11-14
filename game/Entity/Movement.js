@@ -103,14 +103,10 @@ onEntityUseTool = function(gameData, entity) {
         var moveDir = [Math.cos(-angle), Math.sin(-angle)];
         var toolUsePos = [entity.physicsBody.pos[0] + 1.0 * moveDir[0], entity.physicsBody.pos[1] + 1.0 * moveDir[1]];
 
-        if (!entity.controlledByPlayer) return;
-        var playerId = entity.controlledByPlayer.playerId;
-        var player = gameData.playerWorld.objects[playerId];
-        if (!player) return;
-        var tool = player.inventory.getEquippedItemType("tool");
+        var tool = entity.inventory.getEquippedItemType("tool");
         if (!tool || !tool.itemFunction) return;
         tool.itemFunction(entity, tool);
-        
+
 
         /*// Check if any player/monster at dig position, hit it
         var shortestDistance = Number.MAX_VALUE;

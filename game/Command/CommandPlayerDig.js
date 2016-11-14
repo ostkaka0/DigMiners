@@ -11,9 +11,9 @@ CommandPlayerDig = function(playerId, x, y, dir, radius, digSpeed, maxDigHardnes
 
 CommandPlayerDig.prototype.execute = function(gameData) {
     var player = gameData.playerWorld.objects[this.playerId];
-    if(!player) return;
+    if (!player) return;
     var entity = gameData.entityWorld.objects[player.entityId];
-    if(!entity || !entity.movement) return;
+    if (!entity || !entity.movement) return;
 
     var tileWorld = gameData.tileWorld;
     var targetTile = gameData.tileRegister[getTileId(gameData.tileWorld, this.x + 1.0 * this.dir[0], this.y + 1.0 * this.dir[1])];
@@ -21,15 +21,15 @@ CommandPlayerDig.prototype.execute = function(gameData) {
     var onDensityChange = null;
     var digDis = 1.5;
 
-    if(targetTile.isOre && targetDensity > 0) {
+    if (targetTile.isOre && targetDensity > 0) {
         entity.movement.isMining = true;
         digDis = 1.0;
         this.radius = 1.0;
         onDensityChange = function(tileX, tileY, tile, oldDensity, newDensity) {
-            if(tile.isOre) {
+            if (tile.isOre) {
                 var densityChange = (oldDensity - newDensity) / 2 >> 0;
                 var newDensity2 = oldDensity - densityChange;
-                if(newDensity2 < 128)
+                if (newDensity2 < 128)
                     return 0;
                 else return newDensity2;
             }
@@ -46,22 +46,20 @@ CommandPlayerDig.prototype.execute = function(gameData) {
     }
 
     var dug = carveCircle(gameData, this.x + digDis * this.dir[0], this.y + digDis * this.dir[1], this.radius, this.digSpeed, this.maxDigHardness, onDensityChange);
-    if(isServer) {
+    if (isServer) {
         // Only process dug ores on server
-        for(var i = 0; i < dug.length; ++i) {
-            if(!dug[i] || dug[i] <= 0) continue;
+        for (var i = 0; i < dug.length; ++i) {
+            if (!dug[i] || dug[i] <= 0) continue;
             //console.log(this.playerId + " dug " + dug[i] + " " + i);
             var tileName = gameData.tileRegister[i].name;
             var itemId = i;//gameData.itemRegister.getIdByName(tileName);
-            var message = new MessagePlayerInventory(this.playerId, InventoryActions.ADD_ORE, itemId, dug[i]);
-            message.execute(gameData);
-            message.send(player.socket);
-            if(tileName == Tiles.Dirt.name) {
+            sendCommand(new CommandPlayerInventory(this.playerId, InventoryActions.ADD_ORE, itemId, dug[i]));
+            if (tileName == Tiles.Dirt.name) {
                 var rand = Math.random() * 1000;
                 var itemId = null;
-                if(rand > 990)
+                if (rand > 990)
                     itemId = Items.RottenRoot.id;
-                if(itemId != null) {
+                if (itemId != null) {
                     var entity = gameData.entityWorld.objects[player.entityId];
                     var physicsBody = entity.physicsBody;
 

@@ -136,7 +136,7 @@ render = function(tickFracTime) {
         }
     });
 
-    if (global.player && global.player.isBuilding) { // isBuilding is set in Player.js line 50+
+    if (global.player && global.playerEntity && global.playerEntity.isBuilding) {
         var worldCursorPos = [Math.floor((this.mouseX + camera.pos[0] - camera.width / 2) / 32), Math.floor((canvas.height - this.mouseY + camera.pos[1] - camera.height / 2) / 32)];
         var chunkPos = [0, 0];
         var localPos = [0, 0];
@@ -197,8 +197,8 @@ onTexturesLoadComplete = function(textures) {
 }
 
 $(document).click(function(event) {
-    if (global.player && global.player.isBuilding) {
-        var stackId = global.player.inventory.getEquippedStackId("tool");
+    if (global.player && global.playerEntity && global.playerEntity.isBuilding) {
+        var stackId = global.playerEntity.inventory.getEquippedStackId("tool");
         var bodies = [];
         if (!global.player.canPlaceBlock(gameData, global.player.buildPos[0], global.player.buildPos[1]))
             return false;
