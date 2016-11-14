@@ -1,5 +1,5 @@
 Generator = function(seed) {
-    if(!seed)
+    if (!seed)
         seed = 0;
     this.seed = seed;
     this.noise = this.seed;
@@ -9,8 +9,8 @@ Generator = function(seed) {
 }
 
 Generator.prototype.generate = function(chunk, chunkX, chunkY) {
-    for(var yy = 0; yy < CHUNK_DIM; ++yy) {
-        for(var xx = 0; xx < CHUNK_DIM; ++xx) {
+    for (var yy = 0; yy < CHUNK_DIM; ++yy) {
+        for (var xx = 0; xx < CHUNK_DIM; ++xx) {
             var x = xx + chunkX * CHUNK_DIM;
             var y = yy + chunkY * CHUNK_DIM;
 
@@ -29,26 +29,26 @@ Generator.prototype.generate = function(chunk, chunkX, chunkY) {
 
             var tileId = 0;
 
-            if(value > 0.0)
+            if (value > 0.0)
                 tileId = 1;
 
-            if(value > 0.5)
+            if (value > 0.5)
                 tileId = 2;
 
-            if(value > 1.0)
+            if (value > 1.0)
                 tileId = 3;
 
-            if(tileId != 0) {
-                if(oreValue1 > 0.45) {
+            if (tileId != 0) {
+                if (oreValue1 > 0.45) {
                     tileId = Tiles.Coal.id;
                 }
-                if(oreValue2 > 0.50) {
+                if (oreValue2 > 0.50) {
                     tileId = Tiles.Copper.id;
                 }
-                if(oreValue3 > 0.25) {
+                if (oreValue3 > 0.25) {
                     tileId = Tiles.Iron.id;
                 }
-                if(oreValue3 < -0.25) {
+                if (oreValue3 < -0.25) {
                     tileId = Tiles.Apatite.id;
                 }
 
@@ -61,7 +61,7 @@ Generator.prototype.generate = function(chunk, chunkX, chunkY) {
 
 Generator.prototype.generateDungeons = function(blockWorld, chunk, chunkX, chunkY) {
     var blockChunk = blockWorld.get(chunkX, chunkY);
-    if(!blockChunk) {
+    if (!blockChunk) {
         blockChunk = new BlockChunk();
         blockWorld.set(chunkX, chunkY, blockChunk);
     }
@@ -72,16 +72,16 @@ Generator.prototype.generateDungeons = function(blockWorld, chunk, chunkX, chunk
     var openingY = (Math.random() < 0.5 ? 0 : height - 1);
     var tileId = 1;
     var backgroundTileId = 3;
-    for(var yy = 0; yy < height; ++yy) {
-        for(var xx = 0; xx < width; ++xx) {
-            if(yy == 0 || yy == height - 1)
+    for (var yy = 0; yy < height; ++yy) {
+        for (var xx = 0; xx < width; ++xx) {
+            if (yy == 0 || yy == height - 1)
                 blockChunk.setForeground(xx, yy, tileId);
-            if(xx == 0 || xx == width - 1)
+            if (xx == 0 || xx == width - 1)
                 blockChunk.setForeground(xx, yy, tileId);
-            if(xx == openingX && yy == openingY)
+            if (xx == openingX && yy == openingY)
                 blockChunk.setForeground(xx, yy, 0);
 
-            if(yy != 0 && yy != height - 1 && xx != 0 && xx != width - 1) {
+            if (yy != 0 && yy != height - 1 && xx != 0 && xx != width - 1) {
                 blockChunk.setBackground(xx, yy, backgroundTileId);
                 chunk.setDensity(xx, yy, 0);
             }

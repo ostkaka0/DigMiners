@@ -25,18 +25,18 @@ PhysicsWorld.prototype.update = function(dt) {
         var pagePosOld = [Math.floor(posOld[0] / pageDim), Math.floor(posOld[1] / pageDim)];
 
         // Update pages:
-        if(pagePos[0] != pagePosOld[0] || pagePos[1] != pagePosOld[1]) {
+        if (pagePos[0] != pagePosOld[0] || pagePos[1] != pagePosOld[1]) {
             var pageOld = this.pages.get(pagePosOld[0], pagePosOld[1]);
-            if(pageOld) {
+            if (pageOld) {
                 var index = binarySearch(pageOld, id, function(a, b) { return a - b; });
-                if(pageOld[index] == id)
+                if (pageOld[index] == id)
                     pageOld.splice(index, 1);
-                if(pageOld.length == 0)
+                if (pageOld.length == 0)
                     this.pages.set(pagePosOld[0], pagePosOld[1], undefined);
             }
 
             var page = this.pages.get(pagePos[0], pagePos[1]);
-            if(!page) {
+            if (!page) {
                 this.pages.set(pagePos[0], pagePos[1], [id]);
             } else {
                 index = binarySearch(page, id, function(a, b) { return a - b; });
@@ -48,7 +48,7 @@ PhysicsWorld.prototype.update = function(dt) {
         this.posOld[2 * id] = this.pos[2 * id];
         this.posOld[2 * id + 1] = this.pos[2 * id + 1];
     });
-    
+
     var collisions = [];
 
     // Collision:
@@ -61,9 +61,9 @@ PhysicsWorld.prototype.update = function(dt) {
         this.getBodiesInRadius(bodies, posOld, 0.5);
         forOf(this, bodies, function(otherId) {
             // No self collision
-            if(otherId == id) return;
+            if (otherId == id) return;
             // Only do collision once
-            if(otherId > id) return;
+            if (otherId > id) return;
 
             var otherPos = this.getPos(otherId);
             var otherPosOld = this.getPosOld(otherId);
@@ -75,7 +75,7 @@ PhysicsWorld.prototype.update = function(dt) {
             v2.sub(otherPosOld, posOld, dir);
             var dis = v2.length(dir);
             v2.normalize(dir, dir);
-            if(dis == 0)
+            if (dis == 0)
                 dir = [1, 0];
             var deltaPos = [0, 0];
             v2.mul((1.0 - dis) / 2, dir, deltaPos);
@@ -99,22 +99,22 @@ PhysicsWorld.prototype.update = function(dt) {
         this.setPos(id, pos)
         this.setVelocity(id, velocity);
     });
-    
+
     // Collision event
     if (collisions.length != 0) {
         this.onCollision.forEach(function(onCollision) {
-           onCollision(collisions); 
+            onCollision(collisions);
         });
     }
 }
 
 PhysicsWorld.prototype.add = function(pos, velocity) {
-    if(pos == undefined) pos = [0, 0];
-    if(velocity == undefined) velocity = [0, 0];
+    if (pos == undefined) pos = [0, 0];
+    if (velocity == undefined) velocity = [0, 0];
 
     var id;
 
-    if(this.freeIds.length == 0) {
+    if (this.freeIds.length == 0) {
         this.pos.push(fixToInt32(pos[0]), fixToInt32(pos[1]));
         this.posOld.push(fixToInt32(pos[0]), fixToInt32(pos[1]));
         this.velocity.push(fixToInt32(velocity[0]), fixToInt32(velocity[1]));
@@ -131,7 +131,7 @@ PhysicsWorld.prototype.add = function(pos, velocity) {
 
     var pagePos = [Math.floor(fixFromInt32(this.pos[2 * id]) / pageDim), Math.floor(fixFromInt32(this.pos[2 * id + 1]) / pageDim)];
     var page = this.pages.get(pagePos[0], pagePos[1]);
-    if(!page) {
+    if (!page) {
         this.pages.set(pagePos[0], pagePos[1], [id]);
     } else {
         index = binarySearch(page, id, function(a, b) { return a - b; });
@@ -143,32 +143,32 @@ PhysicsWorld.prototype.add = function(pos, velocity) {
 
 PhysicsWorld.prototype.remove = function(id) {
     // Do not re-use IDs, causes bugs and glitches(FIX!)
-    var index = binarySearch(this.freeIds, id, function(a, b) { return a-b; });
+    var index = binarySearch(this.freeIds, id, function(a, b) { return a - b; });
     this.freeIds.splice(index, 0, id);
 
     var pagePos = [Math.floor(fixFromInt32(this.posOld[2 * id]) / pageDim), Math.floor(fixFromInt32(this.posOld[2 * id + 1]) / pageDim)];
     var page = this.pages.get(pagePos[0], pagePos[1]);
-    if(page) {
+    if (page) {
         var index = binarySearch(page, id, function(a, b) { return a - b; });
-        if(page[index] == id)
+        if (page[index] == id)
             page.splice(index, 1);
-        if(page.length == 0)
+        if (page.length == 0)
             this.pages.set(pagePos[0], pagePos[1], undefined);
     }
 }
 
 PhysicsWorld.prototype.getBodiesInRadius = function(bodies, point, radius) {
-    if(radius == undefined) radius = 0.0;
+    if (radius == undefined) radius = 0.0;
     var pagePos = [Math.floor(point[0] / pageDim - 0.5), Math.floor(point[1] / pageDim - 0.5)];
-    for(var i = 0; i < 4; i++) {
+    for (var i = 0; i < 4; i++) {
         var page = this.pages.get(pagePos[0] + i % 2, pagePos[1] + (i / 2 >> 0));
-        if(!page) continue;
-        for(var j = 0; j < page.length; j++) {
+        if (!page) continue;
+        for (var j = 0; j < page.length; j++) {
             var id = page[j];
             var pos = [fixFromInt32(this.posOld[2 * id]), fixFromInt32(this.posOld[2 * id + 1])];
             var delta = [pos[0] - point[0], pos[1] - point[1]];
             var lengthSquared = delta[0] * delta[0] + delta[1] * delta[1];
-            if(lengthSquared < (radius + 0.5) * (radius + 0.5))
+            if (lengthSquared < (radius + 0.5) * (radius + 0.5))
                 bodies.push(id);
         }
     }
@@ -176,17 +176,17 @@ PhysicsWorld.prototype.getBodiesInRadius = function(bodies, point, radius) {
 }
 
 PhysicsWorld.prototype.getBodiesInRadiusSorted = function(bodies, bodyDistances, point, radius) {
-    if(radius == undefined) radius = 0.0;
+    if (radius == undefined) radius = 0.0;
     var pagePos = [Math.floor(point[0] / pageDim - 0.5), Math.floor(point[1] / pageDim - 0.5)];
-    for(var i = 0; i < 4; i++) {
+    for (var i = 0; i < 4; i++) {
         var page = this.pages.get(pagePos[0] + i % 2, pagePos[1] + (i / 2 >> 0));
-        if(!page) continue;
-        for(var j = 0; j < page.length; j++) {
+        if (!page) continue;
+        for (var j = 0; j < page.length; j++) {
             var id = page[j];
             var pos = [fixFromInt32(this.posOld[2 * id]), fixFromInt32(this.posOld[2 * id + 1])];
             var delta = [fix.sub(pos[0], point[0]), fix.sub(pos[1], point[1])];
             var lengthSquared = fix.add(fix.mul(delta[0], delta[0]), fix.mul(delta[1], delta[1]));
-            if(lengthSquared < (radius + 0.5) * (radius + 0.5)) {
+            if (lengthSquared < (radius + 0.5) * (radius + 0.5)) {
                 var dis = fix.sqrt(lengthSquared);
                 var index = binarySearch(bodyDistances, dis);
                 bodies.splice(index, 0, id);
@@ -200,8 +200,8 @@ PhysicsWorld.prototype.getBodiesInRadiusSorted = function(bodies, bodyDistances,
 PhysicsWorld.prototype.forEach = function(thisRef, userFunction) {
     var freeId = this.freeIds[0];
     var freeIdIndex = 0;
-    for(var id = 0; id < this.numBodies; id++) {
-        if(id == freeId) {
+    for (var id = 0; id < this.numBodies; id++) {
+        if (id == freeId) {
             freeIdIndex++;
             freeId = this.freeIds[freeIdIndex];
             continue;

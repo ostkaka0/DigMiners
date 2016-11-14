@@ -11,7 +11,7 @@ DigObstacleBehaviour.prototype.canRun = function() {
     if (v2.dot(moveDir, velocity) > 0.8)
         return false;
     var pos = this.entity.physicsBody.getPos();
-    var tilePos = [Math.floor(pos[0]+moveDir[0]), Math.floor(pos[1]+moveDir[1])];
+    var tilePos = [Math.floor(pos[0] + moveDir[0]), Math.floor(pos[1] + moveDir[1])];
     for (var i = 0; i < 9; i++) {
         var itPos = [tilePos[0] + i % 3 - 1, tilePos[1] + (i / 3 >> 0) - 1];
         var blockId = getForeground(gameData.blockWorld, itPos[0], itPos[1]);

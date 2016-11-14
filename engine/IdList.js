@@ -4,7 +4,7 @@ IdList = function(firstId) {
 }
 
 IdList.prototype.next = function() {
-    if(this.freeIdList.length > 0)
+    if (this.freeIdList.length > 0)
         return this.freeIdList.pop();
     else
         return ++this.nextId;

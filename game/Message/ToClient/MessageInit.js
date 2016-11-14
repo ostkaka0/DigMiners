@@ -2,12 +2,12 @@
 MessageInit = function(gameData, player) {
     this.players = [];
     this.tickId = (gameData) ? gameData.tickId : 0;
-    if(player) {
+    if (player) {
         this.playerId = player.id;
         this.entityId = player.entityId;
     }
 
-    if(!gameData) return;
+    if (!gameData) return;
     gameData.entityWorld.update();
 }
 
@@ -17,7 +17,7 @@ MessageInit.prototype.execute = function(gameData) {
     global.player = player;
     global.playerEntityId = this.entityId;
 
-    for(var i = 0; i < this.players.length; ++i) {
+    for (var i = 0; i < this.players.length; ++i) {
         var playerData = this.players[i];
         var player = gameData.playerWorld.add(new Player(playerData[0], playerData[1]), playerData[0]);
     }
@@ -36,7 +36,7 @@ MessageInit.prototype.getSerializationSize = function(gameData) {
         var entitySize = 0;
         forIn(this, entity, function(componentKey) {
             component = entity[componentKey];
-            if(component.serialize == undefined) return;
+            if (component.serialize == undefined) return;
             entitySize += 4 + component.getSerializationSize(); // component-id
         });
         entitySizes[entity.id] = entitySize;
@@ -47,7 +47,7 @@ MessageInit.prototype.getSerializationSize = function(gameData) {
     // Calculate serializationSize of players
     size += 4;
     gameData.playerWorld.objectArray.forEach(function(player) {
-        if(player.id == this.playerId) return;
+        if (player.id == this.playerId) return;
         size += 8;
     }.bind(this));
     return size;
@@ -69,7 +69,7 @@ MessageInit.prototype.send = function(gameData, socket) {
         serializeInt32(byteArray, index, this.entitySizes[entity.id]);
         Object.keys(entity).forEach(function(key) {
             var component = entity[key];
-            if(!component.serialize) return;
+            if (!component.serialize) return;
             serializeInt32(byteArray, index, component.id);
             component.serialize(byteArray, index);
         }.bind(this));
@@ -78,7 +78,7 @@ MessageInit.prototype.send = function(gameData, socket) {
     // Serialize players
     serializeInt32(byteArray, index, gameData.playerWorld.objectArray.length);
     gameData.playerWorld.objectArray.forEach(function(player) {
-        if(player.id == this.playerId) return;
+        if (player.id == this.playerId) return;
         serializeInt32(byteArray, index, player.id);
         serializeInt32(byteArray, index, player.entityId);
     }.bind(this));
@@ -97,13 +97,13 @@ MessageInit.prototype.receive = function(gameData, byteArray) {
 
     // Deserialize entities
     var amountOfEntities = deserializeInt32(byteArray, index);
-    for(var i = 0; i < amountOfEntities; ++i) {
+    for (var i = 0; i < amountOfEntities; ++i) {
         var entityId = deserializeInt32(byteArray, index);
 
         var entitySize = deserializeInt32(byteArray, index);
         var entityEnd = index.value + entitySize;
         var entity = {};
-        while(index.value < entityEnd) {
+        while (index.value < entityEnd) {
             var componentId = deserializeInt32(byteArray, index);
             var ComponentType = gameData.componentTypes[componentId];
             var componentName = ComponentType.prototype.name;
@@ -112,14 +112,14 @@ MessageInit.prototype.receive = function(gameData, byteArray) {
         }
 
         // If entity received already exists, remove existing(convenience)
-        if(gameData.entityWorld.objects[entityId])
+        if (gameData.entityWorld.objects[entityId])
             gameData.entityWorld.remove(gameData.entityWorld.objects[entityId]);
         gameData.entityWorld.add(entity, entityId);
     }
 
     // Deserialize players
     var amountOfPlayers = deserializeInt32(byteArray, index);
-    for(var i = 0; i < amountOfPlayers; ++i) {
+    for (var i = 0; i < amountOfPlayers; ++i) {
         var playerId = deserializeInt32(byteArray, index);
         var entityId = deserializeInt32(byteArray, index);
         this.players.push([playerId, entityId]);

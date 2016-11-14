@@ -23,18 +23,18 @@ TextureManager = function(gameData) {
 
     this.loader.onProgress(function(name, file, progress) {
         console.log(progress + "% complete");
-        if(onTexturesLoadProgress)
+        if (onTexturesLoadProgress)
             onTexturesLoadProgress(name, file, progress);
     });
 
     this.loader.onComplete(function(texturesLocal) {
         console.log("Textures loaded.");
-        for(var key in texturesLocal)
+        for (var key in texturesLocal)
             texturesLocal[key].name = key;
 
-        for(var name in Items) {
+        for (var name in Items) {
             var itemType = Items[name];
-            if(!itemType.texture.dimX)
+            if (!itemType.texture.dimX)
                 texturesLocal[itemType.name] = texturesLocal[itemType.texture.path];
             else {
                 var offsetWidth = (itemType.texture.offsetWidth ? itemType.texture.offsetWidth : 0);
@@ -48,7 +48,7 @@ TextureManager = function(gameData) {
         }
 
         this.gameData.textures = texturesLocal;
-        if(onTexturesLoadComplete)
+        if (onTexturesLoadComplete)
             onTexturesLoadComplete(texturesLocal);
     }.bind(this));
 }

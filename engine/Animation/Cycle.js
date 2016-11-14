@@ -4,13 +4,13 @@ Cycle = function(frames) {
 }
 
 Cycle.prototype.load = function(frames) {
-    for(var i = 0; i < frames.length; ++i) {
+    for (var i = 0; i < frames.length; ++i) {
         var current = frames[i];
         var x = current[0];
         var y = current[1];
         var angle = current[2];
         var numFrames = current[3];
-        for(var j = 0; j < numFrames; ++j) {
+        for (var j = 0; j < numFrames; ++j) {
             var startX = (i > 0 ? frames[i - 1][0] : frames[frames.length - 1][0]);
             var startY = (i > 0 ? frames[i - 1][1] : frames[frames.length - 1][1]);
             var startAngle = (i > 0 ? frames[i - 1][2] : frames[frames.length - 1][2]);

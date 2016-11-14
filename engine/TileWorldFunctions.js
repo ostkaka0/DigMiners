@@ -5,7 +5,7 @@ getDensity = function(terrainWorld, x, y) {
     var localY = Math.floor(y) - chunkY * CHUNK_DIM;
 
     var chunk = terrainWorld.get(chunkX, chunkY);
-    if(!chunk) {
+    if (!chunk) {
         return 255;
     }
 
@@ -19,7 +19,7 @@ setDensity = function(tileWorld, x, y, density) {
     var localY = Math.floor(y) - chunkY * CHUNK_DIM;
 
     var chunk = tileWorld.get(chunkX, chunkY);
-    if(!chunk) {
+    if (!chunk) {
         console.log("Density set on missing chunk!");
         return;
     }
@@ -34,7 +34,7 @@ getTileId = function(tileWorld, x, y) {
     var localY = Math.floor(y) - chunkY * CHUNK_DIM;
 
     var chunk = tileWorld.get(chunkX, chunkY);
-    if(!chunk)
+    if (!chunk)
         return 0;
 
     return chunk.getTileId(localX, localY);
@@ -47,7 +47,7 @@ setTileId = function(tileWorld, x, y, value) {
     var localY = Math.floor(y) - chunkY * CHUNK_DIM;
 
     var chunk = tileWorld.get(chunkX, chunkY);
-    if(!chunk) {
+    if (!chunk) {
         console.log("Cannot set tile on missing chunk!");
         return;
     }
@@ -108,49 +108,49 @@ calcDir = function(terrainWorld, x, y) {
 
 calcNormal = function(terrainWorld, x, y) {
     var vec = calcDir(terrainWorld, x, y)
-    if(v2.lengthSquared(vec) > 0.0)
+    if (v2.lengthSquared(vec) > 0.0)
         v2.normalize(vec, vec);
 
     return vec;
 }
 
 carveCircle = function(gameData, x, y, radius, digSpeed, maxHardness, onDensityChange) {
-    if(digSpeed == undefined || digSpeed == null)
+    if (digSpeed == undefined || digSpeed == null)
         digSpeed = 1.0;
 
     var tileWorld = gameData.tileWorld;
     var tileRegister = gameData.tileRegister;
 
     var dug = [];
-    for(var i = 0; i < tileRegister.length; ++i)
+    for (var i = 0; i < tileRegister.length; ++i)
         dug[i] = 0;
 
     var intR = parseInt(radius + 0.5);
 
-    for(var yy = -4 * intR; yy < 4 * intR; ++yy) {
-        for(var xx = -4 * intR; xx < 4 * intR; ++xx) {
+    for (var yy = -4 * intR; yy < 4 * intR; ++yy) {
+        for (var xx = -4 * intR; xx < 4 * intR; ++xx) {
             var tileX = Math.floor(x) + xx;
             var tileY = Math.floor(y) + yy;
             var xxx = x - 0.5 - tileX;//xx + x - parseInt(x);//Math.floor(x);
             var yyy = y - 0.5 - tileY;//yy + y - parseInt(y);//Math.floor(y);
             var dis = Math.sqrt(xxx * xxx + yyy * yyy);
-            if(dis > radius)
+            if (dis > radius)
                 continue;
 
             var oldDensity = getDensity(tileWorld, tileX, tileY);
             var tileId = getTileId(tileWorld, tileX, tileY);
             var tile = tileRegister[tileId];
-            if(!tile) {
+            if (!tile) {
                 console.log("Tile is undefined! TileID: " + tileId);
                 continue;
             }
 
-            if(maxHardness && tile.hardness > maxHardness)
+            if (maxHardness && tile.hardness > maxHardness)
                 continue;
 
             var fillStrength = Math.max(Math.min(radius - dis, 1.0) * digSpeed, 0.0) / tile.hardness;
             var newDensity = Math.max(oldDensity - parseInt(255.0 * fillStrength), 0);
-            if(onDensityChange)
+            if (onDensityChange)
                 newDensity = onDensityChange(tileX, tileY, tile, oldDensity, newDensity);
             var densityDiff = oldDensity - newDensity;
 

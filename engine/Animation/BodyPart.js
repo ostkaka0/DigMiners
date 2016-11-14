@@ -4,10 +4,10 @@ BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, parent) {
     this.offset = [offsetX, offsetY, offsetRotation];
     this.defaultOffset = [offsetX, offsetY, offsetRotation];
     this.cycleOffset = [0, 0, 0];
-    if(pivot && (pivot[0] != 0 || pivot[1] != 0)) {
+    if (pivot && (pivot[0] != 0 || pivot[1] != 0)) {
         this.usePivot = true;
         this.pivot = pivot;
-        if(!isServer) {
+        if (!isServer) {
             this.sprite.sprite.anchor.x = 0;
             this.sprite.sprite.anchor.y = 0;
             this.sprite.sprite.pivot.x = pivot[0];
@@ -34,12 +34,12 @@ BodyPart.prototype.position = function(x, y, rotation) {
             this.sprite.sprite.rotation);
     });
     // Run only on root body parts:
-    if(!this.parent) {
+    if (!this.parent) {
 
         forOf(this, this.children, function(child) {
             var totalOffset = [child.cycleOffset[0], child.cycleOffset[1]];
             var newPos = child.rotate(0, 0, totalOffset[0], totalOffset[1], rotation + child.cycleOffset[2] + child.offset[2]);
-            if(totalOffset[0] == 0 && totalOffset[1] == 0)
+            if (totalOffset[0] == 0 && totalOffset[1] == 0)
                 newPos = [0, 0];
 
             child.sprite.sprite.position.x += newPos[0];
@@ -71,36 +71,36 @@ BodyPart.prototype.rotateAroundPoint = function(x, y, rotation, parentRotation) 
 }
 
 BodyPart.prototype.cycle = function(gameData, cycle, fps, runToEnd) {
-    if(!this.cycleInstance) {
+    if (!this.cycleInstance) {
         this.cycleInstance = {};
         this.cycleInstance.cycle = gameData.animationManager.cycles[cycle];
     }
     this.cycleInstance.mspf = 1000.0 / fps;
-    if(!this.cycleInstance.lastFrame || !this.cycleInstance)
+    if (!this.cycleInstance.lastFrame || !this.cycleInstance)
         this.cycleInstance.lastFrame = new Date();
-    if(!this.cycleInstance.currentFrame)
+    if (!this.cycleInstance.currentFrame)
         this.cycleInstance.currentFrame = 0;
     this.cycleInstance.runToEnd = runToEnd; //If animation is aborted, finish animation and stop at frame 0
     this.cycleInstance.finishing = false;
 }
 
 BodyPart.prototype.finishCycle = function() {
-    if(this.cycleInstance) {
+    if (this.cycleInstance) {
         this.cycleInstance.runToEnd = true;
         this.cycleInstance.finishing = false;
     }
 }
 
 BodyPart.prototype.animate = function(gameData, animation, fps, runToEnd) {
-    if(!this.animInstance) {
+    if (!this.animInstance) {
         this.animInstance = {};
         this.animInstance.animation = gameData.animationManager.animations[animation];
         this.sprite.sprite.texture = this.animInstance.animation.texture.clone();
     }
     this.animInstance.mspf = 1000.0 / fps;
-    if(!this.animInstance.lastFrame || !this.animInstance.animating)
+    if (!this.animInstance.lastFrame || !this.animInstance.animating)
         this.animInstance.lastFrame = new Date();
-    if(!this.animInstance.currentFrame)
+    if (!this.animInstance.currentFrame)
         this.animInstance.currentFrame = 0;
     this.animInstance.runToEnd = runToEnd; //If animation is aborted, finish animation and stop at frame 0
     this.animInstance.finishing = false;

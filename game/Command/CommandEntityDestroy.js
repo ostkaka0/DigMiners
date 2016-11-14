@@ -5,7 +5,7 @@ CommandEntityDestroy = function(entityId) {
 
 CommandEntityDestroy.prototype.execute = function(gameData) {
     var entity = gameData.entityWorld.objects[this.entityId];
-    if(!entity) return;
+    if (!entity) return;
     gameData.entityWorld.remove(entity);
 }
 

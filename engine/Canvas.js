@@ -5,7 +5,7 @@ canvasInitGL = function(canvas) {
     gl = canvas.getContext("webgl", { antialias: false }) || canvas.getContext("experimental-webgl", { antialias: false });
 
     // If we don't have a GL context, give up now
-    if(!gl)
+    if (!gl)
         document.write("<h1 style = 'position: fixed; left:24px;top:24px;'>Unable to initialize WebGL. Your browser may not support it.</h1>");
 
     return gl;
