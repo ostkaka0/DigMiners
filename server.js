@@ -82,37 +82,33 @@ gameData.physicsWorld.onCollision.push(function(collisions) {
 
 gameData.entityWorld.onAdd.push(function(entity) {
     if (entity.controlledByPlayer) {
-        //TODO: remove "player"
-        var player = gameData.playerWorld.objects[entity.controlledByPlayer.playerId];
-        if (!player) return;
-        var socket = player.socket;
 
         // give player shovel at join
-        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.RustyShovel.id, 1));
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.RustyShovel.id, 1));
 
-        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.CopperShovel.id, 1));
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.CopperShovel.id, 1));
 
-        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.IronShovel.id, 1));
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.IronShovel.id, 1));
 
-        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.SteelShovel.id, 1));
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.SteelShovel.id, 1));
 
-        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.DiamondShovel.id, 1));
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.DiamondShovel.id, 1));
 
-        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.CopperSword.id, 1));
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.CopperSword.id, 1));
 
         // give player dynamite at join
-        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.Dynamite.id, 4));
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.Dynamite.id, 4));
 
         // give player blocks at join
-        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.StoneWall.id, 10));
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.StoneWall.id, 10));
 
-        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.ADD_ITEM, Items.StoneFloor.id, 10));
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.StoneFloor.id, 10));
 
         // (TEMPORARY) spawn monsters on player join
         for (var i = 0; i < 1; ++i) {
             var monsterEntityId = idList.next();
             var monster = entityTemplates.testMonster(monsterEntityId, [0, 0], gameData);
-            sendCommand(new CommandEntitySpawn(gameData, monster, monsterEntityId));      
+            sendCommand(new CommandEntitySpawn(gameData, monster, monsterEntityId));
             sendCommand(new CommandEntityEquipItem(monsterEntityId, 0, Items.SteelShovel.id, true));
         }
     }

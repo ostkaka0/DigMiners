@@ -37,7 +37,7 @@ MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
         }
 
         // Remove from inventory
-        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.REMOVE_ITEM, item.id, 1));
+        sendCommand(new CommandEntityInventory(player.entityId, InventoryActions.REMOVE_ITEM, item.id, 1));
 
         // Send block change
         var command = new CommandEntityBuild(player.entityId, this.x, this.y, itemType.blockId, type);

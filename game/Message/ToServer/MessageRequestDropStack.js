@@ -29,7 +29,7 @@ MessageRequestDropStack.prototype.execute = function(gameData, player) {
         itemEntity.item.dropped = new Date();
         sendCommand(new CommandEntitySpawn(gameData, itemEntity, itemEntityId));
 
-        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.DROP_STACK, this.id, 0));
+        sendCommand(new CommandEntityInventory(player.entityId, InventoryActions.DROP_STACK, this.id, 0));
 
         if (item.equipped)
             sendCommand(new CommandEntityEquipItem(player.entityId, this.id, item.id, false));

@@ -12,17 +12,17 @@ MessageRequestCraft.prototype.execute = function(gameData, player) {
     for (var j = 0; j < recipe.requiredItems.length; ++j) {
         var itemType = recipe.requiredItems[j][0];
         var amount = recipe.requiredItems[j][1];
-        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.REMOVE_ITEM, itemType.id, amount));
+        sendCommand(new CommandEntityInventory(player.entityId, InventoryActions.REMOVE_ITEM, itemType.id, amount));
     }
     for (var j = 0; j < recipe.requiredOres.length; ++j) {
         var tileType = recipe.requiredOres[j][0];
         var amount = recipe.requiredOres[j][1] * 256.0;
-        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.REMOVE_ORE, tileType.id, amount));
+        sendCommand(new CommandPlayerOreInventory(player.playerId, OreInventoryActions.REMOVE_ORE, tileType.id, amount));
     }
     for (var j = 0; j < recipe.item.length; ++j) {
         var resultItemType = recipe.item[j][0];
         var amount = recipe.item[j][1];
-        sendCommand(new CommandPlayerInventory(player.playerId, InventoryActions.ADD_ITEM, resultItemType.id, amount));
+        sendCommand(new CommandEntityInventory(player.entityId, InventoryActions.ADD_ITEM, resultItemType.id, amount));
     }
 }
 
