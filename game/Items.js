@@ -17,14 +17,13 @@ ItemFunctions.Shovel = function(entity, item) {
             var blockId = blockChunk.getForeground(localPos[0], localPos[1]);
             if (blockId) {
                 var strength = blockChunk.getStrength(localPos[0], localPos[1]);
-                strength -= 64;
+                strength -= 16;
+                var x = chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0];
+                var y = chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1];
                 if (strength <= 0) {
-                    var x = chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0];
-                    var y = chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1];
-                    var command = new CommandEntityBuild(entity.id, x, y, 0, BlockTypes.FOREGROUND);
-                    sendCommand(command);
+                    sendCommand(new CommandEntityBuild(entity.id, x, y, 0, BlockTypes.FOREGROUND));
                 } else
-                    blockChunk.setStrength(localPos[0], localPos[1], strength);
+                    sendCommand(new CommandBlockStrength(x, y, strength));
                 return;
             }
         }
