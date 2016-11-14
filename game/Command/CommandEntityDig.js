@@ -42,14 +42,14 @@ CommandEntityDig.prototype.execute = function(gameData) {
     }
 
     var dug = carveCircle(gameData, this.x + digDis * this.dir[0], this.y + digDis * this.dir[1], this.radius, this.digSpeed, this.maxDigHardness, onDensityChange);
-    if (isServer && entity.inventory && entity.controlledByPlayer) {
+    if (isServer) {
         // Only process dug ores on server
         for (var i = 0; i < dug.length; ++i) {
             if (!dug[i] || dug[i] <= 0) continue;
-            //console.log(this.playerId + " dug " + dug[i] + " " + i);
             var tileName = gameData.tileRegister[i].name;
-            var itemId = i;//gameData.itemRegister.getIdByName(tileName);
-            sendCommand(new CommandPlayerInventory(this.playerId, InventoryActions.ADD_ORE, itemId, dug[i]));
+            var itemId = i;
+            if (entity.inventory && entity.controlledByPlayer)
+                sendCommand(new CommandPlayerOreInventory(entity.controlledByPlayer.playerId, OreInventoryActions.ADD_ORE, itemId, dug[i]));
             if (tileName == Tiles.Dirt.name) {
                 var rand = Math.random() * 1000;
                 var itemId = null;

@@ -213,12 +213,6 @@ gameData.entityWorld.onAdd.push(function(entity) {
     if (!global.playerEntity && entity.id == global.playerEntityId)
         global.playerEntity = entity;
 
-    if (entity.item && entity.item.amount > 1) {
-        var text = new PIXI.Text(entity.item.amount, { fontFamily: 'Monospace', fontSize: 15, fill: 0xffffff, align: 'center' });
-        var textSprite = new Sprite(null, text, false);
-        entity.drawable.addSprite("textAmount", textSprite, null, false);
-    }
-
     if (!isServer && entity.health && entity.drawable)
         onHealthChange(entity);
 
@@ -227,6 +221,12 @@ gameData.entityWorld.onAdd.push(function(entity) {
 
     if (entity.nameComponent && entity.drawable)
         entity.nameComponent.applyName(entity);
+
+    if (entity.item && entity.item.amount > 1) {
+        var text = new PIXI.Text(entity.item.amount, { fontFamily: 'Monospace', fontSize: 15, fill: 0xffffff, align: 'center' });
+        var textSprite = new Sprite(null, text, false);
+        entity.drawable.addSprite("textAmount", textSprite, null, false);
+    }
 });
 
 gameData.physicsWorld.onCollision.push(function(collisions) {
