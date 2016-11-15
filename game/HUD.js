@@ -79,26 +79,19 @@ createHUD = function(gameData) {
     dugItemsFooter.setAttribute("class", "dugItemsFooter");
     dugItems.appendChild(dugItemsFooter);
 
-    var createDropFunc = function(i) {
+    var createClickSlotFunc = function(slotId, clickType, returnValue) {
         return function() {
-            var message = new MessageRequestDropStack(i);
+            var message = new MessageRequestClickSlot(slotId, clickType);
             message.send(socket);
-        };
-    }
-
-    var createEquipFunc = function(i) {
-        return function() {
-            var message = new MessageRequestEquipStack(i);
-            message.send(socket);
-            return false;
+            return returnValue;
         };
     }
 
     // Initialize closures
     for (var i = 0; i < 64; ++i) {
         HUDClosures[i] = [];
-        HUDClosures[i][0] = createDropFunc(i);
-        HUDClosures[i][1] = createEquipFunc(i);
+        HUDClosures[i][0] = createClickSlotFunc(i, InventoryClickTypes.LEFT_CLICK, true);
+        HUDClosures[i][1] = createClickSlotFunc(i, InventoryClickTypes.RIGHT_CLICK, false);
     }
 
     $('.dugItemsEntryImage').mouseenter(function() {
@@ -110,9 +103,15 @@ createHUD = function(gameData) {
         updateHUD(gameData);
     });
 
-    $('*').contextmenu(function() {
+    /*$('*').contextmenu(function() {
         return false;
-    });
+    });*/
+
+    /*$("*").on('click', function(e) {
+        if (e.which == 2) {
+            e.preventDefault();
+        }
+    });*/
 
     // Open/close crafting window when "C" is clicked
     $('*').keydown(function(e) {
