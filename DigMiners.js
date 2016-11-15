@@ -211,8 +211,20 @@ $(document).click(function(event) {
 });
 
 gameData.entityWorld.onAdd.push(function(entity) {
-    if (!global.playerEntity && entity.id == global.playerEntityId)
+    if (!global.playerEntity && entity.id == global.playerEntityId) {
         global.playerEntity = entity;
+        $("*").mousemove(function(e) {
+            if (!this.lastMouseSync || gameData.tickId - this.lastMouseSync >= 1) {
+                this.lastMouseSync = gameData.tickId;
+                var worldCursorPos = [Math.floor((this.mouseX + camera.pos[0] - camera.width / 2) / 32), Math.floor((canvas.height - this.mouseY + camera.pos[1] - camera.height / 2) / 32)];
+                var pos = entity.physicsBody.getPos();
+                var diff = [worldCursorPos[0] - pos[0], worldCursorPos[1] - pos[1]];
+                var normalized = v2.create(0, 0);
+                v2.normalize(diff, normalized);
+                new MessageRequestRotate(normalized).send(socket);
+            }
+        }.bind(this));
+    }
 
     if (!isServer && entity.health && entity.drawable)
         onHealthChange(entity);

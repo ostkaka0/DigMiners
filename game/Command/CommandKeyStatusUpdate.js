@@ -27,7 +27,6 @@ CommandKeyStatusUpdate.prototype.execute = function(gameData) {
         direction[0] -= 1.0;
 
     movement.direction = direction;
-    movement.rotationDirection = direction;
     physicsBody.setPos(this.pos);
 }
 

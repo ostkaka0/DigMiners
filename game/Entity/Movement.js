@@ -80,12 +80,9 @@ entityFunctionEntityMovement = function(gameData, dt) {
         v2.add(normalized, velocity, velocity);
         entity.physicsBody.setVelocity(velocity);
         
-
-
         var direction = entity.movement.rotationDirection;
         if (direction[0] != 0 || direction[1] != 0)
             entity.physicsBody.rotateTo(Math.atan2(-direction[1], direction[0]), entity.physicsBody.rotationSpeed, dt);
-
         
         var tool = entity.equippedItems.items["tool"];
         var useCooldownSeconds = (tool && tool.useCooldown)? tool.useCooldown : 0;//entity.movement.calcDigTickDuration(gameData.tickDuration); // digDuration
@@ -93,8 +90,6 @@ entityFunctionEntityMovement = function(gameData, dt) {
         var useCooldown = Math.round(useCooldownSeconds / dt);
         var useDuration = Math.round(useDurationSeconds / dt);
         useDuration = Math.min(useCooldown, useDuration);
-
-        console.log("timout: " + useCooldown + "  duration: " + useDuration);
 
         if (entity.movement.keyStatuses[Keys.SPACEBAR] && !entity.movement.isUsingTool)
             entity.movement.isUsingTool = true;
