@@ -4,6 +4,8 @@ Movement = function(speed, toolUseDuration) {
     this.direction = v2.create(0, 0);
     this.rotationDirection = v2.create(0, 0);
     this.speed = speed;
+    // Entity will be unable to move quicly when disabled
+    this.disabledTimeout = 0;
     // The number of ticks until next dig. Will decrease by 1 each tick. Player can only dig at 0. Only used by server
     this.toolUseTickTimeout = 0;
     this.toolUseDuration = toolUseDuration || 0.25; // Seconds between each dig
@@ -78,9 +80,20 @@ entityFunctionEntityMovement = function(gameData, dt) {
         if (direction[0] != 0 || direction[1] != 0)
             entity.physicsBody.rotateTo(Math.atan2(-direction[1], direction[0]), entity.physicsBody.rotationSpeed, dt);
 
+        
+        var tool = entity.equippedItems.items["tool"];
+        var digDuration = entity.movement.calcDigTickDuration(gameData.tickDuration);
+        var useDuration = 4;
+
         if (entity.movement.keyStatuses[Keys.SPACEBAR] && !entity.movement.isUsingTool)
             entity.movement.isUsingTool = true;
-        if (entity.movement.isUsingTool && entity.movement.toolUseTickTimeout <= 0)
+        if (entity.movement.isUsingTool && entity.movement.toolUseTickTimeout <= 0) {
+            entity.movement.toolUseTickTimeout = digDuration;
+            if (!isServer)
+                entity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArm", 64 / entity.movement.toolUseDuration, false);
+        }
+            
+        if (entity.movement.isUsingTool && digDuration - entity.movement.toolUseTickTimeout == useDuration)
             onEntityUseTool(gameData, entity);
 
         // Dig update:
@@ -97,10 +110,7 @@ entityFunctionEntityMovement = function(gameData, dt) {
 }
 
 onEntityUseTool = function(gameData, entity) {
-    entity.movement.toolUseTickTimeout = entity.movement.calcDigTickDuration(gameData.tickDuration);
-    if (!isServer)
-        entity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArm", 64 / entity.movement.toolUseDuration, false);
-    else {
+    if (isServer) {
         var tool = entity.equippedItems.items["tool"];
         if (!tool || !tool.itemFunction) return;
         tool.itemFunction(entity, tool);
