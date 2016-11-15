@@ -9,9 +9,12 @@ CommandPlayerLeave.prototype.execute = function(gameData) {
     var entity = gameData.entityWorld.objects[this.entityId];
     if (player)
         gameData.playerWorld.remove(player);
-    if (entity)
+    if (entity) {
         gameData.entityWorld.remove(entity);
-    console.log(entity.nameComponent.entityName + " disconnected with playerId " + this.playerId);
+        console.log(entity.nameComponent.entityName + "with playerId " + this.playerId + " disconnected.");
+    } else {
+        console.log(this.playerId + " disconnected.");
+    }
 }
 
 CommandPlayerLeave.prototype.serialize = function(byteArray, index) {

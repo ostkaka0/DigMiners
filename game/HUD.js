@@ -103,15 +103,9 @@ createHUD = function(gameData) {
         updateHUD(gameData);
     });
 
-    /*$('*').contextmenu(function() {
-        return false;
-    });*/
-
-    /*$("*").on('click', function(e) {
-        if (e.which == 2) {
-            e.preventDefault();
-        }
-    });*/
+    $('*').contextmenu(function(e) {
+        e.preventDefault();
+    });
 
     // Open/close crafting window when "C" is clicked
     $('*').keydown(function(e) {
@@ -165,7 +159,8 @@ updateHUD = function(gameData) {
                 slotImageContainerOverlay.style.display = "block";
 
             slot.onclick = HUDClosures[i][0];
-            slot.oncontextmenu = HUDClosures[i][1];
+            $(slot).off("contextmenu");
+            $(slot).on("contextmenu", HUDClosures[i][1]);
         } else {
             slotImageContainer.style.backgroundImage = "";
             slotTextContainer.innerText = "";
