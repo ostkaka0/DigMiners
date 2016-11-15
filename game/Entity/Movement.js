@@ -9,6 +9,8 @@ Movement = function(speed, toolUseDuration) {
     // The number of ticks until next dig. Will decrease by 1 each tick. Player can only dig at 0. Only used by server
     this.toolUseTickTimeout = 0;
     this.toolUseDuration = toolUseDuration || 0.25; // Seconds between each dig
+    // Entity is unable to move while disabled
+    this.disabledCooldown = 0;
     this.digMovementSpeed = 0.65;
     this.mineMovementSpeed = 0.05;
     this.isUsingTool = false;
@@ -70,10 +72,14 @@ entityFunctionEntityMovement = function(gameData, dt) {
             v2.mul(entity.movement.mineMovementSpeed, normalized, normalized);
         else if (entity.movement.isDigging)
             v2.mul(entity.movement.digMovementSpeed, normalized, normalized);
+        // Slow down when disabled:
+        if (entity.movement.disabledCooldown > 0)
+            v2.mul(0.2, normalized, normalized);
         v2.mul(dt, normalized, normalized);
         var velocity = entity.physicsBody.getVelocity();
         v2.add(normalized, velocity, velocity);
         entity.physicsBody.setVelocity(velocity);
+        
 
 
         var direction = entity.movement.rotationDirection;
@@ -103,6 +109,7 @@ entityFunctionEntityMovement = function(gameData, dt) {
 
         // Dig update:
         entity.movement.toolUseTickTimeout = (entity.movement.toolUseTickTimeout <= 0) ? 0 : entity.movement.toolUseTickTimeout - 1;
+        entity.movement.disabledCooldown = (entity.movement.disabledCooldown <= 0) ? 0 : entity.movement.disabledCooldown - 1;
         // Reset dig state
         if (entity.movement.toolUseTickTimeout == 0 || (!entity.movement.keyStatuses[Keys.SPACEBAR] && entity.movement.isUsingTool)) {
             entity.movement.isUsingTool = false;

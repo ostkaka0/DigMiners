@@ -13,7 +13,7 @@ DigObstacleBehaviour.prototype.canRun = function() {
     
     var velocity = this.entity.physicsBody.getVelocity();
     var moveDir = this.entity.movement.direction;
-    if (v2.dot(moveDir, velocity) > 0.3)
+    if (v2.dot(moveDir, velocity) > 0.5)
         return false;
     var pos = this.entity.physicsBody.getPos();
     var digPos = [pos[0] + moveDir[0]/2, pos[1] + moveDir[1]/2];

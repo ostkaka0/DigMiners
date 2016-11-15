@@ -10,6 +10,7 @@ CommandEntityHurtEntity.prototype.execute = function(gameData) {
     if (!entity) return;
     var otherEntity = gameData.entityWorld.objects[this.otherEntityId];
     if (!otherEntity || !otherEntity.health) return;
+    otherEntity.movement.disabledCooldown = 40;
     otherEntity.health.health = (otherEntity.health.health + this.healthChange < 0 ? 0 : otherEntity.health.health + this.healthChange);
     onHealthChange(otherEntity);
     if (otherEntity.health.health == 0)
