@@ -17,6 +17,7 @@ canvas {
 	text-align: center;
 	cursor: default;
 	z-index: 1;
+    pointer-events: none;
 }
 
 .dugItems {
@@ -29,6 +30,7 @@ canvas {
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    pointer-events: auto;
 }
 
 .dugItemsEntry {
@@ -81,6 +83,7 @@ canvas {
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    pointer-events: auto;
 }
 
 .inventoryHeader {
@@ -157,6 +160,7 @@ canvas {
     height: calc(60% - 10px);
     background-color:white;
     left: 0;
+    pointer-events: auto;
 }
 
 .crafting {

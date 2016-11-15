@@ -110,6 +110,10 @@ createHUD = function(gameData) {
         updateHUD(gameData);
     });
 
+    $('*').contextmenu(function() {
+        return false;
+    });
+
     // Open/close crafting window when "C" is clicked
     $('*').keydown(function(e) {
         e.stopPropagation();

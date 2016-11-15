@@ -2,9 +2,8 @@
 Sprite = function(textureName, sprite, noAnchor) {
     this.textureName = (textureName ? textureName : "");
     this.noAnchor = noAnchor;
-    if (!isServer) {
+    if (!isServer)
         this.setPIXISprite((textureName && textureName.length > 0 ? new PIXI.Sprite(gameData.textures[textureName]) : sprite));
-    }
 }
 
 Sprite.prototype.setPIXISprite = function(sprite) {

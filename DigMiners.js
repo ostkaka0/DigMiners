@@ -2,12 +2,13 @@ var canvas = document.getElementById("canvas");
 var gl = canvasInitGL(canvas);
 var renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight, { 'transparent': true, 'antialias': true });
 var stage = new PIXI.Container();
-var zindices = new Array();
-zindices[0] = new PIXI.Container();
-zindices[1] = new PIXI.Container();
-zindices[2] = new PIXI.Container();
-for (var i = 0; i < zindices.length; ++i)
+
+var zindices = new Array(3);
+for (var i = 0; i < zindices.length; ++i) {
+    zindices[i] = new PIXI.Container();
     stage.addChild(zindices[i]);
+}
+
 renderer.view.style.position = 'absolute';
 renderer.view.style.left = '0%';
 renderer.view.style.top = '0%';
@@ -216,8 +217,16 @@ gameData.entityWorld.onAdd.push(function(entity) {
     if (!isServer && entity.health && entity.drawable)
         onHealthChange(entity);
 
-    if (entity.drawable && entity.bodyparts)
+    if (entity.drawable && entity.bodyparts) {
         entity.drawable.initializeBodyparts(entity.bodyparts.bodyparts);
+        for (var key in entity.bodyparts.bodyparts) {
+            var bodypart = entity.bodyparts.bodyparts[key];
+            bodypart.sprite.sprite.interactive = true;
+            bodypart.sprite.sprite.on("click", function(mouseData) {
+                new MessageRequestClickEntity(entity.id).send(socket);
+            });
+        }
+    }
 
     if (entity.nameComponent && entity.drawable)
         entity.nameComponent.applyName(entity);
