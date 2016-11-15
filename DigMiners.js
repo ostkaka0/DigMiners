@@ -222,8 +222,11 @@ gameData.entityWorld.onAdd.push(function(entity) {
         for (var key in entity.bodyparts.bodyparts) {
             var bodypart = entity.bodyparts.bodyparts[key];
             bodypart.sprite.sprite.interactive = true;
-            bodypart.sprite.sprite.on("click", function(mouseData) {
-                new MessageRequestClickEntity(entity.id).send(socket);
+            bodypart.sprite.sprite.on("mousedown", function(mouseData) {
+                new MessageRequestClickEntity(entity.id, ClickTypes.LEFT_CLICK).send(socket);
+            });
+            bodypart.sprite.sprite.on("rightdown", function(mouseData) {
+                new MessageRequestClickEntity(entity.id, ClickTypes.RIGHT_CLICK).send(socket);
             });
         }
     }
