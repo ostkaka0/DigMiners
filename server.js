@@ -105,7 +105,7 @@ gameData.entityWorld.onAdd.push(function(entity) {
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.StoneFloor.id, 10));
 
         // (TEMPORARY) spawn monsters on player join
-        for (var i = 0; i < 1; ++i) {
+        for (var i = 0; i < 5; ++i) {
             var monsterEntityId = idList.next();
             var monster = entityTemplates.testMonster(monsterEntityId, [0, 0], gameData);
             sendCommand(new CommandEntitySpawn(gameData, monster, monsterEntityId));
