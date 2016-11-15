@@ -31,7 +31,7 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
     var healthbarSprite = new Sprite("healthbar", null, false);
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
 
-    entity.health = new Health(1000, 1000);
+    entity.health = new Health(100, 100);
 
     return entity;
 }

@@ -172,9 +172,8 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.Shovel,
-        // TODO: 
-        // useDelay: 4,
-        // useDuration: 10,
+        useCooldown: 0.25,
+        useDuration: 0.125,
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 1.0,
@@ -188,6 +187,8 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.Shovel,
+        useCooldown: 0.25,
+        useDuration: 0.125,
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 1.2,
@@ -201,6 +202,8 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.Shovel,
+        useCooldown: 0.25,
+        useDuration: 0.125,
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 1.6,
@@ -214,6 +217,8 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.Shovel,
+        useCooldown: 0.25,
+        useDuration: 0.125,
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 1.8,
@@ -227,6 +232,8 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.Shovel,
+        useCooldown: 0.25,
+        useDuration: 0.125,
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 2.2,
@@ -240,6 +247,8 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.Shovel,
+        useCooldown: 0.25,
+        useDuration: 0.125,
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 2.4,
@@ -253,6 +262,8 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.Shovel,
+        useCooldown: 0.25,
+        useDuration: 0.125,
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 2.8,
@@ -266,6 +277,8 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.Shovel,
+        useCooldown: 0.25,
+        useDuration: 0.125,
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 3.0,
@@ -279,6 +292,8 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.Shovel,
+        useCooldown: 0.25,
+        useDuration: 0.125,
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 3.6,
@@ -292,6 +307,8 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.Shovel,
+        useCooldown: 0.25,
+        useDuration: 0.125,
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 4.0,
@@ -306,11 +323,13 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.Sword,
+        useCooldown: 1.0,
+        useDuration: 0.1,
         type: "tool",
         typeOfType: "sword",
         hitRange: 0.5,
-        hitRadius: 0.5,
-        damage: 20
+        hitRadius: 1.5,
+        damage: 40
     }
     Items.CopperSword = {
         name: "Copper Sword",
@@ -320,11 +339,13 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.Sword,
+        useCooldown: 1.0,
+        useDuration: 0.2,
         type: "tool",
         typeOfType: "sword",
         hitRange: 0.5,
-        hitRadius: 0.5,
-        damage: 30
+        hitRadius: 1.5,
+        damage: 60
     }
     Items.IronSword = {
         name: "Iron Sword",
@@ -334,11 +355,13 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.Sword,
+        useCooldown: 1.0,
+        useDuration: 0.2,
         type: "tool",
         typeOfType: "sword",
         hitRange: 0.5,
-        hitRadius: 0.5,
-        damage: 40
+        hitRadius: 1.5,
+        damage: 80
     }
     Items.SteelSword = {
         name: "Steel Sword",
@@ -348,11 +371,13 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.Sword,
+        useCooldown: 1.0,
+        useDuration: 0.2,
         type: "tool",
         typeOfType: "sword",
         hitRange: 0.5,
-        hitRadius: 0.5,
-        damage: 50
+        hitRadius: 1.5,
+        damage: 100
     }
 
     // Other items

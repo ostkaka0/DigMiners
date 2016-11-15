@@ -82,18 +82,23 @@ entityFunctionEntityMovement = function(gameData, dt) {
 
         
         var tool = entity.equippedItems.items["tool"];
-        var digDuration = entity.movement.calcDigTickDuration(gameData.tickDuration);
-        var useDuration = 4;
+        var useCooldownSeconds = (tool && tool.useCooldown)? tool.useCooldown : 0;//entity.movement.calcDigTickDuration(gameData.tickDuration); // digDuration
+        var useDurationSeconds = (tool && tool.useDuration)? tool.useDuration : 0;
+        var useCooldown = Math.round(useCooldownSeconds / dt);
+        var useDuration = Math.round(useDurationSeconds / dt);
+        useDuration = Math.min(useCooldown, useDuration);
+
+        console.log("timout: " + useCooldown + "  duration: " + useDuration);
 
         if (entity.movement.keyStatuses[Keys.SPACEBAR] && !entity.movement.isUsingTool)
             entity.movement.isUsingTool = true;
         if (entity.movement.isUsingTool && entity.movement.toolUseTickTimeout <= 0) {
-            entity.movement.toolUseTickTimeout = digDuration;
+            entity.movement.toolUseTickTimeout = useCooldown;
             if (!isServer)
-                entity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArm", 64 / entity.movement.toolUseDuration, false);
+                entity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArm", 64 / useCooldownSeconds, false);
         }
             
-        if (entity.movement.isUsingTool && digDuration - entity.movement.toolUseTickTimeout == useDuration)
+        if (useCooldown - entity.movement.toolUseTickTimeout == useDuration)
             onEntityUseTool(gameData, entity);
 
         // Dig update:
