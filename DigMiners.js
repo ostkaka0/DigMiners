@@ -216,7 +216,7 @@ gameData.entityWorld.onAdd.push(function(entity) {
         $("*").mousemove(function(e) {
             if (!this.lastMouseSync || gameData.tickId - this.lastMouseSync >= 1) {
                 this.lastMouseSync = gameData.tickId;
-                var worldCursorPos = [Math.floor((this.mouseX + camera.pos[0] - camera.width / 2) / 32), Math.floor((canvas.height - this.mouseY + camera.pos[1] - camera.height / 2) / 32)];
+                var worldCursorPos = [(this.mouseX + camera.pos[0] - camera.width / 2) / 32, (canvas.height - this.mouseY + camera.pos[1] - camera.height / 2) / 32];
                 var pos = entity.physicsBody.getPos();
                 var diff = [worldCursorPos[0] - pos[0], worldCursorPos[1] - pos[1]];
                 var normalized = v2.create(0, 0);
