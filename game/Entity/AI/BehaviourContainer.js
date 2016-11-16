@@ -23,3 +23,8 @@ BehaviourContainer.prototype.update = function() {
         }
     }
 }
+
+BehaviourContainer.prototype.destroy = function(entity) {
+    for (var i = 0; i < this.behaviours.length; ++i)
+        this.behaviours[i].destroy(entity);
+}

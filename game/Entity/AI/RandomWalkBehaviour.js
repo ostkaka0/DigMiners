@@ -28,7 +28,6 @@ RandomWalkBehaviour.prototype.run = function() {
         var dir = this.directions[Math.floor(Math.random() * 6)];
         sendCommand(new CommandEntityMove(this.entity.id, dir, physicsBody.pos[0], physicsBody.pos[1]));
         this.isWalking = true;
-        this.dir = dir;
     } else {
         var velocity = this.entity.physicsBody.getVelocity();
         if (v2.length(velocity) < 0.2 && v2.length(velocity) != 0) return false;
@@ -42,5 +41,9 @@ RandomWalkBehaviour.prototype.run = function() {
 }
 
 RandomWalkBehaviour.prototype.finish = function() {
+
+}
+
+RandomWalkBehaviour.prototype.destroy = function(entity) {
 
 }
