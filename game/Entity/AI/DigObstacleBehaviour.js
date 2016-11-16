@@ -73,3 +73,7 @@ DigObstacleBehaviour.prototype.finish = function() {
         sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.pos[0], this.entity.physicsBody.pos[1]));
     sendCommand(new CommandEntityRotate(this.entity.id, this.oldMoveDir));
 }
+
+DigObstacleBehaviour.prototype.destroy = function(entity) {
+
+}

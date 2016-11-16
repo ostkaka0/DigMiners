@@ -79,6 +79,10 @@ TargetPlayerBehaviour.prototype.finish = function() {
     this.flowField = null;
 }
 
+TargetPlayerBehaviour.prototype.destroy = function(entity) {
+
+}
+
 TargetPlayerBehaviour.prototype.getTarget = function() {
     var shortestDistance = Number.MAX_VALUE;
     var shortestDistanceEntity = null;
