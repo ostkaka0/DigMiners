@@ -3,6 +3,6 @@ Projectiles = {};
 
 Projectiles.Egg = {
     maxDistance: 10, // blocks
-    speed: 5, // blocks per second
+    speed: 1.25, // blocks per second
     textureName: "egg"
 }
