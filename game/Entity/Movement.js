@@ -74,7 +74,7 @@ entityFunctionEntityMovement = function(gameData, dt) {
             v2.mul(entity.movement.digMovementSpeed, normalized, normalized);
         // Slow down when disabled:
         if (entity.movement.disabledCooldown > 0)
-            v2.mul(0.2, normalized, normalized);
+            v2.mul(0.8, normalized, normalized);
         v2.mul(dt, normalized, normalized);
         var velocity = entity.physicsBody.getVelocity();
         v2.add(normalized, velocity, velocity);
