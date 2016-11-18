@@ -18,6 +18,8 @@ TextureManager = function(gameData) {
     this.loader.queueTexture("blockPosGood.png", "blockPosGood");
     this.loader.queueTexture("blockPosBad.png", "blockPosBad");
 
+    this.loader.queueTexture("egg", "egg");
+
     console.log("Loading textures...");
     this.loader.loadTextures();
 

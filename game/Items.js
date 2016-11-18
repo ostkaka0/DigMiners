@@ -31,6 +31,8 @@ ItemFunctions.Shovel = function(entity, item) {
         // Dig terrain
         var pos = entity.physicsBody.getPos();
         gameData.commands.push(new CommandEntityDig(entity.id, pos[0], pos[1], dir, 1.5, Entity.getDigSpeed(entity), Entity.getMaxDigHardness(entity)));
+
+        gameData.commands.push(new CommandProjectileSpawn(idList.next(), v2.clone(pos), entity.physicsBody.angle, Projectiles.Egg));
     }
 }
 
