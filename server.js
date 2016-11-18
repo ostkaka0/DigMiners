@@ -42,7 +42,6 @@ var gameData = new GameData(idList);
 gameData.generator = new Generator(Math.random() * 10000);
 var zindices = {};
 
-var tickDuration = gameData.tickDuration;
 var firstTickTime = process.hrtime();
 var tickNum = 0;
 var messageCallbacks = {};
@@ -105,7 +104,7 @@ gameData.entityWorld.onAdd.push(function(entity) {
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.StoneFloor.id, 10));
 
         // (TEMPORARY) spawn monsters on player join
-        for (var i = 0; i < 1; ++i) {
+        for (var i = 0; i < 5; ++i) {
             var monsterEntityId = idList.next();
             var monster = entityTemplates.testMonster(monsterEntityId, [0, 0], gameData);
             sendCommand(new CommandEntitySpawn(gameData, monster, monsterEntityId));
@@ -115,18 +114,19 @@ gameData.entityWorld.onAdd.push(function(entity) {
 });
 
 update = function() {
-    var now = process.hrtime();
-
     var diff = process.hrtime(firstTickTime);
     var diff_ms = diff[0] * 1e3 + diff[1] / 1e6;
-    var delay = -diff_ms + tickNum * tickDuration;
+    var delay = -diff_ms + tickNum * gameData.tickDuration;
     setTimeout(update, delay);
-
     tick(gameData.tickDuration / 1000.0);
     tickNum++;
 }
 
+var measureTicks = 5;
+var currentMeasureTicks = 0;
+var totalTickTime = 0;
 tick = function(dt) {
+    var tick_begin = process.hrtime();
     gameData.commands = gameData.commands.concat(commandsToSend);
     //console.log("sheduled " + commandsToSend.length + " commands to be sent in tick " + gameData.tickId);
     commandsToSend.length = 0;
@@ -140,6 +140,15 @@ tick = function(dt) {
         if (entity.behaviourContainer)
             entity.behaviourContainer.update();
     });
+    var tick_end = process.hrtime(tick_begin);
+    totalTickTime += (tick_end[0] * 1e3 + tick_end[1] / 1e6);
+    ++currentMeasureTicks;
+    if (currentMeasureTicks > measureTicks) {
+        var tickMs = totalTickTime / measureTicks;
+        console.log(measureTicks + " ticks average: " + tickMs + "ms (" + (tickMs / 50.0 * 100) + "%)");
+        currentMeasureTicks = 0;
+        totalTickTime = 0;
+    }
 }
 
 io.on("connection", function(socket) {
