@@ -5,6 +5,7 @@ TargetPlayerBehaviour = function(entity, maxRadius) {
     this.target = null;
     this.flowField = new Map2D();
     this.nextUpdateTick = gameData.tickId;
+    this.lastTargetPos = null;
 }
 
 TargetPlayerBehaviour.prototype.canRun = function() {
@@ -36,12 +37,15 @@ TargetPlayerBehaviour.prototype.run = function() {
 
     if (dis > this.maxRadius)
         return false;
-    if (gameData.tickId >= this.nextUpdateTick || this.flowField == null) {
-        this.flowField = new Map2D();
-        var expandList = [];
-        aStarFlowField(this.flowField, expandList, gameData.tileWorld, gameData.blockWorld, tilePos, tilePosTarget, 2560);
-        var delay = Math.min(2000, expandList.length * 10);
-        this.nextUpdateTick = gameData.tickId + (delay / gameData.tickDuration >> 0);
+    if (gameData.tickId >= this.nextUpdateTick) {
+        if (!this.lastTargetPos || !this.flowField || v2.distance(this.lastTargetPos, this.target.physicsBody.pos) > v2.distance(this.entity.physicsBody.pos, this.target.physicsBody.pos)) {
+            this.flowField = new Map2D();
+            var expandList = [];
+            aStarFlowField(this.flowField, expandList, gameData.tileWorld, gameData.blockWorld, tilePos, tilePosTarget, 2560);
+            var delay = Math.min(2000, expandList.length * 10);
+            this.nextUpdateTick = gameData.tickId + (delay / gameData.tickDuration >> 0);
+            this.lastTargetPos = v2.clone(this.target.physicsBody.pos);
+        }
     }
 
     var dir = DisField.calcTileDir(this.flowField, tilePos);
