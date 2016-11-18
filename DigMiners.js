@@ -141,9 +141,11 @@ render = function(tickFracTime) {
         } else if (entity.projectile) {
             var x = -camera.pos[0] + canvas.width / 2 + tickFracTime * 32.0 * entity.projectile.posClient[0] + (1 - tickFracTime) * 32.0 * entity.projectile.posClientOld[0];
             var y = camera.pos[1] + canvas.height / 2 - (tickFracTime * 32.0 * entity.projectile.posClient[1] + (1 - tickFracTime) * 32.0 * entity.projectile.posClientOld[1]);
-            entity.projectile.sprite.position.x = x;
-            entity.projectile.sprite.position.y = y;
-            entity.projectile.sprite.rotation = entity.projectile.angle;
+            if (entity.projectile.sprite) {
+                entity.projectile.sprite.position.x = x;
+                entity.projectile.sprite.position.y = y;
+                entity.projectile.sprite.rotation = entity.projectile.angle;
+            }
         }
     });
 
