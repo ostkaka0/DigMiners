@@ -12,9 +12,9 @@ CommandEntityHurtEntity.prototype.execute = function(gameData) {
     if (!otherEntity || !otherEntity.health) return;
     otherEntity.movement.disabledCooldown = 40;
     otherEntity.health.health = (otherEntity.health.health + this.healthChange < 0 ? 0 : otherEntity.health.health + this.healthChange);
-    onHealthChange(otherEntity);
+    gameData.eventHandler.trigger("healthChange", otherEntity);
     if (otherEntity.health.health == 0)
-        onEntityDeath(otherEntity);
+        gameData.eventHandler.trigger("entityDeath", otherEntity);
 }
 
 CommandEntityHurtEntity.prototype.serialize = function(byteArray, index) {

@@ -113,18 +113,33 @@ GameData.prototype.tick = function(dt) {
 
 GameData.prototype.initializeEvents = function() {
     this.eventHandler.on("projectileHit", function(projectileEntity) {
-        console.log(projectileEntity.id + " hit something!");
+        //console.log(projectileEntity.id + " hit something!");
     });
 
     this.eventHandler.on("projectileHitEntity", function(projectileEntity, hitEntity) {
-        console.log(projectileEntity.id + " hit entity " + hitEntity.id);
+        //console.log(projectileEntity.id + " hit entity " + hitEntity.id);
     });
 
     this.eventHandler.on("projectileHitBlock", function(projectileEntity, blockPos) {
-        console.log(projectileEntity.id + " hit block " + blockPos);
+        //console.log(projectileEntity.id + " hit block " + blockPos);
     });
 
     this.eventHandler.on("projectileHitTile", function(projectileEntity, tilePos) {
-        console.log(projectileEntity.id + " hit tile " + tilePos);
+        //console.log(projectileEntity.id + " hit tile " + tilePos);
+    });
+
+    this.eventHandler.on("healthChange", function(entity) {
+        var sprite = entity.drawable.sprites["healthbar"];
+        if (!sprite || !sprite.sprite) return;
+        var defaultHealthbarWidth = 64;
+        sprite.sprite.width = (entity.health.health / entity.health.maxHealth) * defaultHealthbarWidth;
+    });
+
+    this.eventHandler.on("entityDeath", function(entity) {
+        if (!entity.isDead) {
+            entity.isDead = true;
+            gameData.entityWorld.remove(entity);
+            console.log(entity.id + " died!");
+        }
     });
 }
