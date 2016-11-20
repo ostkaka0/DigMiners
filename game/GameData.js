@@ -19,6 +19,8 @@ GameData = function(idList) {
     this.physicsWorld = new PhysicsWorld();
     this.physicsEntities = {};
     this.generator = null;
+    this.eventHandler = new EventHandler();
+    this.initializeEvents();
     if (!isServer)
         this.animationManager = new AnimationManager();
     else
@@ -107,4 +109,22 @@ GameData.prototype.tick = function(dt) {
     entityFunctionProjectileSimulate(this, dt);
     this.entityWorld.update();
     this.tickId++;
+}
+
+GameData.prototype.initializeEvents = function() {
+    this.eventHandler.on("projectileHit", function(projectileEntity) {
+        console.log(projectileEntity.id + " hit something!");
+    });
+
+    this.eventHandler.on("projectileHitEntity", function(projectileEntity, hitEntity) {
+        console.log(projectileEntity.id + " hit entity " + hitEntity.id);
+    });
+
+    this.eventHandler.on("projectileHitBlock", function(projectileEntity, blockPos) {
+        console.log(projectileEntity.id + " hit block " + blockPos);
+    });
+
+    this.eventHandler.on("projectileHitTile", function(projectileEntity, tilePos) {
+        console.log(projectileEntity.id + " hit tile " + tilePos);
+    });
 }
