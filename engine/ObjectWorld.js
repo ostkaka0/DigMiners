@@ -25,13 +25,19 @@ ObjectWorld.prototype.add = function(object, id) {
 }
 
 ObjectWorld.prototype.remove = function(object) {
-    delete this.objects[object.id];
+    this.removeById(object.id);
+}
+
+ObjectWorld.prototype.removeById = function(id) {
+    var object = this.objects[id];
     object.isActive = false;
     this.onRemove.forEach(function(func) {
         func(object);
     }.bind(this));
     object.destroy();
+    delete this.objects[id];
 }
+
 
 ObjectWorld.prototype.update = function() {
     // Update this.objects

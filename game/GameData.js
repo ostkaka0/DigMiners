@@ -113,7 +113,9 @@ GameData.prototype.tick = function(dt) {
 
 GameData.prototype.initializeEvents = function() {
     this.eventHandler.on("projectileHit", function(projectileEntity) {
-        gameData.entityWorld.remove(projectileEntity);
+        setTimeout(function() {
+            gameData.entityWorld.remove(this);
+        }.bind(projectileEntity), projectileEntity.projectile.projectileType.stayTime);
     });
 
     this.eventHandler.on("projectileHitEntity", function(projectileEntity, hitEntity) {
