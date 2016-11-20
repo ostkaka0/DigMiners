@@ -49,9 +49,11 @@ projectileEntitySimulate = function(gameData, entity, dt) {
         for (var j = 0; j < bodies.length; ++j) {
             if (bodyDistances[j] < 0.9) {
                 var hitEntity = gameData.physicsEntities[bodies[j]];
-                gameData.eventHandler.trigger("projectileHitEntity", entity, hitEntity);
-                projectile.hit = true;
-                break;
+                if (!projectile.shooterEntityId || hitEntity.id != projectile.shooterEntityId) {
+                    gameData.eventHandler.trigger("projectileHitEntity", entity, hitEntity);
+                    projectile.hit = true;
+                    break;
+                }
             }
         }
         if (projectile.hit)

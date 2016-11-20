@@ -1,8 +1,9 @@
 
-Projectile = function(pos, angle, projectileType) {
+Projectile = function(pos, angle, projectileType, shooterEntityId) {
     this.pos = pos;
     this.angle = angle;
     this.projectileType = projectileType;
+    this.shooterEntityId = shooterEntityId;
 
     if (pos) {
         this.posOld = v2.clone(pos);
