@@ -113,19 +113,28 @@ GameData.prototype.tick = function(dt) {
 
 GameData.prototype.initializeEvents = function() {
     this.eventHandler.on("projectileHit", function(projectileEntity) {
-        //console.log(projectileEntity.id + " hit something!");
+
     });
 
     this.eventHandler.on("projectileHitEntity", function(projectileEntity, hitEntity) {
-        //console.log(projectileEntity.id + " hit entity " + hitEntity.id);
+        if (isServer) {
+            if (hitEntity.health) {
+                var damage = projectileEntity.projectile.projectileType.damage;
+                sendCommand(new CommandEntityHurtEntity(projectileEntity.id, hitEntity.id, -1 * damage));
+            }
+        }
     });
 
     this.eventHandler.on("projectileHitBlock", function(projectileEntity, blockPos) {
-        //console.log(projectileEntity.id + " hit block " + blockPos);
+        if (isServer) {
+            var strength = getStrength(gameData.blockWorld, blockPos[0], blockPos[1]);
+            strength -= projectileEntity.projectile.projectileType.blockDamage;
+            sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], Math.max(strength, 0)));
+        }
     });
 
     this.eventHandler.on("projectileHitTile", function(projectileEntity, tilePos) {
-        //console.log(projectileEntity.id + " hit tile " + tilePos);
+
     });
 
     this.eventHandler.on("healthChange", function(entity) {
