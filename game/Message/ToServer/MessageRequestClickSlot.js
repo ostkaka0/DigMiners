@@ -6,7 +6,7 @@ MessageRequestClickSlot = function(slotId, clickType) {
 
 MessageRequestClickSlot.prototype.execute = function(gameData, player) {
     var entity = gameData.entityWorld.objects[player.entityId];
-    if (!entity) return;
+    if (!entity || !entity.inventory) return;
     var item = entity.inventory.items[this.slotId];
     if (!item) return;
     if (this.clickType == InventoryClickTypes.LEFT_CLICK) {

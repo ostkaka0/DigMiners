@@ -113,14 +113,14 @@ GameData.prototype.tick = function(dt) {
 
 GameData.prototype.initializeEvents = function() {
     this.eventHandler.on("projectileHit", function(projectileEntity) {
-
+        gameData.entityWorld.remove(projectileEntity);
     });
 
     this.eventHandler.on("projectileHitEntity", function(projectileEntity, hitEntity) {
         if (isServer) {
-            if (hitEntity.health) {
+            if (hitEntity && hitEntity.health) {
                 var damage = projectileEntity.projectile.projectileType.damage;
-                sendCommand(new CommandEntityHurtEntity(projectileEntity.id, hitEntity.id, -1 * damage));
+                sendCommand(new CommandEntityHurtEntity(hitEntity.id, -1 * damage));
             }
         }
     });

@@ -1,13 +1,10 @@
 
-CommandEntityHurtEntity = function(entityId, otherEntityId, healthChange) {
-    this.entityId = entityId;
+CommandEntityHurtEntity = function(otherEntityId, healthChange) {
     this.otherEntityId = otherEntityId;
     this.healthChange = healthChange;
 }
 
 CommandEntityHurtEntity.prototype.execute = function(gameData) {
-    var entity = gameData.entityWorld.objects[this.entityId];
-    if (!entity) return;
     var otherEntity = gameData.entityWorld.objects[this.otherEntityId];
     if (!otherEntity || !otherEntity.health) return;
     otherEntity.movement.disabledCooldown = 40;
@@ -18,17 +15,15 @@ CommandEntityHurtEntity.prototype.execute = function(gameData) {
 }
 
 CommandEntityHurtEntity.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.entityId);
     serializeInt32(byteArray, index, this.otherEntityId);
     serializeInt32(byteArray, index, this.healthChange);
 }
 
 CommandEntityHurtEntity.prototype.deserialize = function(byteArray, index) {
-    this.entityId = deserializeInt32(byteArray, index);
     this.otherEntityId = deserializeInt32(byteArray, index);
     this.healthChange = deserializeInt32(byteArray, index);
 }
 
 CommandEntityHurtEntity.prototype.getSerializationSize = function() {
-    return 12;
+    return 8;
 }

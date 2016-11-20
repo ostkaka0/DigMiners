@@ -58,12 +58,8 @@ projectileEntitySimulate = function(gameData, entity, dt) {
             break;
     }
 
-    if (projectile.hit) {
-        setTimeout(function() {
-            gameData.entityWorld.remove(entity);
-        }, 1000);
+    if (projectile.hit)
         gameData.eventHandler.trigger("projectileHit", entity);
-    }
 
     projectile.pos = pos;
     v2.copy(pos, projectile.posOld);
