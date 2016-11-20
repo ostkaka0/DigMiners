@@ -54,7 +54,7 @@ ItemFunctions.Sword = function(entity, item) {
 
         console.log("Entity hit!");
         hitEntities.push(targetEntity.id);
-        gameData.commands.push(new CommandEntityHurtEntity(entity.id, targetEntity.id, -10));
+        gameData.commands.push(new CommandEntityHurtEntity(targetEntity.id, -10));
     });
 
     // TODO: CommandEntityHit
