@@ -30,13 +30,16 @@ projectileEntitySimulate = function(gameData, entity, dt) {
     for (var i = 0; i < numSteps; i++) {
         v2.add(deltaPos, pos, pos);
 
-        var blockId = getForeground(gameData.blockWorld, pos[0], pos[1]);
+        var blockTilePos = [Math.floor(pos[0]), Math.floor(pos[1])];
+        var blockId = getForeground(gameData.blockWorld, blockTilePos[0], blockTilePos[1]);
         if (blockId != 0) {
+            gameData.eventHandler.trigger("projectileHitBlock", entity, blockTilePos);
             projectile.hit = true;
             break;
         }
-        var density = getDensity(gameData.tileWorld, pos[0], pos[1]);
+        var density = getDensity(gameData.tileWorld, blockTilePos[0], blockTilePos[1]);
         if (density > 128) {
+            gameData.eventHandler.trigger("projectileHitTile", entity, blockTilePos);
             projectile.hit = true;
             break;
         }
@@ -45,7 +48,8 @@ projectileEntitySimulate = function(gameData, entity, dt) {
         gameData.physicsWorld.getBodiesInRadiusSorted(bodies, bodyDistances, pos, 2.0);
         for (var j = 0; j < bodies.length; ++j) {
             if (bodyDistances[j] < 0.9) {
-                var body = bodies[j];
+                var hitEntity = gameData.physicsEntities[bodies[j]];
+                gameData.eventHandler.trigger("projectileHitEntity", entity, hitEntity);
                 projectile.hit = true;
                 break;
             }
@@ -58,6 +62,7 @@ projectileEntitySimulate = function(gameData, entity, dt) {
         setTimeout(function() {
             gameData.entityWorld.remove(entity);
         }, 1000);
+        gameData.eventHandler.trigger("projectileHit", entity);
     }
 
     projectile.pos = pos;
