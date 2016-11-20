@@ -190,7 +190,7 @@ PhysicsWorld.prototype.getBodiesInRadiusSorted = function(bodies, bodyDistances,
                 var dis = fix.sqrt(lengthSquared);
                 var index = binarySearch(bodyDistances, dis);
                 bodies.splice(index, 0, id);
-                bodyDistances(index, 0, dis);
+                bodyDistances.splice(index, 0, dis);
             }
         }
     }
