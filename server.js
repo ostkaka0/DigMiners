@@ -122,7 +122,7 @@ update = function() {
     tickNum++;
 }
 
-var measureTicks = 5;
+var measureTicks = 10;
 var currentMeasureTicks = 0;
 var totalTickTime = 0;
 tick = function(dt) {
@@ -145,7 +145,7 @@ tick = function(dt) {
     ++currentMeasureTicks;
     if (currentMeasureTicks > measureTicks) {
         var tickMs = totalTickTime / measureTicks;
-        console.log(measureTicks + " ticks average: " + tickMs + "ms (" + (tickMs / 50.0 * 100) + "%)");
+        console.log(measureTicks + " ticks average: " + tickMs.toFixed(1) + "ms (" + ((tickMs / 50.0 * 100).toFixed(1)) + "%)");
         currentMeasureTicks = 0;
         totalTickTime = 0;
     }
