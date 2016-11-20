@@ -1,6 +1,7 @@
 
 Projectile = function(pos, angle, projectileType, shooterEntityId) {
     this.pos = pos;
+    this.startPos = v2.clone(pos);
     this.angle = angle;
     this.projectileType = projectileType;
     this.shooterEntityId = shooterEntityId;
@@ -27,6 +28,7 @@ Projectile.prototype.serialize = function(byteArray, index) {
 
 Projectile.prototype.deserialize = function(byteArray, index) {
     this.pos = deserializeV2(byteArray, index);
+    this.startPos = v2.clone(this.pos);
     this.posOld = v2.clone(this.pos);
     this.angle = deserializeFix(byteArray, index);
     this.projectileType = gameData.projectileRegister[deserializeInt8(byteArray, index)];

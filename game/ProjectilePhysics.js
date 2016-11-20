@@ -30,6 +30,11 @@ projectileEntitySimulate = function(gameData, entity, dt) {
     for (var i = 0; i < numSteps; i++) {
         v2.add(deltaPos, pos, pos);
 
+        if (v2.distanceSquared(projectile.startPos, projectile.pos) > projectile.projectileType.maxDistance) {
+            projectile.hit = true;
+            break;
+        }
+
         var blockTilePos = [Math.floor(pos[0]), Math.floor(pos[1])];
         var blockId = getForeground(gameData.blockWorld, blockTilePos[0], blockTilePos[1]);
         if (blockId != 0) {
@@ -45,7 +50,7 @@ projectileEntitySimulate = function(gameData, entity, dt) {
         }
         var bodies = [];
         var bodyDistances = [];
-        gameData.physicsWorld.getBodiesInRadiusSorted(bodies, bodyDistances, pos, 2.0);
+        gameData.physicsWorld.getBodiesInRadiusSorted(bodies, bodyDistances, pos, projectile.projectileType.radius);
         for (var j = 0; j < bodies.length; ++j) {
             if (bodyDistances[j] < 0.9) {
                 var hitEntity = gameData.physicsEntities[bodies[j]];

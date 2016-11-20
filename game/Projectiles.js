@@ -2,6 +2,7 @@
 Projectiles = {};
 
 Projectiles.Egg = {
+    radius: 1.0,
     maxDistance: 10, // blocks
     speed: 1.25, // blocks per second
     damage: 10.0, // damage per hit
