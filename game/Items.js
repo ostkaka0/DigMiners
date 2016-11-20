@@ -20,10 +20,7 @@ ItemFunctions.Shovel = function(entity, item) {
                 strength -= 16;
                 var x = chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0];
                 var y = chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1];
-                if (strength <= 0) {
-                    sendCommand(new CommandEntityBuild(entity.id, x, y, 0, BlockTypes.FOREGROUND));
-                } else
-                    sendCommand(new CommandBlockStrength(x, y, strength));
+                sendCommand(new CommandBlockStrength(x, y, Math.max(strength, 0)));
                 return;
             }
         }

@@ -122,7 +122,7 @@ update = function() {
     tickNum++;
 }
 
-var measureTicks = 10;
+var measureTicks = 600;
 var currentMeasureTicks = 0;
 var totalTickTime = 0;
 tick = function(dt) {
