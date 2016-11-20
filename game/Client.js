@@ -13,7 +13,9 @@ Client = function(gameData, ip) {
 
     var port = gameData.port;
     console.log("Connecting to " + ip + ":" + port + "...");
-    socket = io(ip + ":" + port);
+    socket = io(ip + ":" + port, {
+        reconnection: false
+    });
     sentInit2 = false;
     playersReceived = 0;
 
