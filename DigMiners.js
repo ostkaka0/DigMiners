@@ -239,7 +239,7 @@ gameData.entityWorld.onAdd.push(function(entity) {
     }
 
     if (!isServer && entity.health && entity.drawable)
-        onHealthChange(entity);
+        gameData.eventHandler.trigger("healthChange", entity);
 
     if (entity.drawable && entity.bodyparts) {
         entity.drawable.initializeBodyparts(entity.bodyparts.bodyparts);

@@ -23,18 +23,3 @@ Health.prototype.getSerializationSize = function() {
 Health.prototype.destroy = function(entity) {
 
 }
-
-onHealthChange = function(entity) {
-    var sprite = entity.drawable.sprites["healthbar"];
-    if (!sprite || !sprite.sprite) return;
-    var defaultHealthbarWidth = 64;
-    sprite.sprite.width = (entity.health.health / entity.health.maxHealth) * defaultHealthbarWidth;
-}
-
-onEntityDeath = function(entity) {
-    if (!entity.isDead) {
-        entity.isDead = true;
-        gameData.entityWorld.remove(entity);
-        console.log(entity.id + " died!");
-    }
-}
