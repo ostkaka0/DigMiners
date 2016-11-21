@@ -2,7 +2,7 @@
 CommandBlockStrength = function(x, y, strength) {
     this.x = x;
     this.y = y;
-    this.strength = strength;
+    this.strength = Math.max(strength, 0);
 }
 
 CommandBlockStrength.prototype.execute = function(gameData) {

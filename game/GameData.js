@@ -114,6 +114,9 @@ GameData.prototype.tick = function(dt) {
 GameData.prototype.initializeEvents = function() {
     this.eventHandler.on("projectileHit", function(projectileEntity) {
         setTimeout(function() {
+            var type = this.projectile.projectileType;
+            if (type.isExplosive)
+                createExplosion(this.projectile.pos, type.explosiveRadius, type.explosiveEntityDamage, type.explosionBlockDamage, type.explosionTileDamage);
             gameData.entityWorld.remove(this);
         }.bind(projectileEntity), projectileEntity.projectile.projectileType.stayTime);
     });
