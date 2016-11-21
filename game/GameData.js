@@ -123,7 +123,7 @@ GameData.prototype.initializeEvents = function() {
 
     this.eventHandler.on("projectileHitEntity", function(projectileEntity, hitEntity) {
         if (isServer) {
-            if (hitEntity && hitEntity.health) {
+            if (hitEntity && hitEntity.health && projectileEntity.projectile.projectileType.damage > 0) {
                 var damage = projectileEntity.projectile.projectileType.damage;
                 sendCommand(new CommandHurtEntity(hitEntity.id, -1 * damage));
             }
@@ -132,9 +132,11 @@ GameData.prototype.initializeEvents = function() {
 
     this.eventHandler.on("projectileHitBlock", function(projectileEntity, blockPos) {
         if (isServer) {
-            var strength = getStrength(gameData.blockWorld, blockPos[0], blockPos[1]);
-            strength -= projectileEntity.projectile.projectileType.blockDamage;
-            sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], Math.max(strength, 0)));
+            if (projectileEntity.projectile.projectileType.blockDamage > 0) {
+                var strength = getStrength(gameData.blockWorld, blockPos[0], blockPos[1]);
+                strength -= projectileEntity.projectile.projectileType.blockDamage;
+                sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], Math.max(strength, 0)));
+            }
         }
     });
 

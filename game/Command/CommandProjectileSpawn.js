@@ -25,7 +25,7 @@ CommandProjectileSpawn.prototype.serialize = function(byteArray, index) {
     serializeInt32(byteArray, index, this.entityId);
     serializeV2(byteArray, index, this.pos);
     serializeFix(byteArray, index, this.angle);
-    serializeInt8(byteArray, index, this.projectileType);
+    serializeInt8(byteArray, index, this.projectileType.id);
     serializeInt32(byteArray, index, this.shooterEntityId);
 }
 

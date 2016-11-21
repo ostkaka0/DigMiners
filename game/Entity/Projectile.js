@@ -23,7 +23,7 @@ Projectile.prototype.name = projectile.name; function projectile() { };
 Projectile.prototype.serialize = function(byteArray, index) {
     serializeV2(byteArray, index, this.pos);
     serializeFix(byteArray, index, this.angle);
-    serializeInt8(byteArray, index, this.projectileType);
+    serializeInt8(byteArray, index, this.projectileType.id);
 }
 
 Projectile.prototype.deserialize = function(byteArray, index) {
