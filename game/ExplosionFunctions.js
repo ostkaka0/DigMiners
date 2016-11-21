@@ -22,7 +22,7 @@ createExplosion = function(startPos, radius, entityDamage, blockDamage, tileDama
                 var dist = v2.distanceSquared(startPos, entity.physicsBody.getPos());
                 if (dist <= radius) {
                     var damage = Math.floor((1 - dist / radius) * entityDamage);
-                    sendCommand(new CommandEntityHurt(entity.id, -damage));
+                    sendCommand(new CommandHurtEntity(entity.id, -damage));
                 }
             }
         });
