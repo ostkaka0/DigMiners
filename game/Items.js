@@ -3,34 +3,30 @@ ItemFunctions = {};
 ItemTextures = {};
 
 ItemFunctions.Shovel = function(entity, item) {
-    if (isServer) {
-        var angle = entity.physicsBody.angle;
-        var dir = [Math.cos(-angle), Math.sin(-angle)];
-        var toolUsePos = [entity.physicsBody.pos[0] + 1.0 * dir[0], entity.physicsBody.pos[1] + 1.0 * dir[1]];
+    var angle = entity.physicsBody.angle;
+    var dir = [Math.cos(-angle), Math.sin(-angle)];
+    var toolUsePos = [entity.physicsBody.pos[0] + 1.0 * dir[0], entity.physicsBody.pos[1] + 1.0 * dir[1]];
 
-        // Break block
-        var chunkPos = [];
-        var localPos = [];
-        v2WorldToBlockChunk(toolUsePos, chunkPos, localPos);
-        var blockChunk = gameData.blockWorld.get(chunkPos[0], chunkPos[1]);
-        if (blockChunk) {
-            var blockId = blockChunk.getForeground(localPos[0], localPos[1]);
-            if (blockId) {
-                var strength = blockChunk.getStrength(localPos[0], localPos[1]);
-                strength -= 16;
-                var x = chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0];
-                var y = chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1];
-                sendCommand(new CommandBlockStrength(x, y, Math.max(strength, 0)));
-                return;
-            }
+    // Break block
+    var chunkPos = [];
+    var localPos = [];
+    v2WorldToBlockChunk(toolUsePos, chunkPos, localPos);
+    var blockChunk = gameData.blockWorld.get(chunkPos[0], chunkPos[1]);
+    if (blockChunk) {
+        var blockId = blockChunk.getForeground(localPos[0], localPos[1]);
+        if (blockId) {
+            var strength = blockChunk.getStrength(localPos[0], localPos[1]);
+            strength -= 16;
+            var x = chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0];
+            var y = chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1];
+            sendCommand(new CommandBlockStrength(x, y, Math.max(strength, 0)));
+            return;
         }
-
-        // Dig terrain
-        var pos = entity.physicsBody.getPos();
-        gameData.commands.push(new CommandEntityDig(entity.id, pos[0], pos[1], dir, 1.5, Entity.getDigSpeed(entity), Entity.getMaxDigHardness(entity)));
-
-        gameData.commands.push(new CommandProjectileSpawn(idList.next(), v2.clone(toolUsePos), entity.physicsBody.angle, Projectiles.Egg, entity.id));
     }
+
+    // Dig terrain
+    var pos = entity.physicsBody.getPos();
+    gameData.commands.push(new CommandEntityDig(entity.id, pos[0], pos[1], dir, 1.5, Entity.getDigSpeed(entity), Entity.getMaxDigHardness(entity)));
 }
 
 ItemFunctions.Sword = function(entity, item) {
@@ -61,6 +57,20 @@ ItemFunctions.Sword = function(entity, item) {
     //if (isServer) {
     //    gameData.commands.push(new CommandEntityHit(entity, hitEntities));
     //}
+}
+
+ItemFunctions.RangedWeapon = function(entity, item) {
+    var angle = entity.physicsBody.angle;
+    var rotateAround = function(ax, ay, x, y, angle) {
+        var cos = Math.cos(angle),
+            sin = Math.sin(angle),
+            nx = (cos * (x - ax)) + (sin * (y - ay)) + ax,
+            ny = (cos * (y - ay)) - (sin * (x - ax)) + ay;
+        return [nx, ny];
+    }
+    var dir = rotateAround(0, 0, 0, -0.6, angle);
+    var toolUsePos = [entity.physicsBody.pos[0] + 1.0 * dir[0], entity.physicsBody.pos[1] + 1.0 * dir[1]];
+    gameData.commands.push(new CommandProjectileSpawn(idList.next(), v2.clone(toolUsePos), entity.physicsBody.angle, item.projectileType, entity.id));
 }
 
 ItemTextures.ShovelAtlas = {
@@ -418,5 +428,36 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 10,
         type: "resource"
+    }
+
+    // Ranged weapons
+    Items.EggShooter = {
+        name: "Egg Shooter",
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 4,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.RangedWeapon,
+        useCooldown: 0.15,
+        useDuration: 0,
+        type: "tool",
+        typeOfType: "rangedWeapon",
+        projectileType: Projectiles.Egg
+    }
+
+    Items.BigEggShooter = {
+        name: "Big Egg Shooter",
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 5,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.RangedWeapon,
+        useCooldown: 0.45,
+        useDuration: 0,
+        type: "tool",
+        typeOfType: "rangedWeapon",
+        projectileType: Projectiles.BigEgg
     }
 }

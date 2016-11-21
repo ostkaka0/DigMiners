@@ -103,6 +103,10 @@ gameData.entityWorld.onAdd.push(function(entity) {
 
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.StoneFloor.id, 10));
 
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.EggShooter.id, 1));
+
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.BigEggShooter.id, 1));
+
         // (TEMPORARY) spawn monsters on player join
         for (var i = 0; i < 0; ++i) {
             var monsterEntityId = idList.next();
