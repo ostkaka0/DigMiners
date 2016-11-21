@@ -27,7 +27,7 @@ GameData = function(idList) {
         this.animationManager = {};
     this.commands = [];
     this.pendingCommands = {};
-    this.commandTypes = typeRegisterAddByArray([], [CommandEntityMove, CommandDig, CommandEntityDig, CommandEntityEquipItem, CommandEntityBuild, CommandEntityHurtEntity, CommandEntitySpawn, CommandCollisions, CommandEntityDestroy, CommandPlayerJoin, CommandPlayerLeave, CommandKeyStatusUpdate, CommandEntityInventory, CommandPlayerOreInventory, CommandEntityRotate, CommandBlockStrength, CommandProjectileSpawn]);
+    this.commandTypes = typeRegisterAddByArray([], [CommandEntityMove, CommandDig, CommandEntityDig, CommandEntityEquipItem, CommandEntityBuild, CommandEntityHurt, CommandEntitySpawn, CommandCollisions, CommandEntityDestroy, CommandPlayerJoin, CommandPlayerLeave, CommandKeyStatusUpdate, CommandEntityInventory, CommandPlayerOreInventory, CommandEntityRotate, CommandBlockStrength, CommandProjectileSpawn]);
     this.messagesToClient = [MessageInit, MessageCommands, MessageChunk];
     this.messagesToServer = [MessageRequestKeyStatusUpdate, MessageRequestItemPickup, MessageRequestClickSlot, MessageRequestCraft, MessageRequestPlaceBlock, MessageRequestClickEntity, MessageRequestRotate];
     this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
@@ -125,7 +125,7 @@ GameData.prototype.initializeEvents = function() {
         if (isServer) {
             if (hitEntity && hitEntity.health) {
                 var damage = projectileEntity.projectile.projectileType.damage;
-                sendCommand(new CommandEntityHurtEntity(hitEntity.id, -1 * damage));
+                sendCommand(new CommandEntityHurt(hitEntity.id, -1 * damage));
             }
         }
     });

@@ -66,8 +66,8 @@ Generator.prototype.generateDungeons = function(blockWorld, chunk, chunkX, chunk
         blockWorld.set(chunkX, chunkY, blockChunk);
     }
 
-    var width = Math.floor(Math.random() * 55 + 5);
-    var height = Math.floor(Math.random() * 50 + 5);
+    var width = Math.floor(Math.random() * 15 + 5);
+    var height = Math.floor(Math.random() * 10 + 5);
     var openingX = Math.floor(Math.random() * width);
     var openingY = (Math.random() < 0.5 ? 0 : height - 1);
     var tileId = 1;
@@ -82,7 +82,7 @@ Generator.prototype.generateDungeons = function(blockWorld, chunk, chunkX, chunk
                 blockChunk.setForeground(xx, yy, 0);
 
             if (yy != 0 && yy != height - 1 && xx != 0 && xx != width - 1) {
-                blockChunk.setForeground(xx, yy, tileId);
+                blockChunk.setBackground(xx, yy, backgroundTileId);
                 chunk.setDensity(xx, yy, 0);
             }
         }
