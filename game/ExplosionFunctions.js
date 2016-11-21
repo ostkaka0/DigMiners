@@ -10,14 +10,23 @@ createExplosion = function(startPos, radius, entityDamage, blockDamage, tileDama
                 var dist = v2.distanceSquared(startPos, pos);
                 if (dist <= radius) {
                     v2.floor(pos, pos);
-
-                    var damage = Math.floor(radius / dist * 256 * blockDamage);
+                    var damage = Math.floor((1 - dist / radius) * blockDamage);
                     var strength = getStrength(gameData.blockWorld, pos[0], pos[1]);
                     sendCommand(new CommandBlockStrength(pos[0], pos[1], strength - damage));
                 }
             }
         }
-    } else {
 
+        gameData.entityWorld.objectArray.forEach(function(entity) {
+            if (entity.physicsBody && entity.health) {
+                var dist = v2.distanceSquared(startPos, entity.physicsBody.getPos());
+                if (dist <= radius) {
+                    var damage = Math.floor((1 - dist / radius) * entityDamage);
+                    sendCommand(new CommandEntityHurt(entity.id, -damage));
+                }
+            }
+        });
+    } else {
+        // show explosion particle effect and sound
     }
 }
