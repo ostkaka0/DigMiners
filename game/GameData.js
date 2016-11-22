@@ -8,14 +8,17 @@ GameData = function(idList) {
     this.tickId = 0;
     this.fakeLag = 0;
     this.fakeJitter = 0;
-    this.playerWorld = new ObjectWorld();
-    this.entityWorld = new ObjectWorld();
+    this.playerWorld = new ObjectWorld(true);
+    this.entityWorld = new ObjectWorld(true);
+    this.particleEmitterWorld = new ObjectWorld();
+    this.particleEmitterIdList = new IdList();
     this.tileWorld = new Map2D();
     this.blockWorld = new Map2D();
     this.tileRegister = objectRegisterAddByObject([], Tiles);
     this.itemRegister = objectRegisterAddByObject([], Items);
     this.blockRegister = objectRegisterAddByObject([], Blocks);
     this.projectileRegister = objectRegisterAddByObject([], Projectiles);
+    this.particleRegister = objectRegisterAddByObject([], Particles);
     this.physicsWorld = new PhysicsWorld();
     this.physicsEntities = {};
     this.generator = null;
@@ -108,6 +111,7 @@ GameData.prototype.tick = function(dt) {
     entityFunctionPhysicsBodySimulate(this, dt);
     entityFunctionProjectileSimulate(this, dt);
     this.entityWorld.update();
+    this.particleEmitterWorld.update();
     this.tickId++;
 }
 
@@ -119,6 +123,9 @@ GameData.prototype.initializeEvents = function() {
                 createExplosion(this.projectile.pos, type.explosiveRadius, type.explosiveEntityDamage, type.explosionBlockDamage, type.explosionTileDamage);
             gameData.entityWorld.remove(this);
         }.bind(projectileEntity), projectileEntity.projectile.projectileType.stayTime);
+        if (!isServer) {
+            createDespawningParticles(Particles.Gas, projectileEntity.projectile.pos, 200);
+        }
     });
 
     this.eventHandler.on("projectileHitEntity", function(projectileEntity, hitEntity) {

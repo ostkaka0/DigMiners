@@ -8,6 +8,8 @@ for (var i = 0; i < zindices.length; ++i) {
     zindices[i] = new PIXI.Container();
     stage.addChild(zindices[i]);
 }
+var particleContainer = new PIXI.Container();
+stage.addChild(particleContainer);
 
 renderer.view.style.position = 'absolute';
 renderer.view.style.left = '0%';
@@ -99,6 +101,10 @@ tick = function(dt) {
             projectile.posClient = v2.clone(projectile.pos);
         }
     });
+
+    gameData.particleEmitterWorld.objectArray.forEach(function(emitter) {
+        emitter.update(dt);
+    });
 }
 
 render = function(tickFracTime) {
@@ -129,14 +135,11 @@ render = function(tickFracTime) {
 
             var a = (entity.physicsBody.angle - entity.physicsBody.angleOld) % (Math.PI * 2);
             var rotation = entity.physicsBody.angleOld + (2 * a % (Math.PI * 2) - a) * tickFracTime;
-            //console.log("angle " + entity.physicsBody.angle + " old " + entity.physicsBody.angleOld);
             entity.drawable.positionAll(x, y, rotation, entity.bodyparts);
 
-            //console.log(entitySpeed);
             if (entity.bodyparts.bodyparts.feet) {
                 var speed = v2.distanceSquared(entity.physicsBody.posClient, entity.physicsBody.posClientOld);
                 entity.bodyparts.bodyparts["feet"].animate(gameData, "feet", speed * 450.0, false);
-                //console.log("entity " + entity.id + " speed " + entitySpeed);
             }
         } else if (entity.projectile) {
             var x = -camera.pos[0] + canvas.width / 2 + tickFracTime * 32.0 * entity.projectile.posClient[0] + (1 - tickFracTime) * 32.0 * entity.projectile.posClientOld[0];
@@ -148,6 +151,9 @@ render = function(tickFracTime) {
             }
         }
     });
+
+    particleContainer.position.x = -camera.pos[0] + canvas.width / 2;
+    particleContainer.position.y = camera.pos[1] + canvas.height / 2;
 
     if (global.player && global.playerEntity && global.playerEntity.isBuilding) {
         var worldCursorPos = [Math.floor((this.mouseX + camera.pos[0] - camera.width / 2) / 32), Math.floor((canvas.height - this.mouseY + camera.pos[1] - camera.height / 2) / 32)];

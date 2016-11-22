@@ -21,6 +21,9 @@ TextureManager = function(gameData) {
     this.loader.queueTexture("egg", "egg");
     this.loader.queueTexture("bigEgg", "bigEgg");
 
+    this.loader.queueTexture("particles/smokeParticle", "particles/smokeParticle");
+    this.loader.queueTexture("particles/particle", "particles/particle");
+
     console.log("Loading textures...");
     this.loader.loadTextures();
 
