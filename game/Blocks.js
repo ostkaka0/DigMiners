@@ -19,8 +19,11 @@ BulletFunctions.bunker = function(blockPos, blockType, entity) {
         damageFactor = blockType.bulletBunkerNearFactor;
     if (damageFactor < entity.projectile.damageFactor) {
         entity.projectile.damageFactor = damageFactor;
+        if (entity.projectile.sprite) {
+            entity.projectile.sprite.scale.x = damageFactor;
+            entity.projectile.sprite.scale.y = damageFactor;
+        }
         if (dis > blockType.bulletBunkerDistance) {
-            entity.projectile.angle += 0.31415;
             // TODO: Particles!
         }
     }
