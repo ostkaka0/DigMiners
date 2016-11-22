@@ -24,7 +24,8 @@ BulletFunctions.bunker = function(blockPos, blockType, entity) {
             entity.projectile.sprite.scale.y = damageFactor;
         }
         if (dis > blockType.bulletBunkerDistance) {
-            // TODO: Particles!
+            if (!isServer)
+                createDespawningParticles(entity.projectile.projectileType.hitParticle, [blockPos[0] + 0.5, blockPos[1] + 0.5], 200);
         }
     }
 }
@@ -60,7 +61,7 @@ Blocks.StoneFloor = {
 Blocks.BunkerWindow = {
     name: "Bunker Window",
     isSolid: true,
-    harness: 1.0,
+    hardness: 1.0,
     type: BlockTypes.FOREGROUND,
     isBulletSolid: false,
     bulletFunction: BulletFunctions.bunker,

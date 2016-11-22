@@ -27,8 +27,8 @@ Particles.Gas = {
         "max": 0
     },
     "lifetime": {
-        "min": 2,
-        "max": 1.8
+        "min": 0.5,
+        "max": 0.9
     },
     "blendMode": "screen",
     "frequency": 0.01,
@@ -43,6 +43,6 @@ Particles.Gas = {
     "spawnCircle": {
         "x": 0,
         "y": 0,
-        "r": 50
+        "r": 14
     }
 }
