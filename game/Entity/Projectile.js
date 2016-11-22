@@ -5,6 +5,7 @@ Projectile = function(pos, angle, projectileType, shooterEntityId) {
     this.angle = angle;
     this.projectileType = projectileType;
     this.shooterEntityId = shooterEntityId;
+    this.damageFactor = 1.0;
 
     if (pos) {
         this.posOld = v2.clone(pos);

@@ -102,6 +102,8 @@ gameData.entityWorld.onAdd.push(function(entity) {
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.StoneWall.id, 10));
 
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.StoneFloor.id, 10));
+        
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.BunkerWindow.id, 10));
 
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.EggShooter.id, 1));
 
