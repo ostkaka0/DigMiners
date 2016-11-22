@@ -69,8 +69,11 @@ ItemFunctions.RangedWeapon = function(entity, item) {
         return [nx, ny];
     }
     var dir = rotateAround(0, 0, 0, -0.6, angle);
+    var scatter = item.projectileScatter;
+    if (scatter > 0)
+        angle += Math.random() * 2 * scatter - scatter;
     var toolUsePos = [entity.physicsBody.pos[0] + 1.0 * dir[0], entity.physicsBody.pos[1] + 1.0 * dir[1]];
-    gameData.commands.push(new CommandProjectileSpawn(idList.next(), v2.clone(toolUsePos), entity.physicsBody.angle, item.projectileType, entity.id));
+    gameData.commands.push(new CommandProjectileSpawn(idList.next(), v2.clone(toolUsePos), angle, item.projectileType, entity.id));
 }
 
 ItemTextures.ShovelAtlas = {
@@ -443,7 +446,8 @@ initItems = function(gameData) {
         useDuration: 0,
         type: "tool",
         typeOfType: "rangedWeapon",
-        projectileType: Projectiles.Egg
+        projectileType: Projectiles.Egg,
+        projectileScatter: 0.05
     }
 
     Items.BigEggShooter = {
@@ -458,6 +462,7 @@ initItems = function(gameData) {
         useDuration: 0,
         type: "tool",
         typeOfType: "rangedWeapon",
-        projectileType: Projectiles.BigEgg
+        projectileType: Projectiles.BigEgg,
+        projectileScatter: 0.01
     }
 }
