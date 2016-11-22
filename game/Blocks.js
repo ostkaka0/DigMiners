@@ -6,6 +6,26 @@ BlockTypes = {
 
 Blocks = {};
 
+BulletFunctions = {};
+BulletFunctions.bunker = function(blockPos, blockType, entity) {
+    var entityPos = entity.projectile.startPos;
+    var deltaPos = [blockPos[0] + 0.5 - entityPos[0], blockPos[1] + 0.5 - entityPos[1]];
+    deltaPos = [Math.max(0, Math.abs(deltaPos[0]) - 0.5), Math.max(0, Math.abs(deltaPos[1]) - 0.5)];
+    var dis = v2.lengthSquared(deltaPos);
+    var damageFactor;
+    if (dis > blockType.bulletBunkerDistance)
+        damageFactor = blockType.bulletBunkerFarFactor;
+    else
+        damageFactor = blockType.bulletBunkerNearFactor;
+    if (damageFactor < entity.projectile.damageFactor) {
+        entity.projectile.damageFactor = damageFactor;
+        if (dis > blockType.bulletBunkerDistance) {
+            entity.projectile.angle += 0.31415;
+            // TODO: Particles!
+        }
+    }
+}
+
 Blocks.Null = {
     name: "Air",
     isSolid: false,
@@ -33,3 +53,15 @@ Blocks.StoneFloor = {
     hardness: 1.0,
     type: BlockTypes.BACKGROUND
 };
+
+Blocks.BunkerWindow = {
+    name: "Bunker Window",
+    isSolid: true,
+    harness: 1.0,
+    type: BlockTypes.FOREGROUND,
+    isBulletSolid: false,
+    bulletFunction: BulletFunctions.bunker,
+    bulletBunkerDistance: 2.0,
+    bulletBunkerNearFactor: 0.8,
+    bulletBunkerFarFactor: 0.4
+}

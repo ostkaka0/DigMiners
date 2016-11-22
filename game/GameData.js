@@ -124,7 +124,7 @@ GameData.prototype.initializeEvents = function() {
     this.eventHandler.on("projectileHitEntity", function(projectileEntity, hitEntity) {
         if (isServer) {
             if (hitEntity && hitEntity.health && projectileEntity.projectile.projectileType.damage > 0) {
-                var damage = projectileEntity.projectile.projectileType.damage;
+                var damage = projectileEntity.projectile.projectileType.damage * projectileEntity.projectile.damageFactor;
                 sendCommand(new CommandHurtEntity(hitEntity.id, -1 * damage));
             }
         }
