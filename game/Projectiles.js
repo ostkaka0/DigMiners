@@ -5,16 +5,16 @@ Projectiles.BigEgg = {
     radius: 1.0,
     maxDistance: 50, // blocks
     speed: 1.0, // blocks per second
-    damage: 60.0, // damage per hit
+    damage: 20.0, // damage per hit
     blockDamage: 5.0,
     stayTime: 0, // milliseconds projectile will stay after hit
     textureName: "bigEgg",
     isExplosive: true,
-    explosiveRadius: 5.0,
-    explosiveEntityDamage: 60, // damage in HP units at center of explosion
-    explosionBlockDamage: 400, // damage in block HP units at center of explosion
+    explosiveRadius: 1.0,
+    explosiveEntityDamage: 20, // damage in HP units at center of explosion
+    explosionBlockDamage: 50, // damage in block HP units at center of explosion
     explosionTileDamage: 2, // number of times to run CommandDig with above radius
-    hitParticle: Particles.Gas
+    hitParticle: Particles.BigEgg
 }
 
 Projectiles.Egg = {
@@ -26,5 +26,5 @@ Projectiles.Egg = {
     stayTime: 200,
     textureName: "egg",
     isExplosive: false,
-    hitParticle: Particles.Gas
+    hitParticle: Particles.Egg
 }
