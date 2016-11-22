@@ -11,10 +11,10 @@ createExplosion = function(startPos, radius, entityDamage, blockDamage, tileDama
             for (var x = -radius; x < radius; ++x) {
                 for (var y = -radius; y < radius; ++y) {
                     var pos = v2.create(startPos[0] + x, startPos[1] + y);
-                    var dist = v2.distanceSquared(startPos, pos);
-                    if (dist <= radius) {
+                    var dis = v2.distanceSquared(startPos, pos);
+                    if (dis <= radius) {
                         v2.floor(pos, pos);
-                        var damage = Math.floor((1 - dist / radius) * blockDamage);
+                        var damage = Math.floor((1 - dis / radius) * blockDamage);
                         var strength = getStrength(gameData.blockWorld, pos[0], pos[1]);
                         sendCommand(new CommandBlockStrength(pos[0], pos[1], strength - damage));
                     }
@@ -26,11 +26,9 @@ createExplosion = function(startPos, radius, entityDamage, blockDamage, tileDama
         if (entityDamage > 0) {
             gameData.entityWorld.objectArray.forEach(function(entity) {
                 if (entity.physicsBody && entity.health) {
-                    var dist = v2.distanceSquared(startPos, entity.physicsBody.getPos());
-                    if (dist <= radius) {
-                        var damage = Math.floor((1 - dist / radius) * entityDamage);
-                        sendCommand(new CommandHurtEntity(entity.id, -damage));
-                    }
+                    var dis = v2.distanceSquared(startPos, entity.physicsBody.getPos());
+                    if (dis <= radius)
+                        sendCommand(new CommandHurtEntity(entity.id, -entityDamage));
                 }
             });
         }
