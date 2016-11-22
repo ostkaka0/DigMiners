@@ -38,7 +38,7 @@ projectileEntitySimulate = function(gameData, entity, dt) {
         var blockTilePos = [Math.floor(pos[0]), Math.floor(pos[1])];
         var blockId = getForeground(gameData.blockWorld, blockTilePos[0], blockTilePos[1]);
         var blockType = gameData.blockRegister[blockId];
-        var isBulletSolid = (blockType.isBulletSolid == undefined)? blockType.isSolid : blockType.isBulletSolid;
+        var isBulletSolid = (blockType.isBulletSolid == undefined) ? blockType.isSolid : blockType.isBulletSolid;
         if (blockId != 0 && isBulletSolid) {
             gameData.eventHandler.trigger("projectileHitBlock", entity, blockTilePos);
             projectile.hit = true;
@@ -46,9 +46,9 @@ projectileEntitySimulate = function(gameData, entity, dt) {
         }
         if (blockType.bulletFunction)
             blockType.bulletFunction(blockTilePos, blockType, entity);
-        
+
         var density = getDensity(gameData.tileWorld, blockTilePos[0], blockTilePos[1]);
-        if (density > 128) {
+        if (density > 64) {
             gameData.eventHandler.trigger("projectileHitTile", entity, blockTilePos);
             projectile.hit = true;
             break;
@@ -68,8 +68,10 @@ projectileEntitySimulate = function(gameData, entity, dt) {
             break;
     }
 
-    if (projectile.hit)
+    if (projectile.hit) {
         gameData.eventHandler.trigger("projectileHit", entity);
+        return;
+    }
 
     projectile.pos = pos;
     v2.copy(pos, projectile.posOld);

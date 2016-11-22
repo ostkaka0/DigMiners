@@ -123,9 +123,8 @@ GameData.prototype.initializeEvents = function() {
                 createExplosion(this.projectile.pos, type.explosiveRadius, type.explosiveEntityDamage, type.explosionBlockDamage, type.explosionTileDamage);
             gameData.entityWorld.remove(this);
         }.bind(projectileEntity), projectileEntity.projectile.projectileType.stayTime);
-        if (!isServer) {
-            createDespawningParticles(Particles.Gas, projectileEntity.projectile.pos, 200);
-        }
+        if (!isServer)
+            createDespawningParticles(projectileEntity.projectile.projectileType.hitParticle, projectileEntity.projectile.pos, 200);
     });
 
     this.eventHandler.on("projectileHitEntity", function(projectileEntity, hitEntity) {
