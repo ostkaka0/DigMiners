@@ -1,17 +1,18 @@
 
 Projectile = function(pos, angle, projectileType, shooterEntityId) {
     this.pos = pos;
-    this.startPos = v2.clone(pos);
     this.angle = angle;
     this.projectileType = projectileType;
     this.shooterEntityId = shooterEntityId;
 
     if (pos) {
+        this.startPos = v2.clone(pos);
         this.posOld = v2.clone(pos);
         this.posClient = v2.clone(pos);
         this.posClientOld = v2.clone(pos);
     }
     else {
+        this.startPos = [0, 0];
         this.posOld = [0, 0];
         this.posClient = [0, 0];
         this.posClientOld = [0, 0];
