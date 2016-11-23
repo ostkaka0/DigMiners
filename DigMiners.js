@@ -94,7 +94,7 @@ tick = function(dt) {
         if (entity.physicsBody) {
             var physicsBody = entity.physicsBody;
             physicsBody.posClientOld = v2.clone(physicsBody.posClient);
-            physicsBody.posClient = v2.clone(physicsBody.pos);
+            physicsBody.posClient = v2.clone(physicsBody.getPos());
         } else if (entity.projectile) {
             var projectile = entity.projectile;
             projectile.posClientOld = v2.clone(projectile.posClient);

@@ -1,7 +1,6 @@
 
-CommandDig = function(x, y, radius) {
-    this.x = toFix(x);
-    this.y = toFix(y);
+CommandDig = function(pos, radius) {
+    this.pos = v2.clone(pos);
     this.radius = toFix(radius);
 }
 
@@ -11,14 +10,12 @@ CommandDig.prototype.execute = function(gameData) {
 }
 
 CommandDig.prototype.serialize = function(byteArray, index) {
-    serializeFix(byteArray, index, this.x);
-    serializeFix(byteArray, index, this.y);
+    serializeV2(byteArray, index, this.pos);
     serializeFix(byteArray, index, this.radius);
 }
 
 CommandDig.prototype.deserialize = function(byteArray, index) {
-    this.x = deserializeFix(byteArray, index);
-    this.y = deserializeFix(byteArray, index);
+    this.pos = deserializeV2(byteArray, index);
     this.radius = deserializeFix(byteArray, index);
 }
 

@@ -97,8 +97,7 @@ physicsBodySimulate = function(gameData, physicsBody, dt) {
                 var deltaSpeed = [0, 0];
                 v2.mul(-1.0 * dot, normal, deltaSpeed);
                 v2.div(deltaSpeed, numSteps, deltaSpeed);
-                //deltaPos = [(1.0 - Math.abs(normal[0])) * deltaPos[0], (1.0 - Math.abs(normal[1])) * deltaPos[1]];
-                v2.add(deltaSpeed, velocity, velocity);//physicsBody.speed = [(1.0 - Math.abs(normal[0])) * physicsBody.speed[0], (1.0 - Math.abs(normal[1])) * physicsBody.speed[1]];
+                v2.add(deltaSpeed, velocity, velocity);
             }
         }
     }

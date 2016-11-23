@@ -26,14 +26,14 @@ RandomWalkBehaviour.prototype.run = function() {
     if (!this.isWalking) {
         // Decide a direction to walk
         var dir = this.directions[Math.floor(Math.random() * 6)];
-        sendCommand(new CommandEntityMove(this.entity.id, dir, physicsBody.pos[0], physicsBody.pos[1]));
+        sendCommand(new CommandEntityMove(this.entity.id, dir, physicsBody.getPos()));
         this.isWalking = true;
     } else {
         var velocity = this.entity.physicsBody.getVelocity();
         if (v2.length(velocity) < 0.2 && v2.length(velocity) != 0) return false;
         if (Math.random() > 0.96) {
             // Stop walking
-            sendCommand(new CommandEntityMove(this.entity.id, [0, 0], physicsBody.pos[0], physicsBody.pos[1]));
+            sendCommand(new CommandEntityMove(this.entity.id, [0, 0], physicsBody.getPos()));
             this.isWalking = false;
         }
     }

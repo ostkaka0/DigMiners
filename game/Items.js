@@ -5,7 +5,7 @@ ItemTextures = {};
 ItemFunctions.Shovel = function(entity, item) {
     var angle = entity.physicsBody.angle;
     var dir = [Math.cos(-angle), Math.sin(-angle)];
-    var toolUsePos = [entity.physicsBody.pos[0] + 1.0 * dir[0], entity.physicsBody.pos[1] + 1.0 * dir[1]];
+    var toolUsePos = [entity.physicsBody.getPos()[0] + 1.0 * dir[0], entity.physicsBody.getPos()[1] + 1.0 * dir[1]];
 
     // Break block
     var chunkPos = [];
@@ -25,8 +25,7 @@ ItemFunctions.Shovel = function(entity, item) {
     }
 
     // Dig terrain
-    var pos = entity.physicsBody.getPos();
-    gameData.commands.push(new CommandEntityDig(entity.id, pos[0], pos[1], dir, 1.5, Entity.getDigSpeed(entity), Entity.getMaxDigHardness(entity)));
+    gameData.commands.push(new CommandEntityDig(entity.id, entity.physicsBody.getPos(), dir, 1.5, Entity.getDigSpeed(entity), Entity.getMaxDigHardness(entity)));
 }
 
 ItemFunctions.Sword = function(entity, item) {
@@ -72,7 +71,7 @@ ItemFunctions.RangedWeapon = function(entity, item) {
     var scatter = item.projectileScatter;
     if (scatter > 0)
         angle += Math.random() * 2 * scatter - scatter;
-    var toolUsePos = [entity.physicsBody.pos[0] + 1.0 * dir[0], entity.physicsBody.pos[1] + 1.0 * dir[1]];
+    var toolUsePos = [entity.physicsBody.getPos()[0] + 1.0 * dir[0], entity.physicsBody.getPos()[1] + 1.0 * dir[1]];
     gameData.commands.push(new CommandProjectileSpawn(idList.next(), v2.clone(toolUsePos), angle, item.projectileType, entity.id));
 }
 
