@@ -108,7 +108,7 @@ calcDir = function(terrainWorld, x, y) {
 
 calcNormal = function(terrainWorld, x, y) {
     var vec = calcDir(terrainWorld, x, y)
-    if (v2.lengthSquared(vec) > 0.0)
+    if (v2.sqrLength(vec) > 0.0)
         v2.normalize(vec, vec);
 
     return vec;
