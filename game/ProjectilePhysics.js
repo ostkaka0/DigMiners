@@ -14,7 +14,7 @@ projectileEntitySimulate = function(entity, dt) {
     // Simulate projectile
     var dir = v2.create(Math.cos(entity.projectile.angle), -Math.sin(entity.projectile.angle));
     var toAdd = v2.create(0, 0);
-    v2.mul(projectile.projectileType.speed, dir, toAdd);
+    v2.mul(projectile.projectileType.speed * dt, dir, toAdd);
     v2.add(projectile.pos, toAdd, projectile.pos);
 
     // Check projectile collision
