@@ -13,7 +13,9 @@ Client = function(gameData, ip) {
 
     var port = gameData.port;
     console.log("Connecting to " + ip + ":" + port + "...");
-    socket = io(ip + ":" + port);
+    socket = io(ip + ":" + port, {
+        reconnection: false
+    });
     sentInit2 = false;
     playersReceived = 0;
 
@@ -48,7 +50,7 @@ Client = function(gameData, ip) {
             var message = new messageType();
             message.receive(gameData, data);
             message.execute(gameData);
-            if(messageCallbacks[messageType.prototype.id])
+            if (messageCallbacks[messageType.prototype.id])
                 messageCallbacks[messageType.prototype.id](message);
         });
     });
