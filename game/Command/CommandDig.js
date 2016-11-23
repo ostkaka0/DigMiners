@@ -7,7 +7,7 @@ CommandDig = function(pos, radius) {
 
 CommandDig.prototype.execute = function(gameData) {
     var tileWorld = gameData.tileWorld;
-    carveCircle(gameData, this.x, this.y, this.radius);
+    carveCircle(gameData, this.pos[0], this.pos[1], this.radius);
 }
 
 CommandDig.prototype.serialize = function(byteArray, index) {
