@@ -116,15 +116,15 @@ GameData.prototype.tick = function(dt) {
 }
 
 GameData.prototype.initializeEvents = function() {
-    this.eventHandler.on("projectileHit", function(projectileEntity) {
+    this.eventHandler.on("projectileHit", function(projectileEntity, hitPos) {
         setTimeout(function() {
             var type = this.projectile.projectileType;
             if (type.isExplosive)
-                createExplosion(this.projectile.pos, type.explosiveRadius, type.explosiveEntityDamage, type.explosionBlockDamage, type.explosionTileDamage);
+                createExplosion(hitPos, type.explosiveRadius, type.explosiveEntityDamage, type.explosionBlockDamage, type.explosionTileDamage);
             gameData.entityWorld.remove(this);
         }.bind(projectileEntity), projectileEntity.projectile.projectileType.stayTime);
         if (!isServer)
-            createDespawningParticles(projectileEntity.projectile.projectileType.hitParticle, projectileEntity.projectile.pos, 200);
+            createDespawningParticles(projectileEntity.projectile.projectileType.hitParticle, hitPos, 200);
     });
 
     this.eventHandler.on("projectileHitEntity", function(projectileEntity, hitEntity) {
