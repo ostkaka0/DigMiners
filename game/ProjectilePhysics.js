@@ -68,10 +68,8 @@ projectileEntitySimulate = function(gameData, entity, dt) {
             break;
     }
 
-    if (projectile.hit) {
-        gameData.eventHandler.trigger("projectileHit", entity);
-        return;
-    }
+    if (projectile.hit)
+        gameData.eventHandler.trigger("projectileHit", entity, v2.clone(pos));
 
     projectile.pos = pos;
     v2.copy(pos, projectile.posOld);
