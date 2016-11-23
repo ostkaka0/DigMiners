@@ -19,7 +19,7 @@ CommandProjectileSpawn.prototype.execute = function(gameData) {
         entity.projectile.sprite.anchor.y = 0.5;
         zindices[2].addChild(entity.projectile.sprite);
     }
-    projectileEntitySimulate(entity, 0);
+    projectileEntitySimulate(entity, gameData.tickDuration / 1000.0);
     gameData.entityWorld.add(entity, this.entityId);
 }
 
