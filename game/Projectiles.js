@@ -4,7 +4,7 @@ Projectiles = {};
 Projectiles.BigEgg = {
     radius: 1.0,
     maxDistance: 50, // blocks
-    speed: 1.0, // blocks per second
+    speed: 10, // blocks per second
     damage: 20.0, // damage per hit
     blockDamage: 5.0,
     stayTime: 0, // milliseconds projectile will stay after hit
@@ -20,7 +20,7 @@ Projectiles.BigEgg = {
 Projectiles.Egg = {
     radius: 1.0,
     maxDistance: 200,
-    speed: 1.25,
+    speed: 12.5,
     damage: 10.0,
     blockDamage: 0.0,
     stayTime: 200,
