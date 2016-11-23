@@ -21,7 +21,7 @@ projectileEntitySimulate = function(entity, dt) {
     var pos = v2.clone(projectile.pos);
     var deltaPos = v2.create(0, 0);
     v2.sub(pos, projectile.posOld, deltaPos);
-    var deltaPosLength = v2.lengthSquared(deltaPos);
+    var deltaPosLength = v2.length(deltaPos);
     var numSteps = Math.ceil(deltaPosLength / PROJECTILE_MAX_STEP_LENGTH);
     v2.div(deltaPos, numSteps, deltaPos);
     deltaPosLength /= numSteps;
@@ -30,7 +30,7 @@ projectileEntitySimulate = function(entity, dt) {
     for (var i = 0; i < numSteps; i++) {
         v2.add(deltaPos, pos, pos);
 
-        if (v2.distanceSquared(projectile.startPos, projectile.pos) > projectile.projectileType.maxDistance) {
+        if (v2.distance(projectile.startPos, projectile.pos) > projectile.projectileType.maxDistance) {
             projectile.hit = true;
             break;
         }

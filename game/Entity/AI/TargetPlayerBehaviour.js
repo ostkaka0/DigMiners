@@ -12,7 +12,7 @@ TargetPlayerBehaviour.prototype.canRun = function() {
     this.target = this.getTarget();
     if (this.target == null)
         return false;
-    var dis = v2.distanceSquared(this.entity.physicsBody.getPos(), this.target.physicsBody.getPos());
+    var dis = v2.distance(this.entity.physicsBody.getPos(), this.target.physicsBody.getPos());
     if (dis >= this.maxRadius)
         return false;
     return true;
@@ -33,12 +33,12 @@ TargetPlayerBehaviour.prototype.run = function() {
     var tilePos = [Math.floor(this.entity.physicsBody.getPos()[0]), Math.floor(this.entity.physicsBody.getPos()[1])];
     var tilePosTarget = [Math.floor(this.target.physicsBody.getPos()[0]), Math.floor(this.target.physicsBody.getPos()[1])];
 
-    var dis = v2.distanceSquared(this.entity.physicsBody.getPos(), this.target.physicsBody.getPos());
+    var dis = v2.distance(this.entity.physicsBody.getPos(), this.target.physicsBody.getPos());
 
     if (dis > this.maxRadius)
         return false;
     if (gameData.tickId >= this.nextUpdateTick) {
-        if (!this.lastTargetPos || !this.flowField || v2.distance(this.lastTargetPos, this.target.physicsBody.getPos()) > v2.distance(this.entity.physicsBody.getPos(), this.target.physicsBody.getPos())) {
+        if (!this.lastTargetPos || !this.flowField || v2.sqrDistance(this.lastTargetPos, this.target.physicsBody.getPos()) > v2.sqrDistance(this.entity.physicsBody.getPos(), this.target.physicsBody.getPos())) {
             this.flowField = new Map2D();
             var expandList = [];
             aStarFlowField(this.flowField, expandList, gameData.tileWorld, gameData.blockWorld, tilePos, tilePosTarget, 2560);
@@ -95,7 +95,7 @@ TargetPlayerBehaviour.prototype.getTarget = function() {
         var otherEntity = gameData.entityWorld.objects[otherPlayer.entityId];
         if (!otherEntity || otherEntity.isDead || !otherEntity.isActive) return;
         if (this.entity.id != otherEntity.id && otherEntity.physicsBody && otherEntity.health) {
-            var dis = v2.distanceSquared(this.entity.physicsBody.getPos(), otherEntity.physicsBody.getPos());
+            var dis = v2.distance(this.entity.physicsBody.getPos(), otherEntity.physicsBody.getPos());
             if (dis < shortestDistance) {
                 shortestDistance = dis;
                 shortestDistanceEntity = otherEntity;

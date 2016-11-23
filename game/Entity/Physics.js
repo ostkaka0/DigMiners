@@ -26,7 +26,7 @@ physicsBodySimulate = function(gameData, physicsBody, dt) {
 
     var deltaPos = v2.create(0, 0);
     v2.sub(pos, physicsBody.posOld, deltaPos);
-    var deltaPosLength = v2.lengthSquared(deltaPos);
+    var deltaPosLength = v2.length(deltaPos);
     var numSteps = Math.ceil(deltaPosLength / PHYSICS_MAX_STEP_LENGTH);
     v2.div(deltaPos, numSteps, deltaPos);
     deltaPosLength /= numSteps;

@@ -138,7 +138,7 @@ render = function(tickFracTime) {
             entity.drawable.positionAll(x, y, rotation, entity.bodyparts);
 
             if (entity.bodyparts.bodyparts.feet) {
-                var speed = v2.distanceSquared(entity.physicsBody.posClient, entity.physicsBody.posClientOld);
+                var speed = v2.distance(entity.physicsBody.posClient, entity.physicsBody.posClientOld);
                 entity.bodyparts.bodyparts["feet"].animate(gameData, "feet", speed * 450.0, false);
             }
         } else if (entity.projectile) {

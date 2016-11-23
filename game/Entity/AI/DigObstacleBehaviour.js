@@ -55,7 +55,7 @@ DigObstacleBehaviour.prototype.run = function() {
 
     var pos = this.entity.physicsBody.getPos();
     var tilePos = [Math.floor(pos[0]), Math.floor(pos[1])];
-    var dis = v2.distanceSquared(this.targetTilePos, tilePos);
+    var dis = v2.distance(this.targetTilePos, tilePos);
     if (dis > 0.8) {
         var diff = [this.targetTilePos[0] - tilePos[0], this.targetTilePos[1] - tilePos[1]];
         var normalized = v2.create(0, 0);
