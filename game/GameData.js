@@ -22,7 +22,7 @@ GameData = function(idList) {
     this.physicsWorld = new PhysicsWorld();
     this.physicsEntities = {};
     this.generator = null;
-    this.eventHandler = new EventHandler();
+    this.events = new EventHandler();
     this.initializeEvents();
     if (!isServer)
         this.animationManager = new AnimationManager();
@@ -116,7 +116,7 @@ GameData.prototype.tick = function(dt) {
 }
 
 GameData.prototype.initializeEvents = function() {
-    this.eventHandler.on("projectileHit", function(projectileEntity, hitPos) {
+    this.events.on("projectileHit", function(projectileEntity, hitPos) {
         setTimeout(function() {
             var type = this.projectile.projectileType;
             if (type.isExplosive)
@@ -127,7 +127,7 @@ GameData.prototype.initializeEvents = function() {
             createDespawningParticles(projectileEntity.projectile.projectileType.hitParticle, hitPos, 200);
     });
 
-    this.eventHandler.on("projectileHitEntity", function(projectileEntity, hitEntity) {
+    this.events.on("projectileHitEntity", function(projectileEntity, hitEntity) {
         if (isServer) {
             if (hitEntity && hitEntity.health && projectileEntity.projectile.projectileType.damage > 0) {
                 var damage = projectileEntity.projectile.projectileType.damage * projectileEntity.projectile.damageFactor;
@@ -136,7 +136,7 @@ GameData.prototype.initializeEvents = function() {
         }
     });
 
-    this.eventHandler.on("projectileHitBlock", function(projectileEntity, blockPos) {
+    this.events.on("projectileHitBlock", function(projectileEntity, blockPos) {
         if (isServer) {
             if (projectileEntity.projectile.projectileType.blockDamage > 0) {
                 var strength = getStrength(gameData.blockWorld, blockPos[0], blockPos[1]);
@@ -146,18 +146,18 @@ GameData.prototype.initializeEvents = function() {
         }
     });
 
-    this.eventHandler.on("projectileHitTile", function(projectileEntity, tilePos) {
+    this.events.on("projectileHitTile", function(projectileEntity, tilePos) {
 
     });
 
-    this.eventHandler.on("healthChange", function(entity) {
+    this.events.on("healthChange", function(entity) {
         var sprite = entity.drawable.sprites["healthbar"];
         if (!sprite || !sprite.sprite) return;
         var defaultHealthbarWidth = 64;
         sprite.sprite.width = (entity.health.health / entity.health.maxHealth) * defaultHealthbarWidth;
     });
 
-    this.eventHandler.on("entityDeath", function(entity) {
+    this.events.on("entityDeath", function(entity) {
         if (!entity.isDead) {
             entity.isDead = true;
             gameData.entityWorld.remove(entity);
