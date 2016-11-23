@@ -3,7 +3,7 @@ createExplosion = function(startPos, radius, entityDamage, blockDamage, tileDama
     if (isServer) {
         // Damage terrain
         for (var i = 0; i < tileDamage; ++i)
-            sendCommand(new CommandDig(startPos[0], startPos[1], radius));
+            sendCommand(new CommandDig(startPos, radius));
 
         // Damage blocks
         if (blockDamage > 0) {

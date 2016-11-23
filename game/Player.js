@@ -31,7 +31,7 @@ Player.prototype.canPlaceBlock = function(gameData, x, y) {
     var bodies = [];
     gameData.physicsWorld.getBodiesInRadius(bodies, [x + 0.5, y + 0.5], 0.25);
     if (bodies.length != 0) return false;
-    var distPlayerPos = [entity.physicsBody.pos[0] * 32, entity.physicsBody.pos[1] * 32];
+    var distPlayerPos = [entity.physicsBody.getPos()[0] * 32, entity.physicsBody.getPos()[1] * 32];
     var dist = Math.sqrt((distPlayerPos[0] - distBlockPos[0]) * (distPlayerPos[0] - distBlockPos[0]) + (distPlayerPos[1] - distBlockPos[1]) * (distPlayerPos[1] - distBlockPos[1]));
     var blockChunkX = Math.floor(x / BLOCK_CHUNK_DIM);
     var blockChunkY = Math.floor(y / BLOCK_CHUNK_DIM);
