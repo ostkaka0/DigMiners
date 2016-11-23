@@ -22,6 +22,10 @@ v2.clone = function(a) {
     return [a[0], a[1]];
 }
 
+v2.cloneFix = function(a) {
+    return [toFix(a[0]), toFix(a[1])];
+}
+
 v2.copy = function(a, out) {
     out[0] = a[0];
     out[1] = a[1];

@@ -1,6 +1,7 @@
 
 CommandDig = function(pos, radius) {
-    this.pos = v2.clone(pos);
+    if (pos)
+        this.pos = v2.cloneFix(pos);
     this.radius = toFix(radius);
 }
 

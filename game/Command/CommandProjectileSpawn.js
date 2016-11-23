@@ -1,7 +1,8 @@
 
 CommandProjectileSpawn = function(entityId, pos, angle, projectileType, shooterEntityId) {
     this.entityId = entityId;
-    this.pos = pos;
+    if (pos)
+        this.pos = v2.cloneFix(pos);
     this.angle = angle;
     this.projectileType = projectileType;
     this.shooterEntityId = shooterEntityId;
