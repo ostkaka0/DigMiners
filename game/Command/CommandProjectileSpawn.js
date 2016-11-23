@@ -17,11 +17,9 @@ CommandProjectileSpawn.prototype.execute = function(gameData) {
         entity.projectile.sprite = new PIXI.Sprite(gameData.textures[entity.projectile.projectileType.textureName]);
         entity.projectile.sprite.anchor.x = 0.5;
         entity.projectile.sprite.anchor.y = 0.5;
-        entity.projectile.sprite.position.x = -camera.pos[0] + canvas.width / 2 + 32.0 * entity.projectile.pos[0];
-        entity.projectile.sprite.position.y = camera.pos[1] + canvas.height / 2 - 32.0 * entity.projectile.pos[1];
-        entity.projectile.sprite.rotation = entity.projectile.angle;
         zindices[2].addChild(entity.projectile.sprite);
     }
+    projectileEntitySimulate(entity, 0);
     gameData.entityWorld.add(entity, this.entityId);
 }
 
