@@ -2,7 +2,7 @@
 CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHardness) {
     this.entityId = entityId;
     if (pos)
-        this.pos = v2.clone(pos);
+        this.pos = v2.cloneFix(pos);
     this.dir = dir;
     this.radius = toFix(radius);
     this.digSpeed = digSpeed;

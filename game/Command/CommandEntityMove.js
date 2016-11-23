@@ -3,7 +3,7 @@ CommandEntityMove = function(entityId, direction, pos) {
     this.entityId = entityId;
     this.direction = direction;
     if (pos)
-        this.pos = v2.clone(pos);
+        this.pos = v2.cloneFix(pos);
 }
 
 CommandEntityMove.prototype.execute = function(gameData) {
