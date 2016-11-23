@@ -1,25 +1,18 @@
 var canvas = document.getElementById("canvas");
-var gl = canvasInitGL(canvas);
-var renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight, { 'transparent': true, 'antialias': true });
-var stage = new PIXI.Container();
+canvasInitGL(canvas);
+var renderer = new PIXI.WebGLRenderer(window.innerWidth, window.innerHeight, { 'transparent': true, 'antialias': true, 'view': canvas, 'clearBeforeRender': false });
+var gl = renderer.gl;
 
 var zindices = new Array(3);
 for (var i = 0; i < zindices.length; ++i) {
     zindices[i] = new PIXI.Container();
-    stage.addChild(zindices[i]);
 }
 var particleContainer = new PIXI.Container();
-stage.addChild(particleContainer);
-
-renderer.view.style.position = 'absolute';
-renderer.view.style.left = '0%';
-renderer.view.style.top = '0%';
-document.body.appendChild(renderer.view);
 
 window.addEventListener('resize', function() {
-    this.renderer.resize(window.innerWidth, window.innerHeight);
-    this.camera.width = window.innerWidth;
-    this.camera.height = window.innerHeight;
+    renderer.resize(window.innerWidth, window.innerHeight);
+    camera.width = window.innerWidth;
+    camera.height = window.innerHeight;
 }, false);
 
 var gameData = new GameData();
@@ -108,26 +101,23 @@ tick = function(dt) {
 }
 
 render = function(tickFracTime) {
-    canvasUpdateSize(canvas);
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     camera.width = canvas.width;
     camera.height = canvas.height;
+
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
+    // Set camera pos
     if (global.playerEntity && global.playerEntity.isActive) {
         camera.pos[0] = tickFracTime * 32.0 * global.playerEntity.physicsBody.posClient[0] + (1 - tickFracTime) * 32.0 * global.playerEntity.physicsBody.posClientOld[0];
         camera.pos[1] = tickFracTime * 32.0 * global.playerEntity.physicsBody.posClient[1] + (1 - tickFracTime) * 32.0 * global.playerEntity.physicsBody.posClientOld[1];
     } else // TODO: do something else instead of centering camera at 0,0?
         camera.pos = [0, 0];
 
-    var projectionMatrix = PIXI.Matrix.IDENTITY.clone();//this.renderer.renderTarget.projectionMatrix.clone();
-    var viewMatrix = PIXI.Matrix.IDENTITY.clone();
-    viewMatrix = viewMatrix.translate(-Math.floor(camera.pos[0]), -Math.floor(camera.pos[1]));
-    viewMatrix = viewMatrix.scale(2 / canvas.width, 2 / canvas.height);
-    chunkRenderer.render(gameData.tileWorld, projectionMatrix.clone().append(viewMatrix), camera);
-    blockChunkRenderer.render(gameData, gameData.blockWorld, projectionMatrix.clone().append(viewMatrix), camera);
-
+    // Position entities
     gameData.entityWorld.objectArray.forEach(function(entity) {
         if (entity.physicsBody && entity.drawable) {
             var x = -camera.pos[0] + canvas.width / 2 + 32.0 * (tickFracTime * entity.physicsBody.posClient[0] + (1 - tickFracTime) * entity.physicsBody.posClientOld[0]);
@@ -182,7 +172,24 @@ render = function(tickFracTime) {
     //TODO: animationmanager use dt? maybe not needed
     gameData.animationManager.update();
 
-    renderer.render(stage);
+    // Render terrain and blocks
+    var projectionMatrix = PIXI.Matrix.IDENTITY.clone();
+    var viewMatrix = PIXI.Matrix.IDENTITY.clone();
+    viewMatrix = viewMatrix.translate(-Math.floor(camera.pos[0]), -Math.floor(camera.pos[1]));
+    viewMatrix = viewMatrix.scale(2 / canvas.width, 2 / canvas.height);
+    chunkRenderer.render(gameData.tileWorld, projectionMatrix.clone().append(viewMatrix), camera);
+    blockChunkRenderer.render(gameData, gameData.blockWorld, projectionMatrix.clone().append(viewMatrix), camera);
+
+    // Render entities
+    for (var i = 0; i < zindices.length; ++i)
+        renderer.render(zindices[i]);
+    renderer.render(particleContainer);
+
+    renderer._activeShader = null;
+    renderer._activeRenderTarget = renderer.rootRenderTarget;
+    renderer._activeTextureLocation = 999;
+    renderer._activeTexture = null;
+    renderer.state.resetToDefault();
 }
 
 loadChunk = function(world, x, y) {
@@ -204,9 +211,9 @@ onTexturesLoadProgress = function(name, file, progress) {
 onTexturesLoadComplete = function(textures) {
     // Must wait until all textures have loaded to continue! important
     this.blockPosGood = new PIXI.Sprite(textures["blockPosGood.png"]);
-    this.stage.addChild(this.blockPosGood);
+    zindices[2].addChild(this.blockPosGood);
     this.blockPosBad = new PIXI.Sprite(textures["blockPosBad.png"]);
-    this.stage.addChild(this.blockPosBad);
+    zindices[2].addChild(this.blockPosBad);
     $("*").mousemove(function(event) {
         //console.log(event.pageX + ", " + event.pageY);
         //console.log(worldPos);
@@ -216,15 +223,26 @@ onTexturesLoadComplete = function(textures) {
     client = new Client(gameData, window.vars.ip);
 }
 
-$(document).click(function(event) {
+$(document).mousedown(function(event) {
     if (global.player && global.playerEntity && global.playerEntity.isBuilding) {
-        var stackId = global.playerEntity.inventory.getEquippedStackId("tool");
-        var bodies = [];
-        if (!global.player.canPlaceBlock(gameData, global.player.buildPos[0], global.player.buildPos[1]))
-            return false;
-        if (stackId != null) {
-            var message = new MessageRequestPlaceBlock(stackId, global.player.buildPos[0], global.player.buildPos[1]);
-            message.send(socket);
+        if (event.button == 0) {
+            var stackId = global.playerEntity.inventory.getEquippedStackId("tool");
+            var bodies = [];
+            if (!global.player.canPlaceBlock(gameData, global.player.buildPos[0], global.player.buildPos[1]))
+                return false;
+            if (stackId != null) {
+                var message = new MessageRequestPlaceBlock(stackId, global.player.buildPos[0], global.player.buildPos[1]);
+                message.send(socket);
+            }
+        }
+    } else if (global.player && global.playerEntity) {
+        var worldCursorPos = [(event.pageX + camera.pos[0] - camera.width / 2) / 32, (canvas.height - event.pageY + camera.pos[1] - camera.height / 2) / 32];
+        if (v2.distance(global.playerEntity.physicsBody.getPos(), worldCursorPos) > 0.5) {
+            var chunkPos = [0, 0];
+            var localPos = [0, 0];
+            v2WorldToBlockChunk(worldCursorPos, chunkPos, localPos);
+            var blockPos = [chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0], chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1]];
+            new MessageRequestClickBlock(blockPos, (event.button == 0 ? ClickTypes.LEFT_CLICK : (event.button == 2 ? ClickTypes.RIGHT_CLICK : ClickTypes.UNKNOWN))).send(socket);
         }
     }
 });
