@@ -1,31 +1,40 @@
 GameData = function(idList) {
     initItems(this);
     this.port = 3000;
-    this.itemPickupDistance = 1.0;
+    this.itemPickupDistance = 2.0;
     this.blockPlaceDistance = 96; //Pixels
 
     this.tickDuration = 1000 / 20;
     this.tickId = 0;
-    this.fakeLag = 100;
-    this.fakeJitter = 8;
-    this.playerWorld = new ObjectWorld();
-    this.entityWorld = new ObjectWorld();
+    this.fakeLag = 0;
+    this.fakeJitter = 0;
+    this.playerWorld = new ObjectWorld(true);
+    this.entityWorld = new ObjectWorld(true);
+    this.particleEmitterWorld = new ObjectWorld();
+    this.particleEmitterIdList = new IdList();
     this.tileWorld = new Map2D();
     this.blockWorld = new Map2D();
     this.tileRegister = objectRegisterAddByObject([], Tiles);
     this.itemRegister = objectRegisterAddByObject([], Items);
-    this.generator = {};
-    if(!isServer)
+    this.blockRegister = objectRegisterAddByObject([], Blocks);
+    this.projectileRegister = objectRegisterAddByObject([], Projectiles);
+    this.particleRegister = objectRegisterAddByObject([], Particles);
+    this.physicsWorld = new PhysicsWorld();
+    this.physicsEntities = {};
+    this.generator = null;
+    this.events = new EventHandler();
+    this.initializeEvents();
+    if (!isServer)
         this.animationManager = new AnimationManager();
     else
         this.animationManager = {};
     this.commands = [];
     this.pendingCommands = {};
-    this.commandTypes = typeRegisterAddByArray([], [CommandPlayerMove, CommandDig, CommandPlayerDig, CommandPlayerEquipItem]);
-    this.messagesToClient = [MessageInit, MessageCommands, MessageChunk, MessagePlayerJoin, MessagePlayerLeave, MessagePlayerInventory, MessageEntitySpawn, MessageEntityDestroy, MessagePlayerBuild];
-    this.messagesToServer = [MessagePlayerMove, MessageRequestItemPickup, MessageRequestDropStack, MessageRequestEquipStack, MessageRequestCraft, MessageRequestPlaceBlock];
+    this.commandTypes = typeRegisterAddByArray([], [CommandEntityMove, CommandDig, CommandEntityDig, CommandEntityEquipItem, CommandEntityBuild, CommandHurtEntity, CommandEntitySpawn, CommandCollisions, CommandEntityDestroy, CommandPlayerJoin, CommandPlayerLeave, CommandKeyStatusUpdate, CommandEntityInventory, CommandPlayerOreInventory, CommandEntityRotate, CommandBlockStrength, CommandProjectileSpawn]);
+    this.messagesToClient = [MessageInit, MessageCommands, MessageChunk];
+    this.messagesToServer = [MessageRequestKeyStatusUpdate, MessageRequestItemPickup, MessageRequestClickSlot, MessageRequestCraft, MessageRequestPlaceBlock, MessageRequestClickEntity, MessageRequestRotate, MessageRequestClickBlock];
     this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
-    this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ComponentItem]);
+    this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent, EquippedItems, Projectile]);
 
     Recipes = [];
 
@@ -60,39 +69,99 @@ GameData = function(idList) {
     });
 
     Recipes.push({
-        item: [[Items.ApatiteShovel, 1]],
-        requiredOres: [[Tiles.Apatite, 10]],
+        item: [[Items.CopperSword, 1]],
+        requiredOres: [[Tiles.Copper, 10]],
         requiredItems: [[Items.SmallSticks, 10], [Items.RottenRoot, 4]],
     });
 
+    // Update physicsEntities
+    this.entityWorld.onAdd.push((function(entity) {
+        if (entity.physicsBody)
+            this.physicsEntities[entity.physicsBody.bodyId] = entity;
+    }).bind(this));
+    this.entityWorld.onRemove.push((function(entity) {
+        if (entity.physicsBody)
+            this.physicsEntities[entity.physicsBody.bodyId] = undefined;
+    }).bind(this));
 
-
-
-    if(idList) {
+    if (idList) {
         var onObjectRemove = function(object) { idList.remove(object.id); };
-        this.playerWorld.onRemove = onObjectRemove;
-        this.entityWorld.onRemove = onObjectRemove;
+        this.playerWorld.onRemove.push(onObjectRemove);
+        this.entityWorld.onRemove.push(onObjectRemove);
     }
 }
 
 GameData.prototype.tick = function(dt) {
     var that = this;
 
-    if(this.pendingCommands[this.tickId])
+    if (this.pendingCommands[this.tickId])
         this.commands = this.commands.concat(this.pendingCommands[this.tickId]);
 
     this.entityWorld.objectArray.forEach(function(entity) {
-        if(entity.physicsBody && entity.physicsBody.angle)
+        if (entity.physicsBody && entity.physicsBody.angle)
             entity.physicsBody.angleOld = entity.physicsBody.angle;
     });
-
     this.commands.forEach(function(command) {
         command.execute(that);
     });
     this.commands.length = 0;
     this.playerWorld.update();
-    entityFunctionPlayerMovement(this, dt);
-    entityFunctionPhysicsBodySimulate(this, dt);
+    this.physicsWorld.update(dt);
+    entityFunctionEntityMovement(dt);
+    entityFunctionPhysicsBodySimulate(dt);
+    entityFunctionProjectileSimulate(dt);
     this.entityWorld.update();
+    this.particleEmitterWorld.update();
     this.tickId++;
+}
+
+GameData.prototype.initializeEvents = function() {
+    this.events.on("projectileHit", function(projectileEntity, hitPos) {
+        setTimeout(function() {
+            var type = this.projectile.projectileType;
+            if (type.isExplosive)
+                createExplosion(hitPos, type.explosiveRadius, type.explosiveEntityDamage, type.explosionBlockDamage, type.explosionTileDamage);
+            gameData.entityWorld.remove(this);
+        }.bind(projectileEntity), projectileEntity.projectile.projectileType.stayTime);
+        if (!isServer)
+            createDespawningParticles(projectileEntity.projectile.projectileType.hitParticle, hitPos, 200);
+    });
+
+    this.events.on("projectileHitEntity", function(projectileEntity, hitEntity) {
+        if (isServer) {
+            if (hitEntity && hitEntity.health && projectileEntity.projectile.projectileType.damage > 0) {
+                var damage = projectileEntity.projectile.projectileType.damage * projectileEntity.projectile.damageFactor;
+                sendCommand(new CommandHurtEntity(hitEntity.id, -1 * damage));
+            }
+        }
+    });
+
+    this.events.on("projectileHitBlock", function(projectileEntity, blockPos) {
+        if (isServer) {
+            if (projectileEntity.projectile.projectileType.blockDamage > 0) {
+                var strength = getStrength(gameData.blockWorld, blockPos[0], blockPos[1]);
+                strength -= projectileEntity.projectile.projectileType.blockDamage;
+                sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], Math.max(strength, 0)));
+            }
+        }
+    });
+
+    this.events.on("projectileHitTile", function(projectileEntity, tilePos) {
+
+    });
+
+    this.events.on("healthChange", function(entity) {
+        var sprite = entity.drawable.sprites["healthbar"];
+        if (!sprite || !sprite.sprite) return;
+        var defaultHealthbarWidth = 64;
+        sprite.sprite.width = (entity.health.health / entity.health.maxHealth) * defaultHealthbarWidth;
+    });
+
+    this.events.on("entityDeath", function(entity) {
+        if (!entity.isDead) {
+            entity.isDead = true;
+            gameData.entityWorld.remove(entity);
+            console.log(entity.id + " died!");
+        }
+    });
 }

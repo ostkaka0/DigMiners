@@ -42,7 +42,7 @@
 
             addScriptsRecursive("lib");
             addScriptsRecursive("lib_front_end");
-            addScriptsRecursive("src");
+            addScriptsRecursive("engine");
             addScriptsRecursive("game");
 
             // Run unit tests:

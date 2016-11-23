@@ -1,7 +1,5 @@
 // Place your settings in this file to overwrite default and user settings.
 {
     "typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
-    "typescript.format.insertSpaceAfterKeywordsInControlFlowStatements": false,
-    "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
-    "javascript.format.insertSpaceAfterKeywordsInControlFlowStatements": false
+    "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false
 }
