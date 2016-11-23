@@ -107,8 +107,8 @@ GameData.prototype.tick = function(dt) {
     this.commands.length = 0;
     this.playerWorld.update();
     this.physicsWorld.update(dt);
-    entityFunctionEntityMovement(this, dt);
-    entityFunctionPhysicsBodySimulate(this, dt);
+    entityFunctionEntityMovement(dt);
+    entityFunctionPhysicsBodySimulate(dt);
     entityFunctionProjectileSimulate(dt);
     this.entityWorld.update();
     this.particleEmitterWorld.update();

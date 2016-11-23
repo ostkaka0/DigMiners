@@ -20,7 +20,7 @@ Projectiles.BigEgg = {
 Projectiles.Egg = {
     radius: 1.0,
     maxDistance: 200,
-    speed: 12.5,
+    speed: 18.0,
     damage: 10.0,
     blockDamage: 0.0,
     stayTime: 200,
