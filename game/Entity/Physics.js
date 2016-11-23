@@ -12,15 +12,14 @@ COLLISION_BLOCKS = [
     [-1, -1]
 ];
 
-entityFunctionPhysicsBodySimulate = function(gameData, dt) {
-    var entityWorld = gameData.entityWorld;
-    entityWorld.objectArray.forEach(function(entity) {
+entityFunctionPhysicsBodySimulate = function(dt) {
+    gameData.entityWorld.objectArray.forEach(function(entity) {
         if (entity.physicsBody)
-            physicsBodySimulate(gameData, entity.physicsBody, dt);
+            physicsBodySimulate(entity.physicsBody, dt);
     });
 }
 
-physicsBodySimulate = function(gameData, physicsBody, dt) {
+physicsBodySimulate = function(physicsBody, dt) {
     // Calculate deltaPos and number of steps
     var pos = physicsBody.getPos();
 
