@@ -130,8 +130,8 @@ render = function(tickFracTime) {
 
     gameData.entityWorld.objectArray.forEach(function(entity) {
         if (entity.physicsBody && entity.drawable) {
-            var x = -camera.pos[0] + canvas.width / 2 + tickFracTime * 32.0 * entity.physicsBody.posClient[0] + (1 - tickFracTime) * 32.0 * entity.physicsBody.posClientOld[0];
-            var y = camera.pos[1] + canvas.height / 2 - (tickFracTime * 32.0 * entity.physicsBody.posClient[1] + (1 - tickFracTime) * 32.0 * entity.physicsBody.posClientOld[1]);
+            var x = -camera.pos[0] + canvas.width / 2 + 32.0 * (tickFracTime * entity.physicsBody.posClient[0] + (1 - tickFracTime) * entity.physicsBody.posClientOld[0]);
+            var y = camera.pos[1] + canvas.height / 2 - 32.0 * (tickFracTime * entity.physicsBody.posClient[1] + (1 - tickFracTime) * entity.physicsBody.posClientOld[1]);
 
             var a = (entity.physicsBody.angle - entity.physicsBody.angleOld) % (Math.PI * 2);
             var rotation = entity.physicsBody.angleOld + (2 * a % (Math.PI * 2) - a) * tickFracTime;
@@ -142,8 +142,9 @@ render = function(tickFracTime) {
                 entity.bodyparts.bodyparts["feet"].animate(gameData, "feet", speed * 450.0, false);
             }
         } else if (entity.projectile) {
-            var x = -camera.pos[0] + canvas.width / 2 + tickFracTime * 32.0 * entity.projectile.posClient[0] + (1 - tickFracTime) * 32.0 * entity.projectile.posClientOld[0];
-            var y = camera.pos[1] + canvas.height / 2 - (tickFracTime * 32.0 * entity.projectile.posClient[1] + (1 - tickFracTime) * 32.0 * entity.projectile.posClientOld[1]);
+            var x = -camera.pos[0] + canvas.width / 2 + 32.0 * (tickFracTime * entity.projectile.posClient[0] + (1 - tickFracTime) * entity.projectile.posClientOld[0]);
+            var y = camera.pos[1] + canvas.height / 2 - 32.0 * (tickFracTime * entity.projectile.posClient[1] + (1 - tickFracTime) * entity.projectile.posClientOld[1]);
+
             if (entity.projectile.sprite) {
                 entity.projectile.sprite.position.x = x;
                 entity.projectile.sprite.position.y = y;
