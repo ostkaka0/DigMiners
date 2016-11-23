@@ -101,11 +101,6 @@ tick = function(dt) {
 }
 
 render = function(tickFracTime) {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    camera.width = canvas.width;
-    camera.height = canvas.height;
-
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -264,7 +259,7 @@ gameData.entityWorld.onAdd.push(function(entity) {
     }
 
     if (!isServer && entity.health && entity.drawable)
-        gameData.eventHandler.trigger("healthChange", entity);
+        gameData.events.trigger("healthChange", entity);
 
     if (entity.drawable && entity.bodyparts) {
         entity.drawable.initializeBodyparts(entity.bodyparts.bodyparts);
