@@ -38,7 +38,7 @@ projectileEntitySimulate = function(gameData, entity, dt) {
         var blockTilePos = [Math.floor(pos[0]), Math.floor(pos[1])];
         var blockId = getForeground(gameData.blockWorld, blockTilePos[0], blockTilePos[1]);
         var blockType = gameData.blockRegister[blockId];
-        var isBulletSolid = (blockType.isBulletSolid == undefined) ? blockType.isSolid : blockType.isBulletSolid;
+        var isBulletSolid = (blockType.isBulletSolid == undefined || entity.projectile.projectileType.isExplosive) ? blockType.isSolid : blockType.isBulletSolid;
         if (blockId != 0 && isBulletSolid) {
             gameData.eventHandler.trigger("projectileHitBlock", entity, blockTilePos);
             projectile.hit = true;
