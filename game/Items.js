@@ -68,11 +68,18 @@ ItemFunctions.RangedWeapon = function(entity, item) {
         return [nx, ny];
     }
     var dir = rotateAround(0, 0, 0, -0.6, angle);
-    var scatter = item.projectileScatter;
-    if (scatter > 0)
-        angle += Math.random() * 2 * scatter - scatter;
-    var toolUsePos = [entity.physicsBody.getPos()[0] + 1.0 * dir[0], entity.physicsBody.getPos()[1] + 1.0 * dir[1]];
-    gameData.commands.push(new CommandProjectileSpawn(idList.next(), v2.clone(toolUsePos), angle, item.projectileType, entity.id));
+    var numProjectiles = item.numProjectiles? item.numProjectiles : 1;
+    for (var i = 0; i < numProjectiles; i++) {
+        var scatter = item.projectileScatter;
+        var projectileAngle = angle;
+        var projectileSpeed = item.projectileType.speed;
+        if (scatter > 0) {
+            projectileAngle += Math.random() * 2 * scatter - scatter;
+            projectileSpeed *= 1.0 - 2 * scatter + 4 * scatter * Math.random(); 
+        }
+        var toolUsePos = [entity.physicsBody.getPos()[0] + 1.0 * dir[0], entity.physicsBody.getPos()[1] + 1.0 * dir[1]];
+        gameData.commands.push(new CommandProjectileSpawn(idList.next(), v2.clone(toolUsePos), projectileAngle, projectileSpeed, item.projectileType, entity.id));
+    }
 }
 
 ItemTextures.ShovelAtlas = {
@@ -441,7 +448,7 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.RangedWeapon,
-        useCooldown: 0.15,
+        useCooldown: 0.1,
         useDuration: 0,
         type: "tool",
         typeOfType: "rangedWeapon",
@@ -462,6 +469,37 @@ initItems = function(gameData) {
         type: "tool",
         typeOfType: "rangedWeapon",
         projectileType: Projectiles.BigEgg,
-        projectileScatter: 0.01
+        projectileScatter: 0.05
+    }
+    Items.WeaponCrossbow = {
+        name: "Crossbow",
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 6,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.RangedWeapon,
+        useCooldown: 1.0,
+        useDuration: 0,
+        type: "tool",
+        typeOfType: "rangedWeapon",
+        projectileType: Projectiles.CrossbowArrow,
+        projectileScatter: 0.001
+    }
+    Items.WeaponNailgun = {
+        name: "Nailgun",
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 7,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.RangedWeapon,
+        useCooldown: 1.0,
+        useDuration: 0,
+        type: "tool",
+        typeOfType: "rangedWeapon",
+        numProjectiles: 8,
+        projectileType: Projectiles.Nail,
+        projectileScatter: 0.15
     }
 }

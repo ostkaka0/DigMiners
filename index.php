@@ -42,6 +42,7 @@
 
             addScriptsRecursive("lib");
             addScript("lib_front_end/apixi.js");
+            addScript("lib_front_end/bpixi-particles.min.js");
             addScriptsRecursive("lib_front_end");
             addScriptsRecursive("engine");
             addScriptsRecursive("game");

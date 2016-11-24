@@ -12,12 +12,20 @@ BulletFunctions.bunker = function(blockPos, blockType, entity) {
     var deltaPos = [blockPos[0] + 0.5 - entityPos[0], blockPos[1] + 0.5 - entityPos[1]];
     deltaPos = [Math.max(0, Math.abs(deltaPos[0]) - 0.5), Math.max(0, Math.abs(deltaPos[1]) - 0.5)];
     var dis = v2.length(deltaPos);
+    var rand = noiseRand(noiseRand(noiseRand(noiseRand(blockPos[0]) ^ blockPos[1]) ^ gameData.tickId) ^ entity.id) % 100;
     var damageFactor;
     if (dis > blockType.bulletBunkerDistance)
         damageFactor = blockType.bulletBunkerFarFactor;
     else
         damageFactor = blockType.bulletBunkerNearFactor;
-    if (damageFactor < entity.projectile.damageFactor) {
+        
+    if (rand > damageFactor * 100) {
+        gameData.events.trigger("projectileHitBlock", entity, blockPos);
+        entity.projectile.hit = true;
+        return;
+    }
+    
+    /*if (damageFactor < entity.projectile.damageFactor) {
         entity.projectile.damageFactor = damageFactor;
         if (entity.projectile.sprite) {
             entity.projectile.sprite.scale.x = damageFactor;
@@ -27,7 +35,7 @@ BulletFunctions.bunker = function(blockPos, blockType, entity) {
             if (!isServer)
                 createDespawningParticles(entity.projectile.projectileType.hitParticle(), [blockPos[0] + 0.5, blockPos[1] + 0.5], 200);
         }
-    }
+    }*/
 }
 
 Blocks.Null = {
@@ -67,5 +75,5 @@ Blocks.BunkerWindow = {
     bulletFunction: BulletFunctions.bunker,
     bulletBunkerDistance: 2.0,
     bulletBunkerNearFactor: 0.8,
-    bulletBunkerFarFactor: 0.4
+    bulletBunkerFarFactor: 0.6
 }

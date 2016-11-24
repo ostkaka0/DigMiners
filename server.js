@@ -84,15 +84,10 @@ gameData.entityWorld.onAdd.push(function(entity) {
 
         // give player shovel at join
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.RustyShovel.id, 1));
-
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.CopperShovel.id, 1));
-
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.IronShovel.id, 1));
-
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.SteelShovel.id, 1));
-
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.DiamondShovel.id, 1));
-
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.CopperSword.id, 1));
 
         // give player dynamite at join
@@ -100,14 +95,12 @@ gameData.entityWorld.onAdd.push(function(entity) {
 
         // give player blocks at join
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.StoneWall.id, 100));
-
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.StoneFloor.id, 20));
-        
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.BunkerWindow.id, 20));
-
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.EggShooter.id, 1));
-
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.BigEggShooter.id, 1));
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponCrossbow.id, 1));
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponNailgun.id, 1));
 
         // (TEMPORARY) spawn monsters on player join
         for (var i = 0; i < 0; ++i) {
