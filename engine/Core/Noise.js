@@ -1,7 +1,8 @@
 
 
-/*
-noiseRand(value) {
+
+noiseRand = function(value) {
+    value ^= 0xE773;
     value += (value << 5);
     value ^= (value >> 3);
     value += (value << 2);
@@ -15,7 +16,7 @@ noiseNextInt = function(seed) {
     return noiseRand(seed[0]++);
 }
 
-noiseNextFix = function(seed) {
+/*noiseNextFix = function(seed) {
     return fix.div(noiseNextInt(seed)%32768, 32768);
 }
 
