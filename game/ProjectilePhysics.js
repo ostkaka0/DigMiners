@@ -29,30 +29,14 @@ projectileEntitySimulate = function(entity, dt) {
     // Simulate steps
     for (var i = 0; i < numSteps; i++) {
         v2.add(deltaPos, pos, pos);
+        
+        var distance = v2.distance(projectile.startPos, projectile.pos);
 
-        if (v2.distance(projectile.startPos, projectile.pos) > projectile.projectileType.maxDistance) {
+        if (distance > projectile.projectileType.maxDistance) {
             projectile.hit = true;
             break;
         }
-
-        var blockTilePos = [Math.floor(pos[0]), Math.floor(pos[1])];
-        var blockId = getForeground(gameData.blockWorld, blockTilePos[0], blockTilePos[1]);
-        var blockType = gameData.blockRegister[blockId];
-        var isBulletSolid = (blockType.isBulletSolid == undefined || entity.projectile.projectileType.isExplosive) ? blockType.isSolid : blockType.isBulletSolid;
-        if (blockId != 0 && isBulletSolid) {
-            gameData.events.trigger("projectileHitBlock", entity, blockTilePos);
-            projectile.hit = true;
-            break;
-        }
-        if (blockType.bulletFunction)
-            blockType.bulletFunction(blockTilePos, blockType, entity);
-
-        var density = getDensity(gameData.tileWorld, blockTilePos[0], blockTilePos[1]);
-        if (density > 64) {
-            gameData.events.trigger("projectileHitTile", entity, blockTilePos);
-            projectile.hit = true;
-            break;
-        }
+        
         var bodies = [];
         var bodyDistances = [];
         gameData.physicsWorld.getBodiesInRadiusSorted(bodies, bodyDistances, pos, projectile.projectileType.radius);
@@ -64,6 +48,26 @@ projectileEntitySimulate = function(entity, dt) {
                 break;
             }
         }
+
+        var blockTilePos = [Math.floor(pos[0]), Math.floor(pos[1])];
+        var blockId = getForeground(gameData.blockWorld, blockTilePos[0], blockTilePos[1]);
+        var blockType = gameData.blockRegister[blockId];
+        var isBulletSolid = (blockType.isBulletSolid == undefined || entity.projectile.projectileType.isExplosive) ? blockType.isSolid : blockType.isBulletSolid;
+        if (blockId != 0 && isBulletSolid && v2.dot([Math.cos(projectile.angle), -Math.sin(projectile.angle)], [blockTilePos[0] + 0.5 - pos[0], blockTilePos[1] + 0.5 - pos[1]]) > 0.0) {
+            gameData.events.trigger("projectileHitBlock", entity, blockTilePos);
+            projectile.hit = true;
+            break;
+        }
+        if (blockType.bulletFunction)
+            blockType.bulletFunction(blockTilePos, blockType, entity);
+
+        var density = getDensity(gameData.tileWorld, blockTilePos[0], blockTilePos[1]);
+        if (density > 127) {
+            gameData.events.trigger("projectileHitTile", entity, blockTilePos);
+            projectile.hit = true;
+            break;
+        }
+
         if (projectile.hit)
             break;
     }

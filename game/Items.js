@@ -77,7 +77,7 @@ ItemFunctions.RangedWeapon = function(entity, item) {
             projectileAngle += Math.random() * 2 * scatter - scatter;
             projectileSpeed *= 1.0 - 2 * scatter + 4 * scatter * Math.random(); 
         }
-        var toolUsePos = [entity.physicsBody.getPos()[0] + 1.0 * dir[0], entity.physicsBody.getPos()[1] + 1.0 * dir[1]];
+        var toolUsePos = [entity.physicsBody.getPos()[0] + 0.5 * dir[0], entity.physicsBody.getPos()[1] + 0.5 * dir[1]];
         gameData.commands.push(new CommandProjectileSpawn(idList.next(), v2.clone(toolUsePos), projectileAngle, projectileSpeed, item.projectileType, entity.id));
     }
 }
