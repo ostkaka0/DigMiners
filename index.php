@@ -25,6 +25,7 @@
         <?php
             $includedScripts = array();
             function addScript($path) {
+                global $includedScripts;
                 if (isset($includedScripts[$path]))
                     return;
                 $includedScripts[$path] = true;
