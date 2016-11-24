@@ -124,7 +124,7 @@ GameData.prototype.initializeEvents = function() {
             gameData.entityWorld.remove(this);
         }.bind(projectileEntity), projectileEntity.projectile.projectileType.stayTime);
         if (!isServer)
-            createDespawningParticles(projectileEntity.projectile.projectileType.hitParticle, projectileEntity.projectile.pos, 200);
+            createDespawningParticles(projectileEntity.projectile.projectileType.hitParticle(), projectileEntity.projectile.pos, 200);
     });
 
     this.eventHandler.on("projectileHitEntity", function(projectileEntity, hitEntity) {

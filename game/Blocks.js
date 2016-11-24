@@ -25,7 +25,7 @@ BulletFunctions.bunker = function(blockPos, blockType, entity) {
         }
         if (dis > blockType.bulletBunkerDistance) {
             if (!isServer)
-                createDespawningParticles(entity.projectile.projectileType.hitParticle, [blockPos[0] + 0.5, blockPos[1] + 0.5], 200);
+                createDespawningParticles(entity.projectile.projectileType.hitParticle(), [blockPos[0] + 0.5, blockPos[1] + 0.5], 200);
         }
     }
 }

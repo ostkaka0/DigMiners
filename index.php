@@ -41,6 +41,7 @@
             }
 
             addScriptsRecursive("lib");
+            addScript("lib_front_end/apixi.js");
             addScriptsRecursive("lib_front_end");
             addScriptsRecursive("engine");
             addScriptsRecursive("game");
