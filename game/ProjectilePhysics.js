@@ -58,7 +58,7 @@ projectileEntitySimulate = function(entity, dt) {
         gameData.physicsWorld.getBodiesInRadiusSorted(bodies, bodyDistances, pos, projectile.projectileType.radius);
         for (var j = 0; j < bodies.length; ++j) {
             var hitEntity = gameData.physicsEntities[bodies[j]];
-            if (!projectile.shooterEntityId || hitEntity.id != projectile.shooterEntityId) {
+            if (hitEntity && (!projectile.shooterEntityId || hitEntity.id != projectile.shooterEntityId)) {
                 gameData.events.trigger("projectileHitEntity", entity, hitEntity);
                 projectile.hit = true;
                 break;
