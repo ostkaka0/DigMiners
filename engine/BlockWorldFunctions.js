@@ -33,6 +33,28 @@ setForeground = function(blockWorld, x, y, value) {
         }
         blockWorld.set(blockChunkX, blockChunkY, null);
     }
+
+    if (!isServer) {
+        if (localX == 0) {
+            var otherChunk = blockWorld.get(blockChunkX - 1, blockChunkY);
+            if (otherChunk)
+                otherChunk.isChanged = true;
+        } else if (localX == BLOCK_CHUNK_DIM - 1) {
+            var otherChunk = blockWorld.get(blockChunkX + 1, blockChunkY);
+            if (otherChunk)
+                otherChunk.isChanged = true;
+        }
+        if (localY == 0) {
+            var otherChunk = blockWorld.get(blockChunkX, blockChunkY - 1);
+            if (otherChunk)
+                otherChunk.isChanged = true;
+        } else if (localY == BLOCK_CHUNK_DIM - 1) {
+            var otherChunk = blockWorld.get(blockChunkX, blockChunkY + 1).isChanged = true;
+            if (otherChunk)
+                otherChunk.isChanged = true;
+        }
+    }
+
 }
 
 getBackground = function(blockWorld, x, y) {
