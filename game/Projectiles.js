@@ -18,7 +18,7 @@ Projectiles.BigEgg = {
 }
 
 Projectiles.Egg = {
-    radius: 1.0,
+    radius: 0.2,
     maxDistance: 200,
     speed: 35.0,
     damage: 3.0,
@@ -30,11 +30,11 @@ Projectiles.Egg = {
 }
 
 Projectiles.CrossbowArrow = {
-    radius: 1.0,
+    radius: 0.2,
     maxDistance: 400,
     speed: 50.0,
     damage: 70.0,
-    blockDamage: 25.0,
+    blockDamage: 40.0,
     stayTime: 0,
     textureName: "egg",
     isExplosive: false,
@@ -42,10 +42,10 @@ Projectiles.CrossbowArrow = {
 }
 
 Projectiles.Nail = {
-    radius: 1.0,
+    radius: 0.2,
     maxDistance: 100,
     speed: 30.0,
-    damage: 3.0,
+    damage: 4.0,
     blockDamage: 1.0,
     stayTime: 0,
     textureName: "egg",

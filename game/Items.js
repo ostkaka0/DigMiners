@@ -484,7 +484,7 @@ initItems = function(gameData) {
         type: "tool",
         typeOfType: "rangedWeapon",
         projectileType: Projectiles.CrossbowArrow,
-        projectileScatter: 0.001
+        projectileScatter: 0.0
     }
     Items.WeaponNailgun = {
         name: "Nailgun",

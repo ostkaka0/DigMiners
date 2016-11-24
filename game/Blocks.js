@@ -8,6 +8,13 @@ Blocks = {};
 
 BulletFunctions = {};
 BulletFunctions.bunker = function(blockPos, blockType, entity) {
+    // Fix of diagonal shooting
+    if (entity.projectile.lastBunkerPos) {
+        if (v2.distance(entity.projectile.lastBunkerPos, entity.projectile.pos) < 0.75)
+            return;
+    }
+    entity.projectile.lastBunkerPos = v2.clone(entity.projectile.pos);
+    
     var entityPos = entity.projectile.startPos;
     var deltaPos = [blockPos[0] + 0.5 - entityPos[0], blockPos[1] + 0.5 - entityPos[1]];
     deltaPos = [Math.max(0, Math.abs(deltaPos[0]) - 0.5), Math.max(0, Math.abs(deltaPos[1]) - 0.5)];
@@ -24,18 +31,6 @@ BulletFunctions.bunker = function(blockPos, blockType, entity) {
         entity.projectile.hit = true;
         return;
     }
-    
-    /*if (damageFactor < entity.projectile.damageFactor) {
-        entity.projectile.damageFactor = damageFactor;
-        if (entity.projectile.sprite) {
-            entity.projectile.sprite.scale.x = damageFactor;
-            entity.projectile.sprite.scale.y = damageFactor;
-        }
-        if (dis > blockType.bulletBunkerDistance) {
-            if (!isServer)
-                createDespawningParticles(entity.projectile.projectileType.hitParticle(), [blockPos[0] + 0.5, blockPos[1] + 0.5], 200);
-        }
-    }*/
 }
 
 Blocks.Null = {
@@ -73,7 +68,7 @@ Blocks.BunkerWindow = {
     type: BlockTypes.FOREGROUND,
     isBulletSolid: false,
     bulletFunction: BulletFunctions.bunker,
-    bulletBunkerDistance: 2.0,
-    bulletBunkerNearFactor: 0.8,
-    bulletBunkerFarFactor: 0.6
+    bulletBunkerDistance: 1.0,
+    bulletBunkerNearFactor: 1.0,
+    bulletBunkerFarFactor: 0.5
 }
