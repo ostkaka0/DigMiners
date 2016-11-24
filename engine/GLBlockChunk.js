@@ -13,43 +13,50 @@ GLBlockChunk.prototype.update = function(gl, gameData, blockChunk) {
 
     for (var x = 0; x < BLOCK_CHUNK_DIM; x++) {
         for (var y = 0; y < BLOCK_CHUNK_DIM; y++) {
-            var blockId = blockChunk.getForeground(x, y);
-            if (blockId == 0)
-                blockId = blockChunk.getBackground(x, y);
-            if (blockId == 0) continue;
-            var tile = gameData.blockRegister[blockId];
+            blockIds = [blockChunk.getForeground(x-1, y-1),
+                        blockChunk.getForeground(x, y-1),
+                        blockChunk.getForeground(x-1, y),
+                        blockChunk.getForeground(x, y)];
+            
+            var tiles = [gameData.blockRegister[blockIds[0]],
+                         gameData.blockRegister[blockIds[1]],
+                         gameData.blockRegister[blockIds[2]],
+                         gameData.blockRegister[blockIds[3]]];
+                         
+            for (var i = 0; i < 4; i++) {
+                var blockId = blockIds[i];
+                if (blockId == 0) continue;
+                var cornerIndex = 3 - i;
+                var borderIndex = (blockIds[i^1]? 1:0) + 2 * (blockIds[i^2]? 1:0);// + 4 * (blockIds[i^4]? 1:0);
+                var textureX = 4 * (blockId % 16) + 2 * (borderIndex / 2 >> 0) + cornerIndex % 2;
+                var textureY = 4 * (blockId / 16 >> 0) + 2 * (borderIndex % 2 >> 0) + (cornerIndex / 2 >> 0);
+                var textureQuadDim = 64; // dim of texture by quads
+                var quadDim = 16; // dim of quad by pixels
+                
+                verticesPos.push(x * tileSize + (i % 2 - 1) * quadDim, y * tileSize + ((i / 2 >> 0) - 0) * quadDim);
+                verticesPos.push(x * tileSize + (i % 2 - 0) * quadDim, y * tileSize + ((i / 2 >> 0) - 0) * quadDim);
+                verticesPos.push(x * tileSize + (i % 2 - 0) * quadDim, y * tileSize + ((i / 2 >> 0) - 1) * quadDim);
+                verticesPos.push(x * tileSize + (i % 2 - 1) * quadDim, y * tileSize + ((i / 2 >> 0) - 0) * quadDim);
+                verticesPos.push(x * tileSize + (i % 2 - 0) * quadDim, y * tileSize + ((i / 2 >> 0) - 1) * quadDim);
+                verticesPos.push(x * tileSize + (i % 2 - 1) * quadDim, y * tileSize + ((i / 2 >> 0) - 1) * quadDim);
 
-            // Texture is 16x16 tiles, each with 4 corner variants
-            var textureTileDim = 32; // Size of texture by tiles
-            var textureX = blockId % 16 * 2;
-            var textureY = (blockId / 16 >> 0) * 2;
-
-            verticesPos.push(x * tileSize, y * tileSize);
-            verticesPos.push((x + 1) * tileSize, y * tileSize);
-            verticesPos.push((x + 1) * tileSize, (y + 1) * tileSize);
-            verticesPos.push(x * tileSize, y * tileSize);
-            verticesPos.push((x + 1) * tileSize, (y + 1) * tileSize);
-            verticesPos.push(x * tileSize, (y + 1) * tileSize);
-
-            verticesUV.push((textureX + 0) / textureTileDim, 1 - (textureY + 1) / textureTileDim);
-            verticesUV.push((textureX + 1) / textureTileDim, 1 - (textureY + 1) / textureTileDim);
-            verticesUV.push((textureX + 1) / textureTileDim, 1 - (textureY + 0) / textureTileDim);
-            verticesUV.push((textureX + 0) / textureTileDim, 1 - (textureY + 1) / textureTileDim);
-            verticesUV.push((textureX + 1) / textureTileDim, 1 - (textureY + 0) / textureTileDim);
-            verticesUV.push((textureX + 0) / textureTileDim, 1 - (textureY + 0) / textureTileDim);
-
-            if (tile.type == BlockTypes.FOREGROUND) {
-                var strength = blockChunk.getStrength(x, y);
-                textureX = Math.ceil(10 - (strength / 255.0) * 10);
-            } else
-                textureX = 0;
-            textureY = 0;
-            verticesBreakUV.push((textureX + 0) / textureTileDim, 1 - (textureY + 1) / textureTileDim);
-            verticesBreakUV.push((textureX + 1) / textureTileDim, 1 - (textureY + 1) / textureTileDim);
-            verticesBreakUV.push((textureX + 1) / textureTileDim, 1 - (textureY + 0) / textureTileDim);
-            verticesBreakUV.push((textureX + 0) / textureTileDim, 1 - (textureY + 1) / textureTileDim);
-            verticesBreakUV.push((textureX + 1) / textureTileDim, 1 - (textureY + 0) / textureTileDim);
-            verticesBreakUV.push((textureX + 0) / textureTileDim, 1 - (textureY + 0) / textureTileDim);
+                verticesUV.push((textureX + 0) / textureQuadDim, 1 - (textureY + 1) / textureQuadDim);
+                verticesUV.push((textureX + 1) / textureQuadDim, 1 - (textureY + 1) / textureQuadDim);
+                verticesUV.push((textureX + 1) / textureQuadDim, 1 - (textureY + 0) / textureQuadDim);
+                verticesUV.push((textureX + 0) / textureQuadDim, 1 - (textureY + 1) / textureQuadDim);
+                verticesUV.push((textureX + 1) / textureQuadDim, 1 - (textureY + 0) / textureQuadDim);
+                verticesUV.push((textureX + 0) / textureQuadDim, 1 - (textureY + 0) / textureQuadDim);
+                
+                var strength = blockChunk.getStrength(x + i%2 - 1, y + (i/2>>0) - 1);
+                textureX = Math.ceil(40 - (strength / 255.0) * 40) + 2 * (cornerIndex % 2);
+                textureY = 2 * (cornerIndex / 2 >> 0);
+                verticesBreakUV.push((textureX + 0) / textureQuadDim, 1 - (textureY + 1) / textureQuadDim);
+                verticesBreakUV.push((textureX + 1) / textureQuadDim, 1 - (textureY + 1) / textureQuadDim);
+                verticesBreakUV.push((textureX + 1) / textureQuadDim, 1 - (textureY + 0) / textureQuadDim);
+                verticesBreakUV.push((textureX + 0) / textureQuadDim, 1 - (textureY + 1) / textureQuadDim);
+                verticesBreakUV.push((textureX + 1) / textureQuadDim, 1 - (textureY + 0) / textureQuadDim);
+                verticesBreakUV.push((textureX + 0) / textureQuadDim, 1 - (textureY + 0) / textureQuadDim);
+            }
         }
     }
 
@@ -57,7 +64,7 @@ GLBlockChunk.prototype.update = function(gl, gameData, blockChunk) {
         this.vbo = gl.createBuffer();
     }
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vbo);
-    gl.bufferData(gl.ARRAY_BUFFER, 2 * 3 * 4 * verticesPos.length, gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, 2 * 3 * 4 * verticesPos.length, gl.DYNAMIC_DRAW);
     gl.bufferSubData(gl.ARRAY_BUFFER, 0, new Float32Array(verticesPos));
     gl.bufferSubData(gl.ARRAY_BUFFER, verticesPos.length * 2 * 4, new Float32Array(verticesUV));
     gl.bufferSubData(gl.ARRAY_BUFFER, verticesPos.length * 2 * 4 * 2, new Float32Array(verticesBreakUV));
