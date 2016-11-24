@@ -18,7 +18,7 @@ MessageRequestKeyStatusUpdate.prototype.execute = function(gameData, player) {
     var physicsBody = entity.physicsBody;
     if (!physicsBody) return;
 
-    sendCommand(new CommandKeyStatusUpdate(player.entityId, this.key, this.pressed, physicsBody.pos));
+    sendCommand(new CommandKeyStatusUpdate(player.entityId, this.key, this.pressed, physicsBody.getPos()));
 }
 
 MessageRequestKeyStatusUpdate.prototype.send = function(socket) {

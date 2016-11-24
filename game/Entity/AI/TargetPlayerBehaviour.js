@@ -12,7 +12,7 @@ TargetPlayerBehaviour.prototype.canRun = function() {
     this.target = this.getTarget();
     if (this.target == null)
         return false;
-    var dis = v2.distanceSquared(this.entity.physicsBody.pos, this.target.physicsBody.pos);
+    var dis = v2.distance(this.entity.physicsBody.getPos(), this.target.physicsBody.getPos());
     if (dis >= this.maxRadius)
         return false;
     return true;
@@ -30,21 +30,21 @@ TargetPlayerBehaviour.prototype.run = function() {
             return false;
     }
 
-    var tilePos = [Math.floor(this.entity.physicsBody.pos[0]), Math.floor(this.entity.physicsBody.pos[1])];
-    var tilePosTarget = [Math.floor(this.target.physicsBody.pos[0]), Math.floor(this.target.physicsBody.pos[1])];
+    var tilePos = [Math.floor(this.entity.physicsBody.getPos()[0]), Math.floor(this.entity.physicsBody.getPos()[1])];
+    var tilePosTarget = [Math.floor(this.target.physicsBody.getPos()[0]), Math.floor(this.target.physicsBody.getPos()[1])];
 
-    var dis = v2.distanceSquared(this.entity.physicsBody.pos, this.target.physicsBody.pos);
+    var dis = v2.distance(this.entity.physicsBody.getPos(), this.target.physicsBody.getPos());
 
     if (dis > this.maxRadius)
         return false;
     if (gameData.tickId >= this.nextUpdateTick) {
-        if (!this.lastTargetPos || !this.flowField || v2.distance(this.lastTargetPos, this.target.physicsBody.pos) > v2.distance(this.entity.physicsBody.pos, this.target.physicsBody.pos)) {
+        if (!this.lastTargetPos || !this.flowField || v2.sqrDistance(this.lastTargetPos, this.target.physicsBody.getPos()) > v2.sqrDistance(this.entity.physicsBody.getPos(), this.target.physicsBody.getPos())) {
             this.flowField = new Map2D();
             var expandList = [];
             aStarFlowField(this.flowField, expandList, gameData.tileWorld, gameData.blockWorld, tilePos, tilePosTarget, 2560);
             var delay = Math.min(2000, expandList.length * 10);
             this.nextUpdateTick = gameData.tickId + (delay / gameData.tickDuration >> 0);
-            this.lastTargetPos = v2.clone(this.target.physicsBody.pos);
+            this.lastTargetPos = v2.clone(this.target.physicsBody.getPos());
         }
     }
 
@@ -64,21 +64,21 @@ TargetPlayerBehaviour.prototype.run = function() {
     //v2.normalize(dir, normalized);
 
     if (dis < 1.5 && !this.spacebar) {// 1.0 limit for punch 
-        sendCommand(new CommandKeyStatusUpdate(this.entity.id, Keys.SPACEBAR, true, this.entity.physicsBody.pos));
+        sendCommand(new CommandKeyStatusUpdate(this.entity.id, Keys.SPACEBAR, true, this.entity.physicsBody.getPos()));
         this.spacebar = true;
     } else if (dis >= 1.5 && this.spacebar) {
-        sendCommand(new CommandKeyStatusUpdate(this.entity.id, Keys.SPACEBAR, false, this.entity.physicsBody.pos));
+        sendCommand(new CommandKeyStatusUpdate(this.entity.id, Keys.SPACEBAR, false, this.entity.physicsBody.getPos()));
         this.spacebar = false;
     }
 
     var currentDir = this.entity.movement.direction;
     if (dir[0] != currentDir[0] || dir[1] != currentDir[1])
-        sendCommand(new CommandEntityMove(this.entity.id, dir, this.entity.physicsBody.pos[0], this.entity.physicsBody.pos[1]));
+        sendCommand(new CommandEntityMove(this.entity.id, dir, this.entity.physicsBody.getPos()));
     return true;
 }
 
 TargetPlayerBehaviour.prototype.finish = function() {
-    sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.pos[0], this.entity.physicsBody.pos[1]));
+    sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.getPos()));
     this.target = null;
     this.flowField = null;
 }
@@ -95,7 +95,7 @@ TargetPlayerBehaviour.prototype.getTarget = function() {
         var otherEntity = gameData.entityWorld.objects[otherPlayer.entityId];
         if (!otherEntity || otherEntity.isDead || !otherEntity.isActive) return;
         if (this.entity.id != otherEntity.id && otherEntity.physicsBody && otherEntity.health) {
-            var dis = v2.distanceSquared(this.entity.physicsBody.pos, otherEntity.physicsBody.pos);
+            var dis = v2.distance(this.entity.physicsBody.getPos(), otherEntity.physicsBody.getPos());
             if (dis < shortestDistance) {
                 shortestDistance = dis;
                 shortestDistanceEntity = otherEntity;

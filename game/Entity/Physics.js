@@ -12,21 +12,20 @@ COLLISION_BLOCKS = [
     [-1, -1]
 ];
 
-entityFunctionPhysicsBodySimulate = function(gameData, dt) {
-    var entityWorld = gameData.entityWorld;
-    entityWorld.objectArray.forEach(function(entity) {
+entityFunctionPhysicsBodySimulate = function(dt) {
+    gameData.entityWorld.objectArray.forEach(function(entity) {
         if (entity.physicsBody)
-            physicsBodySimulate(gameData, entity.physicsBody, dt);
+            physicsBodySimulate(entity.physicsBody, dt);
     });
 }
 
-physicsBodySimulate = function(gameData, physicsBody, dt) {
+physicsBodySimulate = function(physicsBody, dt) {
     // Calculate deltaPos and number of steps
     var pos = physicsBody.getPos();
 
     var deltaPos = v2.create(0, 0);
     v2.sub(pos, physicsBody.posOld, deltaPos);
-    var deltaPosLength = v2.lengthSquared(deltaPos);
+    var deltaPosLength = v2.length(deltaPos);
     var numSteps = Math.ceil(deltaPosLength / PHYSICS_MAX_STEP_LENGTH);
     v2.div(deltaPos, numSteps, deltaPos);
     deltaPosLength /= numSteps;
@@ -97,8 +96,7 @@ physicsBodySimulate = function(gameData, physicsBody, dt) {
                 var deltaSpeed = [0, 0];
                 v2.mul(-1.0 * dot, normal, deltaSpeed);
                 v2.div(deltaSpeed, numSteps, deltaSpeed);
-                //deltaPos = [(1.0 - Math.abs(normal[0])) * deltaPos[0], (1.0 - Math.abs(normal[1])) * deltaPos[1]];
-                v2.add(deltaSpeed, velocity, velocity);//physicsBody.speed = [(1.0 - Math.abs(normal[0])) * physicsBody.speed[0], (1.0 - Math.abs(normal[1])) * physicsBody.speed[1]];
+                v2.add(deltaSpeed, velocity, velocity);
             }
         }
     }

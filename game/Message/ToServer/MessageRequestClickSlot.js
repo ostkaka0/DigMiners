@@ -23,7 +23,7 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
         var itemEntityId = idList.next();
         var itemEntity = entityTemplates.item(item.id, item.amount, gameData);
         itemEntity.physicsBody.setPos(physicsBody.getPos());
-        itemEntity.physicsBody.posOld = v2.create(physicsBody.pos[0], physicsBody.pos[1]);
+        itemEntity.physicsBody.posOld = v2.clone(physicsBody.getPos());
         itemEntity.physicsBody.setVelocity([speed2[0], speed2[1]]);
         itemEntity.physicsBody.speedOld = v2.create(speed2[0], speed2[1]);
         itemEntity.physicsBody.angle = physicsBody.angle;

@@ -73,7 +73,7 @@ PhysicsWorld.prototype.update = function(dt) {
             // Calc position
             var dir = [0, 0];
             v2.sub(otherPosOld, posOld, dir);
-            var dis = v2.length(dir);
+            var dis = v2.sqrLength(dir);
             v2.normalize(dir, dir);
             if (dis == 0)
                 dir = [1, 0];

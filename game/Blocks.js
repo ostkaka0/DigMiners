@@ -11,7 +11,7 @@ BulletFunctions.bunker = function(blockPos, blockType, entity) {
     var entityPos = entity.projectile.startPos;
     var deltaPos = [blockPos[0] + 0.5 - entityPos[0], blockPos[1] + 0.5 - entityPos[1]];
     deltaPos = [Math.max(0, Math.abs(deltaPos[0]) - 0.5), Math.max(0, Math.abs(deltaPos[1]) - 0.5)];
-    var dis = v2.lengthSquared(deltaPos);
+    var dis = v2.length(deltaPos);
     var damageFactor;
     if (dis > blockType.bulletBunkerDistance)
         damageFactor = blockType.bulletBunkerFarFactor;

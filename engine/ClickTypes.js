@@ -1,5 +1,6 @@
 
 ClickTypes = {
-    LEFT_CLICK: 0,
-    RIGHT_CLICK: 1
+    UNKNOWN: 0,
+    LEFT_CLICK: 1,
+    RIGHT_CLICK: 2
 }

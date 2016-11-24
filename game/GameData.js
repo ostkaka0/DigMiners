@@ -22,7 +22,7 @@ GameData = function(idList) {
     this.physicsWorld = new PhysicsWorld();
     this.physicsEntities = {};
     this.generator = null;
-    this.eventHandler = new EventHandler();
+    this.events = new EventHandler();
     this.initializeEvents();
     if (!isServer)
         this.animationManager = new AnimationManager();
@@ -32,7 +32,7 @@ GameData = function(idList) {
     this.pendingCommands = {};
     this.commandTypes = typeRegisterAddByArray([], [CommandEntityMove, CommandDig, CommandEntityDig, CommandEntityEquipItem, CommandEntityBuild, CommandHurtEntity, CommandEntitySpawn, CommandCollisions, CommandEntityDestroy, CommandPlayerJoin, CommandPlayerLeave, CommandKeyStatusUpdate, CommandEntityInventory, CommandPlayerOreInventory, CommandEntityRotate, CommandBlockStrength, CommandProjectileSpawn]);
     this.messagesToClient = [MessageInit, MessageCommands, MessageChunk];
-    this.messagesToServer = [MessageRequestKeyStatusUpdate, MessageRequestItemPickup, MessageRequestClickSlot, MessageRequestCraft, MessageRequestPlaceBlock, MessageRequestClickEntity, MessageRequestRotate];
+    this.messagesToServer = [MessageRequestKeyStatusUpdate, MessageRequestItemPickup, MessageRequestClickSlot, MessageRequestCraft, MessageRequestPlaceBlock, MessageRequestClickEntity, MessageRequestRotate, MessageRequestClickBlock];
     this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
     this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent, EquippedItems, Projectile]);
 
@@ -107,27 +107,27 @@ GameData.prototype.tick = function(dt) {
     this.commands.length = 0;
     this.playerWorld.update();
     this.physicsWorld.update(dt);
-    entityFunctionEntityMovement(this, dt);
-    entityFunctionPhysicsBodySimulate(this, dt);
-    entityFunctionProjectileSimulate(this, dt);
+    entityFunctionEntityMovement(dt);
+    entityFunctionPhysicsBodySimulate(dt);
+    entityFunctionProjectileSimulate(dt);
     this.entityWorld.update();
     this.particleEmitterWorld.update();
     this.tickId++;
 }
 
 GameData.prototype.initializeEvents = function() {
-    this.eventHandler.on("projectileHit", function(projectileEntity) {
+    this.events.on("projectileHit", function(projectileEntity, hitPos) {
         setTimeout(function() {
             var type = this.projectile.projectileType;
             if (type.isExplosive)
-                createExplosion(this.projectile.pos, type.explosiveRadius, type.explosiveEntityDamage, type.explosionBlockDamage, type.explosionTileDamage);
+                createExplosion(hitPos, type.explosiveRadius, type.explosiveEntityDamage, type.explosionBlockDamage, type.explosionTileDamage);
             gameData.entityWorld.remove(this);
         }.bind(projectileEntity), projectileEntity.projectile.projectileType.stayTime);
         if (!isServer)
-            createDespawningParticles(projectileEntity.projectile.projectileType.hitParticle(), projectileEntity.projectile.pos, 200);
+            createDespawningParticles(projectileEntity.projectile.projectileType.hitParticle(), hitPos, 200);
     });
 
-    this.eventHandler.on("projectileHitEntity", function(projectileEntity, hitEntity) {
+    this.events.on("projectileHitEntity", function(projectileEntity, hitEntity) {
         if (isServer) {
             if (hitEntity && hitEntity.health && projectileEntity.projectile.projectileType.damage > 0) {
                 var damage = projectileEntity.projectile.projectileType.damage * projectileEntity.projectile.damageFactor;
@@ -136,7 +136,7 @@ GameData.prototype.initializeEvents = function() {
         }
     });
 
-    this.eventHandler.on("projectileHitBlock", function(projectileEntity, blockPos) {
+    this.events.on("projectileHitBlock", function(projectileEntity, blockPos) {
         if (isServer) {
             if (projectileEntity.projectile.projectileType.blockDamage > 0) {
                 var strength = getStrength(gameData.blockWorld, blockPos[0], blockPos[1]);
@@ -146,18 +146,18 @@ GameData.prototype.initializeEvents = function() {
         }
     });
 
-    this.eventHandler.on("projectileHitTile", function(projectileEntity, tilePos) {
+    this.events.on("projectileHitTile", function(projectileEntity, tilePos) {
 
     });
 
-    this.eventHandler.on("healthChange", function(entity) {
+    this.events.on("healthChange", function(entity) {
         var sprite = entity.drawable.sprites["healthbar"];
         if (!sprite || !sprite.sprite) return;
         var defaultHealthbarWidth = 64;
         sprite.sprite.width = (entity.health.health / entity.health.maxHealth) * defaultHealthbarWidth;
     });
 
-    this.eventHandler.on("entityDeath", function(entity) {
+    this.events.on("entityDeath", function(entity) {
         if (!entity.isDead) {
             entity.isDead = true;
             gameData.entityWorld.remove(entity);
