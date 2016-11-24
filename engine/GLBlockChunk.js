@@ -25,7 +25,7 @@ GLBlockChunk.prototype.update = function(gl, gameData, blockChunk) {
                          
             for (var i = 0; i < 4; i++) {
                 var blockId = blockIds[i];
-                if (blockId == 0) continue;
+                if (!blockId) continue;
                 var cornerIndex = 3 - i;
                 var borderIndex = (blockIds[i^1]? 1:0) + 2 * (blockIds[i^2]? 1:0);// + 4 * (blockIds[i^4]? 1:0);
                 var textureX = 4 * (blockId % 16) + 2 * (borderIndex / 2 >> 0) + cornerIndex % 2;
@@ -48,8 +48,8 @@ GLBlockChunk.prototype.update = function(gl, gameData, blockChunk) {
                 verticesUV.push((textureX + 0) / textureQuadDim, 1 - (textureY + 0) / textureQuadDim);
                 
                 var strength = blockChunk.getStrength(x + i%2 - 1, y + (i/2>>0) - 1);
-                textureX = Math.ceil(40 - (strength / 255.0) * 40) + 2 * (cornerIndex % 2);
-                textureY = 2 * (cornerIndex / 2 >> 0);
+                textureX = 2 * Math.ceil(10 - (strength / 255.0) * 10) + 1 * (cornerIndex % 2);
+                textureY = 1 * (cornerIndex / 2 >> 0);
                 verticesBreakUV.push((textureX + 0) / textureQuadDim, 1 - (textureY + 1) / textureQuadDim);
                 verticesBreakUV.push((textureX + 1) / textureQuadDim, 1 - (textureY + 1) / textureQuadDim);
                 verticesBreakUV.push((textureX + 1) / textureQuadDim, 1 - (textureY + 0) / textureQuadDim);
