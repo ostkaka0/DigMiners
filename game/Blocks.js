@@ -72,3 +72,15 @@ Blocks.BunkerWindow = {
     bulletBunkerNearFactor: 1.0,
     bulletBunkerFarFactor: 0.5
 }
+
+Blocks.ForceField = {
+    name: "Bunker Window",
+    isSolid: true,
+    hardness: 1.0,
+    type: BlockTypes.FOREGROUND,
+    isBulletSolid: false,
+    bulletFunction: BulletFunctions.bunker,
+    bulletBunkerDistance: 1.0,
+    bulletBunkerNearFactor: 1.0,
+    bulletBunkerFarFactor: 0.0
+}

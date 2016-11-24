@@ -4,15 +4,15 @@ Projectiles = {};
 Projectiles.BigEgg = {
     radius: 1.0,
     maxDistance: 50, // blocks
-    speed: 20.0, // blocks per second
+    speed: 25.0, // blocks per second
     damage: 10.0, // damage per hit
-    blockDamage: 100.0,
+    blockDamage: 200.0,
     stayTime: 0, // milliseconds projectile will stay after hit
     textureName: "bigEgg",
     isExplosive: true,
     explosiveRadius: 2.0,
     explosiveEntityDamage: 30, // damage in HP units at center of explosion
-    explosionBlockDamage: 5, // damage in block HP units at center of explosion
+    explosionBlockDamage: 15, // damage in block HP units at center of explosion
     explosionTileDamage: 1, // number of times to run CommandDig with above radius
     hitParticle: function() { return Particles.BigEgg }
 }
@@ -20,7 +20,7 @@ Projectiles.BigEgg = {
 Projectiles.Egg = {
     radius: 0.2,
     maxDistance: 200,
-    speed: 35.0,
+    speed: 70.0,
     damage: 3.0,
     blockDamage: 1.0,
     stayTime: 200,
@@ -32,7 +32,7 @@ Projectiles.Egg = {
 Projectiles.CrossbowArrow = {
     radius: 0.2,
     maxDistance: 400,
-    speed: 50.0,
+    speed: 200.0,
     damage: 70.0,
     blockDamage: 40.0,
     stayTime: 0,
@@ -44,7 +44,7 @@ Projectiles.CrossbowArrow = {
 Projectiles.Nail = {
     radius: 0.2,
     maxDistance: 100,
-    speed: 30.0,
+    speed: 60.0,
     damage: 4.0,
     blockDamage: 1.0,
     stayTime: 0,

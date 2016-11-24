@@ -479,7 +479,7 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.RangedWeapon,
-        useCooldown: 1.0,
+        useCooldown: 2.0,
         useDuration: 0,
         type: "tool",
         typeOfType: "rangedWeapon",
