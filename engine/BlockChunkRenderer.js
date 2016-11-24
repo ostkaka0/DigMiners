@@ -102,10 +102,11 @@ BlockChunkRenderer.prototype.renderBlockChunks = function(gameData, matVP, block
             blockChunk.isChanged = true;
         }
         // Update glBlockChunk
-        if (blockChunk.isChanged || true) {
-            glBlockChunk.update(this.gl, gameData, blockChunk);
+        if (blockChunk.isChanged) {
+            glBlockChunk.update(this.gl, gameData, blockChunk, x, y);
             blockChunk.isChanged = false;
         }
+        glBlockChunk.bind();
 
         // * Render the blockChunk
         // Uniforms
