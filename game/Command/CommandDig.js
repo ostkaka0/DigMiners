@@ -1,24 +1,22 @@
 
-CommandDig = function(x, y, radius) {
-    this.x = toFix(x);
-    this.y = toFix(y);
+CommandDig = function(pos, radius) {
+    if (pos)
+        this.pos = v2.cloneFix(pos);
     this.radius = toFix(radius);
 }
 
 CommandDig.prototype.execute = function(gameData) {
     var tileWorld = gameData.tileWorld;
-    carveCircle(gameData, this.x, this.y, this.radius);
+    carveCircle(gameData, this.pos[0], this.pos[1], this.radius);
 }
 
 CommandDig.prototype.serialize = function(byteArray, index) {
-    serializeFix(byteArray, index, this.x);
-    serializeFix(byteArray, index, this.y);
+    serializeV2(byteArray, index, this.pos);
     serializeFix(byteArray, index, this.radius);
 }
 
 CommandDig.prototype.deserialize = function(byteArray, index) {
-    this.x = deserializeFix(byteArray, index);
-    this.y = deserializeFix(byteArray, index);
+    this.pos = deserializeV2(byteArray, index);
     this.radius = deserializeFix(byteArray, index);
 }
 

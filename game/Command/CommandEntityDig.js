@@ -1,8 +1,8 @@
 
-CommandEntityDig = function(entityId, x, y, dir, radius, digSpeed, maxDigHardness) {
+CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHardness) {
     this.entityId = entityId;
-    this.x = toFix(x);
-    this.y = toFix(y);
+    if (pos)
+        this.pos = v2.cloneFix(pos);
     this.dir = dir;
     this.radius = toFix(radius);
     this.digSpeed = digSpeed;
@@ -14,8 +14,8 @@ CommandEntityDig.prototype.execute = function(gameData) {
     if (!entity || !entity.movement) return;
 
     var tileWorld = gameData.tileWorld;
-    var targetTile = gameData.tileRegister[getTileId(gameData.tileWorld, this.x + 1.0 * this.dir[0], this.y + 1.0 * this.dir[1])];
-    var targetDensity = getDensity(gameData.tileWorld, this.x + 1.0 * this.dir[0], this.y + 1.0 * this.dir[1]);
+    var targetTile = gameData.tileRegister[getTileId(gameData.tileWorld, this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1])];
+    var targetDensity = getDensity(gameData.tileWorld, this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1]);
     var onDensityChange = null;
     var digDis = 1.5;
 
@@ -34,14 +34,16 @@ CommandEntityDig.prototype.execute = function(gameData) {
             else return oldDensity;
 
         };
-        v2.mul(0.5, entity.physicsBody.speed, entity.physicsBody.speed);
+        var velocity = v2.create(0, 0);
+        v2.mul(0.5, entity.physicsBody.getVelocity(), velocity);
+        entity.physicsBody.setVelocity(velocity);
     } else {
 
         entity.movement.isDigging = true;
         onDensityChange = function(tileX, tileY, tile, oldDensity, newDensity) { return (tile.isOre) ? oldDensity : newDensity; };
     }
 
-    var dug = carveCircle(gameData, this.x + digDis * this.dir[0], this.y + digDis * this.dir[1], this.radius, this.digSpeed, this.maxDigHardness, onDensityChange);
+    var dug = carveCircle(gameData, this.pos[0] + digDis * this.dir[0], this.pos[1] + digDis * this.dir[1], this.radius, this.digSpeed, this.maxDigHardness, onDensityChange);
     if (isServer) {
         // Only process dug ores on server
         for (var i = 0; i < dug.length; ++i) {
@@ -60,8 +62,7 @@ CommandEntityDig.prototype.execute = function(gameData) {
 
                     var itemEntityId = idList.next();
                     var itemEntity = entityTemplates.item(itemId, 1, gameData);
-                    itemEntity.physicsBody.pos = v2.create(physicsBody.pos[0], physicsBody.pos[1]);
-                    itemEntity.physicsBody.posOld = v2.create(physicsBody.pos[0], physicsBody.pos[1]);
+                    itemEntity.physicsBody.setPos(v2.clone(physicsBody.getPos()));
                     itemEntity.physicsBody.angle = physicsBody.angle;
                     itemEntity.physicsBody.angleOld = physicsBody.angle;
                     sendCommand(new CommandEntitySpawn(gameData, itemEntity, itemEntityId));
@@ -73,8 +74,7 @@ CommandEntityDig.prototype.execute = function(gameData) {
 
 CommandEntityDig.prototype.serialize = function(byteArray, index) {
     serializeInt32(byteArray, index, this.entityId);
-    serializeFix(byteArray, index, this.x);
-    serializeFix(byteArray, index, this.y);
+    serializeV2(byteArray, index, this.pos);
     serializeV2(byteArray, index, this.dir);
     serializeFix(byteArray, index, this.radius);
     serializeFix(byteArray, index, this.digSpeed);
@@ -83,8 +83,7 @@ CommandEntityDig.prototype.serialize = function(byteArray, index) {
 
 CommandEntityDig.prototype.deserialize = function(byteArray, index) {
     this.entityId = deserializeInt32(byteArray, index);
-    this.x = deserializeFix(byteArray, index);
-    this.y = deserializeFix(byteArray, index);
+    this.pos = deserializeV2(byteArray, index);
     this.dir = deserializeV2(byteArray, index);
     this.radius = deserializeFix(byteArray, index);
     this.digSpeed = deserializeFix(byteArray, index);

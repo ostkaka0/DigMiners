@@ -32,16 +32,16 @@ PhysicsBody.prototype.serialize = function(byteArray, index) {
 
 PhysicsBody.prototype.deserialize = function(byteArray, index) {
     this.setPos(deserializeV2(byteArray, index));
-    this.posOld = v2.clone(this.pos);
+    this.posOld = v2.clone(this.getPos());
     this.setVelocity(deserializeV2(byteArray, index));
-    this.speedOld = v2.clone(this.speed);
+    this.speedOld = v2.clone(this.getVelocity());
     this.angle = deserializeFix(byteArray, index);
     this.angleOld = this.angle;
     this.rotationSpeed = deserializeFix(byteArray, index);
     this.damping = deserializeFix(byteArray, index);
 
-    this.posClient = v2.clone(this.pos);
-    this.posClientOld = v2.clone(this.pos);
+    this.posClient = v2.clone(this.getPos());
+    this.posClientOld = v2.clone(this.getPos());
 }
 
 PhysicsBody.prototype.getSerializationSize = function() {
@@ -52,21 +52,7 @@ PhysicsBody.prototype.destroy = function(entity) {
     gameData.physicsWorld.remove(this.bodyId);
 }
 
-// TODO: Remove getters and setters
-// Temporary getters and setters
-Object.defineProperties(PhysicsBody.prototype, {
-    pos: {
-        get: function() { return gameData.physicsWorld.getPos(this.bodyId); },
-        set: function(pos) { }
-    },
-    speed: {
-        get: function() { return gameData.physicsWorld.getVelocity(this.bodyId); },
-        set: function(speed) { }
-    }
-});
-
 PhysicsBody.prototype.getPos = function() { return gameData.physicsWorld.getPos(this.bodyId); }
-PhysicsBody.prototype.getPosOld = function() { return gameData.physicsWorld.getPosOld(this.bodyId); }
 PhysicsBody.prototype.setPos = function(pos) { gameData.physicsWorld.setPos(this.bodyId, pos); }
 PhysicsBody.prototype.getVelocity = function() { return gameData.physicsWorld.getVelocity(this.bodyId); }
 PhysicsBody.prototype.setVelocity = function(velocity) { gameData.physicsWorld.setVelocity(this.bodyId, velocity); }
