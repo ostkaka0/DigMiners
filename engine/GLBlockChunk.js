@@ -33,7 +33,7 @@ GLBlockChunk.prototype.update = function(gl, gameData, blockChunk, chunkX, chunk
                 var blockId = blockIds[i];
                 if (!blockId) continue;
                 var cornerIndex = 3 - i;
-                var borderIndex = (blockIds[i ^ 1] ? 1 : 0) + 2 * (blockIds[i ^ 2] ? 1 : 0);// + 4 * (blockIds[i^4]? 1:0);
+                var borderIndex = (blockIds[i ^ 1] == blockId ? 1 : 0) + 2 * (blockIds[i ^ 2] == blockId ? 1 : 0);// + 4 * (blockIds[i^4]? 1:0);
                 var textureX = 4 * (blockId % 16) + 2 * (borderIndex / 2 >> 0) + cornerIndex % 2;
                 var textureY = 4 * (blockId / 16 >> 0) + 2 * (borderIndex % 2 >> 0) + (cornerIndex / 2 >> 0);
                 var textureQuadDim = 64; // dim of texture by quads
