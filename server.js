@@ -96,7 +96,7 @@ gameData.entityWorld.onAdd.push(function(entity) {
         // give player blocks at join
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.StoneWall.id, 100));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.StoneFloor.id, 20));
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.BunkerWindow.id, 20));
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.BunkerDoor.id, 20));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.ForceField.id, 20));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.EggShooter.id, 1));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.BigEggShooter.id, 1));

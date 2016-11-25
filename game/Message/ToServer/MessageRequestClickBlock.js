@@ -6,8 +6,12 @@ MessageRequestClickBlock = function(blockPos, clickType) {
 
 MessageRequestClickBlock.prototype.execute = function(gameData, player) {
     var entity = gameData.entityWorld.objects[player.entityId];
-    if (!entity) return;
-    console.log("player " + player.playerId + " clicked block " + this.blockPos + ", clicktype: " + this.clickType);
+    if (!entity || !this.blockPos) return;
+    //console.log("player " + player.playerId + " clicked block " + this.blockPos + ", clicktype: " + this.clickType);
+    var blockId = getForeground(gameData.blockWorld, this.blockPos[0], this.blockPos[1]);
+    var blockType = gameData.blockRegister[blockId];
+    if (blockType && blockType.isDoor)
+        blockType.doorFunction(this.blockPos, blockType, entity);
 }
 
 MessageRequestClickBlock.prototype.send = function(socket) {
