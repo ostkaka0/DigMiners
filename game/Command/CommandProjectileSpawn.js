@@ -18,6 +18,8 @@ CommandProjectileSpawn.prototype.execute = function(gameData) {
         entity.projectile.sprite = new PIXI.Sprite(gameData.textures[entity.projectile.projectileType.textureName]);
         entity.projectile.sprite.anchor.x = 0.5;
         entity.projectile.sprite.anchor.y = 0.5;
+        entity.projectile.sprite.scale.x = this.projectileType.scaleX;
+        entity.projectile.sprite.scale.y = this.projectileType.scaleY;
         zindices[2].addChild(entity.projectile.sprite);
     }
     projectileEntitySimulate(entity, gameData.tickDuration / 1000.0);
