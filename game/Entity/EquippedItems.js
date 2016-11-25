@@ -6,6 +6,7 @@ EquippedItems = function(items) {
 EquippedItems.prototype.name = equippedItems.name; function equippedItems() { };
 
 EquippedItems.prototype.serialize = function(byteArray, index) {
+    //todo: make sure all equipped items are not undefined
     var keys = Object.keys(this.items);
     serializeInt32(byteArray, index, keys.length);
     keys.forEach(function(key) {

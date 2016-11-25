@@ -164,4 +164,10 @@ GameData.prototype.initializeEvents = function() {
             console.log(entity.id + " died!");
         }
     });
+
+    this.events.on("entityHitBlock", function(entity, blockPos, blockType, blockCollisionSide) {
+        //console.log(entity.id + " hit block " + blockPos);
+        if (isServer && blockType && blockType.isDoor)
+            blockType.clickFunction(blockPos, blockType, entity, 0);
+    });
 }
