@@ -79,7 +79,7 @@ Generator.prototype.generateDungeons = function(blockWorld, chunk, chunkX, chunk
             if (xx == 0 || xx == width - 1)
                 blockChunk.setForeground(xx, yy, tileId);
             if (xx == openingX && yy == openingY)
-                blockChunk.setForeground(xx, yy, 0);
+                blockChunk.setForeground(xx, yy, Blocks.BunkerDoor.id);
 
             if (yy != 0 && yy != height - 1 && xx != 0 && xx != width - 1) {
                 blockChunk.setBackground(xx, yy, backgroundTileId);

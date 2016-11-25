@@ -71,7 +71,7 @@ BlockClickFunctions.door = function(startBlockPos, blockType, entity, clickType)
     for (var i = 0; i < doors.length; ++i) {
         var blockPos = doors[i];
         sendCommand(new CommandEntityBuild(-1, blockPos[0], blockPos[1], 0, BlockTypes.FOREGROUND));
-        sendCommand(new CommandParticles(Particles.Egg.id, [blockPos[0] + 0.5, blockPos[1] + 0.5], blockType.doorOpenTime));
+        sendCommand(new CommandParticles(Particles.Door.id, [blockPos[0] + 0.5, blockPos[1] + 0.5], 100));
     }
 
     var blockTypeId = blockType.id;
@@ -121,7 +121,7 @@ Blocks.BunkerDoor = {
     isDoor: true,
     clickFunction: BlockClickFunctions.door,
     maxDoorSize: 4,
-    doorOpenTime: 500
+    doorOpenTime: 1000
 }
 
 Blocks.ForceField = {
