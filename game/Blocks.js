@@ -6,8 +6,8 @@ BlockTypes = {
 
 Blocks = {};
 
-BulletFunctions = {};
-BulletFunctions.bunker = function(blockPos, blockType, entity) {
+BlockBulletFunctions = {};
+BlockBulletFunctions.bunker = function(blockPos, blockType, entity) {
     // Fix of diagonal shooting
     if (entity.projectile.lastBunkerPos) {
         if (v2.distance(entity.projectile.lastBunkerPos, entity.projectile.pos) < 0.75)
@@ -33,14 +33,13 @@ BulletFunctions.bunker = function(blockPos, blockType, entity) {
     }
 }
 
-DoorFunctions = {};
-DoorFunctions.bunker = function(startBlockPos, blockType, entity) {
+BlockClickFunctions = {};
+BlockClickFunctions.door = function(startBlockPos, blockType, entity, clickType) {
     var checked = [];
     var doors = [];
 
     var runRecursively = function(blockPos, blockType) {
         doors.push(blockPos);
-        sendCommand(new CommandEntityBuild(-1, blockPos[0], blockPos[1], 0, BlockTypes.FOREGROUND));
         var blockPositions = [
             [blockPos[0] + 1, blockPos[1]],
             [blockPos[0] - 1, blockPos[1]],
@@ -61,7 +60,19 @@ DoorFunctions.bunker = function(startBlockPos, blockType, entity) {
 
         }
     }
+    checked[startBlockPos[0]] = [];
+    checked[startBlockPos[0]][startBlockPos[1]] = true;
     runRecursively(startBlockPos, blockType);
+
+    // Too big doors should not work.
+    if (doors.length > blockType.maxDoorSize)
+        return;
+
+    for (var i = 0; i < doors.length; ++i) {
+        var blockPos = doors[i];
+        sendCommand(new CommandEntityBuild(-1, blockPos[0], blockPos[1], 0, BlockTypes.FOREGROUND));
+        sendCommand(new CommandParticles(Particles.Egg.id, [blockPos[0] + 0.5, blockPos[1] + 0.5], blockType.doorOpenTime));
+    }
 
     var blockTypeId = blockType.id;
     if (doors.length > 0) {
@@ -70,7 +81,7 @@ DoorFunctions.bunker = function(startBlockPos, blockType, entity) {
                 var blockPos = this[i];
                 sendCommand(new CommandEntityBuild(-1, blockPos[0], blockPos[1], blockTypeId, BlockTypes.FOREGROUND));
             }
-        }.bind(doors), 500);
+        }.bind(doors), blockType.doorOpenTime);
     }
 }
 
@@ -108,7 +119,9 @@ Blocks.BunkerDoor = {
     hardness: 1.0,
     type: BlockTypes.FOREGROUND,
     isDoor: true,
-    doorFunction: DoorFunctions.bunker
+    clickFunction: BlockClickFunctions.door,
+    maxDoorSize: 4,
+    doorOpenTime: 500
 }
 
 Blocks.ForceField = {
@@ -117,7 +130,7 @@ Blocks.ForceField = {
     hardness: 1.0,
     type: BlockTypes.FOREGROUND,
     isBulletSolid: false,
-    bulletFunction: BulletFunctions.bunker,
+    bulletFunction: BlockBulletFunctions.bunker,
     bulletBunkerDistance: 1.0,
     bulletBunkerNearFactor: 1.0,
     bulletBunkerFarFactor: 0.0
