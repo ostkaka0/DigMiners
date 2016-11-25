@@ -102,7 +102,7 @@ BlockChunkRenderer.prototype.renderBlockChunks = function(gameData, matVP, block
             blockChunk.isChanged = true;
         }
         // Update glBlockChunk
-        if (blockChunk.isChanged) {
+        if (true || blockChunk.isChanged) {
             glBlockChunk.update(this.gl, gameData, blockChunk, x, y);
             blockChunk.isChanged = false;
         }
