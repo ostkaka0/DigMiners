@@ -27,6 +27,8 @@ entityFunctionPhysicsBodySimulate = function(dt) {
 }
 
 physicsBodySimulate = function(physicsBody, dt) {
+    var playerFatness = 1; // player is 1 block wide
+
     // Calculate deltaPos and number of steps
     var pos = physicsBody.getPos();
 
@@ -41,29 +43,51 @@ physicsBodySimulate = function(physicsBody, dt) {
     // Simulate steps
     for (var i = 0; i < numSteps; i++) {
         v2.add(deltaPos, pos, pos);
-        // Block collision
+
+        // Trigger block hit events
         for (var j = 0; j < COLLISION_BLOCKS.length; ++j) {
-            var chunkPos = v2.create(0, 0);
-            var localPos = v2.create(0, 0);
             var worldPos = v2.clone(pos);
             worldPos[0] += COLLISION_BLOCKS[j][0];
             worldPos[1] += COLLISION_BLOCKS[j][1];
-            v2WorldToBlockChunk(worldPos, chunkPos, localPos);
-            var blockChunk = gameData.blockWorld.get(chunkPos[0], chunkPos[1]);
-            if (!blockChunk) continue;
-            var blockId = blockChunk.getForeground(localPos[0], localPos[1]);
+            var blockId = getForeground(gameData.blockWorld, worldPos[0], worldPos[1]);
             if (!blockId) continue; // Air
             var block = gameData.blockRegister[blockId];
             if (!block || !block.isSolid) continue;
 
-            var playerFatness = 1; // player is 1 block wide
-
-            var worldBlockPos = [chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0], chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1]];
+            var worldBlockPos = v2.create(0, 0);
+            v2.floor(worldPos, worldBlockPos);
             var dx = pos[0] - (worldBlockPos[0] + 0.5);
             var dy = pos[1] - (worldBlockPos[1] + 0.5);
 
             if (Math.abs(dx) < playerFatness && Math.abs(dy) < playerFatness) {
+                if (dy > dx) {
+                    if (dy > -dx)
+                        gameData.events.trigger("entityHitBlockSide", gameData.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.TOP);
+                    else
+                        gameData.events.trigger("entityHitBlockSide", gameData.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.LEFT);
+                } else if (dy > -dx)
+                    gameData.events.trigger("entityHitBlockSide", gameData.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.RIGHT);
+                else
+                    gameData.events.trigger("entityHitBlockSide", gameData.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.BOTTOM);
+            }
+        }
 
+        // Block collision
+        for (var j = 0; j < COLLISION_BLOCKS.length; ++j) {
+            var worldPos = v2.clone(pos);
+            worldPos[0] += COLLISION_BLOCKS[j][0];
+            worldPos[1] += COLLISION_BLOCKS[j][1];
+            var blockId = getForeground(gameData.blockWorld, worldPos[0], worldPos[1]);
+            if (!blockId) continue; // Air
+            var block = gameData.blockRegister[blockId];
+            if (!block || !block.isSolid) continue;
+
+            var worldBlockPos = v2.create(0, 0);
+            v2.floor(worldPos, worldBlockPos);
+            var dx = pos[0] - (worldBlockPos[0] + 0.5);
+            var dy = pos[1] - (worldBlockPos[1] + 0.5);
+
+            if (Math.abs(dx) < playerFatness && Math.abs(dy) < playerFatness) {
                 var blockLeft = worldBlockPos[0];
                 var blockRight = worldBlockPos[0] + 1.0
                 var blockTop = worldBlockPos[1] + 1.0;
@@ -72,26 +96,18 @@ physicsBodySimulate = function(physicsBody, dt) {
                 if (dy > dx) {
                     if (dy > -dx) {
                         pos[1] = blockTop + playerFatness / 2;
-                        //console.log("top, set ypos to " + pos[1]);
                         velocity[1] = 0;
-                        gameData.events.trigger("entityHitBlock", gameData.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.TOP);
 
                     } else {
                         pos[0] = blockLeft - playerFatness / 2;
-                        //console.log("left, set xpos to " + pos[0]);
                         velocity[0] = 0;
-                        gameData.events.trigger("entityHitBlock", gameData.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.LEFT);
                     }
                 } else if (dy > -dx) {
                     pos[0] = blockRight + playerFatness / 2;
-                    //console.log("right, set xpos to " + pos[0]);
                     velocity[0] = 0;
-                    gameData.events.trigger("entityHitBlock", gameData.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.RIGHT);
                 } else {
                     pos[1] = blockBottom - playerFatness / 2;
-                    //console.log("bottom, set ypos to " + pos[1]);
                     velocity[1] = 0;
-                    gameData.events.trigger("entityHitBlock", gameData.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.BOTTOM);
                 }
             }
         }

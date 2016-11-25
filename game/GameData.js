@@ -165,7 +165,7 @@ GameData.prototype.initializeEvents = function() {
         }
     });
 
-    this.events.on("entityHitBlock", function(entity, blockPos, blockType, blockCollisionSide) {
+    this.events.on("entityHitBlockSide", function(entity, blockPos, blockType, blockCollisionSide) {
         //console.log(entity.id + " hit block " + blockPos);
         if (isServer && blockType && blockType.isDoor)
             blockType.clickFunction(blockPos, blockType, entity, 0);

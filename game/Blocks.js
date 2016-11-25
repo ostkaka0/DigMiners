@@ -78,13 +78,30 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
 
         var blockTypeId = blockType.id;
         if (doors.length > 0) {
-            setTimeout(function() {
-                for (var i = 0; i < this.length; ++i) {
-                    var blockPos = this[i];
-                    sendCommand(new CommandEntityBuild(-1, blockPos[0], blockPos[1], blockTypeId, BlockTypes.FOREGROUND));
-                    sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], checked[blockPos[0]][blockPos[1]]));
-                }
-            }.bind(this), blockType.doorOpenTime);
+            var checkDoorClose = function() {
+                setTimeout(function() {
+                    var shouldClose = true;
+                    for (var i = 0; i < this.length; ++i) {
+                        var blockPos = this[i];
+                        var bodies = [];
+                        gameData.physicsWorld.getBodiesInRadius(bodies, [blockPos[0] + 0.5, blockPos[1] + 0.5], 0.5); // TODO: 1.0 magic number
+                        if (bodies.length > 0) {
+                            shouldClose = false;
+                            break;
+                        }
+
+                    }
+                    if (shouldClose) {
+                        for (var i = 0; i < this.length; ++i) {
+                            var blockPos = this[i];
+                            sendCommand(new CommandEntityBuild(-1, blockPos[0], blockPos[1], blockTypeId, BlockTypes.FOREGROUND));
+                            sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], checked[blockPos[0]][blockPos[1]]));
+                        }
+                    } else
+                        checkDoorClose();
+                }.bind(this), blockType.doorOpenTime);
+            }.bind(this);
+            checkDoorClose();
         }
     }.bind(doors), blockType.doorOpenDelay);
 }
@@ -96,11 +113,19 @@ BlockDoorFunctions.blueForcefield = function(blockPos, blockType, entity, clickT
         sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], startStrength));
         //sendCommand(new CommandParticles(Particles.Door.id, [startBlockPos[0] + 0.5, startBlockPos[1] + 0.5], 100));
 
-        var blockTypeId = blockType.id;
-        setTimeout(function() {
-            sendCommand(new CommandEntityBuild(-1, blockPos[0], blockPos[1], blockTypeId, BlockTypes.FOREGROUND));
-            sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], startStrength));
-        }, blockType.doorOpenTime);
+        var checkDoorClose = function() {
+            setTimeout(function() {
+                var bodies = [];
+                gameData.physicsWorld.getBodiesInRadius(bodies, [blockPos[0] + 0.5, blockPos[1] + 0.5], 0.5); // TODO: 1.0 magic number
+                if (bodies.length > 0)
+                    checkDoorClose();
+                else {
+                    sendCommand(new CommandEntityBuild(-1, blockPos[0], blockPos[1], blockType.id, BlockTypes.FOREGROUND));
+                    sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], startStrength));
+                }
+            }, blockType.doorOpenTime);
+        }
+        checkDoorClose();
     }, blockType.doorOpenDelay);
 }
 
@@ -163,7 +188,7 @@ Blocks.RedForcefield = {
     type: BlockTypes.FOREGROUND,
     isDoor: true,
     clickFunction: BlockDoorFunctions.redForcefield,
-    maxDoorSize: 4,
+    maxDoorSize: 10,
     doorOpenTime: 1000,
     doorOpenDelay: 200
 }
