@@ -136,7 +136,6 @@ render = function(tickFracTime) {
                 entity.projectile.sprite.position.y = y;
                 entity.projectile.sprite.rotation = entity.projectile.angle;
                 var distance = v2.distance(pos, entity.projectile.startPos)
-                console.log(distance + "   " + entity.projectile.projectileType.scaleX);
                 if (distance >= entity.projectile.projectileType.scaleX/4)
                     entity.projectile.sprite.visible = true;
             }
