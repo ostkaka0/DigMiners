@@ -127,13 +127,18 @@ render = function(tickFracTime) {
                 entity.bodyparts.bodyparts["feet"].animate(gameData, "feet", speed * 450.0, false);
             }
         } else if (entity.projectile) {
-            var x = -camera.pos[0] + canvas.width / 2 + 32.0 * (tickFracTime * entity.projectile.posClient[0] + (1 - tickFracTime) * entity.projectile.posClientOld[0]);
-            var y = camera.pos[1] + canvas.height / 2 - 32.0 * (tickFracTime * entity.projectile.posClient[1] + (1 - tickFracTime) * entity.projectile.posClientOld[1]);
+            var pos = [tickFracTime * entity.projectile.posClient[0] + (1 - tickFracTime) * entity.projectile.posClientOld[0], tickFracTime * entity.projectile.posClient[1] + (1 - tickFracTime) * entity.projectile.posClientOld[1]]
+            var x = -camera.pos[0] + canvas.width / 2 + 32.0 * pos[0];
+            var y = camera.pos[1] + canvas.height / 2 - 32.0 * pos[1];
 
             if (entity.projectile.sprite) {
                 entity.projectile.sprite.position.x = x;
                 entity.projectile.sprite.position.y = y;
                 entity.projectile.sprite.rotation = entity.projectile.angle;
+                var distance = v2.distance(pos, entity.projectile.startPos)
+                console.log(distance + "   " + entity.projectile.projectileType.scaleX);
+                if (distance >= entity.projectile.projectileType.scaleX/4)
+                    entity.projectile.sprite.visible = true;
             }
         }
     });
