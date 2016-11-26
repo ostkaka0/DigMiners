@@ -68,17 +68,21 @@ ItemFunctions.RangedWeapon = function(entity, item) {
         return [nx, ny];
     }
     var dir = rotateAround(0, 0, 0, -0.6, angle);
+    var maxDistance = (item.projectileType.hitAtCursor && entity.movement.deltaWorldCursorPos)?
+        v2.length(entity.movement.deltaWorldCursorPos) : item.projectileType.maxDistance;
     var numProjectiles = item.numProjectiles? item.numProjectiles : 1;
     for (var i = 0; i < numProjectiles; i++) {
         var scatter = item.projectileScatter;
         var projectileAngle = angle;
         var projectileSpeed = item.projectileType.speed;
+        var projectileMaxDistance = maxDistance;
         if (scatter > 0) {
             projectileAngle += Math.random() * 2 * scatter - scatter;
             projectileSpeed *= 1.0 - 2 * scatter + 4 * scatter * Math.random(); 
+            projectileMaxDistance *= 1.0 - 0.5 * scatter + scatter * Math.random(); 
         }
         var toolUsePos = [entity.physicsBody.getPos()[0] + 0.5 * dir[0], entity.physicsBody.getPos()[1] + 0.5 * dir[1]];
-        gameData.commands.push(new CommandProjectileSpawn(idList.next(), v2.clone(toolUsePos), projectileAngle, projectileSpeed, item.projectileType, entity.id));
+        gameData.commands.push(new CommandProjectileSpawn(idList.next(), v2.clone(toolUsePos), projectileAngle, projectileSpeed, projectileMaxDistance, item.projectileType, entity.id));
     }
 }
 
@@ -464,7 +468,7 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.RangedWeapon,
-        useCooldown: 1.0,
+        useCooldown: 2.5,
         useDuration: 0,
         type: "tool",
         typeOfType: "rangedWeapon",

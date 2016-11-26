@@ -32,7 +32,7 @@ projectileEntitySimulate = function(entity, dt) {
         
         var distance = v2.distance(projectile.startPos, projectile.pos);
 
-        if (distance > projectile.projectileType.maxDistance) {
+        if (distance > projectile.maxDistance) {
             projectile.hit = true;
             break;
         }
