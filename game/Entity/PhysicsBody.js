@@ -16,7 +16,7 @@ PhysicsBody = function(pos, damping) {
         this.damping = toFix(damping);
     this.angle = 0;
     this.angleOld = 0;
-    this.rotationSpeed = toFix(10.0);
+    this.rotationSpeed = 20.0;
 
 }
 
