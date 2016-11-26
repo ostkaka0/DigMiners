@@ -15,8 +15,10 @@ ItemFunctions.Shovel = function(entity, item) {
     if (blockChunk) {
         var blockId = blockChunk.getForeground(localPos[0], localPos[1]);
         if (blockId) {
+            var blockType = gameData.blockRegister[blockId];
             var strength = blockChunk.getStrength(localPos[0], localPos[1]);
-            strength -= 16;
+            // TODO: 16 magic value
+            strength -= 16 * (1 / blockType.hardness);
             var x = chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0];
             var y = chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1];
             sendCommand(new CommandBlockStrength(x, y, Math.max(strength, 0)));
@@ -68,9 +70,9 @@ ItemFunctions.RangedWeapon = function(entity, item) {
         return [nx, ny];
     }
     var dir = rotateAround(0, 0, 0, -0.6, angle);
-    var maxDistance = (item.projectileType.hitAtCursor && entity.movement.deltaWorldCursorPos)?
+    var maxDistance = (item.projectileType.hitAtCursor && entity.movement.deltaWorldCursorPos) ?
         v2.length(entity.movement.deltaWorldCursorPos) : item.projectileType.maxDistance;
-    var numProjectiles = item.numProjectiles? item.numProjectiles : 1;
+    var numProjectiles = item.numProjectiles ? item.numProjectiles : 1;
     for (var i = 0; i < numProjectiles; i++) {
         var scatter = item.projectileScatter;
         var projectileAngle = angle;
@@ -78,8 +80,8 @@ ItemFunctions.RangedWeapon = function(entity, item) {
         var projectileMaxDistance = maxDistance;
         if (scatter > 0) {
             projectileAngle += Math.random() * 2 * scatter - scatter;
-            projectileSpeed *= 1.0 - 2 * scatter + 4 * scatter * Math.random(); 
-            projectileMaxDistance *= 1.0 - 0.5 * scatter + scatter * Math.random(); 
+            projectileSpeed *= 1.0 - 2 * scatter + 4 * scatter * Math.random();
+            projectileMaxDistance *= 1.0 - 0.5 * scatter + scatter * Math.random();
         }
         var toolUsePos = [entity.physicsBody.getPos()[0] + 0.5 * dir[0], entity.physicsBody.getPos()[1] + 0.5 * dir[1]];
         gameData.commands.push(new CommandProjectileSpawn(idList.next(), v2.clone(toolUsePos), projectileAngle, projectileSpeed, projectileMaxDistance, item.projectileType, entity.id));
@@ -459,7 +461,7 @@ initItems = function(gameData) {
         projectileType: Projectiles.Pistol,
         projectileScatter: 0.02
     }
-    
+
     Items.WeaponSmg = {
         name: "Smg",
         texture: ItemTextures.ItemAtlas,
@@ -475,7 +477,7 @@ initItems = function(gameData) {
         projectileType: Projectiles.Smg,
         projectileScatter: 0.08
     }
-    
+
     Items.WeaponAssaultRifle = {
         name: "Assault Rifle",
         texture: ItemTextures.ItemAtlas,
@@ -491,7 +493,7 @@ initItems = function(gameData) {
         projectileType: Projectiles.AssaultRifle,
         projectileScatter: 0.05
     }
-    
+
     Items.WeaponMachineGun = {
         name: "Machine Gun",
         texture: ItemTextures.ItemAtlas,
