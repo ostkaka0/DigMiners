@@ -251,13 +251,7 @@ gameData.entityWorld.onAdd.push(function(entity) {
                 var worldCursorPos = [(this.mouseX + camera.pos[0] - camera.width / 2) / 32, (canvas.height - this.mouseY + camera.pos[1] - camera.height / 2) / 32];
                 var pos = entity.physicsBody.getPos();
                 var diff = [worldCursorPos[0] - pos[0], worldCursorPos[1] - pos[1]];
-                var normalized = v2.create(0, 0);
-                v2.normalize(diff, normalized);
-                diff = [diff[0], diff[1]]
-                var diffLen = 2*v2.length(diff);
-                var rotateAngle = Math.acos(Math.sqrt(diffLen*diffLen-0.25)/diffLen);
-                normalized = [Math.cos(rotateAngle) * normalized[0] - Math.sin(rotateAngle) * normalized[1], Math.cos(rotateAngle) * normalized[1] + Math.sin(rotateAngle) * normalized[0]];
-                new MessageRequestRotate(normalized).send(socket);
+                new MessageRequestRotate(diff).send(socket);
             }
         }.bind(this));
     }

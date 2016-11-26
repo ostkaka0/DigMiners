@@ -8,6 +8,8 @@ Blocks = {};
 
 BlockBulletFunctions = {};
 BlockBulletFunctions.bunker = function(blockPos, blockType, entity) {
+    if (entity.projectile.projectileType.penentrateBunkerWindow)
+        return;
     // Fix of diagonal shooting
     if (entity.projectile.lastBunkerPos) {
         if (v2.distance(entity.projectile.lastBunkerPos, entity.projectile.pos) < 0.75)
