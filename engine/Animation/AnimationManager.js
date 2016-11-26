@@ -23,14 +23,13 @@ AnimationManager.prototype.update = function() {
     var entityWorld = gameData.entityWorld;
     if (!entityWorld)
         console.error("Missing gameData.entityWorld");
-    var now = new Date();
     entityWorld.objectArray.forEach(function(entity) {
         if (entity.bodyparts) {
             forIn(this, entity.bodyparts.bodyparts, function(bodypart) {
                 bodypart = entity.bodyparts.bodyparts[bodypart];
 
                 if (bodypart.animInstance && bodypart.animInstance.animating) {
-                    var diff = now - bodypart.animInstance.lastFrame;
+                    var diff = new Date() - bodypart.animInstance.lastFrame;
 
                     while (diff >= bodypart.animInstance.mspf) {
                         diff -= bodypart.animInstance.mspf;
@@ -46,22 +45,26 @@ AnimationManager.prototype.update = function() {
                         }
                     }
                 } else if (bodypart.cycleInstance) {
-                    var diff = now - bodypart.cycleInstance.lastFrame;
+                    while (true) {
+                        var diff = new Date() - bodypart.cycleInstance.lastFrame + bodypart.cycleInstance.rest;
 
-                    while (diff >= bodypart.cycleInstance.mspf) {
-                        diff -= bodypart.cycleInstance.mspf;
-                        bodypart.cycleInstance.lastFrame = new Date();
-                        bodypart.cycleInstance.currentFrame += 1;
-                        if (bodypart.cycleInstance.currentFrame >= bodypart.cycleInstance.cycle.numFrames)
-                            bodypart.cycleInstance.currentFrame = 0;
-                        bodypart.cycleOffset = [bodypart.cycleInstance.cycle.frames[bodypart.cycleInstance.currentFrame][0],
-                        bodypart.cycleInstance.cycle.frames[bodypart.cycleInstance.currentFrame][1],
-                        bodypart.cycleInstance.cycle.frames[bodypart.cycleInstance.currentFrame][2]];
+                        if (diff >= bodypart.cycleInstance.mspf) {
+                            diff -= bodypart.cycleInstance.mspf;
+                            bodypart.cycleInstance.rest = diff;
+                            bodypart.cycleInstance.lastFrame = new Date();
+                            bodypart.cycleInstance.currentFrame += 1;
+                            if (bodypart.cycleInstance.currentFrame >= bodypart.cycleInstance.cycle.numFrames)
+                                bodypart.cycleInstance.currentFrame = 0;
+                            bodypart.cycleOffset = [bodypart.cycleInstance.cycle.frames[bodypart.cycleInstance.currentFrame][0],
+                            bodypart.cycleInstance.cycle.frames[bodypart.cycleInstance.currentFrame][1],
+                            bodypart.cycleInstance.cycle.frames[bodypart.cycleInstance.currentFrame][2]];
 
-                        if (bodypart.cycleInstance.runToEnd && bodypart.cycleInstance.currentFrame == 0) {
-                            bodypart.cycleInstance = false;
-                            bodypart.cycleInstance.finishing = false;
-                        }
+                            if (bodypart.cycleInstance.runToEnd && bodypart.cycleInstance.currentFrame == 0) {
+                                bodypart.cycleInstance = false;
+                                bodypart.cycleInstance.finishing = false;
+                            }
+                        } else
+                            break;
                     }
                 }
             });

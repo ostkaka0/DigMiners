@@ -79,14 +79,14 @@ entityFunctionEntityMovement = function(dt) {
         var velocity = entity.physicsBody.getVelocity();
         v2.add(normalized, velocity, velocity);
         entity.physicsBody.setVelocity(velocity);
-        
+
         var direction = entity.movement.rotationDirection;
         if (direction[0] != 0 || direction[1] != 0)
             entity.physicsBody.rotateTo(Math.atan2(-direction[1], direction[0]), entity.physicsBody.rotationSpeed, dt);
-        
+
         var tool = entity.equippedItems.items["tool"];
-        var useCooldownSeconds = (tool && tool.useCooldown)? tool.useCooldown : 0;//entity.movement.calcDigTickDuration(gameData.tickDuration); // digDuration
-        var useDurationSeconds = (tool && tool.useDuration)? tool.useDuration : 0;
+        var useCooldownSeconds = (tool && tool.useCooldown) ? tool.useCooldown : 0;//entity.movement.calcDigTickDuration(gameData.tickDuration); // digDuration
+        var useDurationSeconds = (tool && tool.useDuration) ? tool.useDuration : 0;
         var useCooldown = Math.round(useCooldownSeconds / dt);
         var useDuration = Math.round(useDurationSeconds / dt);
         useDuration = Math.min(useCooldown, useDuration);
@@ -96,9 +96,9 @@ entityFunctionEntityMovement = function(dt) {
         if (entity.movement.isUsingTool && entity.movement.toolUseTickTimeout <= 0) {
             entity.movement.toolUseTickTimeout = useCooldown;
             if (!isServer)
-                entity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArm", 64 / useCooldownSeconds, false);
+                entity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArm", 64 / useCooldownSeconds, true);
         }
-            
+
         if (useCooldown - entity.movement.toolUseTickTimeout == useDuration)
             onEntityUseTool(gameData, entity);
 

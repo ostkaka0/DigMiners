@@ -14,7 +14,7 @@ BlockChunk.prototype.getForeground = function(x, y) {
 
 BlockChunk.prototype.setForeground = function(x, y, value) {
     this.foreground[x + y * BLOCK_CHUNK_DIM] = value;
-    this.setStrength(x, y, gameData.blockRegister[value].hardness * 255.0);
+    this.setStrength(x, y, 255.0);
     this.isChanged = true;
 }
 

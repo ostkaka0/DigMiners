@@ -75,11 +75,12 @@ BodyPart.prototype.cycle = function(gameData, cycle, fps, runToEnd) {
         this.cycleInstance = {};
         this.cycleInstance.cycle = gameData.animationManager.cycles[cycle];
     }
+    this.cycleInstance.rest = 0;
     this.cycleInstance.mspf = 1000.0 / fps;
     if (!this.cycleInstance.lastFrame || !this.cycleInstance)
         this.cycleInstance.lastFrame = new Date();
-    if (!this.cycleInstance.currentFrame)
-        this.cycleInstance.currentFrame = 0;
+    //if (!this.cycleInstance.currentFrame)
+    this.cycleInstance.currentFrame = 0;
     this.cycleInstance.runToEnd = runToEnd; //If animation is aborted, finish animation and stop at frame 0
     this.cycleInstance.finishing = false;
 }
