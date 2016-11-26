@@ -140,7 +140,11 @@ GameData.prototype.initializeEvents = function() {
         if (isServer) {
             if (projectileEntity.projectile.projectileType.blockDamage > 0) {
                 var strength = getStrength(gameData.blockWorld, blockPos[0], blockPos[1]);
-                strength -= projectileEntity.projectile.projectileType.blockDamage;
+                var blockId = getForeground(gameData.blockWorld, blockPos[0], blockPos[1]);
+                var block = gameData.blockRegister[blockId];
+                var projectileArmor = (block.projectileArmor)? block.projectileArmor : 0;
+                console.log(block);
+                strength -= Math.round((1.0 - projectileArmor) * projectileEntity.projectile.projectileType.blockDamage);
                 sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], Math.max(strength, 0)));
             }
         }

@@ -20,11 +20,25 @@ Projectiles.BigEgg = {
     hitAtCursor: true // Egg will explode at cursor
 }
 
+Projectiles.Smg = {
+    radius: 0.2,
+    maxDistance: 150,
+    speed: 80.0,
+    damage: 3.0,
+    blockDamage: 1.0,
+    stayTime: 0,
+    textureName: "egg",
+    isExplosive: false,
+    hitParticle: function() { return Particles.Egg },
+    scaleX: 8.0,
+    scaleY: 0.5
+}
+
 Projectiles.Egg = {
     radius: 0.2,
     maxDistance: 200,
-    speed: 100.0,
-    damage: 3.0,
+    speed: 120.0,
+    damage: 4.0,
     blockDamage: 1.0,
     stayTime: 0,
     textureName: "egg",
@@ -54,7 +68,7 @@ Projectiles.Nail = {
     maxDistance: 100,
     speed: 80.0,
     damage: 6.0,
-    blockDamage: 1.0,
+    blockDamage: 3.0,
     stayTime: 0,
     textureName: "egg",
     isExplosive: false,
