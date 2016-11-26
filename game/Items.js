@@ -470,7 +470,7 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.RangedWeapon,
-        useCooldown: 0.1,
+        useCooldown: 0.12,
         useDuration: 0,
         type: "tool",
         typeOfType: "rangedWeapon",
@@ -491,7 +491,7 @@ initItems = function(gameData) {
         type: "tool",
         typeOfType: "rangedWeapon",
         projectileType: Projectiles.AssaultRifle,
-        projectileScatter: 0.05
+        projectileScatter: 0.03
     }
 
     Items.WeaponMachineGun = {
@@ -504,14 +504,14 @@ initItems = function(gameData) {
         itemFunction: ItemFunctions.RangedWeapon,
         useCooldown: 0.04,
         useDuration: 0,
-        numProjectiles: 2,
+        numProjectiles: 1,
         type: "tool",
         typeOfType: "rangedWeapon",
         projectileType: Projectiles.MachineGun,
         projectileScatter: 0.06
     }
     Items.WeaponShotgun = {
-        name: "Nailgun",
+        name: "Shotgun",
         texture: ItemTextures.ItemAtlas,
         spriteId: 7,
         isEquipable: true,

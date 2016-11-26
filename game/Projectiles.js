@@ -19,7 +19,7 @@ Projectiles.Smg = {
     radius: 0.2,
     maxDistance: 150,
     speed: 80.0,
-    damage: 3.0,
+    damage: 4.0,
     blockDamage: 1.0,
     stayTime: 50,
     textureName: "egg",
@@ -40,15 +40,15 @@ Projectiles.AssaultRifle = {
     isExplosive: false,
     hitParticle: function() { return Particles.Egg },
     scaleX: 12.0,
-    scaleY: 0.5
+    scaleY: 0.35
 }
 
 Projectiles.MachineGun = {
     radius: 0.2,
     maxDistance: 200,
     speed: 150.0,
-    damage: 2.0,
-    blockDamage: 2.0,
+    damage: 3.5,
+    blockDamage: 1.0,
     stayTime: 50,
     textureName: "egg",
     isExplosive: false,
