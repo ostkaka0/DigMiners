@@ -17,10 +17,11 @@ CommandProjectileSpawn.prototype.execute = function(gameData) {
     entity.projectile = new Projectile(this.pos, this.angle, this.speed, this.maxDistance, this.projectileType, this.shooterEntityId);
     if (!isServer) {
         entity.projectile.sprite = new PIXI.Sprite(gameData.textures[entity.projectile.projectileType.textureName]);
-        entity.projectile.sprite.anchor.x = 0.5;
+        entity.projectile.sprite.anchor.x = 1.0;
         entity.projectile.sprite.anchor.y = 0.5;
         entity.projectile.sprite.scale.x = this.projectileType.scaleX;
         entity.projectile.sprite.scale.y = this.projectileType.scaleY;
+        entity.projectile.sprite.visible = false;
         zindices[2].addChild(entity.projectile.sprite);
     }
     projectileEntitySimulate(entity, gameData.tickDuration / 1000.0);

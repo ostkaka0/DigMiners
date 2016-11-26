@@ -72,8 +72,11 @@ projectileEntitySimulate = function(entity, dt) {
             break;
     }
 
-    if (projectile.hit)
+    if (projectile.hit) {
         gameData.events.trigger("projectileHit", entity, v2.clone(pos));
+        if (!isServer)
+            projectile.sprite.anchor.x = 1.0;
+    }
 
     projectile.pos = pos;
     v2.copy(pos, projectile.posOld);
