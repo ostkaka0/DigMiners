@@ -11,12 +11,11 @@ BlockBulletFunctions.bunker = function(blockPos, blockType, entity) {
     if (entity.projectile.projectileType.penentrateBunkerWindow)
         return;
     // Fix of diagonal shooting
-    if (entity.projectile.lastBunkerPos) {
+    if (entity.projectile.lastBunkerPos != undefined) {
         if (v2.distance(entity.projectile.lastBunkerPos, entity.projectile.pos) < 0.75)
             return;
     }
     entity.projectile.lastBunkerPos = v2.clone(entity.projectile.pos);
-
     var entityPos = entity.projectile.startPos;
     var deltaPos = [blockPos[0] + 0.5 - entityPos[0], blockPos[1] + 0.5 - entityPos[1]];
     deltaPos = [Math.max(0, Math.abs(deltaPos[0]) - 0.5), Math.max(0, Math.abs(deltaPos[1]) - 0.5)];
@@ -148,8 +147,14 @@ Blocks.StoneWall = {
 Blocks.WoodCrate = {
     name: "Wood Crate",
     isSolid: true,
-    hardness: 1.0,
-    type: BlockTypes.FOREGROUND
+    hardness: 0.25,
+    type: BlockTypes.FOREGROUND,
+    isBulletSolid: false,
+    bulletFunction: BlockBulletFunctions.bunker,
+    bulletBunkerDistance: -1.0,
+    bulletBunkerNearFactor: 0.5,
+    bulletBunkerFarFactor: 0.5, 
+    projectileArmor: -1.0 // Extra sensitive to bullets
 };
 
 Blocks.StoneFloor = {
@@ -168,7 +173,8 @@ Blocks.BunkerWindow = {
     bulletFunction: BlockBulletFunctions.bunker,
     bulletBunkerDistance: 1.0,
     bulletBunkerNearFactor: 1.0,
-    bulletBunkerFarFactor: 0.5
+    bulletBunkerFarFactor: 0.5,
+    projectileArmor: 0.5
 }
 
 Blocks.BlueForcefield = {
@@ -179,7 +185,7 @@ Blocks.BlueForcefield = {
     isDoor: true,
     clickFunction: BlockDoorFunctions.blueForcefield,
     maxDoorSize: 1,
-    doorOpenTime: 1000,
+    doorOpenTime: 2000,
     doorOpenDelay: 200
 }
 
@@ -191,7 +197,7 @@ Blocks.RedForcefield = {
     isDoor: true,
     clickFunction: BlockDoorFunctions.redForcefield,
     maxDoorSize: 10,
-    doorOpenTime: 1000,
+    doorOpenTime: 2000,
     doorOpenDelay: 200
 }
 

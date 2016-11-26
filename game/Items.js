@@ -444,6 +444,22 @@ initItems = function(gameData) {
     }
 
     // Ranged weapons
+    Items.WeaponSmg = {
+        name: "Smg",
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 4,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.RangedWeapon,
+        useCooldown: 0.1,
+        useDuration: 0,
+        type: "tool",
+        typeOfType: "rangedWeapon",
+        projectileType: Projectiles.Smg,
+        projectileScatter: 0.08
+    }
+    
     Items.EggShooter = {
         name: "Egg Shooter",
         texture: ItemTextures.ItemAtlas,
@@ -452,7 +468,7 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.RangedWeapon,
-        useCooldown: 0.1,
+        useCooldown: 0.08,
         useDuration: 0,
         type: "tool",
         typeOfType: "rangedWeapon",
