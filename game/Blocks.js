@@ -154,7 +154,7 @@ Blocks.WoodCrate = {
     bulletBunkerDistance: -1.0,
     bulletBunkerNearFactor: 0.5,
     bulletBunkerFarFactor: 0.5, 
-    projectileArmor: -1.0 // Extra sensitive to bullets
+    projectileArmor: -3.0 // Extra sensitive to bullets
 };
 
 Blocks.StoneFloor = {

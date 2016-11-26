@@ -444,6 +444,22 @@ initItems = function(gameData) {
     }
 
     // Ranged weapons
+    Items.WeaponPistol = {
+        name: "Pistol",
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 4,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.RangedWeapon,
+        useCooldown: 0.5,
+        useDuration: 0,
+        type: "tool",
+        typeOfType: "rangedWeapon",
+        projectileType: Projectiles.Pistol,
+        projectileScatter: 0.02
+    }
+    
     Items.WeaponSmg = {
         name: "Smg",
         texture: ItemTextures.ItemAtlas,
@@ -460,8 +476,8 @@ initItems = function(gameData) {
         projectileScatter: 0.08
     }
     
-    Items.EggShooter = {
-        name: "Egg Shooter",
+    Items.WeaponAssaultRifle = {
+        name: "Assault Rifle",
         texture: ItemTextures.ItemAtlas,
         spriteId: 4,
         isEquipable: true,
@@ -472,41 +488,27 @@ initItems = function(gameData) {
         useDuration: 0,
         type: "tool",
         typeOfType: "rangedWeapon",
-        projectileType: Projectiles.Egg,
+        projectileType: Projectiles.AssaultRifle,
         projectileScatter: 0.05
     }
-
-    Items.BigEggShooter = {
-        name: "Big Egg Shooter",
+    
+    Items.WeaponMachineGun = {
+        name: "Machine Gun",
         texture: ItemTextures.ItemAtlas,
-        spriteId: 5,
+        spriteId: 4,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.RangedWeapon,
-        useCooldown: 2.5,
+        useCooldown: 0.04,
         useDuration: 0,
+        numProjectiles: 2,
         type: "tool",
         typeOfType: "rangedWeapon",
-        projectileType: Projectiles.BigEgg,
-        projectileScatter: 0.05
+        projectileType: Projectiles.MachineGun,
+        projectileScatter: 0.06
     }
-    Items.WeaponCrossbow = {
-        name: "Crossbow",
-        texture: ItemTextures.ItemAtlas,
-        spriteId: 6,
-        isEquipable: true,
-        isDropable: true,
-        maxStackSize: 1,
-        itemFunction: ItemFunctions.RangedWeapon,
-        useCooldown: 2.0,
-        useDuration: 0,
-        type: "tool",
-        typeOfType: "rangedWeapon",
-        projectileType: Projectiles.CrossbowArrow,
-        projectileScatter: 0.0
-    }
-    Items.WeaponNailgun = {
+    Items.WeaponShotgun = {
         name: "Nailgun",
         texture: ItemTextures.ItemAtlas,
         spriteId: 7,
@@ -519,7 +521,37 @@ initItems = function(gameData) {
         type: "tool",
         typeOfType: "rangedWeapon",
         numProjectiles: 8,
-        projectileType: Projectiles.Nail,
+        projectileType: Projectiles.Shotgun,
         projectileScatter: 0.15
+    }
+    Items.WeaponSniperRifle = {
+        name: "Sniper Rifle",
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 6,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.RangedWeapon,
+        useCooldown: 2.0,
+        useDuration: 0,
+        type: "tool",
+        typeOfType: "rangedWeapon",
+        projectileType: Projectiles.SniperRifle,
+        projectileScatter: 0.0
+    }
+    Items.WeaponGrenadeLauncher = {
+        name: "Grenade Launcher",
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 5,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.RangedWeapon,
+        useCooldown: 2.5,
+        useDuration: 0,
+        type: "tool",
+        typeOfType: "rangedWeapon",
+        projectileType: Projectiles.GrenadeLauncher,
+        projectileScatter: 0.05
     }
 }
