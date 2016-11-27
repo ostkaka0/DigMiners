@@ -3,7 +3,7 @@ GameData = function(idList) {
     this.port = 3000;
     this.itemPickupDistance = 2.0;
     this.blockPlaceDistance = 96; //Pixels
-
+    this.idList = idList;
     this.tickDuration = 1000 / 20;
     this.tickId = 0;
     this.fakeLag = 0;
@@ -30,11 +30,14 @@ GameData = function(idList) {
         this.animationManager = {};
     this.commands = [];
     this.pendingCommands = {};
-    this.commandTypes = typeRegisterAddByArray([], [CommandEntityMove, CommandDig, CommandEntityDig, CommandEntityEquipItem, CommandEntityBuild, CommandHurtEntity, CommandEntitySpawn, CommandCollisions, CommandEntityDestroy, CommandPlayerJoin, CommandPlayerLeave, CommandKeyStatusUpdate, CommandEntityInventory, CommandPlayerOreInventory, CommandEntityRotate, CommandBlockStrength, CommandProjectileSpawn, CommandParticles, CommandEntityReloadWeapon]);
+    this.commandTypes = typeRegisterAddByArray([], [CommandEntityMove, CommandDig, CommandEntityDig, CommandEntityEquipItem, CommandEntityBuild, CommandHurtEntity,
+        CommandEntitySpawn, CommandCollisions, CommandEntityDestroy, CommandPlayerJoin, CommandPlayerLeave, CommandKeyStatusUpdate,
+        CommandEntityInventory, CommandPlayerOreInventory, CommandEntityRotate, CommandBlockStrength, CommandProjectileSpawn, CommandParticles, CommandPlaceBlock, CommandEntityReloadWeapon]);
     this.messagesToClient = [MessageInit, MessageCommands, MessageChunk];
-    this.messagesToServer = [MessageRequestKeyStatusUpdate, MessageRequestItemPickup, MessageRequestClickSlot, MessageRequestCraft, MessageRequestPlaceBlock, MessageRequestClickEntity, MessageRequestRotate, MessageRequestClickBlock];
+    this.messagesToServer = [MessageRequestKeyStatusUpdate, MessageRequestItemPickup, MessageRequestClickSlot, MessageRequestCraft, MessageRequestPlaceBlock,
+        MessageRequestClickEntity, MessageRequestRotate, MessageRequestClickBlock];
     this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
-    this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent, EquippedItems, Projectile]);
+    this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent, EquippedItems, Projectile, BlockPlacer]);
 
     Recipes = [];
 
@@ -110,6 +113,13 @@ GameData.prototype.tick = function(dt) {
     entityFunctionEntityMovement(dt);
     entityFunctionPhysicsBodySimulate(dt);
     entityFunctionProjectileSimulate(dt);
+    this.entityWorld.objectArray.forEach(function(entity) {
+        Object.keys(entity).forEach(function(key) {
+            var component = entity[key];
+            if (component && component.update)
+                component.update(entity);
+        });
+    });
     this.entityWorld.update();
     this.particleEmitterWorld.update();
     this.tickId++;
