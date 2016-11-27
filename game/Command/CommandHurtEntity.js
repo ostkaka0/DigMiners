@@ -7,7 +7,8 @@ CommandHurtEntity = function(entityId, healthChange) {
 CommandHurtEntity.prototype.execute = function(gameData) {
     var entity = gameData.entityWorld.objects[this.entityId];
     if (!entity || !entity.health) return;
-    entity.movement.disabledCooldown = 40;
+    if (entity.movement)
+        entity.movement.disabledCooldown = 40;
     entity.health.health = (entity.health.health + this.healthChange < 0 ? 0 : entity.health.health + this.healthChange);
     gameData.events.trigger("healthChange", entity);
     if (entity.health.health <= 0)
