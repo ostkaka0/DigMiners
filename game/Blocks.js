@@ -6,6 +6,16 @@ BlockTypes = {
 
 Blocks = {};
 
+BlockFunctions = {};
+BlockFunctions.createEntity = function(blockPos, block) {
+    if (isServer) {
+        var entity = block.createEntity(blockPos, block);
+        var entityId = gameData.idList.next();
+        sendCommand(new CommandPlaceBlock(blockPos, 0));
+        sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
+    }
+}
+
 BlockBulletFunctions = {};
 BlockBulletFunctions.bunker = function(blockPos, blockType, entity) {
     if (entity.projectile.projectileType.penentrateBunkerWindow)
@@ -221,4 +231,30 @@ Blocks.RedForcefieldOpen = {
     isSolid: false,
     hardness: 1.0,
     type: BlockTypes.FOREGROUND
+}
+
+Blocks.HealthBox =  {
+    name: "Health Box",
+    isSolid: true,
+    hardness: 1.0,
+    type: BlockTypes.FOREGROUND,
+    buildDuration: 40,
+    onPlace: BlockFunctions.createEntity,
+    createEntity: function(blockPos, block) {
+        var entity = {};
+        entity.physicsBody = new PhysicsBody(v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), 0.01);
+        entity.health = new Health(100, 100);
+        entity.potionEffects = new PotionEffects();
+        entity.potionEffects.add(PotionEffectTypes.HealNearEntities.id, -1); 
+
+        var bodySprite = new Sprite(block.name);
+        var bodyparts = {
+            "body": new BodyPart(bodySprite, 0, 0, 0),
+            "text": new BodyPart(bodySprite, 0, 0, 0)
+        };
+        entity.bodyparts = new Bodyparts(bodyparts);
+        entity.drawable = new Drawable(0);
+
+        return entity;
+    }
 }
