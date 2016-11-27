@@ -119,8 +119,8 @@ ItemFunctions.Reload = function(entity, itemType) {
         if (ammoAmount <= 0) return;
         var amountToRemove = Math.min((itemType.ammoCapacity - currentAmmo), ammoAmount);
         if (amountToRemove <= 0) return;
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.REMOVE_ITEM, itemType.ammoItem.id, amountToRemove));
         sendCommand(new CommandEntityReloadWeapon(entity.id, stackId, currentAmmo + amountToRemove));
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.REMOVE_ITEM, itemType.ammoItem.id, amountToRemove));
     }
 }
 
