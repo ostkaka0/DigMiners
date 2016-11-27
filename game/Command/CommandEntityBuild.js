@@ -16,7 +16,7 @@ CommandEntityBuild.prototype.execute = function(gameData) {
     var entity = gameData.entityWorld.objects[this.entityId];
     if (!entity) return;
     if (!isServer && this.blockId)
-        entity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArm", 256, false);
+        entity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArm", 256, true);
 }
 
 CommandEntityBuild.prototype.serialize = function(byteArray, index) {
