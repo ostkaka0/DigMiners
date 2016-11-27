@@ -18,7 +18,6 @@ BlockPlacer.prototype.update = function(entity) {
             placerEntity.blockPlacerId = entity.id;
         if (!isServer) {
             var block = gameData.blockRegister[this.blockId];
-            console.log(textureManager);
             this.sprite = new PIXI.Sprite(gameData.textures[block.name]);
             this.sprite.anchor.x = 0.5;
             this.sprite.anchor.y = 0.5;
@@ -55,6 +54,8 @@ BlockPlacer.prototype.update = function(entity) {
     }
 
     if (isServer && this.duration == 0) {
+        // Remove from inventory and place block
+        sendCommand(new CommandEntityInventory(player.entityId, InventoryActions.REMOVE_ITEM, inventoryItem.id, 1));
         sendCommand(new CommandPlaceBlock(this.blockPos, this.blockId));
     }
     if (this.duration == 0) {
