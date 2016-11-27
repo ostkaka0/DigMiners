@@ -65,8 +65,10 @@ ItemFunctions.Sword = function(entity, item) {
 }
 
 ItemFunctions.Potion = function(entity, item) {
-    var potionEffect = item.getPotionEffect();
-    potionEffect.potionFunction(entity);
+    var potionEffectType = item.getPotionEffect();
+    if (entity.potionEffects) {
+        entity.potionEffects.add(potionEffectType.id, item.potionDuration);
+    }
     if (entity.inventory) {
         var removed = entity.inventory.removeItem(gameData, item.id, 1);
         for (var i = 0; i < removed.length; ++i) {
@@ -431,7 +433,8 @@ initItems = function() {
         useCooldown: 1.5,
         useDuration: 1.0,
         itemFunction: ItemFunctions.Potion,
-        getPotionEffect: function() { return PotionEffects.Healing; }
+        getPotionEffect: function() { return PotionEffectTypes.Healing; },
+        potionDuration: 80
     }
 
     // Ranged weapons

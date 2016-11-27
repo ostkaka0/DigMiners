@@ -1,9 +1,8 @@
 
-PotionEffects = [];
+PotionEffectTypes = [];
 
-PotionEffects.Healing = {
-    duration: 20,
-    effectInterval: 5,
+PotionEffectTypes.Healing = {
+    interval: 10,
     potionFunction: function(entity) { 
         var health = entity.health;
         if (health) {
