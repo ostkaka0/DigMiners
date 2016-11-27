@@ -69,7 +69,7 @@ MessageInit.prototype.send = function(gameData, socket) {
         serializeInt32(byteArray, index, this.entitySizes[entity.id]);
         Object.keys(entity).forEach(function(key) {
             var component = entity[key];
-            if (!component || component.serialize) return;
+            if (!component || !component.serialize) return;
             serializeInt32(byteArray, index, component.id);
             component.serialize(byteArray, index);
         }.bind(this));
