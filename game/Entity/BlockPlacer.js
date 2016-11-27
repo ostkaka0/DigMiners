@@ -16,7 +16,9 @@ BlockPlacer.prototype.update = function(entity) {
         var placerEntity = gameData.entityWorld.objects[this.entityId];
         placerEntity.blockPlacerId = entity.id;
         if (!isServer) {
-            this.sprite = new PIXI.Sprite(gameData.textures["egg"]);
+            var block = gameData.blockRegister[this.blockId];
+            console.log(textureManager);
+            this.sprite = new PIXI.Sprite(gameData.textures[block.name]);
             this.sprite.anchor.x = 0.5;
             this.sprite.anchor.y = 0.5;
             this.sprite.alpha = 0.75;
@@ -45,7 +47,8 @@ BlockPlacer.prototype.update = function(entity) {
     }
     
     if (buildFailure) {
-        placerEntity.blockPlacerId = undefined;
+        if (placerEntity.blockPlacerId == entity.id)
+            placerEntity.blockPlacerId = undefined;
         gameData.entityWorld.remove(entity);
         return;
     }
