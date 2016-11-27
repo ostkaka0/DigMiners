@@ -65,6 +65,10 @@ AnimationManager.prototype.load = function() {
             2.0,
             10],
 
+        [-2,
+        -6,
+            2.0,
+            5],
 
         [0,
             0,
