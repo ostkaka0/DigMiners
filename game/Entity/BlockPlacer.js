@@ -23,15 +23,14 @@ BlockPlacer.prototype.update = function(entity) {
             zindices[2].addChild(this.sprite);
         }
     }
-        
     var placerEntity = gameData.entityWorld.objects[this.entityId];
-    var playerId = (placerEntity.controlledByPlayer)? placerEntity.controlledByPlayer.playerId : undefined;
-    var player = (playerId != undefined)? gameData.playerWorld.objects[playerId] : undefined;
-    var inventoryItem = (placerEntity && placerEntity.inventory)? placerEntity.inventory.getEquippedItemType("tool") : undefined;
+    var playerId = (placerEntity && placerEntity.controlledByPlayer) ? placerEntity.controlledByPlayer.playerId : undefined;
+    var player = (playerId != undefined) ? gameData.playerWorld.objects[playerId] : undefined;
+    var inventoryItem = (placerEntity && placerEntity.inventory) ? placerEntity.inventory.getEquippedItemType("tool") : undefined;
     var bodiesInRadius = [];
-    gameData.physicsWorld.getBodiesInRadius(bodiesInRadius, [this.blockPos[0]+0.5, this.blockPos[1]+0.5], 0.5);
+    gameData.physicsWorld.getBodiesInRadius(bodiesInRadius, [this.blockPos[0] + 0.5, this.blockPos[1] + 0.5], 0.5);
     var buildFailure = false;
-    
+
     if (!placerEntity || placerEntity.blockPlacerId != entity.id)
         buildFailure = true;
     if (player && !player.canPlaceBlock(gameData, this.blockPos[0], this.blockPos[1]))
@@ -50,7 +49,7 @@ BlockPlacer.prototype.update = function(entity) {
         gameData.entityWorld.remove(entity);
         return;
     }
-    
+
     if (isServer && this.duration == 0) {
         sendCommand(new CommandPlaceBlock(this.blockPos, this.blockId));
     }
