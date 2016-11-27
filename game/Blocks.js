@@ -8,14 +8,18 @@ Blocks = {};
 
 BlockBulletFunctions = {};
 BlockBulletFunctions.bunker = function(blockPos, blockType, entity) {
+    console.log("bunker!");
     if (entity.projectile.projectileType.penentrateBunkerWindow)
         return;
     // Fix of diagonal shooting
     if (entity.projectile.lastBunkerPos != undefined) {
-        if (v2.distance(entity.projectile.lastBunkerPos, entity.projectile.pos) < 0.75)
+        var dir = [Math.abs(Math.cos(entity.projectile.angle)), Math.abs(-Math.sin(entity.projectile.angle))]
+        if (dir[0] > dir[1] && entity.projectile.lastBunkerPos[0] == blockPos[0])
+            return
+        else if (dir[1] > dir[0] && entity.projectile.lastBunkerPos[1] == blockPos[1])
             return;
     }
-    entity.projectile.lastBunkerPos = v2.clone(entity.projectile.pos);
+    entity.projectile.lastBunkerPos = v2.clone(blockPos);
     var entityPos = entity.projectile.startPos;
     var deltaPos = [blockPos[0] + 0.5 - entityPos[0], blockPos[1] + 0.5 - entityPos[1]];
     deltaPos = [Math.max(0, Math.abs(deltaPos[0]) - 0.5), Math.max(0, Math.abs(deltaPos[1]) - 0.5)];
@@ -141,7 +145,8 @@ Blocks.StoneWall = {
     name: "Stone Wall",
     isSolid: true,
     hardness: 1.0,
-    type: BlockTypes.FOREGROUND
+    type: BlockTypes.FOREGROUND,
+    buildDuration: 20
 };
 
 Blocks.WoodCrate = {
@@ -149,6 +154,7 @@ Blocks.WoodCrate = {
     isSolid: true,
     hardness: 0.25,
     type: BlockTypes.FOREGROUND,
+    buildDuration: 5,
     isBulletSolid: false,
     bulletFunction: BlockBulletFunctions.bunker,
     bulletBunkerDistance: -1.0,
@@ -169,6 +175,7 @@ Blocks.BunkerWindow = {
     isSolid: true,
     hardness: 1.0,
     type: BlockTypes.FOREGROUND,
+    buildDuration: 40,
     isBulletSolid: false,
     bulletFunction: BlockBulletFunctions.bunker,
     bulletBunkerDistance: 1.0,
@@ -182,6 +189,7 @@ Blocks.BlueForcefield = {
     isSolid: true,
     hardness: 1.0,
     type: BlockTypes.FOREGROUND,
+    buildDuration: 40,
     isDoor: true,
     clickFunction: BlockDoorFunctions.blueForcefield,
     maxDoorSize: 1,
@@ -194,6 +202,7 @@ Blocks.RedForcefield = {
     isSolid: true,
     hardness: 1.0,
     type: BlockTypes.FOREGROUND,
+    buildDuration: 40,
     isDoor: true,
     clickFunction: BlockDoorFunctions.redForcefield,
     maxDoorSize: 10,

@@ -8,15 +8,22 @@ CommandEntityBuild = function(entityId, x, y, blockId, type) {
 }
 
 CommandEntityBuild.prototype.execute = function(gameData) {
-    if (this.type == BlockTypes.FOREGROUND)
+    /*if (this.type == BlockTypes.FOREGROUND)
         setForeground(gameData.blockWorld, this.x, this.y, this.blockId);
     else if (this.type == BlockTypes.BACKGROUND)
-        setBackground(gameData.blockWorld, this.x, this.y, this.blockId);
+        setBackground(gameData.blockWorld, this.x, this.y, this.blockId);*/
 
     var entity = gameData.entityWorld.objects[this.entityId];
     if (!entity) return;
     if (!isServer && this.blockId)
         entity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArm", 256, false);
+    if (isServer) {
+        var block = gameData.blockRegister[this.blockId];
+        var entityBlockPlacer = { blockPlacer: new BlockPlacer([this.x, this.y], this.blockId, block.buildDuration, entity.id) };
+        var entityBlockPlacerId = gameData.idList.next();
+        sendCommand(new CommandEntitySpawn(gameData, entityBlockPlacer, entityBlockPlacerId));
+        entity.blockPlacerId = entityBlockPlacerId;
+    }
 }
 
 CommandEntityBuild.prototype.serialize = function(byteArray, index) {
