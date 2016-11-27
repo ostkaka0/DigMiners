@@ -75,7 +75,7 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
     setTimeout(function() {
         for (var i = 0; i < doors.length; ++i) {
             var blockPos = doors[i];
-            sendCommand(new CommandEntityBuild(-1, blockPos[0], blockPos[1], Blocks.RedForcefieldOpen.id, BlockTypes.FOREGROUND));
+            sendCommand(new CommandBuild(blockPos[0], blockPos[1], Blocks.RedForcefieldOpen.id, BlockTypes.FOREGROUND));
             sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], checked[blockPos[0]][blockPos[1]]));
             //sendCommand(new CommandParticles(Particles.Door.id, [blockPos[0] + 0.5, blockPos[1] + 0.5], 100));
         }
@@ -98,7 +98,7 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
                     if (shouldClose) {
                         for (var i = 0; i < this.length; ++i) {
                             var blockPos = this[i];
-                            sendCommand(new CommandEntityBuild(-1, blockPos[0], blockPos[1], blockTypeId, BlockTypes.FOREGROUND));
+                            sendCommand(new CommandBuild(blockPos[0], blockPos[1], blockTypeId, BlockTypes.FOREGROUND));
                             sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], checked[blockPos[0]][blockPos[1]]));
                         }
                     } else
@@ -113,7 +113,7 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
 BlockDoorFunctions.blueForcefield = function(blockPos, blockType, entity, clickType) {
     var startStrength = getStrength(gameData.blockWorld, blockPos[0], blockPos[1]);
     setTimeout(function() {
-        sendCommand(new CommandEntityBuild(-1, blockPos[0], blockPos[1], Blocks.BlueForcefieldOpen.id, BlockTypes.FOREGROUND));
+        sendCommand(new CommandBuild(blockPos[0], blockPos[1], Blocks.BlueForcefieldOpen.id, BlockTypes.FOREGROUND));
         sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], startStrength));
         //sendCommand(new CommandParticles(Particles.Door.id, [startBlockPos[0] + 0.5, startBlockPos[1] + 0.5], 100));
 
@@ -124,7 +124,7 @@ BlockDoorFunctions.blueForcefield = function(blockPos, blockType, entity, clickT
                 if (bodies.length > 0)
                     checkDoorClose();
                 else {
-                    sendCommand(new CommandEntityBuild(-1, blockPos[0], blockPos[1], blockType.id, BlockTypes.FOREGROUND));
+                    sendCommand(new CommandBuild(blockPos[0], blockPos[1], blockType.id, BlockTypes.FOREGROUND));
                     sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], startStrength));
                 }
             }, blockType.doorOpenTime);
@@ -158,7 +158,7 @@ Blocks.WoodCrate = {
     bulletFunction: BlockBulletFunctions.bunker,
     bulletBunkerDistance: -1.0,
     bulletBunkerNearFactor: 0.5,
-    bulletBunkerFarFactor: 0.5, 
+    bulletBunkerFarFactor: 0.5,
     projectileArmor: -3.0 // Extra sensitive to bullets
 };
 
