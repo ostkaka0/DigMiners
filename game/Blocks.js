@@ -253,7 +253,9 @@ Blocks.HealthBox =  {
             "text": new BodyPart(bodySprite, 0, 0, 0)
         };
         entity.bodyparts = new Bodyparts(bodyparts);
-        entity.drawable = new Drawable(0);
+        entity.drawable = new Drawable(1);
+        var healthbarSprite = new Sprite("healthbar", null, false);
+        entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
 
         return entity;
     }
