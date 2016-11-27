@@ -116,13 +116,11 @@ ItemFunctions.Reload = function(entity, itemType) {
         var currentAmmo = (item.magazine != null ? item.magazine : 0);
 
         var ammoAmount = entity.inventory.getAmountById(itemType.ammoItem.id);
-        console.log("player has " + ammoAmount + " in inventory");
         if (ammoAmount <= 0) return;
         var amountToRemove = Math.min((itemType.ammoCapacity - currentAmmo), ammoAmount);
         if (amountToRemove <= 0) return;
-        console.log("reloading: " + amountToRemove);
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.REMOVE_ITEM, itemType.ammoItem.id, amountToRemove));
-        sendCommand(new CommandEntityReloadWeapon(entity.id, stackId, amountToRemove));
+        sendCommand(new CommandEntityReloadWeapon(entity.id, stackId, currentAmmo + amountToRemove));
     }
 }
 
