@@ -9,11 +9,13 @@ Movement = function(speed, toolUseDuration) {
     // The number of ticks until next dig. Will decrease by 1 each tick. Player can only dig at 0. Only used by server
     this.toolUseTickTimeout = 0;
     this.toolUseDuration = toolUseDuration || 0.25; // Seconds between each dig
+    this.toolReloadTickTimeout = 0;
     // Entity is unable to move while disabled
     this.disabledCooldown = 0;
     this.digMovementSpeed = 0.65;
     this.mineMovementSpeed = 0.05;
     this.isUsingTool = false;
+    this.isReloading = false;
     this.isDigging = false;
     this.isMining = false;
 }
@@ -87,39 +89,75 @@ entityFunctionEntityMovement = function(dt) {
         var tool = entity.equippedItems.items["tool"];
         var useCooldownSeconds = (tool && tool.useCooldown) ? tool.useCooldown : 0;//entity.movement.calcDigTickDuration(gameData.tickDuration); // digDuration
         var useDurationSeconds = (tool && tool.useDuration) ? tool.useDuration : 0;
-        var useCooldown = Math.round(useCooldownSeconds / dt);
-        var useDuration = Math.round(useDurationSeconds / dt);
-        useDuration = Math.min(useCooldown, useDuration);
+        var reloadCooldownSeconds = (tool && tool.reloadCooldown) ? tool.reloadCooldown : 0;
+        var useCooldownTicks = Math.round(useCooldownSeconds / dt);
+        var useDurationTicks = Math.round(useDurationSeconds / dt);
+        var reloadCooldownTicks = Math.round(reloadCooldownSeconds / dt);
+        useDurationTicks = Math.min(useCooldownTicks, useDurationTicks);
 
-        if (entity.movement.keyStatuses[Keys.SPACEBAR] && !entity.movement.isUsingTool)
-            entity.movement.isUsingTool = true;
-        if (entity.movement.isUsingTool && entity.movement.toolUseTickTimeout <= 0) {
-            entity.movement.toolUseTickTimeout = useCooldown;
-            if (!isServer)
-                entity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArm", 64 / useCooldownSeconds, true);
+        if (!entity.movement.isUsingTool && !entity.movement.isReloading) {
+            if (entity.movement.keyStatuses[Keys.SPACEBAR])
+                entity.movement.isUsingTool = true;
+            else if (tool && tool.canReload && entity.movement.keyStatuses[Keys.R])
+                entity.movement.isReloading = true;
         }
 
-        if (useCooldown - entity.movement.toolUseTickTimeout == useDuration)
-            onEntityUseTool(gameData, entity);
+        if (entity.movement.isUsingTool && entity.movement.toolUseTickTimeout <= 0) {
+            entity.movement.toolUseTickTimeout = useCooldownTicks;
+            if (!isServer) {
+                var useCycleName = (tool.useCycle ? tool.useCycle : "rightArm");
+                var useCycle = gameData.animationManager.cycles[useCycleName];
+                if (useCycle)
+                    entity.bodyparts.bodyparts["rightArm"].cycle(gameData, useCycleName, useCycle.numFrames / useCooldownSeconds, true);
+            }
+        }
+
+        if (entity.movement.isReloading && entity.movement.toolReloadTickTimeout <= 0) {
+            entity.movement.toolReloadTickTimeout = reloadCooldownTicks;
+            if (!isServer) {
+                var reloadCycleRightArmName = (tool.reloadCycleRightArm ? tool.reloadCycleRightArm : "rightArm");
+                var reloadCycleLeftArmName = (tool.reloadCycleLeftArm ? tool.reloadCycleLeftArm : "leftArm");
+                var reloadCycleGunName = (tool.reloadCycleGun ? tool.reloadCycleGun : "");
+                var reloadCycleRightArm = gameData.animationManager.cycles[reloadCycleRightArmName];
+                var reloadCycleLeftArm = gameData.animationManager.cycles[reloadCycleLeftArmName];
+                var reloadCycleGun = gameData.animationManager.cycles[reloadCycleGunName];
+                if (reloadCycleRightArm)
+                    entity.bodyparts.bodyparts["rightArm"].cycle(gameData, reloadCycleRightArmName, reloadCycleRightArm.numFrames / reloadCooldownSeconds, true);
+                if (reloadCycleLeftArm)
+                    entity.bodyparts.bodyparts["leftArm"].cycle(gameData, reloadCycleLeftArmName, reloadCycleLeftArm.numFrames / reloadCooldownSeconds, true);
+                if (reloadCycleGun)
+                    entity.bodyparts.bodyparts["tool"].cycle(gameData, reloadCycleGunName, reloadCycleGun.numFrames / reloadCooldownSeconds, true);
+            }
+        }
+
+        if (useCooldownTicks - entity.movement.toolUseTickTimeout == useDurationTicks) {
+            if (isServer) {
+                if (tool && tool.itemFunction)
+                    tool.itemFunction(entity, tool);
+            }
+        }
+
+        if (reloadCooldownTicks - entity.movement.toolReloadTickTimeout == 0) {
+            if (isServer) {
+                if (tool && tool.reloadFunction)
+                    tool.reloadFunction(entity, tool);
+            }
+        }
 
         // Dig update:
         entity.movement.toolUseTickTimeout = (entity.movement.toolUseTickTimeout <= 0) ? 0 : entity.movement.toolUseTickTimeout - 1;
+        entity.movement.toolReloadTickTimeout = (entity.movement.toolReloadTickTimeout <= 0) ? 0 : entity.movement.toolReloadTickTimeout - 1;
         entity.movement.disabledCooldown = (entity.movement.disabledCooldown <= 0) ? 0 : entity.movement.disabledCooldown - 1;
+
         // Reset dig state
         if (entity.movement.toolUseTickTimeout == 0 || (!entity.movement.keyStatuses[Keys.SPACEBAR] && entity.movement.isUsingTool)) {
             entity.movement.isUsingTool = false;
             entity.movement.isDigging = false;
             entity.movement.isMining = false;
-            if (entity.bodyparts.bodyparts["rightArm"])
-                entity.bodyparts.bodyparts["rightArm"].finishCycle();
         }
-    });
-}
 
-onEntityUseTool = function(gameData, entity) {
-    if (isServer) {
-        var tool = entity.equippedItems.items["tool"];
-        if (!tool || !tool.itemFunction) return;
-        tool.itemFunction(entity, tool);
-    }
+        if (entity.movement.toolReloadTickTimeout == 0)// || (!entity.movement.keyStatuses[Keys.R] && entity.movement.isReloading)) {
+            entity.movement.isReloading = false;
+        //}
+    });
 }

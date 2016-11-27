@@ -44,6 +44,7 @@ loadGame = function() {
             if (char == "s") key = Keys.DOWN;
             if (char == "d") key = Keys.RIGHT;
             if (char == " ") key = Keys.SPACEBAR;
+            if (char == "r") key = Keys.R;
             if (key != null)
                 new MessageRequestKeyStatusUpdate(key, true).send(socket);
         }
@@ -58,6 +59,7 @@ loadGame = function() {
             if (char == "s") key = Keys.DOWN;
             if (char == "d") key = Keys.RIGHT;
             if (char == " ") key = Keys.SPACEBAR;
+            if (char == "r") key = Keys.R;
             if (key != null)
                 new MessageRequestKeyStatusUpdate(key, false).send(socket);
         }
@@ -136,7 +138,7 @@ render = function(tickFracTime) {
                 entity.projectile.sprite.position.y = y;
                 entity.projectile.sprite.rotation = entity.projectile.angle;
                 var distance = v2.distance(pos, entity.projectile.startPos)
-                if (distance >= entity.projectile.projectileType.scaleX/4)
+                if (distance >= entity.projectile.projectileType.scaleX / 4)
                     entity.projectile.sprite.visible = true;
             }
         }
