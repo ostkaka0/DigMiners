@@ -96,8 +96,8 @@ entityFunctionEntityMovement = function(dt) {
         useDurationTicks = Math.min(useCooldownTicks, useDurationTicks);
 
         if (!entity.movement.isUsingTool && !entity.movement.isReloading) {
-            if (tool && tool.canReload && entity.movement.keyStatuses[Keys.R] && Entity.canReload(entity, tool))
-                entity.movement.isReloading = true;
+            if (isServer && tool && tool.canReload && entity.movement.keyStatuses[Keys.R] && Entity.canReload(entity, tool))
+                sendCommand(new CommandEntityBeginReloadWeapon(entity.id));
             else if (entity.movement.keyStatuses[Keys.SPACEBAR] && Entity.canUseTool(entity, tool))
                 entity.movement.isUsingTool = true;
         }

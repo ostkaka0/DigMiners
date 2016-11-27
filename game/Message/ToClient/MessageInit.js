@@ -36,6 +36,8 @@ MessageInit.prototype.getSerializationSize = function(gameData) {
         var entitySize = 0;
         forIn(this, entity, function(componentKey) {
             component = entity[componentKey];
+            console.log(componentKey);
+            console.log(component);
             if (component.serialize == undefined) return;
             entitySize += 4 + component.getSerializationSize(); // component-id
         });
