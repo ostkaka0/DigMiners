@@ -96,10 +96,10 @@ entityFunctionEntityMovement = function(dt) {
         useDurationTicks = Math.min(useCooldownTicks, useDurationTicks);
 
         if (!entity.movement.isUsingTool && !entity.movement.isReloading) {
-            if (entity.movement.keyStatuses[Keys.SPACEBAR])
-                entity.movement.isUsingTool = true;
-            else if (tool && tool.canReload && entity.movement.keyStatuses[Keys.R])
+            if (tool && tool.canReload && entity.movement.keyStatuses[Keys.R])
                 entity.movement.isReloading = true;
+            else if (entity.movement.keyStatuses[Keys.SPACEBAR])
+                entity.movement.isUsingTool = true;
         }
 
         if (entity.movement.isUsingTool && entity.movement.toolUseTickTimeout <= 0) {

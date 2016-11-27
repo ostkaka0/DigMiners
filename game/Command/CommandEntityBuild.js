@@ -16,7 +16,7 @@ CommandEntityBuild.prototype.execute = function(gameData) {
     var entity = gameData.entityWorld.objects[this.entityId];
     if (!entity) return;
     if (!isServer && this.blockId)
-        entity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArm", 256, false);
+        entity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArm", 256, true);
     if (isServer) {
         var block = gameData.blockRegister[this.blockId];
         var entityBlockPlacer = { blockPlacer: new BlockPlacer([this.x, this.y], this.blockId, block.buildDuration, entity.id) };
