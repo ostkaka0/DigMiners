@@ -100,6 +100,8 @@ entityFunctionEntityMovement = function(dt) {
                 sendCommand(new CommandEntityBeginReloadWeapon(entity.id));
             else if (entity.movement.keyStatuses[Keys.SPACEBAR] && Entity.canUseTool(entity, tool))
                 entity.movement.isUsingTool = true;
+            else if (isServer && entity.movement.keyStatuses[Keys.SPACEBAR] && Entity.canReload(entity, tool))
+                sendCommand(new CommandEntityBeginReloadWeapon(entity.id));
         }
 
         if (entity.movement.isUsingTool && entity.movement.toolUseTickTimeout <= 0) {
