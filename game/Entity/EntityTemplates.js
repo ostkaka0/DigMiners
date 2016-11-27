@@ -8,6 +8,7 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
     entity.nameComponent = new NameComponent(name);
     entity.inventory = new Inventory();
     entity.equippedItems = new EquippedItems();
+    entity.potionEffects = new PotionEffects();
 
     var feetSprite = new Sprite("feet");
     var rightArmSprite = new Sprite("rightArm");

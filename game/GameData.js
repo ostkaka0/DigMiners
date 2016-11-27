@@ -19,6 +19,7 @@ GameData = function(idList) {
     this.blockRegister = objectRegisterAddByObject([], Blocks);
     this.projectileRegister = objectRegisterAddByObject([], Projectiles);
     this.particleRegister = objectRegisterAddByObject([], Particles);
+    this.potionEffectTypeRegister = objectRegisterAddByObject([], PotionEffectTypes);
     this.physicsWorld = new PhysicsWorld();
     this.physicsEntities = {};
     this.generator = null;
@@ -38,7 +39,7 @@ GameData = function(idList) {
     this.messagesToServer = [MessageRequestKeyStatusUpdate, MessageRequestItemPickup, MessageRequestClickSlot, MessageRequestCraft, MessageRequestPlaceBlock,
         MessageRequestClickEntity, MessageRequestRotate, MessageRequestClickBlock];
     this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
-    this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent, EquippedItems, Projectile, BlockPlacer]);
+    this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent, EquippedItems, Projectile, BlockPlacer, PotionEffects]);
 
     Recipes = [];
 
