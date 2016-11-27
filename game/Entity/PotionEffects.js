@@ -10,9 +10,9 @@ PotionEffects.prototype.serialize = function(byteArray, index) {
     Object.keys(this.effects).forEach(function(potionEffectTypeId) {
         var effect = this.effects[potionEffectTypeId];
         if (!effect) {
-            serializeInt32(potionEffectTypeId);
-            serializeInt32(1);
-            serializeInt32(0);
+            serializeInt32(byteArray, index, potionEffectTypeId);
+            serializeInt32(byteArray, index, 1);
+            serializeInt32(byteArray, index, 0);
         } else {
             serializeInt32(byteArray, index, potionEffectTypeId);
             serializeInt32(byteArray, index, effect.startDuration);
@@ -39,15 +39,15 @@ PotionEffects.prototype.update = function(entity) {
     Object.keys(this.effects).forEach(function(potionEffectTypeId) {
         var effect = this.effects[potionEffectTypeId];
         var potionEffectType = gameData.potionEffectTypeRegister[potionEffectTypeId];
-        if (!effect) return;
+        if (!effect || !potionEffectType) return;
         if (effect.duration == effect.startDuration && potionEffectType.onStart)
             effect.type.onStart(entity);
         if ((effect.startDuration - effect.duration) % potionEffectType.interval == 0)
             potionEffectType.potionFunction(entity);
         effect.duration--;
-        if (effect.duration <= 0) {
+        if (effect.duration == 0 && effect.startDuration != -1) {
             if (potionEffectType.onStop)
-                epotionEffectType.onStop(entity);
+                potionEffectType.onStop(entity);
             this.effects[potionEffectTypeId] = undefined;
         }
         
@@ -66,6 +66,9 @@ PotionEffects.prototype.destroy = function(entity) {
 
 PotionEffects.prototype.add = function(potionEffectTypeId, duration) {
     var effect = this.effects[potionEffectTypeId];
+    if (duration == -1) {
+        this.effects[potionEffectTypeId] = { startDuration: -1, duration: -1 };
+    }
     if (effect) {
         if (effect.duration > duration)
             return;

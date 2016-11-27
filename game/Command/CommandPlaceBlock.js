@@ -6,6 +6,9 @@ CommandPlaceBlock = function(blockPos, blockId) {
 
 CommandPlaceBlock.prototype.execute = function(gameData) {
     setForeground(gameData.blockWorld, this.blockPos[0], this.blockPos[1], this.blockId);
+    var block = gameData.blockRegister[this.blockId];
+    if (block.onPlace)
+        block.onPlace(this.blockPos, block);
 }
 
 CommandPlaceBlock.prototype.serialize = function(byteArray, index) {

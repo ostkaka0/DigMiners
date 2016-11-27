@@ -436,6 +436,21 @@ initItems = function() {
         getPotionEffect: function() { return PotionEffectTypes.Healing; },
         potionDuration: 80
     }
+    Items.HealFriend = {
+        name: "Heal Friend",
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 3, 
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 8,
+        type: "tool",
+        typeOfType: "potion",
+        useCooldown: 1.5,
+        useDuration: 1.0,
+        itemFunction: ItemFunctions.Potion,
+        getPotionEffect: function() { return PotionEffectTypes.HealNearEntities; },
+        potionDuration: 80
+    }
 
     // Ranged weapons
     Items.WeaponPistol = {
