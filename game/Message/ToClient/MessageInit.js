@@ -36,9 +36,7 @@ MessageInit.prototype.getSerializationSize = function(gameData) {
         var entitySize = 0;
         forIn(this, entity, function(componentKey) {
             component = entity[componentKey];
-            console.log(componentKey);
-            console.log(component);
-            if (component.serialize == undefined) return;
+            if (!component || !component.serialize) return;
             entitySize += 4 + component.getSerializationSize(); // component-id
         });
         entitySizes[entity.id] = entitySize;
@@ -71,7 +69,7 @@ MessageInit.prototype.send = function(gameData, socket) {
         serializeInt32(byteArray, index, this.entitySizes[entity.id]);
         Object.keys(entity).forEach(function(key) {
             var component = entity[key];
-            if (!component.serialize) return;
+            if (!component || component.serialize) return;
             serializeInt32(byteArray, index, component.id);
             component.serialize(byteArray, index);
         }.bind(this));

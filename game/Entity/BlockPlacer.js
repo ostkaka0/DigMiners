@@ -10,11 +10,12 @@ BlockPlacer.prototype.name = blockPlacer.name; function blockPlacer() { };
 
 BlockPlacer.prototype.update = function(entity) {
     this.duration--;
-    
+
     if (!this.isInitialized) {
         this.isInitialized = true;
         var placerEntity = gameData.entityWorld.objects[this.entityId];
-        placerEntity.blockPlacerId = entity.id;
+        if (placerEntity)
+            placerEntity.blockPlacerId = entity.id;
         if (!isServer) {
             this.sprite = new PIXI.Sprite(gameData.textures["egg"]);
             this.sprite.anchor.x = 0.5;
@@ -39,13 +40,14 @@ BlockPlacer.prototype.update = function(entity) {
         buildFailure = true;
     if (bodiesInRadius.length != 0)
         buildFailure = true;
-    
+
     if (!isServer && (buildFailure || this.duration == 0)) {
         zindices[2].removeChild(this.sprite);
     }
-    
+
     if (buildFailure) {
-        placerEntity.blockPlacerId = undefined;
+        if (placerEntity)
+            placerEntity.blockPlacerId = undefined;
         gameData.entityWorld.remove(entity);
         return;
     }
@@ -54,7 +56,8 @@ BlockPlacer.prototype.update = function(entity) {
         sendCommand(new CommandPlaceBlock(this.blockPos, this.blockId));
     }
     if (this.duration == 0) {
-        placerEntity.blockPlacerId = undefined;
+        if (placerEntity)
+            placerEntity.blockPlacerId = undefined;
         gameData.entityWorld.remove(entity);
     }
 }
