@@ -3,93 +3,127 @@ ItemFunctions = {};
 ItemTextures = {};
 
 ItemFunctions.Shovel = function(entity, item) {
-    var angle = entity.physicsBody.angle;
-    var dir = [Math.cos(-angle), Math.sin(-angle)];
-    var toolUsePos = [entity.physicsBody.getPos()[0] + 1.0 * dir[0], entity.physicsBody.getPos()[1] + 1.0 * dir[1]];
+    if (isServer) {
+        var angle = entity.physicsBody.angle;
+        var dir = [Math.cos(-angle), Math.sin(-angle)];
+        var toolUsePos = [entity.physicsBody.getPos()[0] + 1.0 * dir[0], entity.physicsBody.getPos()[1] + 1.0 * dir[1]];
 
-    // Break block
-    var chunkPos = [];
-    var localPos = [];
-    v2WorldToBlockChunk(toolUsePos, chunkPos, localPos);
-    var blockChunk = gameData.blockWorld.get(chunkPos[0], chunkPos[1]);
-    if (blockChunk) {
-        var blockId = blockChunk.getForeground(localPos[0], localPos[1]);
-        if (blockId) {
-            var blockType = gameData.blockRegister[blockId];
-            var strength = blockChunk.getStrength(localPos[0], localPos[1]);
-            // TODO: 16 magic value
-            strength -= 16 * (1 / blockType.hardness);
-            var x = chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0];
-            var y = chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1];
-            sendCommand(new CommandBlockStrength(x, y, Math.max(strength, 0)));
-            return;
+        // Break block
+        var chunkPos = [];
+        var localPos = [];
+        v2WorldToBlockChunk(toolUsePos, chunkPos, localPos);
+        var blockChunk = gameData.blockWorld.get(chunkPos[0], chunkPos[1]);
+        if (blockChunk) {
+            var blockId = blockChunk.getForeground(localPos[0], localPos[1]);
+            if (blockId) {
+                var blockType = gameData.blockRegister[blockId];
+                var strength = blockChunk.getStrength(localPos[0], localPos[1]);
+                // TODO: 16 magic value
+                strength -= 16 * (1 / blockType.hardness);
+                var x = chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0];
+                var y = chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1];
+                sendCommand(new CommandBlockStrength(x, y, Math.max(strength, 0)));
+                return;
+            }
         }
-    }
 
-    // Dig terrain
-    gameData.commands.push(new CommandEntityDig(entity.id, entity.physicsBody.getPos(), dir, 1.5, Entity.getDigSpeed(entity), Entity.getMaxDigHardness(entity)));
+        // Dig terrain
+        gameData.commands.push(new CommandEntityDig(entity.id, entity.physicsBody.getPos(), dir, 1.5, Entity.getDigSpeed(entity), Entity.getMaxDigHardness(entity)));
+    }
 }
 
 ItemFunctions.Sword = function(entity, item) {
-    var physicsWorld = gameData.physicsWorld;
-    var bodies = [];
-    var entityBodyId = entity.physicsBody.bodyId;
-    var entityPos = entity.physicsBody.getPos();
-    var angle = entity.physicsBody.angle;
-    var dir = [Math.cos(-angle), Math.sin(-angle)];
-    var hitPos = [0, 0];
-    v2.mul(item.hitRange, dir, hitPos);
-    v2.add(entityPos, hitPos, hitPos);
-    physicsWorld.getBodiesInRadius(bodies, hitPos, item.hitRadius);
+    if (isServer) {
+        var physicsWorld = gameData.physicsWorld;
+        var bodies = [];
+        var entityBodyId = entity.physicsBody.bodyId;
+        var entityPos = entity.physicsBody.getPos();
+        var angle = entity.physicsBody.angle;
+        var dir = [Math.cos(-angle), Math.sin(-angle)];
+        var hitPos = [0, 0];
+        v2.mul(item.hitRange, dir, hitPos);
+        v2.add(entityPos, hitPos, hitPos);
+        physicsWorld.getBodiesInRadius(bodies, hitPos, item.hitRadius);
 
-    var hitEntities = [];
+        var hitEntities = [];
 
-    bodies.forEach(function(bodyId) {
-        if (bodyId == entityBodyId) return;
-        var targetEntity = gameData.physicsEntities[bodyId];
-        if (!targetEntity) return;
+        bodies.forEach(function(bodyId) {
+            if (bodyId == entityBodyId) return;
+            var targetEntity = gameData.physicsEntities[bodyId];
+            if (!targetEntity) return;
 
-        console.log("Entity hit!");
-        hitEntities.push(targetEntity.id);
-        gameData.commands.push(new CommandHurtEntity(targetEntity.id, -10));
-    });
+            console.log("Entity hit!");
+            hitEntities.push(targetEntity.id);
+            gameData.commands.push(new CommandHurtEntity(targetEntity.id, -10));
+        });
 
-    // TODO: CommandEntityHit
-    //if (isServer) {
-    //    gameData.commands.push(new CommandEntityHit(entity, hitEntities));
-    //}
+        // TODO: CommandEntityHit
+        //if (isServer) {
+        //    gameData.commands.push(new CommandEntityHit(entity, hitEntities));
+        //}
+    }
 }
 
-ItemFunctions.RangedWeapon = function(entity, item) {
-    var angle = entity.physicsBody.angle;
-    var rotateAround = function(ax, ay, x, y, angle) {
-        var cos = Math.cos(angle),
-            sin = Math.sin(angle),
-            nx = (cos * (x - ax)) + (sin * (y - ay)) + ax,
-            ny = (cos * (y - ay)) - (sin * (x - ax)) + ay;
-        return [nx, ny];
-    }
-    var dir = rotateAround(0, 0, 0, -0.6, angle);
-    var maxDistance = (item.projectileType.hitAtCursor && entity.movement.deltaWorldCursorPos) ?
-        v2.length(entity.movement.deltaWorldCursorPos) : item.projectileType.maxDistance;
-    var numProjectiles = item.numProjectiles ? item.numProjectiles : 1;
-    for (var i = 0; i < numProjectiles; i++) {
-        var scatter = item.projectileScatter;
-        var projectileAngle = angle;
-        var projectileSpeed = item.projectileType.speed;
-        var projectileMaxDistance = maxDistance;
-        if (scatter > 0) {
-            projectileAngle += Math.random() * 2 * scatter - scatter;
-            projectileSpeed *= 1.0 - 2 * scatter + 4 * scatter * Math.random();
-            projectileMaxDistance *= 1.0 - 0.5 * scatter + scatter * Math.random();
+ItemFunctions.RangedWeapon = function(entity, itemType) {
+    if (!itemType || !entity.inventory) return;
+    var stackId = entity.inventory.getEquippedStackId("tool");
+    if (stackId == null) return;
+    var item = entity.inventory.items[stackId];
+    if (!item) return;
+    if (!item.magazine || item.magazine <= 0) return;
+    var numProjectiles = itemType.numProjectiles ? itemType.numProjectiles : 1;
+    var removedAmmo = (item.magazine >= numProjectiles ? numProjectiles : item.magazine);
+    item.magazine -= removedAmmo;
+    numProjectiles = removedAmmo;
+
+    if (isServer) {
+        var angle = entity.physicsBody.angle;
+        var rotateAround = function(ax, ay, x, y, angle) {
+            var cos = Math.cos(angle),
+                sin = Math.sin(angle),
+                nx = (cos * (x - ax)) + (sin * (y - ay)) + ax,
+                ny = (cos * (y - ay)) - (sin * (x - ax)) + ay;
+            return [nx, ny];
         }
-        var toolUsePos = [entity.physicsBody.getPos()[0] + 0.5 * dir[0], entity.physicsBody.getPos()[1] + 0.5 * dir[1]];
-        gameData.commands.push(new CommandProjectileSpawn(idList.next(), v2.clone(toolUsePos), projectileAngle, projectileSpeed, projectileMaxDistance, item.projectileType, entity.id));
+        var dir = rotateAround(0, 0, 0, -0.6, angle);
+        var maxDistance = (itemType.projectileType.hitAtCursor && entity.movement.deltaWorldCursorPos) ?
+            v2.length(entity.movement.deltaWorldCursorPos) : itemType.projectileType.maxDistance;
+        for (var i = 0; i < numProjectiles; i++) {
+            var scatter = itemType.projectileScatter;
+            var projectileAngle = angle;
+            var projectileSpeed = itemType.projectileType.speed;
+            var projectileMaxDistance = maxDistance;
+            if (scatter > 0) {
+                projectileAngle += Math.random() * 2 * scatter - scatter;
+                projectileSpeed *= 1.0 - 2 * scatter + 4 * scatter * Math.random();
+                projectileMaxDistance *= 1.0 - 0.5 * scatter + scatter * Math.random();
+            }
+            var toolUsePos = [entity.physicsBody.getPos()[0] + 0.5 * dir[0], entity.physicsBody.getPos()[1] + 0.5 * dir[1]];
+            gameData.commands.push(new CommandProjectileSpawn(idList.next(), v2.clone(toolUsePos), projectileAngle, projectileSpeed, projectileMaxDistance, itemType.projectileType, entity.id));
+        }
     }
 }
 
-ItemFunctions.Reload = function(entity, item) {
-    //TODO: reload!
+ItemFunctions.Reload = function(entity, itemType) {
+    if (isServer) {
+        if (!itemType || !entity.inventory) return;
+        var stackId = entity.inventory.getEquippedStackId("tool");
+        if (stackId == null) return;
+        var item = entity.inventory.items[stackId];
+        if (!item) return;
+        if (item.magazine >= itemType.ammoCapacity)
+            return;
+        var currentAmmo = (item.magazine != null ? item.magazine : 0);
+
+        var ammoAmount = entity.inventory.getAmountById(itemType.ammoItem.id);
+        console.log("player has " + ammoAmount + " in inventory");
+        if (ammoAmount <= 0) return;
+        var amountToRemove = Math.min((itemType.ammoCapacity - currentAmmo), ammoAmount);
+        if (amountToRemove <= 0) return;
+        console.log("reloading: " + amountToRemove);
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.REMOVE_ITEM, itemType.ammoItem.id, amountToRemove));
+        sendCommand(new CommandEntityReloadWeapon(entity.id, stackId, amountToRemove));
+    }
 }
 
 ItemTextures.ShovelAtlas = {
@@ -442,10 +476,19 @@ initItems = function(gameData) {
     Items.Torch = {
         name: "Torch",
         texture: ItemTextures.ItemAtlas,
-        spriteId: 3,
+        spriteId: 4,
         isEquipable: false,
         isDropable: true,
         maxStackSize: 10,
+        type: "resource"
+    }
+    Items.Egg = {
+        name: "Egg",
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 3,
+        isEquipable: false,
+        isDropable: true,
+        maxStackSize: 100,
         type: "resource"
     }
 
@@ -467,6 +510,8 @@ initItems = function(gameData) {
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
         reloadCooldown: 1.0,
+        ammoCapacity: 10,
+        ammoItem: Items.Egg,
         type: "tool",
         typeOfType: "rangedWeapon",
         projectileType: Projectiles.Pistol,
@@ -490,6 +535,8 @@ initItems = function(gameData) {
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
         reloadCooldown: 1.0,
+        ammoCapacity: 10,
+        ammoItem: Items.Egg,
         type: "tool",
         typeOfType: "rangedWeapon",
         projectileType: Projectiles.Smg,
@@ -513,6 +560,8 @@ initItems = function(gameData) {
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
         reloadCooldown: 1.0,
+        ammoCapacity: 10,
+        ammoItem: Items.Egg,
         type: "tool",
         typeOfType: "rangedWeapon",
         projectileType: Projectiles.AssaultRifle,
@@ -536,6 +585,8 @@ initItems = function(gameData) {
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
         reloadCooldown: 1.0,
+        ammoCapacity: 10,
+        ammoItem: Items.Egg,
         numProjectiles: 1,
         type: "tool",
         typeOfType: "rangedWeapon",
@@ -559,6 +610,8 @@ initItems = function(gameData) {
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
         reloadCooldown: 1.0,
+        ammoCapacity: 10,
+        ammoItem: Items.Egg,
         type: "tool",
         typeOfType: "rangedWeapon",
         numProjectiles: 8,
@@ -582,6 +635,8 @@ initItems = function(gameData) {
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
         reloadCooldown: 1.0,
+        ammoCapacity: 10,
+        ammoItem: Items.Egg,
         type: "tool",
         typeOfType: "rangedWeapon",
         projectileType: Projectiles.SniperRifle,
@@ -604,6 +659,8 @@ initItems = function(gameData) {
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
         reloadCooldown: 1.0,
+        ammoCapacity: 10,
+        ammoItem: Items.Egg,
         type: "tool",
         typeOfType: "rangedWeapon",
         projectileType: Projectiles.GrenadeLauncher,
