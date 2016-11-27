@@ -45,26 +45,27 @@ AnimationManager.prototype.load = function() {
     ]);
 
     this.cycles["leftArmGunReload"] = new Cycle([
-        [0,        // x
-            0,     // y
+        [-2,        // x
+        -6,     // y
             2.0,      // angle
             15],    // num frames
+
+        [-2,
+        -6,
+            2.0,
+            5],
+
         [0,
             0,
             2.0,
             10],
+
         [-2,
         -6,
             2.0,
             10],
-        [0,
-            0,
-            2.0,
-            10],
-        [0,
-            0,
-            2.0,
-            5],
+
+
         [0,
             0,
             0,
