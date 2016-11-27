@@ -116,13 +116,11 @@ ItemFunctions.Reload = function(entity, itemType) {
         var currentAmmo = (item.magazine != null ? item.magazine : 0);
 
         var ammoAmount = entity.inventory.getAmountById(itemType.ammoItem.id);
-        console.log("player has " + ammoAmount + " in inventory");
         if (ammoAmount <= 0) return;
         var amountToRemove = Math.min((itemType.ammoCapacity - currentAmmo), ammoAmount);
         if (amountToRemove <= 0) return;
-        console.log("reloading: " + amountToRemove);
+        sendCommand(new CommandEntityReloadWeapon(entity.id, stackId, currentAmmo + amountToRemove));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.REMOVE_ITEM, itemType.ammoItem.id, amountToRemove));
-        sendCommand(new CommandEntityReloadWeapon(entity.id, stackId, amountToRemove));
     }
 }
 
@@ -535,7 +533,7 @@ initItems = function(gameData) {
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
         reloadCooldown: 1.0,
-        ammoCapacity: 10,
+        ammoCapacity: 25,
         ammoItem: Items.Egg,
         type: "tool",
         typeOfType: "rangedWeapon",
@@ -560,7 +558,7 @@ initItems = function(gameData) {
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
         reloadCooldown: 1.0,
-        ammoCapacity: 10,
+        ammoCapacity: 35,
         ammoItem: Items.Egg,
         type: "tool",
         typeOfType: "rangedWeapon",
@@ -585,7 +583,7 @@ initItems = function(gameData) {
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
         reloadCooldown: 1.0,
-        ammoCapacity: 10,
+        ammoCapacity: 70,
         ammoItem: Items.Egg,
         numProjectiles: 1,
         type: "tool",
@@ -610,7 +608,7 @@ initItems = function(gameData) {
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
         reloadCooldown: 1.0,
-        ammoCapacity: 10,
+        ammoCapacity: 32,
         ammoItem: Items.Egg,
         type: "tool",
         typeOfType: "rangedWeapon",
@@ -635,7 +633,7 @@ initItems = function(gameData) {
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
         reloadCooldown: 1.0,
-        ammoCapacity: 10,
+        ammoCapacity: 1,
         ammoItem: Items.Egg,
         type: "tool",
         typeOfType: "rangedWeapon",
@@ -659,7 +657,7 @@ initItems = function(gameData) {
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
         reloadCooldown: 1.0,
-        ammoCapacity: 10,
+        ammoCapacity: 1,
         ammoItem: Items.Egg,
         type: "tool",
         typeOfType: "rangedWeapon",

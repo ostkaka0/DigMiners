@@ -8,7 +8,6 @@ Blocks = {};
 
 BlockBulletFunctions = {};
 BlockBulletFunctions.bunker = function(blockPos, blockType, entity) {
-    console.log("bunker!");
     if (entity.projectile.projectileType.penentrateBunkerWindow)
         return;
     // Fix of diagonal shooting
