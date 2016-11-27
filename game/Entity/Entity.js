@@ -26,7 +26,7 @@ Entity.getMaxDigHardness = function(entity) {
 }
 
 Entity.canReload = function(entity, itemType) {
-    if (!itemType || !entity.inventory) return false;
+    if (!itemType || !itemType.canReload || !entity.inventory) return false;
     var stackId = entity.inventory.getEquippedStackId("tool");
     if (stackId == null) return false;
     var item = entity.inventory.items[stackId];
