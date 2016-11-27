@@ -9,13 +9,21 @@ BlockPlacer = function(blockPos, blockId, duration, entityId) {
 BlockPlacer.prototype.name = blockPlacer.name; function blockPlacer() { };
 
 BlockPlacer.prototype.update = function(entity) {
+    this.duration--;
+    
     if (!this.isInitialized) {
         this.isInitialized = true;
         var placerEntity = gameData.entityWorld.objects[this.entityId];
         placerEntity.blockPlacerId = entity.id;
+        if (!isServer) {
+            this.sprite = new PIXI.Sprite(gameData.textures["egg"]);
+            this.sprite.anchor.x = 0.5;
+            this.sprite.anchor.y = 0.5;
+            this.sprite.alpha = 0.75;
+            zindices[2].addChild(this.sprite);
+        }
     }
         
-    this.duration--;
     var placerEntity = gameData.entityWorld.objects[this.entityId];
     var playerId = (placerEntity.controlledByPlayer)? placerEntity.controlledByPlayer.playerId : undefined;
     var player = (playerId != undefined)? gameData.playerWorld.objects[playerId] : undefined;
@@ -32,6 +40,10 @@ BlockPlacer.prototype.update = function(entity) {
         buildFailure = true;
     if (bodiesInRadius.length != 0)
         buildFailure = true;
+    
+    if (!isServer && (buildFailure || this.duration == 0)) {
+        zindices[2].removeChild(this.sprite);
+    }
     
     if (buildFailure) {
         placerEntity.blockPlacerId = undefined;

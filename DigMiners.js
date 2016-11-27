@@ -141,6 +141,12 @@ render = function(tickFracTime) {
                 if (distance >= entity.projectile.projectileType.scaleX / 4)
                     entity.projectile.sprite.visible = true;
             }
+        } else if (entity.blockPlacer && entity.blockPlacer.sprite) {
+            entity.blockPlacer.sprite.position.x = -camera.pos[0] + canvas.width / 2 + 32 * (entity.blockPlacer.blockPos[0] + 0.5);
+            entity.blockPlacer.sprite.position.y = camera.pos[1] + canvas.height / 2 - 32 * (entity.blockPlacer.blockPos[1] + 0.5);
+            var factor = 1.0 - entity.blockPlacer.duration / gameData.blockRegister[entity.blockPlacer.blockId].buildDuration;
+            entity.blockPlacer.sprite.scale.x = 32 * factor / 8;
+            entity.blockPlacer.sprite.scale.y = 32 * factor / 8;
         }
     });
 
