@@ -64,6 +64,27 @@ ItemFunctions.Sword = function(entity, item) {
     }
 }
 
+ItemFunctions.Potion = function(entity, item) {
+    var potionEffect = item.getPotionEffect();
+    potionEffect.potionFunction(entity);
+    if (entity.inventory) {
+        var removed = entity.inventory.removeItem(gameData, item.id, 1);
+        for (var i = 0; i < removed.length; ++i) {
+            // Dequip item when removed from inventory
+            var entry = removed[i];
+            var stackId = entry[0];
+            var item = entry[1];
+            var itemType = gameData.itemRegister[item.id];
+            if (item.equipped)
+                Entity.onDequip(entity, stackId, itemType);
+        };
+        if (!isServer && global.playerEntity && entity.id == global.playerEntity.id) {
+            updateHUD(gameData);
+            checkCanAffordRecipe();
+        }
+    }
+}
+
 ItemFunctions.RangedWeapon = function(entity, itemType) {
     if (!itemType || !entity.inventory) return;
     var stackId = entity.inventory.getEquippedStackId("tool");
@@ -284,95 +305,6 @@ initItems = function(gameData) {
         digSpeed: 1.8,
         maxDigHardness: Tiles.Apatite.hardness,
     }
-    Items.LapisLazuliShovel = {
-        name: "Lapis Lazuli Shovel",
-        texture: ItemTextures.ShovelAtlas,
-        spriteId: 5,
-        isEquipable: true,
-        isDropable: true,
-        maxStackSize: 1,
-        itemFunction: ItemFunctions.Shovel,
-        useCooldown: 0.25,
-        useDuration: 0.125,
-        type: "tool",
-        typeOfType: "shovel",
-        digSpeed: 2.2,
-        maxDigHardness: 64,
-    }
-    Items.MagnetiteShovel = {
-        name: "Magnetite Shovel",
-        texture: ItemTextures.ShovelAtlas,
-        spriteId: 7,
-        isEquipable: true,
-        isDropable: true,
-        maxStackSize: 1,
-        itemFunction: ItemFunctions.Shovel,
-        useCooldown: 0.25,
-        useDuration: 0.125,
-        type: "tool",
-        typeOfType: "shovel",
-        digSpeed: 2.4,
-        maxDigHardness: 64,
-    }
-    Items.QuartzShovel = {
-        name: "Quartz Shovel",
-        texture: ItemTextures.ShovelAtlas,
-        spriteId: 9,
-        isEquipable: true,
-        isDropable: true,
-        maxStackSize: 1,
-        itemFunction: ItemFunctions.Shovel,
-        useCooldown: 0.25,
-        useDuration: 0.125,
-        type: "tool",
-        typeOfType: "shovel",
-        digSpeed: 2.8,
-        maxDigHardness: 64,
-    }
-    Items.EmeraldShovel = {
-        name: "Emerald Shovel",
-        texture: ItemTextures.ShovelAtlas,
-        spriteId: 10,
-        isEquipable: true,
-        isDropable: true,
-        maxStackSize: 1,
-        itemFunction: ItemFunctions.Shovel,
-        useCooldown: 0.25,
-        useDuration: 0.125,
-        type: "tool",
-        typeOfType: "shovel",
-        digSpeed: 3.0,
-        maxDigHardness: 64,
-    }
-    Items.RubyShovel = {
-        name: "Ruby Shovel",
-        texture: ItemTextures.ShovelAtlas,
-        spriteId: 12,
-        isEquipable: true,
-        isDropable: true,
-        maxStackSize: 1,
-        itemFunction: ItemFunctions.Shovel,
-        useCooldown: 0.25,
-        useDuration: 0.125,
-        type: "tool",
-        typeOfType: "shovel",
-        digSpeed: 3.6,
-        maxDigHardness: 64,
-    }
-    Items.DiamondShovel = {
-        name: "Diamond Shovel",
-        texture: ItemTextures.ShovelAtlas,
-        spriteId: 13,
-        isEquipable: true,
-        isDropable: true,
-        maxStackSize: 1,
-        itemFunction: ItemFunctions.Shovel,
-        useCooldown: 0.25,
-        useDuration: 0.125,
-        type: "tool",
-        typeOfType: "shovel",
-        digSpeed: 4.0,
-    }
 
     // Swords
     Items.RustySword = {
@@ -488,6 +420,22 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 100,
         type: "resource"
+    }
+    Items.PotionHealth = {
+        name: "Health Potion",
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 3, 
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 8,
+        type: "tool",
+        typeOfType: "potion",
+        digSpeed: 0.0, 
+        useCooldown: 1.75,
+        useDuration: 1.0,
+        maxDigHardness: 0.0,
+        itemFunction: ItemFunctions.Potion,
+        getPotionEffect: function() { return PotionEffects.Healing; }
     }
 
     // Ranged weapons

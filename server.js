@@ -87,12 +87,12 @@ gameData.entityWorld.onAdd.push(function(entity) {
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.CopperShovel.id, 1));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.IronShovel.id, 1));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.SteelShovel.id, 1));
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.DiamondShovel.id, 1));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.CopperSword.id, 1));
 
         // give player dynamite at join
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.Dynamite.id, 4));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.Egg.id, 99));
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.PotionHealth.id, 8));
 
         // give player blocks at join
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.StoneWall.id, 100));
