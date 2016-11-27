@@ -96,9 +96,9 @@ entityFunctionEntityMovement = function(dt) {
         useDurationTicks = Math.min(useCooldownTicks, useDurationTicks);
 
         if (!entity.movement.isUsingTool && !entity.movement.isReloading) {
-            if (tool && tool.canReload && entity.movement.keyStatuses[Keys.R])
+            if (tool && tool.canReload && entity.movement.keyStatuses[Keys.R] && Entity.canReload(entity, tool))
                 entity.movement.isReloading = true;
-            else if (entity.movement.keyStatuses[Keys.SPACEBAR])
+            else if (entity.movement.keyStatuses[Keys.SPACEBAR] && Entity.canUseTool(entity, tool))
                 entity.movement.isUsingTool = true;
         }
 
@@ -131,17 +131,13 @@ entityFunctionEntityMovement = function(dt) {
         }
 
         if (useCooldownTicks - entity.movement.toolUseTickTimeout == useDurationTicks) {
-            if (isServer) {
-                if (tool && tool.itemFunction)
-                    tool.itemFunction(entity, tool);
-            }
+            if (tool && tool.itemFunction)
+                tool.itemFunction(entity, tool);
         }
 
         if (reloadCooldownTicks - entity.movement.toolReloadTickTimeout == 0) {
-            if (isServer) {
-                if (tool && tool.reloadFunction)
-                    tool.reloadFunction(entity, tool);
-            }
+            if (tool && tool.reloadFunction)
+                tool.reloadFunction(entity, tool);
         }
 
         // Dig update:
