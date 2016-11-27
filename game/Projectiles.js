@@ -91,13 +91,13 @@ Projectiles.GrenadeLauncher = {
     maxDistance: 50, // blocks
     speed: 25.0, // blocks per second
     damage: 10.0, // damage per hit
-    blockDamage: 200.0,
+    blockDamage: 80.0,
     stayTime: 0, // milliseconds projectile will stay after hit
     textureName: "bigEgg",
     isExplosive: true,
     explosiveRadius: 2.0,
     explosiveEntityDamage: 30, // damage in HP units at center of explosion
-    explosionBlockDamage: 15, // damage in block HP units at center of explosion
+    explosionBlockDamage: 60, // damage in block HP units at center of explosion
     explosionTileDamage: 1, // number of times to run CommandDig with above radius
     hitParticle: function() { return Particles.BigEgg },
     scaleX: 1.0,

@@ -91,7 +91,7 @@ gameData.entityWorld.onAdd.push(function(entity) {
 
         // give player dynamite at join
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.Dynamite.id, 4));
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.Egg.id, 99));
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.Egg.id, 1000));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.PotionHealth.id, 8));
 
         // give player blocks at join

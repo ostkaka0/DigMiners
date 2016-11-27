@@ -205,7 +205,7 @@ ItemTextures.BlockAtlas = {
     dimY: 16,
 }
 
-initItems = function(gameData) {
+initItems = function() {
     // Blocks
     var num = 0;
     for (var name in Blocks) {
@@ -399,9 +399,7 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 8,
         type: "tool",
-        typeOfType: "explosive",
-        digSpeed: 0.0,
-        maxDigHardness: 0.0,
+        typeOfType: "explosive"
     }
     Items.Torch = {
         name: "Torch",
@@ -430,10 +428,8 @@ initItems = function(gameData) {
         maxStackSize: 8,
         type: "tool",
         typeOfType: "potion",
-        digSpeed: 0.0, 
-        useCooldown: 1.75,
+        useCooldown: 1.5,
         useDuration: 1.0,
-        maxDigHardness: 0.0,
         itemFunction: ItemFunctions.Potion,
         getPotionEffect: function() { return PotionEffects.Healing; }
     }
@@ -505,7 +501,7 @@ initItems = function(gameData) {
         reloadCycleRightArm: "rightArmGunReload",
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
-        reloadCooldown: 1.0,
+        reloadCooldown: 2.0,
         ammoCapacity: 35,
         ammoItem: Items.Egg,
         type: "tool",
@@ -530,8 +526,8 @@ initItems = function(gameData) {
         reloadCycleRightArm: "rightArmGunReload",
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
-        reloadCooldown: 1.0,
-        ammoCapacity: 70,
+        reloadCooldown: 8.0,
+        ammoCapacity: 150,
         ammoItem: Items.Egg,
         numProjectiles: 1,
         type: "tool",
@@ -547,7 +543,7 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.RangedWeapon,
-        useCooldown: 1.0,
+        useCooldown: 0.6,
         useDuration: 0,
         useCycle: "rightArmGun",
         canReload: true,
@@ -555,8 +551,8 @@ initItems = function(gameData) {
         reloadCycleRightArm: "rightArmGunReload",
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
-        reloadCooldown: 1.0,
-        ammoCapacity: 32,
+        reloadCooldown: 2.0,
+        ammoCapacity: 64,
         ammoItem: Items.Egg,
         type: "tool",
         typeOfType: "rangedWeapon",
@@ -572,7 +568,7 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.RangedWeapon,
-        useCooldown: 2.0,
+        useCooldown: 0.1,
         useDuration: 0,
         useCycle: "rightArmGun",
         canReload: true,
@@ -580,7 +576,7 @@ initItems = function(gameData) {
         reloadCycleRightArm: "rightArmGunReload",
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
-        reloadCooldown: 1.0,
+        reloadCooldown: 2.0,
         ammoCapacity: 1,
         ammoItem: Items.Egg,
         type: "tool",
@@ -596,7 +592,7 @@ initItems = function(gameData) {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.RangedWeapon,
-        useCooldown: 0.1,
+        useCooldown: 1.0,
         useDuration: 0,
         useCycle: "rightArmGun",
         canReload: true,
@@ -604,8 +600,8 @@ initItems = function(gameData) {
         reloadCycleRightArm: "rightArmGunReload",
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
-        reloadCooldown: 1.0,
-        ammoCapacity: 1,
+        reloadCooldown: 4.0,
+        ammoCapacity: 6,
         ammoItem: Items.Egg,
         type: "tool",
         typeOfType: "rangedWeapon",
