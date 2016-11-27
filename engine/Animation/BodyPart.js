@@ -47,7 +47,7 @@ BodyPart.prototype.position = function(x, y, rotation) {
             child.sprite.sprite.rotation = rotation + child.cycleOffset[2] + child.offset[2];
 
             forOf(this, child.children, function(child2) {
-                child2.rotateAroundPoint(x, y, rotation, child.sprite.sprite.rotation);
+                child2.rotateAroundPoint(x, y, rotation, child.sprite.sprite.rotation, child.cycleOffset[0], child.cycleOffset[1]);
             });
         });
     }
@@ -61,9 +61,9 @@ BodyPart.prototype.rotate = function(ax, ay, x, y, angle) {
     return [-nx, ny];
 }
 
-BodyPart.prototype.rotateAroundPoint = function(x, y, rotation, parentRotation) {
+BodyPart.prototype.rotateAroundPoint = function(x, y, rotation, parentRotation, cycleX, cycleY) {
     var rotatedParent = this.rotate(0, 0, this.parent.offset[0], this.parent.offset[1], rotation);
-    var rotatedOffset = this.rotate(0, 0, this.offset[0], this.offset[1], parentRotation + this.cycleOffset[2] + this.offset[2]);
+    var rotatedOffset = this.rotate(0, 0, this.offset[0] + cycleX, this.offset[1] + cycleY, parentRotation + this.offset[2]);
 
     this.sprite.sprite.position.x = x + rotatedParent[0] + rotatedOffset[0];
     this.sprite.sprite.position.y = y + rotatedParent[1] + rotatedOffset[1];
@@ -71,10 +71,9 @@ BodyPart.prototype.rotateAroundPoint = function(x, y, rotation, parentRotation) 
 }
 
 BodyPart.prototype.cycle = function(gameData, cycle, fps, runToEnd) {
-    if (!this.cycleInstance) {
+    if (!this.cycleInstance)
         this.cycleInstance = {};
-        this.cycleInstance.cycle = gameData.animationManager.cycles[cycle];
-    }
+    this.cycleInstance.cycle = gameData.animationManager.cycles[cycle];
     this.cycleInstance.rest = 0;
     this.cycleInstance.mspf = 1000.0 / fps;
     if (!this.cycleInstance.lastFrame || !this.cycleInstance)

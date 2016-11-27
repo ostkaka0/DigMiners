@@ -17,6 +17,74 @@ AnimationManager.prototype.load = function() {
             0,
             32]
     ]);
+
+    this.cycles["rightArmGun"] = new Cycle([
+        [3,        // x
+            0,     // y
+            0,      // angle
+            32],    // num frames
+        [0,
+            0,
+            0,
+            32]
+    ]);
+
+    this.cycles["rightArmGunReload"] = new Cycle([
+        [0,        // x
+            0,     // y
+            -0.5,      // angle
+            10],    // num frames
+        [0,        // x
+            0,     // y
+            -0.5,      // angle
+            60],    // num frames
+        [0,
+            0,
+            0,
+            10]
+    ]);
+
+    this.cycles["leftArmGunReload"] = new Cycle([
+        [0,        // x
+            0,     // y
+            2.0,      // angle
+            15],    // num frames
+        [0,
+            0,
+            2.0,
+            10],
+        [-2,
+        -6,
+            2.0,
+            10],
+        [0,
+            0,
+            2.0,
+            10],
+        [0,
+            0,
+            2.0,
+            5],
+        [0,
+            0,
+            0,
+            10]
+    ]);
+
+    this.cycles["gunReload"] = new Cycle([
+        [0,        // x
+            0,     // y
+            1.3,      // angle
+            10],    // num frames
+        [0,        // x
+            0,     // y
+            1.3,      // angle
+            60],    // num frames
+        [0,
+            0,
+            0,
+            10]
+    ]);
 }
 
 AnimationManager.prototype.update = function() {

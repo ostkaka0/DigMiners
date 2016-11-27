@@ -20,7 +20,7 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
         "feet": new BodyPart(feetSprite, 0, 0, 0, null, null),
         "tool": new BodyPart(new Sprite(), -10, 15, 0, null, "rightArm"),
         "rightArm": new BodyPart(rightArmSprite, 5, 4, 0, [10, 11], "body"),
-        "leftArm": new BodyPart(leftArmSprite, 5, -16, 0, [10, 11], "body"),
+        "leftArm": new BodyPart(leftArmSprite, 5, -4, 0, [10, 23], "body"),
         "body": new BodyPart(new Sprite(), 0, 0, 0, null, null),
         "head": new BodyPart(headSprite, 1, 0, 0, null, null),
         "hat": new BodyPart(new Sprite(), 1, 0, 0, null, null)
@@ -70,7 +70,7 @@ entityTemplates.testMonster = function(entityId, pos, gameData) {
         "feet": new BodyPart(feetSprite, 0, 0, 0, null, null),
         "tool": new BodyPart(new Sprite(), -10, 15, 0, null, "rightArm"),
         "rightArm": new BodyPart(rightArmSprite, 5, 4, 0, [10, 11], "body"),
-        "leftArm": new BodyPart(leftArmSprite, 5, -16, 0, [10, 11], "body"),
+        "leftArm": new BodyPart(leftArmSprite, 5, -16, 0, [10, 23], "body"),
         "body": new BodyPart(new Sprite(), 0, 0, 0, null, null),
         "head": new BodyPart(headSprite, 1, 0, 0, null, null),
         "hat": new BodyPart(new Sprite(), 1, 0, 0, null, null)

@@ -1,12 +1,4 @@
 
-Keys = {
-    UP: 0,
-    LEFT: 1,
-    DOWN: 2,
-    RIGHT: 3,
-    SPACEBAR: 4
-}
-
 MessageRequestKeyStatusUpdate = function(key, pressed) {
     this.key = key;
     this.pressed = pressed;
