@@ -64,18 +64,25 @@ PotionEffects.prototype.destroy = function(entity) {
     }.bind(this));
 }
 
-PotionEffects.prototype.add = function(potionEffectTypeId, duration) {
-    var effect = this.effects[potionEffectTypeId];
+PotionEffects.prototype.add = function(potionEffectType, duration) {
+    var effect = this.effects[potionEffectType.id];
     if (duration == -1) {
-        this.effects[potionEffectTypeId] = { startDuration: -1, duration: -1 };
-    }
-    if (effect) {
-        if (effect.duration > duration)
+        this.effects[potionEffectType.id] = { startDuration: -1, duration: -1 };
+    } else if (effect) {
+        if (effect.duration >= duration)
             return;
+        var before = { startDuration: effect.startDuration, duration: effect.duration };
+        if (duration >= potionEffectType.interval)
+            effect.startDuration = duration - (duration % potionEffectType.interval) + potionEffectType.interval + ((effect.startDuration - effect.duration) % potionEffectType.interval);
+        else
+            effect.startDuration = ((effect.startDuration + duration - effect.duration) % potionEffectType.interval) + potionEffectType.interval;
         effect.duration = duration;
-        if (duration > effect.startDuration)
-            effect.startDuration = duration;
+        if ((before.startDuration - before.duration) % potionEffectType.interval != (effect.startDuration - effect.duration) % potionEffectType.interval) {
+            console.log("Potion error!")
+            console.log("before: " + before.startDuration + " | " + before.duration + " -> " + (before.startDuration - before.duration) % potionEffectType.interval);
+            console.log("after: " + effect.startDuration + " | " + effect.duration + " -> " + (effect.startDuration - effect.duration) % potionEffectType.interval);
+        }
+    } else {
+        this.effects[potionEffectType.id] = { startDuration: duration, duration: duration };
     }
-    
-    this.effects[potionEffectTypeId] = { startDuration: duration, duration: duration };
 }

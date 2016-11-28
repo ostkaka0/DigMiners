@@ -245,7 +245,7 @@ Blocks.HealthBox =  {
         entity.physicsBody = new PhysicsBody(v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), 0.01);
         entity.health = new Health(100, 100);
         entity.potionEffects = new PotionEffects();
-        entity.potionEffects.add(PotionEffectTypes.HealNearEntities.id, -1); 
+        entity.potionEffects.add(PotionEffectTypes.HealNearEntities, -1); 
 
         var bodySprite = new Sprite(block.name);
         var bodyparts = {
