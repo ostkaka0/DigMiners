@@ -75,7 +75,7 @@ Projectiles.SniperRifle = {
     radius: 0.2,
     maxDistance: 400,
     speed: 150.0,
-    damage: 40.0,
+    damage: 60.0,
     blockDamage: 40.0,
     stayTime: 50,
     textureName: "egg",
