@@ -158,19 +158,29 @@ Blocks.StoneWall = {
     buildDuration: 20
 };
 
-Blocks.WoodCrate = {
+Blocks.WoodCrate =  {
     name: "Wood Crate",
     isSolid: true,
-    hardness: 0.25,
+    hardness: 0.50,
     type: BlockTypes.FOREGROUND,
-    buildDuration: 5,
-    isBulletSolid: false,
-    bulletFunction: BlockBulletFunctions.bunker,
-    bulletBunkerDistance: -1.0,
-    bulletBunkerNearFactor: 0.5,
-    bulletBunkerFarFactor: 0.5,
-    projectileArmor: -3.0 // Extra sensitive to bullets
-};
+    buildDuration: 10,
+    onPlace: BlockFunctions.createEntity,
+    createEntity: function(blockPos, block) {
+        var entity = {};
+        entity.physicsBody = new PhysicsBody(v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), 0.01);
+        entity.health = new Health(50, 50);
+
+        var bodySprite = new Sprite(block.name);
+        var bodyparts = {
+            "body": new BodyPart(bodySprite, 0, 0, 0),
+            "text": new BodyPart(bodySprite, 0, 0, 0)
+        };
+        entity.bodyparts = new Bodyparts(bodyparts);
+        entity.drawable = new Drawable(0);
+
+        return entity;
+    }
+}
 
 Blocks.StoneFloor = {
     name: "Stone Floor",
