@@ -2,7 +2,7 @@
 PotionEffectTypes = [];
 
 PotionEffectTypes.Healing = {
-    interval: 10,
+    interval: 5,
     potionFunction: function(entity) { 
         var health = entity.health;
         if (health) {
@@ -29,7 +29,7 @@ PotionEffectTypes.HealNearEntities = {
                 return;
             var posOther = otherEntity.physicsBody.getPos();
             if (v2.distance(pos, posOther) < 4.0)
-                otherEntity.potionEffects.add(PotionEffectTypes.Healing.id, 6);
+                otherEntity.potionEffects.add(PotionEffectTypes.Healing, 10);
             
         }.bind(this));
     }

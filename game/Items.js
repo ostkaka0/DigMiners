@@ -67,7 +67,7 @@ ItemFunctions.Sword = function(entity, item) {
 ItemFunctions.Potion = function(entity, item) {
     var potionEffectType = item.getPotionEffect();
     if (entity.potionEffects) {
-        entity.potionEffects.add(potionEffectType.id, item.potionDuration);
+        entity.potionEffects.add(potionEffectType, item.potionDuration);
     }
     if (entity.inventory) {
         var removed = entity.inventory.removeItem(gameData, item.id, 1);
