@@ -29,7 +29,7 @@ Player.prototype.canPlaceBlock = function(gameData, x, y) {
     var entity = gameData.entityWorld.objects[this.entityId];
     if (!entity) return false;
     var bodies = [];
-    gameData.physicsWorld.getBodiesInRadius(bodies, [x + 0.5, y + 0.5], 0.25);
+    gameData.physicsWorld.getBodiesInRadius(bodies, [x + 0.5, y + 0.5], 0.0);
     if (bodies.length != 0) return false;
     var physicsBody = entity.physicsBody;
     if (!physicsBody) return false;

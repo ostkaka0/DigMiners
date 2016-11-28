@@ -594,7 +594,7 @@ initItems = function() {
         reloadCycleRightArm: "rightArmGunReload",
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
-        reloadCooldown: 2.0,
+        reloadCooldown: 3.0,
         ammoCapacity: 1,
         ammoItem: Items.Egg,
         type: "tool",
