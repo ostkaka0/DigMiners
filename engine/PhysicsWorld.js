@@ -73,12 +73,12 @@ PhysicsWorld.prototype.update = function(dt) {
             // Calc position
             var dir = [0, 0];
             v2.sub(otherPosOld, posOld, dir);
-            var dis = v2.sqrLength(dir);
+            var dis = v2.length(dir);
             v2.normalize(dir, dir);
             if (dis == 0)
                 dir = [1, 0];
             var deltaPos = [0, 0];
-            v2.mul((1.0 - dis) / 2, dir, deltaPos);
+            v2.mul((1.0 - dis) * Math.min(1.0, 8*(1.0 - dis)) / 2.0, dir, deltaPos);
             v2.sub(pos, deltaPos, pos);
             v2.add(otherPos, deltaPos, otherPos);
 
@@ -87,8 +87,9 @@ PhysicsWorld.prototype.update = function(dt) {
             var velocityY = fix.mul(velocity[1], fix.sub(mass, otherMass)) + fix.div(fix.mul(2, fix.mul(otherMass, otherVelocity[1])), fix.add(mass, otherMass));
             var otherVelocityX = fix.mul(otherVelocity[1], fix.sub(otherMass, mass)) + fix.div(fix.mul(2, fix.mul(mass, velocity[0])), fix.add(mass, otherMass));
             var otherVelocityY = fix.mul(otherVelocity[1], fix.sub(otherMass, mass)) + fix.div(fix.mul(2, fix.mul(mass, velocity[1])), fix.add(mass, otherMass));
-            velocity = [velocityX - deltaPos[0]*5, velocityY - deltaPos[1]*4];
-            otherVelocity = [otherVelocityX + deltaPos[0]*4, otherVelocityY + deltaPos[1]*4];
+            var collisionVelocityFactor = Math.min(8, 80 * (1.0 - dis));
+            velocity = [velocityX - collisionVelocityFactor * deltaPos[0], velocityY - collisionVelocityFactor * deltaPos[1]];
+            otherVelocity = [otherVelocityX + collisionVelocityFactor * deltaPos[0], otherVelocityY + collisionVelocityFactor * deltaPos[1]];
 
             this.setPos(otherId, otherPos);
             this.setVelocity(otherId, otherVelocity);

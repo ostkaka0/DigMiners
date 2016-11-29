@@ -87,13 +87,10 @@ entityFunctionEntityMovement = function(dt) {
             entity.physicsBody.rotateTo(Math.atan2(-direction[1], direction[0]), entity.physicsBody.rotationSpeed, dt);
 
         var tool = entity.equippedItems.items["tool"];
-        var useCooldownSeconds = (tool && tool.useCooldown) ? tool.useCooldown : 0;//entity.movement.calcDigTickDuration(gameData.tickDuration); // digDuration
-        var useDurationSeconds = (tool && tool.useDuration) ? tool.useDuration : 0;
-        var reloadCooldownSeconds = (tool && tool.reloadCooldown) ? tool.reloadCooldown : 0;
-        var useCooldownTicks = Math.round(useCooldownSeconds / dt);
-        var useDurationTicks = Math.round(useDurationSeconds / dt);
-        var reloadCooldownTicks = Math.round(reloadCooldownSeconds / dt);
-        useDurationTicks = Math.min(useCooldownTicks, useDurationTicks);
+        var useCooldown = (tool && tool.useCooldown) ? tool.useCooldown : 0;
+        var useDuration = (tool && tool.useDuration) ? tool.useDuration : 0;
+        var reloadCooldown = (tool && tool.reloadCooldown) ? tool.reloadCooldown : 0;
+        useDuration = Math.min(useCooldown, useDuration);
 
         if (!entity.movement.isUsingTool && !entity.movement.isReloading) {
             if (isServer && tool && tool.canReload && entity.movement.keyStatuses[Keys.R] && Entity.canReload(entity, tool))
@@ -105,17 +102,17 @@ entityFunctionEntityMovement = function(dt) {
         }
 
         if (entity.movement.isUsingTool && entity.movement.toolUseTickTimeout <= 0) {
-            entity.movement.toolUseTickTimeout = useCooldownTicks;
+            entity.movement.toolUseTickTimeout = useCooldown;
             if (!isServer) {
                 var useCycleName = (tool.useCycle ? tool.useCycle : "rightArm");
                 var useCycle = gameData.animationManager.cycles[useCycleName];
                 if (useCycle)
-                    entity.bodyparts.bodyparts["rightArm"].cycle(gameData, useCycleName, useCycle.numFrames / useCooldownSeconds, true);
+                    entity.bodyparts.bodyparts["rightArm"].cycle(gameData, useCycleName, useCycle.numFrames / useCooldown * 20, true);
             }
         }
 
         if (entity.movement.isReloading && entity.movement.toolReloadTickTimeout <= 0) {
-            entity.movement.toolReloadTickTimeout = reloadCooldownTicks;
+            entity.movement.toolReloadTickTimeout = reloadCooldown;
             if (!isServer) {
                 var reloadCycleRightArmName = (tool.reloadCycleRightArm ? tool.reloadCycleRightArm : "rightArm");
                 var reloadCycleLeftArmName = (tool.reloadCycleLeftArm ? tool.reloadCycleLeftArm : "leftArm");
@@ -124,20 +121,20 @@ entityFunctionEntityMovement = function(dt) {
                 var reloadCycleLeftArm = gameData.animationManager.cycles[reloadCycleLeftArmName];
                 var reloadCycleGun = gameData.animationManager.cycles[reloadCycleGunName];
                 if (reloadCycleRightArm)
-                    entity.bodyparts.bodyparts["rightArm"].cycle(gameData, reloadCycleRightArmName, reloadCycleRightArm.numFrames / reloadCooldownSeconds, true);
+                    entity.bodyparts.bodyparts["rightArm"].cycle(gameData, reloadCycleRightArmName, reloadCycleRightArm.numFrames / reloadCooldown * 20, true);
                 if (reloadCycleLeftArm)
-                    entity.bodyparts.bodyparts["leftArm"].cycle(gameData, reloadCycleLeftArmName, reloadCycleLeftArm.numFrames / reloadCooldownSeconds, true);
+                    entity.bodyparts.bodyparts["leftArm"].cycle(gameData, reloadCycleLeftArmName, reloadCycleLeftArm.numFrames / reloadCooldown * 20, true);
                 if (reloadCycleGun)
-                    entity.bodyparts.bodyparts["tool"].cycle(gameData, reloadCycleGunName, reloadCycleGun.numFrames / reloadCooldownSeconds, true);
+                    entity.bodyparts.bodyparts["tool"].cycle(gameData, reloadCycleGunName, reloadCycleGun.numFrames / reloadCooldown * 20, true);
             }
         }
 
-        if (useCooldownTicks - entity.movement.toolUseTickTimeout == useDurationTicks) {
+        if (useCooldown - entity.movement.toolUseTickTimeout == useDuration) {
             if (tool && tool.itemFunction)
                 tool.itemFunction(entity, tool);
         }
 
-        if (reloadCooldownTicks - entity.movement.toolReloadTickTimeout == 0) {
+        if (reloadCooldown - entity.movement.toolReloadTickTimeout == 0) {
             if (tool && tool.reloadFunction)
                 tool.reloadFunction(entity, tool);
         }
