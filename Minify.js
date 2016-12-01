@@ -6,10 +6,17 @@ UglifyJS = require("uglify-js");
 util = require("util");
 path = require("path");
 
+var outputPath = "./html/";
 var externalSourceFiles = [];
 var sourceFiles = [];
 var inputSrc = "";
 var inputSrcExternal = "";
+
+if (process.argv.length >= 3)
+    outputPath = process.argv[2] + "/";
+    
+console.log("Output directory:" + outputPath);
+if (!fs.existsSync(outputPath)) fs.mkdirSync(outputPath);
 
 var reservedWords = ["abstract", "arguments", "boolean", "break", "byte", "case", "catch", "char", "class", "const", "continue", "debugger", "default", "delete", "do", "double",
                         "else", "enum", "eval", "export", "extends", "false", "final", "finally", "float", "for", "function", "goto", "if", "implements", "import", "in",
@@ -28,7 +35,7 @@ var reservedWindowWords = ["alert", "all", "anchor", "anchors", "area", "assign"
                            "parseInt", "password", "pkcs11", "plugin", "prompt", "propertyIsEnum", "radio", "reset", "screenX", "screenY", "scroll", "secure", "select", "self",
                            "setInterval", "setTimeout", "status", "submit", "taint", "text", "textarea", "top", "unescape", "untaint", "window"];
                            
-var reservedHtmlWords = ["onblur", "onclick", "onerror", "onfocus", "onkeydown", "onkeypress", "onkeyup", "onmouseover onload", "onmouseup", "onmousedown", "onsubmit"]
+var reservedHtmlWords = ["onblur", "onclick", "onerror", "onfocus", "onkeydown", "onkeypress", "onkeyup", "onmouseover", "onload", "onmouseup", "onmousedown", "onsubmit"]
 
 var reservedOther = ["define", "exports", "module", "call", "global", "require", "error", "Error", "code", "data"];
 var reservedObjects = ["array", "Array", "Int8Array", "Uint8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array", "Int32Array", "Uint32Array", "Int64Array", "Uint64Array", "Float32Array",
@@ -86,6 +93,9 @@ isalpha = function(c) {
 
 isnum = function(c) {
     return c >= '0' && c <= '9';
+}
+ishex = function(c) {
+    return isnum(c) || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
 }
 
 isalnum = function(char) {
@@ -167,8 +177,8 @@ scan = function(source) {
             do {
                 strNumber += source.charAt(i);
                 i++;
-            } while(isalnum(source.charAt(i)) || source.charAt(i) == '.');
-            tokens.push(new TokenNumber(parseFloat(strNumber)));
+            } while(isalnum(source.charAt(i)) || source.charAt(i) == '.' || source.charAt(i) == 'x' || source.charAt(i) == 'X');
+            tokens.push(new TokenNumber(strNumber));//new TokenNumber(parseFloat(strNumber)));
             
         }
         // Regexp
@@ -295,7 +305,7 @@ mangleTokens = function(tokens, except) {
             }
         } else if ((token.value == "=" || token.value == ":") && lastToken != null) {
             var name = "_" + nameIndex.toString(36);
-            process.stdout.write(lastToken.value + " -> " + name + "  \t");
+            //process.stdout.write(lastToken.value + " -> " + name + "  \t");
             names[lastToken.value] = name;
             nameIndex++;
             lastToken = null;
@@ -335,7 +345,7 @@ tokensToString = function(tokens) {
 }
 
 loadExternalScript = function(filePath) {
-    console.log("Loading(external) " + filePath + "...");
+    process.stdout.write(".");//console.log("Loading(external) " + filePath + "...");
     externalSourceFiles.push(filePath);
     inputSrcExternal += fs.readFileSync(filePath) + "\n";
 }
@@ -354,7 +364,7 @@ loadRecursive = function(dir, load) {
 }
 
 loadScript = function(filePath) {
-    console.log("Loading " + filePath + "...");
+    process.stdout.write("."); //console.log("Loading " + filePath + "...");
     sourceFiles.push(filePath);
     inputSrc += fs.readFileSync(filePath) + "\n";
     //for (var token of tokens) {
@@ -410,14 +420,15 @@ var result = UglifyJS.minify(output, {
     mangleProperties: true,
     mangle: true
 });
+output = result.code;
 
 console.log("Copying...");
 
-copyFile("html_index.php", "html/index.php");
-copyFile("style.css", "html/style.css");
-copyRecursive("data/", "html/data");
+copyFile("html_index.php", outputPath + "index.php");
+copyFile("style.css", outputPath + "tyle.css");
+copyRecursive("data/", outputPath + "data/");
 
-fs.writeFile("html/src.js", result.code, function(err){
+fs.writeFile(outputPath + "src.js", output, function(err){
     if (err)
         console.log(err);
 })
