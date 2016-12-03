@@ -1,19 +1,31 @@
-console = require("console");
-fs = require("fs");
-path = require("path");
-yuicompressor = require('yuicompressor');
-UglifyJS = require("uglify-js");
-util = require("util");
-path = require("path");
+var console = require("console");
+var fs = require("fs");
+var path = require("path");
+var yuicompressor = require('yuicompressor');
+var UglifyJS = require("uglify-js");
+var util = require("util");
+var path = require("path");
+var commander = require("commander");
+var copydir = require('copy-dir');
 
 var outputPath = "./html/";
+var loadedFiles = {};
 var externalSourceFiles = [];
 var sourceFiles = [];
 var inputSrc = "";
 var inputSrcExternal = "";
 
-if (process.argv.length >= 3)
-    outputPath = process.argv[2] + "/";
+commander.version('0.0.1')
+    .usage("[options]")
+    .option("-o, --output <s>", "Output directory")
+    .option("-d, --debug", "Debug mode. Mangling will only add underline to names, no minification")
+    .parse(process.argv)
+
+if (commander.output) 
+    outputPath = commander.output + "/";
+    
+if (commander.debug)
+    console.log("Debug mode enabled");
     
 console.log("Output directory:" + outputPath);
 if (!fs.existsSync(outputPath)) fs.mkdirSync(outputPath);
@@ -35,7 +47,7 @@ var reservedWindowWords = ["alert", "all", "anchor", "anchors", "area", "assign"
                            "parseInt", "password", "pkcs11", "plugin", "prompt", "propertyIsEnum", "radio", "reset", "screenX", "screenY", "scroll", "secure", "select", "self",
                            "setInterval", "setTimeout", "status", "submit", "taint", "text", "textarea", "top", "unescape", "untaint", "window"];
                            
-var reservedHtmlWords = ["onblur", "onclick", "onerror", "onfocus", "onkeydown", "onkeypress", "onkeyup", "onmouseover", "onload", "onmouseup", "onmousedown", "onsubmit"]
+var reservedHtmlWords = ["onblur", "onclick", "onerror", "onfocus", "onkeydown", "onkeypress", "onkeyup", "onmouseover", "onload", "onmouseup", "onmousedown", "onsubmit", "background", "backgroundImage"]
 
 var reservedOther = ["define", "exports", "module", "call", "global", "require", "error", "Error", "code", "data"];
 var reservedObjects = ["array", "Array", "Int8Array", "Uint8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array", "Int32Array", "Uint32Array", "Int64Array", "Uint64Array", "Float32Array",
@@ -61,6 +73,7 @@ var reservedObjectPrototypes = [["Error", "columnNumber", "filename", "lineNumbe
                                 ["ArrayBuffer", "SharedArrayBuffer", "DataView", "isView", "transfer", "byteLength", "getFloat32", "getFloat64", "getInt16", "getInt32", "getInt8", "getUint16", "getUint32", "getUint8", "setFloat32", "setFloat64", "setInt16", "setInt32", "setInt8", "setUint16", "setUint32", "setUint8"],
                                 ["Atomics", "add", "and", "compareExchange", "exchange", "isLockFree", "load", "or", "store", "sub", "wait", "wake", "xor"],
                                 ["UserAgent", "NavigatorID", "userAgent", "Navigator", "WorkerNavigator", "aboort", "autocomplete", "autocompleteerror", "DOMContentLoaded", "afterprint", "afterscriptexecute", "beforesprint", "beforeunload", "blur", "cancel", "change", "click", "close", "connect", "contextmenu", "error", "focus", "hashchange", "input", "invalid", "languagechange", "load", "loadend", "loadstart", "message", "offline", "online", "open", "pagehide", "pageshow", "popstate", "progress", "readystatechange", "reset", "select", "show", "sort", "storage", "submit", "toggle", "unload", "loadeddata", "loadedmetadata", "canplay", "playing", "play", "canplaythrough", "seeked", "seeking", "stalled", "suspend", "timeupdate", "volumechange", "waiting", "durationchange"]
+                                ["Document", "characterSet", "charset", "compatMode", "contentType", "doctype", "documentElement", "documentURI", "hidden", "implementation", "lastStyleSheetSet", "pointerLockElement", "preferredStyleSheetSet", "scrollingElement", "selectedStyleSheetSet", "styleSheets", "styleSheetSets", "timeline", "undomanager", "visibilityState", "children", "firstElementChild", "lastElementChild", "childElementCount", "activeElement", "alinkColor", "anchors", "applets", "bgColor", "body", "cookie", "defaultView", "designMode", "dir", "domain", "embeds", "fgColor", "forms", "head", "height", "images", "lastModified", "linkColor", "links", "location", "plugins", "readyState", "referrer", "scripts", "title", "URL", "vlinkColor", "width", "onafterscriptexecute", "onbeforescriptexecute", "oncopy", "oncut", "onfullscreenchange", "onfullscreenerror", "onpaste", "onpointerlockchange", "onpointerlockerror", "onreadystatechange", "onselectionchange", "onwheel", "onabort", "onanimationcancel", "onanimationend", "onanimationiteration", "onanimationstart", "onblur", "onerror", "onfocus", "onchange", "onclick", "onclose", "oncontextmenu", "ondblclick", "ondrag", "ondragend", "ondragenter", "ondragexit", "ondragleave", "ondragover", "ondragstart", "ondrop", "oninput", "onkeydown", "onkeypress", "onkeyup", "onload", "onmousedown", "onmousemove", "onmouseout", "onmouseover", "onmouseup", "onpointerdown", "onpointermove", "onpointercancel", "onpointerover", "onpointerout", "onpointerenter", "onpointerleave", "onreset", "onscroll", "onselect", "onsubmit", "ontouchcancel", "ontouchend", "ontouchmove", "ontouchstart", "ontransitionend", "adoptNode", "caretPositionFromPoint", "caretRangeFromPoint", "createAttribute", "createCDATASection", "createComment", "createDocumentFragment", "createElement", "createElementNS", "createEntityReference", "createEvent", "createNodeIterator", "createProcessingInstruction", "createRange", "createTexNode", "createTouch", "createTouchList", "createTreeWalker", "elementFromPoint", "elementsFromPoints", "enableStyleSheetForSet", "exitPointerLock", "getAnimations", "getElementsByClassName", "getElementsByTagName", "getElementsByTagNameNS", "importNode", "registerElement", "releaseCapture", "mozSetImageElement", "getElementById", "querySelector", "querySelectorAll", "createExpression", "createNSResolver", "evaluate", "clear", "close", "execCommand", "getElementsByName", "getSelection", "hasFocus", "open", "queryCommandEnabled", "queryCommandState", "queryCommandSupported", "write", "writeLn"]
 ];
 
 var reservedGameWords = ["screen", "isServer", "window", "vars", "ip"];
@@ -71,11 +84,11 @@ reservedObjectPrototypes.forEach(function(array) {
     allReservedKeywords = allReservedKeywords.concat(array);
 });
 
-TokenLabel = function(labels) { this.value = labels; }
-TokenString = function(value) { this.value = value; }
-TokenSymbol = function(value) { this.value = value; }
-TokenNumber = function(value) { this.value = value; }
-TokenRegexp = function(value) { this.value = value; }
+TokenLabel = function(value, numSpace) { this.value = value; this.numSpace = numSpace | 0; }
+TokenString = function(value, numSpace) { this.value = value; this.numSpace = numSpace | 0; }
+TokenSymbol = function(value, numSpace) { this.value = value; this.numSpace = numSpace | 0; }
+TokenNumber = function(value, numSpace) { this.value = value; this.numSpace = numSpace | 0; }
+TokenRegexp = function(value, numSpace) { this.value = value; this.numSpace = numSpace | 0; }
 
 
 ExprAssign = function(name, symbol, value) { this.name = name; this.symbol = symbol; this.value = value; }
@@ -85,6 +98,12 @@ ExprTokenArray = function(tokens) { this.tokens = tokens; }
 
 isspace = function(c) {
     return c == ' ' || c == '\t' || c == '\r';
+}
+
+getSpaceLength = function(c) {
+    if (c == ' ') return 1;
+    if (c == '\t') return 4;
+    return 0;
 }
 
 isalpha = function(c) {
@@ -114,12 +133,24 @@ scan = function(source) {
     var tokens = [];
     var i = 0;
     var lastRegexp = -1;
+    var numSpacePrevious = 0;
+    var numSpace = 0;
     while (i < source.length) {
-        while(isspace(source.charAt(i))) i++;
+        numSpacePrevious = numSpace;
+        numSpace = 0;
+        if (isspace(source.charAt(i))) {
+            numSpace = numSpacePrevious;
+            do {
+                numSpace += getSpaceLength(source.charAt(i));
+                if (source.charAt(i) == '\n')
+                    numSpace = 0;
+                i++;
+            } while(isspace(source.charAt(i)));
+        }
         
         // Comments:
-        if (source.substring(i, i+2) == "//") {
-            do i++; 
+        else if (source.substring(i, i+2) == "//") {
+            do i++
             while(source.charAt(i) != '\n' && i < source.length);
         }
         else if(source.substring(i, i+2) == "/*") {
@@ -135,7 +166,7 @@ scan = function(source) {
                 strLabel += source.charAt(i);
                 i++;
             } while(isalnum(source.charAt(i)));
-            tokens.push(new TokenLabel(strLabel));
+            tokens.push(new TokenLabel(strLabel, numSpacePrevious));
         }
         
         // String:
@@ -153,7 +184,7 @@ scan = function(source) {
             } while(source.charAt(i) != '"');
             string += source.charAt(i);
             i++;
-            tokens.push(new TokenString(string));
+            tokens.push(new TokenString(string, numSpacePrevious));
         } else if (source.charAt(i) == '\'') {
             var lastchar = ' ';
             var string = "";
@@ -168,7 +199,7 @@ scan = function(source) {
             } while(source.charAt(i) != '\'');
             string += source.charAt(i);
             i++;
-            tokens.push(new TokenString(string));
+            tokens.push(new TokenString(string, numSpacePrevious));
         }
         
         // Number:
@@ -178,7 +209,7 @@ scan = function(source) {
                 strNumber += source.charAt(i);
                 i++;
             } while(isalnum(source.charAt(i)) || source.charAt(i) == '.' || source.charAt(i) == 'x' || source.charAt(i) == 'X');
-            tokens.push(new TokenNumber(strNumber));//new TokenNumber(parseFloat(strNumber)));
+            tokens.push(new TokenNumber(strNumber, numSpacePrevious));//new TokenNumber(parseFloat(strNumber)));
             
         }
         // Regexp
@@ -215,19 +246,19 @@ scan = function(source) {
             
             if (char4 == ">>>=") {
                 i += 4;
-                tokens.push(new TokenSymbol(char4));
+                tokens.push(new TokenSymbol(char4, numSpacePrevious));
             } else if (char3 == ">>>" || char3 == "===" || char3 == "!==" || char3 == "**=" || char3 == "<<=" || char3 == ">>=" || char3 == "...") {
                 i += 3;
-                tokens.push(new TokenSymbol(char3));
+                tokens.push(new TokenSymbol(char3, numSpacePrevious));
             } else if (char2 == "++" || char2 == "--" || char2 == "**" || char2 == "<<" || char2 == ">>" || char2 == "<=" || char2 == ">=" ||
                        char2 == "==" || char2 == "!=" || char2 == "&&" || char2 == "||" || char2 == "+=" || char2 == "-=" || char2 == "*=" || 
                        char2 == "/=" || char2 == "%=" || char2 == "&=" || char2 == "^=" || char2 == "|=") {
                i += 2;
-               tokens.push(new TokenSymbol(char2));
+               tokens.push(new TokenSymbol(char2, numSpacePrevious));
             }
             else {
                i++;
-               tokens.push(new TokenSymbol(char));
+               tokens.push(new TokenSymbol(char, numSpacePrevious));
             }
         }
         else {
@@ -253,42 +284,13 @@ parseExceptions = function(tokens) {
     return exceptions;
 }
 
-mangleTokens = function(tokens, except) {
+mangleTokens = function(tokens, except, debug) {
     var names = {};
     var exceptions = {};
     var nameIndex = 0;
     except.forEach(function(name) { exceptions[name] = name; });
     
     lastToken = null;
-    
-/*    for (var i = 0; i < tokens.length; i++) {
-        var failure = false;
-        var tokenArray = [];
-        var token = tokens[i];
-        if (token.constructor == TokenLabel) {
-            if (!token.value.length || token.value.length < 3) continue;
-            
-            tokenArray.push(token);
-            lastToken = token;
-            
-            for (i = i+2; i < tokens.length && !failure; i+=2) {
-                if (tokens[i-1].value != ".") { i-=2; break;} 
-                if (tokens[i].constructor != TokenLabel) failure = true;
-                if (tokens[i].value == "prototype") continue;
-                if (exceptions[tokens[i].value] != undefined) failure = true;
-                if (failure) { i--; break; }
-                tokenArray.push(tokens[i]);
-                lastToken = tokens[i];
-            }
-            //console.log(tokens[i]);
-            if (!failure && tokens[i].value == "=" && exceptions[lastToken] == undefined && names[lastToken] == undefined) {
-                var name = "_" + nameIndex.toString(36);
-                process.stdout.write(lastToken.value + " -> " + name + "  \t");
-                names[lastToken.value] = name;
-                nameIndex++;
-            }
-        }
-    }*/
     
     var lastToken = null;
     for (var i = 0; i < tokens.length; i++) {
@@ -304,7 +306,7 @@ mangleTokens = function(tokens, except) {
                 
             }
         } else if ((token.value == "=" || token.value == ":") && lastToken != null) {
-            var name = "_" + nameIndex.toString(36);
+            var name =  "_" + (debug? lastToken.value : nameIndex.toString(36));
             //process.stdout.write(lastToken.value + " -> " + name + "  \t");
             names[lastToken.value] = name;
             nameIndex++;
@@ -328,7 +330,15 @@ mangleTokens = function(tokens, except) {
 tokensToString = function(tokens) {
     if (tokens.length == 0) return "";
     var str = tokens[0].value;
-    var lastToken = tokens[0];
+    
+    for(var i = 1; i < tokens.length; i++) {
+        var token = tokens[i];
+        for (var j = 0; token.numSpace && j < token.numSpace; j++)
+            str += " ";
+        str += token.value;
+    }
+    
+    /*var lastToken = tokens[0];
     
     for(var i = 1; i < tokens.length; i++) {
         var token = tokens[i];
@@ -339,12 +349,14 @@ tokensToString = function(tokens) {
         else
             str += " " + token.value;
         lastToken = token;
-    }
+    }*/
     
     return str;
 }
 
 loadExternalScript = function(filePath) {
+    if (loadedFiles[filePath]) return;
+    loadedFiles[filePath] = true;
     process.stdout.write(".");//console.log("Loading(external) " + filePath + "...");
     externalSourceFiles.push(filePath);
     inputSrcExternal += fs.readFileSync(filePath) + "\n";
@@ -364,6 +376,8 @@ loadRecursive = function(dir, load) {
 }
 
 loadScript = function(filePath) {
+    if (loadedFiles[filePath]) return;
+    loadedFiles[filePath] = true;
     process.stdout.write("."); //console.log("Loading " + filePath + "...");
     sourceFiles.push(filePath);
     inputSrc += fs.readFileSync(filePath) + "\n";
@@ -386,14 +400,18 @@ copyFile = function (src, dest) {
 }
 
 copyRecursive = function(dir, dest) {
-    
+    copydir(dir, dest, function(error) {
+        if (error) console.log("Copy error: " + error);
+    });
 }
 
 loadExternalScriptsRecursive = loadRecursive.bind(null, loadExternalScript);
 loadScriptRecursive = loadRecursive.bind(null, loadScript);
 
-
+// Libraries to mangle:
 //loadScript("lib_front_end/apixi.js");
+loadScript("lib/perlin.js");
+loadScript("lib_front_end/bpixi-particles.min.js");
 
 loadRecursive("lib", loadExternalScript);
 loadRecursive("lib_front_end", loadExternalScript);
@@ -409,44 +427,30 @@ var tokensExternal = scan(inputSrcExternal);
 var tokens = scan(inputSrc);
 console.log("Mangling names... (2/3)");
 var reservedKeywords = parseExceptions(tokensExternal).concat(allReservedKeywords);
-mangleTokens(tokens, reservedKeywords);
+mangleTokens(tokens, reservedKeywords, commander.debug);
 console.log("Mangling names... (3/3)");
 var output = inputSrcExternal + tokensToString(tokens);
 //console.log(output);
 
-console.log("Minifying...");
-var result = UglifyJS.minify(output, {
-    fromString: true,
-    mangleProperties: true,
-    mangle: true
-});
-output = result.code;
+if (!commander.debug) {
+    console.log("Minifying...");
+    var result = UglifyJS.minify(output, {
+        fromString: true,
+        mangleProperties: true,
+        mangle: true
+    });
+    output = result.code;
+}
 
 console.log("Copying...");
 
 copyFile("html_index.php", outputPath + "index.php");
-copyFile("style.css", outputPath + "tyle.css");
-copyRecursive("data/", outputPath + "data/");
+copyFile("style.css", outputPath + "style.css");
+copyRecursive("data/", outputPath + "data");
 
 fs.writeFile(outputPath + "src.js", output, function(err){
     if (err)
         console.log(err);
 })
 
-
 console.log("done!");
-
-
-
-/*yuicompressor.compress(outputSrc, {
-    charset: "utf8",
-    type: "js",
-    //nomunge: false,
-    "line-break": 80,
-}, function(err, data, extra) {
-    console.log(err);
-    console.log(data);
-    console.log(extra);
-});*/
-
-//console.log(outputSrc);
