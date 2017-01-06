@@ -38,7 +38,7 @@ runUnitTests();
 
 var idList = new IdList();
 var connections = new Array(); // key socketId, value player object
-var gameData = new GameData(idList);
+gameData.init(idList);
 gameData.generator = new Generator(Math.random() * 10000);
 var zindices = {};
 
