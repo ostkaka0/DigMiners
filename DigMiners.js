@@ -1,11 +1,13 @@
+(function() {
+
 var canvas = document.getElementById("canvas");
 canvasInitGL(canvas);
 var renderer = new PIXI.WebGLRenderer(window.innerWidth, window.innerHeight, { 'transparent': true, 'antialias': true, 'view': canvas, 'clearBeforeRender': false });
 var gl = renderer.gl;
 
-var zindices = new Array(3);
-for (var i = 0; i < zindices.length; ++i) {
-    zindices[i] = new PIXI.Container();
+window.zindices = new Array(3);
+for (var i = 0; i < window.zindices.length; ++i) {
+    window.zindices[i] = new PIXI.Container();
 }
 var particleContainer = new PIXI.Container();
 
@@ -15,7 +17,7 @@ window.addEventListener('resize', function() {
     camera.height = window.innerHeight;
 }, false);
 
-var gameData = new GameData();
+gameData.init();
 var camera = {
     width: window.innerWidth,
     height: window.innerHeight,
@@ -27,9 +29,8 @@ var commands = [];
 var player = null;
 var playerEntity = null;
 var keysDown = {};
-var messageCallbacks = {};
 var textureManager = new TextureManager(gameData);
-var global = {};
+window.global = {};
 
 loadGame = function() {
     gameData.animationManager.load();
@@ -188,8 +189,8 @@ render = function(tickFracTime) {
     blockChunkRenderer.render(gameData, gameData.blockWorld, projectionMatrix.clone().append(viewMatrix), camera);
 
     // Render entities
-    for (var i = 0; i < zindices.length; ++i)
-        renderer.render(zindices[i]);
+    for (var i = 0; i < window.zindices.length; ++i)
+        renderer.render(window.zindices[i]);
     renderer.render(particleContainer);
 
     renderer._activeShader = null;
@@ -208,7 +209,7 @@ loadChunk = function(world, x, y) {
 }
 
 onMessage = function(messageType, callback) {
-    messageCallbacks[messageType.prototype.id] = callback;
+    gameData.messageCallbacks[messageType.prototype.id] = callback;
 }
 
 onTexturesLoadProgress = function(name, file, progress) {
@@ -218,9 +219,9 @@ onTexturesLoadProgress = function(name, file, progress) {
 onTexturesLoadComplete = function(textures) {
     // Must wait until all textures have loaded to continue! important
     this.blockPosGood = new PIXI.Sprite(textures["blockPosGood.png"]);
-    zindices[2].addChild(this.blockPosGood);
+    window.zindices[2].addChild(this.blockPosGood);
     this.blockPosBad = new PIXI.Sprite(textures["blockPosBad.png"]);
-    zindices[2].addChild(this.blockPosBad);
+    window.zindices[2].addChild(this.blockPosBad);
     $("*").mousemove(function(event) {
         //console.log(event.pageX + ", " + event.pageY);
         //console.log(worldPos);
@@ -318,3 +319,5 @@ gameData.physicsWorld.onCollision.push(function(collisions) {
         });
     }
 });
+
+}());

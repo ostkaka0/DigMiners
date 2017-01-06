@@ -50,8 +50,8 @@ Client = function(gameData, ip) {
             var message = new messageType();
             message.receive(gameData, data);
             message.execute(gameData);
-            if (messageCallbacks[messageType.prototype.id])
-                messageCallbacks[messageType.prototype.id](message);
+            if (gameData.messageCallbacks[messageType.prototype.id])
+                gameData.messageCallbacks[messageType.prototype.id](message);
         });
     });
 }

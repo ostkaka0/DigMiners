@@ -1,4 +1,10 @@
-GameData = function(idList) {
+gameData = {};
+
+gameData.destroy = function() {
+    gameData = {};
+}
+
+gameData.init = function(idList) {
     initItems(this);
     this.port = 3000;
     this.itemPickupDistance = 2.0;
@@ -39,6 +45,7 @@ GameData = function(idList) {
     this.messagesToServer = [MessageRequestKeyStatusUpdate, MessageRequestItemPickup, MessageRequestClickSlot, MessageRequestCraft, MessageRequestPlaceBlock,
         MessageRequestClickEntity, MessageRequestRotate, MessageRequestClickBlock];
     this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
+    this.messageCallbacks = {};
     this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent, EquippedItems, Projectile, BlockPlacer, PotionEffects]);
 
     Recipes = [];
@@ -96,7 +103,7 @@ GameData = function(idList) {
     }
 }
 
-GameData.prototype.tick = function(dt) {
+gameData.tick = function(dt) {
     var that = this;
 
     if (this.pendingCommands[this.tickId])
@@ -127,7 +134,7 @@ GameData.prototype.tick = function(dt) {
     this.tickId++;
 }
 
-GameData.prototype.initializeEvents = function() {
+gameData.initializeEvents = function() {
     this.events.on("projectileHit", function(projectileEntity, hitPos) {
         setTimeout(function() {
             var type = this.projectile.projectileType;
