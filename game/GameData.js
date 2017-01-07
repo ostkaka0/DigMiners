@@ -38,7 +38,7 @@ gameData.init = function(idList) {
     this.commands = [];
     this.pendingCommands = {};
     this.commandTypes = typeRegisterAddByArray([], [CommandEntityMove, CommandDig, CommandEntityDig, CommandEntityEquipItem, CommandEntityBuild, CommandHurtEntity,
-        CommandEntitySpawn, CommandCollisions, CommandEntityDestroy, CommandPlayerJoin, CommandPlayerLeave, CommandKeyStatusUpdate,
+        CommandEntitySpawn, CommandCollisions, CommandEntityDestroy, CommandPlayerJoin, CommandPlayerLeave, CommandPlayerSpawn, CommandKeyStatusUpdate,
         CommandEntityInventory, CommandPlayerOreInventory, CommandEntityRotate, CommandBlockStrength, CommandProjectileSpawn, CommandParticles, CommandPlaceBlock,
         CommandEntityReloadWeapon, CommandEntityBeginReloadWeapon, CommandBuild]);
     this.messagesToClient = [MessageInit, MessageCommands, MessageChunk];
@@ -184,6 +184,15 @@ gameData.initializeEvents = function() {
             entity.isDead = true;
             gameData.entityWorld.remove(entity);
             console.log(entity.id + " died!");
+            if (entity.controlledByPlayer) {
+                var playerId = entity.controlledByPlayer.playerId;
+                var player = gameData.playerWorld.objects[playerId];
+                player.entityId = null;
+                if (isServer) {
+                    var newEntity = 
+                    sendCommand(new CommandPlayerSpawn(playerId, gameData.idList.next(), entity.nameComponent.entityName)); 
+                }
+            }
         }
     });
 

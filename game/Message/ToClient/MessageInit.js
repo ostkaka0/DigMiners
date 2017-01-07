@@ -15,7 +15,6 @@ MessageInit.prototype.execute = function(gameData) {
     gameData.tickId = this.tickId;
     var player = gameData.playerWorld.add(new Player(this.playerId, this.entityId), this.playerId);
     global.player = player;
-    global.playerEntityId = this.entityId;
 
     for (var i = 0; i < this.players.length; ++i) {
         var playerData = this.players[i];

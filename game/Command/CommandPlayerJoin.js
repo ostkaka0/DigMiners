@@ -1,13 +1,12 @@
 
 CommandPlayerJoin = function(playerId, entityId, playerName, socketId) {
     this.playerId = playerId;
-    this.entityId = entityId;
     this.playerName = playerName;
     this.socketId = socketId;
 }
 
 CommandPlayerJoin.prototype.execute = function(gameData) {
-    var player = new Player(this.playerId, this.entityId);
+    var player = new Player(this.playerId);
     if (isServer || this.playerId != global.player.id)
         gameData.playerWorld.add(player, this.playerId);
 
@@ -19,11 +18,9 @@ CommandPlayerJoin.prototype.execute = function(gameData) {
         // Send init message
         // Sends generator seed, chunks must be sent AFTERWARDS
         new MessageInit(gameData, player).send(gameData, socket);
-
+        
         // Spawn player's entity
-        var entity = entityTemplates.player(this.playerId, this.entityId, this.playerName, gameData);
-        connections[this.socketId].entity = entity;
-        sendCommand(new CommandEntitySpawn(gameData, entity, this.entityId));
+        sendCommand(new CommandPlayerSpawn(this.playerId, gameData.idList.next(), this.playerName));
 
         // Send chunks
         // TODO: client requests chunks instead
@@ -41,16 +38,14 @@ CommandPlayerJoin.prototype.execute = function(gameData) {
 
 CommandPlayerJoin.prototype.serialize = function(byteArray, index) {
     serializeInt32(byteArray, index, this.playerId);
-    serializeInt32(byteArray, index, this.entityId);
     serializeUTF8(byteArray, index, this.playerName);
 }
 
 CommandPlayerJoin.prototype.deserialize = function(byteArray, index) {
     this.playerId = deserializeInt32(byteArray, index);
-    this.entityId = deserializeInt32(byteArray, index);
     this.playerName = deserializeUTF8(byteArray, index);
 }
 
 CommandPlayerJoin.prototype.getSerializationSize = function() {
-    return 8 + getUTF8SerializationSize(this.playerName);
+    return 4 + getUTF8SerializationSize(this.playerName);
 }
