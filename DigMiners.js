@@ -9,7 +9,7 @@ window.zindices = new Array(3);
 for (var i = 0; i < window.zindices.length; ++i) {
     window.zindices[i] = new PIXI.Container();
 }
-var particleContainer = new PIXI.Container();
+window.particleContainer = new PIXI.Container();
 
 window.addEventListener('resize', function() {
     renderer.resize(window.innerWidth, window.innerHeight);
