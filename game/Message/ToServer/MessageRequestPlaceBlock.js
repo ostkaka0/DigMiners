@@ -43,11 +43,11 @@ MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
 }
 
 MessageRequestPlaceBlock.prototype.send = function(socket) {
-    socket.emit(this.idString, { stackId: this.stackId, x: this.x, y: this.y });
+    socket.emit(this.idString, [this.stackId, this.x, this.y]);
 }
 
 MessageRequestPlaceBlock.prototype.receive = function(gameData, data) {
-    this.stackId = data.stackId;
-    this.x = data.x;
-    this.y = data.y;
+    this.stackId = data[0];
+    this.x = data[1];
+    this.y = data[2];
 }
