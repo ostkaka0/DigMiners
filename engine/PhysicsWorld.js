@@ -51,9 +51,12 @@ PhysicsWorld.prototype.update = function(dt) {
 
     var collisions = [];
 
+    var velocityEpsilon = toFix(0.01);
     // Collision:
     this.forEach(this, function(id) {
         var velocity = this.getVelocity(id);
+        if (v2.length(velocity) < velocityEpsilon)
+            return;
         var pos = this.getPos(id);
         var posOld = this.getPosOld(id);
         var mass = 1.0;
@@ -62,12 +65,14 @@ PhysicsWorld.prototype.update = function(dt) {
         forOf(this, bodies, function(otherId) {
             // No self collision
             if (otherId == id) return;
+            
+            var otherVelocity = this.getVelocity(otherId);
+            
             // Only do collision once
-            if (otherId > id) return;
+            if (otherId > id && v2.length(otherVelocity) >= velocityEpsilon) return;
 
             var otherPos = this.getPos(otherId);
             var otherPosOld = this.getPosOld(otherId);
-            var otherVelocity = this.getVelocity(otherId);
             var otherMass = 1.0;
 
             // Calc position
@@ -78,7 +83,7 @@ PhysicsWorld.prototype.update = function(dt) {
             if (dis == 0)
                 dir = [1, 0];
             var deltaPos = [0, 0];
-            v2.mul((1.0 - dis) * Math.min(1.0, 8*(1.0 - dis)) / 2.0, dir, deltaPos);
+            v2.mul((1.0 - dis) / 2.0, dir, deltaPos);
             v2.sub(pos, deltaPos, pos);
             v2.add(otherPos, deltaPos, otherPos);
 
