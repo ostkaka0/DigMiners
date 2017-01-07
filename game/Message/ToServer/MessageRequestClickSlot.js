@@ -9,7 +9,7 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
     if (!entity || !entity.inventory) return;
     var item = entity.inventory.items[this.slotId];
     if (!item) return;
-    if (this.clickType == InventoryClickTypes.LEFT_CLICK) {
+    /*if (this.clickType == InventoryClickTypes.RIGHT_CLICK) {
         // Drop stack
         var physicsBody = entity.physicsBody;
         if (!physicsBody) return;
@@ -35,7 +35,7 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
 
         if (item.equipped)
             sendCommand(new CommandEntityEquipItem(player.entityId, this.slotId, item.id, false));
-    } else if (this.clickType == InventoryClickTypes.RIGHT_CLICK) {
+    } else if (this.clickType == InventoryClickTypes.LEFT_CLICK)*/ {
         // Equip stack
         var itemType = gameData.itemRegister[item.id];
         if (itemType && itemType.isEquipable) {
