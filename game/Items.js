@@ -456,7 +456,7 @@ initItems = function() {
     Items.WeaponPistol = {
         name: "Pistol",
         texture: ItemTextures.ItemAtlas,
-        spriteId: 4,
+        spriteId: 0,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
@@ -481,7 +481,7 @@ initItems = function() {
     Items.WeaponSmg = {
         name: "Smg",
         texture: ItemTextures.ItemAtlas,
-        spriteId: 4,
+        spriteId: 0,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
@@ -506,7 +506,7 @@ initItems = function() {
     Items.WeaponAssaultRifle = {
         name: "Assault Rifle",
         texture: ItemTextures.ItemAtlas,
-        spriteId: 4,
+        spriteId: 0,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
@@ -531,7 +531,7 @@ initItems = function() {
     Items.WeaponMachineGun = {
         name: "Machine Gun",
         texture: ItemTextures.ItemAtlas,
-        spriteId: 4,
+        spriteId: 0,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
@@ -556,7 +556,7 @@ initItems = function() {
     Items.WeaponShotgun = {
         name: "Shotgun",
         texture: ItemTextures.ItemAtlas,
-        spriteId: 7,
+        spriteId: 0,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
@@ -581,7 +581,7 @@ initItems = function() {
     Items.WeaponSniperRifle = {
         name: "Sniper Rifle",
         texture: ItemTextures.ItemAtlas,
-        spriteId: 6,
+        spriteId: 0,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
@@ -605,7 +605,7 @@ initItems = function() {
     Items.WeaponGrenadeLauncher = {
         name: "Grenade Launcher",
         texture: ItemTextures.ItemAtlas,
-        spriteId: 5,
+        spriteId: 0,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
