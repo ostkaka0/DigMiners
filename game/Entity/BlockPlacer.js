@@ -38,11 +38,12 @@ BlockPlacer.prototype.update = function(entity) {
     if (inventoryItem && inventoryItem.blockId != this.blockId)
         buildFailure = true;
 
-    if (!isServer && (buildFailure || this.duration == 0)) {
+    var shouldDestroy = (buildFailure && this.duration >= 0) || this.duration <= -2;
+    if (!isServer && shouldDestroy) {
         zindices[2].removeChild(this.sprite);
     }
 
-    if (buildFailure) {
+    if (shouldDestroy) {
         if (placerEntity && placerEntity.blockPlacerId == entity.id)
             placerEntity.blockPlacerId = undefined;
         gameData.entityWorld.remove(entity);
@@ -54,7 +55,7 @@ BlockPlacer.prototype.update = function(entity) {
         sendCommand(new CommandEntityInventory(player.entityId, InventoryActions.REMOVE_ITEM, inventoryItem.id, 1));
         sendCommand(new CommandPlaceBlock(this.blockPos, this.blockId));
     }
-    if (this.duration == 0) {
+    if (shouldDestroy) {
         if (placerEntity)
             placerEntity.blockPlacerId = undefined;
         gameData.entityWorld.remove(entity);
