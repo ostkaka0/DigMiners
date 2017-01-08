@@ -107,20 +107,11 @@ gameData.entityWorld.onAdd.push(function(entity) {
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponGrenadeLauncher.id, 1));
 
         // (TEMPORARY) spawn monsters on player join
-        for (var i = 0; i < 1; ++i) {
+        for (var i = 0; i < 0; ++i) {
             var monsterEntityId = idList.next();
             var monster = entityTemplates.testMonster(monsterEntityId, [20 * (-1 + 2 *Math.random()), 10 * (-1 + 2 *Math.random())], gameData);
             sendCommand(new CommandEntitySpawn(gameData, monster, monsterEntityId));
             var weaponId = Items.WeaponPistol.id + Math.floor((Items.WeaponGrenadeLauncher.id - Items.WeaponPistol.id + 1) * Math.random());
-            sendCommand(new CommandEntityInventory(monsterEntityId, InventoryActions.ADD_ITEM, weaponId, 1));
-            sendCommand(new CommandEntityEquipItem(monsterEntityId, 0, weaponId, true));
-            sendCommand(new CommandEntityInventory(monsterEntityId, InventoryActions.ADD_ITEM, Items.Egg.id, 1000));
-        }
-        for (var i = 0; i < 5; ++i) {
-            var monsterEntityId = idList.next();
-            var monster = entityTemplates.testMonster(monsterEntityId, [20 * (-1 + 2 *Math.random()), 10 * (-1 + 2 *Math.random())], gameData);
-            sendCommand(new CommandEntitySpawn(gameData, monster, monsterEntityId));
-            var weaponId = Items.SteelSword.id;
             sendCommand(new CommandEntityInventory(monsterEntityId, InventoryActions.ADD_ITEM, weaponId, 1));
             sendCommand(new CommandEntityEquipItem(monsterEntityId, 0, weaponId, true));
             sendCommand(new CommandEntityInventory(monsterEntityId, InventoryActions.ADD_ITEM, Items.Egg.id, 1000));

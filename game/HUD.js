@@ -1,18 +1,22 @@
 
 var HUD = {};
+HUD.inventoryWidth = 10;
+HUD.inventoryHeight = 1;
 
 HUDClosures = [];
 
 createHUD = function(gameData) {
     // create inventory
     var inventory = document.getElementById("inventory");
+    inventory.style.width = HUD.inventoryWidth * 34;
+    inventory.style.height = 22 + HUD.inventoryHeight * 34;
     $(inventory).click(function(e) {
         e.stopPropagation();
     });
     inventory.innerHTML = '<div class="inventoryHeader">Your amazing inventory</div>';
     var inventoryContent = document.createElement("div");
     inventoryContent.setAttribute("class", "inventoryContent");
-    for (var i = 0; i < 64; ++i) {
+    for (var i = 0; i < HUD.inventoryWidth * HUD.inventoryHeight; ++i) {
         var slot = document.createElement("div");
         slot.setAttribute("class", "inventorySlot");
         slot.setAttribute("id", "slot" + i);
@@ -88,7 +92,7 @@ createHUD = function(gameData) {
     }
 
     // Initialize closures
-    for (var i = 0; i < 64; ++i) {
+    for (var i = 0; i < HUD.inventoryWidth * HUD.inventoryHeight; ++i) {
         HUDClosures[i] = [];
         HUDClosures[i][0] = createClickSlotFunc(i, InventoryClickTypes.LEFT_CLICK, true);
         HUDClosures[i][1] = createClickSlotFunc(i, InventoryClickTypes.RIGHT_CLICK, false);
@@ -131,7 +135,7 @@ createHUD = function(gameData) {
 
 updateHUD = function(gameData) {
     // update inventory
-    for (var i = 0; i < 64; ++i) {
+    for (var i = 0; i < HUD.inventoryWidth * HUD.inventoryHeight; ++i) {
         var slot = document.getElementById("slot" + i);
         var slotDescriptionContainer = slot.childNodes[0];
         var slotImageContainer = slot.childNodes[1];
