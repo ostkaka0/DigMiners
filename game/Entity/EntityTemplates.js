@@ -3,7 +3,7 @@ entityTemplates = {};
 entityTemplates.player = function(playerId, entityId, name, gameData) {
     var entity = {};
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
-    entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001);
+    entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 20.0);
     entity.movement = new Movement(40.0);
     entity.nameComponent = new NameComponent(name);
     entity.inventory = new Inventory();
@@ -57,21 +57,21 @@ entityTemplates.item = function(itemId, amount, gameData) {
 
 entityTemplates.testMonster = function(entityId, pos, gameData) {
     var entity = {};
-    entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01);
+    entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 5.0);
     entity.movement = new Movement(20.0);
     entity.nameComponent = new NameComponent(entityId);
     entity.equippedItems = new EquippedItems();
 
-    var feetSprite = new Sprite("feet");
-    var rightArmSprite = new Sprite("rightArm");
-    var leftArmSprite = new Sprite("leftArm");
-    var headSprite = new Sprite("head");
+    var feetSprite = new Sprite("monster/feet");
+    var rightArmSprite = new Sprite("monster/rightArm");
+    var leftArmSprite = new Sprite("monster/leftArm");
+    var headSprite = new Sprite("monster/head");
 
     var bodyparts = {
         "feet": new BodyPart(feetSprite, 0, 0, 0, null, null),
         "tool": new BodyPart(new Sprite(), -10, 15, 0, null, "rightArm"),
-        "rightArm": new BodyPart(rightArmSprite, 5, 4, 0, [10, 11], "body"),
-        "leftArm": new BodyPart(leftArmSprite, 5, -16, 0, [10, 23], "body"),
+        "rightArm": new BodyPart(rightArmSprite, 5, 8, 0, [10, 11], "body"),
+        "leftArm": new BodyPart(leftArmSprite, 5, -8, 0, [10, 23], "body"),
         "body": new BodyPart(new Sprite(), 0, 0, 0, null, null),
         "head": new BodyPart(headSprite, 1, 0, 0, null, null),
         "hat": new BodyPart(new Sprite(), 1, 0, 0, null, null)

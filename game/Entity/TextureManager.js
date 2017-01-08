@@ -9,6 +9,11 @@ TextureManager = function(gameData) {
     this.loader.queueTexture("rightArm", "rightArm");
     this.loader.queueTexture("leftArm", "leftArm");
 
+    this.loader.queueTexture("monster/feet", "monster/feetSheet");
+    this.loader.queueTexture("monster/head", "monster/head");
+    this.loader.queueTexture("monster/rightArm", "monster/rightArm");
+    this.loader.queueTexture("monster/leftArm", "monster/leftArm");
+
     this.loader.queueTexture("shovelAtlas.png", "shovelAtlas");
     this.loader.queueTexture("swordAtlas.png", "shovelAtlas");
     this.loader.queueTexture("gunAtlas.png", "gunAtlas");
