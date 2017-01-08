@@ -29,5 +29,5 @@ Health.prototype.hurt = function(entity, attacker, damage) {
         return;
     if (attacker && entity.id != attacker.id && entity.team && attacker.team && entity.team.value != Teams.None && entity.team.value == attacker.team.value)
         return;
-    gameData.commands.push(new CommandHurtEntity(entity.id, -damage));
+    sendCommand(new CommandHurtEntity(entity.id, -damage));
 }
