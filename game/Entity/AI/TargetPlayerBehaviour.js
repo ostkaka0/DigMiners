@@ -47,6 +47,7 @@ TargetPlayerBehaviour.prototype.run = function() {
             this.lastTargetPos = v2.clone(this.target.physicsBody.getPos());
         }
     }
+    if (!this.flowField) return false;
 
     var dir = DisField.calcTileDir(this.flowField, tilePos);
     if (dir[0] == 0 && dir[1] == 0) {
