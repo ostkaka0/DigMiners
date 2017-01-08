@@ -14,6 +14,7 @@ gameData.init = function(idList) {
     this.tickId = 0;
     this.fakeLag = 0;
     this.fakeJitter = 0;
+    this.respawnTime = 1;
     this.playerWorld = new ObjectWorld(true);
     this.entityWorld = new ObjectWorld(true);
     this.particleEmitterWorld = new ObjectWorld();

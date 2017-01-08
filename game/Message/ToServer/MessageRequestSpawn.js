@@ -5,7 +5,7 @@ MessageRequestSpawn = function(playerName) {
 
 MessageRequestSpawn.prototype.execute = function(gameData, player) {
     if (player.entity != null && player.entityId != null) return;
-    if (gameData.tickId - player.deathTick < 20 * 5) return;
+    if (gameData.tickId - player.deathTick < 20 * gameData.respawnTime) return;
 
     sendCommand(new CommandPlayerSpawn(player.id, gameData.idList.next(), this.playerName));
 }
