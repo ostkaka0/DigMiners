@@ -15,7 +15,7 @@ CommandEntityMove.prototype.execute = function(gameData) {
     if (!physicsBody) return;
     movement.direction = this.direction;
     movement.rotationDirection = this.direction;
-    physicsBody.setPos([this.x, this.y]);
+    physicsBody.setPos(this.pos);
 }
 
 CommandEntityMove.prototype.serialize = function(byteArray, index) {
