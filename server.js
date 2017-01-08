@@ -96,7 +96,7 @@ gameData.entityWorld.onAdd.push(function(entity) {
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.BlueForcefield.id, 10));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.BunkerWindow.id, 10));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.HealthBox.id, 10));
-        
+
         // Give player weapons
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponPistol.id, 1));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponSmg.id, 1));
@@ -111,7 +111,10 @@ gameData.entityWorld.onAdd.push(function(entity) {
             var monsterEntityId = idList.next();
             var monster = entityTemplates.testMonster(monsterEntityId, [0, 0], gameData);
             sendCommand(new CommandEntitySpawn(gameData, monster, monsterEntityId));
-            sendCommand(new CommandEntityEquipItem(monsterEntityId, 0, Items.SteelShovel.id, true));
+            var weaponId = Items.WeaponPistol.id + Math.floor(7 * Math.random());
+            sendCommand(new CommandEntityInventory(monsterEntityId, InventoryActions.ADD_ITEM, weaponId, 1));
+            sendCommand(new CommandEntityEquipItem(monsterEntityId, 0, weaponId, true));
+            sendCommand(new CommandEntityInventory(monsterEntityId, InventoryActions.ADD_ITEM, Items.Egg.id, 1000));
         }
     }
 });

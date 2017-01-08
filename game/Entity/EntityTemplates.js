@@ -60,7 +60,9 @@ entityTemplates.testMonster = function(entityId, pos, gameData) {
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 5.0);
     entity.movement = new Movement(20.0);
     entity.nameComponent = new NameComponent(entityId);
+    entity.inventory = new Inventory();
     entity.equippedItems = new EquippedItems();
+    entity.potionEffects = new PotionEffects();
 
     var feetSprite = new Sprite("monster/feet");
     var rightArmSprite = new Sprite("monster/rightArm");
