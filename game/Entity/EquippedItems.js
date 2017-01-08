@@ -12,7 +12,7 @@ EquippedItems.prototype.serialize = function(byteArray, index) {
     keys.forEach(function(key) {
         var value = this.items[key];
         serializeUTF8(byteArray, index, key);
-        serializeInt32(byteArray, index, value.id);
+        serializeInt32(byteArray, index, (value != null ? value.id : -1));
     }.bind(this));
 }
 
