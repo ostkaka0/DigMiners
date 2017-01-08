@@ -18,9 +18,6 @@ CommandPlayerJoin.prototype.execute = function(gameData) {
         // Send init message
         // Sends generator seed, chunks must be sent AFTERWARDS
         new MessageInit(gameData, player).send(gameData, socket);
-        
-        // Spawn player's entity
-        sendCommand(new CommandPlayerSpawn(this.playerId, gameData.idList.next(), this.playerName));
 
         // Send chunks
         // TODO: client requests chunks instead
