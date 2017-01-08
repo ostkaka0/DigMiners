@@ -31,8 +31,8 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
     entity.drawable = new Drawable(1);
     var healthbarSprite = new Sprite("healthbar", null, false);
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
-
     entity.health = new Health(100, 100);
+    entity.team = new Team(Teams.Human);
 
     return entity;
 }
@@ -85,6 +85,7 @@ entityTemplates.testMonster = function(entityId, pos, gameData) {
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
 
     entity.health = new Health(100, 100);
+    entity.team = new Team(Teams.Zombie);
 
     entity.behaviourContainer = new BehaviourContainer();
     entity.behaviourContainer.behaviours.push(new DigObstacleBehaviour(entity));
