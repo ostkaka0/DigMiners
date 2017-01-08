@@ -47,7 +47,7 @@ gameData.init = function(idList) {
         MessageRequestClickEntity, MessageRequestRotate, MessageRequestClickBlock, MessageRequestSpawn];
     this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
     this.messageCallbacks = {};
-    this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent, EquippedItems, Projectile, BlockPlacer, PotionEffects]);
+    this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent, EquippedItems, Projectile, BlockPlacer, PotionEffects, Team]);
 
     Recipes = [];
 
@@ -151,7 +151,9 @@ gameData.initializeEvents = function() {
         if (isServer) {
             if (hitEntity && hitEntity.health && projectileEntity.projectile.projectileType.damage > 0) {
                 var damage = projectileEntity.projectile.projectileType.damage * projectileEntity.projectile.damageFactor;
-                sendCommand(new CommandHurtEntity(hitEntity.id, -1 * damage));
+                var shooterId = projectileEntity.projectile.shooterEntityId;
+                var shooter = gameData.entityWorld.objects[shooterId];
+                hitEntity.health.hurt(hitEntity, shooter, damage);
             }
         }
     });

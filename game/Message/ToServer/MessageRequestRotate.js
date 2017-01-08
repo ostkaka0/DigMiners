@@ -6,6 +6,7 @@ MessageRequestRotate = function(deltaWorldCursorPos) {
 
 MessageRequestRotate.prototype.execute = function(gameData, player) {
     if (!this.deltaWorldCursorPos) return;
+    if (player.entityId == null) return;
     var entity = gameData.entityWorld.objects[player.entityId];
     if (!entity) return;
     var movement = entity.movement;
