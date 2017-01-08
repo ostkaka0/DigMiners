@@ -3,6 +3,7 @@ Player = function(playerId, entityId) {
     this.playerId = playerId;
     this.entityId = entityId;
     this.text = null;
+    this.deathTick = gameData.tickId;
     this.oreInventory = new Array();
 }
 

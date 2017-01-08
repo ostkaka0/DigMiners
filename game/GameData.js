@@ -43,7 +43,7 @@ gameData.init = function(idList) {
         CommandEntityReloadWeapon, CommandEntityBeginReloadWeapon, CommandBuild]);
     this.messagesToClient = [MessageInit, MessageCommands, MessageChunk];
     this.messagesToServer = [MessageRequestKeyStatusUpdate, MessageRequestItemPickup, MessageRequestClickSlot, MessageRequestCraft, MessageRequestPlaceBlock,
-        MessageRequestClickEntity, MessageRequestRotate, MessageRequestClickBlock];
+        MessageRequestClickEntity, MessageRequestRotate, MessageRequestClickBlock, MessageRequestSpawn];
     this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
     this.messageCallbacks = {};
     this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent, EquippedItems, Projectile, BlockPlacer, PotionEffects]);
@@ -187,11 +187,8 @@ gameData.initializeEvents = function() {
             if (entity.controlledByPlayer) {
                 var playerId = entity.controlledByPlayer.playerId;
                 var player = gameData.playerWorld.objects[playerId];
+                player.deathTick = gameData.tickId;
                 player.entityId = null;
-                if (isServer) {
-                    var newEntity = 
-                    sendCommand(new CommandPlayerSpawn(playerId, gameData.idList.next(), entity.nameComponent.entityName)); 
-                }
             }
         }
     });

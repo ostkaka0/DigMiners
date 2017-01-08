@@ -5,6 +5,7 @@ DeathScreen = function() {
     this.root = $("<div>").appendTo("body");
     this.divBackground = $("<div>").appendTo(this.root);
     this.divWindow = $("<div>", {"class": "window"}).appendTo(this.root);
+    this.inputName = $("<input><br/><br/>", {"type": "input", "value": "bertil"}).appendTo(this.divWindow);
     this.btnSpawn = $("<button>", {
         "class": "button",
         "width": "128px",
@@ -24,7 +25,7 @@ DeathScreen = function() {
         "z-index": "1", 
     });
     this.divWindow.css({
-        "position": "absolute",
+        "position": "fixed",
         "width": this.width + "px",
         "height": this.height + "px",
         "left": "50%",
@@ -34,8 +35,24 @@ DeathScreen = function() {
         "z-index": "1", 
     });
     
+    this.btnSpawn.setDisabledCountdown = function(duration) {
+        if (duration <= 0) {
+            this.btnSpawn.prop("disabled", false);
+            this.btnSpawn.text("Spawn!");
+        } else {
+            this.btnSpawn.prop("disabled", true);
+            this.btnSpawn.text("Wait - " + duration);
+            setTimeout(this.btnSpawn.setDisabledCountdown.bind(this, duration - 1), 1000);
+        }
+    }.bind(this);
+    
     this.btnSpawn.click(function(event) {
-        this.root.hide();
+        new MessageRequestSpawn(this.inputName.val()).send(socket);
+    }.bind(this));
+    
+    gameData.entityWorld.onAdd.push(function(entity) {
+        if (entity.id == global.playerEntityId)
+            this.root.hide();
     }.bind(this));
     
     gameData.events.on("entityDeath", function(entity) {
@@ -43,5 +60,8 @@ DeathScreen = function() {
         if (entity.controlledByPlayer.playerId != global.player.id) return;
         
         this.root.show();
+        this.btnSpawn.setDisabledCountdown(5);
     }.bind(this));
+    
+    this.btnSpawn.setDisabledCountdown(5)
 }
