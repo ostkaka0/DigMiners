@@ -63,10 +63,12 @@ TargetPlayerBehaviour.prototype.run = function() {
     //var normalized = v2.create(0, 0);
     //v2.normalize(dir, normalized);
 
-    if (dis < 1.5 && !this.spacebar) {// 1.0 limit for punch 
+    var attackDistance = this.getAttackDistance();
+
+    if (dis < attackDistance && !this.spacebar) {// 1.0 limit for punch 
         sendCommand(new CommandKeyStatusUpdate(this.entity.id, Keys.SPACEBAR, true, this.entity.physicsBody.getPos()));
         this.spacebar = true;
-    } else if (dis >= 1.5 && this.spacebar) {
+    } else if (dis >= attackDistance && this.spacebar) {
         sendCommand(new CommandKeyStatusUpdate(this.entity.id, Keys.SPACEBAR, false, this.entity.physicsBody.getPos()));
         this.spacebar = false;
     }
@@ -105,4 +107,12 @@ TargetPlayerBehaviour.prototype.getTarget = function() {
     if (shortestDistance <= this.maxRadius)
         return shortestDistanceEntity;
     return null;
+}
+
+TargetPlayerBehaviour.prototype.getAttackDistance = function() {
+    if (this.entity.equippedItems.items["tool"].itemFunction == ItemFunctions.RangedWeapon) {
+        // TODO: Raycast
+        return 10.0;
+    }
+    return 2.0;
 }
