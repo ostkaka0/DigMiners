@@ -1,5 +1,5 @@
 
-PhysicsBody = function(pos, damping) {
+PhysicsBody = function(pos, damping, rotationSpeed) {
     this.bodyId = gameData.physicsWorld.add(pos);
     if (pos) {
         this.posOld = v2.clone(pos);
@@ -11,13 +11,15 @@ PhysicsBody = function(pos, damping) {
         this.posClient = [0, 0];
         this.posClientOld = [0, 0];
     }
+    if (rotationSpeed)
+        this.rotationSpeed = rotationSpeed;
+    else
+        this.rotationSpeed = 20.0;
     this.speedOld = [0, 0];
     if (damping)
         this.damping = toFix(damping);
     this.angle = 0;
     this.angleOld = 0;
-    this.rotationSpeed = 20.0;
-
 }
 
 PhysicsBody.prototype.name = physicsBody.name; function physicsBody() { };
