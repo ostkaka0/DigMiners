@@ -66,8 +66,6 @@ canvas {
 
 .inventory {
     position: fixed;
-    width: 544px;
-    height: 158px;
     bottom: 10px;
     margin-left: auto;
     margin-right: auto;
@@ -94,8 +92,6 @@ canvas {
 
 .inventoryContent {
     position: relative;
-    width: 544px;
-    height: 136px;
 }
 
 .inventorySlot {
