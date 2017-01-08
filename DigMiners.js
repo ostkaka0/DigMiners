@@ -18,6 +18,8 @@ window.addEventListener('resize', function() {
 }, false);
 
 gameData.init();
+var deathScreen = new DeathScreen();
+
 var camera = {
     width: window.innerWidth,
     height: window.innerHeight,
