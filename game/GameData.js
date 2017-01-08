@@ -190,6 +190,10 @@ gameData.initializeEvents = function() {
                 var player = gameData.playerWorld.objects[playerId];
                 player.deathTick = gameData.tickId;
                 player.entityId = null;
+                if (!isServer && player.id == global.player.id) {
+                    global.playerEntity = null;
+                    global.playerEntityId = null;
+                }
             }
         }
     });
