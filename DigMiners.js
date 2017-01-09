@@ -48,6 +48,10 @@ var loadingScreen = new LoadingScreen();
 var textureManager = new TextureManager(gameData);
 window.global = {};
 
+var lastMouseSync = 0;
+var mouseX = 0;
+var mouseY = 0;
+
 loadGame = function() {
     gameData.animationManager.load();
     // Player input
@@ -171,7 +175,7 @@ render = function(tickFracTime) {
     particleContainer.position.y = camera.pos[1] + canvas.height / 2;
 
     if (global.player && global.playerEntity && global.playerEntity.isBuilding) {
-        var worldCursorPos = [Math.floor((this.mouseX + camera.pos[0] - camera.width / 2) / 32), Math.floor((canvas.height - this.mouseY + camera.pos[1] - camera.height / 2) / 32)];
+        var worldCursorPos = [Math.floor((mouseX + camera.pos[0] - camera.width / 2) / 32), Math.floor((canvas.height - mouseY + camera.pos[1] - camera.height / 2) / 32)];
         var chunkPos = [0, 0];
         var localPos = [0, 0];
         v2WorldToBlockChunk(worldCursorPos, chunkPos, localPos);
@@ -252,13 +256,13 @@ $(document).mousedown(function(event) {
     }
 });
 
-gameData.entityWorld.onAdd.push(function(entity) {
+gameData.entityWorld.onAdd["DigMiners.js"] = function(entity) {
     if (!global.playerEntity && entity.id == global.playerEntityId) {
         global.playerEntity = entity;
         $("*").mousemove(function(e) {
-            if (!this.lastMouseSync || gameData.tickId - this.lastMouseSync >= 1) {
-                this.lastMouseSync = gameData.tickId;
-                var worldCursorPos = [(this.mouseX + camera.pos[0] - camera.width / 2) / 32, (canvas.height - this.mouseY + camera.pos[1] - camera.height / 2) / 32];
+            if (gameData.tickId - lastMouseSync >= 2) {
+                lastMouseSync = gameData.tickId;
+                var worldCursorPos = [(mouseX + camera.pos[0] - camera.width / 2) / 32, (canvas.height - mouseY + camera.pos[1] - camera.height / 2) / 32];
                 var pos = entity.physicsBody.getPos();
                 var diff = [worldCursorPos[0] - pos[0], worldCursorPos[1] - pos[1]];
                 new MessageRequestRotate(diff).send(socket);
@@ -291,7 +295,7 @@ gameData.entityWorld.onAdd.push(function(entity) {
         var textSprite = new Sprite(null, text, false);
         entity.drawable.addSprite("textAmount", textSprite, null, false);
     }
-});
+}
 
 gameData.physicsWorld.onCollision.push(function(collisions) {
     if (global.playerEntity && collisions) {

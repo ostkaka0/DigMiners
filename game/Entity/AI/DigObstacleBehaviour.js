@@ -8,7 +8,7 @@ DigObstacleBehaviour = function(entity) {
 }
 
 DigObstacleBehaviour.prototype.canRun = function() {
-    if (this.entity.equippedItems.items["tool"].itemFunction != ItemFunctions.Shovel)
+    if (!this.entity.equippedItems.items["tool"] || this.entity.equippedItems.items["tool"].itemFunction != ItemFunctions.Shovel)
         return false;
     if (this.nextRunTick && gameData.tickId < this.nextRunTick)
         return false;

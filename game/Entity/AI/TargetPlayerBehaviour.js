@@ -111,7 +111,7 @@ TargetPlayerBehaviour.prototype.getTarget = function() {
 }
 
 TargetPlayerBehaviour.prototype.getAttackDistance = function() {
-    if (this.entity.equippedItems.items["tool"].itemFunction == ItemFunctions.RangedWeapon) {
+    if (this.entity.equippedItems.items["tool"] && this.entity.equippedItems.items["tool"].itemFunction == ItemFunctions.RangedWeapon) {
         // TODO: Raycast
         return 10.0;
     }

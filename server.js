@@ -73,13 +73,36 @@ for (var x = -3; x < 3; ++x) {
         loadChunk(gameData.tileWorld, x, y);
     }
 }
-carveCircle(gameData, 0, 0, 24, 100.0);
+
+// Dig player spawners
+gameData.spawnPoints.forEach(function(pos) {
+    carveCircle(gameData, pos[0], pos[1], 4, 100.0);
+    setForeground(gameData.blockWorld, pos[0], pos[1], Blocks.BlueForcefieldOpen.id);
+});
+
+// Add monster spawners
+for (var i = 0; i < 10; i++) {
+    var pos = [Math.floor(40 * (1.0 - 2.0*Math.random())), Math.floor(40 * (1.0 - 2.0*Math.random()))];
+    var entityId = gameData.idList.next();
+    var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 1);
+    gameData.entityWorld.add(entity, entityId);
+    carveCircle(gameData, pos[0], pos[1], 2.0, 100.0);
+}
+// Add gun monster sspawners
+for (var i = 0; i < 5; i++) {
+    var pos = [Math.floor(40 * (1.0 - 2.0*Math.random())), Math.floor(40 * (1.0 - 2.0*Math.random()))];
+    var entityId = gameData.idList.next();
+    var weaponId = Items.WeaponMachineGun.id + Math.floor((Items.WeaponGrenadeLauncher.id - Items.WeaponMachineGun.id + 1) * Math.random());
+    var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 1, 2.0, 2400, [{id: weaponId}, {id: Items.Egg.id, quantity: 1000}]);
+    gameData.entityWorld.add(entity, entityId);
+    carveCircle(gameData, pos[0], pos[1], 6.0, 100.0);
+}
 
 gameData.physicsWorld.onCollision.push(function(collisions) {
     sendCommand(new CommandCollisions(collisions));
 });
 
-gameData.entityWorld.onAdd.push(function(entity) {
+gameData.entityWorld.onAdd["server.js"] = function(entity) {
     if (entity.controlledByPlayer) {
 
         // give player shovel at join
@@ -90,26 +113,21 @@ gameData.entityWorld.onAdd.push(function(entity) {
 
         // give player blocks at join
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.StoneWall.id, 100));
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.StoneFloor.id, 20));
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WoodCrate.id, 100));
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.RedForcefield.id, 10));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.BlueForcefield.id, 10));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.BunkerWindow.id, 10));
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WoodCrate.id, 100));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.HealthBox.id, 10));
 
         // Give player weapons
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponPistol.id, 1));
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponSmg.id, 1));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponAssaultRifle.id, 1));
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponMachineGun.id, 1));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponShotgun.id, 1));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponSniperRifle.id, 1));
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponGrenadeLauncher.id, 1));
 
         // (TEMPORARY) spawn monsters on player join
         for (var i = 0; i < 0; ++i) {
             var monsterEntityId = idList.next();
-            var monster = entityTemplates.testMonster(monsterEntityId, [20 * (-1 + 2 *Math.random()), 10 * (-1 + 2 *Math.random())], gameData);
+            var monster = entityTemplates.testMonster(monsterEntityId, [50 * (-1 + 2 *Math.random()), 50 * (-1 + 2 *Math.random())], gameData);
             sendCommand(new CommandEntitySpawn(gameData, monster, monsterEntityId));
             var weaponId = Items.WeaponPistol.id + Math.floor((Items.WeaponGrenadeLauncher.id - Items.WeaponPistol.id + 1) * Math.random());
             sendCommand(new CommandEntityInventory(monsterEntityId, InventoryActions.ADD_ITEM, weaponId, 1));
@@ -117,7 +135,7 @@ gameData.entityWorld.onAdd.push(function(entity) {
             sendCommand(new CommandEntityInventory(monsterEntityId, InventoryActions.ADD_ITEM, Items.Egg.id, 1000));
         }
     }
-});
+};
 
 update = function() {
     var diff = process.hrtime(firstTickTime);

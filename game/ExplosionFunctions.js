@@ -1,5 +1,5 @@
 
-createExplosion = function(startPos, radius, entityDamage, blockDamage, tileDamage) {
+createExplosion = function(startPos, radius, entityDamage, blockDamage, tileDamage, attacker) {
     if (isServer) {
         // Damage terrain
         for (var i = 0; i < tileDamage; ++i)
@@ -27,8 +27,9 @@ createExplosion = function(startPos, radius, entityDamage, blockDamage, tileDama
             gameData.entityWorld.objectArray.forEach(function(entity) {
                 if (entity.physicsBody && entity.health) {
                     var dis = v2.distance(startPos, entity.physicsBody.getPos());
-                    if (dis <= radius)
-                        sendCommand(new CommandHurtEntity(entity.id, -entityDamage));
+                    if (dis <= radius) {
+                        entity.health.hurt(entity, attacker, entityDamage);
+                    }
                 }
             });
         }

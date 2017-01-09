@@ -2,8 +2,8 @@ ObjectWorld = function(useDestroyFunc) {
     this.useDestroyFunc = useDestroyFunc;
     this.objectArray = [];
     this.objects = {};
-    this.onAdd = [];
-    this.onRemove = [];
+    this.onAdd = {};
+    this.onRemove = {};
 }
 
 ObjectWorld.prototype.add = function(object, id) {
@@ -21,8 +21,8 @@ ObjectWorld.prototype.add = function(object, id) {
 
     this.objects[object.id] = object;
     object.isActive = true;
-    this.onAdd.forEach(function(func) {
-        func(object);
+    Object.keys(this.onAdd).forEach(function(key) {
+        this.onAdd[key](object);
     }.bind(this));
     return object;
 }
@@ -36,8 +36,8 @@ ObjectWorld.prototype.removeById = function(id) {
     var object = this.objects[id];
     if (!object) return;
     object.isActive = false;
-    this.onRemove.forEach(function(func) {
-        func(object);
+    Object.keys(this.onRemove).forEach(function(key) {
+        this.onRemove[key](object);
     }.bind(this));
     if (this.useDestroyFunc)
         object.destroy();

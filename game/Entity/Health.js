@@ -23,3 +23,11 @@ Health.prototype.getSerializationSize = function() {
 Health.prototype.destroy = function(entity) {
 
 }
+
+Health.prototype.hurt = function(entity, attacker, damage) {
+    if (!isServer)
+        return;
+    if (attacker && entity.id != attacker.id && entity.team && attacker.team && entity.team.value != Teams.None && entity.team.value == attacker.team.value)
+        return;
+    sendCommand(new CommandHurtEntity(entity.id, -damage));
+}
