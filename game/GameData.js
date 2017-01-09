@@ -42,13 +42,17 @@ gameData.init = function(idList) {
         CommandEntitySpawn, CommandCollisions, CommandEntityDestroy, CommandPlayerJoin, CommandPlayerLeave, CommandPlayerSpawn, CommandKeyStatusUpdate,
         CommandEntityInventory, CommandPlayerOreInventory, CommandEntityRotate, CommandBlockStrength, CommandProjectileSpawn, CommandParticles, CommandPlaceBlock,
         CommandEntityReloadWeapon, CommandEntityBeginReloadWeapon, CommandBuild]);
+    this.commandCallbacks = [];
     this.messagesToClient = [MessageInit, MessageCommands, MessageChunk];
     this.messagesToServer = [MessageRequestKeyStatusUpdate, MessageRequestItemPickup, MessageRequestClickSlot, MessageRequestCraft, MessageRequestPlaceBlock,
         MessageRequestClickEntity, MessageRequestRotate, MessageRequestClickBlock, MessageRequestSpawn];
     this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
     this.messageCallbacks = {};
     this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent, EquippedItems, Projectile, BlockPlacer, PotionEffects, Team]);
-
+    this.spawnPoints = [];
+    for (var i = 0; i < 10; i++)
+        this.spawnPoints.push([Math.floor(20 * (1.0-2.0*Math.random())), Math.floor(20 * (1.0-2.0*Math.random()))]);
+    
     Recipes = [];
 
     Recipes.push({

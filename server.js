@@ -73,7 +73,11 @@ for (var x = -3; x < 3; ++x) {
         loadChunk(gameData.tileWorld, x, y);
     }
 }
-carveCircle(gameData, 0, 0, 24, 100.0);
+
+gameData.spawnPoints.forEach(function(pos) {
+    carveCircle(gameData, pos[0], pos[1], 4, 100.0);
+    setForeground(gameData.blockWorld, pos[0], pos[1], Blocks.BlueForcefieldOpen.id);
+});
 
 gameData.physicsWorld.onCollision.push(function(collisions) {
     sendCommand(new CommandCollisions(collisions));

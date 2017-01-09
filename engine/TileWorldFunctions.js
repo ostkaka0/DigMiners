@@ -53,7 +53,7 @@ setTileId = function(tileWorld, x, y, value) {
     }
 
     chunk.setTileId(localX, localY, value);
-    this.on("onChunkChange", chunkX, chunkY, chunk);
+    //this.on("onChunkChange", chunkX, chunkY, chunk);
 }
 
 calcDensity = function(terrainWorld, x, y) {
