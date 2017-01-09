@@ -92,19 +92,19 @@ gameData.init = function(idList) {
     });
 
     // Update physicsEntities
-    this.entityWorld.onAdd.push((function(entity) {
+    this.entityWorld.onAdd["GameData.js"] = function(entity) {
         if (entity.physicsBody)
             this.physicsEntities[entity.physicsBody.bodyId] = entity;
-    }).bind(this));
-    this.entityWorld.onRemove.push((function(entity) {
+    }.bind(this);
+    this.entityWorld.onRemove["GameData.js"] = function(entity) {
         if (entity.physicsBody)
             this.physicsEntities[entity.physicsBody.bodyId] = undefined;
-    }).bind(this));
+    }.bind(this);
 
     if (idList) {
         var onObjectRemove = function(object) { idList.remove(object.id); };
-        this.playerWorld.onRemove.push(onObjectRemove);
-        this.entityWorld.onRemove.push(onObjectRemove);
+        this.playerWorld.onRemove["GameData.js"] = onObjectRemove;
+        this.entityWorld.onRemove["GameData.js"] = onObjectRemove;
     }
 }
 
@@ -194,11 +194,13 @@ gameData.initializeEvents = function() {
             if (entity.controlledByPlayer) {
                 var playerId = entity.controlledByPlayer.playerId;
                 var player = gameData.playerWorld.objects[playerId];
-                player.deathTick = gameData.tickId;
-                player.entityId = null;
-                if (!isServer && player.id == global.player.id) {
-                    global.playerEntity = null;
-                    global.playerEntityId = null;
+                if (player) {
+                    player.deathTick = gameData.tickId;
+                    player.entityId = null;
+                    if (!isServer && player.id == global.player.id) {
+                        global.playerEntity = null;
+                        global.playerEntityId = null;
+                    }
                 }
             }
         }
