@@ -1,7 +1,9 @@
 <html>
     <head>
     <title>DigMiners</title>
-    <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="tether.min.css"/>
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
     </head>
     <body>
         <canvas class="canvas" id="canvas"></canvas>
