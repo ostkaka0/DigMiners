@@ -1,6 +1,6 @@
 entityTemplates = {};
 
-entityTemplates.player = function(playerId, entityId, name, gameData) {
+entityTemplates.player = function(playerId, entityId, name) {
     var entity = {};
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 20.0);
@@ -31,13 +31,13 @@ entityTemplates.player = function(playerId, entityId, name, gameData) {
     entity.drawable = new Drawable(1);
     var healthbarSprite = new Sprite("healthbar", null, false);
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
-
     entity.health = new Health(100, 100);
+    entity.team = new Team(Teams.Human);
 
     return entity;
 }
 
-entityTemplates.item = function(itemId, amount, gameData) {
+entityTemplates.item = function(itemId, amount) {
     var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
 
@@ -55,7 +55,7 @@ entityTemplates.item = function(itemId, amount, gameData) {
     return entity;
 }
 
-entityTemplates.testMonster = function(entityId, pos, gameData) {
+entityTemplates.testMonster = function(entityId, pos) {
     var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 5.0);
     entity.movement = new Movement(20.0);
@@ -85,11 +85,18 @@ entityTemplates.testMonster = function(entityId, pos, gameData) {
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
 
     entity.health = new Health(100, 100);
+    entity.team = new Team(Teams.Zombie);
 
     entity.behaviourContainer = new BehaviourContainer();
     entity.behaviourContainer.behaviours.push(new DigObstacleBehaviour(entity));
     entity.behaviourContainer.behaviours.push(new TargetPlayerBehaviour(entity, 30.0));
     entity.behaviourContainer.behaviours.push(new RandomWalkBehaviour(entity));
 
+    return entity;
+}
+
+entityTemplates.monsterSpawner = function(entityId, pos, entityTemplate, maxEntities, radius, duration, items, equippedItemId) {
+    var entity = {};
+    entity.spawner = new Spawner(entityTemplate, pos, maxEntities, radius, duration, items, equippedItemId);
     return entity;
 }

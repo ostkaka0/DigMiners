@@ -5,6 +5,14 @@ Inventory = function() {
 
 Inventory.prototype.sortItems = function() {
     this.items.sort(function(a, b) {
+        var aType = gameData.itemRegister[a.id];
+        var bType = gameData.itemRegister[b.id];
+        
+        if (aType.type == "tool" && bType.type != "tool")
+            return -1;
+        if (bType.type == "tool" && aType.type != "tool")
+            return 1;
+        
         if (a.id < b.id)
             return -1;
 

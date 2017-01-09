@@ -1,7 +1,7 @@
 g_unitTests.testobjectWorld = function() {
     var idList = new IdList();
     var objectWorld = new ObjectWorld();
-    objectWorld.onRemove.push(function(object) { idList.remove(object.id); });
+    objectWorld.onRemove["UTestObjectWorld.js"] = function(object) { idList.remove(object.id); };
     objectWorld.update();
     var object = objectWorld.add({}, idList.next());
     if(object.isActive || objectWorld.objectArray.length != 0 || idList.freeIdList.length > 0 || idList.nextId != 2)
