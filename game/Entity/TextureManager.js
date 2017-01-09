@@ -1,6 +1,9 @@
 TextureManager = function(gameData) {
     this.gameData = gameData;
     this.loader = new TextureLoader();
+
+    this.gameData.events.trigger("texturesBeginLoading");
+
     this.loader.queueTexture("healthbar");
     this.loader.queueTexture("feet", "feetSheet");
     this.loader.queueTexture("tool", "toolSheet");
@@ -35,9 +38,8 @@ TextureManager = function(gameData) {
 
     this.loader.onProgress(function(name, file, progress) {
         console.log(progress + "% complete");
-        if (onTexturesLoadProgress)
-            onTexturesLoadProgress(name, file, progress);
-    });
+        this.gameData.events.trigger("texturesLoadProgress", name, file, progress);
+    }.bind(this));
 
     this.loader.onComplete(function(texturesLocal) {
         console.log("Textures loaded.");
@@ -60,8 +62,7 @@ TextureManager = function(gameData) {
         }
 
         this.gameData.textures = texturesLocal;
-        if (onTexturesLoadComplete)
-            onTexturesLoadComplete(texturesLocal);
+        this.gameData.events.trigger("texturesLoaded", texturesLocal)
     }.bind(this));
 }
 

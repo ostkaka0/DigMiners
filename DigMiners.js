@@ -18,7 +18,20 @@ window.addEventListener('resize', function() {
 }, false);
 
 gameData.init();
-var deathScreen = new DeathScreen();
+gameData.events.on("texturesLoaded", function(textures) {
+    // Must wait until all textures have loaded to continue! important
+    this.blockPosGood = new PIXI.Sprite(textures["blockPosGood.png"]);
+    window.zindices[2].addChild(this.blockPosGood);
+    this.blockPosBad = new PIXI.Sprite(textures["blockPosBad.png"]);
+    window.zindices[2].addChild(this.blockPosBad);
+    $("*").mousemove(function(event) {
+        //console.log(event.pageX + ", " + event.pageY);
+        //console.log(worldPos);
+        this.mouseX = event.pageX;
+        this.mouseY = event.pageY;
+    }.bind(this));
+    client = new Client(gameData, window.vars.ip);
+});
 
 var camera = {
     width: window.innerWidth,
@@ -31,6 +44,7 @@ var commands = [];
 var player = null;
 var playerEntity = null;
 var keysDown = {};
+var loadingScreen = new LoadingScreen();
 var textureManager = new TextureManager(gameData);
 window.global = {};
 
@@ -212,25 +226,6 @@ loadChunk = function(world, x, y) {
 
 onMessage = function(messageType, callback) {
     gameData.messageCallbacks[messageType.prototype.id] = callback;
-}
-
-onTexturesLoadProgress = function(name, file, progress) {
-
-}
-
-onTexturesLoadComplete = function(textures) {
-    // Must wait until all textures have loaded to continue! important
-    this.blockPosGood = new PIXI.Sprite(textures["blockPosGood.png"]);
-    window.zindices[2].addChild(this.blockPosGood);
-    this.blockPosBad = new PIXI.Sprite(textures["blockPosBad.png"]);
-    window.zindices[2].addChild(this.blockPosBad);
-    $("*").mousemove(function(event) {
-        //console.log(event.pageX + ", " + event.pageY);
-        //console.log(worldPos);
-        this.mouseX = event.pageX;
-        this.mouseY = event.pageY;
-    }.bind(this));
-    client = new Client(gameData, window.vars.ip);
 }
 
 $(document).mousedown(function(event) {
