@@ -17,6 +17,10 @@ window.addEventListener('resize', function() {
     camera.height = window.innerHeight;
 }, false);
 
+var lastMouseSync = 0;
+var mouseX = 0;
+var mouseY = 0;
+
 gameData.init();
 gameData.events.on("texturesLoaded", function(textures) {
     // Must wait until all textures have loaded to continue! important
@@ -25,10 +29,8 @@ gameData.events.on("texturesLoaded", function(textures) {
     this.blockPosBad = new PIXI.Sprite(textures["blockPosBad.png"]);
     window.zindices[2].addChild(this.blockPosBad);
     $("*").mousemove(function(event) {
-        //console.log(event.pageX + ", " + event.pageY);
-        //console.log(worldPos);
-        this.mouseX = event.pageX;
-        this.mouseY = event.pageY;
+        mouseX = event.pageX;
+        mouseY = event.pageY;
     }.bind(this));
     client = new Client(gameData, window.vars.ip);
 });
@@ -47,10 +49,6 @@ var keysDown = {};
 var loadingScreen = new LoadingScreen();
 var textureManager = new TextureManager(gameData);
 window.global = {};
-
-var lastMouseSync = 0;
-var mouseX = 0;
-var mouseY = 0;
 
 loadGame = function() {
     gameData.animationManager.load();
