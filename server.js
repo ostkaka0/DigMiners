@@ -74,16 +74,35 @@ for (var x = -3; x < 3; ++x) {
     }
 }
 
+// Dig player spawners
 gameData.spawnPoints.forEach(function(pos) {
     carveCircle(gameData, pos[0], pos[1], 4, 100.0);
     setForeground(gameData.blockWorld, pos[0], pos[1], Blocks.BlueForcefieldOpen.id);
 });
 
+// Add monster spawners
+for (var i = 0; i < 10; i++) {
+    var pos = [Math.floor(40 * (1.0 - 2.0*Math.random())), Math.floor(40 * (1.0 - 2.0*Math.random()))];
+    var entityId = gameData.idList.next();
+    var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 1);
+    gameData.entityWorld.add(entity, entityId);
+    carveCircle(gameData, pos[0], pos[1], 2.0, 100.0);
+}
+// Add gun monster sspawners
+for (var i = 0; i < 5; i++) {
+    var pos = [Math.floor(40 * (1.0 - 2.0*Math.random())), Math.floor(40 * (1.0 - 2.0*Math.random()))];
+    var entityId = gameData.idList.next();
+    var weaponId = Items.WeaponMachineGun.id + Math.floor((Items.WeaponGrenadeLauncher.id - Items.WeaponMachineGun.id + 1) * Math.random());
+    var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 1, 2.0, 2400, [{id: weaponId}, {id: Items.Egg.id, quantity: 1000}]);
+    gameData.entityWorld.add(entity, entityId);
+    carveCircle(gameData, pos[0], pos[1], 6.0, 100.0);
+}
+
 gameData.physicsWorld.onCollision.push(function(collisions) {
     sendCommand(new CommandCollisions(collisions));
 });
 
-gameData.entityWorld.onAdd.push(function(entity) {
+gameData.entityWorld.onAdd["server.js"] = function(entity) {
     if (entity.controlledByPlayer) {
 
         // give player shovel at join
@@ -116,7 +135,7 @@ gameData.entityWorld.onAdd.push(function(entity) {
             sendCommand(new CommandEntityInventory(monsterEntityId, InventoryActions.ADD_ITEM, Items.Egg.id, 1000));
         }
     }
-});
+};
 
 update = function() {
     var diff = process.hrtime(firstTickTime);

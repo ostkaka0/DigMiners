@@ -3,6 +3,9 @@ ItemFunctions = {};
 ItemTextures = {};
 
 ItemFunctions.Shovel = function(entity, item) {
+    // Shovels might be meele weapons
+    ItemFunctions.Sword(entity, item);
+    
     if (isServer) {
         var angle = entity.physicsBody.angle;
         var dir = [Math.cos(-angle), Math.sin(-angle)];
@@ -35,15 +38,17 @@ ItemFunctions.Shovel = function(entity, item) {
 ItemFunctions.Sword = function(entity, item) {
     if (isServer) {
         var physicsWorld = gameData.physicsWorld;
+        var hitRange = item.hitRange || 1.0;
+        var hitRadius = item.hitRadius || 0.5;
         var bodies = [];
         var entityBodyId = entity.physicsBody.bodyId;
         var entityPos = entity.physicsBody.getPos();
         var angle = entity.physicsBody.angle;
         var dir = [Math.cos(-angle), Math.sin(-angle)];
         var hitPos = [0, 0];
-        v2.mul(item.hitRange, dir, hitPos);
+        v2.mul(hitRange, dir, hitPos);
         v2.add(entityPos, hitPos, hitPos);
-        physicsWorld.getBodiesInRadius(bodies, hitPos, item.hitRadius);
+        physicsWorld.getBodiesInRadius(bodies, hitPos, hitRadius);
 
         var hitEntities = [];
 
@@ -54,7 +59,8 @@ ItemFunctions.Sword = function(entity, item) {
 
             console.log("Entity hit!");
             hitEntities.push(targetEntity.id);
-            targetEntity.health.hurt(targetEntity, entity, 10);
+            if (targetEntity.health)
+                targetEntity.health.hurt(targetEntity, entity, 10);
         });
 
         // TODO: CommandEntityHit
