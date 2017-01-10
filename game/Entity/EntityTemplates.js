@@ -57,7 +57,7 @@ entityTemplates.item = function(itemId, amount) {
 
 entityTemplates.testMonster = function(entityId, pos) {
     var entity = {};
-    entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 5.0);
+    entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0);
     entity.movement = new Movement(20.0);
     entity.nameComponent = new NameComponent(entityId);
     entity.inventory = new Inventory();
