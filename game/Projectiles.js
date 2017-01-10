@@ -61,7 +61,7 @@ Projectiles.Shotgun = {
     radius: 0.2,
     maxDistance: 100,
     speed: 80.0,
-    damage: 8.0,
+    damage: 6.0,
     blockDamage: 3.0,
     stayTime: 50,
     textureName: "egg",

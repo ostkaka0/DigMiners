@@ -44,6 +44,7 @@ var zindices = {};
 
 var firstTickTime = process.hrtime();
 var tickNum = 0;
+var skippedTicks = 0;
 var messageCallbacks = {};
 var commandsToSend = [];
 sendCommand = function(command) {
@@ -140,7 +141,12 @@ gameData.entityWorld.onAdd["server.js"] = function(entity) {
 update = function() {
     var diff = process.hrtime(firstTickTime);
     var diff_ms = diff[0] * 1e3 + diff[1] / 1e6;
-    var delay = -diff_ms + tickNum * gameData.tickDuration;
+    var delay = -diff_ms + (tickNum + skippedTicks) * gameData.tickDuration;
+    if (delay < -gameData.tickDuration) {
+        var numTicksToSkip = Math.ceil(-delay / gameData.tickDuration);
+        skippedTicks += numTicksToSkip;
+        console.log(numTicksToSkip + " ticks skipped!");
+    }
     setTimeout(update, delay);
     tick(gameData.tickDuration / 1000.0);
     tickNum++;
