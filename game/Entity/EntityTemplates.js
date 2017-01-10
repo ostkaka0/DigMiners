@@ -9,11 +9,13 @@ entityTemplates.player = function(playerId, entityId, name) {
     entity.inventory = new Inventory();
     entity.equippedItems = new EquippedItems();
     entity.potionEffects = new PotionEffects();
-
+    
+    var teamEnum = Teams.Blue + Math.floor(2.0 * Math.random());
     var feetSprite = new Sprite("feet");
     var rightArmSprite = new Sprite("rightArm");
     var leftArmSprite = new Sprite("leftArm");
     var headSprite = new Sprite("head");
+    var hatSprite = new Sprite((teamEnum == Teams.Blue)? "egg" : "bigEgg");
 
     // Order of bodyparts is draw order
     // Parameters: sprite, offsetX, offsetY, offsetAngle, pivot(v2), parent name
@@ -24,7 +26,7 @@ entityTemplates.player = function(playerId, entityId, name) {
         "leftArm": new BodyPart(leftArmSprite, 5, -4, 0, [10, 23], "body"),
         "body": new BodyPart(new Sprite(), 0, 0, 0, null, null),
         "head": new BodyPart(headSprite, 1, 0, 0, null, null),
-        "hat": new BodyPart(new Sprite(), 1, 0, 0, null, null)
+        "hat": new BodyPart(hatSprite, 1, 0, 0, null, null)
     };
 
     entity.bodyparts = new Bodyparts(bodyparts);
@@ -32,7 +34,7 @@ entityTemplates.player = function(playerId, entityId, name) {
     var healthbarSprite = new Sprite("healthbar", null, false);
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
     entity.health = new Health(100, 100);
-    entity.team = new Team(Teams.Human);
+    entity.team = new Team(teamEnum);
 
     return entity;
 }
@@ -64,10 +66,12 @@ entityTemplates.testMonster = function(entityId, pos) {
     entity.equippedItems = new EquippedItems();
     entity.potionEffects = new PotionEffects();
 
+    var teamEnum = Teams.Blue + Math.floor(2.0 * Math.random());
     var feetSprite = new Sprite("monster/feet");
     var rightArmSprite = new Sprite("monster/rightArm");
     var leftArmSprite = new Sprite("monster/leftArm");
     var headSprite = new Sprite("monster/head");
+    var hatSprite = new Sprite((teamEnum == Teams.Blue)? "egg" : "bigEgg");
 
     var bodyparts = {
         "feet": new BodyPart(feetSprite, 0, 0, 0, null, null),
@@ -76,7 +80,7 @@ entityTemplates.testMonster = function(entityId, pos) {
         "leftArm": new BodyPart(leftArmSprite, 5, -8, 0, [10, 23], "body"),
         "body": new BodyPart(new Sprite(), 0, 0, 0, null, null),
         "head": new BodyPart(headSprite, 1, 0, 0, null, null),
-        "hat": new BodyPart(new Sprite(), 1, 0, 0, null, null)
+        "hat": new BodyPart(hatSprite, 1, 0, 0, null, null)
     };
 
     entity.bodyparts = new Bodyparts(bodyparts);
@@ -85,7 +89,7 @@ entityTemplates.testMonster = function(entityId, pos) {
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
 
     entity.health = new Health(100, 100);
-    entity.team = new Team(Teams.Zombie);
+    entity.team = new Team(teamEnum);
 
     entity.behaviourContainer = new BehaviourContainer();
     entity.behaviourContainer.behaviours.push(new DigObstacleBehaviour(entity));

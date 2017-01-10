@@ -118,18 +118,18 @@ TargetPlayerBehaviour.prototype.destroy = function(entity) {
 TargetPlayerBehaviour.prototype.getTarget = function() {
     var shortestDistance = Number.MAX_VALUE;
     var shortestDistanceEntity = null;
-    gameData.playerWorld.objectArray.forEach(function(otherPlayer) {
-        if (otherPlayer.entityId == -1) return;
-        var otherEntity = gameData.entityWorld.objects[otherPlayer.entityId];
-        if (!otherEntity || otherEntity.isDead || !otherEntity.isActive) return;
-        if (this.entity.id != otherEntity.id && otherEntity.physicsBody && otherEntity.health) {
-            var dis = v2.distance(this.entity.physicsBody.getPos(), otherEntity.physicsBody.getPos());
-            if (dis < shortestDistance) {
-                shortestDistance = dis;
-                shortestDistanceEntity = otherEntity;
-            }
+    gameData.entityWorld.objectArray.forEach(function(otherEntity) {
+        if (!otherEntity.health || !otherEntity.physicsBody) return;
+        if (this.entity.team && (!otherEntity.team || otherEntity.team.value == this.entity.team.value)) return;
+        if (otherEntity.id == this.entity.id) return;
+        
+        var dis = v2.distance(this.entity.physicsBody.getPos(), otherEntity.physicsBody.getPos());
+        if (dis < shortestDistance) {
+            shortestDistance = dis;
+            shortestDistanceEntity = otherEntity;
         }
     }.bind(this));
+
     if (shortestDistance <= this.maxRadius)
         return shortestDistanceEntity;
     return null;
