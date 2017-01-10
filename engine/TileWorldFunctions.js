@@ -19,11 +19,8 @@ setDensity = function(tileWorld, x, y, density) {
     var localY = Math.floor(y) - chunkY * CHUNK_DIM;
 
     var chunk = tileWorld.get(chunkX, chunkY);
-    if (!chunk) {
-        console.log("Density set on missing chunk!");
+    if (!chunk)
         return;
-    }
-
     chunk.setDensity(localX, localY, density);
 }
 
