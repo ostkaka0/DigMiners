@@ -258,7 +258,7 @@ gameData.entityWorld.onAdd["DigMiners.js"] = function(entity) {
     if (!global.playerEntity && entity.id == global.playerEntityId) {
         global.playerEntity = entity;
         $("*").mousemove(function(e) {
-            if (gameData.tickId - lastMouseSync >= 2) {
+            if (gameData.tickId - lastMouseSync >= 1) {
                 lastMouseSync = gameData.tickId;
                 var worldCursorPos = [(mouseX + camera.pos[0] - camera.width / 2) / 32, (canvas.height - mouseY + camera.pos[1] - camera.height / 2) / 32];
                 var pos = entity.physicsBody.getPos();
