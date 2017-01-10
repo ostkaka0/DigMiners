@@ -114,7 +114,7 @@ physicsBodySimulate = function(physicsBody, dt) {
 
         // Terrain collision
         var density = calcDensity(gameData.tileWorld, pos[0], pos[1]);
-        if (density > 0) {
+        if (density > 0.5) {
             var dir = calcDir(gameData.tileWorld, pos[0], pos[1]);
             //v2.mul(2.0, dir, dir);
             v2.add(pos, dir, pos);
