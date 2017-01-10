@@ -57,7 +57,6 @@ ItemFunctions.Sword = function(entity, item) {
             var targetEntity = gameData.physicsEntities[bodyId];
             if (!targetEntity) return;
 
-            console.log("Entity hit!");
             hitEntities.push(targetEntity.id);
             if (targetEntity.health)
                 targetEntity.health.hurt(targetEntity, entity, 10);

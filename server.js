@@ -88,12 +88,12 @@ for (var i = 0; i < 10; i++) {
     gameData.entityWorld.add(entity, entityId);
     carveCircle(gameData, pos[0], pos[1], 2.0, 100.0);
 }
-// Add gun monster sspawners
+// Add gun monster spawners
 for (var i = 0; i < 10; i++) {
     var pos = [Math.floor(80 * (1.0 - 2.0*Math.random())), Math.floor(80 * (1.0 - 2.0*Math.random()))];
     var entityId = gameData.idList.next();
     var weaponId = Items.WeaponPistol.id + Math.floor((Items.WeaponSmg.id - Items.WeaponPistol.id + 1) * Math.random());
-    var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 2, 2.0, 3000, [{id: weaponId}, {id: Items.Egg.id, quantity: 1000}]);
+    var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 3, 2.0, 3000, [{id: weaponId}, {id: Items.Egg.id, quantity: 1000}]);
     gameData.entityWorld.add(entity, entityId);
     carveCircle(gameData, pos[0], pos[1], 6.0, 100.0);
 }
@@ -127,7 +127,7 @@ gameData.entityWorld.onAdd["server.js"] = function(entity) {
         // (TEMPORARY) spawn monsters on player join
         for (var i = 0; i < 0; ++i) {
             var monsterEntityId = idList.next();
-            var monster = entityTemplates.testMonster(monsterEntityId, [50 * (-1 + 2 *Math.random()), 50 * (-1 + 2 *Math.random())], gameData);
+            var monster = entityTemplates.testMonster(monsterEntityId, [50 * (-1 + 2 * Math.random()), 50 * (-1 + 2 * Math.random())], gameData);
             sendCommand(new CommandEntitySpawn(gameData, monster, monsterEntityId));
             var weaponId = Items.WeaponPistol.id + Math.floor((Items.WeaponGrenadeLauncher.id - Items.WeaponPistol.id + 1) * Math.random());
             sendCommand(new CommandEntityInventory(monsterEntityId, InventoryActions.ADD_ITEM, weaponId, 1));
@@ -146,7 +146,7 @@ update = function() {
     tickNum++;
 }
 
-var measureTicks = 600;
+var measureTicks = 20;
 var currentMeasureTicks = 0;
 var totalTickTime = 0;
 tick = function(dt) {
@@ -169,7 +169,7 @@ tick = function(dt) {
     ++currentMeasureTicks;
     if (currentMeasureTicks > measureTicks) {
         var tickMs = totalTickTime / measureTicks;
-        console.log(measureTicks + " ticks average: " + tickMs.toFixed(1) + "ms (" + ((tickMs / 50.0 * 100).toFixed(1)) + "%)");
+        console.log(measureTicks + " ticks average: " + tickMs.toFixed(1) + "ms (" + ((tickMs / 50.0 * 100).toFixed(1)) + "%) numEntities: " + gameData.entityWorld.objectArray.length);
         currentMeasureTicks = 0;
         totalTickTime = 0;
     }
