@@ -114,16 +114,18 @@ physicsBodySimulate = function(physicsBody, dt) {
 
         // Terrain collision
         var density = calcDensity(gameData.tileWorld, pos[0], pos[1]);
-        if (density > 0.5) {
+        if (density > 1) {
             var dir = calcDir(gameData.tileWorld, pos[0], pos[1]);
             //v2.mul(2.0, dir, dir);
-            v2.add(pos, dir, pos);
+            var tempDir = v2.clone(dir);
+            v2.mul(0.5 + density/255, tempDir, tempDir);
+            v2.add(pos, tempDir, pos);
             var normal = v2.create(0, 0);
             v2.normalize(dir, normal);
             if (normal[0] || normal[1]) {
                 var dot = v2.dot(normal, physicsBody.getVelocity());
                 var deltaSpeed = [0, 0];
-                v2.mul(-1.0 * dot, normal, deltaSpeed);
+                v2.mul(-4.0 * density/255 * density/255 * dot, normal, deltaSpeed);
                 v2.div(deltaSpeed, numSteps, deltaSpeed);
                 v2.add(deltaSpeed, velocity, velocity);
             }
