@@ -1,5 +1,5 @@
 
-Movement = function(speed, toolUseDuration) {
+Movement = function(speed, toolUseDuration, damageMultiplier) {
     this.keyStatuses = {};
     this.direction = v2.create(0, 0);
     this.rotationDirection = v2.create(0, 0);
@@ -18,6 +18,7 @@ Movement = function(speed, toolUseDuration) {
     this.isReloading = false;
     this.isDigging = false;
     this.isMining = false;
+    this.damageMultiplier = (damageMultiplier == null)? 1.0 : damageMultiplier;
 }
 
 Movement.prototype.name = movement.name; function movement() { };

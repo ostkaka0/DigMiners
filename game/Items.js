@@ -59,7 +59,7 @@ ItemFunctions.Sword = function(entity, item) {
 
             hitEntities.push(targetEntity.id);
             if (targetEntity.health)
-                targetEntity.health.hurt(targetEntity, entity, 10);
+                targetEntity.health.hurt(targetEntity, entity, 40);
         });
 
         // TODO: CommandEntityHit
