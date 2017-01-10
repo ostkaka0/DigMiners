@@ -131,6 +131,8 @@ createHUD = function(gameData) {
         if (e.keyCode == 32)
             e.preventDefault();
     });
+
+    $('.hud').show();
 }
 
 updateHUD = function(gameData) {

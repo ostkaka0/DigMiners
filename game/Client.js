@@ -27,6 +27,7 @@ Client = function(gameData, ip) {
         }, 2000);
 
         console.log("Connected.");
+        var deathScreen = new DeathScreen();
     });
 
     socket.on('message', function(msg) {
