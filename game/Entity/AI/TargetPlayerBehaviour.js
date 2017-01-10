@@ -8,7 +8,7 @@ TargetPlayerBehaviour = function(entity, maxRadius) {
     this.lastTargetPos = null;
     this.spacebar = false;
     this.moving = false;
-    this.isGunner = (this.entity.equippedItems.items["tool"] && this.entity.equippedItems.items["tool"].itemFunction == ItemFunctions.RangedWeapon);
+    this.isGunner = false;
 }
 
 TargetPlayerBehaviour.prototype.canRun = function() {
@@ -22,7 +22,7 @@ TargetPlayerBehaviour.prototype.canRun = function() {
 }
 
 TargetPlayerBehaviour.prototype.initialize = function() {
-
+    this.isGunner = (this.entity.equippedItems.items["tool"] && this.entity.equippedItems.items["tool"].itemFunction == ItemFunctions.RangedWeapon);
 }
 
 TargetPlayerBehaviour.prototype.run = function() {
@@ -85,10 +85,12 @@ TargetPlayerBehaviour.prototype.run = function() {
         sendCommand(new CommandKeyStatusUpdate(this.entity.id, Keys.SPACEBAR, false, this.entity.physicsBody.getPos()));
         this.spacebar = false;
     }
-    if (dis < 5.0 && !this.moving && this.isGunner) {
-        sendCommand(new CommandEntityMove(this.entity.id, [-dir[0], -dir[1]], this.entity.physicsBody.getPos()));
-        this.moving = true;
-    } else if (this.moving && dis < 10.0 && this.isGunner) {
+    if (dis < 4.0 && this.isGunner) {
+        if (!this.isMoving) {
+            sendCommand(new CommandEntityMove(this.entity.id, [-dir[0], -dir[1]], this.entity.physicsBody.getPos()));
+            this.moving = true;
+        }
+    } else if (this.moving && dis < 6.0 && this.isGunner) {
         sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.getPos()));
         this.moving = false;
     } else if ((dir[0] != currentDir[0] || dir[1] != currentDir[1]) && !this.spacebar) {
@@ -136,12 +138,12 @@ TargetPlayerBehaviour.prototype.getTarget = function() {
 TargetPlayerBehaviour.prototype.getAttackDistance = function(pos, dir) {
     if (this.entity.equippedItems.items["tool"] && this.entity.equippedItems.items["tool"].itemFunction == ItemFunctions.RangedWeapon) {
         // TODO: Raycast
-        var stepLength = 1.0;
+        var stepLength = 0.5;
         var dis = stepLength;
         var rayPos = v2.clone(pos);
         var step = [stepLength * dir[0], stepLength * dir[1]];
         v2.add(step, rayPos, rayPos);
-        for (var i = 0; i < 10; i++) {
+        for (var i = 0; i < 40; i++) {
             if (getDensity(gameData.tileWorld, rayPos[0], rayPos[1]) > 127) break;
             if (getForeground(gameData.blockWorld, rayPos[0], rayPos[1]) != 0) break;
             

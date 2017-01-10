@@ -51,7 +51,7 @@ gameData.init = function(idList) {
     this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent, EquippedItems, Projectile, BlockPlacer, PotionEffects, Team]);
     this.spawnPoints = [];
     for (var i = 0; i < 10; i++)
-        this.spawnPoints.push([Math.floor(20 * (1.0-2.0*Math.random())), Math.floor(20 * (1.0-2.0*Math.random()))]);
+        this.spawnPoints.push([Math.floor(60 * (1.0-2.0*Math.random())), Math.floor(60 * (1.0-2.0*Math.random()))]);
     
     Recipes = [];
 

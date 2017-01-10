@@ -82,18 +82,18 @@ gameData.spawnPoints.forEach(function(pos) {
 
 // Add monster spawners
 for (var i = 0; i < 10; i++) {
-    var pos = [Math.floor(40 * (1.0 - 2.0*Math.random())), Math.floor(40 * (1.0 - 2.0*Math.random()))];
+    var pos = [Math.floor(80 * (1.0 - 2.0*Math.random())), Math.floor(80 * (1.0 - 2.0*Math.random()))];
     var entityId = gameData.idList.next();
-    var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 2);
+    var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 2, 2.0, 3000);
     gameData.entityWorld.add(entity, entityId);
     carveCircle(gameData, pos[0], pos[1], 2.0, 100.0);
 }
 // Add gun monster sspawners
 for (var i = 0; i < 10; i++) {
-    var pos = [Math.floor(60 * (1.0 - 2.0*Math.random())), Math.floor(60 * (1.0 - 2.0*Math.random()))];
+    var pos = [Math.floor(80 * (1.0 - 2.0*Math.random())), Math.floor(80 * (1.0 - 2.0*Math.random()))];
     var entityId = gameData.idList.next();
     var weaponId = Items.WeaponPistol.id + Math.floor((Items.WeaponSmg.id - Items.WeaponPistol.id + 1) * Math.random());
-    var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 2, 2.0, 2400, [{id: weaponId}, {id: Items.Egg.id, quantity: 1000}]);
+    var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 2, 2.0, 3000, [{id: weaponId}, {id: Items.Egg.id, quantity: 1000}]);
     gameData.entityWorld.add(entity, entityId);
     carveCircle(gameData, pos[0], pos[1], 6.0, 100.0);
 }
@@ -106,7 +106,7 @@ gameData.entityWorld.onAdd["server.js"] = function(entity) {
     if (entity.controlledByPlayer) {
 
         // give player shovel at join
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.RustyShovel.id, 1));
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.SteelShovel.id, 1));
 
         // give player dynamite at join
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.Egg.id, 800));
