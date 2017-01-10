@@ -3,9 +3,9 @@
 Spawner = function(entityTemplate, pos, maxEntities, radius, duration, items, equippedItemId, randomDuration) {
     this.entityTemplate = entityTemplate;
     this.pos = v2.clone(pos);
-    this.maxEntities = 10;
+    this.maxEntities = maxEntities;
     this.radius = radius || 1.0;
-    this.duration = duration | 240;
+    this.duration = duration || 240;
     this.items = items || [{id: Items.SteelShovel.id, quantity: 1}];
     this.equippedItemId = (equippedItemId != undefined)? equippedItemId : null;
     this.randomDuration = (randomDuration != undefined)? randomDuration : 0.5;
@@ -66,5 +66,5 @@ Spawner.prototype.destroy = function(entity) {
 }
 
 Spawner.prototype.updateDuration = function() {
-    this.nextSpawnTickId = gameData.tickId + 5;//this.duration + Math.floor(this.randomDuration * this.duration * (-0.5 + Math.random()));
+    this.nextSpawnTickId = gameData.tickId + this.duration + Math.floor(this.randomDuration * this.duration * (-0.5 + Math.random()));
 }

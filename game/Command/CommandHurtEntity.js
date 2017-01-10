@@ -5,7 +5,6 @@ CommandHurtEntity = function(entityId, healthChange) {
 }
 
 CommandHurtEntity.prototype.execute = function(gameData) {
-    return;
     var entity = gameData.entityWorld.objects[this.entityId];
     if (!entity || !entity.health) return;
     if (entity.movement)
