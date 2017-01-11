@@ -11,9 +11,13 @@ TargetPlayerBehaviour = function(entity, maxRadius) {
     this.moving = false;
     this.isGunner = false;
     this.isAiming = false;
+    this.nextCanRunTickId = gameData.tickId;
 }
 
 TargetPlayerBehaviour.prototype.canRun = function() {
+    if (gameData.tickId < this.nextCanRunTickId)
+        return false;
+    this.nextCanRunTickId = gameData.tickId + 40 + 40 * Math.random() >> 0;
     this.target = this.getTarget();
     if (this.target == null)
         return false;
@@ -28,6 +32,7 @@ TargetPlayerBehaviour.prototype.initialize = function() {
 }
 
 TargetPlayerBehaviour.prototype.run = function() {
+    if (gameData.tickId % 5 != this.nextCanRunTickId % 5) return true;
     if (!this.target || this.target.isDead || !this.target.isActive) {
         this.target = this.getTarget();
         // If it can't find a new target we must stop this behaviour
