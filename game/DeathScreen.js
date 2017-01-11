@@ -17,12 +17,48 @@ DeathScreen = function() {
     this.inputName = $("<input>", {
         "type": "input",
         "value": "bertil",
-    }).appendTo(this.inputNameHolder);
-    this.inputName.css({
-        "width": "100%",
-        "margin-left": "auto",
-        "margin-right": "auto",
-    });
+    }).appendTo(this.inputHolder);
+
+    this.checkboxHolder = $("<div>", {
+        "class": "btn-group",
+        "data-toggle": "buttons",
+    }).appendTo(this.divWindow);
+
+    this.buttonLabel1 = $("<label>", {
+        "class": "btn btn-primary active",
+        "text": "Class 1",
+        "classnumber": 1
+    }).appendTo(this.checkboxHolder);
+    this.button1Input = $("<input>", {
+        "type": "radio",
+        "name": "classes",
+        "id": "class1",
+    }).appendTo(this.buttonLabel1);
+    this.buttonLabel1.css({ "width": "33%", });
+
+    this.buttonLabel2 = $("<label>", {
+        "class": "btn btn-primary",
+        "text": "Class 2",
+        "classnumber": 2
+    }).appendTo(this.checkboxHolder);
+    this.button2Input = $("<input>", {
+        "type": "radio",
+        "name": "classes",
+        "id": "class2",
+    }).appendTo(this.buttonLabel2);
+    this.buttonLabel2.css({ "width": "33%", });
+
+    this.buttonLabel3 = $("<label>", {
+        "class": "btn btn-primary",
+        "text": "Class 3",
+        "classnumber": 3
+    }).appendTo(this.checkboxHolder);
+    this.button3Input = $("<input>", {
+        "type": "radio",
+        "name": "classes",
+        "id": "class3",
+    }).appendTo(this.buttonLabel3);
+    this.buttonLabel3.css({ "width": "33%", });
 
     this.btnHolder = $("<div>", {
         "width": "128px",
@@ -39,28 +75,6 @@ DeathScreen = function() {
     this.btnSpawn.css({
         "width": "100%",
         "height": "100%",
-    });
-
-    this.root.css({ "z-index": "1", });
-    this.divBackground.css({
-        "position": "absolute",
-        "width": "100%",
-        "height": "100%",
-        "top": "0px",
-        "left": "0px",
-        "background-color": "#000000",
-        "opacity": "0.5",
-        "z-index": "1",
-    });
-    this.divWindow.css({
-        "position": "fixed",
-        "width": this.width + "px",
-        "height": this.height + "px",
-        "left": "50%",
-        "top": "50%",
-        "margin-left": (-this.width / 2) + "px",
-        "margin-top": (-this.height / 2) + "px",
-        "z-index": "1",
     });
 
     this.btnSpawn.setDisabledCountdown = function(duration) {
@@ -92,4 +106,12 @@ DeathScreen = function() {
     }.bind(this));
 
     this.btnSpawn.setDisabledCountdown(gameData.respawnTime)
+}
+
+DeathScreen.prototype.getClass = function() {
+    var pickedClass = 1;
+    var button = this.checkboxHolder.find(".active");
+    if (button)
+        pickedClass = button.attr("classnumber");
+    return pickedClass;
 }
