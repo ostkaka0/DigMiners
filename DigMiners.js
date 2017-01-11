@@ -1,4 +1,3 @@
-(function() {
 
 var canvas = document.getElementById("canvas");
 canvasInitGL(canvas);
@@ -323,5 +322,3 @@ gameData.physicsWorld.onCollision.push(function(collisions) {
         });
     }
 });
-
-}());
