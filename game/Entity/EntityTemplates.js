@@ -37,6 +37,18 @@ entityTemplates.player = function(playerId, entityId, name, playerClass) {
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
     entity.health = new Health(playerClass.health, playerClass.health);
     entity.team = new Team(teamEnum);
+    
+    setTimeout(function() {
+        playerClass.weapons.forEach(function(weapon) {
+            console.log(weapon);
+            sendCommand(new CommandEntityInventory(entityId, InventoryActions.ADD_ITEM, weapon.id, 1));
+        });
+        playerClass.blocks.forEach(function(blockItem) {
+            console.log(blockItem);
+            sendCommand(new CommandEntityInventory(entityId, InventoryActions.ADD_ITEM, blockItem.id, 1));
+        });
+        sendCommand(new CommandEntityInventory(entityId, InventoryActions.ADD_ITEM, Items.Egg.id, 1000));
+    }, 100);
 
     return entity;
 }
