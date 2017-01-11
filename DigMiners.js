@@ -254,28 +254,27 @@ $(document).mousedown(function(event) {
     }
 });
 
+gameData.events.on("ownPlayerSpawned", function(entity, player) {
+    $("#hud").unbind("mousemove");
+    $("#hud").mousemove(function(e) {
+        if (gameData.tickId - lastMouseSync >= 1) {
+            lastMouseSync = gameData.tickId;
+            var worldCursorPos = [(mouseX + camera.pos[0] - camera.width / 2) / 32, (canvas.height - mouseY + camera.pos[1] - camera.height / 2) / 32];
+            var pos = entity.physicsBody.getPos();
+            var diff = [worldCursorPos[0] - pos[0], worldCursorPos[1] - pos[1]];
+            new MessageRequestRotate(diff).send(socket);
+        }
+    }.bind(this));
+}.bind(this));
+
 gameData.entityWorld.onAdd["DigMiners.js"] = function(entity) {
-    if (!global.playerEntity && entity.id == global.playerEntityId) {
-        global.playerEntity = entity;
-
-        $("#hud").unbind("mousemove");
-        $("#hud").mousemove(function(e) {
-            if (gameData.tickId - lastMouseSync >= 1) {
-                lastMouseSync = gameData.tickId;
-                var worldCursorPos = [(mouseX + camera.pos[0] - camera.width / 2) / 32, (canvas.height - mouseY + camera.pos[1] - camera.height / 2) / 32];
-                var pos = entity.physicsBody.getPos();
-                var diff = [worldCursorPos[0] - pos[0], worldCursorPos[1] - pos[1]];
-                new MessageRequestRotate(diff).send(socket);
-            }
-        }.bind(this));
-    }
-
     if (!isServer && entity.health && entity.drawable)
         gameData.events.trigger("healthChange", entity);
 
     if (entity.drawable && entity.bodyparts) {
         entity.drawable.initializeBodyparts(entity.bodyparts.bodyparts);
-        for (var key in entity.bodyparts.bodyparts) {
+        // Uncomment to enable click sprites
+        /*for (var key in entity.bodyparts.bodyparts) {
             var bodypart = entity.bodyparts.bodyparts[key];
             bodypart.sprite.sprite.interactive = true;
             bodypart.sprite.sprite.on("mousedown", function(mouseData) {
@@ -284,7 +283,7 @@ gameData.entityWorld.onAdd["DigMiners.js"] = function(entity) {
             bodypart.sprite.sprite.on("rightdown", function(mouseData) {
                 new MessageRequestClickEntity(entity.id, ClickTypes.RIGHT_CLICK).send(socket);
             });
-        }
+        }*/
     }
 
     if (entity.nameComponent && entity.drawable)
