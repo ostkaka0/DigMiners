@@ -8,7 +8,7 @@ MessageRequestSpawn.prototype.execute = function(gameData, player) {
     if (gameData.tickId - player.deathTick < 20 * gameData.respawnTime) return;
 
     var entityId = gameData.idList.next();
-    var entity = entityTemplates.player(player.id, entityId, this.playerName, Math.random() * 4 >> 0);
+    var entity = entityTemplates.player(player.id, entityId, this.playerName, PlayerClassRegister[Math.random() * 4 >> 0]);
 
     // Set spawn position
     var pos = gameData.spawnPoints[Math.floor(Math.random() * gameData.spawnPoints.length)];
