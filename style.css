@@ -321,9 +321,6 @@ canvas {
     border-color: #BBBBBB;
     border-radius: 8px;
     padding: 12px;
-    -webkit-box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
 }
 
 ::-webkit-scrollbar {
