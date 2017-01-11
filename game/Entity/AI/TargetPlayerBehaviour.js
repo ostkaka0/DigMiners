@@ -120,7 +120,8 @@ TargetPlayerBehaviour.prototype.getTarget = function() {
     var shortestDistanceEntity = null;
     gameData.entityWorld.objectArray.forEach(function(otherEntity) {
         if (!otherEntity.health || !otherEntity.physicsBody) return;
-        if (this.entity.team && (!otherEntity.team || otherEntity.team.value == this.entity.team.value)) return;
+        if (!otherEntity.team && !otherEntity.movement) return;
+        if (this.entity.team && this.entity.team.value != Teams.None && (!otherEntity.team || otherEntity.team.value == this.entity.team.value)) return;
         if (otherEntity.id == this.entity.id) return;
         
         var dis = v2.distance(this.entity.physicsBody.getPos(), otherEntity.physicsBody.getPos());
