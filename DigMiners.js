@@ -254,6 +254,10 @@ $(document).mousedown(function(event) {
     }
 });
 
+gameData.events.on("connected", function() {
+    this.deathScreen = new DeathScreen();
+}.bind(this));
+
 gameData.events.on("ownPlayerSpawned", function(entity, player) {
     $("#hud").unbind("mousemove");
     $("#hud").mousemove(function(e) {
