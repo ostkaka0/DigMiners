@@ -106,7 +106,7 @@ gameData.physicsWorld.onCollision.push(function(collisions) {
 gameData.entityWorld.onAdd["server.js"] = function(entity) {
     if (entity.controlledByPlayer) {
 
-        // give player shovel at join
+        /*// give player shovel at join
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.SteelShovel.id, 1));
 
         // give player dynamite at join
@@ -123,7 +123,7 @@ gameData.entityWorld.onAdd["server.js"] = function(entity) {
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponPistol.id, 1));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponAssaultRifle.id, 1));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponShotgun.id, 1));
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponSniperRifle.id, 1));
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponSniperRifle.id, 1));*/
 
         // (TEMPORARY) spawn monsters on player join
         for (var i = 0; i < 0; ++i) {
