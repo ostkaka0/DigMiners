@@ -53,6 +53,8 @@ gameData.init = function(idList) {
     for (var i = 0; i < 10; i++)
         this.spawnPoints.push([Math.floor(60 * (1.0-2.0*Math.random())), Math.floor(60 * (1.0-2.0*Math.random()))]);
     
+    initPlayerClasses();
+    
     Recipes = [];
 
     Recipes.push({

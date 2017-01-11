@@ -1,10 +1,12 @@
 entityTemplates = {};
 
-entityTemplates.player = function(playerId, entityId, name) {
+
+
+entityTemplates.player = function(playerId, entityId, name, playerClass) {
     var entity = {};
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 20.0);
-    entity.movement = new Movement(40.0);
+    entity.movement = new Movement(playerClass.speed * 40.0);
     entity.nameComponent = new NameComponent(name);
     entity.inventory = new Inventory();
     entity.equippedItems = new EquippedItems();
@@ -33,7 +35,7 @@ entityTemplates.player = function(playerId, entityId, name) {
     entity.drawable = new Drawable(1);
     var healthbarSprite = new Sprite("healthbar", null, false);
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
-    entity.health = new Health(100, 100);
+    entity.health = new Health(playerClass.health, playerClass.health);
     entity.team = new Team(teamEnum);
 
     return entity;
