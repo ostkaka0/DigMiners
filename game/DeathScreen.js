@@ -55,41 +55,26 @@ DeathScreen = function() {
         "data-toggle": "buttons",
     }).appendTo(this.divWindow);
 
-    this.buttonLabel1 = $("<label>", {
-        "class": "btn btn-primary active",
-        "text": "Class 1",
-        "classnumber": 0
-    }).appendTo(this.checkboxHolder);
-    this.button1Input = $("<input>", {
-        "type": "radio",
-        "name": "classes",
-        "id": "class1",
-    }).appendTo(this.buttonLabel1);
-    this.buttonLabel1.css({ "width": "33%", });
+    var currentClass = 0;
+    var keys = Object.keys(PlayerClasses);
+    keys.forEach(function(key) {
+        var classType = PlayerClasses[key];
 
-    this.buttonLabel2 = $("<label>", {
-        "class": "btn btn-primary",
-        "text": "Class 2",
-        "classnumber": 1
-    }).appendTo(this.checkboxHolder);
-    this.button2Input = $("<input>", {
-        "type": "radio",
-        "name": "classes",
-        "id": "class2",
-    }).appendTo(this.buttonLabel2);
-    this.buttonLabel2.css({ "width": "33%", });
+        var buttonLabel = $("<label>", {
+            "class": "btn btn-primary" + (currentClass == 0 ? " active" : ""),
+            "text": classType.name,
+            "classnumber": currentClass
+        }).appendTo(this.checkboxHolder);
+        buttonLabel.css({ "width": (100 / keys.length) + "%", });
 
-    this.buttonLabel3 = $("<label>", {
-        "class": "btn btn-primary",
-        "text": "Class 3",
-        "classnumber": 2
-    }).appendTo(this.checkboxHolder);
-    this.button3Input = $("<input>", {
-        "type": "radio",
-        "name": "classes",
-        "id": "class3",
-    }).appendTo(this.buttonLabel3);
-    this.buttonLabel3.css({ "width": "33%", });
+        var buttonInput = $("<input>", {
+            "type": "radio",
+            "name": "classes",
+            "id": "class1",
+        }).appendTo(buttonLabel);
+
+        ++currentClass;
+    }.bind(this));
 
     this.btnHolder = $("<div>", {
         "class": "card-block",
