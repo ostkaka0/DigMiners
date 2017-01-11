@@ -1,21 +1,52 @@
 
 DeathScreen = function() {
     this.width = 320;
-    this.height = 80;
-    this.root = $("<div>").appendTo("body");
-    this.divBackground = $("<div>").appendTo(this.root);
-    this.divWindow = $("<div>", { "class": "window" }).appendTo(this.root);
+    this.height = 200;
 
-    this.inputNameHolder = $("<div>", {
-        "width": "160px",
-        "height": "40px",
-    }).appendTo(this.divWindow);
-    this.inputNameHolder.css({
-        "margin-left": "auto",
-        "margin-right": "auto",
+    this.root = $("<div>").appendTo("body");
+    this.root.css({ "z-index": "1", });
+
+    this.divBackground = $("<div>").appendTo(this.root);
+    this.divBackground.css({
+        "position": "absolute",
+        "width": "100%",
+        "height": "100%",
+        "top": "0px",
+        "left": "0px",
+        "background-color": "#000000",
+        "opacity": "0.5",
+        "z-index": "1",
     });
-    this.inputName = $("<input>", {
-        "type": "input",
+
+    this.divWindow = $("<div>", {
+        "class": "card col-12"
+    }).appendTo(this.root);
+    this.divWindow.css({
+        "position": "fixed",
+        "width": this.width + "px",
+        "height": this.height + "px",
+        "left": "50%",
+        "top": "50%",
+        "margin-left": (-this.width / 2) + "px",
+        "margin-top": (-this.height / 2) + "px",
+        "z-index": "1",
+    });
+
+    this.inputHolder = $("<div>", {
+        "class": "form-group row",
+    }).appendTo(this.divWindow);
+    this.inputHolder.css({
+        "margin-top": "10px",
+    });
+    this.inputLabel = $("<label>", {
+        "for": "input",
+        "class": "col-4 col-form-label",
+        "text": "Username: ",
+    }).appendTo(this.inputHolder);
+    this.inputUsername = $("<input>", {
+        "id": "input",
+        "type": "text",
+        "class": "col-7 form-control",
         "value": "bertil",
     }).appendTo(this.inputHolder);
 
@@ -61,7 +92,8 @@ DeathScreen = function() {
     this.buttonLabel3.css({ "width": "33%", });
 
     this.btnHolder = $("<div>", {
-        "width": "128px",
+        "class": "card-block",
+        "width": "160px",
         "height": "40px",
     }).appendTo(this.divWindow);
     this.btnHolder.css({
@@ -69,7 +101,8 @@ DeathScreen = function() {
         "margin-right": "auto",
     });
     this.btnSpawn = $("<button>", {
-        "class": "button",
+        "type": "button",
+        "class": "btn btn-success",
         "text": "Spawn!",
     }).appendTo(this.btnHolder);
     this.btnSpawn.css({
@@ -89,13 +122,12 @@ DeathScreen = function() {
     }.bind(this);
 
     this.btnSpawn.click(function(event) {
-        new MessageRequestSpawn(this.inputName.val(), 3 * Math.random() >> 0).send(socket);
+        new MessageRequestSpawn(this.inputUsername.val()).send(socket);
     }.bind(this));
 
-    gameData.entityWorld.onAdd["DeathScreen.js"] = function(entity) {
-        if (entity.id == global.playerEntityId)
-            this.root.hide();
-    }.bind(this);
+    gameData.events.on("ownPlayerSpawned", function(entity) {
+        this.root.hide();
+    }.bind(this));
 
     gameData.events.on("entityDeath", function(entity) {
         if (!entity.controlledByPlayer) return;
