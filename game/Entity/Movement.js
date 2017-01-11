@@ -19,6 +19,7 @@ Movement = function(speed, toolUseDuration, damageMultiplier) {
     this.isDigging = false;
     this.isMining = false;
     this.damageMultiplier = (damageMultiplier == null)? 1.0 : damageMultiplier;
+    this.entityLookTarget = null;
 }
 
 Movement.prototype.name = movement.name; function movement() { };
@@ -64,6 +65,7 @@ entityFunctionEntityMovement = function(dt) {
     gameData.entityWorld.objectArray.forEach(function(entity) {
         if (!entity || !entity.movement || !entity.physicsBody)
             return;
+        var movement = entity.movement;
 
         // Movement:
         var normalized = v2.create(0, 0);
@@ -83,9 +85,16 @@ entityFunctionEntityMovement = function(dt) {
         v2.add(normalized, velocity, velocity);
         entity.physicsBody.setVelocity(velocity);
 
-        var direction = entity.movement.rotationDirection;
-        if (direction[0] != 0 || direction[1] != 0)
-            entity.physicsBody.rotateTo(Math.atan2(-direction[1], direction[0]), entity.physicsBody.rotationSpeed, dt);
+        // Look at entityLookTarget
+        if (movement.entityLookTarget && (!movement.entityLookTarget.isActive || !movement.entityLookTarget.physicsBody))
+            movement.entityLookTarget = null;
+        if (movement.entityLookTarget) {
+            v2.sub(movement.entityLookTarget.physicsBody.getPos(), entity.physicsBody.getPos(), movement.rotationDirection);
+            v2.normalize(movement.rotationDirection, movement.rotationDirection);
+        }
+        var rotationDirection = entity.movement.rotationDirection;
+        if (rotationDirection[0] != 0 || rotationDirection[1] != 0)
+            entity.physicsBody.rotateTo(Math.atan2(-rotationDirection[1], rotationDirection[0]), entity.physicsBody.rotationSpeed, dt);
 
         var tool = entity.equippedItems.items["tool"];
         var useCooldown = (tool && tool.useCooldown) ? tool.useCooldown : 0;

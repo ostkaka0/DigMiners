@@ -3,12 +3,14 @@ TargetPlayerBehaviour = function(entity, maxRadius) {
     this.entity = entity;
     this.maxRadius = maxRadius;
     this.target = null;
-    this.flowField = new Map2D();
-    this.nextUpdateTick = gameData.tickId;
+    this.flowField = null;
+    this.lastUpdateTickId = gameData.tickId;
+    this.nextPathUpdateTick = gameData.tickId;
     this.lastTargetPos = null;
     this.spacebar = false;
     this.moving = false;
     this.isGunner = false;
+    this.isAiming = false;
 }
 
 TargetPlayerBehaviour.prototype.canRun = function() {
@@ -40,13 +42,13 @@ TargetPlayerBehaviour.prototype.run = function() {
 
     if (dis > this.maxRadius)
         return false;
-    if (gameData.tickId >= this.nextUpdateTick) {
+    if (gameData.tickId >= this.nextPathUpdateTick) {
         if (!this.lastTargetPos || !this.flowField || v2.sqrDistance(this.lastTargetPos, this.target.physicsBody.getPos()) > v2.sqrDistance(this.entity.physicsBody.getPos(), this.target.physicsBody.getPos())) {
             this.flowField = new Map2D();
             var expandList = [];
-            aStarFlowField(this.flowField, expandList, gameData.tileWorld, gameData.blockWorld, tilePos, tilePosTarget, 2560);
-            var delay = Math.min(2000, expandList.length * 10);
-            this.nextUpdateTick = gameData.tickId + (delay / gameData.tickDuration >> 0);
+            aStarFlowField(this.flowField, expandList, gameData.tileWorld, gameData.blockWorld, tilePos, tilePosTarget, 25600);
+            var delay = Math.min(2000, expandList.length * 10 + Math.floor(dis * 10));
+            this.nextPathUpdateTick = gameData.tickId + (delay / gameData.tickDuration >> 0);
             this.lastTargetPos = v2.clone(this.target.physicsBody.getPos());
         }
     }
@@ -56,7 +58,8 @@ TargetPlayerBehaviour.prototype.run = function() {
     v2.sub(this.target.physicsBody.getPos(), this.entity.physicsBody.getPos(), targetDir);
     v2.normalize(targetDir, targetDir);
     
-    var dir = DisField.calcTileDir(this.flowField, tilePos);
+    var flowFieldDir = DisField.calcTileDir(this.flowField, tilePos);
+    var dir = flowFieldDir
     if (dir[0] == 0 && dir[1] == 0)
         dir = v2.clone(targetDir);
     if (dir[0] == 0 && dir[1] == 0)
@@ -68,6 +71,12 @@ TargetPlayerBehaviour.prototype.run = function() {
     //var dir = v2.create(diffX, diffY);
     //var normalized = v2.create(0, 0);
     //v2.normalize(dir, normalized);
+    var tickInterval = Math.floor(40 * Math.min(1.0, dis / 40.0));
+    tickInterval = Math.max(5, tickInterval);
+    
+    if (gameData.tickId < this.lastUpdateTickId + tickInterval)
+        return true;
+    this.lastUpdateTickId = gameData.tickId;
 
     var attackDistance = this.getAttackDistance(tilePos, dir);
     var attackDotAngle = this.getAttackDotAngle();
@@ -97,18 +106,27 @@ TargetPlayerBehaviour.prototype.run = function() {
         sendCommand(new CommandEntityMove(this.entity.id, dir, this.entity.physicsBody.getPos()));
         this.moving = true;
     }
-    if (dis < 20.0) {
-        sendCommand(new CommandEntityRotate(this.entity.id, targetDir));
+    // Look at target entity
+    if (dis < 20.0 && !this.isAiming && this.isGunner) {
+        sendCommand(new CommandEntityLookAtEntity(this.entity.id, this.target.id));
+    } else if (dis > 20.0 && this.isAiming) {
+        sendCommand(new CommandEntityLookAtEntity(this.entity.id, 0));
     }
     return true;
 }
 
 TargetPlayerBehaviour.prototype.finish = function() {
-    sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.getPos()));
+    if (this.moving)
+        sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.getPos()));
+    if (this.spacebar)
+        sendCommand(new CommandKeyStatusUpdate(this.entity.id, Keys.SPACEBAR, false, this.entity.physicsBody.getPos()));
+    if (this.isAiming)
+        sendCommand(new CommandEntityLookAtEntity(this.entity.id, 0));
     this.target = null;
     this.flowField = null;
     this.spacebar = false;
     this.moving = false;
+    this.isAiming = false;
 }
 
 TargetPlayerBehaviour.prototype.destroy = function(entity) {
@@ -159,7 +177,7 @@ TargetPlayerBehaviour.prototype.getAttackDistance = function(pos, dir) {
 
 TargetPlayerBehaviour.prototype.getAttackDotAngle = function() {
     if (this.entity.equippedItems.items["tool"] && this.entity.equippedItems.items["tool"].itemFunction == ItemFunctions.RangedWeapon) {
-        return 0.01;
+        return 0.05;
     }
     return 0.5;
 }
