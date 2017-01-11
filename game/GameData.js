@@ -190,7 +190,6 @@ gameData.initializeEvents = function() {
         if (!entity.isDead) {
             entity.isDead = true;
             gameData.entityWorld.remove(entity);
-            console.log(entity.id + " died!");
             if (entity.controlledByPlayer) {
                 var playerId = entity.controlledByPlayer.playerId;
                 var player = gameData.playerWorld.objects[playerId];
