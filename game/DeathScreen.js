@@ -58,18 +58,19 @@ DeathScreen = function() {
     this.buttonLabel1 = $("<label>", {
         "class": "btn btn-primary active",
         "text": "Class 1",
+        "classnumber": 1
     }).appendTo(this.checkboxHolder);
     this.button1Input = $("<input>", {
         "type": "radio",
         "name": "classes",
         "id": "class1",
-        "checked": "true"
     }).appendTo(this.buttonLabel1);
     this.buttonLabel1.css({ "width": "33%", });
 
     this.buttonLabel2 = $("<label>", {
         "class": "btn btn-primary",
         "text": "Class 2",
+        "classnumber": 2
     }).appendTo(this.checkboxHolder);
     this.button2Input = $("<input>", {
         "type": "radio",
@@ -81,6 +82,7 @@ DeathScreen = function() {
     this.buttonLabel3 = $("<label>", {
         "class": "btn btn-primary",
         "text": "Class 3",
+        "classnumber": 3
     }).appendTo(this.checkboxHolder);
     this.button3Input = $("<input>", {
         "type": "radio",
@@ -88,8 +90,6 @@ DeathScreen = function() {
         "id": "class3",
     }).appendTo(this.buttonLabel3);
     this.buttonLabel3.css({ "width": "33%", });
-
-
 
     this.btnHolder = $("<div>", {
         "class": "card-block",
@@ -109,10 +109,6 @@ DeathScreen = function() {
         "width": "100%",
         "height": "100%",
     });
-
-
-
-
 
     this.btnSpawn.setDisabledCountdown = function(duration) {
         if (duration <= 0) {
@@ -142,4 +138,12 @@ DeathScreen = function() {
     }.bind(this));
 
     this.btnSpawn.setDisabledCountdown(gameData.respawnTime)
+}
+
+DeathScreen.prototype.getClass = function() {
+    var pickedClass = 1;
+    var button = this.checkboxHolder.find(".active");
+    if (button)
+        pickedClass = button.attr("classnumber");
+    return pickedClass;
 }
