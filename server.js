@@ -90,7 +90,7 @@ for (var i = 0; i < 10; i++) {
     carveCircle(gameData, pos[0], pos[1], 2.0, 100.0);
 }
 // Add gun monster spawners
-for (var i = 0; i < 5; i++) {
+for (var i = 0; i < 10; i++) {
     var pos = [Math.floor(80 * (1.0 - 2.0*Math.random())), Math.floor(80 * (1.0 - 2.0*Math.random()))];
     var entityId = gameData.idList.next();
     var weaponId = Items.WeaponPistol.id + Math.floor((Items.WeaponSniperRifle.id - Items.WeaponPistol.id + 1) * Math.random());
