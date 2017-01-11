@@ -58,7 +58,7 @@ DeathScreen = function() {
     this.buttonLabel1 = $("<label>", {
         "class": "btn btn-primary active",
         "text": "Class 1",
-        "classnumber": 1
+        "classnumber": 0
     }).appendTo(this.checkboxHolder);
     this.button1Input = $("<input>", {
         "type": "radio",
@@ -70,7 +70,7 @@ DeathScreen = function() {
     this.buttonLabel2 = $("<label>", {
         "class": "btn btn-primary",
         "text": "Class 2",
-        "classnumber": 2
+        "classnumber": 1
     }).appendTo(this.checkboxHolder);
     this.button2Input = $("<input>", {
         "type": "radio",
@@ -82,7 +82,7 @@ DeathScreen = function() {
     this.buttonLabel3 = $("<label>", {
         "class": "btn btn-primary",
         "text": "Class 3",
-        "classnumber": 3
+        "classnumber": 2
     }).appendTo(this.checkboxHolder);
     this.button3Input = $("<input>", {
         "type": "radio",
@@ -122,7 +122,7 @@ DeathScreen = function() {
     }.bind(this);
 
     this.btnSpawn.click(function(event) {
-        new MessageRequestSpawn(this.inputUsername.val()).send(socket);
+        new MessageRequestSpawn(this.inputUsername.val(), this.getClass()).send(socket);
     }.bind(this));
 
     gameData.events.on("ownPlayerSpawned", function(entity) {
@@ -141,7 +141,7 @@ DeathScreen = function() {
 }
 
 DeathScreen.prototype.getClass = function() {
-    var pickedClass = 1;
+    var pickedClass = 0;
     var button = this.checkboxHolder.find(".active");
     if (button)
         pickedClass = button.attr("classnumber");

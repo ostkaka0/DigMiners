@@ -1,5 +1,6 @@
 
 createParticles = function(type, pos) {
+    return;
     if (!isServer) {
         var typeCopy = JSON.parse(JSON.stringify(type));
         typeCopy.pos = {
@@ -18,6 +19,7 @@ createParticles = function(type, pos) {
 }
 
 createDespawningParticles = function(type, pos, msAlive) {
+    return;
     var emitter = createParticles(type, pos);
     setTimeout(function() {
         setTimeout(function() {

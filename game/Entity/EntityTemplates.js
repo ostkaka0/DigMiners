@@ -11,13 +11,13 @@ entityTemplates.player = function(playerId, entityId, name, playerClass) {
     entity.inventory = new Inventory();
     entity.equippedItems = new EquippedItems();
     entity.potionEffects = new PotionEffects();
-    
+
     var teamEnum = Teams.Blue + Math.floor(2.0 * Math.random());
     var feetSprite = new Sprite("feet");
     var rightArmSprite = new Sprite("rightArm");
     var leftArmSprite = new Sprite("leftArm");
     var headSprite = new Sprite("head");
-    var hatSprite = new Sprite((teamEnum == Teams.Blue)? "egg" : "bigEgg");
+    var hatSprite = new Sprite((teamEnum == Teams.Blue) ? "egg" : "bigEgg");
 
     // Order of bodyparts is draw order
     // Parameters: sprite, offsetX, offsetY, offsetAngle, pivot(v2), parent name
@@ -37,18 +37,6 @@ entityTemplates.player = function(playerId, entityId, name, playerClass) {
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
     entity.health = new Health(playerClass.health, playerClass.health);
     entity.team = new Team(teamEnum);
-    
-    setTimeout(function() {
-        playerClass.weapons.forEach(function(weapon) {
-            console.log(weapon);
-            sendCommand(new CommandEntityInventory(entityId, InventoryActions.ADD_ITEM, weapon.id, 1));
-        });
-        playerClass.blocks.forEach(function(blockItem) {
-            console.log(blockItem);
-            sendCommand(new CommandEntityInventory(entityId, InventoryActions.ADD_ITEM, blockItem.id, 1));
-        });
-        sendCommand(new CommandEntityInventory(entityId, InventoryActions.ADD_ITEM, Items.Egg.id, 1000));
-    }, 100);
 
     return entity;
 }
@@ -85,7 +73,7 @@ entityTemplates.testMonster = function(entityId, pos) {
     var rightArmSprite = new Sprite("monster/rightArm");
     var leftArmSprite = new Sprite("monster/leftArm");
     var headSprite = new Sprite("monster/head");
-    var hatSprite = new Sprite((teamEnum == Teams.Blue)? "egg" : "bigEgg");
+    var hatSprite = new Sprite((teamEnum == Teams.Blue) ? "egg" : "bigEgg");
 
     var bodyparts = {
         "feet": new BodyPart(feetSprite, 0, 0, 0, null, null),
