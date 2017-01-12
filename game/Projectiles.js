@@ -6,13 +6,14 @@ Projectiles.Pistol = {
     maxDistance: 150,
     speed: 80.0,
     damage: 20.0,
+    armorPenentration: 0.3,
     blockDamage: 8.0,
     stayTime: 50,
     textureName: "egg",
     isExplosive: false,
     hitParticle: function() { return Particles.Egg },
     scaleX: 8.0,
-    scaleY: 0.5
+    scaleY: 0.5,
 }
 
 Projectiles.Smg = {
@@ -20,6 +21,7 @@ Projectiles.Smg = {
     maxDistance: 150,
     speed: 80.0,
     damage: 8.0,
+    armorPenentration: 0.0,
     blockDamage: 1.0,
     stayTime: 50,
     textureName: "egg",
@@ -34,6 +36,7 @@ Projectiles.AssaultRifle = {
     maxDistance: 200,
     speed: 120.0,
     damage: 10.0,
+    armorPenentration: 0.3,
     blockDamage: 1.0,
     stayTime: 50,
     textureName: "egg",
@@ -47,7 +50,8 @@ Projectiles.MachineGun = {
     radius: 0.2,
     maxDistance: 200,
     speed: 150.0,
-    damage: 12.0,
+    damage: 14.0,
+    armorPenentration: 0.0,
     blockDamage: 1.0,
     stayTime: 50,
     textureName: "egg",
@@ -62,6 +66,7 @@ Projectiles.Shotgun = {
     maxDistance: 100,
     speed: 80.0,
     damage: 6.0,
+    armorPenentration: 0.0,
     blockDamage: 3.0,
     stayTime: 50,
     textureName: "egg",
@@ -76,6 +81,7 @@ Projectiles.SniperRifle = {
     maxDistance: 400,
     speed: 150.0,
     damage: 80.0,
+    armorPenentration: 0.5,
     blockDamage: 40.0,
     stayTime: 50,
     textureName: "egg",
@@ -91,6 +97,7 @@ Projectiles.GrenadeLauncher = {
     maxDistance: 50, // blocks
     speed: 25.0, // blocks per second
     damage: 40.0, // damage per hit
+    armorPenentration: 1.0,
     blockDamage: 80.0,
     stayTime: 0, // milliseconds projectile will stay after hit
     textureName: "bigEgg",

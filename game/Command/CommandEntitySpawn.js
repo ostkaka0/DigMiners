@@ -1,5 +1,5 @@
 
-CommandEntitySpawn = function(gameData, entity, entityId) {
+CommandEntitySpawn = function(gameData, entity, entityId, teamId) {
     this.entity = entity;
     this.entityId = entityId;
 }

@@ -2,7 +2,7 @@ entityTemplates = {};
 
 
 
-entityTemplates.player = function(playerId, entityId, name, playerClass) {
+entityTemplates.player = function(playerId, entityId, name, playerClass, teamId) {
     var entity = {};
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 20.0);
@@ -12,7 +12,7 @@ entityTemplates.player = function(playerId, entityId, name, playerClass) {
     entity.equippedItems = new EquippedItems();
     entity.potionEffects = new PotionEffects();
 
-    var teamEnum = Teams.Blue + Math.floor(2.0 * Math.random());
+    var teamEnum = teamId;
     var feetSprite = new Sprite("feet");
     var rightArmSprite = new Sprite("rightArm");
     var leftArmSprite = new Sprite("leftArm");
@@ -35,7 +35,7 @@ entityTemplates.player = function(playerId, entityId, name, playerClass) {
     entity.drawable = new Drawable(1);
     var healthbarSprite = new Sprite("healthbar", null, false);
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
-    entity.health = new Health(playerClass.health, playerClass.health);
+    entity.health = new Health(playerClass.health, playerClass.health, playerClass.armor);
     entity.team = new Team(teamEnum);
 
     return entity;
@@ -59,7 +59,7 @@ entityTemplates.item = function(itemId, amount) {
     return entity;
 }
 
-entityTemplates.testMonster = function(entityId, pos) {
+entityTemplates.testMonster = function(entityId, pos, teamId) {
     var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0);
     entity.movement = new Movement(20.0, 0.25, 0.25);
@@ -68,7 +68,7 @@ entityTemplates.testMonster = function(entityId, pos) {
     entity.equippedItems = new EquippedItems();
     entity.potionEffects = new PotionEffects();
 
-    var teamEnum = Teams.Blue + Math.floor(2.0 * Math.random());
+    var teamEnum = teamId || Teams.Zombie;
     var feetSprite = new Sprite("monster/feet");
     var rightArmSprite = new Sprite("monster/rightArm");
     var leftArmSprite = new Sprite("monster/leftArm");
@@ -90,19 +90,20 @@ entityTemplates.testMonster = function(entityId, pos) {
     var healthbarSprite = new Sprite("healthbar", null, false);
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
 
-    entity.health = new Health(100, 100);
+    entity.health = new Health(50, 50, 0.0);
     entity.team = new Team(teamEnum);
 
     entity.behaviourContainer = new BehaviourContainer();
     entity.behaviourContainer.behaviours.push(new DigObstacleBehaviour(entity));
-    entity.behaviourContainer.behaviours.push(new TargetPlayerBehaviour(entity, 30.0));
+    entity.behaviourContainer.behaviours.push(new TargetPlayerBehaviour(entity, 10.0));
+    entity.behaviourContainer.behaviours.push(new WalkToPointBehaviour(entity, [-pos[0], -pos[1]]));
     entity.behaviourContainer.behaviours.push(new RandomWalkBehaviour(entity));
 
     return entity;
 }
 
-entityTemplates.monsterSpawner = function(entityId, pos, entityTemplate, maxEntities, radius, duration, items, equippedItemId) {
+entityTemplates.monsterSpawner = function(entityId, pos, entityTemplate, maxEntities, radius, duration, items, equippedItemId, teamId) {
     var entity = {};
-    entity.spawner = new Spawner(entityTemplate, pos, maxEntities, radius, duration, items, equippedItemId);
+    entity.spawner = new Spawner(entityTemplate, pos, maxEntities, radius, duration, items, equippedItemId, null, teamId);
     return entity;
 }

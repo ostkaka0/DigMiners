@@ -49,9 +49,9 @@ gameData.init = function(idList) {
     this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
     this.messageCallbacks = {};
     this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent, EquippedItems, Projectile, BlockPlacer, PotionEffects, Team]);
-    this.spawnPoints = [];
-    for (var i = 0; i < 10; i++)
-        this.spawnPoints.push([Math.floor(60 * (1.0-2.0*Math.random())), Math.floor(60 * (1.0-2.0*Math.random()))]);
+    this.spawnPoints = {};
+    this.spawnPoints[Teams.Blue] = [[-60, -10], [-60, 0], [-60, 10]];
+    this.spawnPoints[Teams.Red] = [[60, -10],[60, 0],[60, 10]];
     
     initPlayerClasses();
     
@@ -157,9 +157,10 @@ gameData.initializeEvents = function() {
         if (isServer) {
             if (hitEntity && hitEntity.health && projectileEntity.projectile.projectileType.damage > 0) {
                 var damage = projectileEntity.projectile.projectileType.damage * projectileEntity.projectile.damageFactor;
+                var armorPenentration = projectileEntity.projectile.projectileType.armorPenentration;
                 var shooterId = projectileEntity.projectile.shooterEntityId;
                 var shooter = gameData.entityWorld.objects[shooterId];
-                hitEntity.health.hurt(hitEntity, shooter, damage);
+                hitEntity.health.hurt(hitEntity, shooter, damage, armorPenentration);
             }
         }
     });

@@ -1,7 +1,8 @@
 
-Health = function(health, maxHealth) {
+Health = function(health, maxHealth, armor) {
     this.health = health;
     this.maxHealth = maxHealth;
+    this.armor = armor;
 }
 
 Health.prototype.name = health.name; function health() { };
@@ -24,7 +25,7 @@ Health.prototype.destroy = function(entity) {
 
 }
 
-Health.prototype.hurt = function(entity, attacker, damage) {
+Health.prototype.hurt = function(entity, attacker, damage, armorPenentration) {
     if (!isServer)
         return;
     if (attacker && entity.id != attacker.id && entity.team && attacker.team && entity.team.value != Teams.None && entity.team.value == attacker.team.value)
@@ -32,5 +33,7 @@ Health.prototype.hurt = function(entity, attacker, damage) {
     if (attacker && attacker.movement)
         damage *= attacker.movement.damageMultiplier;
         
-    sendCommand(new CommandHurtEntity(entity.id, -damage));
+    armorPenentration = armorPenentration || 0.0;
+        
+    sendCommand(new CommandHurtEntity(entity.id, -Math.min(1.0, (1.0 - this.armor + armorPenentration)) * damage));
 }
