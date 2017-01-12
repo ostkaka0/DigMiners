@@ -149,6 +149,8 @@ TargetPlayerBehaviour.prototype.getTarget = function() {
         
         var dis = v2.distance(this.entity.physicsBody.getPos(), otherEntity.physicsBody.getPos());
         if (dis < shortestDistance) {
+            if (otherEntity.controlledByPlayer)
+                dis /= 4;
             shortestDistance = dis;
             shortestDistanceEntity = otherEntity;
         }
@@ -168,7 +170,7 @@ TargetPlayerBehaviour.prototype.getAttackDistance = function(pos, dir) {
         var step = [stepLength * dir[0], stepLength * dir[1]];
         v2.add(step, rayPos, rayPos);
         for (var i = 0; i < 40; i++) {
-            if (getDensity(gameData.tileWorld, rayPos[0], rayPos[1]) > 127) break;
+            if (getDensity(gameData.tileWorld, rayPos[0], rayPos[1]) > 192) break;
             if (getForeground(gameData.blockWorld, rayPos[0], rayPos[1]) != 0) break;
             
             v2.add(step, rayPos, rayPos);

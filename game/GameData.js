@@ -50,8 +50,8 @@ gameData.init = function(idList) {
     this.messageCallbacks = {};
     this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent, EquippedItems, Projectile, BlockPlacer, PotionEffects, Team]);
     this.spawnPoints = {};
-    this.spawnPoints[Teams.Blue] = [[-60, -10], [-60, 0], [-60, 10]];
-    this.spawnPoints[Teams.Red] = [[60, -10],[60, 0],[60, 10]];
+    this.spawnPoints[Teams.Blue] = [[-60, -20], [-60, 0], [-60, 20]];
+    this.spawnPoints[Teams.Red] = [[60, -20],[60, 0],[60, 20]];
     
     initPlayerClasses();
     

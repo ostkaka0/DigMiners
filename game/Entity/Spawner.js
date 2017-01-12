@@ -6,7 +6,7 @@ Spawner = function(entityTemplate, pos, maxEntities, radius, duration, items, eq
     this.maxEntities = maxEntities;
     this.radius = radius || 1.0;
     this.duration = duration || 240;
-    this.items = items || [{id: Items.SteelShovel.id, quantity: 1}];
+    this.items = items || [{id: Items.RustyShovel.id, quantity: 1}];
     this.equippedItemId = (equippedItemId != undefined)? equippedItemId : null;
     this.randomDuration = (randomDuration != undefined)? randomDuration : 0.5;
     this.teamId = teamId || Teams.None;
