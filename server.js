@@ -82,7 +82,7 @@ gameData.spawnPoints.forEach(function(pos) {
 });
 
 // Add monster spawners
-for (var i = 0; i < 20; i++) {
+for (var i = 0; i < 10; i++) {
     var pos = [Math.floor(80 * (1.0 - 2.0*Math.random())), Math.floor(80 * (1.0 - 2.0*Math.random()))];
     var entityId = gameData.idList.next();
     var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 2, 2.0, 3000);
@@ -90,11 +90,11 @@ for (var i = 0; i < 20; i++) {
     carveCircle(gameData, pos[0], pos[1], 2.0, 100.0);
 }
 // Add gun monster spawners
-for (var i = 0; i < 20; i++) {
+for (var i = 0; i < 10; i++) {
     var pos = [Math.floor(80 * (1.0 - 2.0*Math.random())), Math.floor(80 * (1.0 - 2.0*Math.random()))];
     var entityId = gameData.idList.next();
     var weaponId = Items.WeaponPistol.id + Math.floor((Items.WeaponSniperRifle.id - Items.WeaponPistol.id + 1) * Math.random());
-    var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 2, 2.0, 30, [{id: weaponId}, {id: Items.Egg.id, quantity: 1000}]);
+    var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 2, 2.0, 3000, [{id: weaponId}, {id: Items.Egg.id, quantity: 1000}]);
     gameData.entityWorld.add(entity, entityId);
     carveCircle(gameData, pos[0], pos[1], 6.0, 100.0);
 }
