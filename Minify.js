@@ -413,11 +413,14 @@ loadScriptRecursive = loadRecursive.bind(null, loadScript);
 
 // Libraries to mangle:
 //loadScript("lib_front_end/apixi.js");
-loadScript("lib/perlin.js");
-loadScript("lib_front_end/bpixi-particles.min.js");
-
+loadExternalScript("lib_front_end/ajquery-3.1.1.min.js");
+loadExternalScript("lib_front_end/atether.min.js");
+loadExternalScript("lib_front_end/bootstrap.min.js");
 loadRecursive("lib", loadExternalScript);
 loadRecursive("lib_front_end", loadExternalScript);
+
+loadScript("lib/perlin.js");
+loadScript("lib_front_end/bpixi-particles.min.js");
 loadRecursive("engine", loadScript);
 loadRecursive("game", loadScript);
 loadScript("DigMiners.js");

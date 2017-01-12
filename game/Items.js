@@ -40,6 +40,7 @@ ItemFunctions.Sword = function(entity, item) {
         var physicsWorld = gameData.physicsWorld;
         var hitRange = item.hitRange || 1.0;
         var hitRadius = item.hitRadius || 0.5;
+        var damage = item.damage || 10.0;
         var bodies = [];
         var entityBodyId = entity.physicsBody.bodyId;
         var entityPos = entity.physicsBody.getPos();
@@ -59,7 +60,7 @@ ItemFunctions.Sword = function(entity, item) {
 
             hitEntities.push(targetEntity.id);
             if (targetEntity.health)
-                targetEntity.health.hurt(targetEntity, entity, 40);
+                targetEntity.health.hurt(targetEntity, entity, damage);
         });
 
         // TODO: CommandEntityHit
@@ -275,7 +276,7 @@ initItems = function() {
         useDuration: 2,
         type: "tool",
         typeOfType: "shovel",
-        digSpeed: 1.0,
+        digSpeed: 0.5,
         maxDigHardness: Tiles.Copper.hardness,
     }
     Items.CopperShovel = {
@@ -290,7 +291,7 @@ initItems = function() {
         useDuration: 2,
         type: "tool",
         typeOfType: "shovel",
-        digSpeed: 1.2,
+        digSpeed: 0.75,
         maxDigHardness: Tiles.Iron.hardness,
     }
     Items.IronShovel = {
@@ -305,7 +306,7 @@ initItems = function() {
         useDuration: 2,
         type: "tool",
         typeOfType: "shovel",
-        digSpeed: 1.6,
+        digSpeed: 1.0,
         maxDigHardness: Tiles.Iron.hardness,
     }
     Items.SteelShovel = {
@@ -320,8 +321,42 @@ initItems = function() {
         useDuration: 2,
         type: "tool",
         typeOfType: "shovel",
-        digSpeed: 1.8,
+        digSpeed: 2.0,
         maxDigHardness: Tiles.Apatite.hardness,
+    }
+
+    // Melee
+    Items.Knife = {
+        name: "Knife",
+        texture: ItemTextures.SwordAtlas,
+        spriteId: 0,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.Sword,
+        useCooldown: 20,
+        useDuration: 4,
+        type: "tool",
+        typeOfType: "sword",
+        hitRange: 0.25,
+        hitRadius: 0.5,
+        damage: 40
+    }
+    Items.AssasinKnife = {
+        name: "Assassin Knife",
+        texture: ItemTextures.SwordAtlas,
+        spriteId: 1,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.Sword,
+        useCooldown: 20,
+        useDuration: 4,
+        type: "tool",
+        typeOfType: "sword",
+        hitRange: 0.25,
+        hitRadius: 0.5,
+        damage: 80
     }
 
     // Swords
