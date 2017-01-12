@@ -62,7 +62,7 @@ entityTemplates.item = function(itemId, amount) {
 entityTemplates.testMonster = function(entityId, pos, teamId) {
     var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0);
-    entity.movement = new Movement(20.0, 0.25, 0.25);
+    entity.movement = new Movement(20.0, 0.25, 1.0);
     entity.nameComponent = new NameComponent(entityId);
     entity.inventory = new Inventory();
     entity.equippedItems = new EquippedItems();
@@ -95,7 +95,7 @@ entityTemplates.testMonster = function(entityId, pos, teamId) {
 
     entity.behaviourContainer = new BehaviourContainer();
     entity.behaviourContainer.behaviours.push(new DigObstacleBehaviour(entity));
-    entity.behaviourContainer.behaviours.push(new TargetPlayerBehaviour(entity, 10.0));
+    entity.behaviourContainer.behaviours.push(new TargetPlayerBehaviour(entity, 40.0));
     entity.behaviourContainer.behaviours.push(new WalkToPointBehaviour(entity, [-pos[0], -pos[1]]));
     entity.behaviourContainer.behaviours.push(new RandomWalkBehaviour(entity));
 
