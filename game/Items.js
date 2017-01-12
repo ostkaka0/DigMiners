@@ -60,7 +60,7 @@ ItemFunctions.Sword = function(entity, item) {
 
             hitEntities.push(targetEntity.id);
             if (targetEntity.health)
-                targetEntity.health.hurt(targetEntity, entity, damage);
+                targetEntity.health.hurt(targetEntity, entity, damage, 1.0);
         });
 
         // TODO: CommandEntityHit
@@ -334,12 +334,12 @@ initItems = function() {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.Sword,
-        useCooldown: 20,
-        useDuration: 4,
+        useCooldown: 10,
+        useDuration: 0,
         type: "tool",
         typeOfType: "sword",
         hitRange: 0.25,
-        hitRadius: 0.5,
+        hitRadius: 0.75,
         damage: 40
     }
     Items.AssasinKnife = {
@@ -350,12 +350,12 @@ initItems = function() {
         isDropable: true,
         maxStackSize: 1,
         itemFunction: ItemFunctions.Sword,
-        useCooldown: 20,
-        useDuration: 4,
+        useCooldown: 10,
+        useDuration: 0,
         type: "tool",
         typeOfType: "sword",
         hitRange: 0.25,
-        hitRadius: 0.5,
+        hitRadius: 0.75,
         damage: 80
     }
 

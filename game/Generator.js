@@ -57,16 +57,6 @@ Generator.prototype.generate = function(chunk, chunkX, chunkY) {
             chunk.setTileId(xx, yy, tileId);
         }
     }
-    gameData.spawnPoints.forEach(function(pos) {
-        var local_pos = [pos[0] - chunkX * CHUNK_DIM, pos[1] - chunkY * CHUNK_DIM];
-        if (local_pos[0] < 0 || local_pos[1] < 0 || local_pos[1] >= CHUNK_DIM || local_pos[1] >= CHUNK_DIM)
-            return;
-            
-        if (chunk.getTileId(local_pos[0], local_pos[1]) != 0)
-            chunk.setTileId(local_pos[0], local_pos[1], Blocks.BlueForcefieldOpen.id);
-        else
-            chunk.setTileId(local_pos[0], local_pos[1], Blocks.RedForcefieldOpen.id);
-    });
 }
 
 Generator.prototype.generateDungeons = function(blockWorld, chunk, chunkX, chunkY) {

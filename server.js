@@ -75,14 +75,21 @@ for (var x = -3; x < 3; ++x) {
     }
 }
 
-// Dig player spawners
-gameData.spawnPoints.forEach(function(pos) {
-    carveCircle(gameData, pos[0], pos[1], 4, 100.0);
-    setForeground(gameData.blockWorld, pos[0], pos[1], Blocks.BlueForcefieldOpen.id);
+console.log(gameData.spawnPoints);
+// Add team monster spawners
+Object.keys(gameData.spawnPoints).forEach(function(teamId) {
+    console.log("Team: " + teamId);
+    var spawnList = gameData.spawnPoints[teamId];
+    spawnList.forEach(function(pos) {
+        var entityId = gameData.idList.next();
+        var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 10, 2.0, 60, null, null, teamId);
+        gameData.entityWorld.add(entity, entityId);
+        carveCircle(gameData, pos[0], pos[1], 15.0, 100.0);
+    });
 });
 
-// Add monster spawners
-for (var i = 0; i < 10; i++) {
+/*// Add monster spawners
+for (var i = 0; i < 50; i++) {
     var pos = [Math.floor(80 * (1.0 - 2.0*Math.random())), Math.floor(80 * (1.0 - 2.0*Math.random()))];
     var entityId = gameData.idList.next();
     var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 2, 2.0, 3000);
@@ -97,7 +104,7 @@ for (var i = 0; i < 10; i++) {
     var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 2, 2.0, 3000, [{id: weaponId}, {id: Items.Egg.id, quantity: 1000}]);
     gameData.entityWorld.add(entity, entityId);
     carveCircle(gameData, pos[0], pos[1], 6.0, 100.0);
-}
+}*/
 
 gameData.physicsWorld.onCollision.push(function(collisions) {
     sendCommand(new CommandCollisions(collisions));

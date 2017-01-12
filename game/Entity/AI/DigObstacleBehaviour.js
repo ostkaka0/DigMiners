@@ -5,6 +5,8 @@ DigObstacleBehaviour = function(entity) {
     this.oldMoveDir = null;
     this.stopTick = null;
     this.nextRunTick = null;
+    this.nextCanRunTickId = gameData.tickId;
+    this.canRunOldPos = null;
 }
 
 DigObstacleBehaviour.prototype.canRun = function() {
@@ -12,12 +14,25 @@ DigObstacleBehaviour.prototype.canRun = function() {
         return false;
     if (this.nextRunTick && gameData.tickId < this.nextRunTick)
         return false;
+    if (gameData.tickId < this.nextCanRunTickId)
+        return false;
+
+    this.nextCanRunTickId = gameData.tickId + 5;
+    
+
 
     var velocity = this.entity.physicsBody.getVelocity();
     var moveDir = this.entity.movement.direction;
-    if (v2.dot(moveDir, velocity) > 0.5)
-        return false;
+    //if (v2.dot(moveDir, velocity) > 1.0)
+    //    return false;
     var pos = this.entity.physicsBody.getPos();
+    
+    if (this.canRunOldPos && v2.distance(this.canRunOldPos, pos) > 2.0) {
+        this.canRunOldPos = v2.clone(pos);
+        return false;
+    }
+    this.canRunOldPos = v2.clone(pos);
+    
     var digPos = [pos[0] + moveDir[0] / 2, pos[1] + moveDir[1] / 2];
     var tilePos = [Math.floor(digPos[0] - 0.5), Math.floor(digPos[1] - 0.5)];
     for (var i = 0; i < 4; i++) {

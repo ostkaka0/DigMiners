@@ -10,10 +10,11 @@ MessageRequestSpawn.prototype.execute = function(gameData, player) {
 
     var entityId = gameData.idList.next();
     var classType = PlayerClassRegister[this.classId];
-    var entity = entityTemplates.player(player.id, entityId, this.playerName, classType);
+    var teamId = Teams.Blue + Math.random() * 2 >> 0
+    var entity = entityTemplates.player(player.id, entityId, this.playerName, classType, teamId);
 
     // Set spawn position
-    var pos = gameData.spawnPoints[Math.floor(Math.random() * gameData.spawnPoints.length)];
+    var pos = gameData.spawnPoints[teamId][Math.random() * gameData.spawnPoints[teamId].length >> 0];
     entity.physicsBody.setPos(pos);
     entity.physicsBody.posOld = v2.clone(pos);
 

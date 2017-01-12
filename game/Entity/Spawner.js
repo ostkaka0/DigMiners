@@ -1,6 +1,6 @@
 
 
-Spawner = function(entityTemplate, pos, maxEntities, radius, duration, items, equippedItemId, randomDuration) {
+Spawner = function(entityTemplate, pos, maxEntities, radius, duration, items, equippedItemId, randomDuration, teamId) {
     this.entityTemplate = entityTemplate;
     this.pos = v2.clone(pos);
     this.maxEntities = maxEntities;
@@ -9,6 +9,7 @@ Spawner = function(entityTemplate, pos, maxEntities, radius, duration, items, eq
     this.items = items || [{id: Items.SteelShovel.id, quantity: 1}];
     this.equippedItemId = (equippedItemId != undefined)? equippedItemId : null;
     this.randomDuration = (randomDuration != undefined)? randomDuration : 0.5;
+    this.teamId = teamId || Teams.None;
     
     this.numEntities = 0;
     this.entityTable = {};
@@ -38,9 +39,11 @@ Spawner.prototype.update = function(entity) {
         }.bind(this);
     }
     
+    console.log("Entity Spawner teamId:" + this.teamId);
+    
     // Spawn entity
     var monsterEntityId = idList.next();
-    var monster = this.entityTemplate(monsterEntityId, [this.pos[0] + this.radius * (-1 + 2 *Math.random()), this.pos[1] + this.radius * (-1 + 2 *Math.random())]);
+    var monster = this.entityTemplate(monsterEntityId, [this.pos[0] + this.radius * (-1 + 2 *Math.random()), this.pos[1] + this.radius * (-1 + 2 *Math.random())], this.teamId);
     sendCommand(new CommandEntitySpawn(gameData, monster, monsterEntityId));
     
     // Add items
