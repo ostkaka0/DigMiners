@@ -6,8 +6,8 @@ CommandKeyStatusUpdate = function(entityId, key, pressed, pos) {
     this.pos = pos;
 }
 
-CommandKeyStatusUpdate.prototype.execute = function(gameData) {
-    var entity = gameData.entityWorld.objects[this.entityId];
+CommandKeyStatusUpdate.prototype.execute = function() {
+    var entity = gameData.world.entityWorld.objects[this.entityId];
     if (!entity) return;
     var physicsBody = entity.physicsBody;
     if (!physicsBody) return;

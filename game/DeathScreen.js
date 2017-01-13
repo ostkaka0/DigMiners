@@ -110,11 +110,11 @@ DeathScreen = function() {
         new MessageRequestSpawn(this.inputUsername.val(), this.getClass()).send(socket);
     }.bind(this));
 
-    gameData.events.on("ownPlayerSpawned", function(entity) {
+    gameData.world.events.on("ownPlayerSpawned", function(entity) {
         this.root.hide();
     }.bind(this));
 
-    gameData.events.on("entityDeath", function(entity) {
+    gameData.world.events.on("entityDeath", function(entity) {
         if (!entity.controlledByPlayer) return;
         if (entity.controlledByPlayer.playerId != global.player.id) return;
 

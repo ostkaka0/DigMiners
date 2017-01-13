@@ -27,7 +27,7 @@ Client = function(gameData, ip) {
         }, 2000);
 
         console.log("Connected.");
-        gameData.events.trigger("connected");
+        gameData.world.events.trigger("connected");
     });
 
     socket.on('message', function(msg) {

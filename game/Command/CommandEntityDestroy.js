@@ -3,10 +3,10 @@ CommandEntityDestroy = function(entityId) {
     this.entityId = entityId;
 }
 
-CommandEntityDestroy.prototype.execute = function(gameData) {
-    var entity = gameData.entityWorld.objects[this.entityId];
+CommandEntityDestroy.prototype.execute = function() {
+    var entity = gameData.world.entityWorld.objects[this.entityId];
     if (!entity) return;
-    gameData.entityWorld.remove(entity);
+    gameData.world.entityWorld.remove(entity);
 }
 
 CommandEntityDestroy.prototype.serialize = function(byteArray, index) {

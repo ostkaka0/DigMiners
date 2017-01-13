@@ -5,7 +5,7 @@ MessageRequestClickSlot = function(slotId, clickType) {
 }
 
 MessageRequestClickSlot.prototype.execute = function(gameData, player) {
-    var entity = gameData.entityWorld.objects[player.entityId];
+    var entity = gameData.world.entityWorld.objects[player.entityId];
     if (!entity || !entity.inventory) return;
     var item = entity.inventory.items[this.slotId];
     if (!item) return;

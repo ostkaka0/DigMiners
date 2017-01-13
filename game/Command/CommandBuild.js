@@ -6,11 +6,11 @@ CommandBuild = function(x, y, blockId, type) {
     this.type = type;
 }
 
-CommandBuild.prototype.execute = function(gameData) {
+CommandBuild.prototype.execute = function() {
     if (this.type == BlockTypes.FOREGROUND)
-        setForeground(gameData.blockWorld, this.x, this.y, this.blockId);
+        setForeground(gameData.world.blockWorld, this.x, this.y, this.blockId);
     else if (this.type == BlockTypes.BACKGROUND)
-        setBackground(gameData.blockWorld, this.x, this.y, this.blockId);
+        setBackground(gameData.world.blockWorld, this.x, this.y, this.blockId);
 }
 
 CommandBuild.prototype.serialize = function(byteArray, index) {

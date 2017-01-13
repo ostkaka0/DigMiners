@@ -1,12 +1,12 @@
 MessageCommands = function() {
-    this.tickId = (isServer) ? gameData.tickId : 0;
-    this.commands = (isServer) ? gameData.commands : [];
+    this.tickId = (isServer) ? gameData.world.tickId : 0;
+    this.commands = (isServer) ? gameData.world.commands : [];
 }
 
 MessageCommands.prototype.execute = function(gameData) {
     var that = this;
     setTimeout(function() {
-        gameData.pendingCommands[that.tickId] = that.commands;
+        gameData.world.pendingCommands[that.tickId] = that.commands;
     }, Config.fakeLag + Config.fakeJitter * Math.random());
 }
 

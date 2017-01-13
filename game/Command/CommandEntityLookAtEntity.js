@@ -5,7 +5,7 @@ CommandEntityLookAtEntity = function(entityId, targetEntityId) {
     this.targetEntityId = targetEntityId;
 }
 
-CommandEntityLookAtEntity.prototype.execute = function(gameData) {
+CommandEntityLookAtEntity.prototype.execute = function() {
     var entity = gameData.entityWorld.objects[this.entityId];
     var targetEntity = gameData.entityWorld.objects[this.targetEntityId];
     if (!entity) return;

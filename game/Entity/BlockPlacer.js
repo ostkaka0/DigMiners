@@ -13,7 +13,7 @@ BlockPlacer.prototype.update = function(entity) {
 
     if (!this.isInitialized) {
         this.isInitialized = true;
-        var placerEntity = gameData.entityWorld.objects[this.entityId];
+        var placerEntity = gameData.world.entityWorld.objects[this.entityId];
         if (placerEntity)
             placerEntity.blockPlacerId = entity.id;
         if (!isServer) {
@@ -25,7 +25,7 @@ BlockPlacer.prototype.update = function(entity) {
             zindices[2].addChild(this.sprite);
         }
     }
-    var placerEntity = gameData.entityWorld.objects[this.entityId];
+    var placerEntity = gameData.world.entityWorld.objects[this.entityId];
     var playerId = (placerEntity && placerEntity.controlledByPlayer) ? placerEntity.controlledByPlayer.playerId : undefined;
     var player = (playerId != undefined) ? gameData.playerWorld.objects[playerId] : undefined;
     var inventoryItem = (placerEntity && placerEntity.inventory) ? placerEntity.inventory.getEquippedItemType("tool") : undefined;
@@ -46,7 +46,7 @@ BlockPlacer.prototype.update = function(entity) {
     if (shouldDestroy) {
         if (placerEntity && placerEntity.blockPlacerId == entity.id)
             placerEntity.blockPlacerId = undefined;
-        gameData.entityWorld.remove(entity);
+        gameData.world.entityWorld.remove(entity);
         return;
     }
 
@@ -58,7 +58,7 @@ BlockPlacer.prototype.update = function(entity) {
     if (shouldDestroy) {
         if (placerEntity)
             placerEntity.blockPlacerId = undefined;
-        gameData.entityWorld.remove(entity);
+        gameData.world.entityWorld.remove(entity);
     }
 }
 

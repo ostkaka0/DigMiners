@@ -13,7 +13,7 @@ Spawner = function(entityTemplate, pos, maxEntities, radius, duration, items, eq
     
     this.numEntities = 0;
     this.entityTable = {};
-    this.nextSpawnTickId = gameData.tickId;
+    this.nextSpawnTickId = gameData.world.tickId;
     
     this.initialized = false;
 }
@@ -22,13 +22,13 @@ Spawner.prototype.name = spawner.name; function spawner() { };
 
 Spawner.prototype.update = function(entity) {
     if (this.numEntities >= this.maxEntities) return;
-    if (gameData.tickId - this.nextSpawnTickId <= 0) return;
+    if (gameData.world.tickId - this.nextSpawnTickId <= 0) return;
     if (!isServer) return;
     
     // Lazy init
     if (!this.initialized) {
         this.initialized = true;
-        gameData.entityWorld.onRemove["Spawner.js_" + entity.id] = function(entity) {
+        gameData.world.entityWorld.onRemove["Spawner.js_" + entity.id] = function(entity) {
             if (this.entityTable[entity.id] == undefined) return;
             
             if (this.numEntities == this.maxEntities) 
@@ -42,7 +42,7 @@ Spawner.prototype.update = function(entity) {
     console.log("Entity Spawner teamId:" + this.teamId);
     
     // Spawn entity
-    var monsterEntityId = idList.next();
+    var monsterEntityId = gameData.world.idList.next();
     var monster = this.entityTemplate(monsterEntityId, [this.pos[0] + this.radius * (-1 + 2 *Math.random()), this.pos[1] + this.radius * (-1 + 2 *Math.random())], this.teamId);
     sendCommand(new CommandEntitySpawn(gameData, monster, monsterEntityId));
     
@@ -65,9 +65,9 @@ Spawner.prototype.update = function(entity) {
 }
 
 Spawner.prototype.onDestroy = function(entity) {
-    gameData.entityWorld.onRemove["Spawner.js_" + entity.id] = undefined;
+    gameData.world.entityWorld.onRemove["Spawner.js_" + entity.id] = undefined;
 }
 
 Spawner.prototype.updateDuration = function() {
-    this.nextSpawnTickId = gameData.tickId + this.duration + Math.floor(this.randomDuration * this.duration * (-0.5 + Math.random()));
+    this.nextSpawnTickId = gameData.world.tickId + this.duration + Math.floor(this.randomDuration * this.duration * (-0.5 + Math.random()));
 }
