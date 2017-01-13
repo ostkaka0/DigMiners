@@ -38,7 +38,7 @@ PotionEffects.prototype.getSerializationSize = function() {
 PotionEffects.prototype.update = function(entity) {
     Object.keys(this.effects).forEach(function(potionEffectTypeId) {
         var effect = this.effects[potionEffectTypeId];
-        var potionEffectType = gameData.potionEffectTypeRegister[potionEffectTypeId];
+        var potionEffectType = Config.potionEffectTypeRegister[potionEffectTypeId];
         if (!effect || !potionEffectType) return;
         if (effect.duration == effect.startDuration && potionEffectType.onStart)
             effect.type.onStart(entity);
@@ -57,7 +57,7 @@ PotionEffects.prototype.update = function(entity) {
 PotionEffects.prototype.destroy = function(entity) {
     Object.keys(this.effects).forEach(function(potionEffectTypeId) {
         var effect = this.effects[potionEffectTypeId];
-        var potionEffectType = gameData.potionEffectTypeRegister[potionEffectTypeId];
+        var potionEffectType = Config.potionEffectTypeRegister[potionEffectTypeId];
         if (!effect) return;
         if (potionEffectType.onStop)
             potionEffectType.onStop(entity);

@@ -21,7 +21,7 @@ var mouseX = 0;
 var mouseY = 0;
 
 gameData.init();
-gameData.events.on("texturesLoaded", function(textures) {
+gameData.world.events.on("texturesLoaded", function(textures) {
     // Must wait until all textures have loaded to continue! important
     this.blockPosGood = new PIXI.Sprite(textures["blockPosGood.png"]);
     window.zindices[2].addChild(this.blockPosGood);
@@ -39,8 +39,8 @@ var camera = {
     height: window.innerHeight,
     pos: v2.create(0, 0)
 };
-var chunkRenderer = new ChunkRenderer(gl, gameData.tileWorld, 32.0);
-var blockChunkRenderer = new BlockChunkRenderer(gl, gameData.blockWorld, 32.0);
+var chunkRenderer = new ChunkRenderer(gl, gameData.world.tileWorld, 32.0);
+var blockChunkRenderer = new BlockChunkRenderer(gl, gameData.world.blockWorld, 32.0);
 var commands = [];
 var player = null;
 var playerEntity = null;
@@ -84,26 +84,26 @@ loadGame = function() {
     });
 
     // Start gameLoop
-    gameLoop(tick, render, gameData.tickDuration);
+    gameLoop(tick, render, Config.tickDuration);
 }
 
 tick = function(dt) {
     var readyTicks = 0;
-    for (var i = 0; i <= 6 && gameData.pendingCommands[gameData.tickId + i]; i++)
+    for (var i = 0; i <= 6 && gameData.world.pendingCommands[gameData.world.tickId + i]; i++)
         readyTicks++;
 
     if (readyTicks >= 3) {
-        while (readyTicks >= 1 && gameData.pendingCommands[gameData.tickId]) {
+        while (readyTicks >= 1 && gameData.world.pendingCommands[gameData.world.tickId]) {
             gameData.tick(dt);
             readyTicks--;
         }
     }
 
-    if (gameData.pendingCommands[gameData.tickId])
+    if (gameData.world.pendingCommands[gameData.world.tickId])
         gameData.tick(dt);
 
     // Fix interpolation after MessagePlayerMove
-    forOf(this, gameData.entityWorld.objectArray, function(entity) {
+    forOf(this, gameData.world.entityWorld.objectArray, function(entity) {
         if (entity.physicsBody) {
             var physicsBody = entity.physicsBody;
             physicsBody.posClientOld = v2.clone(physicsBody.posClient);
@@ -115,7 +115,7 @@ tick = function(dt) {
         }
     });
 
-    gameData.particleEmitterWorld.objectArray.forEach(function(emitter) {
+    gameData.world.particleEmitterWorld.objectArray.forEach(function(emitter) {
         emitter.update(dt);
     });
 }
@@ -133,7 +133,7 @@ render = function(tickFracTime) {
         camera.pos = [0, 0];
 
     // Position entities
-    gameData.entityWorld.objectArray.forEach(function(entity) {
+    gameData.world.entityWorld.objectArray.forEach(function(entity) {
         if (entity.physicsBody && entity.drawable) {
             var x = -camera.pos[0] + canvas.width / 2 + 32.0 * (tickFracTime * entity.physicsBody.posClient[0] + (1 - tickFracTime) * entity.physicsBody.posClientOld[0]);
             var y = camera.pos[1] + canvas.height / 2 - 32.0 * (tickFracTime * entity.physicsBody.posClient[1] + (1 - tickFracTime) * entity.physicsBody.posClientOld[1]);
@@ -162,7 +162,7 @@ render = function(tickFracTime) {
         } else if (entity.blockPlacer && entity.blockPlacer.sprite) {
             entity.blockPlacer.sprite.position.x = -camera.pos[0] + canvas.width / 2 + 32 * (entity.blockPlacer.blockPos[0] + 0.5);
             entity.blockPlacer.sprite.position.y = camera.pos[1] + canvas.height / 2 - 32 * (entity.blockPlacer.blockPos[1] + 0.5);
-            var factor = 1.0 - entity.blockPlacer.duration / gameData.blockRegister[entity.blockPlacer.blockId].buildDuration;
+            var factor = 1.0 - entity.blockPlacer.duration / Config.blockRegister[entity.blockPlacer.blockId].buildDuration;
             entity.blockPlacer.sprite.scale.x = factor;
             entity.blockPlacer.sprite.scale.y = factor;
         }
@@ -202,8 +202,8 @@ render = function(tickFracTime) {
     var viewMatrix = PIXI.Matrix.IDENTITY.clone();
     viewMatrix = viewMatrix.translate(-Math.floor(camera.pos[0]), -Math.floor(camera.pos[1]));
     viewMatrix = viewMatrix.scale(2 / canvas.width, 2 / canvas.height);
-    chunkRenderer.render(gameData.tileWorld, projectionMatrix.clone().append(viewMatrix), camera);
-    blockChunkRenderer.render(gameData, gameData.blockWorld, projectionMatrix.clone().append(viewMatrix), camera);
+    chunkRenderer.render(gameData.world.tileWorld, projectionMatrix.clone().append(viewMatrix), camera);
+    blockChunkRenderer.render(gameData, gameData.world.blockWorld, projectionMatrix.clone().append(viewMatrix), camera);
 
     // Render entities
     for (var i = 0; i < window.zindices.length; ++i)
@@ -218,9 +218,9 @@ render = function(tickFracTime) {
 }
 
 loadChunk = function(world, x, y) {
-    if (gameData.generator) {
+    if (gameData.world.generator) {
         var chunk = new Chunk();
-        gameData.generator.generate(chunk, x, y);
+        gameData.world.generator.generate(chunk, x, y);
         world.set(x, y, chunk);
     }
 }
@@ -253,15 +253,15 @@ $(document).mousedown(function(event) {
     }
 });
 
-gameData.events.on("connected", function() {
+gameData.world.events.on("connected", function() {
     this.deathScreen = new DeathScreen();
 }.bind(this));
 
-gameData.events.on("ownPlayerSpawned", function(entity, player) {
+gameData.world.events.on("ownPlayerSpawned", function(entity, player) {
     $("#hud").unbind("mousemove");
     $("#hud").mousemove(function(e) {
-        if (gameData.tickId - lastMouseSync >= 1) {
-            lastMouseSync = gameData.tickId;
+        if (gameData.world.tickId - lastMouseSync >= 1) {
+            lastMouseSync = gameData.world.tickId;
             var worldCursorPos = [(mouseX + camera.pos[0] - camera.width / 2) / 32, (canvas.height - mouseY + camera.pos[1] - camera.height / 2) / 32];
             var pos = entity.physicsBody.getPos();
             var diff = [worldCursorPos[0] - pos[0], worldCursorPos[1] - pos[1]];
@@ -270,9 +270,9 @@ gameData.events.on("ownPlayerSpawned", function(entity, player) {
     }.bind(this));
 }.bind(this));
 
-gameData.entityWorld.onAdd["DigMiners.js"] = function(entity) {
+gameData.world.entityWorld.onAdd["DigMiners.js"] = function(entity) {
     if (!isServer && entity.health && entity.drawable)
-        gameData.events.trigger("healthChange", entity);
+        gameData.world.events.trigger("healthChange", entity);
 
     if (entity.drawable && entity.bodyparts) {
         entity.drawable.initializeBodyparts(entity.bodyparts.bodyparts);
@@ -299,11 +299,11 @@ gameData.entityWorld.onAdd["DigMiners.js"] = function(entity) {
     }
 }
 
-gameData.physicsWorld.onCollision.push(function(collisions) {
+gameData.world.physicsWorld.onCollision.push(function(collisions) {
     if (global.playerEntity && collisions) {
         collisions.forEach(function(collision) {
-            var aEntity = gameData.physicsEntities[collision[0]];
-            var bEntity = gameData.physicsEntities[collision[1]];
+            var aEntity = gameData.world.physicsEntities[collision[0]];
+            var bEntity = gameData.world.physicsEntities[collision[1]];
             if (aEntity == undefined || bEntity == undefined) return;
             var playerEntity = null;
             var itemEntity = null;

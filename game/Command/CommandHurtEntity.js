@@ -4,15 +4,15 @@ CommandHurtEntity = function(entityId, healthChange) {
     this.healthChange = toFix(healthChange);
 }
 
-CommandHurtEntity.prototype.execute = function(gameData) {
-    var entity = gameData.entityWorld.objects[this.entityId];
+CommandHurtEntity.prototype.execute = function() {
+    var entity = gameData.world.entityWorld.objects[this.entityId];
     if (!entity || !entity.health) return;
     if (entity.movement)
         entity.movement.disabledCooldown = 40;
     entity.health.health = (entity.health.health + this.healthChange < 0 ? 0 : entity.health.health + this.healthChange);
-    gameData.events.trigger("healthChange", entity);
+    gameData.world.events.trigger("healthChange", entity);
     if (entity.health.health <= 0)
-        gameData.events.trigger("entityDeath", entity);
+        gameData.world.events.trigger("entityDeath", entity);
 }
 
 CommandHurtEntity.prototype.serialize = function(byteArray, index) {

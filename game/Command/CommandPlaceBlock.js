@@ -4,9 +4,9 @@ CommandPlaceBlock = function(blockPos, blockId) {
     this.blockId = blockId;
 }
 
-CommandPlaceBlock.prototype.execute = function(gameData) {
-    setForeground(gameData.blockWorld, this.blockPos[0], this.blockPos[1], this.blockId);
-    var block = gameData.blockRegister[this.blockId];
+CommandPlaceBlock.prototype.execute = function() {
+    setForeground(gameData.world.blockWorld, this.blockPos[0], this.blockPos[1], this.blockId);
+    var block = Config.blockRegister[this.blockId];
     if (block.onPlace)
         block.onPlace(this.blockPos, block);
 }

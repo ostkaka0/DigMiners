@@ -10,9 +10,9 @@ CommandProjectileSpawn = function(entityId, pos, angle, speed, maxDistance, proj
     this.shooterEntityId = shooterEntityId;
 }
 
-CommandProjectileSpawn.prototype.execute = function(gameData) {
-    if (gameData.entityWorld.objects[this.entityId])
-        gameData.entityWorld.remove(gameData.entityWorld.objects[this.entityId]);
+CommandProjectileSpawn.prototype.execute = function() {
+    if (gameData.world.entityWorld.objects[this.entityId])
+        gameData.world.entityWorld.remove(gameData.world.entityWorld.objects[this.entityId]);
     var entity = {};
     entity.projectile = new Projectile(this.pos, this.angle, this.speed, this.maxDistance, this.projectileType, this.shooterEntityId);
     if (!isServer) {
@@ -24,8 +24,8 @@ CommandProjectileSpawn.prototype.execute = function(gameData) {
         entity.projectile.sprite.visible = false;
         zindices[2].addChild(entity.projectile.sprite);
     }
-    projectileEntitySimulate(entity, gameData.tickDuration / 1000.0);
-    gameData.entityWorld.add(entity, this.entityId);
+    projectileEntitySimulate(entity, Config.tickDuration / 1000.0);
+    gameData.world.entityWorld.add(entity, this.entityId);
 }
 
 CommandProjectileSpawn.prototype.serialize = function(byteArray, index) {
@@ -44,7 +44,7 @@ CommandProjectileSpawn.prototype.deserialize = function(byteArray, index) {
     this.angle = deserializeFix(byteArray, index);
     this.speed = deserializeFix(byteArray, index);
     this.maxDistance = deserializeFix(byteArray, index);
-    this.projectileType = gameData.projectileRegister[deserializeInt8(byteArray, index)];
+    this.projectileType = Config.projectileRegister[deserializeInt8(byteArray, index)];
     this.shooterEntityId = deserializeInt32(byteArray, index);
 }
 

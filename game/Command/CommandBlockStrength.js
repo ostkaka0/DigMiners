@@ -5,11 +5,11 @@ CommandBlockStrength = function(x, y, strength) {
     this.strength = Math.max(strength, 0);
 }
 
-CommandBlockStrength.prototype.execute = function(gameData) {
+CommandBlockStrength.prototype.execute = function() {
     if (this.strength > 0)
-        setStrength(gameData.blockWorld, this.x, this.y, this.strength);
+        setStrength(gameData.world.blockWorld, this.x, this.y, this.strength);
     else
-        setForeground(gameData.blockWorld, this.x, this.y, 0);
+        setForeground(gameData.world.blockWorld, this.x, this.y, 0);
 }
 
 CommandBlockStrength.prototype.serialize = function(byteArray, index) {

@@ -110,19 +110,19 @@ DeathScreen = function() {
         new MessageRequestSpawn(this.inputUsername.val(), this.getClass()).send(socket);
     }.bind(this));
 
-    gameData.events.on("ownPlayerSpawned", function(entity) {
+    gameData.world.events.on("ownPlayerSpawned", function(entity) {
         this.root.hide();
     }.bind(this));
 
-    gameData.events.on("entityDeath", function(entity) {
+    gameData.world.events.on("entityDeath", function(entity) {
         if (!entity.controlledByPlayer) return;
         if (entity.controlledByPlayer.playerId != global.player.id) return;
 
         this.root.show();
-        this.btnSpawn.setDisabledCountdown(gameData.respawnTime);
+        this.btnSpawn.setDisabledCountdown(Config.respawnTime);
     }.bind(this));
 
-    this.btnSpawn.setDisabledCountdown(gameData.respawnTime)
+    this.btnSpawn.setDisabledCountdown(Config.respawnTime)
 }
 
 DeathScreen.prototype.getClass = function() {

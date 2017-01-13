@@ -3,8 +3,8 @@ CommandEntityBeginReloadWeapon = function(entityId) {
     this.entityId = entityId;
 }
 
-CommandEntityBeginReloadWeapon.prototype.execute = function(gameData) {
-    var entity = gameData.entityWorld.objects[this.entityId];
+CommandEntityBeginReloadWeapon.prototype.execute = function() {
+    var entity = gameData.world.entityWorld.objects[this.entityId];
     if (!entity || !entity.movement) return;
     entity.movement.isReloading = true;
 }

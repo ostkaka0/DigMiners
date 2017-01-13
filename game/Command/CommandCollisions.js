@@ -1,7 +1,7 @@
 
 CommandCollisions = function(collisions) {
-    var physicsWorld = gameData.physicsWorld;
-    var physicsEntities = gameData.physicsEntities;
+    var physicsWorld = gameData.world.physicsWorld;
+    var physicsEntities = gameData.world.physicsEntities;
 
     var bodies = {};
     this.collisions = [];
@@ -27,9 +27,9 @@ CommandCollisions = function(collisions) {
     }
 }
 
-CommandCollisions.prototype.execute = function(gameData) {
-    var physicsWorld = gameData.physicsWorld;
-    var entities = gameData.entityWorld.objects;
+CommandCollisions.prototype.execute = function() {
+    var physicsWorld = gameData.world.physicsWorld;
+    var entities = gameData.world.entityWorld.objects;
 
     this.collisions.forEach(function(collisionData) {
         var entity = entities[collisionData[0]];

@@ -93,9 +93,9 @@ AnimationManager.prototype.load = function() {
 }
 
 AnimationManager.prototype.update = function() {
-    var entityWorld = gameData.entityWorld;
+    var entityWorld = gameData.world.entityWorld;
     if (!entityWorld)
-        console.error("Missing gameData.entityWorld");
+        console.error("Missing gameData.world.entityWorld");
     entityWorld.objectArray.forEach(function(entity) {
         if (entity.bodyparts) {
             forIn(this, entity.bodyparts.bodyparts, function(bodypart) {

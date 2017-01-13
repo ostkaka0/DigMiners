@@ -11,7 +11,7 @@ Client = function(gameData, ip) {
     var testOut = deserializeUTF8(testArray, counter);
     console.log("unserialized \"" + testOut + "\"");*/
 
-    var port = gameData.port;
+    var port = Config.port;
     console.log("Connecting to " + ip + ":" + port + "...");
     socket = io(ip + ":" + port, {
         reconnection: false
@@ -27,7 +27,7 @@ Client = function(gameData, ip) {
         }, 2000);
 
         console.log("Connected.");
-        gameData.events.trigger("connected");
+        gameData.world.events.trigger("connected");
     });
 
     socket.on('message', function(msg) {
@@ -46,7 +46,7 @@ Client = function(gameData, ip) {
         ping = 2 * (Date.now() - time);
     });
 
-    gameData.messagesToClient.forEach(function(messageType) {
+    Config.messagesToClient.forEach(function(messageType) {
         socket.on(messageType.prototype.idString, function(data) {
             var message = new messageType();
             message.receive(gameData, data);

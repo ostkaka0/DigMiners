@@ -62,7 +62,7 @@ Movement.prototype.destroy = function(entity) {
 }
 
 entityFunctionEntityMovement = function(dt) {
-    gameData.entityWorld.objectArray.forEach(function(entity) {
+    gameData.world.entityWorld.objectArray.forEach(function(entity) {
         if (!entity || !entity.movement || !entity.physicsBody)
             return;
         var movement = entity.movement;

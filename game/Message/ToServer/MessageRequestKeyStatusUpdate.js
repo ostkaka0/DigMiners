@@ -5,7 +5,7 @@ MessageRequestKeyStatusUpdate = function(key, pressed) {
 }
 
 MessageRequestKeyStatusUpdate.prototype.execute = function(gameData, player) {
-    var entity = gameData.entityWorld.objects[player.entityId];
+    var entity = gameData.world.entityWorld.objects[player.entityId];
     if (!entity) return;
     var physicsBody = entity.physicsBody;
     if (!physicsBody) return;
