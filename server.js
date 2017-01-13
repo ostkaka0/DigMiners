@@ -82,7 +82,7 @@ Object.keys(gameData.spawnPoints).forEach(function(teamId) {
     var spawnList = gameData.spawnPoints[teamId];
     spawnList.forEach(function(pos) {
         var entityId = gameData.idList.next();
-        var entity = entityTemplates.TeamBase(entityId, pos, teamId, 10, 2.0, 60);
+        var entity = entityTemplates.TeamBase(entityId, pos, teamId, 1, 2.0, 60);
         //entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 5, 2.0, 120, null, null, teamId);
         gameData.entityWorld.add(entity, entityId);
         carveCircle(gameData, pos[0], pos[1], 5.0, 100.0);
