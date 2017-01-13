@@ -19,7 +19,7 @@ ItemFunctions.Shovel = function(entity, item) {
         if (blockChunk) {
             var blockId = blockChunk.getForeground(localPos[0], localPos[1]);
             if (blockId) {
-                var blockType = gameData.blockRegister[blockId];
+                var blockType = Config.blockRegister[blockId];
                 var strength = blockChunk.getStrength(localPos[0], localPos[1]);
                 // TODO: 16 magic value
                 strength -= 16 * (1 / blockType.hardness);
@@ -82,7 +82,7 @@ ItemFunctions.Potion = function(entity, item) {
             var entry = removed[i];
             var stackId = entry[0];
             var item = entry[1];
-            var itemType = gameData.itemRegister[item.id];
+            var itemType = Config.itemRegister[item.id];
             if (item.equipped)
                 Entity.onDequip(entity, stackId, itemType);
         };

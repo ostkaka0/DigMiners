@@ -18,7 +18,7 @@ CommandEntityBuild.prototype.execute = function(gameData) {
     if (!isServer && this.blockId)
         entity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArm", 256, true);
     if (isServer) {
-        var block = gameData.blockRegister[this.blockId];
+        var block = Config.blockRegister[this.blockId];
         var entityBlockPlacer = { blockPlacer: new BlockPlacer([this.x, this.y], this.blockId, block.buildDuration, entity.id) };
         var entityBlockPlacerId = gameData.idList.next();
         sendCommand(new CommandEntitySpawn(gameData, entityBlockPlacer, entityBlockPlacerId));

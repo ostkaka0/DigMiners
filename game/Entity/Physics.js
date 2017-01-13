@@ -51,7 +51,7 @@ physicsBodySimulate = function(physicsBody, dt) {
             worldPos[1] += COLLISION_BLOCKS[j][1];
             var blockId = getForeground(gameData.blockWorld, worldPos[0], worldPos[1]);
             if (!blockId) continue; // Air
-            var block = gameData.blockRegister[blockId];
+            var block = Config.blockRegister[blockId];
             if (!block || !block.isSolid) continue;
 
             var worldBlockPos = v2.create(0, 0);
@@ -79,7 +79,7 @@ physicsBodySimulate = function(physicsBody, dt) {
             worldPos[1] += COLLISION_BLOCKS[j][1];
             var blockId = getForeground(gameData.blockWorld, worldPos[0], worldPos[1]);
             if (!blockId) continue; // Air
-            var block = gameData.blockRegister[blockId];
+            var block = Config.blockRegister[blockId];
             if (!block || !block.isSolid) continue;
 
             var worldBlockPos = v2.create(0, 0);

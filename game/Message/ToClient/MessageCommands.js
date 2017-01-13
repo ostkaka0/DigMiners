@@ -1,4 +1,4 @@
-MessageCommands = function(gameData) {
+MessageCommands = function() {
     this.tickId = (gameData) ? gameData.tickId : 0;
     this.commands = (gameData) ? gameData.commands : [];
 }
@@ -7,7 +7,7 @@ MessageCommands.prototype.execute = function(gameData) {
     var that = this;
     setTimeout(function() {
         gameData.pendingCommands[that.tickId] = that.commands;
-    }, gameData.fakeLag + gameData.fakeJitter * Math.random());
+    }, Config.fakeLag + Config.fakeJitter * Math.random());
 }
 
 MessageCommands.prototype.send = function(socket) {
@@ -32,7 +32,7 @@ MessageCommands.prototype.receive = function(gameData, byteArray) {
     this.tickId = deserializeInt32(byteArray, counter);
     while (counter.value < byteArray.byteLength) {
         var commandId = deserializeInt32(byteArray, counter);
-        var command = new gameData.commandTypes[commandId]();
+        var command = new Config.commandTypes[commandId]();
         command.deserialize(byteArray, counter);
         this.commands.push(command);
     }

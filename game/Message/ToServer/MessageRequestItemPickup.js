@@ -13,7 +13,7 @@ MessageRequestItemPickup.prototype.execute = function(gameData, player) {
         var playerPhysicsBody = playerEntity.physicsBody;
 
         var dis = v2.distance(physicsBody.getPos(), playerPhysicsBody.getPos());
-        if (dis <= gameData.itemPickupDistance + 0.1) {
+        if (dis <= Config.itemPickupDistance + 0.1) {
             entity.pickedUp = true;
             // Add item to player inventory
             sendCommand(new CommandEntityInventory(player.entityId, InventoryActions.ADD_ITEM, entity.item.itemId, entity.item.amount));

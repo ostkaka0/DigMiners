@@ -6,27 +6,16 @@ gameData.destroy = function() {
 
 gameData.init = function(idList) {
     initItems(this);
-    this.port = 3000;
-    this.itemPickupDistance = 2.0;
-    this.blockPlaceDistance = 96; //Pixels
-    this.idList = idList;
-    this.tickDuration = 1000 / 20;
+    initConfig();
+    
     this.tickId = 0;
-    this.fakeLag = 0;
-    this.fakeJitter = 0;
-    this.respawnTime = 1;
+    this.idList = idList;
     this.playerWorld = new ObjectWorld(true);
     this.entityWorld = new ObjectWorld(true);
     this.particleEmitterWorld = new ObjectWorld();
     this.particleEmitterIdList = new IdList();
     this.tileWorld = new Map2D();
     this.blockWorld = new Map2D();
-    this.tileRegister = objectRegisterAddByObject([], Tiles);
-    this.itemRegister = objectRegisterAddByObject([], Items);
-    this.blockRegister = objectRegisterAddByObject([], Blocks);
-    this.projectileRegister = objectRegisterAddByObject([], Projectiles);
-    this.particleRegister = objectRegisterAddByObject([], Particles);
-    this.potionEffectTypeRegister = objectRegisterAddByObject([], PotionEffectTypes);
     this.physicsWorld = new PhysicsWorld();
     this.physicsEntities = {};
     this.generator = null;
@@ -38,17 +27,8 @@ gameData.init = function(idList) {
         this.animationManager = {};
     this.commands = [];
     this.pendingCommands = {};
-    this.commandTypes = typeRegisterAddByArray([], [CommandEntityMove, CommandDig, CommandEntityDig, CommandEntityEquipItem, CommandEntityBuild, CommandHurtEntity,
-        CommandEntitySpawn, CommandCollisions, CommandEntityDestroy, CommandPlayerJoin, CommandPlayerLeave, CommandPlayerSpawn, CommandKeyStatusUpdate,
-        CommandEntityInventory, CommandPlayerOreInventory, CommandEntityRotate, CommandBlockStrength, CommandProjectileSpawn, CommandParticles, CommandPlaceBlock,
-        CommandEntityReloadWeapon, CommandEntityBeginReloadWeapon, CommandBuild, CommandEntityLookAtEntity]);
     this.commandCallbacks = [];
-    this.messagesToClient = [MessageInit, MessageCommands, MessageChunk];
-    this.messagesToServer = [MessageRequestKeyStatusUpdate, MessageRequestItemPickup, MessageRequestClickSlot, MessageRequestCraft, MessageRequestPlaceBlock,
-        MessageRequestClickEntity, MessageRequestRotate, MessageRequestClickBlock, MessageRequestSpawn];
-    this.messageTypes = typeRegisterAddByArray([], this.messagesToClient.concat(this.messagesToServer));
     this.messageCallbacks = {};
-    this.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent, EquippedItems, Projectile, BlockPlacer, PotionEffects, Team]);
     this.spawnPoints = {};
     this.spawnPoints[Teams.Blue] = [[-60, -20], [-60, 0], [-60, 20]];
     this.spawnPoints[Teams.Red] = [[60, -20],[60, 0],[60, 20]];

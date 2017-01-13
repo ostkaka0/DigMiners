@@ -104,7 +104,7 @@ MessageInit.prototype.receive = function(gameData, byteArray) {
         var entity = {};
         while (index.value < entityEnd) {
             var componentId = deserializeInt32(byteArray, index);
-            var ComponentType = gameData.componentTypes[componentId];
+            var ComponentType = Config.componentTypes[componentId];
             var componentName = ComponentType.prototype.name;
             entity[componentName] = new ComponentType();
             entity[componentName].deserialize(byteArray, index, gameData);

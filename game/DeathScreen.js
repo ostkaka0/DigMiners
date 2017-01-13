@@ -119,10 +119,10 @@ DeathScreen = function() {
         if (entity.controlledByPlayer.playerId != global.player.id) return;
 
         this.root.show();
-        this.btnSpawn.setDisabledCountdown(gameData.respawnTime);
+        this.btnSpawn.setDisabledCountdown(Config.respawnTime);
     }.bind(this));
 
-    this.btnSpawn.setDisabledCountdown(gameData.respawnTime)
+    this.btnSpawn.setDisabledCountdown(Config.respawnTime)
 }
 
 DeathScreen.prototype.getClass = function() {
