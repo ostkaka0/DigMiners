@@ -206,6 +206,12 @@ gameData.initializeEvents = function() {
                 }
             }
         }
+        
+        Object.keys(entity).forEach(function (key) {
+            var component = entity[key];
+            if (component.onDestroy)
+                component.onDestroy(entity);
+        });
     });
 
     this.events.on("entityHitBlockSide", function(entity, blockPos, blockType, blockCollisionSide) {
