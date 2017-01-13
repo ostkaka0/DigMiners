@@ -1,6 +1,6 @@
 
-PhysicsBody = function(pos, damping, rotationSpeed) {
-    this.bodyId = gameData.physicsWorld.add(pos);
+PhysicsBody = function(pos, damping, rotationSpeed, mass) {
+    this.bodyId = gameData.physicsWorld.add(pos, 0.0, mass);
     if (pos) {
         this.posOld = v2.clone(pos);
         this.posClient = v2.clone(pos);
@@ -27,6 +27,7 @@ PhysicsBody.prototype.name = physicsBody.name; function physicsBody() { };
 PhysicsBody.prototype.serialize = function(byteArray, index) {
     serializeV2(byteArray, index, this.getPos());
     serializeV2(byteArray, index, this.getVelocity());
+    serializeFix(byteArray,index, this.getMass());
     serializeFix(byteArray, index, this.angle);
     serializeFix(byteArray, index, this.rotationSpeed);
     serializeFix(byteArray, index, this.damping);
@@ -37,6 +38,7 @@ PhysicsBody.prototype.deserialize = function(byteArray, index) {
     this.posOld = v2.clone(this.getPos());
     this.setVelocity(deserializeV2(byteArray, index));
     this.speedOld = v2.clone(this.getVelocity());
+    this.setMass(deserializeFix(byteArray, index));
     this.angle = deserializeFix(byteArray, index);
     this.angleOld = this.angle;
     this.rotationSpeed = deserializeFix(byteArray, index);
@@ -47,7 +49,7 @@ PhysicsBody.prototype.deserialize = function(byteArray, index) {
 }
 
 PhysicsBody.prototype.getSerializationSize = function() {
-    return 28;
+    return 32;
 }
 
 PhysicsBody.prototype.destroy = function(entity) {
@@ -58,6 +60,8 @@ PhysicsBody.prototype.getPos = function() { return gameData.physicsWorld.getPos(
 PhysicsBody.prototype.setPos = function(pos) { gameData.physicsWorld.setPos(this.bodyId, pos); }
 PhysicsBody.prototype.getVelocity = function() { return gameData.physicsWorld.getVelocity(this.bodyId); }
 PhysicsBody.prototype.setVelocity = function(velocity) { gameData.physicsWorld.setVelocity(this.bodyId, velocity); }
+PhysicsBody.prototype.getMass = function() { return gameData.physicsWorld.getMass(this.bodyId); }
+PhysicsBody.prototype.setMass = function(mass) { gameData.physicsWorld.setMass(this.bodyId, mass); }
 
 PhysicsBody.prototype.rotateTo = function(angle, speed, dt) {
     if (this.angle == angle)

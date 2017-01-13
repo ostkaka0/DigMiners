@@ -22,7 +22,7 @@ ObjectWorld.prototype.add = function(object, id) {
     this.objects[object.id] = object;
     object.isActive = true;
     Object.keys(this.onAdd).forEach(function(key) {
-        this.onAdd[key](object);
+        if (this.onAdd[key]) this.onAdd[key](object);
     }.bind(this));
     return object;
 }
@@ -37,7 +37,7 @@ ObjectWorld.prototype.removeById = function(id) {
     if (!object) return;
     object.isActive = false;
     Object.keys(this.onRemove).forEach(function(key) {
-        this.onRemove[key](object);
+        if (this.onRemove[key]) this.onRemove[key](object);
     }.bind(this));
     if (this.useDestroyFunc)
         object.destroy();

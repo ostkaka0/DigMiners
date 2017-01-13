@@ -64,7 +64,7 @@ Spawner.prototype.update = function(entity) {
     this.numEntities++;
 }
 
-Spawner.prototype.destroy = function(entity) {
+Spawner.prototype.onDestroy = function(entity) {
     gameData.entityWorld.onRemove["Spawner.js_" + entity.id] = undefined;
 }
 

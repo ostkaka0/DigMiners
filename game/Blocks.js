@@ -167,7 +167,7 @@ Blocks.WoodCrate =  {
     onPlace: BlockFunctions.createEntity,
     createEntity: function(blockPos, block) {
         var entity = {};
-        entity.physicsBody = new PhysicsBody(v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), 0.01);
+        entity.physicsBody = new PhysicsBody(v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), 0.01, 4.0);
         entity.health = new Health(50, 50);
 
         var bodySprite = new Sprite(block.name);

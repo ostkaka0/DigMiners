@@ -5,6 +5,7 @@ PhysicsWorld = function() {
     this.pos = [];
     this.posOld = [];
     this.velocity = [];
+    this.masss = [];
     this.freeIds = [];
     this.pages = new Map2D();
     this.onCollision = [];
@@ -14,6 +15,7 @@ PhysicsWorld.prototype.update = function(dt) {
     // Update pos, velocity, posOld and pages
     this.forEach(this, function(id) {
         // Update pos, velocity
+        if (this.masss[id] == 0) return;
         this.pos[2 * id] += dt * this.velocity[2 * id] >> 0;
         this.pos[2 * id + 1] += dt * this.velocity[2 * id + 1] >> 0;
         this.velocity[2 * id] = fix.pow(0.01, dt) * this.velocity[2 * id] >> 0;
@@ -54,26 +56,26 @@ PhysicsWorld.prototype.update = function(dt) {
     var velocityEpsilon = toFix(0.01);
     // Collision:
     this.forEach(this, function(id) {
+        var mass = this.getMass(id);
         var velocity = this.getVelocity(id);
-        if (v2.length(velocity) < velocityEpsilon)
+        if (v2.length(velocity) < velocityEpsilon || mass == 0)
             return;
         var pos = this.getPos(id);
         var posOld = this.getPosOld(id);
-        var mass = 1.0;
         var bodies = [];
         this.getBodiesInRadius(bodies, posOld, 0.5);
         forOf(this, bodies, function(otherId) {
             // No self collision
             if (otherId == id) return;
             
+            var otherMass = this.getMass(otherId);
             var otherVelocity = this.getVelocity(otherId);
             
             // Only do collision once
-            if (otherId > id && v2.length(otherVelocity) >= velocityEpsilon) return;
+            if (otherId > id && v2.length(otherVelocity) >= velocityEpsilon && otherMass != 0) return;
 
             var otherPos = this.getPos(otherId);
             var otherPosOld = this.getPosOld(otherId);
-            var otherMass = 1.0;
 
             // Calc position
             var dir = [0, 0];
@@ -84,17 +86,19 @@ PhysicsWorld.prototype.update = function(dt) {
                 dir = [1, 0];
             var deltaPos = [0, 0];
             v2.mul((1.0 - dis) / 2.0, dir, deltaPos);
-            v2.sub(pos, deltaPos, pos);
-            v2.add(otherPos, deltaPos, otherPos);
+            if (otherMass / mass > 0.1)
+                pos = [pos[0] - deltaPos[0] * Math.min(2.0, otherMass / mass), pos[1] - deltaPos[1] * Math.min(2.0, otherMass / mass)];
+            if (mass / otherMass > 0.1)
+                otherPos = [otherPos[0] + deltaPos[0] * Math.min(2.0, mass / otherMass), otherPos[1] + deltaPos[1] * Math.min(2.0, mass / otherMass)];
 
             // Calc velocity
-            var velocityX = fix.mul(velocity[0], fix.sub(mass, otherMass)) + fix.div(fix.mul(2, fix.mul(otherMass, otherVelocity[0])), fix.add(mass, otherMass));
-            var velocityY = fix.mul(velocity[1], fix.sub(mass, otherMass)) + fix.div(fix.mul(2, fix.mul(otherMass, otherVelocity[1])), fix.add(mass, otherMass));
-            var otherVelocityX = fix.mul(otherVelocity[1], fix.sub(otherMass, mass)) + fix.div(fix.mul(2, fix.mul(mass, velocity[0])), fix.add(mass, otherMass));
-            var otherVelocityY = fix.mul(otherVelocity[1], fix.sub(otherMass, mass)) + fix.div(fix.mul(2, fix.mul(mass, velocity[1])), fix.add(mass, otherMass));
-            var collisionVelocityFactor = Math.min(8, 80 * (1.0 - dis));
-            velocity = [velocityX - collisionVelocityFactor * deltaPos[0], velocityY - collisionVelocityFactor * deltaPos[1]];
-            otherVelocity = [otherVelocityX + collisionVelocityFactor * deltaPos[0], otherVelocityY + collisionVelocityFactor * deltaPos[1]];
+            var velocityX = fix.mul(velocity[0], Math.min(1.0, Math.max(-1.0, fix.sub(mass, otherMass)))) + fix.div(fix.mul(2, fix.mul(otherMass, otherVelocity[0])), fix.add(mass, otherMass));
+            var velocityY = fix.mul(velocity[1], Math.min(1.0, Math.max(-1.0, fix.sub(mass, otherMass)))) + fix.div(fix.mul(2, fix.mul(otherMass, otherVelocity[1])), fix.add(mass, otherMass))
+            var otherVelocityX = fix.mul(otherVelocity[0], Math.min(1.0, Math.max(-1.0, fix.sub(otherMass, mass)))) + fix.div(fix.mul(2, fix.mul(mass, velocity[0])), fix.add(mass, otherMass));
+            var otherVelocityY = fix.mul(otherVelocity[1], Math.min(1.0, Math.max(-1.0, fix.sub(otherMass, mass)))) + fix.div(fix.mul(2, fix.mul(mass, velocity[1])), fix.add(mass, otherMass));
+            var collisionVelocityFactor = 0.0; //Math.min(8, 80 * (1.0 - dis));
+            velocity = [velocityX - collisionVelocityFactor * Math.min(2.0, otherMass / mass) * deltaPos[0], velocityY - collisionVelocityFactor * Math.min(2.0, otherMass / mass) * deltaPos[1]];
+            otherVelocity = [otherVelocityX + collisionVelocityFactor * Math.min(2.0, mass / otherMass) * deltaPos[0], otherVelocityY + collisionVelocityFactor * Math.min(2.0, mass / otherMass) * deltaPos[1]];
 
             this.setPos(otherId, otherPos);
             this.setVelocity(otherId, otherVelocity);
@@ -114,9 +118,11 @@ PhysicsWorld.prototype.update = function(dt) {
     }
 }
 
-PhysicsWorld.prototype.add = function(pos, velocity) {
+PhysicsWorld.prototype.add = function(pos, velocity, mass) {
     if (pos == undefined) pos = [0, 0];
     if (velocity == undefined) velocity = [0, 0];
+    if (mass == undefined) mass = 1.0;
+    else console.log("mass is " + mass);
 
     var id;
 
@@ -124,6 +130,7 @@ PhysicsWorld.prototype.add = function(pos, velocity) {
         this.pos.push(fixToInt32(pos[0]), fixToInt32(pos[1]));
         this.posOld.push(fixToInt32(pos[0]), fixToInt32(pos[1]));
         this.velocity.push(fixToInt32(velocity[0]), fixToInt32(velocity[1]));
+        this.masss.push(fixToInt32(mass));
         id = this.numBodies++;
     } else {
         id = this.freeIds.pop();
@@ -133,6 +140,7 @@ PhysicsWorld.prototype.add = function(pos, velocity) {
         this.posOld[2 * id + 1] = fixToInt32(pos[1]);
         this.velocity[2 * id] = fixToInt32(velocity[0]);
         this.velocity[2 * id + 1] = fixToInt32(velocity[1]);
+        this.masss[id] = fixToInt32(mass);
     }
 
     var pagePos = [Math.floor(fixFromInt32(this.pos[2 * id]) / pageDim), Math.floor(fixFromInt32(this.pos[2 * id + 1]) / pageDim)];
@@ -236,4 +244,12 @@ PhysicsWorld.prototype.getVelocity = function(id) {
 PhysicsWorld.prototype.setVelocity = function(id, velocity) {
     this.velocity[2 * id] = fixToInt32(velocity[0]);
     this.velocity[2 * id + 1] = fixToInt32(velocity[1]);
+}
+
+PhysicsWorld.prototype.getMass = function(id) {
+    return fixFromInt32(this.masss[id]);
+}
+
+PhysicsWorld.prototype.setMass = function(id, weight) {
+    this.masss[id] = fixToInt32(weight);
 }
