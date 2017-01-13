@@ -5,8 +5,8 @@ Inventory = function() {
 
 Inventory.prototype.sortItems = function() {
     this.items.sort(function(a, b) {
-        var aType = gameData.itemRegister[a.id];
-        var bType = gameData.itemRegister[b.id];
+        var aType = Config.itemRegister[a.id];
+        var bType = Config.itemRegister[b.id];
         
         if (aType.type == "tool" && bType.type != "tool")
             return -1;
@@ -25,7 +25,7 @@ Inventory.prototype.sortItems = function() {
 
 Inventory.prototype.addItem = function(gameData, id, amount) {
     //console.log("adding " + amount + " " + id);
-    var maxStack = gameData.itemRegister[id].maxStackSize;
+    var maxStack = Config.itemRegister[id].maxStackSize;
     for (var i = 0; true; ++i) {
         if (amount < 0) {
             console.log("inventory bad thing happens!");
@@ -38,7 +38,7 @@ Inventory.prototype.addItem = function(gameData, id, amount) {
         }
         if (i >= this.items.length || !this.items[i]) {
             var added = (amount <= maxStack ? amount : maxStack);
-            this.items.push({ 'id': id, 'name': gameData.itemRegister[id].name, 'amount': added });
+            this.items.push({ 'id': id, 'name': Config.itemRegister[id].name, 'amount': added });
             amount -= added;
             continue;
         }
@@ -108,7 +108,7 @@ Inventory.prototype.removeStack = function(id) {
 Inventory.prototype.dequipAll = function(gameData, type, arg) {
     var dequippedItems = [];
     for (var i = 0; i < this.items.length; ++i) {
-        var itemType = gameData.itemRegister[this.items[i].id];
+        var itemType = Config.itemRegister[this.items[i].id];
         if (itemType.type == type && this.items[i].equipped) {
             this.items[i].equipped = false;
             dequippedItems.push([i, this.items[i].id]);
@@ -122,7 +122,7 @@ Inventory.prototype.getEquippedItemType = function(type) {
     for (var i = 0; i < this.items.length; ++i) {
         var item = this.items[i];
         if (item.equipped) {
-            var itemType = gameData.itemRegister[item.id];
+            var itemType = Config.itemRegister[item.id];
             if (itemType.type == type)
                 return itemType;
         }
@@ -133,7 +133,7 @@ Inventory.prototype.getEquippedStackId = function(type) {
     for (var i = 0; i < this.items.length; ++i) {
         var item = this.items[i];
         if (item.equipped) {
-            var itemType = gameData.itemRegister[item.id];
+            var itemType = Config.itemRegister[item.id];
             if (itemType.type == type)
                 return i;
         }

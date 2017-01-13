@@ -6,7 +6,7 @@ MessageRequestSpawn = function(playerName, classId) {
 
 MessageRequestSpawn.prototype.execute = function(gameData, player) {
     if (player.entity != null && player.entityId != null) return;
-    if (gameData.tickId - player.deathTick < 20 * gameData.respawnTime) return;
+    if (gameData.tickId - player.deathTick < 20 * Config.respawnTime) return;
 
     var entityId = gameData.idList.next();
     var classType = PlayerClassRegister[this.classId];

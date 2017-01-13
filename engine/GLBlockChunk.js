@@ -24,10 +24,10 @@ GLBlockChunk.prototype.update = function(gl, gameData, blockChunk, chunkX, chunk
             if (x - 1 < 0)
                 blockIds[2] = getForeground(gameData.blockWorld, chunkX * BLOCK_CHUNK_DIM + x - 1, chunkY * BLOCK_CHUNK_DIM + y);
 
-            var tiles = [gameData.blockRegister[blockIds[0]],
-            gameData.blockRegister[blockIds[1]],
-            gameData.blockRegister[blockIds[2]],
-            gameData.blockRegister[blockIds[3]]];
+            var tiles = [Config.blockRegister[blockIds[0]],
+            Config.blockRegister[blockIds[1]],
+            Config.blockRegister[blockIds[2]],
+            Config.blockRegister[blockIds[3]]];
 
             for (var i = 0; i < 4; i++) {
                 var blockId = blockIds[i];

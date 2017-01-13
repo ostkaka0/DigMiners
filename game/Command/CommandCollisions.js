@@ -28,6 +28,7 @@ CommandCollisions = function(collisions) {
 }
 
 CommandCollisions.prototype.execute = function(gameData) {
+    return;
     var physicsWorld = gameData.physicsWorld;
     var entities = gameData.entityWorld.objects;
 

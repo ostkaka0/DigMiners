@@ -10,7 +10,7 @@ MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
     if (!entity) return;
     var item = entity.inventory.items[this.stackId];
     if (!item) return;
-    var itemType = gameData.itemRegister[item.id];
+    var itemType = Config.itemRegister[item.id];
     if (itemType && itemType.typeOfType == "block") {
 
         if (!entity.inventory.hasItem(item.id, 1))
@@ -24,7 +24,7 @@ MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
         var localX = Math.floor(this.x) - blockChunkX * BLOCK_CHUNK_DIM;
         var localY = Math.floor(this.y) - blockChunkY * BLOCK_CHUNK_DIM;
 
-        var blockType = gameData.blockRegister[itemType.blockId];
+        var blockType = Config.blockRegister[itemType.blockId];
         var type = blockType.type;
 
         var blockChunk = gameData.blockWorld.get(blockChunkX, blockChunkY);

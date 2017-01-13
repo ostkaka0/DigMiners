@@ -149,14 +149,14 @@ gameData.entityWorld.onAdd["server.js"] = function(entity) {
 update = function() {
     var diff = process.hrtime(firstTickTime);
     var diff_ms = diff[0] * 1e3 + diff[1] / 1e6;
-    var delay = -diff_ms + (tickNum + skippedTicks) * gameData.tickDuration;
-    if (delay < -gameData.tickDuration) {
-        var numTicksToSkip = Math.ceil(-delay / gameData.tickDuration);
+    var delay = -diff_ms + (tickNum + skippedTicks) * Config.tickDuration;
+    if (delay < -Config.tickDuration) {
+        var numTicksToSkip = Math.ceil(-delay / Config.tickDuration);
         skippedTicks += numTicksToSkip;
         console.log(numTicksToSkip + " ticks skipped!");
     }
     setTimeout(update, delay);
-    tick(gameData.tickDuration / 1000.0);
+    tick(Config.tickDuration / 1000.0);
     tickNum++;
 }
 
@@ -219,7 +219,7 @@ io.on("connection", function(socket) {
         //setTimeout(function() {
         var counter = new IndexCounter();
         var commandId = deserializeInt32(data, counter);
-        var command = new gameData.commandTypes.list[commandId]();
+        var command = new Config.commandTypes.list[commandId]();
         command.deserialize(data, counter);
         sendCommand(command);
         //}, 300);
@@ -234,7 +234,7 @@ io.on("connection", function(socket) {
         connections[socket.id].ping = 2 * (Date.now() - time);
     });
 
-    gameData.messagesToServer.forEach(function(messageType) {
+    Config.messagesToServer.forEach(function(messageType) {
         socket.on(messageType.prototype.idString, function(data) {
             var message = new messageType();
             message.receive(gameData, data);
@@ -245,7 +245,7 @@ io.on("connection", function(socket) {
     });
 });
 
-http.listen(gameData.port, function() {
+http.listen(Config.port, function() {
     console.log("Listening on :3000");
 });
 

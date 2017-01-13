@@ -39,7 +39,7 @@ Projectile.prototype.deserialize = function(byteArray, index) {
     this.angle = deserializeFix(byteArray, index);
     this.speed = deserializeFix(byteArray, index);
     this.maxDistance = deserializeFix(byteArray, index);
-    this.projectileType = gameData.projectileRegister[deserializeInt8(byteArray, index)];
+    this.projectileType = Config.projectileRegister[deserializeInt8(byteArray, index)];
     this.posClient = v2.create(0, 0);
     this.posClientOld = v2.create(0, 0);
 }

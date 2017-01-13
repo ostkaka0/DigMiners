@@ -7,7 +7,7 @@ CommandParticles = function(particleId, pos, time) {
 
 CommandParticles.prototype.execute = function(gameData) {
     if (!isServer)
-        createDespawningParticles(gameData.particleRegister[this.particleId], this.pos, this.time);
+        createDespawningParticles(Config.particleRegister[this.particleId], this.pos, this.time);
 }
 
 CommandParticles.prototype.serialize = function(byteArray, index) {

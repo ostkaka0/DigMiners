@@ -57,7 +57,7 @@ DigObstacleBehaviour.prototype.initialize = function() {
     var normalized = v2.create(0, 0);
     v2.normalize(diff, normalized);
     sendCommand(new CommandEntityRotate(this.entity.id, normalized));
-    this.stopTick = gameData.tickId + (4000 / gameData.tickDuration >> 0);
+    this.stopTick = gameData.tickId + (4000 / Config.tickDuration >> 0);
     this.nextRunTick = null;
 }
 
@@ -66,7 +66,7 @@ DigObstacleBehaviour.prototype.run = function() {
     var density = getDensity(gameData.tileWorld, this.targetTilePos[0], this.targetTilePos[1]);
     if (gameData.tickId >= this.stopTick) {
         // No digging for 2 seconds
-        this.nextRunTick = gameData.tickId + (2000 / gameData.tickDuration >> 0);
+        this.nextRunTick = gameData.tickId + (2000 / Config.tickDuration >> 0);
         return false;
     }
 

@@ -22,7 +22,7 @@ EquippedItems.prototype.deserialize = function(byteArray, index) {
     for (var i = 0; i < itemsLength; ++i) {
         var key = deserializeUTF8(byteArray, index);
         var id = deserializeInt32(byteArray, index);
-        this.items[key] = gameData.itemRegister[id];
+        this.items[key] = Config.itemRegister[id];
     }
 }
 

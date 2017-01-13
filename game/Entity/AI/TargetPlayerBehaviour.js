@@ -53,7 +53,7 @@ TargetPlayerBehaviour.prototype.run = function() {
             var expandList = [];
             aStarFlowField(this.flowField, expandList, gameData.tileWorld, gameData.blockWorld, tilePos, tilePosTarget, 25600);
             var delay = Math.min(2000, expandList.length * 10 + Math.floor(dis * 10));
-            this.nextPathUpdateTick = gameData.tickId + (delay / gameData.tickDuration >> 0);
+            this.nextPathUpdateTick = gameData.tickId + (delay / Config.tickDuration >> 0);
             this.lastTargetPos = v2.clone(this.target.physicsBody.getPos());
         }
     }

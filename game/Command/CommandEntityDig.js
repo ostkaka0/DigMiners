@@ -14,7 +14,7 @@ CommandEntityDig.prototype.execute = function(gameData) {
     if (!entity || !entity.movement) return;
 
     var tileWorld = gameData.tileWorld;
-    var targetTile = gameData.tileRegister[getTileId(gameData.tileWorld, this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1])];
+    var targetTile = Config.tileRegister[getTileId(gameData.tileWorld, this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1])];
     var targetDensity = getDensity(gameData.tileWorld, this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1]);
     var onDensityChange = null;
     var digDis = 1.5;
@@ -48,7 +48,7 @@ CommandEntityDig.prototype.execute = function(gameData) {
         // Only process dug ores on server
         for (var i = 0; i < dug.length; ++i) {
             if (!dug[i] || dug[i] <= 0) continue;
-            var tileName = gameData.tileRegister[i].name;
+            var tileName = Config.tileRegister[i].name;
             var itemId = i;
             if (entity.inventory && entity.controlledByPlayer)
                 sendCommand(new CommandPlayerOreInventory(entity.controlledByPlayer.playerId, OreInventoryActions.ADD_ORE, itemId, dug[i]));

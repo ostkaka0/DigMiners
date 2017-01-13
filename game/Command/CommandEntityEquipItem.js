@@ -10,7 +10,7 @@ CommandEntityEquipItem.prototype.execute = function(gameData) {
     var entity = gameData.entityWorld.objects[this.entityId];
     if (!entity) return;
 
-    var itemType = gameData.itemRegister[this.itemId];
+    var itemType = Config.itemRegister[this.itemId];
     if (!itemType.isEquipable) return;
 
     if (!entity.equippedItems) return;

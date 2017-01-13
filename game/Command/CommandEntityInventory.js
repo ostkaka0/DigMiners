@@ -24,7 +24,7 @@ CommandEntityInventory.prototype.execute = function(gameData) {
             var entry = removed[i];
             var stackId = entry[0];
             var item = entry[1];
-            var itemType = gameData.itemRegister[item.id];
+            var itemType = Config.itemRegister[item.id];
             if (item.equipped)
                 Entity.onDequip(entity, stackId, itemType);
         };
