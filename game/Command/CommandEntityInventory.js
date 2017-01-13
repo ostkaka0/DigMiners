@@ -12,8 +12,8 @@ CommandEntityInventory = function(entityId, actionId, itemId, amount) {
     this.amount = amount;
 }
 
-CommandEntityInventory.prototype.execute = function(gameData) {
-    var entity = gameData.entityWorld.objects[this.entityId];
+CommandEntityInventory.prototype.execute = function() {
+    var entity = gameData.world.entityWorld.objects[this.entityId];
     if (!entity || !entity.inventory) return;
     if (this.actionId == InventoryActions.ADD_ITEM) {
         entity.inventory.addItem(gameData, this.itemId, this.amount);

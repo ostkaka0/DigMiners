@@ -6,8 +6,8 @@ CommandEntityMove = function(entityId, direction, pos) {
         this.pos = v2.cloneFix(pos);
 }
 
-CommandEntityMove.prototype.execute = function(gameData) {
-    var entity = gameData.entityWorld.objects[this.entityId];
+CommandEntityMove.prototype.execute = function() {
+    var entity = gameData.world.entityWorld.objects[this.entityId];
     if (!entity) return;
     var movement = entity.movement;
     if (!movement) return;

@@ -115,7 +115,7 @@ carveCircle = function(gameData, x, y, radius, digSpeed, maxHardness, onDensityC
     if (digSpeed == undefined || digSpeed == null)
         digSpeed = 1.0;
 
-    var tileWorld = gameData.tileWorld;
+    var tileWorld = gameData.world.tileWorld;
     var tileRegister = Config.tileRegister;
 
     var dug = [];

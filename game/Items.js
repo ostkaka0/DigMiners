@@ -15,7 +15,7 @@ ItemFunctions.Shovel = function(entity, item) {
         var chunkPos = [];
         var localPos = [];
         v2WorldToBlockChunk(toolUsePos, chunkPos, localPos);
-        var blockChunk = gameData.blockWorld.get(chunkPos[0], chunkPos[1]);
+        var blockChunk = gameData.world.blockWorld.get(chunkPos[0], chunkPos[1]);
         if (blockChunk) {
             var blockId = blockChunk.getForeground(localPos[0], localPos[1]);
             if (blockId) {
@@ -31,13 +31,13 @@ ItemFunctions.Shovel = function(entity, item) {
         }
 
         // Dig terrain
-        gameData.commands.push(new CommandEntityDig(entity.id, entity.physicsBody.getPos(), dir, 1.5, Entity.getDigSpeed(entity), Entity.getMaxDigHardness(entity)));
+        gameData.world.commands.push(new CommandEntityDig(entity.id, entity.physicsBody.getPos(), dir, 1.5, Entity.getDigSpeed(entity), Entity.getMaxDigHardness(entity)));
     }
 }
 
 ItemFunctions.Sword = function(entity, item) {
     if (isServer) {
-        var physicsWorld = gameData.physicsWorld;
+        var physicsWorld = gameData.world.physicsWorld;
         var hitRange = item.hitRange || 1.0;
         var hitRadius = item.hitRadius || 0.5;
         var damage = item.damage || 10.0;
@@ -55,7 +55,7 @@ ItemFunctions.Sword = function(entity, item) {
 
         bodies.forEach(function(bodyId) {
             if (bodyId == entityBodyId) return;
-            var targetEntity = gameData.physicsEntities[bodyId];
+            var targetEntity = gameData.world.physicsEntities[bodyId];
             if (!targetEntity) return;
 
             hitEntities.push(targetEntity.id);
@@ -65,7 +65,7 @@ ItemFunctions.Sword = function(entity, item) {
 
         // TODO: CommandEntityHit
         //if (isServer) {
-        //    gameData.commands.push(new CommandEntityHit(entity, hitEntities));
+        //    gameData.world.commands.push(new CommandEntityHit(entity, hitEntities));
         //}
     }
 }
@@ -128,7 +128,7 @@ ItemFunctions.RangedWeapon = function(entity, itemType) {
                 projectileMaxDistance *= 1.0 - 0.5 * scatter + scatter * Math.random();
             }
             var toolUsePos = [entity.physicsBody.getPos()[0] + 0.5 * dir[0], entity.physicsBody.getPos()[1] + 0.5 * dir[1]];
-            gameData.commands.push(new CommandProjectileSpawn(idList.next(), v2.clone(toolUsePos), projectileAngle, projectileSpeed, projectileMaxDistance, itemType.projectileType, entity.id));
+            gameData.world.commands.push(new CommandProjectileSpawn(gameData.world.idList.next(), v2.clone(toolUsePos), projectileAngle, projectileSpeed, projectileMaxDistance, itemType.projectileType, entity.id));
         }
     }
 }

@@ -4,11 +4,11 @@ CommandEntitySpawn = function(gameData, entity, entityId, teamId) {
     this.entityId = entityId;
 }
 
-CommandEntitySpawn.prototype.execute = function(gameData) {
+CommandEntitySpawn.prototype.execute = function() {
     this.entity.inventory = new Inventory();
-    if (gameData.entityWorld.objects[this.entityId])
-        gameData.entityWorld.remove(gameData.entityWorld.objects[this.entityId]);
-    gameData.entityWorld.add(this.entity, this.entityId);
+    if (gameData.world.entityWorld.objects[this.entityId])
+        gameData.world.entityWorld.remove(gameData.world.entityWorld.objects[this.entityId]);
+    gameData.world.entityWorld.add(this.entity, this.entityId);
 }
 
 CommandEntitySpawn.prototype.serialize = function(byteArray, index) {

@@ -1,7 +1,7 @@
 PROJECTILE_MAX_STEP_LENGTH = 0.125;
 
 entityFunctionProjectileSimulate = function(dt) {
-    gameData.entityWorld.objectArray.forEach(function(entity) {
+    gameData.world.entityWorld.objectArray.forEach(function(entity) {
         if (entity.projectile)
             projectileEntitySimulate(entity, dt);
     });
@@ -39,31 +39,31 @@ projectileEntitySimulate = function(entity, dt) {
         
         var bodies = [];
         var bodyDistances = [];
-        gameData.physicsWorld.getBodiesInRadiusSorted(bodies, bodyDistances, pos, projectile.projectileType.radius);
+        gameData.world.physicsWorld.getBodiesInRadiusSorted(bodies, bodyDistances, pos, projectile.projectileType.radius);
         for (var j = 0; j < bodies.length; ++j) {
-            var hitEntity = gameData.physicsEntities[bodies[j]];
+            var hitEntity = gameData.world.physicsEntities[bodies[j]];
             if (hitEntity && (!projectile.shooterEntityId || hitEntity.id != projectile.shooterEntityId)) {
-                gameData.events.trigger("projectileHitEntity", entity, hitEntity);
+                gameData.world.events.trigger("projectileHitEntity", entity, hitEntity);
                 projectile.hit = true;
                 break;
             }
         }
 
         var blockTilePos = [Math.floor(pos[0]), Math.floor(pos[1])];
-        var blockId = getForeground(gameData.blockWorld, blockTilePos[0], blockTilePos[1]);
+        var blockId = getForeground(gameData.world.blockWorld, blockTilePos[0], blockTilePos[1]);
         var blockType = Config.blockRegister[blockId];
         var isBulletSolid = (blockType.isBulletSolid == undefined || entity.projectile.projectileType.isExplosive) ? blockType.isSolid : blockType.isBulletSolid;
         if (blockId != 0 && isBulletSolid && v2.dot([Math.cos(projectile.angle), -Math.sin(projectile.angle)], [blockTilePos[0] + 0.5 - pos[0], blockTilePos[1] + 0.5 - pos[1]]) > 0.0) {
-            gameData.events.trigger("projectileHitBlock", entity, blockTilePos);
+            gameData.world.events.trigger("projectileHitBlock", entity, blockTilePos);
             projectile.hit = true;
             break;
         }
         if (blockType.bulletFunction)
             blockType.bulletFunction(blockTilePos, blockType, entity);
 
-        var density = getDensity(gameData.tileWorld, blockTilePos[0], blockTilePos[1]);
+        var density = getDensity(gameData.world.tileWorld, blockTilePos[0], blockTilePos[1]);
         if (density > 127) {
-            gameData.events.trigger("projectileHitTile", entity, blockTilePos);
+            gameData.world.events.trigger("projectileHitTile", entity, blockTilePos);
             projectile.hit = true;
             break;
         }
@@ -73,7 +73,7 @@ projectileEntitySimulate = function(entity, dt) {
     }
 
     if (projectile.hit) {
-        gameData.events.trigger("projectileHit", entity, v2.clone(pos));
+        gameData.world.events.trigger("projectileHit", entity, v2.clone(pos));
         if (!isServer && projectile.sprite) {
             projectile.sprite.anchor.x = 1.0;
             if (!projectile.sprite.visible) {

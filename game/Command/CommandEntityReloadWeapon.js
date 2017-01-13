@@ -5,8 +5,8 @@ CommandEntityReloadWeapon = function(entityId, stackId, ammo) {
     this.ammo = ammo;
 }
 
-CommandEntityReloadWeapon.prototype.execute = function(gameData) {
-    var entity = gameData.entityWorld.objects[this.entityId];
+CommandEntityReloadWeapon.prototype.execute = function() {
+    var entity = gameData.world.entityWorld.objects[this.entityId];
     if (!entity || !entity.inventory) return;
     var item = entity.inventory.items[this.stackId];
     if (!item) return;

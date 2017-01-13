@@ -5,8 +5,8 @@ CommandDig = function(pos, radius) {
     this.radius = toFix(radius);
 }
 
-CommandDig.prototype.execute = function(gameData) {
-    var tileWorld = gameData.tileWorld;
+CommandDig.prototype.execute = function() {
+    var tileWorld = gameData.world.tileWorld;
     carveCircle(gameData, this.pos[0], this.pos[1], this.radius);
 }
 

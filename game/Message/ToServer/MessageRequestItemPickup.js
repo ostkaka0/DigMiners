@@ -4,10 +4,10 @@ MessageRequestItemPickup = function(entityId) {
 }
 
 MessageRequestItemPickup.prototype.execute = function(gameData, player) {
-    var entity = gameData.entityWorld.objects[this.entityId];
+    var entity = gameData.world.entityWorld.objects[this.entityId];
     if (!entity) return;
     if (entity.item && !entity.pickedUp) {
-        var playerEntity = gameData.entityWorld.objects[player.entityId];
+        var playerEntity = gameData.world.entityWorld.objects[player.entityId];
         if (!playerEntity) return;
         var physicsBody = entity.physicsBody;
         var playerPhysicsBody = playerEntity.physicsBody;

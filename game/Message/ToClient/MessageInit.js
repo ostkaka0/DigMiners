@@ -1,18 +1,18 @@
 
 MessageInit = function(gameData, player) {
     this.players = [];
-    this.tickId = (gameData) ? gameData.tickId : 0;
+    this.tickId = (gameData) ? gameData.world.tickId : 0;
     if (player) {
         this.playerId = player.id;
         this.entityId = player.entityId;
     }
 
     if (!gameData) return;
-    gameData.entityWorld.update();
+    gameData.world.entityWorld.update();
 }
 
 MessageInit.prototype.execute = function(gameData) {
-    gameData.tickId = this.tickId;
+    gameData.world.tickId = this.tickId;
     var player = gameData.playerWorld.add(new Player(this.playerId, this.entityId), this.playerId);
     global.player = player;
 
@@ -30,7 +30,7 @@ MessageInit.prototype.getSerializationSize = function(gameData) {
 
     // Calculate serializationSize of entities
     var entitySizes = {};
-    forOf(this, gameData.entityWorld.objectArray, function(entity) {
+    forOf(this, gameData.world.entityWorld.objectArray, function(entity) {
         size += 8; // Entity-id, entitySize
         var entitySize = 0;
         forIn(this, entity, function(componentKey) {
@@ -59,11 +59,11 @@ MessageInit.prototype.send = function(gameData, socket) {
     serializeInt32(byteArray, index, this.tickId);
     serializeInt32(byteArray, index, this.playerId);
     serializeInt32(byteArray, index, this.entityId);
-    serializeInt32(byteArray, index, gameData.generator.seed);
+    serializeInt32(byteArray, index, gameData.world.generator.seed);
 
     // Serialize entities
-    serializeInt32(byteArray, index, gameData.entityWorld.objectArray.length);
-    gameData.entityWorld.objectArray.forEach(function(entity) {
+    serializeInt32(byteArray, index, gameData.world.entityWorld.objectArray.length);
+    gameData.world.entityWorld.objectArray.forEach(function(entity) {
         serializeInt32(byteArray, index, entity.id);
         serializeInt32(byteArray, index, this.entitySizes[entity.id]);
         Object.keys(entity).forEach(function(key) {
@@ -92,7 +92,7 @@ MessageInit.prototype.receive = function(gameData, byteArray) {
     this.tickId = deserializeInt32(byteArray, index);
     this.playerId = deserializeInt32(byteArray, index);
     this.entityId = deserializeInt32(byteArray, index);
-    gameData.generator = new Generator(deserializeInt32(byteArray, index));
+    gameData.world.generator = new Generator(deserializeInt32(byteArray, index));
 
     // Deserialize entities
     var amountOfEntities = deserializeInt32(byteArray, index);
@@ -111,9 +111,9 @@ MessageInit.prototype.receive = function(gameData, byteArray) {
         }
 
         // If entity received already exists, remove existing(convenience)
-        if (gameData.entityWorld.objects[entityId])
-            gameData.entityWorld.remove(gameData.entityWorld.objects[entityId]);
-        gameData.entityWorld.add(entity, entityId);
+        if (gameData.world.entityWorld.objects[entityId])
+            gameData.world.entityWorld.remove(gameData.world.entityWorld.objects[entityId]);
+        gameData.world.entityWorld.add(entity, entityId);
     }
 
     // Deserialize players

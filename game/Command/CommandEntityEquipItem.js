@@ -6,8 +6,8 @@ CommandEntityEquipItem = function(entityId, stackId, itemId, equipped) {
     this.equipped = equipped;
 }
 
-CommandEntityEquipItem.prototype.execute = function(gameData) {
-    var entity = gameData.entityWorld.objects[this.entityId];
+CommandEntityEquipItem.prototype.execute = function() {
+    var entity = gameData.world.entityWorld.objects[this.entityId];
     if (!entity) return;
 
     var itemType = Config.itemRegister[this.itemId];

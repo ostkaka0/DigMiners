@@ -5,19 +5,19 @@ DigObstacleBehaviour = function(entity) {
     this.oldMoveDir = null;
     this.stopTick = null;
     this.nextRunTick = null;
-    this.nextCanRunTickId = gameData.tickId;
+    this.nextCanRunTickId = gameData.world.tickId;
     this.canRunOldPos = null;
 }
 
 DigObstacleBehaviour.prototype.canRun = function() {
     if (!this.entity.equippedItems.items["tool"] || this.entity.equippedItems.items["tool"].itemFunction != ItemFunctions.Shovel)
         return false;
-    if (this.nextRunTick && gameData.tickId < this.nextRunTick)
+    if (this.nextRunTick && gameData.world.tickId < this.nextRunTick)
         return false;
-    if (gameData.tickId < this.nextCanRunTickId)
+    if (gameData.world.tickId < this.nextCanRunTickId)
         return false;
 
-    this.nextCanRunTickId = gameData.tickId + 5;
+    this.nextCanRunTickId = gameData.world.tickId + 5;
     
 
 
@@ -37,8 +37,8 @@ DigObstacleBehaviour.prototype.canRun = function() {
     var tilePos = [Math.floor(digPos[0] - 0.5), Math.floor(digPos[1] - 0.5)];
     for (var i = 0; i < 4; i++) {
         var itPos = [tilePos[0] + (i & 1), tilePos[1] + (i >> 1)];
-        var blockId = getForeground(gameData.blockWorld, itPos[0], itPos[1]);
-        var density = getDensity(gameData.tileWorld, itPos[0], itPos[1]);
+        var blockId = getForeground(gameData.world.blockWorld, itPos[0], itPos[1]);
+        var density = getDensity(gameData.world.tileWorld, itPos[0], itPos[1]);
         if (blockId != 0 || density > 127) {
             this.targetTilePos = itPos;
             return true;
@@ -57,16 +57,16 @@ DigObstacleBehaviour.prototype.initialize = function() {
     var normalized = v2.create(0, 0);
     v2.normalize(diff, normalized);
     sendCommand(new CommandEntityRotate(this.entity.id, normalized));
-    this.stopTick = gameData.tickId + (4000 / Config.tickDuration >> 0);
+    this.stopTick = gameData.world.tickId + (4000 / Config.tickDuration >> 0);
     this.nextRunTick = null;
 }
 
 DigObstacleBehaviour.prototype.run = function() {
-    var blockId = getForeground(gameData.blockWorld, this.targetTilePos[0], this.targetTilePos[1]);
-    var density = getDensity(gameData.tileWorld, this.targetTilePos[0], this.targetTilePos[1]);
-    if (gameData.tickId >= this.stopTick) {
+    var blockId = getForeground(gameData.world.blockWorld, this.targetTilePos[0], this.targetTilePos[1]);
+    var density = getDensity(gameData.world.tileWorld, this.targetTilePos[0], this.targetTilePos[1]);
+    if (gameData.world.tickId >= this.stopTick) {
         // No digging for 2 seconds
-        this.nextRunTick = gameData.tickId + (2000 / Config.tickDuration >> 0);
+        this.nextRunTick = gameData.world.tickId + (2000 / Config.tickDuration >> 0);
         return false;
     }
 

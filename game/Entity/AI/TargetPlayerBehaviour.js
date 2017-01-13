@@ -4,20 +4,20 @@ TargetPlayerBehaviour = function(entity, maxRadius) {
     this.maxRadius = maxRadius;
     this.target = null;
     this.flowField = null;
-    this.lastUpdateTickId = gameData.tickId;
-    this.nextPathUpdateTick = gameData.tickId;
+    this.lastUpdateTickId = gameData.world.tickId;
+    this.nextPathUpdateTick = gameData.world.tickId;
     this.lastTargetPos = null;
     this.spacebar = false;
     this.moving = false;
     this.isGunner = false;
     this.isAiming = false;
-    this.nextCanRunTickId = gameData.tickId;
+    this.nextCanRunTickId = gameData.world.tickId;
 }
 
 TargetPlayerBehaviour.prototype.canRun = function() {
-    if (gameData.tickId < this.nextCanRunTickId)
+    if (gameData.world.tickId < this.nextCanRunTickId)
         return false;
-    this.nextCanRunTickId = gameData.tickId + 40 + 40 * Math.random() >> 0;
+    this.nextCanRunTickId = gameData.world.tickId + 40 + 40 * Math.random() >> 0;
     this.target = this.getTarget();
     if (this.target == null)
         return false;
@@ -32,7 +32,7 @@ TargetPlayerBehaviour.prototype.initialize = function() {
 }
 
 TargetPlayerBehaviour.prototype.run = function() {
-    if (gameData.tickId % 5 != this.nextCanRunTickId % 5) return true;
+    if (gameData.world.tickId % 5 != this.nextCanRunTickId % 5) return true;
     if (!this.target || this.target.isDead || !this.target.isActive) {
         this.target = this.getTarget();
         // If it can't find a new target we must stop this behaviour
@@ -47,13 +47,13 @@ TargetPlayerBehaviour.prototype.run = function() {
 
     if (dis > this.maxRadius)
         return false;
-    if (gameData.tickId >= this.nextPathUpdateTick) {
+    if (gameData.world.tickId >= this.nextPathUpdateTick) {
         if (!this.lastTargetPos || !this.flowField || v2.sqrDistance(this.lastTargetPos, this.target.physicsBody.getPos()) > v2.sqrDistance(this.entity.physicsBody.getPos(), this.target.physicsBody.getPos())) {
             this.flowField = new Map2D();
             var expandList = [];
-            aStarFlowField(this.flowField, expandList, gameData.tileWorld, gameData.blockWorld, tilePos, tilePosTarget, 25600);
+            aStarFlowField(this.flowField, expandList, gameData.world.tileWorld, gameData.world.blockWorld, tilePos, tilePosTarget, 25600);
             var delay = Math.min(2000, expandList.length * 10 + Math.floor(dis * 10));
-            this.nextPathUpdateTick = gameData.tickId + (delay / Config.tickDuration >> 0);
+            this.nextPathUpdateTick = gameData.world.tickId + (delay / Config.tickDuration >> 0);
             this.lastTargetPos = v2.clone(this.target.physicsBody.getPos());
         }
     }
@@ -79,9 +79,9 @@ TargetPlayerBehaviour.prototype.run = function() {
     var tickInterval = Math.floor(40 * Math.min(1.0, dis / 40.0));
     tickInterval = Math.max(5, tickInterval);
     
-    if (gameData.tickId < this.lastUpdateTickId + tickInterval)
+    if (gameData.world.tickId < this.lastUpdateTickId + tickInterval)
         return true;
-    this.lastUpdateTickId = gameData.tickId;
+    this.lastUpdateTickId = gameData.world.tickId;
     
     var currentDir = this.entity.movement.direction;
     var attackDistance = this.getAttackDistance(tilePos, dir);
@@ -141,7 +141,7 @@ TargetPlayerBehaviour.prototype.destroy = function(entity) {
 TargetPlayerBehaviour.prototype.getTarget = function() {
     var shortestDistance = Number.MAX_VALUE;
     var shortestDistanceEntity = null;
-    gameData.entityWorld.objectArray.forEach(function(otherEntity) {
+    gameData.world.entityWorld.objectArray.forEach(function(otherEntity) {
         if (!otherEntity.health || !otherEntity.physicsBody) return;
         if (!otherEntity.team && !otherEntity.movement) return;
         if (this.entity.team && this.entity.team.value != Teams.None && (!otherEntity.team || otherEntity.team.value == this.entity.team.value)) return;
@@ -170,8 +170,8 @@ TargetPlayerBehaviour.prototype.getAttackDistance = function(pos, dir) {
         var step = [stepLength * dir[0], stepLength * dir[1]];
         v2.add(step, rayPos, rayPos);
         for (var i = 0; i < 40; i++) {
-            if (getDensity(gameData.tileWorld, rayPos[0], rayPos[1]) > 192) break;
-            if (getForeground(gameData.blockWorld, rayPos[0], rayPos[1]) != 0) break;
+            if (getDensity(gameData.world.tileWorld, rayPos[0], rayPos[1]) > 192) break;
+            if (getForeground(gameData.world.blockWorld, rayPos[0], rayPos[1]) != 0) break;
             
             v2.add(step, rayPos, rayPos);
             dis += stepLength;
