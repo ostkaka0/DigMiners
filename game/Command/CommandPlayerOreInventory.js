@@ -11,7 +11,7 @@ CommandPlayerOreInventory = function(playerId, actionId, itemId, amount) {
     this.amount = amount;
 }
 
-CommandPlayerOreInventory.prototype.execute = function(gameData) {
+CommandPlayerOreInventory.prototype.execute = function() {
     var player = gameData.playerWorld.objects[this.playerId];
     if (!player) return;
     if (this.actionId == OreInventoryActions.ADD_ORE) {

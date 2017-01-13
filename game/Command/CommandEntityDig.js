@@ -9,13 +9,13 @@ CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHardness
     this.maxDigHardness = maxDigHardness;
 }
 
-CommandEntityDig.prototype.execute = function(gameData) {
-    var entity = gameData.entityWorld.objects[this.entityId];
+CommandEntityDig.prototype.execute = function() {
+    var entity = gameData.world.entityWorld.objects[this.entityId];
     if (!entity || !entity.movement) return;
 
-    var tileWorld = gameData.tileWorld;
-    var targetTile = gameData.tileRegister[getTileId(gameData.tileWorld, this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1])];
-    var targetDensity = getDensity(gameData.tileWorld, this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1]);
+    var tileWorld = gameData.world.tileWorld;
+    var targetTile = Config.tileRegister[getTileId(gameData.world.tileWorld, this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1])];
+    var targetDensity = getDensity(gameData.world.tileWorld, this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1]);
     var onDensityChange = null;
     var digDis = 1.5;
 
@@ -48,7 +48,7 @@ CommandEntityDig.prototype.execute = function(gameData) {
         // Only process dug ores on server
         for (var i = 0; i < dug.length; ++i) {
             if (!dug[i] || dug[i] <= 0) continue;
-            var tileName = gameData.tileRegister[i].name;
+            var tileName = Config.tileRegister[i].name;
             var itemId = i;
             if (entity.inventory && entity.controlledByPlayer)
                 sendCommand(new CommandPlayerOreInventory(entity.controlledByPlayer.playerId, OreInventoryActions.ADD_ORE, itemId, dug[i]));
@@ -60,7 +60,7 @@ CommandEntityDig.prototype.execute = function(gameData) {
                 if (itemId != null) {
                     var physicsBody = entity.physicsBody;
 
-                    var itemEntityId = idList.next();
+                    var itemEntityId = gameData.world.idList.next();
                     var itemEntity = entityTemplates.item(itemId, 1, gameData);
                     itemEntity.physicsBody.setPos(v2.clone(physicsBody.getPos()));
                     itemEntity.physicsBody.angle = physicsBody.angle;

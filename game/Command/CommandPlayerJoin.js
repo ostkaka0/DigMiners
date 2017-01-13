@@ -5,7 +5,7 @@ CommandPlayerJoin = function(playerId, entityId, playerName, socketId) {
     this.socketId = socketId;
 }
 
-CommandPlayerJoin.prototype.execute = function(gameData) {
+CommandPlayerJoin.prototype.execute = function() {
     var player = new Player(this.playerId);
     if (isServer || this.playerId != global.player.id)
         gameData.playerWorld.add(player, this.playerId);
@@ -23,8 +23,8 @@ CommandPlayerJoin.prototype.execute = function(gameData) {
         // TODO: client requests chunks instead
         for (var x = -3; x < 3; ++x) {
             for (var y = -3; y < 3; ++y) {
-                var chunk = gameData.tileWorld.get(x, y);
-                var blockChunk = gameData.blockWorld.get(x, y);
+                var chunk = gameData.world.tileWorld.get(x, y);
+                var blockChunk = gameData.world.blockWorld.get(x, y);
                 var message = new MessageChunk(chunk, blockChunk, x, y);
                 message.send(socket);
             }

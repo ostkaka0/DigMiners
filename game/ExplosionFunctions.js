@@ -15,7 +15,7 @@ createExplosion = function(startPos, radius, entityDamage, blockDamage, tileDama
                     if (dis <= radius) {
                         v2.floor(pos, pos);
                         var damage = Math.floor((1 - dis / radius) * blockDamage);
-                        var strength = getStrength(gameData.blockWorld, pos[0], pos[1]);
+                        var strength = getStrength(gameData.world.blockWorld, pos[0], pos[1]);
                         sendCommand(new CommandBlockStrength(pos[0], pos[1], strength - damage));
                     }
                 }
@@ -24,7 +24,7 @@ createExplosion = function(startPos, radius, entityDamage, blockDamage, tileDama
 
         // Hurt entities
         if (entityDamage > 0) {
-            gameData.entityWorld.objectArray.forEach(function(entity) {
+            gameData.world.entityWorld.objectArray.forEach(function(entity) {
                 if (entity.physicsBody && entity.health) {
                     var dis = v2.distance(startPos, entity.physicsBody.getPos());
                     if (dis <= radius) {

@@ -10,7 +10,7 @@ BlockFunctions = {};
 BlockFunctions.createEntity = function(blockPos, block) {
     if (isServer) {
         var entity = block.createEntity(blockPos, block);
-        var entityId = gameData.idList.next();
+        var entityId = gameData.world.idList.next();
         sendCommand(new CommandPlaceBlock(blockPos, 0));
         sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
     }
@@ -33,7 +33,7 @@ BlockBulletFunctions.bunker = function(blockPos, blockType, entity) {
     var deltaPos = [blockPos[0] + 0.5 - entityPos[0], blockPos[1] + 0.5 - entityPos[1]];
     deltaPos = [Math.max(0, Math.abs(deltaPos[0]) - 0.5), Math.max(0, Math.abs(deltaPos[1]) - 0.5)];
     var dis = v2.length(deltaPos);
-    var rand = noiseRand(noiseRand(noiseRand(noiseRand(blockPos[0]) ^ blockPos[1]) ^ gameData.tickId) ^ entity.id) % 100;
+    var rand = noiseRand(noiseRand(noiseRand(noiseRand(blockPos[0]) ^ blockPos[1]) ^ gameData.world.tickId) ^ entity.id) % 100;
     var damageFactor;
     if (dis > blockType.bulletBunkerDistance)
         damageFactor = blockType.bulletBunkerFarFactor;
@@ -41,7 +41,7 @@ BlockBulletFunctions.bunker = function(blockPos, blockType, entity) {
         damageFactor = blockType.bulletBunkerNearFactor;
 
     if (rand > damageFactor * 100) {
-        gameData.events.trigger("projectileHitBlock", entity, blockPos);
+        gameData.world.events.trigger("projectileHitBlock", entity, blockPos);
         entity.projectile.hit = true;
         return;
     }
@@ -66,8 +66,8 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
             if (checked[pos[0]] == null || checked[pos[0]][pos[1]] == null) {
                 if (checked[pos[0]] == null)
                     checked[pos[0]] = [];
-                checked[pos[0]][pos[1]] = getStrength(gameData.blockWorld, pos[0], pos[1]);
-                var blockId = getForeground(gameData.blockWorld, pos[0], pos[1]);
+                checked[pos[0]][pos[1]] = getStrength(gameData.world.blockWorld, pos[0], pos[1]);
+                var blockId = getForeground(gameData.world.blockWorld, pos[0], pos[1]);
                 if (blockType.id == blockId)
                     runRecursively(pos, blockType);
             }
@@ -75,7 +75,7 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
         }
     }
     checked[startBlockPos[0]] = [];
-    checked[startBlockPos[0]][startBlockPos[1]] = getStrength(gameData.blockWorld, startBlockPos[0], startBlockPos[1]);
+    checked[startBlockPos[0]][startBlockPos[1]] = getStrength(gameData.world.blockWorld, startBlockPos[0], startBlockPos[1]);
     runRecursively(startBlockPos, blockType);
 
     // Too big doors should not work.
@@ -98,7 +98,7 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
                     for (var i = 0; i < this.length; ++i) {
                         var blockPos = this[i];
                         var bodies = [];
-                        gameData.physicsWorld.getBodiesInRadius(bodies, [blockPos[0] + 0.5, blockPos[1] + 0.5], 0.5); // TODO: 1.0 magic number
+                        gameData.world.physicsWorld.getBodiesInRadius(bodies, [blockPos[0] + 0.5, blockPos[1] + 0.5], 0.5); // TODO: 1.0 magic number
                         if (bodies.length > 0) {
                             shouldClose = false;
                             break;
@@ -121,7 +121,7 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
 }
 
 BlockDoorFunctions.blueForcefield = function(blockPos, blockType, entity, clickType) {
-    var startStrength = getStrength(gameData.blockWorld, blockPos[0], blockPos[1]);
+    var startStrength = getStrength(gameData.world.blockWorld, blockPos[0], blockPos[1]);
     setTimeout(function() {
         sendCommand(new CommandBuild(blockPos[0], blockPos[1], Blocks.BlueForcefieldOpen.id, BlockTypes.FOREGROUND));
         sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], startStrength));
@@ -130,7 +130,7 @@ BlockDoorFunctions.blueForcefield = function(blockPos, blockType, entity, clickT
         var checkDoorClose = function() {
             setTimeout(function() {
                 var bodies = [];
-                gameData.physicsWorld.getBodiesInRadius(bodies, [blockPos[0] + 0.5, blockPos[1] + 0.5], 0.5); // TODO: 1.0 magic number
+                gameData.world.physicsWorld.getBodiesInRadius(bodies, [blockPos[0] + 0.5, blockPos[1] + 0.5], 0.5); // TODO: 1.0 magic number
                 if (bodies.length > 0)
                     checkDoorClose();
                 else {

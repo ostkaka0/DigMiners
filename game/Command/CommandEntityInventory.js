@@ -12,8 +12,8 @@ CommandEntityInventory = function(entityId, actionId, itemId, amount) {
     this.amount = amount;
 }
 
-CommandEntityInventory.prototype.execute = function(gameData) {
-    var entity = gameData.entityWorld.objects[this.entityId];
+CommandEntityInventory.prototype.execute = function() {
+    var entity = gameData.world.entityWorld.objects[this.entityId];
     if (!entity || !entity.inventory) return;
     if (this.actionId == InventoryActions.ADD_ITEM) {
         entity.inventory.addItem(gameData, this.itemId, this.amount);
@@ -24,7 +24,7 @@ CommandEntityInventory.prototype.execute = function(gameData) {
             var entry = removed[i];
             var stackId = entry[0];
             var item = entry[1];
-            var itemType = gameData.itemRegister[item.id];
+            var itemType = Config.itemRegister[item.id];
             if (item.equipped)
                 Entity.onDequip(entity, stackId, itemType);
         };

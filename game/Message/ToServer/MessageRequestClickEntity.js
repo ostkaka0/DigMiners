@@ -5,7 +5,7 @@ MessageRequestClickEntity = function(entityId, clickType) {
 }
 
 MessageRequestClickEntity.prototype.execute = function(gameData, player) {
-    var entity = gameData.entityWorld.objects[this.entityId];
+    var entity = gameData.world.entityWorld.objects[this.entityId];
     if (!entity) return;
     console.log("player " + player.playerId + " clicked entity " + this.entityId + ", clicktype: " + this.clickType);
 }

@@ -58,8 +58,8 @@ createHUD = function(gameData) {
     // create dugItems
     var dugItems = document.getElementById("dugItems");
     dugItems.innerHTML = "";
-    for (var i = 0; i < gameData.tileRegister.length; ++i) {
-        var tileType = gameData.tileRegister[i];
+    for (var i = 0; i < Config.tileRegister.length; ++i) {
+        var tileType = Config.tileRegister[i];
         if (tileType.isOre) {
             var dugItemsEntry = document.createElement("div");
             dugItemsEntry.setAttribute("class", "dugItemsEntry");
@@ -101,7 +101,7 @@ createHUD = function(gameData) {
     $('.dugItemsEntryImage').mouseenter(function() {
         var text = $(this).parent().find('.dugItemsEntryText');
         var id = $(this).parent().attr("id").substr($(this).parent().attr("id").length - 1);
-        var tileType = gameData.tileRegister[id];
+        var tileType = Config.tileRegister[id];
         text.text(tileType.name);
     }).mouseleave(function() {
         updateHUD(gameData);
@@ -151,7 +151,7 @@ updateHUD = function(gameData) {
             slotImageContainer.style.width = 34;
             slotImageContainer.style.height = 34;
 
-            var itemType = gameData.itemRegister[item.id];
+            var itemType = Config.itemRegister[item.id];
             putItemImage(slotImageContainer, itemType, 32, 32, itemType.texture.inventoryAngle, itemType.texture.inventoryOffset, itemType.texture.inventorySize);
 
             slotTextContainer.innerText = "";
@@ -176,8 +176,8 @@ updateHUD = function(gameData) {
     }
 
     // update dugItems
-    for (var i = 0; i < gameData.tileRegister.length; ++i) {
-        var tileType = gameData.tileRegister[i];
+    for (var i = 0; i < Config.tileRegister.length; ++i) {
+        var tileType = Config.tileRegister[i];
         if (!tileType.isOre) continue;
         var amount = 0;
         if (global.player.oreInventory[i])

@@ -4,13 +4,13 @@ CommandPlayerLeave = function(playerId, entityId) {
     this.entityId = entityId;
 }
 
-CommandPlayerLeave.prototype.execute = function(gameData) {
+CommandPlayerLeave.prototype.execute = function() {
     var player = gameData.playerWorld.objects[this.playerId];
-    var entity = gameData.entityWorld.objects[this.entityId];
+    var entity = gameData.world.entityWorld.objects[this.entityId];
     if (player)
         gameData.playerWorld.remove(player);
     if (entity) {
-        gameData.entityWorld.remove(entity);
+        gameData.world.entityWorld.remove(entity);
         if (entity.nameComponent)
             console.log(entity.nameComponent.entityName + "with playerId " + this.playerId + " disconnected.");
     } else {

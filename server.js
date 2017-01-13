@@ -36,10 +36,9 @@ loadScript("UnitTest.js");
 loadScriptsRecursive("unit_tests");
 runUnitTests();
 
-var idList = new IdList();
 var connections = new Array(); // key socketId, value player object
-gameData.init(idList);
-gameData.generator = new Generator(Math.random() * 10000);
+gameData.init();
+gameData.world.generator = new Generator(Math.random() * 10000);
 var zindices = {};
 
 var firstTickTime = process.hrtime();
@@ -63,15 +62,15 @@ var lastnames = ["face", "dip", "nose", "brain", "head", "breath",
 
 loadChunk = function(world, x, y) {
     var chunk = new Chunk();
-    gameData.generator.generate(chunk, x, y);
+    gameData.world.generator.generate(chunk, x, y);
     world.set(x, y, chunk);
 
-    gameData.generator.generateDungeons(gameData.blockWorld, chunk, x, y);
+    gameData.world.generator.generateDungeons(gameData.world.blockWorld, chunk, x, y);
 }
 
 for (var x = -3; x < 3; ++x) {
     for (var y = -3; y < 3; ++y) {
-        loadChunk(gameData.tileWorld, x, y);
+        loadChunk(gameData.world.tileWorld, x, y);
     }
 }
 
@@ -81,10 +80,10 @@ Object.keys(gameData.spawnPoints).forEach(function(teamId) {
     console.log("Team: " + teamId);
     var spawnList = gameData.spawnPoints[teamId];
     spawnList.forEach(function(pos) {
-        var entityId = gameData.idList.next();
-        var entity = entityTemplates.TeamBase(entityId, pos, teamId, 10, 2.0, 60);
+        var entityId = gameData.world.idList.next();
+        var entity = entityTemplates.TeamBase(entityId, pos, teamId, 10, 2.0, 40);
         //entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 5, 2.0, 120, null, null, teamId);
-        gameData.entityWorld.add(entity, entityId);
+        gameData.world.entityWorld.add(entity, entityId);
         carveCircle(gameData, pos[0], pos[1], 5.0, 100.0);
     });
 });
@@ -94,7 +93,7 @@ for (var i = 0; i < 50; i++) {
     var pos = [Math.floor(80 * (1.0 - 2.0*Math.random())), Math.floor(80 * (1.0 - 2.0*Math.random()))];
     var entityId = gameData.idList.next();
     var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 2, 2.0, 3000);
-    gameData.entityWorld.add(entity, entityId);
+    gameData.world.entityWorld.add(entity, entityId);
     carveCircle(gameData, pos[0], pos[1], 2.0, 100.0);
 }
 // Add gun monster spawners
@@ -103,15 +102,15 @@ for (var i = 0; i < 10; i++) {
     var entityId = gameData.idList.next();
     var weaponId = Items.WeaponPistol.id + Math.floor((Items.WeaponSniperRifle.id - Items.WeaponPistol.id + 1) * Math.random());
     var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 2, 2.0, 3000, [{id: weaponId}, {id: Items.Egg.id, quantity: 1000}]);
-    gameData.entityWorld.add(entity, entityId);
+    gameData.world.entityWorld.add(entity, entityId);
     carveCircle(gameData, pos[0], pos[1], 6.0, 100.0);
 }*/
 
-gameData.physicsWorld.onCollision.push(function(collisions) {
+gameData.world.physicsWorld.onCollision.push(function(collisions) {
     sendCommand(new CommandCollisions(collisions));
 });
 
-gameData.entityWorld.onAdd["server.js"] = function(entity) {
+gameData.world.entityWorld.onAdd["server.js"] = function(entity) {
     if (entity.controlledByPlayer) {
 
         /*// give player shovel at join
@@ -135,7 +134,7 @@ gameData.entityWorld.onAdd["server.js"] = function(entity) {
 
         // (TEMPORARY) spawn monsters on player join
         for (var i = 0; i < 0; ++i) {
-            var monsterEntityId = idList.next();
+            var monsterEntityId = gameData.world.idList.next();
             var monster = entityTemplates.testMonster(monsterEntityId, [50 * (-1 + 2 * Math.random()), 50 * (-1 + 2 * Math.random())], gameData);
             sendCommand(new CommandEntitySpawn(gameData, monster, monsterEntityId));
             var weaponId = Items.WeaponPistol.id + Math.floor((Items.WeaponGrenadeLauncher.id - Items.WeaponPistol.id + 1) * Math.random());
@@ -149,14 +148,14 @@ gameData.entityWorld.onAdd["server.js"] = function(entity) {
 update = function() {
     var diff = process.hrtime(firstTickTime);
     var diff_ms = diff[0] * 1e3 + diff[1] / 1e6;
-    var delay = -diff_ms + (tickNum + skippedTicks) * gameData.tickDuration;
-    if (delay < -gameData.tickDuration) {
-        var numTicksToSkip = Math.ceil(-delay / gameData.tickDuration);
+    var delay = -diff_ms + (tickNum + skippedTicks) * Config.tickDuration;
+    if (delay < -Config.tickDuration) {
+        var numTicksToSkip = Math.ceil(-delay / Config.tickDuration);
         skippedTicks += numTicksToSkip;
         console.log(numTicksToSkip + " ticks skipped!");
     }
     setTimeout(update, delay);
-    tick(gameData.tickDuration / 1000.0);
+    tick(Config.tickDuration / 1000.0);
     tickNum++;
 }
 
@@ -165,8 +164,8 @@ var currentMeasureTicks = 0;
 var totalTickTime = 0;
 tick = function(dt) {
     var tick_begin = process.hrtime();
-    gameData.commands = gameData.commands.concat(commandsToSend);
-    //console.log("sheduled " + commandsToSend.length + " commands to be sent in tick " + gameData.tickId);
+    gameData.world.commands = gameData.world.commands.concat(commandsToSend);
+    //console.log("sheduled " + commandsToSend.length + " commands to be sent in tick " + gameData.world.tickId);
     commandsToSend.length = 0;
 
     // Send commands
@@ -174,7 +173,7 @@ tick = function(dt) {
 
     gameData.tick(dt);
 
-    gameData.entityWorld.objectArray.forEach(function(entity) {
+    gameData.world.entityWorld.objectArray.forEach(function(entity) {
         if (entity.behaviourContainer)
             entity.behaviourContainer.update();
     });
@@ -183,7 +182,7 @@ tick = function(dt) {
     ++currentMeasureTicks;
     if (currentMeasureTicks > measureTicks) {
         var tickMs = totalTickTime / measureTicks;
-        console.log(measureTicks + " ticks average: " + tickMs.toFixed(1) + "ms (" + ((tickMs / 50.0 * 100).toFixed(1)) + "%) numEntities: " + gameData.entityWorld.objectArray.length);
+        console.log(measureTicks + " ticks average: " + tickMs.toFixed(1) + "ms (" + ((tickMs / 50.0 * 100).toFixed(1)) + "%) numEntities: " + gameData.world.entityWorld.objectArray.length);
         currentMeasureTicks = 0;
         totalTickTime = 0;
     }
@@ -197,8 +196,8 @@ io.on("connection", function(socket) {
         socket.emit('ping');
     }, 2000);
 
-    var playerId = idList.next();
-    var entityId = idList.next();
+    var playerId = gameData.playerIdList.next();
+    var entityId = gameData.world.idList.next();
     var name = names[Math.round(Math.random() * names.length)] + " " + lastnames[Math.round(Math.random() * lastnames.length)];
 
     // Send playerJoin message
@@ -219,7 +218,7 @@ io.on("connection", function(socket) {
         //setTimeout(function() {
         var counter = new IndexCounter();
         var commandId = deserializeInt32(data, counter);
-        var command = new gameData.commandTypes.list[commandId]();
+        var command = new Config.commandTypes.list[commandId]();
         command.deserialize(data, counter);
         sendCommand(command);
         //}, 300);
@@ -234,7 +233,7 @@ io.on("connection", function(socket) {
         connections[socket.id].ping = 2 * (Date.now() - time);
     });
 
-    gameData.messagesToServer.forEach(function(messageType) {
+    Config.messagesToServer.forEach(function(messageType) {
         socket.on(messageType.prototype.idString, function(data) {
             var message = new messageType();
             message.receive(gameData, data);
@@ -245,7 +244,7 @@ io.on("connection", function(socket) {
     });
 });
 
-http.listen(gameData.port, function() {
+http.listen(Config.port, function() {
     console.log("Listening on :3000");
 });
 

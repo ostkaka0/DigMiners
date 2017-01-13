@@ -4,11 +4,11 @@ CommandEntitySpawn = function(gameData, entity, entityId, teamId) {
     this.entityId = entityId;
 }
 
-CommandEntitySpawn.prototype.execute = function(gameData) {
+CommandEntitySpawn.prototype.execute = function() {
     this.entity.inventory = new Inventory();
-    if (gameData.entityWorld.objects[this.entityId])
-        gameData.entityWorld.remove(gameData.entityWorld.objects[this.entityId]);
-    gameData.entityWorld.add(this.entity, this.entityId);
+    if (gameData.world.entityWorld.objects[this.entityId])
+        gameData.world.entityWorld.remove(gameData.world.entityWorld.objects[this.entityId]);
+    gameData.world.entityWorld.add(this.entity, this.entityId);
 }
 
 CommandEntitySpawn.prototype.serialize = function(byteArray, index) {
@@ -29,7 +29,7 @@ CommandEntitySpawn.prototype.deserialize = function(byteArray, index) {
     for (var i = 0; i < numComponents; ++i) {
 
         var componentId = deserializeInt32(byteArray, index);
-        var ComponentType = gameData.componentTypes[componentId];
+        var ComponentType = Config.componentTypes[componentId];
         var componentName = ComponentType.prototype.name;
         entity[componentName] = new ComponentType();
         entity[componentName].deserialize(byteArray, index, gameData);

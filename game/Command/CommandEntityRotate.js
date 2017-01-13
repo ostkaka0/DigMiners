@@ -4,8 +4,8 @@ CommandEntityRotate = function(entityId, direction) {
     this.direction = direction;
 }
 
-CommandEntityRotate.prototype.execute = function(gameData) {
-    var entity = gameData.entityWorld.objects[this.entityId];
+CommandEntityRotate.prototype.execute = function() {
+    var entity = gameData.world.entityWorld.objects[this.entityId];
     if (!entity) return;
     var movement = entity.movement;
     if (!movement) return;

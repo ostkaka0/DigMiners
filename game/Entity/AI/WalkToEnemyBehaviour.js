@@ -4,15 +4,15 @@ WalkToEnemyBehaviour = function(entity, maxRadius) {
     this.entity = entity;
     this.maxRadius = maxRadius;
     this.target = null;
-    this.nextUpdateTickId = gameData.tickId;
+    this.nextUpdateTickId = gameData.world.tickId;
     this.moving = false;
-    this.nextCanRunTickId = gameData.tickId;
+    this.nextCanRunTickId = gameData.world.tickId;
 }
 
 WalkToEnemyBehaviour.prototype.canRun = function() {
-    if (gameData.tickId < this.nextCanRunTickId)
+    if (gameData.world.tickId < this.nextCanRunTickId)
         return false;
-    this.nextCanRunTickId = gameData.tickId + 40 + 40 * Math.random() >> 0;
+    this.nextCanRunTickId = gameData.world.tickId + 40 + 40 * Math.random() >> 0;
     this.target = this.getTarget();
     if (this.target == null)
         return false;
@@ -26,8 +26,8 @@ WalkToEnemyBehaviour.prototype.initialize = function() {
 }
 
 WalkToEnemyBehaviour.prototype.run = function() {
-    if (gameData.tickId < this.nextUpdateTickId) return true;
-    this.nextUpdateTickId = gameData.tickId + 60;
+    if (gameData.world.tickId < this.nextUpdateTickId) return true;
+    this.nextUpdateTickId = gameData.world.tickId + 60;
     
     if (!this.target || this.target.isDead || !this.target.isActive) {
         this.target = this.getTarget();
@@ -69,7 +69,7 @@ WalkToEnemyBehaviour.prototype.destroy = function(entity) {
 WalkToEnemyBehaviour.prototype.getTarget = function() {
     var shortestDistance = Number.MAX_VALUE;
     var shortestDistanceEntity = null;
-    gameData.entityWorld.objectArray.forEach(function(otherEntity) {
+    gameData.world.entityWorld.objectArray.forEach(function(otherEntity) {
         if (!otherEntity.health || !otherEntity.physicsBody) return;
         if (!otherEntity.team && !otherEntity.movement) return;
         if (this.entity.team && this.entity.team.value != Teams.None && (!otherEntity.team || otherEntity.team.value == this.entity.team.value)) return;

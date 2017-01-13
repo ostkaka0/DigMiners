@@ -4,16 +4,16 @@ MessageRequestItemPickup = function(entityId) {
 }
 
 MessageRequestItemPickup.prototype.execute = function(gameData, player) {
-    var entity = gameData.entityWorld.objects[this.entityId];
+    var entity = gameData.world.entityWorld.objects[this.entityId];
     if (!entity) return;
     if (entity.item && !entity.pickedUp) {
-        var playerEntity = gameData.entityWorld.objects[player.entityId];
+        var playerEntity = gameData.world.entityWorld.objects[player.entityId];
         if (!playerEntity) return;
         var physicsBody = entity.physicsBody;
         var playerPhysicsBody = playerEntity.physicsBody;
 
         var dis = v2.distance(physicsBody.getPos(), playerPhysicsBody.getPos());
-        if (dis <= gameData.itemPickupDistance + 0.1) {
+        if (dis <= Config.itemPickupDistance + 0.1) {
             entity.pickedUp = true;
             // Add item to player inventory
             sendCommand(new CommandEntityInventory(player.entityId, InventoryActions.ADD_ITEM, entity.item.itemId, entity.item.amount));

@@ -7,11 +7,11 @@ MessageChunk = function(chunk, blockChunk, x, y) {
 }
 
 MessageChunk.prototype.execute = function(gameData) {
-    if (gameData.generator)
-        gameData.generator.generate(this.chunk, this.x, this.y);
-    gameData.tileWorld.set(this.x, this.y, this.chunk);
+    if (gameData.world.generator)
+        gameData.world.generator.generate(this.chunk, this.x, this.y);
+    gameData.world.tileWorld.set(this.x, this.y, this.chunk);
     if (!this.blockChunkEmpty)
-        gameData.blockWorld.set(this.x, this.y, this.blockChunk);
+        gameData.world.blockWorld.set(this.x, this.y, this.blockChunk);
 }
 
 MessageChunk.prototype.send = function(socket) {
