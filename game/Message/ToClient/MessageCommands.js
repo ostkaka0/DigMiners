@@ -1,6 +1,6 @@
 MessageCommands = function() {
-    this.tickId = (gameData) ? gameData.tickId : 0;
-    this.commands = (gameData) ? gameData.commands : [];
+    this.tickId = (isServer) ? gameData.tickId : 0;
+    this.commands = (isServer) ? gameData.commands : [];
 }
 
 MessageCommands.prototype.execute = function(gameData) {
