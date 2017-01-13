@@ -95,7 +95,8 @@ entityTemplates.testMonster = function(entityId, pos, teamId) {
 
     entity.behaviourContainer = new BehaviourContainer();
     entity.behaviourContainer.behaviours.push(new DigObstacleBehaviour(entity));
-    entity.behaviourContainer.behaviours.push(new TargetPlayerBehaviour(entity, 40.0));
+    entity.behaviourContainer.behaviours.push(new TargetPlayerBehaviour(entity, 15.0));
+    entity.behaviourContainer.behaviours.push(new WalkToEnemyBehaviour(entity, 60.0));
     entity.behaviourContainer.behaviours.push(new WalkToPointBehaviour(entity, [-pos[0], -pos[1]]));
     entity.behaviourContainer.behaviours.push(new RandomWalkBehaviour(entity));
 

@@ -82,10 +82,10 @@ Object.keys(gameData.spawnPoints).forEach(function(teamId) {
     var spawnList = gameData.spawnPoints[teamId];
     spawnList.forEach(function(pos) {
         var entityId = gameData.idList.next();
-        var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 5, 2.0, 200, null, null, teamId);
+        var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 5, 2.0, 120, null, null, teamId);
         gameData.entityWorld.add(entity, entityId);
         var entityId = gameData.idList.next();
-        var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 5, 2.0, 200, [{id: Items.WeaponShotgun.id}, {id: Items.Egg.id, quantity: 1000}], null, teamId);
+        var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 5, 2.0, 120, [{id: Items.WeaponShotgun.id}, {id: Items.Egg.id, quantity: 1000}], null, teamId);
         gameData.entityWorld.add(entity, entityId);
         carveCircle(gameData, pos[0], pos[1], 5.0, 100.0);
     });
