@@ -452,6 +452,8 @@ console.log("Copying...");
 
 copyFile("html_index.php", outputPath + "index.php");
 copyFile("style.css", outputPath + "style.css");
+copyFile("bootstrap.min.css", outputPath + "bootstrap.min.css");
+copyFile("tether.min.css", outputPath + "tether.min.css");
 copyRecursive("data/", outputPath + "data");
 
 fs.writeFile(outputPath + "src.js", output, function(err){
