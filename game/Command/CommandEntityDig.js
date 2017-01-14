@@ -52,7 +52,7 @@ CommandEntityDig.prototype.execute = function() {
             var itemId = i;
             if (entity.inventory && entity.controlledByPlayer)
                 sendCommand(new CommandPlayerOreInventory(entity.controlledByPlayer.playerId, OreInventoryActions.ADD_ORE, itemId, dug[i]));
-            if (tileName == Tiles.Dirt.name) {
+            /*if (tileName == Tiles.Dirt.name) {
                 var rand = Math.random() * 1000;
                 var itemId = null;
                 if (rand > 990)
@@ -67,7 +67,7 @@ CommandEntityDig.prototype.execute = function() {
                     itemEntity.physicsBody.angleOld = physicsBody.angle;
                     sendCommand(new CommandEntitySpawn(gameData, itemEntity, itemEntityId));
                 }
-            }
+            }*/
         }
     }
 }
