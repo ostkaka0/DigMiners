@@ -9,9 +9,9 @@
             var isServer = false;
             window.vars = { 
             <?php
-                $ip = (isset($_GET["ip"]) ? '"' . $_GET["ip"] . '"' : '"127.0.0.1"');
+                $ip = (isset($_GET["ip"]) ? '"' . $_GET["ip"] . '"' : '"digwar.io"');
                 if(empty($ip))
-                    $ip = '"127.0.0.1"';
+                    $ip = '"digwar.io"';
                 echo ("ip: " . $ip);
             ?>
         };

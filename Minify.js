@@ -442,7 +442,7 @@ if (!commander.debug) {
     console.log("Minifying...");
     var result = UglifyJS.minify(output, {
         fromString: true,
-        mangleProperties: true,
+        mangleProperties: false,
         mangle: true
     });
     output = result.code;
