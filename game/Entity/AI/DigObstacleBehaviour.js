@@ -8,19 +8,24 @@ DigObstacleBehaviour = function(entity, maxWalkDis) {
     this.nextRunTick = null;
     this.nextCanRunTickId = gameData.world.tickId;
     this.canRunOldPos = null;
+    this.oldItemId = 0;
 }
 
 DigObstacleBehaviour.prototype.canRun = function() {
-    if (!this.entity.equippedItems.items["tool"] || this.entity.equippedItems.items["tool"].itemFunction != ItemFunctions.Shovel)
-        return false;
+    if (!this.entity.inventory) return false;
     if (this.nextRunTick && gameData.world.tickId < this.nextRunTick)
         return false;
     if (gameData.world.tickId < this.nextCanRunTickId)
         return false;
-
     this.nextCanRunTickId = gameData.world.tickId + 5;
     
-
+    // Change equipped item to shovel
+    var shovelSlotId = -1;
+    if (!this.entity.equippedItems.items["tool"] || this.entity.equippedItems.items["tool"].itemFunction != ItemFunctions.Shovel) {
+        shovelSlotId = this.entity.inventory.findTool(ItemFunctions.Shovel);
+        console.log("found shovel: " + shovelSlotId);
+        if (shovelSlotId == -1) return false;
+    }
 
     var velocity = this.entity.physicsBody.getVelocity();
     var moveDir = this.entity.movement.direction;
@@ -42,6 +47,10 @@ DigObstacleBehaviour.prototype.canRun = function() {
         var density = getDensity(gameData.world.tileWorld, itPos[0], itPos[1]);
         if (blockId != 0 || density > 127) {
             this.targetTilePos = itPos;
+            if (shovelSlotId != -1) {
+                this.oldItemId = this.entity.equippedItems.items["tool"].id;
+                sendCommand(new CommandEntityEquipItem(this.entity.id, shovelSlotId, this.entity.inventory.items[shovelSlotId].id, true));
+            }
             return true;
         }
     }
@@ -90,6 +99,9 @@ DigObstacleBehaviour.prototype.finish = function() {
     sendCommand(new CommandKeyStatusUpdate(this.entity.id, Keys.SPACEBAR, false, this.entity.physicsBody.getPos()));
     sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.getPos()));
     sendCommand(new CommandEntityRotate(this.entity.id, this.oldMoveDir));
+    
+    //if (this.oldItemId)
+    //    sendCommand(new CommandEntityEquipItem(this.entity.id, 0, this.oldItemId, true));
 }
 
 DigObstacleBehaviour.prototype.destroy = function(entity) {
