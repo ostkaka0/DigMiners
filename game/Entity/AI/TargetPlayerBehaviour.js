@@ -29,6 +29,12 @@ TargetPlayerBehaviour.prototype.canRun = function() {
 
 TargetPlayerBehaviour.prototype.initialize = function() {
     this.isGunner = (this.entity.equippedItems.items["tool"] && this.entity.equippedItems.items["tool"].itemFunction == ItemFunctions.RangedWeapon);
+    if (!this.isGunner) {
+        var slotId = this.entity.inventory.findTool(ItemFunctions.RangedWeapon);
+        this.isGunner = (slotId != -1)
+        if (this.isGunner)
+            sendCommand(new CommandEntityEquipItem(this.entity.id, slotId, this.entity.inventory.items[slotId].id, true));
+    }
 }
 
 TargetPlayerBehaviour.prototype.run = function() {

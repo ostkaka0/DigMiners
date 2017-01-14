@@ -139,3 +139,12 @@ Inventory.prototype.getEquippedStackId = function(type) {
         }
     }
 }
+
+Inventory.prototype.findTool = function(itemFunction) {
+    for (var i = 0; i < this.items.length; i++) {
+        var itemType = Config.itemRegister[this.items[i].id];
+        if (itemType.itemFunction == itemFunction)
+            return i;
+    }
+    return -1;
+}

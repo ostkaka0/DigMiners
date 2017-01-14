@@ -6,8 +6,8 @@ CommandEntityLookAtEntity = function(entityId, targetEntityId) {
 }
 
 CommandEntityLookAtEntity.prototype.execute = function() {
-    var entity = gameData.entityWorld.objects[this.entityId];
-    var targetEntity = gameData.entityWorld.objects[this.targetEntityId];
+    var entity = gameData.world.entityWorld.objects[this.entityId];
+    var targetEntity = gameData.world.entityWorld.objects[this.targetEntityId];
     if (!entity) return;
     var movement = entity.movement;
     if (!movement) return;

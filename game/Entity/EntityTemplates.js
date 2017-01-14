@@ -160,7 +160,7 @@ entityTemplates.TeamBase = function(entityId, pos, teamId, maxEntities, radius, 
     duration = duration || 60;
     
     var entity = {};
-    entity.spawner = new Spawner(entityTemplates.testMonster, pos, maxEntities, radius, duration, null, null, null, teamId);
+    entity.spawner = new Spawner(entityTemplates.testMonster, pos, maxEntities, radius, duration, [{id: Items.WeaponPistol.id, quantity: 1}, {id: Items.RustyShovel.id, quantity: 1}, {id: Items.Egg.id, quantity: 1000}], null, null, teamId);
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, null, 1000.0);
     entity.nameComponent = new NameComponent("Base");
 

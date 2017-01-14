@@ -30,7 +30,7 @@ GameModeBaseWar.prototype.init = function() {
     Object.keys(this.playerSpawns).forEach(function(teamId) {
         this.playerSpawns[teamId].forEach(function(pos) {
             var entityId = gameData.world.idList.next();
-            var entity = entityTemplates.TeamBase(entityId, pos, teamId, 10, 2.0, 40);
+            var entity = entityTemplates.TeamBase(entityId, pos, teamId, 5, 2.0, 40);
             this.spawnEntities[teamId][entityId] = entity;
             sendCommand(new CommandEntitySpawn(gameData, entity, entityId, teamId));
             sendCommand(new CommandDig(pos, 5.0));
