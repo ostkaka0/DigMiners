@@ -23,7 +23,6 @@ DigObstacleBehaviour.prototype.canRun = function() {
     var shovelSlotId = -1;
     if (!this.entity.equippedItems.items["tool"] || this.entity.equippedItems.items["tool"].itemFunction != ItemFunctions.Shovel) {
         shovelSlotId = this.entity.inventory.findTool(ItemFunctions.Shovel);
-        console.log("found shovel: " + shovelSlotId);
         if (shovelSlotId == -1) return false;
     }
 
