@@ -1,6 +1,7 @@
 
-DigObstacleBehaviour = function(entity) {
+DigObstacleBehaviour = function(entity, maxWalkDis) {
     this.entity = entity;
+    this.maxWalkDis = maxWalkDis;
     this.targetTilePos = null;
     this.oldMoveDir = null;
     this.stopTick = null;
@@ -27,7 +28,7 @@ DigObstacleBehaviour.prototype.canRun = function() {
     //    return false;
     var pos = this.entity.physicsBody.getPos();
     
-    if (this.canRunOldPos && v2.distance(this.canRunOldPos, pos) > 2.0) {
+    if (this.canRunOldPos && v2.distance(this.canRunOldPos, pos) > this.maxWalkDis) {
         this.canRunOldPos = v2.clone(pos);
         return false;
     }

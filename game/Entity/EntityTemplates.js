@@ -94,10 +94,55 @@ entityTemplates.testMonster = function(entityId, pos, teamId) {
     entity.team = new Team(teamEnum);
 
     entity.behaviourContainer = new BehaviourContainer();
-    entity.behaviourContainer.behaviours.push(new DigObstacleBehaviour(entity));
+    entity.behaviourContainer.behaviours.push(new DigObstacleBehaviour(entity, 0.5));
     entity.behaviourContainer.behaviours.push(new TargetPlayerBehaviour(entity, 15.0));
+    entity.behaviourContainer.behaviours.push(new DigObstacleBehaviour(entity, 1.0));
     entity.behaviourContainer.behaviours.push(new WalkToEnemyBehaviour(entity, 60.0));
     entity.behaviourContainer.behaviours.push(new WalkToPointBehaviour(entity, [-pos[0], -pos[1]]));
+    entity.behaviourContainer.behaviours.push(new RandomWalkBehaviour(entity));
+
+    return entity;
+}
+
+entityTemplates.zombie = function(entityId, pos, teamId) {
+    var entity = {};
+    entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0);
+    entity.movement = new Movement(30.0 + 20.0 * Math.random(), 0.25, 1.0);
+    entity.nameComponent = new NameComponent("Zombie");
+    entity.inventory = new Inventory();
+    entity.equippedItems = new EquippedItems();
+    entity.potionEffects = new PotionEffects();
+
+    var teamEnum = teamId || Teams.Zombie;
+    var feetSprite = new Sprite("monster/feet");
+    var rightArmSprite = new Sprite("monster/rightArm");
+    var leftArmSprite = new Sprite("monster/leftArm");
+    var headSprite = new Sprite("monster/head");
+    var hatSprite = new Sprite((teamEnum == Teams.Blue) ? "egg" : "bigEgg");
+
+    var bodyparts = {
+        "feet": new BodyPart(feetSprite, 0, 0, 0, null, null),
+        "tool": new BodyPart(new Sprite(), -10, 15, 0, null, "rightArm"),
+        "rightArm": new BodyPart(rightArmSprite, 5, 8, 0, [10, 11], "body"),
+        "leftArm": new BodyPart(leftArmSprite, 5, -8, 0, [10, 23], "body"),
+        "body": new BodyPart(new Sprite(), 0, 0, 0, null, null),
+        "head": new BodyPart(headSprite, 1, 0, 0, null, null),
+        "hat": new BodyPart(hatSprite, 1, 0, 0, null, null)
+    };
+
+    entity.bodyparts = new Bodyparts(bodyparts);
+    entity.drawable = new Drawable(1);
+    var healthbarSprite = new Sprite("healthbar", null, false);
+    entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
+
+    entity.health = new Health(50, 50, 0.0);
+    entity.team = new Team(teamEnum);
+
+    entity.behaviourContainer = new BehaviourContainer();
+    entity.behaviourContainer.behaviours.push(new DigObstacleBehaviour(entity, 0.5));
+    entity.behaviourContainer.behaviours.push(new TargetPlayerBehaviour(entity, 15.0));
+    entity.behaviourContainer.behaviours.push(new DigObstacleBehaviour(entity, 1.0));
+    entity.behaviourContainer.behaviours.push(new WalkToEnemyBehaviour(entity, 1000.0));
     entity.behaviourContainer.behaviours.push(new RandomWalkBehaviour(entity));
 
     return entity;
@@ -141,7 +186,39 @@ entityTemplates.TeamBase = function(entityId, pos, teamId, maxEntities, radius, 
     var healthbarSprite = new Sprite("healthbar", null, false);
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
 
-    entity.health = new Health(200, 200, 0.0);
+    entity.health = new Health(2000, 2000, 0.0);
+    entity.team = new Team(teamEnum);
+    return entity;
+}
+
+entityTemplates.humanBase = function(entityId, pos, teamId)  {
+    var entity = {};
+    entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, null, 1000.0);
+    entity.nameComponent = new NameComponent("Base");
+
+    var teamEnum = teamId || Teams.Human;
+    var feetSprite = new Sprite("monster/feet");
+    var rightArmSprite = new Sprite("monster/rightArm");
+    var leftArmSprite = new Sprite("monster/leftArm");
+    var headSprite = new Sprite("monster/head");
+    var hatSprite = new Sprite((teamEnum == Teams.Blue) ? "egg" : "bigEgg");
+
+    var bodyparts = {
+        "feet": new BodyPart(feetSprite, 0, 0, 0, null, null),
+        "tool": new BodyPart(new Sprite(), -10, 15, 0, null, "rightArm"),
+        "rightArm": new BodyPart(rightArmSprite, 5, 8, 0, [10, 11], "body"),
+        "leftArm": new BodyPart(leftArmSprite, 5, -8, 0, [10, 23], "body"),
+        "body": new BodyPart(new Sprite(), 0, 0, 0, null, null),
+        "head": new BodyPart(headSprite, 1, 0, 0, null, null),
+        "hat": new BodyPart(hatSprite, 1, 0, 0, null, null)
+    };
+
+    entity.bodyparts = new Bodyparts(bodyparts);
+    entity.drawable = new Drawable(1);
+    var healthbarSprite = new Sprite("healthbar", null, false);
+    entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
+
+    entity.health = new Health(2000, 2000, 0.0);
     entity.team = new Team(teamEnum);
     return entity;
 }

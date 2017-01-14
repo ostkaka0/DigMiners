@@ -151,7 +151,7 @@ update = function() {
     tickNum++;
 }
 
-var measureTicks = 20;
+var measureTicks = 100;
 var currentMeasureTicks = 0;
 var totalTickTime = 0;
 tick = function(dt) {
