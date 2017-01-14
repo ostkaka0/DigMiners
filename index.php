@@ -22,7 +22,6 @@
             <div class="dugItems" id="dugItems"></div>
             <div class="inventory" id="inventory"></div>
             <div class="crafting" id="crafting"></div>
-            <!--<div class="chat" id="chat">chat</div>-->
         </div>
         <?php
             $includedScripts = array();
