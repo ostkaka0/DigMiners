@@ -37,7 +37,7 @@ GameModeBaseWar.prototype.init = function() {
         }.bind(this));
     }.bind(this));
     
-    gameData.world.entityWorld.onRemove["GameModeBaseWar.j"] = function(entity) {
+    gameData.world.entityWorld.onRemove["GameModeBaseWar.js"] = function(entity) {
         var team = Teams.none;
         
         this.teams.forEach(function(currentTeam) {
