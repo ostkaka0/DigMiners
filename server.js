@@ -36,19 +36,23 @@ loadScript("UnitTest.js");
 loadScriptsRecursive("unit_tests");
 runUnitTests();
 
+var commandsToSend = [];
+sendCommand = function(command) {
+    commandsToSend.push(command);
+}
+clearCommands = function() {
+    commandsToSend.length = 0;
+}
+
 var connections = new Array(); // key socketId, value player object
 gameData.init();
-gameData.world.generator = new Generator(Math.random() * 10000);
 var zindices = {};
 
 var firstTickTime = process.hrtime();
 var tickNum = 0;
 var skippedTicks = 0;
 var messageCallbacks = {};
-var commandsToSend = [];
-sendCommand = function(command) {
-    commandsToSend.push(command);
-}
+
 
 var names = ["Runny", "Buttercup", "Dinky", "Stinky", "Crusty",
     "Greasy", "Gidget", "Cheesypoof", "Lumpy", "Wacky", "Tiny", "Flunky",
@@ -60,23 +64,11 @@ var lastnames = ["face", "dip", "nose", "brain", "head", "breath",
     "honker", "toes", "buns", "mister", "fanny", "squirt", "chunks",
     "brains", "wit", "juice", "shower"];
 
-loadChunk = function(world, x, y) {
-    var chunk = new Chunk();
-    gameData.world.generator.generate(chunk, x, y);
-    world.set(x, y, chunk);
 
-    gameData.world.generator.generateDungeons(gameData.world.blockWorld, chunk, x, y);
-}
-
-for (var x = -3; x < 3; ++x) {
-    for (var y = -3; y < 3; ++y) {
-        loadChunk(gameData.world.tileWorld, x, y);
-    }
-}
 
 console.log(gameData.spawnPoints);
 // Add team monster spawners
-Object.keys(gameData.spawnPoints).forEach(function(teamId) {
+/*Object.keys(gameData.spawnPoints).forEach(function(teamId) {
     console.log("Team: " + teamId);
     var spawnList = gameData.spawnPoints[teamId];
     spawnList.forEach(function(pos) {
@@ -86,7 +78,7 @@ Object.keys(gameData.spawnPoints).forEach(function(teamId) {
         gameData.world.entityWorld.add(entity, entityId);
         carveCircle(gameData, pos[0], pos[1], 5.0, 100.0);
     });
-});
+});*/
 
 /*// Add monster spawners
 for (var i = 0; i < 50; i++) {

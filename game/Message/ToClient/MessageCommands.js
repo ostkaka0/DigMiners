@@ -4,10 +4,13 @@ MessageCommands = function() {
 }
 
 MessageCommands.prototype.execute = function(gameData) {
-    var that = this;
-    setTimeout(function() {
-        gameData.world.pendingCommands[that.tickId] = that.commands;
-    }, Config.fakeLag + Config.fakeJitter * Math.random());
+    if (Config.fakeLag == 0 && Config.fakeJitter == 0) {
+        gameData.world.pendingCommands[this.tickId] = this.commands;
+    } else {
+        setTimeout(function() {
+            gameData.world.pendingCommands[this.tickId] = this.commands;
+        }.bind(this), Config.fakeLag + Config.fakeJitter * Math.random());
+    }
 }
 
 MessageCommands.prototype.send = function(socket) {

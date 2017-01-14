@@ -14,7 +14,7 @@ MessageRequestSpawn.prototype.execute = function(gameData, player) {
     var entity = entityTemplates.player(player.id, entityId, this.playerName, classType, teamId);
 
     // Set spawn position
-    var pos = gameData.spawnPoints[teamId][Math.random() * gameData.spawnPoints[teamId].length >> 0];
+    var pos = gameData.gameMode.playerSpawns[teamId][Math.random() * gameData.gameMode.playerSpawns[teamId].length >> 0];
     entity.physicsBody.setPos(pos);
     entity.physicsBody.posOld = v2.clone(pos);
 

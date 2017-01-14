@@ -10,7 +10,7 @@ World = function() {
     this.blockWorld = new Map2D();
     this.physicsWorld = new PhysicsWorld();
     this.physicsEntities = {};
-    this.generator = null;
+    this.generator = new Generator(Math.random() * 1000000 >> 0);
     
     this.commands = [];
     this.pendingCommands = {};
