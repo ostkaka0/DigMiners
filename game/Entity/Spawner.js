@@ -39,8 +39,6 @@ Spawner.prototype.update = function(entity) {
         }.bind(this);
     }
     
-    console.log("Entity Spawner teamId:" + this.teamId);
-    
     // Spawn entity
     var monsterEntityId = gameData.world.idList.next();
     var monster = this.entityTemplate(monsterEntityId, [this.pos[0] + this.radius * (-1 + 2 *Math.random()), this.pos[1] + this.radius * (-1 + 2 *Math.random())], this.teamId);

@@ -93,7 +93,7 @@ gameData.tick = function(dt) {
 }
 
 gameData.changeGameMode = function()  {
-    this.nextGameMode = new GameModeBaseWar();
+    this.nextGameMode = new Config.gameModeRegister[Config.gameModeRegister.length * Math.random() >> 0]();
     console.log("Changing game mode to: " + this.nextGameMode.name);
 }
 

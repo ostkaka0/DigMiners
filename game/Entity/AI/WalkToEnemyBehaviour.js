@@ -27,7 +27,7 @@ WalkToEnemyBehaviour.prototype.initialize = function() {
 
 WalkToEnemyBehaviour.prototype.run = function() {
     if (gameData.world.tickId < this.nextUpdateTickId) return true;
-    this.nextUpdateTickId = gameData.world.tickId + 60;
+    this.nextUpdateTickId = gameData.world.tickId + 20;
     
     if (!this.target || this.target.isDead || !this.target.isActive) {
         this.target = this.getTarget();
