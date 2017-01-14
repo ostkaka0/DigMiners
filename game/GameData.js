@@ -10,7 +10,9 @@ gameData.init = function(idList) {
     
     this.playerIdList = (isServer)? new IdList() : null;
     this.playerWorld = new ObjectWorld(true);
-    this.world = new World();
+    this.world = null;
+    this.gameMode = null;
+    this.changeGameMode();
     
     if (!isServer)
         this.animationManager = new AnimationManager();
@@ -18,10 +20,6 @@ gameData.init = function(idList) {
         this.animationManager = {};
     
     this.messageCallbacks = {};
-    
-    this.spawnPoints = {};
-    this.spawnPoints[Teams.Blue] = [[-60, -20], [-60, 0], [-60, 20]];
-    this.spawnPoints[Teams.Red] = [[60, -20],[60, 0],[60, 20]];
     
     initPlayerClasses();
     
@@ -73,6 +71,18 @@ gameData.tick = function(dt) {
     this.playerWorld.update();
     if (this.world)
         this.world.tick(dt);
+}
+
+gameData.changeGameMode = function(gameMode)  {
+    if (isServer)
+        clearCommands();
+    if (this.gameMode && this.gameMode.onDestroy)
+        this.gameMode.onDestroy();
+    this.world = new World();
+    this.gameMode = new GameModeBaseWar();
+    this.gameMode.init();
+    
+    console.log("Changing game mode to: " + this.gameMode.name);
 }
 
 

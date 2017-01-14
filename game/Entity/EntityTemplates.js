@@ -141,7 +141,7 @@ entityTemplates.TeamBase = function(entityId, pos, teamId, maxEntities, radius, 
     var healthbarSprite = new Sprite("healthbar", null, false);
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
 
-    entity.health = new Health(2000, 2000, 0.0);
+    entity.health = new Health(200, 200, 0.0);
     entity.team = new Team(teamEnum);
     return entity;
 }
