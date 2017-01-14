@@ -66,7 +66,7 @@ World.prototype.initializeEvents = function() {
     }
     
     this.events.on("projectileHit", function(projectileEntity, hitPos) {
-        setTimeout(function(projectileEntity) {
+        gameData.setTimeout(function(projectileEntity) {
             var type = projectileEntity.projectile.projectileType;
             if (type.isExplosive)
                 createExplosion(hitPos, type.explosiveRadius, type.explosiveEntityDamage, type.explosionBlockDamage, type.explosionTileDamage);
@@ -132,7 +132,7 @@ World.prototype.initializeEvents = function() {
         
         Object.keys(entity).forEach(function (key) {
             var component = entity[key];
-            if (component.onDestroy)
+            if (component && component.onDestroy)
                 component.onDestroy(entity);
         });
     }.bind(this));
