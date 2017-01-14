@@ -82,6 +82,8 @@ gameData.tick = function(dt) {
         this.gameMode = this.nextGameMode;
         this.gameMode.init();
         this.nextGameMode = null;
+        if (isServer)
+            new MessageChangeGameMode().send(io.sockets);
         return;
     }
     
