@@ -14,7 +14,9 @@ gameData.init = function(idList) {
     this.playerWorld = new ObjectWorld(true);
     this.world = null;
     this.gameMode = null;
+    this.nextGameMode = null;
     this.changeGameMode();
+    this.tick(); // Load gamemode
     
     if (!isServer)
         this.animationManager = new AnimationManager();
@@ -70,22 +72,27 @@ gameData.init = function(idList) {
 }
 
 gameData.tick = function(dt) {
+    if (this.nextGameMode) {
+        this.clearTimeouts();
+        if (isServer)
+            clearCommands();
+        if (this.gameMode && this.gameMode.onDestroy)
+            this.gameMode.onDestroy();
+        this.world = new World();
+        this.gameMode = this.nextGameMode;
+        this.gameMode.init();
+        this.nextGameMode = null;
+        return;
+    }
+    
     this.playerWorld.update();
     if (this.world)
         this.world.tick(dt);
 }
 
-gameData.changeGameMode = function(gameMode)  {
-    this.clearTimeouts();
-    if (isServer)
-        clearCommands();
-    if (this.gameMode && this.gameMode.onDestroy)
-        this.gameMode.onDestroy();
-    this.world = new World();
-    this.gameMode = new GameModeBaseWar();
-    this.gameMode.init();
-    
-    console.log("Changing game mode to: " + this.gameMode.name);
+gameData.changeGameMode = function()  {
+    this.nextGameMode = new GameModeBaseWar();
+    console.log("Changing game mode to: " + this.nextGameMode.name);
 }
 
 gameData.setTimeout = function(callback, duration) {
