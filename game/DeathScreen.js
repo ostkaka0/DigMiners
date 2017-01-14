@@ -102,7 +102,7 @@ DeathScreen = function() {
         } else {
             this.btnSpawn.prop("disabled", true);
             this.btnSpawn.text("Wait - " + duration);
-            setTimeout(this.btnSpawn.setDisabledCountdown.bind(this, duration - 1), 1000);
+            gameData.setTimeout(this.btnSpawn.setDisabledCountdown.bind(this, duration - 1), 1000);
         }
     }.bind(this);
 

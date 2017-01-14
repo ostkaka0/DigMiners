@@ -8,6 +8,8 @@ gameData.init = function(idList) {
     initItems(this);
     initConfig();
     
+    this.timeouts = {};
+    this.timeoutIdList = new IdList();
     this.playerIdList = (isServer)? new IdList() : null;
     this.playerWorld = new ObjectWorld(true);
     this.world = null;
@@ -74,6 +76,7 @@ gameData.tick = function(dt) {
 }
 
 gameData.changeGameMode = function(gameMode)  {
+    this.clearTimeouts();
     if (isServer)
         clearCommands();
     if (this.gameMode && this.gameMode.onDestroy)
@@ -85,4 +88,21 @@ gameData.changeGameMode = function(gameMode)  {
     console.log("Changing game mode to: " + this.gameMode.name);
 }
 
+gameData.setTimeout = function(callback, duration) {
+    var gameData = this;
+    var timeoutId = this.timeoutIdList.next();
+    var timeout = setTimeout(function() {
+        delete gameData.timeouts[timeoutId];
+        callback();
+    }, duration);
+    this.timeouts[timeoutId] = timeout;
+    return timeout;
+}
+
+gameData.clearTimeouts = function() {
+    Object.keys(this.timeouts).forEach(function(timeoutId) {
+        clearTimeout(this.timeouts[timeoutId]);
+    }.bind(this));
+    this.timeouts = {};
+}
 

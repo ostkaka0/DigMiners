@@ -21,8 +21,8 @@ createParticles = function(type, pos) {
 createDespawningParticles = function(type, pos, msAlive) {
     return;
     var emitter = createParticles(type, pos);
-    setTimeout(function() {
-        setTimeout(function() {
+    gameData.setTimeout(function() {
+        gameData.setTimeout(function() {
             this.destroy();
             gameData.particleEmitterWorld.remove(this);
         }.bind(this), 5000);

@@ -82,7 +82,7 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
     if (doors.length > blockType.maxDoorSize)
         return;
 
-    setTimeout(function() {
+    gameData.setTimeout(function() {
         for (var i = 0; i < doors.length; ++i) {
             var blockPos = doors[i];
             sendCommand(new CommandBuild(blockPos[0], blockPos[1], Blocks.RedForcefieldOpen.id, BlockTypes.FOREGROUND));
@@ -93,7 +93,7 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
         var blockTypeId = blockType.id;
         if (doors.length > 0) {
             var checkDoorClose = function() {
-                setTimeout(function() {
+                gameData.setTimeout(function() {
                     var shouldClose = true;
                     for (var i = 0; i < this.length; ++i) {
                         var blockPos = this[i];
@@ -122,13 +122,13 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
 
 BlockDoorFunctions.blueForcefield = function(blockPos, blockType, entity, clickType) {
     var startStrength = getStrength(gameData.world.blockWorld, blockPos[0], blockPos[1]);
-    setTimeout(function() {
+    gameData.setTimeout(function() {
         sendCommand(new CommandBuild(blockPos[0], blockPos[1], Blocks.BlueForcefieldOpen.id, BlockTypes.FOREGROUND));
         sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], startStrength));
         //sendCommand(new CommandParticles(Particles.Door.id, [startBlockPos[0] + 0.5, startBlockPos[1] + 0.5], 100));
 
         var checkDoorClose = function() {
-            setTimeout(function() {
+            gameData.setTimeout(function() {
                 var bodies = [];
                 gameData.world.physicsWorld.getBodiesInRadius(bodies, [blockPos[0] + 0.5, blockPos[1] + 0.5], 0.5); // TODO: 1.0 magic number
                 if (bodies.length > 0)
