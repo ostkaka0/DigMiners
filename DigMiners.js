@@ -113,8 +113,6 @@ loadGame = function() {
         }
     });
     $("#eventdiv").mousedown(function(event) {
-        console.log("MOUSEDOWN");
-        console.log(event.target.tagName);
         if (!keysDown[" "]) {
             keysDown[" "] = true;
             new MessageRequestKeyStatusUpdate(Keys.SPACEBAR, true).send(socket);
