@@ -111,7 +111,7 @@ createHUD = function(gameData) {
         e.preventDefault();
     });
 
-    // Open/close crafting window when "C" is clicked
+    /*// Open/close crafting window when "C" is clicked
     $('*').keydown(function(e) {
         e.stopPropagation();
         var key = e.which;
@@ -130,7 +130,7 @@ createHUD = function(gameData) {
     $('*').keydown(function(e) {
         if (e.keyCode == 32)
             e.preventDefault();
-    });
+    });*/
 
     // Create chat
     var chat = new Chat();

@@ -10,9 +10,8 @@ Chat = function() {
         "bottom": "5px",
         "z-index": "1",
         "padding": "0",
-        "background-color": "rgba(64, 64, 64, 0.7)",
+        "background-color": "rgba(0, 0, 0, 0.25)",
         "border-radius": "5px",
-        "border": "solid 2px",
     });
 
     this.textOutput = $("<div>", {
@@ -24,7 +23,6 @@ Chat = function() {
         "margin-top": "5px",
         "margin-left": "auto",
         "margin-right": "auto",
-        "background-color": "rgba(255, 255, 255, 0.8)",
         "border-radius": "2px",
         "text-align": "left",
 
@@ -39,9 +37,12 @@ Chat = function() {
         "margin-left": "auto",
         "margin-right": "auto",
         "top": "5px",
+        "fontFamily": "Monospace",
         "font-size": "12px",
-        "line-height": "12px",
-        "overflow-y": "scroll"
+        "overflow-x": "hidden",
+        "overflow-y": "scroll",
+        "color": "white",
+        "word-wrap": "break-word",
     });
 
     this.row = $("<div>", {
@@ -102,9 +103,18 @@ Chat = function() {
         this.write(text);
     }.bind(this));
 
-    $("*").on('keypress', function(e) {
+    this.blurAll = function() {
+        var tmp = document.createElement("input");
+        document.body.appendChild(tmp);
+        tmp.focus();
+        document.body.removeChild(tmp);
+    }
+
+    $("body").on('keypress', function(e) {
         if (e.which == 13) {
-            if (!this.textInputInput.is(":focus"))
+            if (this.textInputInput.is(":focus"))
+                this.blurAll();
+            else
                 this.textInputInput.focus();
         }
     }.bind(this));
@@ -116,6 +126,10 @@ Chat.prototype.write = function(text) {
     var p = $("<p>", {
         "text": text
     }).appendTo(this.textOutputTextContainer);
+    p.css({
+        "margin-top": "0",
+        "margin-bottom": "0"
+    });
 
     setTimeout(function() {
         this.textOutputTextContainer.animate({
