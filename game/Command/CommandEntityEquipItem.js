@@ -28,10 +28,15 @@ CommandEntityEquipItem.prototype.execute = function() {
         entity.bodyparts.bodyparts[itemType.type].offset[0] += equippedOffset[0];
         entity.bodyparts.bodyparts[itemType.type].offset[1] += equippedOffset[1];
     }
+    
+    if (entity.inventory) {
+        var item = entity.inventory.items[this.stackId];
+        if (item && itemType.itemFunction == ItemFunctions.RangedWeapon && !item.magazine) {
+            item.magazine = itemType.ammoCapacity;
+        }
+        
 
-    if (isServer || (global.playerEntity && this.entityId == global.playerEntity.id)) {
-        if (entity.inventory) {
-            var item = entity.inventory.items[this.stackId];
+        if (isServer || (global.playerEntity && this.entityId == global.playerEntity.id)) {
             if (item && item.id == this.itemId) {
                 item.equipped = this.equipped;
                 if (!isServer)
