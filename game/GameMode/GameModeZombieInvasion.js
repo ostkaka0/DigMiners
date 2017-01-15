@@ -100,7 +100,7 @@ GameModeZombieInvasion.prototype.spawnZombie = function(entityId, pos, teamId) {
             default:
             case 0: 
                 // Improve speed, decrease health
-                entity.movement.speed += 5;
+                entity.movement.speed += 10;
                 var newMaxHealth = Math.max(50, entity.health.maxHealth-10);
                 entity.health.health = newMaxHealth;
                 entity.health.maxHealth = newMaxHealth;
@@ -109,12 +109,12 @@ GameModeZombieInvasion.prototype.spawnZombie = function(entityId, pos, teamId) {
                 // Improve health, decrease speed                // Improve speed: 
                 entity.health.health += 20;
                 entity.health.maxHealth += 20;
-                entity.movement.speed = Math.max(10, entity.movement.speed-5);
+                entity.movement.speed = Math.max(10, entity.movement.speed-4);
             break;
             case 2: 
                 // Improve armor, decrease speed
                 entity.health.armor = Math.min(0.8, entity.health.armor + 0.1);
-                entity.movement.speed = Math.max(10, entity.movement.speed-5);
+                entity.movement.speed = Math.max(10, entity.movement.speed-4);
             break;
             case 3: 
                 // Increase damage
