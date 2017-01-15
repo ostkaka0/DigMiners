@@ -144,6 +144,7 @@ TargetPlayerBehaviour.prototype.destroy = function(entity) {
 }
 
 TargetPlayerBehaviour.prototype.getTarget = function() {
+    var hasMovement = false;
     var shortestDistance = Number.MAX_VALUE;
     var shortestDistanceEntity = null;
     gameData.world.entityWorld.objectArray.forEach(function(otherEntity) {
@@ -153,11 +154,12 @@ TargetPlayerBehaviour.prototype.getTarget = function() {
         if (otherEntity.id == this.entity.id) return;
         
         var dis = v2.distance(this.entity.physicsBody.getPos(), otherEntity.physicsBody.getPos());
-        if (dis < shortestDistance) {
+        if ((dis < shortestDistance || (!hasMovement && otherEntity.movement)) && (!hasMovement || otherEntity.movement)) {
             if (otherEntity.controlledByPlayer)
                 dis /= 4;
             shortestDistance = dis;
             shortestDistanceEntity = otherEntity;
+            hasMovement = (otherEntity.movement != null);
         }
     }.bind(this));
 
