@@ -7,6 +7,7 @@ CommandPlayerJoin = function(playerId, entityId, playerName, socketId) {
 
 CommandPlayerJoin.prototype.execute = function() {
     var player = new Player(this.playerId);
+    player.name = this.playerName;
     if (isServer || this.playerId != global.player.id)
         gameData.playerWorld.add(player, this.playerId);
 
