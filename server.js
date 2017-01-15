@@ -225,6 +225,12 @@ io.on("connection", function(socket) {
         connections[socket.id].ping = 2 * (Date.now() - time);
     });
 
+    socket.on("chat", function(text) {
+        var player = connections[socket.id].player;
+        if (player)
+            io.sockets.emit("chat", player.name + ": " + text);
+    });
+
     Config.messagesToServer.forEach(function(messageType) {
         socket.on(messageType.prototype.idString, function(data) {
             var message = new messageType();

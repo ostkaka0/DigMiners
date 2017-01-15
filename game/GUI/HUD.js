@@ -132,6 +132,10 @@ createHUD = function(gameData) {
             e.preventDefault();
     });
 
+    // Create chat
+    var chat = new Chat();
+    chat.appendTo("#hud");
+
     $('.hud').show();
 }
 
