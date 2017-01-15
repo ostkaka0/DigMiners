@@ -24,8 +24,8 @@ GameModeBaseWar.prototype.init = function() {
         }
     }
     
-    this.playerSpawns[Teams.Blue] = [[-60, -20], [-60, 0], [-60, 20]];
-    this.playerSpawns[Teams.Red] = [[60, -20],[60, 0],[60, 20]];
+    this.playerSpawns[Teams.Blue] = [[-60, -40], [-60, 0], [-60, 40]];
+    this.playerSpawns[Teams.Red] = [[60, -40],[60, 0],[60, 40]];
     
     Object.keys(this.playerSpawns).forEach(function(teamId) {
         this.playerSpawns[teamId].forEach(function(pos) {
