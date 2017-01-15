@@ -39,6 +39,7 @@ TargetPlayerBehaviour.prototype.initialize = function() {
 
 TargetPlayerBehaviour.prototype.run = function() {
     if (gameData.world.tickId % 5 != this.nextCanRunTickId % 5) return true;
+    
     if (!this.target || this.target.isDead || !this.target.isActive) {
         this.target = this.getTarget();
         // If it can't find a new target we must stop this behaviour
@@ -106,10 +107,8 @@ TargetPlayerBehaviour.prototype.run = function() {
         this.spacebar = false;
     }
     if (dis < 4.0 && this.isGunner) {
-        if (!this.isMoving) {
-            sendCommand(new CommandEntityMove(this.entity.id, [-dir[0], -dir[1]], this.entity.physicsBody.getPos()));
-            this.moving = true;
-        }
+        sendCommand(new CommandEntityMove(this.entity.id, [-dir[0], -dir[1]], this.entity.physicsBody.getPos()));
+        this.moving = true;
     } else if (this.moving && dis < 6.0 && this.isGunner) {
         sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.getPos()));
         this.moving = false;

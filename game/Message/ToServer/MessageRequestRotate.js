@@ -22,7 +22,7 @@ MessageRequestRotate.prototype.execute = function(gameData, player) {
     var armLength = 0.5; // The distance from origin to weapon
     var rotateAngle = Math.acos(Math.sqrt(diffLen*diffLen-armLength*armLength)/diffLen);
     direction = [Math.cos(rotateAngle) * direction[0] - Math.sin(rotateAngle) * direction[1], Math.cos(rotateAngle) * direction[1] + Math.sin(rotateAngle) * direction[0]];
-    if (isNaN(direction[0]) ||  isNaN(direction[1])) return;
+    if (isNaN(direction[0]) || isNaN(direction[1])) return;
     
     movement.rotationDirection = direction;
     movement.deltaWorldCursorPos = this.deltaWorldCursorPos;

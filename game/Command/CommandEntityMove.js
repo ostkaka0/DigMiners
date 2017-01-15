@@ -14,7 +14,7 @@ CommandEntityMove.prototype.execute = function() {
     var physicsBody = entity.physicsBody;
     if (!physicsBody) return;
     movement.direction = this.direction;
-    movement.rotationDirection = this.direction;
+    movement.rotationDirection = v2.clone(this.direction);
     physicsBody.setPos(this.pos);
 }
 
