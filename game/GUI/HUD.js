@@ -111,8 +111,8 @@ createHUD = function(gameData) {
         e.preventDefault();
     });
 
-    /*// Open/close crafting window when "C" is clicked
-    $('*').keydown(function(e) {
+    // Open/close crafting window when "C" is clicked
+    /*$('*').keydown(function(e) {
         e.stopPropagation();
         var key = e.which;
         if (key == 67) { // c
@@ -124,10 +124,10 @@ createHUD = function(gameData) {
             return true;
         }
         return true;
-    });
+    });*/
 
     // Stop scroll to bottom when spacebar is used
-    $('*').keydown(function(e) {
+    /*$('*').keydown(function(e) {
         if (e.keyCode == 32)
             e.preventDefault();
     });*/
