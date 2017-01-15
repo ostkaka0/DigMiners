@@ -1,7 +1,7 @@
 
 var canvas = document.getElementById("canvas");
 canvasInitGL(canvas);
-var renderer = new PIXI.WebGLRenderer(window.innerWidth, window.innerHeight, { 'transparent': true, 'antialias': true, 'view': canvas, 'clearBeforeRender': false });
+var renderer = new PIXI.WebGLRenderer(window.innerWidth, window.innerHeight, { 'transparent': false, 'antialias': true, 'view': canvas, 'clearBeforeRender': false });
 var gl = renderer.gl;
 
 window.zindices = new Array(3);
@@ -49,11 +49,28 @@ var loadingScreen = new LoadingScreen();
 var textureManager = new TextureManager(gameData);
 window.global = {};
 
+
+var keyCodeLeft = 37;
+var keyCodeLeft = 38;
+var keyCodeLeft = 39;
+var keyCodeLeft = 37;
+
 loadGame = function() {
     gameData.animationManager.load();
     // Player input
     $('*').keydown(function(event) {
         var char = String.fromCharCode(event.keyCode).toLowerCase();
+        
+        // Arrow keys:
+        if (event.keyCode == 37)
+            char = "a";
+        else if (event.keyCode == 38)
+            char = "w";
+        else if (event.keyCode == 39)
+            char = "d";
+        else if (event.keyCode == 40)
+            char = "s";
+        
         if (!keysDown[char]) {
             keysDown[char] = true;
             var key = null;
@@ -66,9 +83,22 @@ loadGame = function() {
             if (key != null)
                 new MessageRequestKeyStatusUpdate(key, true).send(socket);
         }
+        
+
     });
     $('*').keyup(function(event) {
         var char = String.fromCharCode(event.keyCode).toLowerCase();
+        
+        // Arrow keys:
+        if (event.keyCode == 37)
+            char = "a";
+        else if (event.keyCode == 38)
+            char = "w";
+        else if (event.keyCode == 39)
+            char = "d";
+        else if (event.keyCode == 40)
+            char = "s";
+        
         if (keysDown[char]) {
             keysDown[char] = false;
             var key = null;
@@ -80,6 +110,20 @@ loadGame = function() {
             if (char == "r") key = Keys.R;
             if (key != null)
                 new MessageRequestKeyStatusUpdate(key, false).send(socket);
+        }
+    });
+    $("#eventdiv").mousedown(function(event) {
+        console.log("MOUSEDOWN");
+        console.log(event.target.tagName);
+        if (!keysDown[" "]) {
+            keysDown[" "] = true;
+            new MessageRequestKeyStatusUpdate(Keys.SPACEBAR, true).send(socket);
+        }
+    });
+    $('*').mouseup(function(event) {
+        if (keysDown[" "]) {
+            keysDown[" "] = false;
+            new MessageRequestKeyStatusUpdate(Keys.SPACEBAR, false).send(socket);
         }
     });
 
@@ -259,7 +303,7 @@ gameData.world.events.on("connected", function() {
 
 gameData.world.events.on("ownPlayerSpawned", function(entity, player) {
     $("#hud").unbind("mousemove");
-    $("#hud").mousemove(function(e) {
+    $("*").mousemove(function(e) {
         if (gameData.world.tickId - lastMouseSync >= 1) {
             lastMouseSync = gameData.world.tickId;
             var worldCursorPos = [(mouseX + camera.pos[0] - camera.width / 2) / 32, (canvas.height - mouseY + camera.pos[1] - camera.height / 2) / 32];

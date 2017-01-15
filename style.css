@@ -22,6 +22,11 @@ canvas {
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
     box-sizing: content-box;
+    pointer-events:none;
+}
+
+.hud > * {
+    pointer-events:all;
 }
 
 .dugItems {
@@ -84,6 +89,7 @@ canvas {
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    pointer-events:all;
 }
 
 .inventoryHeader {
