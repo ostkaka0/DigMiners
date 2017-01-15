@@ -7,6 +7,7 @@
     </head>
     <body>
         <canvas class="canvas" id="canvas"></canvas>
+        <div id ="eventdiv" style = "position: absolute; width: 100%; height: 100%; background-color: transparent;"></div>
         <script type = "text/javascript">
             var isServer = false;
             window.vars = { 
