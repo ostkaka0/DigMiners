@@ -28,8 +28,8 @@ gameData.world.events.on("texturesLoaded", function(textures) {
     this.blockPosBad = new PIXI.Sprite(textures["blockPosBad.png"]);
     window.zindices[2].addChild(this.blockPosBad);
     $("*").mousemove(function(event) {
-        mouseX = event.screenX;
-        mouseY = event.screenY;
+        mouseX = event.pageX;
+        mouseY = event.pageY;
     }.bind(this));
     client = new Client(gameData, window.vars.ip);
 });
