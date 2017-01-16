@@ -40,6 +40,7 @@ GameModeZombieInvasion.prototype.init = function() {
         var entity = entityTemplates.humanBase(entityId, pos, Teams.Human);
         this.bases[entityId] = entity;
         sendCommand(new CommandEntitySpawn(gameData, entity, entityId, Teams.Human));
+        this.generateDungeon(pos[0] >> 0, pos[1] >> 0);
     }
 
     // Zombie spawners
@@ -125,4 +126,31 @@ GameModeZombieInvasion.prototype.spawnZombie = function(entityId, pos, teamId) {
     }
 
     return entity;
+}
+
+GameModeZombieInvasion.prototype.generateDungeon = function(tileX, tileY) {
+    var width = Math.floor(Math.random() * 5 + 10);
+    var height = Math.floor(Math.random() * 5 + 10);
+    
+    
+    for (var yy = 0; yy < height; ++yy) {
+        for (var xx = 0; xx < width; ++xx) {
+            var x = xx + tileX - width / 2;
+            var y = yy + tileY - height / 2;
+            var tileId = 0;
+            
+            if (yy <= 0 || yy >= height - 1)
+                tileId = 1;
+            else if (xx <= 0 || xx >= width - 1)
+                tileId = 1;
+                
+            setDensity(gameData.world.tileWorld, x, y, 0);
+            setForeground(gameData.world.blockWorld, x, y, tileId);
+        }
+    }
+    
+    
+    setForeground(gameData.world.blockWorld, tileX - width / 2 + Math.random() * width / 2 >> 0, tileY + ((Math.random() > 0.5)? -1: 1) * Math.height / 2 >> 0, Blocks.BlueForcefield.id);
+    setForeground(gameData.world.blockWorld, tileX + ((Math.random() > 0.5)? -1: 1) * Math.width / 2 >> 0, tileY - height / 2 + Math.random() * height / 2 >> 0, Blocks.BlueForcefield.id);
+    setForeground(gameData.world.blockWorld, tileX - width / 2 + Math.random() * width / 2 >> 0 >> 0, tileY - height / 2 + Math.random() * height / 2 >> 0, Blocks.WoodCrate.id);
 }
