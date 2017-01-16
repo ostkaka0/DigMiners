@@ -28,8 +28,8 @@ gameData.world.events.on("texturesLoaded", function(textures) {
     this.blockPosBad = new PIXI.Sprite(textures["blockPosBad.png"]);
     window.zindices[2].addChild(this.blockPosBad);
     $("*").mousemove(function(event) {
-        mouseX = event.pageX;
-        mouseY = event.pageY;
+        mouseX = event.screenX;
+        mouseY = event.screenY;
     }.bind(this));
     client = new Client(gameData, window.vars.ip);
 });
@@ -80,6 +80,9 @@ loadGame = function() {
             if (char == "d") key = Keys.RIGHT;
             if (char == " ") key = Keys.SPACEBAR;
             if (char == "r") key = Keys.R;
+            
+            if (key == Keys.SPACEBAR && keysDown["lmb"]) return;
+            
             if (key != null)
                 new MessageRequestKeyStatusUpdate(key, true).send(socket);
         }
@@ -108,19 +111,24 @@ loadGame = function() {
             if (char == "d") key = Keys.RIGHT;
             if (char == " ") key = Keys.SPACEBAR;
             if (char == "r") key = Keys.R;
+            
+            if (key == Keys.SPACEBAR && keysDown["lmb"]) return;
+            
             if (key != null)
                 new MessageRequestKeyStatusUpdate(key, false).send(socket);
         }
     });
     $("#eventdiv").mousedown(function(event) {
-        if (!keysDown[" "]) {
-            keysDown[" "] = true;
+        if (event.button == 0 && !keysDown["lmb"]) {
+            keysDown["lmb"] = true;
+            if (keysDown[" "]) return;
             new MessageRequestKeyStatusUpdate(Keys.SPACEBAR, true).send(socket);
         }
     });
     $('*').mouseup(function(event) {
-        if (keysDown[" "]) {
-            keysDown[" "] = false;
+        if (event.button == 0 && keysDown["lmb"]) {
+            keysDown["lmb"] = false;
+            if (keysDown[" "]) return;
             new MessageRequestKeyStatusUpdate(Keys.SPACEBAR, false).send(socket);
         }
     });
@@ -299,17 +307,22 @@ gameData.world.events.on("connected", function() {
     this.deathScreen = new DeathScreen();
 }.bind(this));
 
+$("*").mousemove(function(e) {
+    if (!global.player || !global.playerEntity) return;
+    if (gameData.world.tickId - lastMouseSync < 1) return;
+    
+    var entity = global.playerEntity;
+    lastMouseSync = gameData.world.tickId;
+    var worldCursorPos = [(e.pageX + camera.pos[0] - camera.width / 2) / 32, (canvas.height - e.pageY + camera.pos[1] - camera.height / 2) / 32];
+    var pos = entity.physicsBody.getPos();
+    var diff = [worldCursorPos[0] - pos[0], worldCursorPos[1] - pos[1]];
+    console.log(e.screenX + " " + diff[0]);
+    new MessageRequestRotate(diff).send(socket);
+}.bind(this));
+
 gameData.world.events.on("ownPlayerSpawned", function(entity, player) {
-    $("#hud").unbind("mousemove");
-    $("*").mousemove(function(e) {
-        if (gameData.world.tickId - lastMouseSync >= 1) {
-            lastMouseSync = gameData.world.tickId;
-            var worldCursorPos = [(mouseX + camera.pos[0] - camera.width / 2) / 32, (canvas.height - mouseY + camera.pos[1] - camera.height / 2) / 32];
-            var pos = entity.physicsBody.getPos();
-            var diff = [worldCursorPos[0] - pos[0], worldCursorPos[1] - pos[1]];
-            new MessageRequestRotate(diff).send(socket);
-        }
-    }.bind(this));
+    //$("#hud").unbind("mousemove");
+    
 }.bind(this));
 
 gameData.world.entityWorld.onAdd["DigMiners.js"] = function(entity) {

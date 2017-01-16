@@ -122,7 +122,6 @@ PhysicsWorld.prototype.add = function(pos, velocity, mass) {
     if (pos == undefined) pos = [0, 0];
     if (velocity == undefined) velocity = [0, 0];
     if (mass == undefined) mass = 1.0;
-    else console.log("mass is " + mass);
 
     var id;
 
