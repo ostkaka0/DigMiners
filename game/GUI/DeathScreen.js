@@ -47,7 +47,7 @@ DeathScreen = function() {
         "id": "input",
         "type": "text",
         "class": "col-7 form-control",
-        "value": "bertil",
+        "value": "",
     }).appendTo(this.inputHolder);
 
     this.checkboxHolder = $("<div>", {

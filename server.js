@@ -190,7 +190,8 @@ io.on("connection", function(socket) {
 
     var playerId = gameData.playerIdList.next();
     var entityId = gameData.world.idList.next();
-    var name = names[Math.round(Math.random() * names.length)] + " " + lastnames[Math.round(Math.random() * lastnames.length)];
+    //var name = names[Math.round(Math.random() * names.length)] + " " + lastnames[Math.round(Math.random() * lastnames.length)];
+    var name = "Guest" + playerId;
 
     // Send playerJoin message
     sendCommand(new CommandPlayerJoin(playerId, entityId, name, socket.id));
