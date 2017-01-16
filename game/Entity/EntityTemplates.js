@@ -95,7 +95,7 @@ entityTemplates.testMonster = function(entityId, pos, teamId) {
 
     entity.behaviourContainer = new BehaviourContainer();
     entity.behaviourContainer.behaviours.push(new DigObstacleBehaviour(entity, 0.5));
-    entity.behaviourContainer.behaviours.push(new TargetPlayerBehaviour(entity, 15.0));
+    entity.behaviourContainer.behaviours.push(new TargetPlayerBehaviour(entity, 10.0));
     entity.behaviourContainer.behaviours.push(new DigObstacleBehaviour(entity, 1.0));
     entity.behaviourContainer.behaviours.push(new WalkToEnemyBehaviour(entity, 60.0));
     entity.behaviourContainer.behaviours.push(new WalkToPointBehaviour(entity, [-pos[0], -pos[1]]));
@@ -140,7 +140,7 @@ entityTemplates.zombie = function(entityId, pos, teamId) {
 
     entity.behaviourContainer = new BehaviourContainer();
     entity.behaviourContainer.behaviours.push(new DigObstacleBehaviour(entity, 0.5));
-    entity.behaviourContainer.behaviours.push(new TargetPlayerBehaviour(entity, 15.0));
+    entity.behaviourContainer.behaviours.push(new TargetPlayerBehaviour(entity, 20.0));
     entity.behaviourContainer.behaviours.push(new DigObstacleBehaviour(entity, 1.0));
     entity.behaviourContainer.behaviours.push(new WalkToEnemyBehaviour(entity, 1000.0));
     entity.behaviourContainer.behaviours.push(new RandomWalkBehaviour(entity));

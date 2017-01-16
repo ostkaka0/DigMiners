@@ -91,10 +91,11 @@ TargetPlayerBehaviour.prototype.run = function() {
     this.lastUpdateTickId = gameData.world.tickId;
     
     var currentDir = this.entity.movement.direction;
-    var attackDistance = this.getAttackDistance(tilePos, dir);
-    var attackDotAngle = this.getAttackDotAngle();
     var angle = this.entity.physicsBody.angle;
-    var dotAngle = v2.dot(targetDir, [Math.cos(-angle), Math.sin(-angle)]);
+    var angleVec = [Math.cos(-angle), Math.sin(-angle)];
+    var attackDistance = this.getAttackDistance(this.entity.physicsBody.getPos(), angleVec);
+    var attackDotAngle = this.getAttackDotAngle();
+    var dotAngle = v2.dot(targetDir, angleVec);
 
     if (dis < attackDistance && !this.spacebar && 1.0 - dotAngle < attackDotAngle) {// 1.0 limit for punch 
         sendCommand(new CommandKeyStatusUpdate(this.entity.id, Keys.SPACEBAR, true, this.entity.physicsBody.getPos()));
@@ -105,10 +106,10 @@ TargetPlayerBehaviour.prototype.run = function() {
         sendCommand(new CommandKeyStatusUpdate(this.entity.id, Keys.SPACEBAR, false, this.entity.physicsBody.getPos()));
         this.spacebar = false;
     }
-    if (dis < 4.0 && this.isGunner) {
+    if (this.isGunner && dis < 4.0 && dis < attackDistance) {
         sendCommand(new CommandEntityMove(this.entity.id, [-dir[0], -dir[1]], this.entity.physicsBody.getPos()));
         this.moving = true;
-    } else if (this.moving && dis < 6.0 && this.isGunner) {
+    } else if (this.isGunner && this.moving && dis < 6.0 && dis < attackDistance) {
         sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.getPos()));
         this.moving = false;
     } else if (v2.dot(dir, currentDir) < 0.9 && !this.spacebar) {
@@ -116,9 +117,9 @@ TargetPlayerBehaviour.prototype.run = function() {
         this.moving = true;
     }
     // Look at target entity
-    if (dis < 20.0 && !this.isAiming && this.isGunner) {
+    if (this.isGunner && !this.isAiming && dis < 20.0 && dis < attackDistance) {
         sendCommand(new CommandEntityLookAtEntity(this.entity.id, this.target.id));
-    } else if (dis > 20.0 && this.isAiming) {
+    } else if (this.isAiming && dis > 20.0 && dis < attackDistance) {
         sendCommand(new CommandEntityLookAtEntity(this.entity.id, 0));
     }
     return true;
@@ -174,7 +175,7 @@ TargetPlayerBehaviour.prototype.getTarget = function() {
 }
 
 TargetPlayerBehaviour.prototype.getAttackDistance = function(pos, dir) {
-    if (this.entity.equippedItems.items["tool"] && this.entity.equippedItems.items["tool"].itemFunction == ItemFunctions.RangedWeapon) {
+    if (this.isGunner) {
         // TODO: Raycast
         var stepLength = 0.5;
         var dis = stepLength;
@@ -182,7 +183,7 @@ TargetPlayerBehaviour.prototype.getAttackDistance = function(pos, dir) {
         var step = [stepLength * dir[0], stepLength * dir[1]];
         v2.add(step, rayPos, rayPos);
         for (var i = 0; i < 40; i++) {
-            if (getDensity(gameData.world.tileWorld, rayPos[0], rayPos[1]) > 192) break;
+            if (getDensity(gameData.world.tileWorld, rayPos[0], rayPos[1]) > 127) break;
             if (getForeground(gameData.world.blockWorld, rayPos[0], rayPos[1]) != 0) break;
             
             v2.add(step, rayPos, rayPos);
