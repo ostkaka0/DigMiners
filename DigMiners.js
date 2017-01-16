@@ -316,7 +316,6 @@ $("*").mousemove(function(e) {
     var worldCursorPos = [(e.pageX + camera.pos[0] - camera.width / 2) / 32, (canvas.height - e.pageY + camera.pos[1] - camera.height / 2) / 32];
     var pos = entity.physicsBody.getPos();
     var diff = [worldCursorPos[0] - pos[0], worldCursorPos[1] - pos[1]];
-    console.log(e.screenX + " " + diff[0]);
     new MessageRequestRotate(diff).send(socket);
 }.bind(this));
 
