@@ -96,7 +96,6 @@ TargetPlayerBehaviour.prototype.run = function() {
     var angle = this.entity.physicsBody.angle;
     var dotAngle = v2.dot(targetDir, [Math.cos(-angle), Math.sin(-angle)]);
 
-
     if (dis < attackDistance && !this.spacebar && 1.0 - dotAngle < attackDotAngle) {// 1.0 limit for punch 
         sendCommand(new CommandKeyStatusUpdate(this.entity.id, Keys.SPACEBAR, true, this.entity.physicsBody.getPos()));
         sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.getPos()));
@@ -152,20 +151,26 @@ TargetPlayerBehaviour.prototype.getTarget = function() {
         if (!otherEntity.team && !otherEntity.movement) return;
         if (this.entity.team && this.entity.team.value != Teams.None && (!otherEntity.team || otherEntity.team.value == this.entity.team.value)) return;
         if (otherEntity.id == this.entity.id) return;
+        if (hasMovement && !otherEntity.movement) return;
         
         var dis = v2.distance(this.entity.physicsBody.getPos(), otherEntity.physicsBody.getPos());
-        if ((dis < shortestDistance || (!hasMovement && otherEntity.movement)) && (!hasMovement || otherEntity.movement)) {
-            if (otherEntity.controlledByPlayer)
-                dis /= 4;
-            shortestDistance = dis;
-            shortestDistanceEntity = otherEntity;
-            hasMovement = (otherEntity.movement != null);
+        
+        if (dis > this.maxRadius) return;
+        
+        if (otherEntity.controlledByPlayer)
+            dis /= 4;
+            
+        if (dis >= shortestDistance) {
+            if (hasMovement || !otherEntity.movement)
+                return;
         }
+        
+        shortestDistance = dis;
+        shortestDistanceEntity = otherEntity;
+        hasMovement = (otherEntity.movement)? true : false;
     }.bind(this));
 
-    if (shortestDistance <= this.maxRadius)
-        return shortestDistanceEntity;
-    return null;
+    return shortestDistanceEntity;
 }
 
 TargetPlayerBehaviour.prototype.getAttackDistance = function(pos, dir) {
