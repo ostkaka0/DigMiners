@@ -14,8 +14,19 @@ Entity.onDequip = function(entity, stackId, itemType) {
 Entity.getDigSpeed = function(entity) {
     var defaultDigSpeed = 0.0;
     var itemType = entity.equippedItems.items["tool"];
-    if (!itemType || itemType.typeOfType != "shovel") return defaultDigSpeed;
-    return itemType.digSpeed;
+    if (!itemType || itemType.typeOfType != "shovel") defaultDigSpeed = defaultDigSpeed;
+    else defaultDigSpeed = itemType.digSpeed
+    return defaultDigSpeed;
+}
+
+Entity.getBlockBreakSpeed = function(entity) {
+    var blockBreakSpeed = 1.0;
+    var itemType = entity.equippedItems.items["tool"];
+    if (itemType) 
+        blockBreakSpeed = itemType.blockBreakSpeed || 1.0;
+    if (entity.movement)
+        blockBreakSpeed *= entity.movement.digHardnessMultiplier;
+    return blockBreakSpeed;
 }
 
 Entity.getMaxDigHardness = function(entity) {

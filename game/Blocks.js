@@ -155,7 +155,7 @@ Blocks.StoneWall = {
     isSolid: true,
     hardness: 1.0,
     type: BlockTypes.FOREGROUND,
-    buildDuration: 10
+    buildDuration: 20
 };
 
 Blocks.WoodCrate =  {
@@ -163,8 +163,8 @@ Blocks.WoodCrate =  {
     isSolid: true,
     hardness: 0.50,
     type: BlockTypes.FOREGROUND,
-    buildDuration: 10,
-    onPlace: BlockFunctions.createEntity,
+    buildDuration: 5,
+    /*onPlace: BlockFunctions.createEntity,
     createEntity: function(blockPos, block) {
         var entity = {};
         entity.physicsBody = new PhysicsBody(v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), 0.01, 4.0);
@@ -179,7 +179,7 @@ Blocks.WoodCrate =  {
         entity.drawable = new Drawable(0);
 
         return entity;
-    }
+    }*/
 }
 
 Blocks.StoneFloor = {

@@ -9,6 +9,7 @@ DigObstacleBehaviour = function(entity, maxWalkDis) {
     this.nextCanRunTickId = gameData.world.tickId;
     this.canRunOldPos = null;
     this.oldItemId = 0;
+    this.digPauseDuration = 10; // Duration between finish digging and start digging again
 }
 
 DigObstacleBehaviour.prototype.canRun = function() {
@@ -99,6 +100,7 @@ DigObstacleBehaviour.prototype.finish = function() {
     sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.getPos()));
     sendCommand(new CommandEntityRotate(this.entity.id, this.oldMoveDir));
     
+    this.nextCanRunTickId = gameData.world.tickId + this.digPauseDuration;
     //if (this.oldItemId)
     //    sendCommand(new CommandEntityEquipItem(this.entity.id, 0, this.oldItemId, true));
 }
