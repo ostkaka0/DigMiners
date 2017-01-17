@@ -5,7 +5,6 @@ CommandEntitySpawn = function(gameData, entity, entityId, teamId) {
 }
 
 CommandEntitySpawn.prototype.execute = function() {
-    this.entity.inventory = new Inventory();
     if (gameData.world.entityWorld.objects[this.entityId])
         gameData.world.entityWorld.remove(gameData.world.entityWorld.objects[this.entityId]);
     gameData.world.entityWorld.add(this.entity, this.entityId);

@@ -1,9 +1,5 @@
 
 serializeBooleans = function(byteArray, index, booleans) {
-    for (var i = 0; i < 8; ++i) {
-        if (booleans[i] == null || booleans[i] == undefined)
-            booleans[i] = false;
-    }
     var bitField = (booleans[0] ? 1 : 0) |
         (booleans[1] ? 2 : 0) |
         (booleans[2] ? 4 : 0) |
@@ -18,14 +14,14 @@ serializeBooleans = function(byteArray, index, booleans) {
 deserializeBooleans = function(byteArray, index) {
     var bitField = deserializeInt8(byteArray, index);
     var booleans = [];
-    booleans[0] = (bitField & 1 != 0);
-    booleans[1] = (bitField & 2 != 0);
-    booleans[2] = (bitField & 4 != 0);
-    booleans[3] = (bitField & 8 != 0);
-    booleans[4] = (bitField & 16 != 0);
-    booleans[5] = (bitField & 32 != 0);
-    booleans[6] = (bitField & 64 != 0);
-    booleans[7] = (bitField & 128 != 0);
+    booleans[0] = ((bitField & 1) != 0);
+    booleans[1] = ((bitField & 2) != 0);
+    booleans[2] = ((bitField & 4) != 0);
+    booleans[3] = ((bitField & 8) != 0);
+    booleans[4] = ((bitField & 16) != 0);
+    booleans[5] = ((bitField & 32) != 0);
+    booleans[6] = ((bitField & 64) != 0);
+    booleans[7] = ((bitField & 128) != 0);
     return booleans;
 }
 
