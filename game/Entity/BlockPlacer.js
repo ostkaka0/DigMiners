@@ -50,7 +50,7 @@ BlockPlacer.prototype.update = function(entity) {
         return;
     }
 
-    if (isServer && this.duration == 0) {
+    if (isServer && this.duration == 0 && inventoryItem && inventoryItem.id) {
         // Remove from inventory and place block
         sendCommand(new CommandEntityInventory(player.entityId, InventoryActions.REMOVE_ITEM, inventoryItem.id, 1));
         sendCommand(new CommandPlaceBlock(this.blockPos, this.blockId));

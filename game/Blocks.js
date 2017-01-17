@@ -155,7 +155,7 @@ Blocks.StoneWall = {
     isSolid: true,
     hardness: 1.0,
     type: BlockTypes.FOREGROUND,
-    buildDuration: 20
+    buildDuration: 10
 };
 
 Blocks.WoodCrate =  {
