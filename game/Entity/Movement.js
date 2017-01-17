@@ -1,5 +1,5 @@
 
-Movement = function(speed, toolUseDuration, damageMultiplier) {
+Movement = function(speed, toolUseDuration, damageMultiplier, digHardnessMultiplier) {
     this.keyStatuses = {};
     this.direction = v2.create(0, 0);
     this.rotationDirection = v2.create(0, 0);
@@ -19,6 +19,7 @@ Movement = function(speed, toolUseDuration, damageMultiplier) {
     this.isDigging = false;
     this.isMining = false;
     this.damageMultiplier = (damageMultiplier == null)? 1.0 : damageMultiplier;
+    this.digHardnessMultiplier = (digHardnessMultiplier == null)? 1.0 : digHardnessMultiplier;
     this.entityLookTarget = null;
 }
 

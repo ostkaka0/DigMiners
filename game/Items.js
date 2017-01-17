@@ -22,7 +22,7 @@ ItemFunctions.Shovel = function(entity, item) {
                 var blockType = Config.blockRegister[blockId];
                 var strength = blockChunk.getStrength(localPos[0], localPos[1]);
                 // TODO: 16 magic value
-                strength -= 16 * (1 / blockType.hardness);
+                strength -= 16 * (Entity.getBlockBreakSpeed(entity) / blockType.hardness);
                 var x = chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0];
                 var y = chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1];
                 sendCommand(new CommandBlockStrength(x, y, Math.max(strength, 0)));
