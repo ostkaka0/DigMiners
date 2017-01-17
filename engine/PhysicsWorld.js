@@ -125,7 +125,7 @@ PhysicsWorld.prototype.add = function(pos, velocity, mass, radius) {
     if (pos == undefined) pos = [0, 0];
     if (velocity == undefined) velocity = [0, 0];
     if (mass == undefined) mass = 1.0;
-    if (radius == undefined) radius = 1.0;
+    if (radius == undefined) radius = 0.5;
 
     var id;
 

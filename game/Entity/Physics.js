@@ -12,6 +12,34 @@ COLLISION_BLOCKS = [
     [-1, -1]
 ];
 
+COLLISION_BLOCKS_LARGE = [
+    [0, 0],
+    [0, -1],
+    [0, 1],
+    [-1, 0],
+    [1, 0],
+    [1, -1],
+    [-1, 1],
+    [1, 1],
+    [-1, -1],
+    [-2, -2],
+    [-2, -1],
+    [-2, 0],
+    [-2, 1],
+    [-2, 2],
+    [2, -2],
+    [2, -1],
+    [2, 0],
+    [2, 1],
+    [2, -2],
+    [-1, 2],
+    [0, 2],
+    [1, 2],
+    [-1, -2],
+    [0, -2],
+    [1, -2],
+];
+
 BlockCollisionSide = {
     TOP: 0,
     LEFT: 1,
@@ -27,7 +55,7 @@ entityFunctionPhysicsBodySimulate = function(dt) {
 }
 
 physicsBodySimulate = function(physicsBody, dt) {
-    var playerFatness = 1; // player is 1 block wide
+    var radius = physicsBody.getRadius();
 
     // Calculate deltaPos and number of steps
     var pos = physicsBody.getPos();
@@ -59,7 +87,7 @@ physicsBodySimulate = function(physicsBody, dt) {
             var dx = pos[0] - (worldBlockPos[0] + 0.5);
             var dy = pos[1] - (worldBlockPos[1] + 0.5);
 
-            if (Math.abs(dx) < playerFatness && Math.abs(dy) < playerFatness) {
+            if (Math.abs(dx) < radius + 0.5 && Math.abs(dy) < radius + 0.5) {
                 if (dy > dx) {
                     if (dy > -dx)
                         gameData.world.events.trigger("entityHitBlockSide", gameData.world.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.TOP);
@@ -87,7 +115,7 @@ physicsBodySimulate = function(physicsBody, dt) {
             var dx = pos[0] - (worldBlockPos[0] + 0.5);
             var dy = pos[1] - (worldBlockPos[1] + 0.5);
 
-            if (Math.abs(dx) < playerFatness && Math.abs(dy) < playerFatness) {
+            if (Math.abs(dx) < radius + 0.5 && Math.abs(dy) < radius + 0.5) {
                 var blockLeft = worldBlockPos[0];
                 var blockRight = worldBlockPos[0] + 1.0
                 var blockTop = worldBlockPos[1] + 1.0;
@@ -95,18 +123,18 @@ physicsBodySimulate = function(physicsBody, dt) {
 
                 if (dy > dx) {
                     if (dy > -dx) {
-                        pos[1] = blockTop + playerFatness / 2;
+                        pos[1] = blockTop + radius;
                         velocity[1] = 0;
 
                     } else {
-                        pos[0] = blockLeft - playerFatness / 2;
+                        pos[0] = blockLeft - radius;
                         velocity[0] = 0;
                     }
                 } else if (dy > -dx) {
-                    pos[0] = blockRight + playerFatness / 2;
+                    pos[0] = blockRight + radius;
                     velocity[0] = 0;
                 } else {
-                    pos[1] = blockBottom - playerFatness / 2;
+                    pos[1] = blockBottom - radius;
                     velocity[1] = 0;
                 }
             }
@@ -118,14 +146,14 @@ physicsBodySimulate = function(physicsBody, dt) {
             var dir = calcDir(gameData.world.tileWorld, pos[0], pos[1]);
             //v2.mul(2.0, dir, dir);
             var tempDir = v2.clone(dir);
-            v2.mul(0.5 + density/255, tempDir, tempDir);
+            v2.mul(0.5 + density / 255, tempDir, tempDir);
             v2.add(pos, tempDir, pos);
             var normal = v2.create(0, 0);
             v2.normalize(dir, normal);
             if (normal[0] || normal[1]) {
                 var dot = v2.dot(normal, physicsBody.getVelocity());
                 var deltaSpeed = [0, 0];
-                v2.mul(-4.0 * density/255 * density/255 * dot, normal, deltaSpeed);
+                v2.mul(-4.0 * density / 255 * density / 255 * dot, normal, deltaSpeed);
                 v2.div(deltaSpeed, numSteps, deltaSpeed);
                 v2.add(deltaSpeed, velocity, velocity);
             }
