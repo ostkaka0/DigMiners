@@ -1,4 +1,4 @@
-var pageDim = 2;
+var pageDim = 4;
 
 PhysicsWorld = function() {
     this.numBodies = 0;
@@ -88,7 +88,7 @@ PhysicsWorld.prototype.update = function(dt) {
             if (dis == 0)
                 dir = [1, 0];
             var deltaPos = [0, 0];
-            v2.mul((1.0 - dis) / 2.0, dir, deltaPos);
+            v2.mul(((radius + otherRadius) - dis) / 2.0, dir, deltaPos);
             if (otherMass / mass > 0.1)
                 pos = [pos[0] - deltaPos[0] * Math.min(2.0, otherMass / mass), pos[1] - deltaPos[1] * Math.min(2.0, otherMass / mass)];
             if (mass / otherMass > 0.1)
