@@ -15,6 +15,7 @@ CommandPlayerSpawn.prototype.execute = function() {
     if (!isServer && global.player.id == this.playerId) {
         global.playerEntityId = this.entityId;
         global.playerEntity = entity;
+        updateHUD(gameData);
         gameData.world.events.trigger("ownPlayerSpawned", entity, player);
     }
     gameData.world.events.trigger("playerSpawned", entity, player);

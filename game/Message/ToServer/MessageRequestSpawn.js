@@ -21,17 +21,16 @@ MessageRequestSpawn.prototype.execute = function(gameData, player) {
     entity.physicsBody.setPos(pos);
     entity.physicsBody.posOld = v2.clone(pos);
 
-    console.log("spawning entity " + entityId + " at " + pos);
-    sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
-    sendCommand(new CommandPlayerSpawn(player.id, entityId, player.name));
-
     classType.weapons.forEach(function(weapon) {
-        sendCommand(new CommandEntityInventory(entityId, InventoryActions.ADD_ITEM, weapon.id, 1));
+        entity.inventory.addStaticItem(gameData, weapon.id)
     });
     classType.blocks.forEach(function(blockItem) {
-        sendCommand(new CommandEntityInventory(entityId, InventoryActions.ADD_ITEM, blockItem.id, 100));
+        entity.inventory.addStaticItem(gameData, blockItem.id)
     });
-    sendCommand(new CommandEntityInventory(entityId, InventoryActions.ADD_ITEM, Items.Egg.id, 1000));
+    entity.inventory.addStaticItem(gameData, Items.Egg.id)
+
+    sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
+    sendCommand(new CommandPlayerSpawn(player.id, entityId, player.name));
 }
 
 MessageRequestSpawn.prototype.send = function(socket) {

@@ -3,16 +3,49 @@ Inventory = function() {
     this.items = [];
 }
 
+Inventory.prototype.name = inventory.name; function inventory() { };
+
+Inventory.prototype.serialize = function(byteArray, index) {
+    serializeInt32(byteArray, index, this.items.length);
+    for (var i = 0; i < this.items.length; ++i) {
+        serializeInt32(byteArray, index, this.items[i].id);
+        serializeInt32(byteArray, index, this.items[i].amount);
+        var booleans = [this.items[i].equipped, this.items[i].static];
+        serializeBooleans(byteArray, index, booleans);
+    }
+}
+
+Inventory.prototype.deserialize = function(byteArray, index) {
+    this.items = [];
+    var itemsLength = deserializeInt32(byteArray, index);
+    for (var i = 0; i < itemsLength; ++i) {
+        var id = deserializeInt32(byteArray, index);
+        var amount = deserializeInt32(byteArray, index);
+        var booleans = deserializeBooleans(byteArray, index);
+        this.items[i] = {
+            "id": id,
+            "name": Config.itemRegister[id].name,
+            "amount": amount,
+            "equipped": booleans[0],
+            "static": booleans[1]
+        }
+    }
+}
+
+Inventory.prototype.getSerializationSize = function() {
+    return 4 + this.items.length * 9;
+}
+
 Inventory.prototype.sortItems = function() {
     this.items.sort(function(a, b) {
         var aType = Config.itemRegister[a.id];
         var bType = Config.itemRegister[b.id];
-        
+
         if (aType.type == "tool" && bType.type != "tool")
             return -1;
         if (bType.type == "tool" && aType.type != "tool")
             return 1;
-        
+
         if (a.id < b.id)
             return -1;
 
@@ -42,7 +75,7 @@ Inventory.prototype.addItem = function(gameData, id, amount) {
             amount -= added;
             continue;
         }
-        if (this.items[i].id === id && this.items[i].amount < maxStack) {
+        if (this.items[i].id === id && !this.items[i].static && this.items[i].amount < maxStack) {
             var maxToAdd = maxStack - this.items[i].amount;
             var added = (amount <= maxToAdd ? amount : maxToAdd);
             this.items[i].amount += added;
@@ -52,11 +85,17 @@ Inventory.prototype.addItem = function(gameData, id, amount) {
     this.sortItems();
 }
 
+Inventory.prototype.addStaticItem = function(gameData, id) {
+    //console.log("adding " + amount + " " + id);
+    this.items.push({ 'id': id, 'name': Config.itemRegister[id].name, 'amount': 1, 'static': true });
+    this.sortItems();
+}
+
 Inventory.prototype.removeItem = function(gameData, id, amount) {
     var removedItems = [];
     for (var i = this.items.length - 1; i >= 0; --i) {
         var currentAmount = this.items[i].amount;
-        if (this.items[i].id === id && currentAmount >= 0) {
+        if (this.items[i].id === id && !this.items[i].static && currentAmount >= 0) {
             var removed = (amount <= currentAmount ? amount : currentAmount);
             this.items[i].amount -= removed;
             if (this.items[i].amount <= 0) {
