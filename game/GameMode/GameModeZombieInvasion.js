@@ -1,9 +1,12 @@
 
 GameModeZombieInvasion = function() {
-    this.wavePauseDuration = 10000;
-    this.numEndWaveZombies = 10;
-    this.waveDuration = 60000;
+    this.wavePauseDuration = 30000;
+    this.numEndWaveZombies = 5;
     this.waveNum = 0;
+    this.numZombieToSpawn = 0;
+    this.zombies = {};
+    this.endWave = false;
+    this.endWaveTimer = null;
 
     this.playerSpawns = {};
     this.teams = [Teams.Human];
@@ -18,8 +21,6 @@ GameModeZombieInvasion.prototype.init = function() {
         var chunk = new Chunk();
         gameData.world.generator.generate(chunk, x, y);
         world.set(x, y, chunk);
-
-        gameData.world.generator.generateDungeons(gameData.world.blockWorld, chunk, x, y);
     }
 
     for (var x = -3; x < 3; ++x) {
@@ -50,26 +51,45 @@ GameModeZombieInvasion.prototype.init = function() {
         for (var j = 0; j < 10 && v2.length(pos) < 40.0; j++)
             pos = [90.0 * (-1 + 2 * Math.random()), 90.0 * (-1 + 2 * Math.random())];
         var entityId = gameData.world.idList.next();
-        var entity = entityTemplates.monsterSpawner(entityId, pos, this.spawnZombie.bind(this), 0, 2.0, 1, null, null, Teams.Zombie);
+        var entity = entityTemplates.monsterSpawner(entityId, pos, this.spawnZombie.bind(this), 0, 2.0, 40, null, null, Teams.Zombie);
         sendCommand(new CommandEntitySpawn(gameData, entity, entityId, Teams.Zombie));
         sendCommand(new CommandDig(pos, 5.0));
         this.zombieSpawners.push(entity);
     }
 
     gameData.world.entityWorld.onRemove["GameModeBaseWar.js"] = function(entity) {
-        if (!this.bases[entity.id]) return;
+        if (this.zombies[entity.id]) {
+            delete this.zombies[entity.id];
+            if (Object.keys(this.zombies).length <= this.numEndWaveZombies && this.numZombiesToSpawn <= 0 && !this.endWave) {
+                this.endWave = true;
+                if (this.endWaveTimer) {
+                    clearTimeout(this.endWaveTimer);
+                    this.endWaveTimer = null;
+                }
+                gameData.setTimeout(this.startWave.bind(this), this.wavePauseDuration);
+                sendCommand(new CommandPopupMessage("Zombies are mutating."));
+            }
+            // start wave with timer when there are few zombies
+            else if (Object.keys(this.zombies).length <= this.numEndWaveZombies + 5 && this.numZombiesToSpawn <= 0 && !this.endWave && !this.endWaveTimer) {
+                this.endWaveTimer = gameData.setTimeout(function() {
+                    this.endWaveTimer = null;
+                    if (this.endWave) return;
+                    this.endWave = true;
+                    gameData.setTimeout(this.startWave.bind(this), this.wavePauseDuration);
+                    sendCommand(new CommandPopupMessage("Zombies are mutating."));
+                }.bind(this), 10000);
+            }
+        } else if (this.bases[entity.id]) {
+            delete this.bases[entity.id];
 
-        // Delete spawn
-        delete this.bases[entity.id];
-
-        // End gamemode
-        if (Object.keys(this.bases).length <= 0) {
-            sendCommand(new CommandPopupMessage("All bases destroyed. Changing gamemode in 5 seconds.", 5000));
-            gameData.setTimeout(function() { gameData.changeGameMode(); }, 5000);
-        } else
-            sendCommand(new CommandPopupMessage("Base destroyed! " + Object.keys(this.bases).length + " bases remaining."));
+            // End gamemode
+            if (Object.keys(this.bases).length <= 0) {
+                sendCommand(new CommandPopupMessage("All bases destroyed. Changing gamemode in 5 seconds.", 5000));
+                gameData.setTimeout(function() { gameData.changeGameMode(); }, 5000);
+            } else
+                sendCommand(new CommandPopupMessage("Base destroyed! " + Object.keys(this.bases).length + " bases remaining."));
+        }
     }.bind(this);
-
 
     gameData.setTimeout(this.startWave.bind(this), this.initialWaitTicks);
 }
@@ -78,51 +98,56 @@ GameModeZombieInvasion.prototype.name = "Zombie Invasion";
 
 GameModeZombieInvasion.prototype.startWave = function() {
     this.waveNum++;
-    gameData.setTimeout(this.startWave.bind(this), this.waveDuration + this.wavePauseDuration);
 
     sendCommand(new CommandPopupMessage("Starting wave " + this.waveNum + "."));
 
     // Enable spawns
     this.zombieSpawners.forEach(function(entity) {
-        entity.spawner.maxEntities = Math.max(1, Math.min(5, this.waveNum + gameData.playerWorld.objectArray.length - 1));
+        entity.spawner.maxEntities = 5; //Math.max(1, Math.min(5, this.waveNum/4 + gameData.playerWorld.objectArray.length - 1));
     }.bind(this));
-    // Disable spawns after 1 seconds
-    gameData.setTimeout(function() {
-        this.zombieSpawners.forEach(function(entity) {
-            entity.spawner.maxEntities = 0;
-        }.bind(this));
-    }.bind(this), 1000);
+    
+    this.numZombiesToSpawn = 10 + 5 * this.waveNum;
+    this.endWave = false;
 }
 
 GameModeZombieInvasion.prototype.spawnZombie = function(entityId, pos, teamId) {
     var entity = entityTemplates.zombie(entityId, pos, teamId);
+    this.zombies[entityId] = entity;
     // Make zombie stronger for each wave
-    for (var i = 0; i < this.waveNum; i++) {
+    for (var i = 0; i < this.waveNum - 1; i++) {
         switch (4 * Math.random() >> 0) {
             default:
             case 0:
                 // Improve speed, decrease health
-                entity.movement.speed += 10;
-                var newMaxHealth = Math.max(50, entity.health.maxHealth - 10);
+                entity.movement.speed += 5;
+                var newMaxHealth = Math.max(50, entity.health.maxHealth - 5);
                 entity.health.health = newMaxHealth;
                 entity.health.maxHealth = newMaxHealth;
                 break;
             case 1:
                 // Improve health, decrease speed                // Improve speed: 
-                entity.health.health += 20;
-                entity.health.maxHealth += 20;
-                entity.movement.speed = Math.max(10, entity.movement.speed - 4);
+                entity.health.health += 10;
+                entity.health.maxHealth += 10;
+                entity.movement.speed = Math.max(10, entity.movement.speed - 2);
                 break;
             case 2:
                 // Improve armor, decrease speed
-                entity.health.armor = Math.min(0.8, entity.health.armor + 0.1);
-                entity.movement.speed = Math.max(10, entity.movement.speed - 4);
+                entity.health.armor = Math.min(0.8, entity.health.armor + 0.05);
+                entity.movement.speed = Math.max(10, entity.movement.speed - 2);
                 break;
             case 3:
                 // Increase damage
-                entity.damageMultiplier += 0.1;
+                entity.damageMultiplier += 0.05;
                 break;
         }
+    }
+    
+    this.numZombiesToSpawn--;
+    // Stop spawning
+    if (this.numZombiesToSpawn <= 0) {
+        this.zombieSpawners.forEach(function(entity) {
+            entity.spawner.maxEntities = 0;
+        }.bind(this));
     }
 
     return entity;

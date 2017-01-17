@@ -29,7 +29,7 @@ MessageRequestSpawn.prototype.execute = function(gameData, player) {
         sendCommand(new CommandEntityInventory(entityId, InventoryActions.ADD_ITEM, weapon.id, 1));
     });
     classType.blocks.forEach(function(blockItem) {
-        sendCommand(new CommandEntityInventory(entityId, InventoryActions.ADD_ITEM, blockItem.id, 16));
+        sendCommand(new CommandEntityInventory(entityId, InventoryActions.ADD_ITEM, blockItem.id, 100));
     });
     sendCommand(new CommandEntityInventory(entityId, InventoryActions.ADD_ITEM, Items.Egg.id, 1000));
 }

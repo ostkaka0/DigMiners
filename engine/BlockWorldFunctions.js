@@ -49,7 +49,7 @@ setForeground = function(blockWorld, x, y, value) {
             if (otherChunk)
                 otherChunk.isChanged = true;
         } else if (localY == BLOCK_CHUNK_DIM - 1) {
-            var otherChunk = blockWorld.get(blockChunkX, blockChunkY + 1).isChanged = true;
+            var otherChunk = blockWorld.get(blockChunkX, blockChunkY + 1);
             if (otherChunk)
                 otherChunk.isChanged = true;
         }
