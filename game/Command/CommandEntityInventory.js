@@ -32,8 +32,8 @@ CommandEntityInventory.prototype.execute = function() {
         var item = entity.inventory.removeStack(this.itemId);
     }
     if (!isServer && global.playerEntity && this.entityId == global.playerEntity.id) {
-        updateHUD(gameData);
-        checkCanAffordRecipe();
+        gameData.HUD.update();
+        gameData.HUD.checkCanAffordRecipe();
     }
 }
 

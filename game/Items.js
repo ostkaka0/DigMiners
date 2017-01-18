@@ -87,8 +87,8 @@ ItemFunctions.Potion = function(entity, item) {
                 Entity.onDequip(entity, stackId, itemType);
         };
         if (!isServer && global.playerEntity && entity.id == global.playerEntity.id) {
-            updateHUD(gameData);
-            checkCanAffordRecipe();
+            gameData.HUD.update();
+            gameData.HUD.checkCanAffordRecipe();
         }
     }
 }

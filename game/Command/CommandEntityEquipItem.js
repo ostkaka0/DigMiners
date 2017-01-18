@@ -40,7 +40,7 @@ CommandEntityEquipItem.prototype.execute = function() {
             if (item && item.id == this.itemId) {
                 item.equipped = this.equipped;
                 if (!isServer)
-                    updateHUD(gameData);
+                    gameData.HUD.update();
             }
         }
     }
