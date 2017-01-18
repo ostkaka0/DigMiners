@@ -1,22 +1,21 @@
 
-var HUD = {};
-HUD.inventoryWidth = 10;
-HUD.inventoryHeight = 1;
+HUD = function(gameData) {
 
-HUDClosures = [];
+    this.inventoryWidth = 10;
+    this.inventoryHeight = 1;
+    this.HUDClosures = [];
 
-createHUD = function(gameData) {
     // create inventory
     var inventory = document.getElementById("inventory");
-    inventory.style.width = HUD.inventoryWidth * 34;
-    inventory.style.height = 22 + HUD.inventoryHeight * 34;
+    inventory.style.width = this.inventoryWidth * 34;
+    inventory.style.height = 22 + this.inventoryHeight * 34;
     $(inventory).click(function(e) {
         e.stopPropagation();
     });
     inventory.innerHTML = '<div class="inventoryHeader">Your amazing inventory</div>';
     var inventoryContent = document.createElement("div");
     inventoryContent.setAttribute("class", "inventoryContent");
-    for (var i = 0; i < HUD.inventoryWidth * HUD.inventoryHeight; ++i) {
+    for (var i = 0; i < this.inventoryWidth * this.inventoryHeight; ++i) {
         var slot = document.createElement("div");
         slot.setAttribute("class", "inventorySlot");
         slot.setAttribute("id", "slot" + i);
@@ -55,33 +54,7 @@ createHUD = function(gameData) {
         amount.fadeIn(50);
     });
 
-    // create dugItems
-    var dugItems = document.getElementById("dugItems");
-    dugItems.innerHTML = "";
-    for (var i = 0; i < Config.tileRegister.length; ++i) {
-        var tileType = Config.tileRegister[i];
-        if (tileType.isOre) {
-            var dugItemsEntry = document.createElement("div");
-            dugItemsEntry.setAttribute("class", "dugItemsEntry");
-            dugItemsEntry.setAttribute("id", "entry" + i);
-
-            var dugItemsEntryImage = document.createElement("div");
-            dugItemsEntryImage.setAttribute("class", "dugItemsEntryImage");
-            dugItemsEntryImage.style.backgroundRepeat = "no-repeat";
-            dugItemsEntryImage.style.backgroundImage = "url('data/textures/tiles/" + tileType.name + ".png')";
-            dugItemsEntry.appendChild(dugItemsEntryImage);
-
-            var dugItemsEntryText = document.createElement("div");
-            dugItemsEntryText.setAttribute("class", "dugItemsEntryText");
-            dugItemsEntryText.innerText = "0.0";
-            dugItemsEntry.appendChild(dugItemsEntryText);
-
-            dugItems.appendChild(dugItemsEntry);
-        }
-    }
-    var dugItemsFooter = document.createElement("div");
-    dugItemsFooter.setAttribute("class", "dugItemsFooter");
-    dugItems.appendChild(dugItemsFooter);
+    this.dugItems = new DugItems();
 
     var createClickSlotFunc = function(slotId, clickType, returnValue) {
         return function() {
@@ -92,10 +65,10 @@ createHUD = function(gameData) {
     }
 
     // Initialize closures
-    for (var i = 0; i < HUD.inventoryWidth * HUD.inventoryHeight; ++i) {
-        HUDClosures[i] = [];
-        HUDClosures[i][0] = createClickSlotFunc(i, InventoryClickTypes.LEFT_CLICK, true);
-        HUDClosures[i][1] = createClickSlotFunc(i, InventoryClickTypes.RIGHT_CLICK, false);
+    for (var i = 0; i < this.inventoryWidth * this.inventoryHeight; ++i) {
+        this.HUDClosures[i] = [];
+        this.HUDClosures[i][0] = createClickSlotFunc(i, InventoryClickTypes.LEFT_CLICK, true);
+        this.HUDClosures[i][1] = createClickSlotFunc(i, InventoryClickTypes.RIGHT_CLICK, false);
     }
 
     $('.dugItemsEntryImage').mouseenter(function() {
@@ -104,7 +77,7 @@ createHUD = function(gameData) {
         var tileType = Config.tileRegister[id];
         text.text(tileType.name);
     }).mouseleave(function() {
-        updateHUD(gameData);
+        gameData.HUD.update();
     });
 
     $('*').contextmenu(function(e) {
@@ -118,9 +91,9 @@ createHUD = function(gameData) {
         if (key == 67) { // c
             var crafting = document.getElementById("crafting");
             if (!crafting.style.display || crafting.style.display == "none")
-                openCraftingWindow(gameData);
+                gameData.HUD.openCraftingWindow();
             else
-                closeCraftingWindow();
+                gameData.HUD.closeCraftingWindow();
             return true;
         }
         return true;
@@ -133,15 +106,18 @@ createHUD = function(gameData) {
     });*/
 
     // Create chat
-    var chat = new Chat();
-    chat.appendTo("#hud");
+    this.chat = new Chat();
+    this.chat.appendTo("#hud");
+
+    this.ammo = new AmmoHUD();
+    this.ammo.appendTo("#hud");
 
     $('.hud').show();
 }
 
-updateHUD = function(gameData) {
+HUD.prototype.update = function() {
     // update inventory
-    for (var i = 0; i < HUD.inventoryWidth * HUD.inventoryHeight; ++i) {
+    for (var i = 0; i < this.inventoryWidth * this.inventoryHeight; ++i) {
         var slot = document.getElementById("slot" + i);
         var slotDescriptionContainer = slot.childNodes[0];
         var slotImageContainer = slot.childNodes[1];
@@ -156,7 +132,7 @@ updateHUD = function(gameData) {
             slotImageContainer.style.height = 34;
 
             var itemType = Config.itemRegister[item.id];
-            putItemImage(slotImageContainer, itemType, 32, 32, itemType.texture.inventoryAngle, itemType.texture.inventoryOffset, itemType.texture.inventorySize);
+            this.putItemImage(slotImageContainer, itemType, 32, 32, itemType.texture.inventoryAngle, itemType.texture.inventoryOffset, itemType.texture.inventorySize);
 
             slotTextContainer.innerText = "";
             if (item.amount > 1)
@@ -168,9 +144,9 @@ updateHUD = function(gameData) {
             if (item.equipped)
                 slotImageContainerOverlay.style.display = "block";
 
-            slot.onclick = HUDClosures[i][0];
+            slot.onclick = this.HUDClosures[i][0];
             $(slot).off("contextmenu");
-            $(slot).on("contextmenu", HUDClosures[i][1]);
+            $(slot).on("contextmenu", this.HUDClosures[i][1]);
         } else {
             slotImageContainer.style.backgroundImage = "";
             slotTextContainer.innerText = "";
@@ -180,19 +156,10 @@ updateHUD = function(gameData) {
     }
 
     // update dugItems
-    for (var i = 0; i < Config.tileRegister.length; ++i) {
-        var tileType = Config.tileRegister[i];
-        if (!tileType.isOre) continue;
-        var amount = 0;
-        if (global.player.oreInventory[i])
-            amount = global.player.oreInventory[i];
-        var dugItemsEntry = document.getElementById("entry" + i);
-        var dugItemsEntryText = dugItemsEntry.childNodes[1];
-        dugItemsEntryText.innerText = parseFloat(Math.floor((amount / 256.0) * 10) / 10).toFixed(1);
-    }
+    this.dugItems.update();
 }
 
-openCraftingWindow = function(gameData) {
+HUD.prototype.openCraftingWindow = function() {
     HUD.selectedRecipeId = null;
 
     // Create crafting window
@@ -272,12 +239,12 @@ openCraftingWindow = function(gameData) {
                 var imageHeight = gameData.textures[resultItemType.name].height;
                 craftingRightPreviewImageHolder.style.width = imageWidth;
                 craftingRightPreviewImageHolder.style.height = imageHeight;
-                putItemImage(craftingRightPreviewImageHolder, resultItemType, 80, 80);
+                this.putItemImage(craftingRightPreviewImageHolder, resultItemType, 80, 80);
                 craftingRightPreviewTextContainer.innerText = resultItemType.name;
             }
 
-            checkCanAffordRecipe();
-        });
+            gameData.HUD.checkCanAffordRecipe();
+        }.bind(this));
 
         var craftingEntryContent = document.createElement("div");
         craftingEntryContent.setAttribute("class", "craftingEntryContent");
@@ -324,7 +291,7 @@ openCraftingWindow = function(gameData) {
             imageHolder.setAttribute("class", "craftingImageHolder");
             imageHolder.style.width = imageWidth;
             imageHolder.style.height = imageHeight;
-            putItemImage(imageHolder, itemType, imageWidth, imageHeight, false, false);
+            this.putItemImage(imageHolder, itemType, imageWidth, imageHeight, false, false);
             imageHolder.innerText = amount;
             craftingEntryContent.appendChild(imageHolder);
 
@@ -356,7 +323,7 @@ openCraftingWindow = function(gameData) {
             imageHolder.setAttribute("class", "craftingImageHolder");
             imageHolder.style.width = imageWidth;
             imageHolder.style.height = imageHeight;
-            putItemImage(imageHolder, resultItemType, imageWidth, imageHeight, false, false);
+            this.putItemImage(imageHolder, resultItemType, imageWidth, imageHeight, false, false);
             if (resultAmount > 1)
                 imageHolder.innerText = resultAmount;
             craftingEntryContent.appendChild(imageHolder);
@@ -378,13 +345,13 @@ openCraftingWindow = function(gameData) {
     }
 }
 
-closeCraftingWindow = function() {
+HUD.prototype.closeCraftingWindow = function() {
     var crafting = document.getElementById("crafting");
     crafting.innerHTML = "";
     crafting.style.display = "none";
 }
 
-checkCanAffordRecipe = function() {
+HUD.prototype.checkCanAffordRecipe = function() {
     var recipeId = HUD.selectedRecipeId;
     if (recipeId == null || recipeId == undefined)
         return;
@@ -398,7 +365,7 @@ checkCanAffordRecipe = function() {
     }
 }
 
-putItemImage = function(container, itemType, containerWidth, containerHeight, angle, offset, scale) {
+HUD.prototype.putItemImage = function(container, itemType, containerWidth, containerHeight, angle, offset, scale) {
     var backgroundScale = containerWidth / Math.max(itemType.texture.spriteWidth, itemType.texture.spriteHeight);
     if (!containerWidth || !scale)
         backgroundScale = 1.0;

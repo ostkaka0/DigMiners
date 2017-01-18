@@ -22,7 +22,7 @@ MessageInit.prototype.execute = function(gameData) {
     }
 
     loadGame();
-    createHUD(gameData);
+    gameData.HUD = new HUD(gameData);
 }
 
 MessageInit.prototype.getSerializationSize = function(gameData) {
