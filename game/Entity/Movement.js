@@ -18,8 +18,8 @@ Movement = function(speed, toolUseDuration, damageMultiplier, digHardnessMultipl
     this.isReloading = false;
     this.isDigging = false;
     this.isMining = false;
-    this.damageMultiplier = (damageMultiplier == null)? 1.0 : damageMultiplier;
-    this.digHardnessMultiplier = (digHardnessMultiplier == null)? 1.0 : digHardnessMultiplier;
+    this.damageMultiplier = (damageMultiplier == null) ? 1.0 : damageMultiplier;
+    this.digHardnessMultiplier = (digHardnessMultiplier == null) ? 1.0 : digHardnessMultiplier;
     this.entityLookTarget = null;
 }
 
@@ -162,8 +162,10 @@ entityFunctionEntityMovement = function(dt) {
             entity.movement.isMining = false;
         }
 
-        if (entity.movement.toolReloadTickTimeout == 0)// || (!entity.movement.keyStatuses[Keys.R] && entity.movement.isReloading)) {
+        if (entity.movement.toolReloadTickTimeout == 0 && entity.movement.isReloading) {// || (!entity.movement.keyStatuses[Keys.R] && entity.movement.isReloading)) {
             entity.movement.isReloading = false;
+            gameData.world.events.trigger("finishReload", entity, tool);
+        }
         //}
     });
 }

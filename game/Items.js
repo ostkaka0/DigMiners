@@ -5,7 +5,7 @@ ItemTextures = {};
 ItemFunctions.Shovel = function(entity, item) {
     // Shovels might be meele weapons
     ItemFunctions.Sword(entity, item);
-    
+
     if (isServer) {
         var angle = entity.physicsBody.angle;
         var dir = [Math.cos(-angle), Math.sin(-angle)];
@@ -87,8 +87,8 @@ ItemFunctions.Potion = function(entity, item) {
                 Entity.onDequip(entity, stackId, itemType);
         };
         if (!isServer && global.playerEntity && entity.id == global.playerEntity.id) {
-            updateHUD(gameData);
-            checkCanAffordRecipe();
+            gameData.HUD.update();
+            gameData.HUD.checkCanAffordRecipe();
         }
     }
 }
@@ -102,6 +102,7 @@ ItemFunctions.RangedWeapon = function(entity, itemType) {
     if (!item.magazine || item.magazine <= 0) return;
     var numProjectiles = itemType.numProjectiles ? itemType.numProjectiles : 1;
     item.magazine -= 1;
+    gameData.world.events.trigger("bulletFired", entity, itemType);
 
     if (isServer) {
         var angle = entity.physicsBody.angle;
@@ -142,7 +143,7 @@ ItemFunctions.Reload = function(entity, itemType) {
             return;
         var currentAmmo = (item.magazine != null ? item.magazine : 0);
 
-        var ammoAmount = (entity.ammo)? entity.ammo[itemType.id] || 0 : itemType.ammoCapacity;
+        var ammoAmount = (entity.ammo) ? entity.ammo[itemType.id] || 0 : itemType.ammoCapacity;
         if (ammoAmount <= 0) return;
         sendCommand(new CommandEntityReloadWeapon(entity.id, stackId));
     }
@@ -470,7 +471,7 @@ initItems = function() {
     Items.PotionHealth = {
         name: "Health Potion",
         texture: ItemTextures.ItemAtlas,
-        spriteId: 3, 
+        spriteId: 3,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 8,
@@ -485,7 +486,7 @@ initItems = function() {
     Items.HealFriend = {
         name: "Heal Friend",
         texture: ItemTextures.ItemAtlas,
-        spriteId: 3, 
+        spriteId: 3,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 8,

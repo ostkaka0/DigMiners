@@ -24,8 +24,8 @@ CommandPlayerOreInventory.prototype.execute = function() {
         player.oreInventory[this.itemId] -= this.amount;
     }
     if (!isServer && global.player && this.playerId == global.player.playerId) {
-        updateHUD(gameData);
-        checkCanAffordRecipe();
+        gameData.HUD.update();
+        gameData.HUD.checkCanAffordRecipe();
     }
 }
 
