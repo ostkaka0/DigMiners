@@ -114,7 +114,7 @@ ItemFunctions.RangedWeapon = function(entity, itemType) {
                 ny = (cos * (y - ay)) - (sin * (x - ax)) + ay;
             return [nx, ny];
         }
-        var dir = rotateAround(0, 0, 0, -0.6, angle);
+        var dir = rotateAround(0, 0, 0, -1.15, angle);
         var maxDistance = (itemType.projectileType.hitAtCursor && entity.movement.deltaWorldCursorPos) ?
             v2.length(entity.movement.deltaWorldCursorPos) : itemType.projectileType.maxDistance;
         for (var i = 0; i < numProjectiles; i++) {

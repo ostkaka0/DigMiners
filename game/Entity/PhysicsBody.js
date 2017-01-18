@@ -1,6 +1,6 @@
 
-PhysicsBody = function(pos, damping, rotationSpeed, mass) {
-    this.bodyId = gameData.world.physicsWorld.add(pos, 0.0, mass);
+PhysicsBody = function(pos, damping, rotationSpeed, mass, radius) {
+    this.bodyId = gameData.world.physicsWorld.add(pos, 0.0, mass, radius);
     if (pos) {
         this.posOld = v2.clone(pos);
         this.posClient = v2.clone(pos);
@@ -27,7 +27,8 @@ PhysicsBody.prototype.name = physicsBody.name; function physicsBody() { };
 PhysicsBody.prototype.serialize = function(byteArray, index) {
     serializeV2(byteArray, index, this.getPos());
     serializeV2(byteArray, index, this.getVelocity());
-    serializeFix(byteArray,index, this.getMass());
+    serializeFix(byteArray, index, this.getMass());
+    serializeFix(byteArray, index, this.getRadius());
     serializeFix(byteArray, index, this.angle);
     serializeFix(byteArray, index, this.rotationSpeed);
     serializeFix(byteArray, index, this.damping);
@@ -39,6 +40,7 @@ PhysicsBody.prototype.deserialize = function(byteArray, index) {
     this.setVelocity(deserializeV2(byteArray, index));
     this.speedOld = v2.clone(this.getVelocity());
     this.setMass(deserializeFix(byteArray, index));
+    this.setRadius(deserializeFix(byteArray, index));
     this.angle = deserializeFix(byteArray, index);
     this.angleOld = this.angle;
     this.rotationSpeed = deserializeFix(byteArray, index);
@@ -49,7 +51,7 @@ PhysicsBody.prototype.deserialize = function(byteArray, index) {
 }
 
 PhysicsBody.prototype.getSerializationSize = function() {
-    return 32;
+    return 36;
 }
 
 PhysicsBody.prototype.destroy = function(entity) {
@@ -62,6 +64,8 @@ PhysicsBody.prototype.getVelocity = function() { return gameData.world.physicsWo
 PhysicsBody.prototype.setVelocity = function(velocity) { gameData.world.physicsWorld.setVelocity(this.bodyId, velocity); }
 PhysicsBody.prototype.getMass = function() { return gameData.world.physicsWorld.getMass(this.bodyId); }
 PhysicsBody.prototype.setMass = function(mass) { gameData.world.physicsWorld.setMass(this.bodyId, mass); }
+PhysicsBody.prototype.getRadius = function() { return gameData.world.physicsWorld.getRadius(this.bodyId); }
+PhysicsBody.prototype.setRadius = function(radius) { gameData.world.physicsWorld.setRadius(this.bodyId, radius); }
 
 PhysicsBody.prototype.rotateTo = function(angle, speed, dt) {
     if (this.angle == angle)
