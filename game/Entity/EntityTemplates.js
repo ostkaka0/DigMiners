@@ -37,6 +37,16 @@ entityTemplates.player = function(playerId, entityId, name, playerClass, teamId)
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
     entity.health = new Health(playerClass.health, playerClass.health, playerClass.armor);
     entity.team = new Team(teamEnum);
+    entity.ammo = new Ammo();
+    
+    playerClass.weapons.forEach(function(weapon) {
+        entity.inventory.addStaticItem(gameData, weapon.id);
+        entity.ammo[weapon.id] = 100;
+    });
+    console.log(entity.ammo);
+    playerClass.blocks.forEach(function(blockItem) {
+        entity.inventory.addStaticItem(gameData, blockItem.id);
+    });
 
     return entity;
 }
