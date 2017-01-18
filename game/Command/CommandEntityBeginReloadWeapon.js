@@ -7,6 +7,7 @@ CommandEntityBeginReloadWeapon.prototype.execute = function() {
     var entity = gameData.world.entityWorld.objects[this.entityId];
     if (!entity || !entity.movement) return;
     entity.movement.isReloading = true;
+    gameData.world.events.trigger("beginReload", entity);
 }
 
 CommandEntityBeginReloadWeapon.prototype.serialize = function(byteArray, index) {

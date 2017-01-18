@@ -10,7 +10,6 @@ GameModeZombieInvasion = function() {
 
     this.playerSpawns = {};
     this.teams = [Teams.Human];
-    this.bases = {};
     this.zombieSpawners = [];
 }
 
@@ -29,20 +28,9 @@ GameModeZombieInvasion.prototype.init = function() {
         }
     }
 
-    // Player spawns and bases
-    this.playerSpawns[Teams.Human] = [];
-    for (var i = 0; i < 4; i++) {
-        var pos = [15.0 * (-1 + 2 * Math.random()), 15.0 * (-1 + 2 * Math.random())];
-        this.playerSpawns[Teams.Human].push(pos);
-        sendCommand(new CommandDig(pos, 5.0));
-
-        // Base Entity
-        var entityId = gameData.world.idList.next();
-        var entity = entityTemplates.humanBase(entityId, pos, Teams.Human);
-        this.bases[entityId] = entity;
-        sendCommand(new CommandEntitySpawn(gameData, entity, entityId, Teams.Human));
-        this.generateDungeon(pos[0] >> 0, pos[1] >> 0);
-    }
+    this.playerSpawns[Teams.Human] = [[0, 0]];
+    sendCommand(new CommandDig([0, 0], 5.0));
+    this.generateDungeon(0, 0);
 
     // Zombie spawners
     for (var i = 0; i < 10; i++) {
@@ -79,15 +67,6 @@ GameModeZombieInvasion.prototype.init = function() {
                     sendCommand(new CommandPopupMessage("Zombies are mutating."));
                 }.bind(this), 10000);
             }
-        } else if (this.bases[entity.id]) {
-            delete this.bases[entity.id];
-
-            // End gamemode
-            if (Object.keys(this.bases).length <= 0) {
-                sendCommand(new CommandPopupMessage("All bases destroyed. Changing gamemode in 5 seconds.", 5000));
-                gameData.setTimeout(function() { gameData.changeGameMode(); }, 5000);
-            } else
-                sendCommand(new CommandPopupMessage("Base destroyed! " + Object.keys(this.bases).length + " bases remaining."));
         }
     }.bind(this);
 
@@ -105,7 +84,7 @@ GameModeZombieInvasion.prototype.startWave = function() {
     this.zombieSpawners.forEach(function(entity) {
         entity.spawner.maxEntities = 5; //Math.max(1, Math.min(5, this.waveNum/4 + gameData.playerWorld.objectArray.length - 1));
     }.bind(this));
-    
+
     this.numZombiesToSpawn = 10 + 5 * this.waveNum;
     this.endWave = false;
 }
@@ -141,7 +120,7 @@ GameModeZombieInvasion.prototype.spawnZombie = function(entityId, pos, teamId) {
                 break;
         }
     }
-    
+
     this.numZombiesToSpawn--;
     // Stop spawning
     if (this.numZombiesToSpawn <= 0) {
@@ -154,28 +133,28 @@ GameModeZombieInvasion.prototype.spawnZombie = function(entityId, pos, teamId) {
 }
 
 GameModeZombieInvasion.prototype.generateDungeon = function(tileX, tileY) {
-    var width = Math.floor(Math.random() * 5 + 10);
-    var height = Math.floor(Math.random() * 5 + 10);
-    
-    
+    var width = Math.floor(Math.random() * 10 + 10);
+    var height = Math.floor(Math.random() * 10 + 10);
+
+
     for (var yy = 0; yy < height; ++yy) {
         for (var xx = 0; xx < width; ++xx) {
             var x = xx + tileX - width / 2;
             var y = yy + tileY - height / 2;
             var tileId = 0;
-            
+
             if (yy <= 0 || yy >= height - 1)
                 tileId = 1;
             else if (xx <= 0 || xx >= width - 1)
                 tileId = 1;
-                
+
             setDensity(gameData.world.tileWorld, x, y, 0);
             setForeground(gameData.world.blockWorld, x, y, tileId);
         }
     }
-    
-    
-    setForeground(gameData.world.blockWorld, tileX - width / 2 + Math.random() * width / 2 >> 0, tileY + ((Math.random() > 0.5)? -1: 1) * Math.height / 2 >> 0, Blocks.BlueForcefield.id);
-    setForeground(gameData.world.blockWorld, tileX + ((Math.random() > 0.5)? -1: 1) * Math.width / 2 >> 0, tileY - height / 2 + Math.random() * height / 2 >> 0, Blocks.BlueForcefield.id);
-    setForeground(gameData.world.blockWorld, tileX - width / 2 + Math.random() * width / 2 >> 0 >> 0, tileY - height / 2 + Math.random() * height / 2 >> 0, Blocks.WoodCrate.id);
+
+
+    //setForeground(gameData.world.blockWorld, tileX - width / 2 + Math.random() * width / 2 >> 0, tileY + ((Math.random() > 0.5)? -1: 1) * Math.height / 2 >> 0, Blocks.BlueForcefield.id);
+    //setForeground(gameData.world.blockWorld, tileX + ((Math.random() > 0.5)? -1: 1) * Math.width / 2 >> 0, tileY - height / 2 + Math.random() * height / 2 >> 0, Blocks.BlueForcefield.id);
+    //setForeground(gameData.world.blockWorld, tileX - width / 2 + Math.random() * width / 2 >> 0 >> 0, tileY - height / 2 + Math.random() * height / 2 >> 0, Blocks.WoodCrate.id);
 }
