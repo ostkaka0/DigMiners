@@ -4,11 +4,13 @@ Entity = {};
 Entity.onEquip = function(entity, stackId, itemType) {
     if (itemType.typeOfType == "block")
         entity.isBuilding = true;
+    gameData.world.events.trigger("equip", entity, stackId, itemType);
 }
 
 Entity.onDequip = function(entity, stackId, itemType) {
     if (itemType.typeOfType == "block")
         entity.isBuilding = false;
+    gameData.world.events.trigger("dequip", entity, stackId, itemType);
 }
 
 Entity.getDigSpeed = function(entity) {
@@ -22,7 +24,7 @@ Entity.getDigSpeed = function(entity) {
 Entity.getBlockBreakSpeed = function(entity) {
     var blockBreakSpeed = 1.0;
     var itemType = entity.equippedItems.items["tool"];
-    if (itemType) 
+    if (itemType)
         blockBreakSpeed = itemType.blockBreakSpeed || 1.0;
     if (entity.movement)
         blockBreakSpeed *= entity.movement.digHardnessMultiplier;

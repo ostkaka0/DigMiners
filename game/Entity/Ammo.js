@@ -19,8 +19,6 @@ Ammo.prototype.deserialize = function(byteArray, index) {
         var amount = deserializeInt32(byteArray, index)
         this[key] = amount;
     }
-    console.log(this);
-    
 }
 
 Ammo.prototype.getSerializationSize = function() {
