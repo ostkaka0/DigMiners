@@ -44,7 +44,7 @@ Entity.canReload = function(entity, itemType) {
     if (!item) return false;
     if (item.magazine != null && item.magazine >= itemType.ammoCapacity)
         return false;
-    if (!entity.inventory.hasItem(itemType.ammoItem.id, 1))
+    if (entity.ammo && !entity.ammo[item.id])
         return false;
     return true;
 }

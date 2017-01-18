@@ -21,14 +21,6 @@ MessageRequestSpawn.prototype.execute = function(gameData, player) {
     entity.physicsBody.setPos(pos);
     entity.physicsBody.posOld = v2.clone(pos);
 
-    classType.weapons.forEach(function(weapon) {
-        entity.inventory.addStaticItem(gameData, weapon.id)
-    });
-    classType.blocks.forEach(function(blockItem) {
-        entity.inventory.addStaticItem(gameData, blockItem.id)
-    });
-    entity.inventory.addStaticItem(gameData, Items.Egg.id)
-
     sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
     sendCommand(new CommandPlayerSpawn(player.id, entityId, player.name));
 }
