@@ -101,9 +101,7 @@ ItemFunctions.RangedWeapon = function(entity, itemType) {
     if (!item) return;
     if (!item.magazine || item.magazine <= 0) return;
     var numProjectiles = itemType.numProjectiles ? itemType.numProjectiles : 1;
-    var removedAmmo = (item.magazine >= numProjectiles ? numProjectiles : item.magazine);
-    item.magazine -= removedAmmo;
-    numProjectiles = removedAmmo;
+    item.magazine -= 1;
 
     if (isServer) {
         var angle = entity.physicsBody.angle;
@@ -520,6 +518,7 @@ initItems = function() {
         reloadCooldown: 20,
         ammoCapacity: 10,
         ammoItem: Items.Egg,
+        ammoMax: 100,
         type: "tool",
         typeOfType: "rangedWeapon",
         projectileType: Projectiles.Pistol,
@@ -544,7 +543,8 @@ initItems = function() {
         reloadCycleGun: "gunReload",
         reloadCooldown: 20,
         ammoCapacity: 25,
-        ammoItem: Items.Egg,
+        ammoMax: 250,
+        ammoInfinite: true,
         type: "tool",
         typeOfType: "rangedWeapon",
         projectileType: Projectiles.Smg,
@@ -570,6 +570,7 @@ initItems = function() {
         reloadCooldown: 40,
         ammoCapacity: 35,
         ammoItem: Items.Egg,
+        ammoMax: 280,
         type: "tool",
         typeOfType: "rangedWeapon",
         projectileType: Projectiles.AssaultRifle,
@@ -595,6 +596,7 @@ initItems = function() {
         reloadCooldown: 160,
         ammoCapacity: 150,
         ammoItem: Items.Egg,
+        ammoMax: 300,
         numProjectiles: 1,
         type: "tool",
         typeOfType: "rangedWeapon",
@@ -618,8 +620,9 @@ initItems = function() {
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
         reloadCooldown: 40,
-        ammoCapacity: 64,
+        ammoCapacity: 8,
         ammoItem: Items.Egg,
+        ammoMax: 64,
         type: "tool",
         typeOfType: "rangedWeapon",
         numProjectiles: 8,
@@ -645,6 +648,7 @@ initItems = function() {
         reloadCooldown: 60,
         ammoCapacity: 1,
         ammoItem: Items.Egg,
+        ammoMax: 15,
         type: "tool",
         typeOfType: "rangedWeapon",
         projectileType: Projectiles.SniperRifle,
@@ -669,6 +673,7 @@ initItems = function() {
         reloadCooldown: 80,
         ammoCapacity: 6,
         ammoItem: Items.Egg,
+        ammoMax: 6,
         type: "tool",
         typeOfType: "rangedWeapon",
         projectileType: Projectiles.GrenadeLauncher,
