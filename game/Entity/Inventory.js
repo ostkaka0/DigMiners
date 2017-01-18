@@ -179,6 +179,17 @@ Inventory.prototype.getEquippedStackId = function(type) {
     }
 }
 
+Inventory.prototype.getEquippedItem = function(type) {
+    for (var i = 0; i < this.items.length; ++i) {
+        var item = this.items[i];
+        if (item.equipped) {
+            var itemType = Config.itemRegister[item.id];
+            if (itemType.type == type)
+                return item;
+        }
+    }
+}
+
 Inventory.prototype.findTool = function(itemFunction) {
     for (var i = 0; i < this.items.length; i++) {
         var itemType = Config.itemRegister[this.items[i].id];

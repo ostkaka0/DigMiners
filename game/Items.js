@@ -5,7 +5,7 @@ ItemTextures = {};
 ItemFunctions.Shovel = function(entity, item) {
     // Shovels might be meele weapons
     ItemFunctions.Sword(entity, item);
-    
+
     if (isServer) {
         var angle = entity.physicsBody.angle;
         var dir = [Math.cos(-angle), Math.sin(-angle)];
@@ -104,6 +104,7 @@ ItemFunctions.RangedWeapon = function(entity, itemType) {
     var removedAmmo = (item.magazine >= numProjectiles ? numProjectiles : item.magazine);
     item.magazine -= removedAmmo;
     numProjectiles = removedAmmo;
+    gameData.world.events.trigger("bulletFired", entity, itemType);
 
     if (isServer) {
         var angle = entity.physicsBody.angle;
@@ -144,7 +145,7 @@ ItemFunctions.Reload = function(entity, itemType) {
             return;
         var currentAmmo = (item.magazine != null ? item.magazine : 0);
 
-        var ammoAmount = (entity.ammo)? entity.ammo[itemType.id] || 0 : itemType.ammoCapacity;
+        var ammoAmount = (entity.ammo) ? entity.ammo[itemType.id] || 0 : itemType.ammoCapacity;
         if (ammoAmount <= 0) return;
         sendCommand(new CommandEntityReloadWeapon(entity.id, stackId));
     }
@@ -472,7 +473,7 @@ initItems = function() {
     Items.PotionHealth = {
         name: "Health Potion",
         texture: ItemTextures.ItemAtlas,
-        spriteId: 3, 
+        spriteId: 3,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 8,
@@ -487,7 +488,7 @@ initItems = function() {
     Items.HealFriend = {
         name: "Heal Friend",
         texture: ItemTextures.ItemAtlas,
-        spriteId: 3, 
+        spriteId: 3,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 8,

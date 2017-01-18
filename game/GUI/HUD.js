@@ -110,7 +110,6 @@ HUD = function(gameData) {
     this.chat.appendTo("#hud");
 
     this.ammo = new AmmoHUD();
-    this.ammo.appendTo("#hud");
 
     $('.hud').show();
 }
