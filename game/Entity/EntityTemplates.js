@@ -5,7 +5,7 @@ entityTemplates = {};
 entityTemplates.player = function(playerId, entityId, name, playerClass, teamId) {
     var entity = {};
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
-    entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 20.0);
+    entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 20.0, 1.0, 0.3);
     entity.movement = new Movement(playerClass.speed * 30.0);
     entity.nameComponent = new NameComponent(name);
     entity.inventory = new Inventory();
@@ -71,7 +71,7 @@ entityTemplates.item = function(itemId, amount) {
 
 entityTemplates.testMonster = function(entityId, pos, teamId) {
     var entity = {};
-    entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0);
+    entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0, 1.0, 0.3);
     entity.movement = new Movement(20.0, 0.25, 1.0, 0.5);
     entity.nameComponent = new NameComponent(entityId);
     entity.inventory = new Inventory();
@@ -116,7 +116,7 @@ entityTemplates.testMonster = function(entityId, pos, teamId) {
 
 entityTemplates.zombie = function(entityId, pos, teamId) {
     var entity = {};
-    entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0);
+    entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0, 1.0, 0.3);
     entity.movement = new Movement(20.0, 0.25, 1.0, 0.5);
     entity.nameComponent = new NameComponent("Zombie");
     entity.inventory = new Inventory();
@@ -164,13 +164,13 @@ entityTemplates.monsterSpawner = function(entityId, pos, entityTemplate, maxEnti
     return entity;
 }
 
-entityTemplates.TeamBase = function(entityId, pos, teamId, maxEntities, radius, duration)  {
+entityTemplates.TeamBase = function(entityId, pos, teamId, maxEntities, radius, duration) {
     maxEntities = maxEntities || 10;
     radius = radius || 4.0;
     duration = duration || 60;
-    
+
     var entity = {};
-    entity.spawner = new Spawner(entityTemplates.testMonster, pos, maxEntities, radius, duration, [{id: Items.WeaponPistol.id, quantity: 1}, {id: Items.RustyShovel.id, quantity: 1}, {id: Items.Egg.id, quantity: 1000}], null, null, teamId);
+    entity.spawner = new Spawner(entityTemplates.testMonster, pos, maxEntities, radius, duration, [{ id: Items.WeaponPistol.id, quantity: 1 }, { id: Items.RustyShovel.id, quantity: 1 }, { id: Items.Egg.id, quantity: 1000 }], null, null, teamId);
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, null, 1000.0);
     entity.nameComponent = new NameComponent("Base");
 
@@ -201,7 +201,7 @@ entityTemplates.TeamBase = function(entityId, pos, teamId, maxEntities, radius, 
     return entity;
 }
 
-entityTemplates.humanBase = function(entityId, pos, teamId)  {
+entityTemplates.humanBase = function(entityId, pos, teamId) {
     var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, null, 1000.0);
     entity.nameComponent = new NameComponent("Base");
