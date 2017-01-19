@@ -26,7 +26,7 @@ initPlayerClasses = function() {
         },
         Medic: {
             name: "Medic",
-            blocks: [Items.StoneWall, Items.BlueForcefield, Items.HealthBox],
+            blocks: [Items.StoneWall, Items.BlueForcefield, Items.HealthBox, Items.AmmoBox],
             weapons: [Items.WeaponShotgun, Items.WeaponSmg, Items.IronShovel],
             speed: 1.0,
             health: 100.0,

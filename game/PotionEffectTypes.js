@@ -12,6 +12,22 @@ PotionEffectTypes.Healing = {
     }
 }
 
+PotionEffectTypes.SupplyAmmo = {
+    interval: 5,
+    potionFunction: function(entity) { 
+        if (!entity.ammo) return;
+        Object.keys(entity.ammo).forEach(function(itemId) {
+            var itemType = Config.itemRegister[itemId];
+            var amount = entity.ammo[itemId];
+            // Add 1% of ammoMax
+            var ammoToAdd = Math.min(itemType.ammoMax - amount, Math.max(1, itemType.ammoMax * 0.01 >> 0));
+            if (ammoToAdd == 0) return;
+            entity.ammo[itemId] += ammoToAdd;
+            // TODO: Trigger event?
+        });
+    }
+}
+
 PotionEffectTypes.HealNearEntities = {
     interval: 5, 
     potionFunction: function(entity) { 
@@ -30,6 +46,21 @@ PotionEffectTypes.HealNearEntities = {
             var posOther = otherEntity.physicsBody.getPos();
             if (v2.distance(pos, posOther) < 4.0)
                 otherEntity.potionEffects.add(PotionEffectTypes.Healing, 10);
+            
+        }.bind(this));
+    }
+}
+
+PotionEffectTypes.SupplyAmmoNearEntities = {
+    interval: 5, 
+    potionFunction: function(entity) { 
+        var pos = entity.physicsBody.getPos();
+        gameData.world.entityWorld.objectArray.forEach(function(otherEntity) {
+            if (!otherEntity.physicsBody || !otherEntity.potionEffects)
+                return;
+            var posOther = otherEntity.physicsBody.getPos();
+            if (v2.distance(pos, posOther) < 4.0)
+                otherEntity.potionEffects.add(PotionEffectTypes.SupplyAmmo, 10);
             
         }.bind(this));
     }

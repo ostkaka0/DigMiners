@@ -15,6 +15,29 @@ BlockFunctions.createEntity = function(blockPos, block) {
         sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
     }
 }
+BlockFunctions.createEntityBox = function(blockPos, block) {
+        if (isServer) {
+        var entity = {};
+        var entityId = gameData.world.idList.next();
+        entity.physicsBody = new PhysicsBody(v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), 0.01);
+        entity.health = new Health(100, 100);
+        var bodySprite = new Sprite(block.name);
+        var bodyparts = {
+            "body": new BodyPart(bodySprite, 0, 0, 0),
+            "text": new BodyPart(bodySprite, 0, 0, 0)
+        };
+        entity.bodyparts = new Bodyparts(bodyparts);
+        entity.drawable = new Drawable(1);
+        var healthbarSprite = new Sprite("healthbar", null, false);
+        entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
+        
+        if (block.onCreateEntity)
+            block.onCreateEntity(entity);
+            
+        sendCommand(new CommandPlaceBlock(blockPos, 0));
+        sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
+    }
+}
 
 BlockBulletFunctions = {};
 BlockBulletFunctions.bunker = function(blockPos, blockType, entity) {
@@ -249,24 +272,24 @@ Blocks.HealthBox =  {
     hardness: 1.0,
     type: BlockTypes.FOREGROUND,
     buildDuration: 40,
-    onPlace: BlockFunctions.createEntity,
-    createEntity: function(blockPos, block) {
-        var entity = {};
-        entity.physicsBody = new PhysicsBody(v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), 0.01);
-        entity.health = new Health(100, 100);
+    onPlace: BlockFunctions.createEntityBox,
+    onCreateEntity: function(entity) {
         entity.potionEffects = new PotionEffects();
         entity.potionEffects.add(PotionEffectTypes.HealNearEntities, -1); 
+        return entity;
+    }
+}
 
-        var bodySprite = new Sprite(block.name);
-        var bodyparts = {
-            "body": new BodyPart(bodySprite, 0, 0, 0),
-            "text": new BodyPart(bodySprite, 0, 0, 0)
-        };
-        entity.bodyparts = new Bodyparts(bodyparts);
-        entity.drawable = new Drawable(1);
-        var healthbarSprite = new Sprite("healthbar", null, false);
-        entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
-
+Blocks.AmmoBox =  {
+    name: "Ammo Box",
+    isSolid: true,
+    hardness: 1.0,
+    type: BlockTypes.FOREGROUND,
+    buildDuration: 40,
+    onPlace: BlockFunctions.createEntityBox,
+    onCreateEntity: function(entity) {
+        entity.potionEffects = new PotionEffects();
+        entity.potionEffects.add(PotionEffectTypes.SupplyAmmoNearEntities, -1); 
         return entity;
     }
 }
