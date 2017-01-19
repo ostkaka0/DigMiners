@@ -324,7 +324,7 @@ gameData.world.events.on("ownPlayerSpawned", function(entity, player) {
     
 }.bind(this));
 
-gameData.world.entityWorld.onAdd["DigMiners.js"] = function(entity) {
+subscribeEvent(gameData.world.entityWorld.onAdd, window, function(entity) {
     if (!isServer && entity.health && entity.drawable)
         gameData.world.events.trigger("healthChange", entity);
 
@@ -351,7 +351,7 @@ gameData.world.entityWorld.onAdd["DigMiners.js"] = function(entity) {
         var textSprite = new Sprite(null, text, false);
         entity.drawable.addSprite("textAmount", textSprite, null, false);
     }
-}
+});
 
 gameData.world.physicsWorld.onCollision.push(function(collisions) {
     if (global.playerEntity && collisions) {

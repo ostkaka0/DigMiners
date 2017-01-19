@@ -102,7 +102,7 @@ gameData.world.physicsWorld.onCollision.push(function(collisions) {
     sendCommand(new CommandCollisions(collisions));
 });
 
-gameData.world.entityWorld.onAdd["server.js"] = function(entity) {
+subscribeEvent(gameData.world.entityWorld.onAdd, global, function(entity) {
     if (entity.controlledByPlayer) {
 
         /*// give player shovel at join
@@ -135,7 +135,7 @@ gameData.world.entityWorld.onAdd["server.js"] = function(entity) {
             sendCommand(new CommandEntityInventory(monsterEntityId, InventoryActions.ADD_ITEM, Items.Egg.id, 1000));
         }
     }
-};
+});
 
 update = function() {
     var diff = process.hrtime(firstTickTime);

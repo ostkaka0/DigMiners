@@ -37,7 +37,7 @@ GameModeBaseWar.prototype.init = function() {
         }.bind(this));
     }.bind(this));
     
-    gameData.world.entityWorld.onRemove["GameModeBaseWar.js"] = function(entity) {
+    subscribeEvent(gameData.world.entityWorld.onRemove, this, function(entity) {
         var team = Teams.none;
         
         this.teams.forEach(function(currentTeam) {
@@ -58,7 +58,7 @@ GameModeBaseWar.prototype.init = function() {
        // End gamemode
         if (Object.keys(this.spawnEntities).length <= 1)
             gameData.changeGameMode();
-    }.bind(this);
+    }.bind(this));
 }
 
 GameModeBaseWar.prototype.name = "Base War";
