@@ -41,6 +41,7 @@ Player.prototype.canPlaceBlock = function(gameData, x, y) {
     var blockChunk = gameData.world.blockWorld.get(blockChunkX, blockChunkY);
     var localX = Math.floor(x) - blockChunkX * BLOCK_CHUNK_DIM;
     var localY = Math.floor(y) - blockChunkY * BLOCK_CHUNK_DIM;
+    if (getDensity(gameData.world.tileWorld, x, y) > 127) return false;
     if (dist < Config.blockPlaceDistance && (!blockChunk || !blockChunk.getForeground(localX, localY)))
         return true;
     return false;
