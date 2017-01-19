@@ -18,7 +18,7 @@ unsubscribeEvents = function(events, subscriber) {
 }
 
 triggerEvent = function(event) {
-    var args = [...arguments].slice(1);
+    var args = Array.from(arguments).slice(1);
     event.forEach(function(callback) {
         callback[1].apply(null, args);
     });
