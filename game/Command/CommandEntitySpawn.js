@@ -15,7 +15,7 @@ CommandEntitySpawn.prototype.serialize = function(byteArray, index) {
     serializeInt32(byteArray, index, this.numComponents);
     forIn(this, this.entity, function(key) {
         var component = this.entity[key];
-        if (!component.serialize) return;
+        if (!component || !component.serialize) return;
         serializeInt32(byteArray, index, component.id);
         component.serialize(byteArray, index);
     });
@@ -42,7 +42,7 @@ CommandEntitySpawn.prototype.getSerializationSize = function() {
     this.numComponents = 0;
     forIn(this, this.entity, function(component) {
         component = this.entity[component];
-        if (!component.serialize) return;
+        if (!component || !component.serialize) return;
         size += 4 + component.getSerializationSize(); // component-id
         ++this.numComponents;
     });

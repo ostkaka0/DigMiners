@@ -7,26 +7,26 @@ gameData.destroy = function() {
 gameData.init = function(idList) {
     initItems(this);
     initConfig();
-    
+
     this.timeouts = {};
     this.timeoutIdList = new IdList();
-    this.playerIdList = (isServer)? new IdList() : null;
+    this.playerIdList = (isServer) ? new IdList() : null;
     this.playerWorld = new ObjectWorld(true);
     this.world = null;
     this.gameMode = null;
     this.nextGameMode = null;
     this.changeGameMode();
     this.tick(); // Load gamemode
-    
+
     if (!isServer)
         this.animationManager = new AnimationManager();
     else
         this.animationManager = {};
-    
+
     this.messageCallbacks = {};
-    
+
     initPlayerClasses();
-    
+
     Recipes = [];
 
     Recipes.push({
@@ -64,7 +64,7 @@ gameData.init = function(idList) {
         requiredOres: [[Tiles.Copper, 10]],
         requiredItems: [[Items.SmallSticks, 10], [Items.RottenRoot, 4]],
     });
-    
+
     if (this.playerIdList) {
         var onObjectRemove = function(object) { this.playerIdList.remove(object.id); }.bind(this);
         subscribeEvent(this.playerWorld.onRemove, this, onObjectRemove);
@@ -87,13 +87,15 @@ gameData.tick = function(dt) {
             new MessageChangeGameMode().send(io.sockets);
         return;
     }
-    
+
     this.playerWorld.update();
     if (this.world)
         this.world.tick(dt);
+    if (this.gameMode.tick)
+        this.gameMode.tick(dt);
 }
 
-gameData.changeGameMode = function()  {
+gameData.changeGameMode = function() {
     this.nextGameMode = new Config.gameModeRegister[Config.gameModeRegister.length * Math.random() >> 0]();
     console.log("Changing game mode to: " + this.nextGameMode.name);
 }

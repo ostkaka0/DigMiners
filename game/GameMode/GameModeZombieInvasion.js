@@ -9,8 +9,13 @@ GameModeZombieInvasion = function() {
     this.endWaveTimer = null;
 
     this.playerSpawns = {};
+    this.zombieSpawns = [];
     this.teams = [Teams.Human];
     this.zombieSpawners = [];
+
+    this.lastStartMessage = null;
+    this.startSeconds = 15;
+    this.started = false;
 }
 
 GameModeZombieInvasion.prototype.init = function() {
@@ -43,6 +48,7 @@ GameModeZombieInvasion.prototype.init = function() {
         sendCommand(new CommandEntitySpawn(gameData, entity, entityId, Teams.Zombie));
         sendCommand(new CommandDig(pos, 5.0));
         this.zombieSpawners.push(entity);
+        this.zombieSpawns.push(pos);
     }
 
     subscribeEvent(gameData.world.entityWorld.onRemove, this, function(entity) {
@@ -70,7 +76,39 @@ GameModeZombieInvasion.prototype.init = function() {
         }
     }.bind(this));
 
-    gameData.setTimeout(this.startWave.bind(this), this.initialWaitTicks);
+    this.lastStartMessage = new Date();
+}
+
+GameModeZombieInvasion.prototype.createEntity = function(player, entityId, classId) {
+    if (!this.started) {
+        var classType = PlayerClassRegister[classId];
+        var entity = entityTemplates.player(player.id, entityId, player.name, classType, Teams.Human);
+
+        // Set spawn position
+        var pos = this.playerSpawns[Teams.Human][Math.random() * this.playerSpawns[Teams.Human].length >> 0];
+        entity.physicsBody.setPos(pos);
+        entity.physicsBody.posOld = v2.clone(pos);
+        return entity;
+    } else {
+        /*var pos = this.zombieSpawns[Math.random() * this.zombieSpawns.length >> 0];
+        var entity = entityTemplates.playerZombie(player.id, entityId, player.name, pos, classId);
+        entity.inventory.addItem(gameData, Items.RustyShovel.id, 1);
+        return entity;*/
+        return null;
+    }
+}
+
+GameModeZombieInvasion.prototype.tick = function(dt) {
+    if (this.startSeconds >= 0 && this.lastStartMessage && ((new Date()).getTime() - this.lastStartMessage.getTime()) >= 1000) {
+        this.lastStartMessage = new Date();
+        if (this.startSeconds > 0)
+            sendCommand(new CommandPopupMessage("Game starting in " + this.startSeconds + " seconds."));
+        else {
+            this.started = true;
+            this.startWave();
+        }
+        --this.startSeconds;
+    }
 }
 
 GameModeZombieInvasion.prototype.name = "Zombie Invasion";

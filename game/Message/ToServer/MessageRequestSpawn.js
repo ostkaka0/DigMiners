@@ -12,17 +12,26 @@ MessageRequestSpawn.prototype.execute = function(gameData, player) {
         player.name = this.playerName;
 
     var entityId = gameData.world.idList.next();
-    var classType = PlayerClassRegister[this.classId];
-    var teamId = gameData.gameMode.teams[Math.random() * gameData.gameMode.teams.length >> 0];
-    var entity = entityTemplates.player(player.id, entityId, player.name, classType, teamId);
+    var entity = null;
+    if (gameData.gameMode.createEntity)
+        entity = gameData.gameMode.createEntity(player, entityId, this.classId);
+    else {
+        var classType = PlayerClassRegister[this.classId];
+        var teamId = gameData.gameMode.teams[Math.random() * gameData.gameMode.teams.length >> 0];
+        entity = entityTemplates.player(player.id, entityId, player.name, classType, teamId);
 
-    // Set spawn position
-    var pos = gameData.gameMode.playerSpawns[teamId][Math.random() * gameData.gameMode.playerSpawns[teamId].length >> 0];
-    entity.physicsBody.setPos(pos);
-    entity.physicsBody.posOld = v2.clone(pos);
+        // Set spawn position
+        var pos = gameData.gameMode.playerSpawns[teamId][Math.random() * gameData.gameMode.playerSpawns[teamId].length >> 0];
+        entity.physicsBody.setPos(pos);
+        entity.physicsBody.posOld = v2.clone(pos);
+    }
 
-    sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
-    sendCommand(new CommandPlayerSpawn(player.id, entityId, player.name));
+    if (entity) {
+        sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
+        sendCommand(new CommandPlayerSpawn(player.id, entityId, player.name));
+    } else {
+        //TODO: CommandPlayerSpectate
+    }
 }
 
 MessageRequestSpawn.prototype.send = function(socket) {
