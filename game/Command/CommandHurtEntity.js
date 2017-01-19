@@ -10,9 +10,9 @@ CommandHurtEntity.prototype.execute = function() {
     if (entity.movement)
         entity.movement.disabledCooldown = 40;
     entity.health.health = (entity.health.health + this.healthChange < 0 ? 0 : entity.health.health + this.healthChange);
-    triggerEvent(Health.onChange, entity);
+    triggerEvent(HealthEvents.onChange, entity);
     if (entity.health.health <= 0)
-        triggerEvent(Health.onDeath, entity);
+        triggerEvent(HealthEvents.onDeath, entity);
 }
 
 CommandHurtEntity.prototype.serialize = function(byteArray, index) {

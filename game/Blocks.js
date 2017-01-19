@@ -64,7 +64,7 @@ BlockBulletFunctions.bunker = function(blockPos, blockType, entity) {
         damageFactor = blockType.bulletBunkerNearFactor;
 
     if (rand > damageFactor * 100) {
-        gameData.world.events.trigger("projectileHitBlock", entity, blockPos);
+        triggerEvent(ProjectileEvents.onHitBlock, entity, blockPos);
         entity.projectile.hit = true;
         return;
     }

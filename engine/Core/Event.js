@@ -11,6 +11,12 @@ unsubscribeEvent = function(event, subscriber) {
     }
 }
 
+unsubscribeEvents = function(events, subscriber) {
+    Object.keys(events).forEach(function(event) {
+        unsubscribeEvent(event, subscriber);
+    });
+}
+
 triggerEvent = function(event) {
     var args = [...arguments].slice(1);
     event.forEach(function(callback) {

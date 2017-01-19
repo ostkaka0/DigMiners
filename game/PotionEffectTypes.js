@@ -7,7 +7,7 @@ PotionEffectTypes.Healing = {
         var health = entity.health;
         if (health) {
             health.health = Math.min(health.maxHealth, health.health + 1);
-            triggerEvent(Health.onChange, entity);
+            triggerEvent(HealthEvents.onChange, entity);
         }
     }
 }

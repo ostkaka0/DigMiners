@@ -66,7 +66,7 @@ World.prototype.initializeEvents = function() {
         subscribeEvent(this.entityWorld.onRemove, this, onObjectRemove);
     }
     
-    this.events.on("projectileHit", function(projectileEntity, hitPos) {
+    subscribeEvent(ProjectileEvents.onHit, this, function(projectileEntity, hitPos) {
         gameData.setTimeout(function(projectileEntity) {
             var type = projectileEntity.projectile.projectileType;
             if (type.isExplosive)
@@ -77,7 +77,7 @@ World.prototype.initializeEvents = function() {
             createDespawningParticles(projectileEntity.projectile.projectileType.hitParticle(), hitPos, 200);
     }.bind(this));
 
-    this.events.on("projectileHitEntity", function(projectileEntity, hitEntity) {
+    subscribeEvent(ProjectileEvents.onHitEntity, this, function(projectileEntity, hitEntity) {
         if (isServer) {
             if (hitEntity && hitEntity.health && projectileEntity.projectile.projectileType.damage > 0) {
                 var damage = projectileEntity.projectile.projectileType.damage * projectileEntity.projectile.damageFactor;
@@ -89,7 +89,7 @@ World.prototype.initializeEvents = function() {
         }
     }.bind(this));
 
-    this.events.on("projectileHitBlock", function(projectileEntity, blockPos) {
+    subscribeEvent(ProjectileEvents.onHitBlock, this, function(projectileEntity, blockPos) {
         if (isServer) {
             if (projectileEntity.projectile.projectileType.blockDamage > 0) {
                 var strength = getStrength(this.blockWorld, blockPos[0], blockPos[1]);
@@ -101,19 +101,21 @@ World.prototype.initializeEvents = function() {
             }
         }
     }.bind(this));
+    
+    unsubscribeEvents(ProjectileEvents, this);
 
-    this.events.on("projectileHitTile", function(projectileEntity, tilePos) {
+    subscribeEvent(ProjectileEvents.onHitTile, this, function(projectileEntity, tilePos) {
 
     }.bind(this));
 
-    subscribeEvent(Health.onChange, this, function(entity) {
+    subscribeEvent(HealthEvents.onChange, this, function(entity) {
         var sprite = entity.drawable.sprites["healthbar"];
         if (!sprite || !sprite.sprite) return;
         var defaultHealthbarWidth = 64;
         sprite.sprite.width = (entity.health.health / entity.health.maxHealth) * defaultHealthbarWidth;
     }.bind(this));
 
-    subscribeEvent(Health.onDeath, this, function(entity) {
+    subscribeEvent(HealthEvents.onDeath, this, function(entity) {
         if (!entity.isDead) {
             entity.isDead = true;
             this.entityWorld.remove(entity);
@@ -145,6 +147,6 @@ World.prototype.initializeEvents = function() {
 }
 
 World.prototype.destroy = function() {
-    unsubscribeEvent(Health.onChange, this);
-    unsubscribeEvent(Health.onDeath, this);
+    unsubscribeEvents(HealthEvents, this);
+    unsubscribeEvents(ProjectileEvents, this);
 }

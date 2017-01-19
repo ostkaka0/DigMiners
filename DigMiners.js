@@ -326,7 +326,7 @@ gameData.world.events.on("ownPlayerSpawned", function(entity, player) {
 
 subscribeEvent(gameData.world.entityWorld.onAdd, window, function(entity) {
     if (!isServer && entity.health && entity.drawable)
-        triggerEvent(Health.onChange, entity);
+        triggerEvent(HealthEvents.onChange, entity);
 
     if (entity.drawable && entity.bodyparts) {
         entity.drawable.initializeBodyparts(entity.bodyparts.bodyparts);

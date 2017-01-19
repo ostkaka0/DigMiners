@@ -1,6 +1,8 @@
 Items = {};
 ItemFunctions = {};
 ItemTextures = {};
+ItemEvents = {};
+ItemEvents.onShoot = [];
 
 ItemFunctions.Shovel = function(entity, item) {
     // Shovels might be meele weapons
@@ -102,7 +104,6 @@ ItemFunctions.RangedWeapon = function(entity, itemType) {
     if (!item.magazine || item.magazine <= 0) return;
     var numProjectiles = itemType.numProjectiles ? itemType.numProjectiles : 1;
     item.magazine -= 1;
-    gameData.world.events.trigger("bulletFired", entity, itemType);
 
     if (isServer) {
         var angle = entity.physicsBody.angle;
