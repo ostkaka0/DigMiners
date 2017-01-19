@@ -22,8 +22,8 @@ GameModeZombieInvasion.prototype.init = function() {
         world.set(x, y, chunk);
     }
 
-    for (var x = -3; x < 3; ++x) {
-        for (var y = -3; y < 3; ++y) {
+    for (var x = -2; x < 2; ++x) {
+        for (var y = -2; y < 2; ++y) {
             loadChunk(gameData.world.tileWorld, x, y);
         }
     }
@@ -35,9 +35,9 @@ GameModeZombieInvasion.prototype.init = function() {
     // Zombie spawners
     for (var i = 0; i < 10; i++) {
         var pos = [0, 0];
-        // calculate random position at least 40 tiles from middle
-        for (var j = 0; j < 10 && v2.length(pos) < 40.0; j++)
-            pos = [90.0 * (-1 + 2 * Math.random()), 90.0 * (-1 + 2 * Math.random())];
+        // calculate random position at least 20 tiles from middle
+        for (var j = 0; j < 10 && v2.length(pos) < 20.0; j++)
+            pos = [60.0 * (-1 + 2 * Math.random()), 60.0 * (-1 + 2 * Math.random())];
         var entityId = gameData.world.idList.next();
         var entity = entityTemplates.monsterSpawner(entityId, pos, this.spawnZombie.bind(this), 0, 2.0, 40, null, null, Teams.Zombie);
         sendCommand(new CommandEntitySpawn(gameData, entity, entityId, Teams.Zombie));
@@ -85,7 +85,7 @@ GameModeZombieInvasion.prototype.startWave = function() {
         entity.spawner.maxEntities = 5; //Math.max(1, Math.min(5, this.waveNum/4 + gameData.playerWorld.objectArray.length - 1));
     }.bind(this));
 
-    this.numZombiesToSpawn = 10 + 5 * this.waveNum;
+    this.numZombiesToSpawn = 10 + 10 * Math.pow(2, this.waveNum/3);
     this.endWave = false;
 }
 
@@ -98,21 +98,19 @@ GameModeZombieInvasion.prototype.spawnZombie = function(entityId, pos, teamId) {
             default:
             case 0:
                 // Improve speed, decrease health
-                entity.movement.speed += 5;
+                entity.movement.speed += 10;
                 var newMaxHealth = Math.max(50, entity.health.maxHealth - 5);
                 entity.health.health = newMaxHealth;
                 entity.health.maxHealth = newMaxHealth;
                 break;
             case 1:
-                // Improve health, decrease speed                // Improve speed: 
+                // Improve health
                 entity.health.health += 10;
                 entity.health.maxHealth += 10;
-                entity.movement.speed = Math.max(10, entity.movement.speed - 2);
                 break;
             case 2:
                 // Improve armor, decrease speed
                 entity.health.armor = Math.min(0.8, entity.health.armor + 0.05);
-                entity.movement.speed = Math.max(10, entity.movement.speed - 2);
                 break;
             case 3:
                 // Increase damage
