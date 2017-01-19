@@ -12,7 +12,7 @@ CommandHurtEntity.prototype.execute = function() {
     entity.health.health = (entity.health.health + this.healthChange < 0 ? 0 : entity.health.health + this.healthChange);
     triggerEvent(Health.onChange, entity);
     if (entity.health.health <= 0)
-        gameData.world.events.trigger("entityDeath", entity);
+        triggerEvent(Health.onDeath, entity);
 }
 
 CommandHurtEntity.prototype.serialize = function(byteArray, index) {
