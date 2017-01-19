@@ -10,7 +10,7 @@ CommandHurtEntity.prototype.execute = function() {
     if (entity.movement)
         entity.movement.disabledCooldown = 40;
     entity.health.health = (entity.health.health + this.healthChange < 0 ? 0 : entity.health.health + this.healthChange);
-    gameData.world.events.trigger("healthChange", entity);
+    triggerEvent(Health.onChange, entity);
     if (entity.health.health <= 0)
         gameData.world.events.trigger("entityDeath", entity);
 }
