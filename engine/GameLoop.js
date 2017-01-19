@@ -12,7 +12,7 @@ function gameLoop(tick, render, tickDuration) {
         // Simulate ticks:
         var newTickNum = Math.floor((now - firstTickTime) / tickDuration);
         var tickFracTime = (now - firstTickTime) / tickDuration - newTickNum;
-        if (newTickNum - tickNum > 100)
+        if (newTickNum - tickNum > 1200)
             location.reload();
         for (; tickNum < newTickNum; ++tickNum) {
             tick(tickDuration / 1000.0);
