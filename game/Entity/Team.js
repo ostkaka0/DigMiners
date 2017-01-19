@@ -26,7 +26,3 @@ Team.prototype.deserialize = function(byteArray, index) {
 Team.prototype.getSerializationSize = function() {
     return 4;
 }
-
-Team.prototype.destroy = function(entity) {
-
-}
