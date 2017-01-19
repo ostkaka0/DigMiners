@@ -161,8 +161,8 @@ GameModeZombieInvasion.prototype.forceRespawnPlayers = function() {
             console.log("entity: " + entity);
             if (!entity || !entity.inventory || !entity.ammo || !entity.health)
                 return;
-            entity.health.value = entity.health.maxValue;
-            TriggerEvent(HealthEvents.onChange, entity);
+            entity.health.health = entity.health.maxHealth;
+            triggerEvent(HealthEvents.onChange, entity);
             entity.inventory.items.forEach(function(item) {
                 var itemType = Config.itemRegister[item.id];
                 if (entity.ammo[item.id] != undefined)
