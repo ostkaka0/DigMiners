@@ -132,9 +132,13 @@ GameModeZombieInvasion.prototype.endWave = function() {
     this.playerSpawning = true;
     gameData.setTimeout(this.startWave.bind(this), this.wavePauseDuration);
     sendCommand(new CommandPopupMessage("Zombies are mutating"));
+    
+
 }
 
 GameModeZombieInvasion.prototype.startWave = function() {
+    this.forceRespawnPlayers();
+    
     this.playerSpawning = false;
     this.waveNum++;
 
@@ -147,6 +151,37 @@ GameModeZombieInvasion.prototype.startWave = function() {
 
     this.numZombiesToSpawn = 10 + 10 * Math.pow(2, this.waveNum/3);
     this.endingWave = false;
+}
+
+GameModeZombieInvasion.prototype.forceRespawnPlayers = function() {
+    gameData.playerWorld.objectArray.forEach(function(player) {
+        if (player.entityId) {
+            // Heal and supply ammo
+            var entity = gameData.world.entityWorld.objects[player.entityId];
+            console.log("entity: " + entity);
+            if (!entity || !entity.inventory || !entity.ammo || !entity.health)
+                return;
+            entity.health.value = entity.health.maxValue;
+            TriggerEvent(HealthEvents.onChange, entity);
+            entity.inventory.items.forEach(function(item) {
+                var itemType = Config.itemRegister[item.id];
+                if (entity.ammo[item.id] != undefined)
+                    entity.ammo[item.id] = itemType.ammoMax;
+            });
+            return;
+        }
+
+        var entityId = gameData.world.idList.next();
+        var entity = this.createEntity(player, entityId, PlayerClasses.Assault.id);
+
+        if (!entity) {
+            console.error("entity is null");
+            return;
+        }
+        
+        sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
+        sendCommand(new CommandPlayerSpawn(player.id, entityId, player.name));
+    }.bind(this));
 }
 
 GameModeZombieInvasion.prototype.spawnZombie = function(entityId, pos, teamId) {
