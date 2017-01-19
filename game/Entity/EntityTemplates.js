@@ -43,7 +43,6 @@ entityTemplates.player = function(playerId, entityId, name, playerClass, teamId)
         entity.inventory.addStaticItem(gameData, weapon.id);
         entity.ammo[weapon.id] = weapon.ammoMax || 0;
     });
-    console.log(entity.ammo);
     playerClass.blocks.forEach(function(blockItem) {
         entity.inventory.addStaticItem(gameData, blockItem.id);
     });
