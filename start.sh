@@ -1,5 +1,5 @@
 #!/bin/bash
 while :
 do
-    nodejs server.js
+    node server.js 2>> server.log
 done
