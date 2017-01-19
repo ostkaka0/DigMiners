@@ -114,6 +114,10 @@ DeathScreen = function() {
         this.root.hide();
     }.bind(this));
 
+    gameData.world.events.on("spectate", function(entity) {
+        this.root.hide();
+    }.bind(this));
+
     gameData.world.events.on("entityDeath", function(entity) {
         if (!entity.controlledByPlayer) return;
         if (entity.controlledByPlayer.playerId != global.player.id) return;

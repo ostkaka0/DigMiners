@@ -60,7 +60,7 @@ loadGame = function() {
     // Player input
     $('*').keydown(function(event) {
         var char = String.fromCharCode(event.keyCode).toLowerCase();
-        
+
         // Arrow keys:
         if (event.keyCode == 37)
             char = "a";
@@ -70,7 +70,7 @@ loadGame = function() {
             char = "d";
         else if (event.keyCode == 40)
             char = "s";
-        
+
         if (!keysDown[char]) {
             keysDown[char] = true;
             var key = null;
@@ -80,18 +80,18 @@ loadGame = function() {
             if (char == "d") key = Keys.RIGHT;
             if (char == " ") key = Keys.SPACEBAR;
             if (char == "r") key = Keys.R;
-            
+
             if (key == Keys.SPACEBAR && keysDown["lmb"]) return;
-            
+
             if (key != null)
                 new MessageRequestKeyStatusUpdate(key, true).send(socket);
         }
-        
+
 
     });
     $('*').keyup(function(event) {
         var char = String.fromCharCode(event.keyCode).toLowerCase();
-        
+
         // Arrow keys:
         if (event.keyCode == 37)
             char = "a";
@@ -101,7 +101,7 @@ loadGame = function() {
             char = "d";
         else if (event.keyCode == 40)
             char = "s";
-        
+
         if (keysDown[char]) {
             keysDown[char] = false;
             var key = null;
@@ -111,9 +111,9 @@ loadGame = function() {
             if (char == "d") key = Keys.RIGHT;
             if (char == " ") key = Keys.SPACEBAR;
             if (char == "r") key = Keys.R;
-            
+
             if (key == Keys.SPACEBAR && keysDown["lmb"]) return;
-            
+
             if (key != null)
                 new MessageRequestKeyStatusUpdate(key, false).send(socket);
         }
@@ -176,7 +176,10 @@ render = function(tickFracTime) {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     // Set camera pos
-    if (global.playerEntity && global.playerEntity.isActive) {
+    if (global.spectateEntity) {
+        camera.pos[0] = tickFracTime * 32.0 * global.spectateEntity.physicsBody.posClient[0] + (1 - tickFracTime) * 32.0 * global.spectateEntity.physicsBody.posClientOld[0];
+        camera.pos[1] = tickFracTime * 32.0 * global.spectateEntity.physicsBody.posClient[1] + (1 - tickFracTime) * 32.0 * global.spectateEntity.physicsBody.posClientOld[1];
+    } else if (global.playerEntity && global.playerEntity.isActive) {
         camera.pos[0] = tickFracTime * 32.0 * global.playerEntity.physicsBody.posClient[0] + (1 - tickFracTime) * 32.0 * global.playerEntity.physicsBody.posClientOld[0];
         camera.pos[1] = tickFracTime * 32.0 * global.playerEntity.physicsBody.posClient[1] + (1 - tickFracTime) * 32.0 * global.playerEntity.physicsBody.posClientOld[1];
     } else // TODO: do something else instead of centering camera at 0,0?
@@ -310,7 +313,7 @@ gameData.world.events.on("connected", function() {
 $("*").mousemove(function(e) {
     if (!global.player || !global.playerEntity) return;
     if (gameData.world.tickId - lastMouseSync < 1) return;
-    
+
     var entity = global.playerEntity;
     lastMouseSync = gameData.world.tickId;
     var worldCursorPos = [(e.pageX + camera.pos[0] - camera.width / 2) / 32, (canvas.height - e.pageY + camera.pos[1] - camera.height / 2) / 32];
@@ -321,7 +324,7 @@ $("*").mousemove(function(e) {
 
 gameData.world.events.on("ownPlayerSpawned", function(entity, player) {
     //$("#hud").unbind("mousemove");
-    
+
 }.bind(this));
 
 subscribeEvent(gameData.world.entityWorld.onAdd, window, function(entity) {
