@@ -45,7 +45,7 @@ GameModeZombieInvasion.prototype.init = function() {
         this.zombieSpawners.push(entity);
     }
 
-    gameData.world.entityWorld.onRemove["GameModeBaseWar.js"] = function(entity) {
+    subscribeEvent(gameData.world.entityWorld.onRemove, this, function(entity) {
         if (this.zombies[entity.id]) {
             delete this.zombies[entity.id];
             if (Object.keys(this.zombies).length <= this.numEndWaveZombies && this.numZombiesToSpawn <= 0 && !this.endWave) {
@@ -68,7 +68,7 @@ GameModeZombieInvasion.prototype.init = function() {
                 }.bind(this), 10000);
             }
         }
-    }.bind(this);
+    }.bind(this));
 
     gameData.setTimeout(this.startWave.bind(this), this.initialWaitTicks);
 }

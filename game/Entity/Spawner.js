@@ -28,7 +28,7 @@ Spawner.prototype.update = function(entity) {
     // Lazy init
     if (!this.initialized) {
         this.initialized = true;
-        gameData.world.entityWorld.onRemove["Spawner.js_" + entity.id] = function(entity) {
+        subscribeEvent(gameData.world.entityWorld.onRemove, this, function(entity) {
             if (this.entityTable[entity.id] == undefined) return;
             
             if (this.numEntities == this.maxEntities) 
@@ -36,8 +36,8 @@ Spawner.prototype.update = function(entity) {
                 
             this.entityTable[entity.id] = undefined;
             this.numEntities--;
-        }.bind(this);
-    }
+        }.bind(this));
+    };
     
     // Spawn entity
     var monsterEntityId = gameData.world.idList.next();
@@ -63,7 +63,7 @@ Spawner.prototype.update = function(entity) {
 }
 
 Spawner.prototype.onDestroy = function(entity) {
-    gameData.world.entityWorld.onRemove["Spawner.js_" + entity.id] = undefined;
+    unsubscribeEvent(gameData.world.entityWorld.onRemove, this);
 }
 
 Spawner.prototype.updateDuration = function() {

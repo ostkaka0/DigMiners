@@ -67,7 +67,7 @@ gameData.init = function(idList) {
     
     if (this.playerIdList) {
         var onObjectRemove = function(object) { this.playerIdList.remove(object.id); }.bind(this);
-        this.playerWorld.onRemove["GameData.js"] = onObjectRemove;
+        subscribeEvent(this.playerWorld.onRemove, this, onObjectRemove);
     }
 }
 

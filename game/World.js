@@ -51,18 +51,19 @@ World.prototype.tick = function(dt) {
 
 World.prototype.initializeEvents = function() {
     // Update physicsEntities
-    this.entityWorld.onAdd["GameData.js"] = function(entity) {
+    // No unsubscribing is required, becuase world is owner of entityWorld
+    subscribeEvent(this.entityWorld.onAdd, this, function(entity) {
         if (entity.physicsBody)
             this.physicsEntities[entity.physicsBody.bodyId] = entity;
-    }.bind(this);
-    this.entityWorld.onRemove["GameData.js"] = function(entity) {
+    }.bind(this));
+    subscribeEvent(this.entityWorld.onRemove, this, function(entity) {
         if (entity.physicsBody)
             this.physicsEntities[entity.physicsBody.bodyId] = undefined;
-    }.bind(this);
+    }.bind(this));
 
     if (this.idList) {
         var onObjectRemove = function(object) { this.idList.remove(object.id); }.bind(this);
-        this.entityWorld.onRemove["GameData.js"] = onObjectRemove;
+        subscribeEvent(this.entityWorld.onRemove, this, onObjectRemove);
     }
     
     this.events.on("projectileHit", function(projectileEntity, hitPos) {
