@@ -106,7 +106,7 @@ World.prototype.initializeEvents = function() {
 
     }.bind(this));
 
-    this.events.on("healthChange", function(entity) {
+    subscribeEvent(Health.onChange, this, function(entity) {
         var sprite = entity.drawable.sprites["healthbar"];
         if (!sprite || !sprite.sprite) return;
         var defaultHealthbarWidth = 64;
@@ -139,8 +139,11 @@ World.prototype.initializeEvents = function() {
     }.bind(this));
 
     this.events.on("entityHitBlockSide", function(entity, blockPos, blockType, blockCollisionSide) {
-        //console.log(entity.id + " hit block " + blockPos);
         if (isServer && blockType && blockType.isDoor)
             blockType.clickFunction(blockPos, blockType, entity, 0);
     }.bind(this));
+}
+
+World.prototype.destroy = function() {
+    unsubscribeEvent(Health.onChange, this);
 }

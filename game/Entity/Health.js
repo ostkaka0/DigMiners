@@ -5,6 +5,8 @@ Health = function(health, maxHealth, armor) {
     this.armor = armor;
 }
 
+Health.onChange = [];
+
 Health.prototype.name = health.name; function health() { };
 
 Health.prototype.serialize = function(byteArray, index) {

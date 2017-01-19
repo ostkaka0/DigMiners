@@ -78,6 +78,7 @@ gameData.tick = function(dt) {
             clearCommands();
         if (this.gameMode && this.gameMode.onDestroy)
             this.gameMode.onDestroy();
+        if (this.world) this.world.destroy();
         this.world = new World();
         this.gameMode = this.nextGameMode;
         this.gameMode.init();

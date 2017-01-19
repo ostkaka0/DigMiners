@@ -7,7 +7,7 @@ PotionEffectTypes.Healing = {
         var health = entity.health;
         if (health) {
             health.health = Math.min(health.maxHealth, health.health + 1);
-            gameData.world.events.trigger("healthChange", entity);
+            triggerEvent(Health.onChange, entity);
         }
     }
 }
@@ -20,7 +20,7 @@ PotionEffectTypes.SupplyAmmo = {
             var itemType = Config.itemRegister[itemId];
             var amount = entity.ammo[itemId];
             // Add 1% of ammoMax
-            var ammoToAdd = Math.min(itemType.ammoMax - amount, Math.max(1, itemType.ammoMax * 0.01 >> 0));
+            var ammoToAdd = Math.min(itemType.ammoMax - amount, Math.max(1, itemType.ammoMax * 0.05 >> 0));
             if (ammoToAdd == 0) return;
             entity.ammo[itemId] += ammoToAdd;
             // TODO: Trigger event?
