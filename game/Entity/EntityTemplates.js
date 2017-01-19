@@ -17,7 +17,7 @@ entityTemplates.player = function(playerId, entityId, name, playerClass, teamId)
     var rightArmSprite = new Sprite("rightArm");
     var leftArmSprite = new Sprite("leftArm");
     var headSprite = new Sprite("head");
-    var hatSprite = new Sprite((teamEnum == Teams.Blue) ? "egg" : "bigEgg");
+    var hatSprite = new Sprite();//((teamEnum == Teams.Blue) ? "egg" : "bigEgg");
 
     // Order of bodyparts is draw order
     // Parameters: sprite, offsetX, offsetY, offsetAngle, pivot(v2), parent name
@@ -38,7 +38,7 @@ entityTemplates.player = function(playerId, entityId, name, playerClass, teamId)
     entity.health = new Health(playerClass.health, playerClass.health, playerClass.armor);
     entity.team = new Team(teamEnum);
     entity.ammo = new Ammo();
-    
+
     playerClass.weapons.forEach(function(weapon) {
         entity.inventory.addStaticItem(gameData, weapon.id);
         entity.ammo[weapon.id] = weapon.ammoMax || 0;
@@ -48,6 +48,14 @@ entityTemplates.player = function(playerId, entityId, name, playerClass, teamId)
         entity.inventory.addStaticItem(gameData, blockItem.id);
     });
 
+    return entity;
+}
+
+entityTemplates.playerZombie = function(playerId, entityId, name, pos, playerClass) {
+    var entity = entityTemplates.zombie(entityId, pos, Teams.Zombie);
+    entity.behaviourContainer = undefined;
+    entity.controlledByPlayer = new ControlledByPlayer(playerId);
+    entity.nameComponent = new NameComponent(name);
     return entity;
 }
 
@@ -128,7 +136,7 @@ entityTemplates.zombie = function(entityId, pos, teamId) {
     var rightArmSprite = new Sprite("monster/rightArm");
     var leftArmSprite = new Sprite("monster/leftArm");
     var headSprite = new Sprite("monster/head");
-    var hatSprite = new Sprite((teamEnum == Teams.Blue) ? "egg" : "bigEgg");
+    var hatSprite = new Sprite();//((teamEnum == Teams.Blue) ? "egg" : "bigEgg");
 
     var bodyparts = {
         "feet": new BodyPart(feetSprite, 0, 0, 0, null, null),

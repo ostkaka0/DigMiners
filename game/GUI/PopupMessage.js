@@ -39,15 +39,13 @@ PopupMessage.prototype.show = function() {
     var toRemove = $("#popup");
     if (toRemove)
         toRemove.remove();
-    this.outer.fadeIn(400);
+    this.outer.fadeIn(0);
+    this.outer.appendTo($("#hud"));
     setTimeout(function() {
-        this.outer.appendTo($("#hud"));
+        var fadeTime = 400;
+        this.outer.fadeOut(fadeTime);
         setTimeout(function() {
-            var fadeTime = 400;
-            this.outer.fadeOut(fadeTime);
-            setTimeout(function() {
-                this.outer.remove();
-            }.bind(this), fadeTime);
-        }.bind(this), this.timeout);
-    }.bind(this), 400);
+            this.outer.remove();
+        }.bind(this), fadeTime);
+    }.bind(this), this.timeout);
 }
