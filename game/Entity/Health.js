@@ -1,12 +1,13 @@
 
+HealthEvents = {};
+HealthEvents.onChange = [];
+HealthEvents.onDeath = [];
+
 Health = function(health, maxHealth, armor) {
     this.health = health;
     this.maxHealth = maxHealth;
     this.armor = armor;
 }
-
-Health.onChange = [];
-Health.onDeath = [];
 
 Health.prototype.name = health.name; function health() { };
 

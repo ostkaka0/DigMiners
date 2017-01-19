@@ -1,4 +1,10 @@
 
+ProjectileEvents = {};
+ProjectileEvents.onHit = [];
+ProjectileEvents.onHitEntity = [];
+ProjectileEvents.onHitBlock = [];
+ProjectileEvents.onHitTile = [];
+
 Projectile = function(pos, angle, speed, maxDistance, projectileType, shooterEntityId) {
     this.pos = pos;
     this.angle = angle;

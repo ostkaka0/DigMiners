@@ -43,7 +43,7 @@ projectileEntitySimulate = function(entity, dt) {
         for (var j = 0; j < bodies.length; ++j) {
             var hitEntity = gameData.world.physicsEntities[bodies[j]];
             if (hitEntity && (!projectile.shooterEntityId || hitEntity.id != projectile.shooterEntityId)) {
-                gameData.world.events.trigger("projectileHitEntity", entity, hitEntity);
+                triggerEvent(ProjectileEvents.onHitEntity, entity, hitEntity);
                 projectile.hit = true;
                 break;
             }
@@ -54,7 +54,7 @@ projectileEntitySimulate = function(entity, dt) {
         var blockType = Config.blockRegister[blockId];
         var isBulletSolid = (blockType.isBulletSolid == undefined || entity.projectile.projectileType.isExplosive) ? blockType.isSolid : blockType.isBulletSolid;
         if (blockId != 0 && isBulletSolid && v2.dot([Math.cos(projectile.angle), -Math.sin(projectile.angle)], [blockTilePos[0] + 0.5 - pos[0], blockTilePos[1] + 0.5 - pos[1]]) > 0.0) {
-            gameData.world.events.trigger("projectileHitBlock", entity, blockTilePos);
+            triggerEvent(ProjectileEvents.onHitBlock, entity, blockTilePos);
             projectile.hit = true;
             break;
         }
@@ -63,7 +63,7 @@ projectileEntitySimulate = function(entity, dt) {
 
         var density = getDensity(gameData.world.tileWorld, blockTilePos[0], blockTilePos[1]);
         if (density > 127) {
-            gameData.world.events.trigger("projectileHitTile", entity, blockTilePos);
+            triggerEvent(ProjectileEvents.onHitTile, entity, blockTilePos);
             projectile.hit = true;
             break;
         }
@@ -73,7 +73,7 @@ projectileEntitySimulate = function(entity, dt) {
     }
 
     if (projectile.hit) {
-        gameData.world.events.trigger("projectileHit", entity, v2.clone(pos));
+        triggerEvent(ProjectileEvents.onHit, entity, v2.clone(pos));
         if (!isServer && projectile.sprite) {
             projectile.sprite.anchor.x = 1.0;
             if (!projectile.sprite.visible) {
