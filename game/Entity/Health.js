@@ -6,6 +6,7 @@ Health = function(health, maxHealth, armor) {
 }
 
 Health.onChange = [];
+Health.onDeath = [];
 
 Health.prototype.name = health.name; function health() { };
 

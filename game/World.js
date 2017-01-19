@@ -113,7 +113,7 @@ World.prototype.initializeEvents = function() {
         sprite.sprite.width = (entity.health.health / entity.health.maxHealth) * defaultHealthbarWidth;
     }.bind(this));
 
-    this.events.on("entityDeath", function(entity) {
+    subscribeEvent(Health.onDeath, this, function(entity) {
         if (!entity.isDead) {
             entity.isDead = true;
             this.entityWorld.remove(entity);
@@ -146,4 +146,5 @@ World.prototype.initializeEvents = function() {
 
 World.prototype.destroy = function() {
     unsubscribeEvent(Health.onChange, this);
+    unsubscribeEvent(Health.onDeath, this);
 }
