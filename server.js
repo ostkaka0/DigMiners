@@ -138,6 +138,7 @@ subscribeEvent(gameData.world.entityWorld.onAdd, global, function(entity) {
 });
 
 update = function() {
+    var server_has_players = (Object.keys(connections).length > 0);//!gameData.playerWorld || gameData.playerWorld.length > 0);
     var diff = process.hrtime(firstTickTime);
     var diff_ms = diff[0] * 1e3 + diff[1] / 1e6;
     var delay = -diff_ms + (tickNum + skippedTicks) * Config.tickDuration;
@@ -147,7 +148,8 @@ update = function() {
         console.log(numTicksToSkip + " ticks skipped!");
     }
     setTimeout(update, delay);
-    tick(Config.tickDuration / 1000.0);
+    if (server_has_players)
+        tick(Config.tickDuration / 1000.0);
     tickNum++;
 }
 
