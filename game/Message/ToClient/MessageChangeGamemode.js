@@ -1,3 +1,4 @@
+
 MessageChangeGameMode = function() {
     this.gameModeId = gameData.gameMode.id;
 }

@@ -30,7 +30,17 @@ MessageRequestSpawn.prototype.execute = function(gameData, player) {
         sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
         sendCommand(new CommandPlayerSpawn(player.id, entityId, player.name));
     } else {
-        //TODO: CommandPlayerSpectate
+
+        var entities = [];
+        gameData.world.entityWorld.objectArray.forEach(function(entity) {
+            if (entity.physicsBody)
+                entities.push(entity);
+        });
+
+        if (entities.length > 0) {
+            var spectateEntity = entities[Math.floor(Math.random() * entities.length)];
+            new MessageSpectate(spectateEntity.id).send(player.socket);
+        }
     }
 }
 
