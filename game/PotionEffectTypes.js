@@ -23,6 +23,7 @@ PotionEffectTypes.SupplyAmmo = {
             var ammoToAdd = Math.min(itemType.ammoMax - amount, Math.max(1, itemType.ammoMax * 0.05 >> 0));
             if (ammoToAdd == 0) return;
             entity.ammo[itemId] += ammoToAdd;
+            triggerEvent(AmmoEvents.onChange, entity);
             // TODO: Trigger event?
         });
     }

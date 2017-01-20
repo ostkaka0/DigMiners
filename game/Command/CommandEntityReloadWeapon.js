@@ -13,8 +13,10 @@ CommandEntityReloadWeapon.prototype.execute = function() {
     var ammoAmount = (entity.ammo) ? entity.ammo[item.id] || 0 : itemType.ammoCapacity;
     var ammoToReload = Math.min(ammoAmount, itemType.ammoCapacity - item.magazine);
     item.magazine += ammoToReload;
-    if (entity.ammo && entity.ammo[item.id])
+    if (entity.ammo && entity.ammo[item.id]) {
         entity.ammo[item.id] -= ammoToReload;
+        triggerEvent(AmmoEvents.onChange, entity);
+    }
 }
 
 CommandEntityReloadWeapon.prototype.serialize = function(byteArray, index) {

@@ -95,7 +95,6 @@ GameModeZombieInvasion.prototype.createEntity = function(player, entityId, class
     if (this.playerSpawning) {
         var classType = PlayerClassRegister[classId];
         var entity = entityTemplates.player(player.id, entityId, player.name, classType, Teams.Human);
-        console.log(classType);
 
         // Set spawn position
         var pos = this.playerSpawns[Teams.Human][Math.random() * this.playerSpawns[Teams.Human].length >> 0];
@@ -159,16 +158,17 @@ GameModeZombieInvasion.prototype.forceRespawnPlayers = function() {
         if (player.entityId) {
             // Heal and supply ammo
             var entity = gameData.world.entityWorld.objects[player.entityId];
-            console.log("entity: " + entity);
             if (!entity || !entity.inventory || !entity.ammo || !entity.health)
                 return;
-            entity.health.health = entity.health.maxHealth;
-            triggerEvent(HealthEvents.onChange, entity);
             entity.inventory.items.forEach(function(item) {
                 var itemType = Config.itemRegister[item.id];
                 if (entity.ammo[item.id] != undefined)
                     entity.ammo[item.id] = itemType.ammoMax;
             });
+            triggerEvent(AmmoEvents.onChange, entity);
+            new MessageAmmoChange(entity, Object.keys(entity.ammo)).send(player.socket);
+            var healthChange = entity.health.maxHealth - entity.health.health;
+            sendCommand(new CommandEntityHealthChange(entity.id, healthChange));
             return;
         }
 
