@@ -31,7 +31,7 @@ CommandEntityEquipItem.prototype.execute = function() {
     
     if (entity.inventory) {
         var item = entity.inventory.items[this.stackId];
-        if (item && itemType.itemFunction == ItemFunctions.RangedWeapon && !item.magazine) {
+        if (item && itemType.itemFunction == ItemFunctions.RangedWeapon && (item.magazine == undefined || item.magazine == null)) {
             item.magazine = itemType.ammoCapacity;
         }
         
