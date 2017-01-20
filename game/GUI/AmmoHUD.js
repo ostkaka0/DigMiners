@@ -15,13 +15,18 @@ AmmoHUD = function() {
     this.updateFunction = function(entity, itemType) {
         if (entity && entity.id == global.playerEntityId) {
             var item = entity.inventory.getEquippedItem("tool");
-            if (item && itemType.typeOfType == "rangedWeapon")
+            if (item && (!itemType || itemType.typeOfType == "rangedWeapon"))
                 this.root.text(item.name + " ammo: " + item.magazine + " / " + ((entity.ammo != undefined) ? entity.ammo[item.id] : -1));
             else
                 this.root.text("No weapon equipped");
         }
     }
 
+    subscribeEvent(AmmoEvents.onChange, this, function(entity) {
+        if (entity && entity.id == global.playerEntityId)
+            this.updateFunction(entity, null)
+    }.bind(this));
+    
     gameData.world.events.on("beginReload", function(entity) {
         if (entity && entity.id == global.playerEntityId)
             this.root.text("Reloading...");

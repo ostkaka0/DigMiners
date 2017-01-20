@@ -1,4 +1,7 @@
 
+AmmoEvents = {};
+AmmoEvents.onChange = [];
+
 Ammo = function() { }
 
 Ammo.prototype.name = ammo.name; function ammo() { };

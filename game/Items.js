@@ -105,6 +105,8 @@ ItemFunctions.RangedWeapon = function(entity, itemType) {
     var numProjectiles = itemType.numProjectiles ? itemType.numProjectiles : 1;
     item.magazine -= 1;
 
+    gameData.world.events.trigger("bulletFired", entity, itemType);
+
     if (isServer) {
         var angle = entity.physicsBody.angle;
         var rotateAround = function(ax, ay, x, y, angle) {

@@ -39,5 +39,5 @@ Health.prototype.hurt = function(entity, attacker, damage, armorPenentration) {
         
     armorPenentration = armorPenentration || 0.0;
         
-    sendCommand(new CommandHurtEntity(entity.id, -Math.min(1.0, (1.0 - this.armor + armorPenentration)) * damage));
+    sendCommand(new CommandEntityHealthChange(entity.id, -Math.min(1.0, (1.0 - this.armor + armorPenentration)) * damage));
 }
