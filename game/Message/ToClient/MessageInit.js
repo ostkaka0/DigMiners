@@ -30,17 +30,17 @@ MessageInit.prototype.getSerializationSize = function(gameData) {
 
     // Calculate serializationSize of entities
     var entitySizes = {};
-    forOf(this, gameData.world.entityWorld.objectArray, function(entity) {
+    gameData.world.entityWorld.objectArray.forEach(function(entity) {
         size += 8; // Entity-id, entitySize
         var entitySize = 0;
-        forIn(this, entity, function(componentKey) {
+        Object.keys(entity).forEach(function(componentKey) {
             component = entity[componentKey];
             if (!component || !component.serialize) return;
             entitySize += 4 + component.getSerializationSize(); // component-id
-        });
+        }.bind(this));
         entitySizes[entity.id] = entitySize;
         size += entitySize;
-    });
+    }.bind(this));
     this.entitySizes = entitySizes;
 
     // Calculate serializationSize of players

@@ -66,7 +66,7 @@ PhysicsWorld.prototype.update = function(dt) {
         var posOld = this.getPosOld(id);
         var bodies = [];
         this.getBodiesInRadius(bodies, posOld, radius);
-        forOf(this, bodies, function(otherId) {
+        bodies.forEach(function(otherId) {
             // No self collision
             if (otherId == id) return;
 
@@ -107,7 +107,7 @@ PhysicsWorld.prototype.update = function(dt) {
             this.setVelocity(otherId, otherVelocity);
 
             collisions.push([id, otherId]);
-        });
+        }.bind(this));
 
         this.setPos(id, pos)
         this.setVelocity(id, velocity);

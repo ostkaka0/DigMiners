@@ -153,7 +153,7 @@ tick = function(dt) {
         gameData.tick(dt);
 
     // Fix interpolation after MessagePlayerMove
-    forOf(this, gameData.world.entityWorld.objectArray, function(entity) {
+    gameData.world.entityWorld.objectArray.forEach(function(entity) {
         if (entity.physicsBody) {
             var physicsBody = entity.physicsBody;
             physicsBody.posClientOld = v2.clone(physicsBody.posClient);
@@ -163,7 +163,7 @@ tick = function(dt) {
             projectile.posClientOld = v2.clone(projectile.posClient);
             projectile.posClient = v2.clone(projectile.pos);
         }
-    });
+    }.bind(this));
 
     gameData.world.particleEmitterWorld.objectArray.forEach(function(emitter) {
         emitter.update(dt);

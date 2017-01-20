@@ -13,12 +13,12 @@ CommandEntitySpawn.prototype.execute = function() {
 CommandEntitySpawn.prototype.serialize = function(byteArray, index) {
     serializeInt32(byteArray, index, this.entityId);
     serializeInt32(byteArray, index, this.numComponents);
-    forIn(this, this.entity, function(key) {
+    Object.keys(this.entity).forEach(function(key) {
         var component = this.entity[key];
         if (!component || !component.serialize) return;
         serializeInt32(byteArray, index, component.id);
         component.serialize(byteArray, index);
-    });
+    }.bind(this));
 }
 
 CommandEntitySpawn.prototype.deserialize = function(byteArray, index) {
@@ -40,11 +40,11 @@ CommandEntitySpawn.prototype.deserialize = function(byteArray, index) {
 CommandEntitySpawn.prototype.getSerializationSize = function() {
     var size = 8; // Entity-id, numComponents
     this.numComponents = 0;
-    forIn(this, this.entity, function(component) {
+    Object.keys(this.entity).forEach(function(component) {
         component = this.entity[component];
         if (!component || !component.serialize) return;
         size += 4 + component.getSerializationSize(); // component-id
         ++this.numComponents;
-    });
+    }.bind(this));
     return size;
 }
