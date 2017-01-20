@@ -23,9 +23,16 @@
     render = function() {
         var time = (Date.now() - startTime) / 1000.0;
         context.clearRect(0, 0, canvas.width, canvas.height);
-        drawSprite(context, textures["block.png"], [64, 64], time, [64.0, 16.0]);
-        for (var i = 0; i < 1000; i++)
-            drawSprite(context, textures["egg.png"], [600 + 400 * Math.sin(time + i/4), 200 + 0.6*i], time + i/2, [32.0, 8.0]);
+        var transformA = new DrawTransform([64, 64], time, [64.0, 16.0]);
+        transformA.begin(context);
+        context.drawImage(textures["block.png"], 0, 0, 1, 1);
+        transformA.end(context);
+        for (var i = 0; i < 1000; i++) {
+            var transformB = new DrawTransform([600 + 400 * Math.sin(time + i/4), 200 + 0.6*i], time + i/2, [32.0, 8.0]);
+            transformB.begin(context);
+            context.drawImage(textures["egg.png"], 0, 0, 1, 1);
+            transformB.end(context);
+        }
     }
     
     preload();
