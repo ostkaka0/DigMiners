@@ -101,8 +101,6 @@ World.prototype.initializeEvents = function() {
             }
         }
     }.bind(this));
-    
-    unsubscribeEvents(ProjectileEvents, this);
 
     subscribeEvent(ProjectileEvents.onHitTile, this, function(projectileEntity, tilePos) {
 
