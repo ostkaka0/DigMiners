@@ -3,12 +3,10 @@
     var context = canvas.getContext("2d", {antialias: true});
     var image = new Image();
     var startTime = Date.now();
+    var textures = null;
     
     preload = function() {
-        image.addEventListener("load", function() {
-            load();
-        }, false);
-        image.src = "data/textures/block.png" 
+        textures = loadTextures("data/textures/", ["block.png", "egg.png"], load);
     }
     
     load = function() {
@@ -25,9 +23,9 @@
     render = function() {
         var time = (Date.now() - startTime) / 1000.0;
         context.clearRect(0, 0, canvas.width, canvas.height);
-        drawSprite(context, image, [64, 64], time, [64.0, 16.0]);
+        drawSprite(context, textures["block.png"], [64, 64], time, [64.0, 16.0]);
         for (var i = 0; i < 1000; i++)
-            drawSprite(context, image, [600 + 400 * Math.sin(time + i/4), 200 + 0.6*i], time + i/2, [32.0, 8.0]);
+            drawSprite(context, textures["egg.png"], [600 + 400 * Math.sin(time + i/4), 200 + 0.6*i], time + i/2, [32.0, 8.0]);
     }
     
     preload();
