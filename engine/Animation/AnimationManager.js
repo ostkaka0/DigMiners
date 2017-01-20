@@ -98,7 +98,7 @@ AnimationManager.prototype.update = function() {
         console.error("Missing gameData.world.entityWorld");
     entityWorld.objectArray.forEach(function(entity) {
         if (entity.bodyparts) {
-            forIn(this, entity.bodyparts.bodyparts, function(bodypart) {
+            Object.keys(entity.bodyparts.bodyparts).forEach(function(bodypart) {
                 bodypart = entity.bodyparts.bodyparts[bodypart];
 
                 if (bodypart.animInstance && bodypart.animInstance.animating) {
@@ -140,7 +140,7 @@ AnimationManager.prototype.update = function() {
                             break;
                     }
                 }
-            });
+            }.bind(this));
         }
-    });
+    }.bind(this));
 }
