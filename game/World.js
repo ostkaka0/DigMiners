@@ -2,7 +2,7 @@
 
 World = function() {
     this.tickId = 0;
-    this.idList = (isServer)? new IdList() : null;
+    this.idList = (isServer) ? new IdList() : null;
     this.entityWorld = new ObjectWorld(true);
     this.particleEmitterWorld = new ObjectWorld();
     this.particleEmitterIdList = new IdList();
@@ -11,11 +11,11 @@ World = function() {
     this.physicsWorld = new PhysicsWorld();
     this.physicsEntities = {};
     this.generator = new Generator(Math.random() * 1000000 >> 0);
-    
+
     this.commands = [];
     this.pendingCommands = {};
     this.commandCallbacks = [];
-    
+
     this.events = new EventHandler();
     this.initializeEvents();
 }
@@ -65,7 +65,7 @@ World.prototype.initializeEvents = function() {
         var onObjectRemove = function(object) { this.idList.remove(object.id); }.bind(this);
         subscribeEvent(this.entityWorld.onRemove, this, onObjectRemove);
     }
-    
+
     subscribeEvent(ProjectileEvents.onHit, this, function(projectileEntity, hitPos) {
         gameData.setTimeout(function(projectileEntity) {
             var type = projectileEntity.projectile.projectileType;
@@ -130,8 +130,8 @@ World.prototype.initializeEvents = function() {
                 }
             }
         }
-        
-        Object.keys(entity).forEach(function (key) {
+
+        Object.keys(entity).forEach(function(key) {
             var component = entity[key];
             if (component && component.onDestroy)
                 component.onDestroy(entity);
@@ -141,6 +141,41 @@ World.prototype.initializeEvents = function() {
     this.events.on("entityHitBlockSide", function(entity, blockPos, blockType, blockCollisionSide) {
         if (isServer && blockType && blockType.isDoor)
             blockType.clickFunction(blockPos, blockType, entity, 0);
+    }.bind(this));
+
+    this.events.on("equip", function(entity, stackId, itemType) {
+        if (itemType.type == "tool" && itemType.typeOfType == "rangedWeapon") {
+            /*entity.bodyparts.bodyparts["tool"].offset[2] = Config.shootAngle;
+            entity.bodyparts.bodyparts["leftArm"].offset[2] = Config.shootAngle;
+            entity.bodyparts.bodyparts["rightArm"].offset[2] = -Config.shootAngle;*/
+
+
+
+            var shoulderAngle = Math.PI / 4.0;
+            var pos = BodyPart.rotate(0, 0, entity.bodyparts.bodyparts["leftArm"].offset[0], entity.bodyparts.bodyparts["leftArm"].offset[1], shoulderAngle + 1.0);
+            entity.bodyparts.bodyparts["leftArm"].offset[0] = -pos[0];
+            entity.bodyparts.bodyparts["leftArm"].offset[1] = pos[1];
+
+            pos = BodyPart.rotate(0, 0, entity.bodyparts.bodyparts["rightArm"].offset[0], entity.bodyparts.bodyparts["rightArm"].offset[1], shoulderAngle);
+            entity.bodyparts.bodyparts["rightArm"].offset[0] = -pos[0];
+            entity.bodyparts.bodyparts["rightArm"].offset[1] = pos[1];
+
+            entity.bodyparts.bodyparts["leftArm"].offset[2] = 2.5;
+
+        }
+    }.bind(this));
+
+    this.events.on("dequip", function(entity, stackId, itemType) {
+        if (itemType.type == "tool" && itemType.typeOfType == "rangedWeapon") {
+            entity.bodyparts.bodyparts["tool"].offset[2] = entity.bodyparts.bodyparts["tool"].defaultOffset[2];
+            entity.bodyparts.bodyparts["leftArm"].offset[2] = entity.bodyparts.bodyparts["leftArm"].defaultOffset[2];
+            entity.bodyparts.bodyparts["rightArm"].offset[2] = entity.bodyparts.bodyparts["rightArm"].defaultOffset[2];
+
+            entity.bodyparts.bodyparts["leftArm"].offset[0] = entity.bodyparts.bodyparts["leftArm"].defaultOffset[0];
+            entity.bodyparts.bodyparts["leftArm"].offset[1] = entity.bodyparts.bodyparts["leftArm"].defaultOffset[1];
+            entity.bodyparts.bodyparts["rightArm"].offset[0] = entity.bodyparts.bodyparts["rightArm"].defaultOffset[0];
+            entity.bodyparts.bodyparts["rightArm"].offset[1] = entity.bodyparts.bodyparts["rightArm"].defaultOffset[1];
+        }
     }.bind(this));
 }
 
