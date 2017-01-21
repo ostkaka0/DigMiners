@@ -135,8 +135,8 @@ entityFunctionEntityMovement = function(dt) {
                     entity.bodyparts.bodyparts["rightArm"].cycle(gameData, reloadCycleRightArmName, reloadCycleRightArm.numFrames / reloadCooldown * 20, true);
                 if (reloadCycleLeftArm)
                     entity.bodyparts.bodyparts["leftArm"].cycle(gameData, reloadCycleLeftArmName, reloadCycleLeftArm.numFrames / reloadCooldown * 20, true);
-                if (reloadCycleGun)
-                    entity.bodyparts.bodyparts["tool"].cycle(gameData, reloadCycleGunName, reloadCycleGun.numFrames / reloadCooldown * 20, true);
+                //if (reloadCycleGun)
+                  //  entity.bodyparts.bodyparts["tool"].cycle(gameData, reloadCycleGunName, reloadCycleGun.numFrames / reloadCooldown * 20, true);
             }
         }
 
