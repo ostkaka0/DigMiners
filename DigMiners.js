@@ -21,7 +21,8 @@ var mouseX = 0;
 var mouseY = 0;
 
 gameData.init();
-gameData.world.events.on("texturesLoaded", function(textures) {
+
+subscribeEvent(TextureLoaderEvents.onComplete, this, function(textures) {
     // Must wait until all textures have loaded to continue! important
     this.blockPosGood = new PIXI.Sprite(textures["blockPosGood.png"]);
     window.zindices[2].addChild(this.blockPosGood);
@@ -46,7 +47,7 @@ var player = null;
 var playerEntity = null;
 var keysDown = {};
 var loadingScreen = new LoadingScreen();
-var textureManager = new TextureManager(gameData);
+var textureManager = new TextureManager();
 window.global = {};
 
 

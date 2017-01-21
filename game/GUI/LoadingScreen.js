@@ -60,11 +60,11 @@ LoadingScreen = function() {
         this.root.show();
     }.bind(this));
 
-    gameData.world.events.on("texturesLoadProgress", function(name, file, progress) {
+    subscribeEvent(TextureLoaderEvents.onProgress, this, function(file, progress) {
         this.resize(progress);
     }.bind(this));
 
-    gameData.world.events.on("texturesLoaded", function(textures) {
+    subscribeEvent(TextureLoaderEvents.onComplete, this, function(textures) {
         this.root.hide();
     }.bind(this));
 }
