@@ -1,55 +1,51 @@
-TextureManager = function(gameData) {
-    this.gameData = gameData;
+
+TextureManager = function() {
     this.loader = new TextureLoader();
+    var loader = this.loader;
 
-    this.gameData.world.events.trigger("texturesBeginLoading");
-
-    this.loader.queueTexture("healthbar");
-    this.loader.queueTexture("feet", "feetSheet");
-    this.loader.queueTexture("tool", "toolSheet");
-    this.loader.queueTexture("body", "body");
-    this.loader.queueTexture("head", "head");
-    this.loader.queueTexture("rightArm", "rightArm");
-    this.loader.queueTexture("leftArm", "leftArm");
-
-    this.loader.queueTexture("monster/feet", "monster/feetSheet");
-    this.loader.queueTexture("monster/head", "monster/head");
-    this.loader.queueTexture("monster/rightArm", "monster/rightArm");
-    this.loader.queueTexture("monster/leftArm", "monster/leftArm");
-
-    this.loader.queueTexture("shovelAtlas.png", "shovelAtlas");
-    this.loader.queueTexture("swordAtlas.png", "shovelAtlas");
-    this.loader.queueTexture("gunAtlas.png", "gunAtlas");
-    this.loader.queueTexture("itemAtlas.png", "itemAtlas");
-    this.loader.queueTexture("hatAtlas.png", "hatAtlas");
-    this.loader.queueTexture("blockAtlas.png", "blockAtlas");
-
-    this.loader.queueTexture("blockPosGood.png", "blockPosGood");
-    this.loader.queueTexture("blockPosBad.png", "blockPosBad");
-
-    this.loader.queueTexture("egg", "egg");
-    this.loader.queueTexture("bigEgg", "bigEgg");
-
-    this.loader.queueTexture("particles/smokeParticle", "particles/smokeParticle");
-    this.loader.queueTexture("particles/particle", "particles/particle");
-
+    gameData.world.events.trigger("texturesBeginLoading");
     console.log("Loading textures...");
-    this.loader.loadTextures();
 
-    this.loader.onProgress(function(name, file, progress) {
+    loader.queue("healthbar.png");
+    loader.queue("feet.png");
+    loader.queue("tool.png");
+    loader.queue("body.png");
+    loader.queue("head.png");
+    loader.queue("rightArm.png");
+    loader.queue("leftArm.png");
+
+    loader.queue("monster/feet.png");
+    loader.queue("monster/head.png");
+    loader.queue("monster/rightArm.png");
+    loader.queue("monster/leftArm.png");
+
+    loader.queue("shovelAtlas.png");
+    loader.queue("swordAtlas.png");
+    loader.queue("gunAtlas.png");
+    loader.queue("itemAtlas.png");
+    loader.queue("hatAtlas.png");
+    loader.queue("blockAtlas.png");
+
+    loader.queue("blockPosGood.png");
+    loader.queue("blockPosBad.png");
+
+    loader.queue("egg.png");
+    loader.queue("bigEgg.png");
+
+    loader.queue("particles/smokeParticle.png");
+    loader.queue("particles/particle.png");
+
+    subscribeEvent(TextureLoaderEvents.onProgress, this, function(file, progress) {
         console.log(progress + "% complete");
-        this.gameData.world.events.trigger("texturesLoadProgress", name, file, progress);
     }.bind(this));
 
-    this.loader.onComplete(function(texturesLocal) {
+    subscribeEvent(TextureLoaderEvents.onComplete, this, function(textures) {
         console.log("Textures loaded.");
-        for (var key in texturesLocal)
-            texturesLocal[key].name = key;
 
         for (var name in Items) {
             var itemType = Items[name];
             if (!itemType.texture.dimX)
-                texturesLocal[itemType.name] = texturesLocal[itemType.texture.path];
+                textures[itemType.name] = textures[itemType.texture.path];
             else {
                 var offsetWidth = (itemType.texture.offsetWidth ? itemType.texture.offsetWidth : 0);
                 var offsetHeight = (itemType.texture.offsetHeight ? itemType.texture.offsetHeight : 0);
@@ -57,19 +53,12 @@ TextureManager = function(gameData) {
                     Math.floor(itemType.spriteId / itemType.texture.dimX) * (itemType.texture.spriteHeight + offsetHeight),
                     itemType.texture.spriteWidth,
                     itemType.texture.spriteHeight);
-                texturesLocal[itemType.name] = new PIXI.Texture(texturesLocal[itemType.texture.path], rect);
+                textures[itemType.name] = new PIXI.Texture(textures[itemType.texture.path], rect);
             }
         }
 
-        this.gameData.textures = texturesLocal;
-        this.gameData.world.events.trigger("texturesLoaded", texturesLocal)
+        gameData.textures = textures;
     }.bind(this));
-}
 
-TextureManager.prototype.onComplete = function(func) {
-    this.onCompleteFunc = func;
-}
-
-TextureManager.prototype.onProgress = function(func) {
-    this.onProgressFunc = func;
+    this.loader.loadTextures();
 }
