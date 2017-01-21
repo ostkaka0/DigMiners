@@ -21,53 +21,34 @@ BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, parent) {
 }
 
 BodyPart.prototype.position = function(x, y, rotation) {
-    //Begin by initializing all bodyparts in center with same rotation.
-    var rotatedOffset = this.rotate(0, 0, this.offset[0] + (this.parent ? this.parent.offset[0] : 0), this.offset[1] + (this.parent ? this.parent.offset[1] : 0), rotation);
-
-    this.sprite.sprite.position.x = x + rotatedOffset[0];
-    this.sprite.sprite.position.y = y + rotatedOffset[1];
+    this.sprite.sprite.position.x = x;
+    this.sprite.sprite.position.y = y;
     this.sprite.sprite.rotation = rotation;
-
-    forOf(this, this.children, function(child) {
-        child.position(this.sprite.sprite.position.x,
-            this.sprite.sprite.position.y,
-            this.sprite.sprite.rotation);
-    });
-    // Run only on root body parts:
-    if (!this.parent) {
-
-        forOf(this, this.children, function(child) {
-            var totalOffset = [child.cycleOffset[0], child.cycleOffset[1]];
-            var newPos = child.rotate(0, 0, totalOffset[0], totalOffset[1], rotation + child.cycleOffset[2] + child.offset[2]);
-            if (totalOffset[0] == 0 && totalOffset[1] == 0)
-                newPos = [0, 0];
-
-            child.sprite.sprite.position.x += newPos[0];
-            child.sprite.sprite.position.y += newPos[1];
-            child.sprite.sprite.rotation = rotation + child.cycleOffset[2] + child.offset[2];
-
-            forOf(this, child.children, function(child2) {
-                child2.rotateAroundPoint(x, y, rotation, child.sprite.sprite.rotation, child.cycleOffset[0], child.cycleOffset[1]);
-            });
-        });
-    }
+    this.children.forEach(function(child) {
+        BodyPart.positionChild(child, this);
+    }.bind(this));
 }
 
-BodyPart.prototype.rotate = function(ax, ay, x, y, angle) {
+BodyPart.positionChild = function(child, parent) {
+    child.sprite.sprite.position.x = parent.sprite.sprite.position.x;
+    child.sprite.sprite.position.y = parent.sprite.sprite.position.y;
+    var rotation3 = parent.sprite.sprite.rotation + child.cycleOffset[2] + child.offset[2];
+    var rotatedOffset = BodyPart.rotate(0, 0, child.cycleOffset[0], child.cycleOffset[1], rotation3);
+    var derivedOffset = BodyPart.rotate(0, 0, child.offset[0], child.offset[1], parent.sprite.sprite.rotation);
+    child.sprite.sprite.position.x += rotatedOffset[0] + derivedOffset[0];
+    child.sprite.sprite.position.y += rotatedOffset[1] + derivedOffset[1];
+    child.sprite.sprite.rotation = rotation3;
+    child.children.forEach(function(child2) {
+        BodyPart.positionChild(child2, child);
+    }.bind(this));
+}
+
+BodyPart.rotate = function(ax, ay, x, y, angle) {
     var cos = Math.cos(angle),
         sin = Math.sin(angle),
         nx = (cos * (x - ax)) + (sin * (y - ay)) + ax,
         ny = (cos * (y - ay)) - (sin * (x - ax)) + ay;
     return [-nx, ny];
-}
-
-BodyPart.prototype.rotateAroundPoint = function(x, y, rotation, parentRotation, cycleX, cycleY) {
-    var rotatedParent = this.rotate(0, 0, this.parent.offset[0], this.parent.offset[1], rotation);
-    var rotatedOffset = this.rotate(0, 0, this.offset[0] + cycleX, this.offset[1] + cycleY, parentRotation + this.offset[2]);
-
-    this.sprite.sprite.position.x = x + rotatedParent[0] + rotatedOffset[0];
-    this.sprite.sprite.position.y = y + rotatedParent[1] + rotatedOffset[1];
-    this.sprite.sprite.rotation = parentRotation + this.cycleOffset[2] + this.offset[2];
 }
 
 BodyPart.prototype.cycle = function(gameData, cycle, fps, runToEnd) {
