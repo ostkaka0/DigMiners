@@ -2,22 +2,25 @@
 loadTexture = function(path, callback) {
     var texture = new Image();
     texture.addEventListener("load", callback, false);
-    texture.src = "data/textures/block.png" 
+    texture.src = "data/textures/block.png"
     return texture;
 }
 
-loadTextures = function(parentFolder, paths, callback) {
+loadTextures = function(parentFolder, paths, finishCallback, callback) {
     var textures = {};
     var numPathsToLoad = paths.length;
-    
+
     paths.forEach(function(path) {
         var texture = new Image();
         texture.addEventListener("load", function() {
             numPathsToLoad--;
-            if (numPathsToLoad == 0)
-                callback(textures);
+            if (callback)
+                callback((paths.length - numPathsToLoad) / paths.length * 100.0, texture.name);
+            if (numPathsToLoad == 0 && finishCallback)
+                finishCallback(textures);
         }, false);
         texture.src = parentFolder + "/" + path;
+        texture.name = path;
         textures[path] = texture;
     });
     return textures;
