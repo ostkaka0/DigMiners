@@ -14,6 +14,7 @@ SpriteContainer.prototype.remove = function(sprite) {
         this.container.splice(index, 1);
     else
         console.log("Tried to remove sprite which is not stored");
+    return index;
 }
 
 SpriteContainer.prototype.getAll = function() {

@@ -110,14 +110,14 @@ Drawable.prototype.positionAll = function(x, y, rotation, bodyparts) {
 Drawable.prototype.setBodypartSprite = function(bodypart, sprite) {
     var index = -1;
     if (!isServer && !bodypart.sprite.fake)
-        this.container.remove(bodypart.sprite);
+        index = this.container.remove(bodypart.sprite);
     bodypart.sprite = sprite;
     bodypart.offset[0] = bodypart.defaultOffset[0];
     bodypart.offset[1] = bodypart.defaultOffset[1];
     bodypart.offset[2] = bodypart.defaultOffset[2];
     if (!isServer) {
         if (index != -1)
-            this.container[index] = sprite;
+            this.container.container.splice(index, 0, sprite);
         else
             this.container.add(sprite);
     }

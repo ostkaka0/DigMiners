@@ -50,8 +50,9 @@ LoadingScreen = function() {
     })
 
     this.resize = function(percentage) {
-        this.progressbar.css({ "width": (percentage + "%") });
-        this.progressbar.text(percentage + "%");
+        var percentage2 = Math.round(percentage);
+        this.progressbar.css({ "width": (percentage2 + "%") });
+        this.progressbar.text(percentage2 + "%");
     }.bind(this);
 
     this.root.hide();
