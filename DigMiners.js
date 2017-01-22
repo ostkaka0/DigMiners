@@ -15,10 +15,10 @@ for (var i = 0; i < window.zindices.length; ++i)
 window.addEventListener('resize', function() {
     //renderer.resize(window.innerWidth, window.innerHeight);
     canvasUpdateSize(canvas);
-    canvasUpdateSize(spriteCanvas);   
+    canvasUpdateSize(spriteCanvas);
     camera.width = window.innerWidth;
     camera.height = window.innerHeight;
-    
+
 }, false);
 
 var lastMouseSync = 0;
@@ -29,10 +29,12 @@ gameData.init();
 
 subscribeEvent(TextureLoaderEvents.onComplete, this, function(textures) {
     // Must wait until all textures have loaded to continue! important
-    /*this.blockPosGood = new PIXI.Sprite(textures["blockPosGood.png"]);
-    window.zindices[2].addChild(this.blockPosGood);
-    this.blockPosBad = new PIXI.Sprite(textures["blockPosBad.png"]);
-    window.zindices[2].addChild(this.blockPosBad);*/
+    window.blockPosGood = new Sprite("blockPosGood.png");
+    window.blockPosGood.anchor = [0, 0];
+    window.zindices[2].add(window.blockPosGood);
+    window.blockPosBad = new Sprite("blockPosBad.png");
+    window.blockPosBad.anchor = [0, 0];
+    window.zindices[2].add(window.blockPosBad);
     $("*").mousemove(function(event) {
         mouseX = event.pageX;
         mouseY = event.pageY;
@@ -211,19 +213,19 @@ render = function(tickFracTime) {
             var y = camera.pos[1] + canvas.height / 2 - 32.0 * pos[1];
 
             if (entity.projectile.sprite) {
-                entity.projectile.sprite.position.x = x;
-                entity.projectile.sprite.position.y = y;
-                entity.projectile.sprite.rotation = entity.projectile.angle;
+                entity.projectile.sprite.pos[0] = x;
+                entity.projectile.sprite.pos[1] = y;
+                entity.projectile.sprite.angle = entity.projectile.angle;
                 var distance = v2.distance(pos, entity.projectile.startPos)
                 if (distance >= entity.projectile.projectileType.scaleX / 4)
                     entity.projectile.sprite.visible = true;
             }
         } else if (entity.blockPlacer && entity.blockPlacer.sprite) {
-            entity.blockPlacer.sprite.position.x = -camera.pos[0] + canvas.width / 2 + 32 * (entity.blockPlacer.blockPos[0] + 0.5);
-            entity.blockPlacer.sprite.position.y = camera.pos[1] + canvas.height / 2 - 32 * (entity.blockPlacer.blockPos[1] + 0.5);
+            entity.blockPlacer.sprite.pos[0] = -camera.pos[0] + canvas.width / 2 + 32 * (entity.blockPlacer.blockPos[0] + 0.5);
+            entity.blockPlacer.sprite.pos[1] = camera.pos[1] + canvas.height / 2 - 32 * (entity.blockPlacer.blockPos[1] + 0.5);
             var factor = 1.0 - entity.blockPlacer.duration / Config.blockRegister[entity.blockPlacer.blockId].buildDuration;
-            entity.blockPlacer.sprite.scale.x = factor;
-            entity.blockPlacer.sprite.scale.y = factor;
+            entity.blockPlacer.sprite.scale[0] = factor;
+            entity.blockPlacer.sprite.scale[1] = factor;
         }
     });
 
@@ -238,19 +240,19 @@ render = function(tickFracTime) {
         var blockPos = [chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0], chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1]];
         global.player.buildPos = blockPos;
         if (global.player.canPlaceBlock(gameData, blockPos[0], blockPos[1])) {
-            this.blockPosBad.visible = false;
-            this.blockPosGood.visible = true;
-            this.blockPosGood.position.x = blockPos[0] * 32 - camera.pos[0] + camera.width / 2;
-            this.blockPosGood.position.y = canvas.height - ((blockPos[1] + 1) * 32 - camera.pos[1] + camera.height / 2);
+            window.blockPosBad.visible = false;
+            window.blockPosGood.visible = true;
+            window.blockPosGood.pos[0] = blockPos[0] * 32 - camera.pos[0] + camera.width / 2;
+            window.blockPosGood.pos[1] = canvas.height - ((blockPos[1] + 1) * 32 - camera.pos[1] + camera.height / 2);
         } else {
-            this.blockPosGood.visible = false;
-            this.blockPosBad.visible = true;
-            this.blockPosBad.position.x = blockPos[0] * 32 - camera.pos[0] + camera.width / 2;
-            this.blockPosBad.position.y = canvas.height - ((blockPos[1] + 1) * 32 - camera.pos[1] + camera.height / 2);
+            window.blockPosGood.visible = false;
+            window.blockPosBad.visible = true;
+            window.blockPosBad.pos[0] = blockPos[0] * 32 - camera.pos[0] + camera.width / 2;
+            window.blockPosBad.pos[1] = canvas.height - ((blockPos[1] + 1) * 32 - camera.pos[1] + camera.height / 2);
         }
     } else {
-        //this.blockPosGood.visible = false;
-        //this.blockPosBad.visible = false;
+        window.blockPosGood.visible = false;
+        window.blockPosBad.visible = false;
     }
 
     //TODO: animationmanager use dt? maybe not needed
@@ -280,11 +282,19 @@ render = function(tickFracTime) {
         var arr = zindices[i].getAll();
         for (var j = 0; j < arr.length; ++j) {
             var sprite = arr[j];
-            if (sprite.texture) {
-                //console.log(sprite);
-                sprite.transform.begin(context2d);
-                context2d.drawImage(sprite.texture.baseImage, 0, 0, sprite.texture.width, sprite.texture.height);
-                sprite.transform.end(context2d);
+            if (sprite.visible && sprite.texture) {
+                sprite.begin(context2d);
+                context2d.drawImage(
+                    sprite.texture.baseImage,
+                    (sprite.frame ? sprite.frame[0] : sprite.texture.x),
+                    (sprite.frame ? sprite.frame[1] : sprite.texture.y),
+                    (sprite.frame ? sprite.frame[2] : sprite.texture.width),
+                    (sprite.frame ? sprite.frame[3] : sprite.texture.height),
+                    0,
+                    0,
+                    (sprite.frame ? sprite.frame[2] : sprite.texture.width),
+                    (sprite.frame ? sprite.frame[3] : sprite.texture.height));
+                sprite.end(context2d);
             }
         }
     }

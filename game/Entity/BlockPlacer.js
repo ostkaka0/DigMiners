@@ -18,9 +18,9 @@ BlockPlacer.prototype.update = function(entity) {
             placerEntity.blockPlacerId = entity.id;
         if (!isServer) {
             var block = Config.blockRegister[this.blockId];
-            this.sprite = new PIXI.Sprite(gameData.textures[block.name]);
-            this.sprite.anchor.x = 0.5;
-            this.sprite.anchor.y = 0.5;
+            this.sprite = new Sprite(block.name);
+            this.sprite.anchor[0] = 0.5;
+            this.sprite.anchor[1] = 0.5;
             this.sprite.alpha = 0.75;
             zindices[2].add(this.sprite);
         }

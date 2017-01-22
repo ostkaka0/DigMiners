@@ -65,7 +65,7 @@ TextureManager = function() {
 
         gameData.textures = texturesOutput;
         console.log(texturesOutput);
-    }.bind(this));
+    }.bind(this), true);
 
     this.loader.loadTextures();
 }
