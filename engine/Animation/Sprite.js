@@ -1,50 +1,39 @@
 
 Sprite = function(textureName) {
-    try {
-        if (typeof textureName != "string")
-            throw "textureName is not string";
-    } catch (e) {
-        console.error(e.stack);
-    }
     this.textureName = (textureName ? textureName : "");
     if (!isServer)
         this.texture = gameData.textures[this.textureName];
-    this.transform = new DrawTransform();
     this.frame = null;
     this.visible = true;
+
+    this.pos = [0, 0];
+    this.angle = 0;
+    this.scale = [1.0, 1.0];
+    this.pivot = [0, 0];
+    this.anchor = [0.5, 0.5];
+    this.alpha = 1.0;
 }
 
-Object.defineProperties(Sprite.prototype, {
-    pos: {
-        get: function() {
-            return this.transform.pos;
-        },
-        set: function(value) {
-            this.transform.pos = value;
-        }
-    },
-    angle: {
-        get: function() {
-            return this.transform.angle;
-        },
-        set: function(value) {
-            this.transform.angle = value;
-        }
-    },
-    scale: {
-        get: function() {
-            return this.transform.scale;
-        },
-        set: function(value) {
-            this.transform.scale = value;
-        }
-    },
-    pivot: {
-        get: function() {
-            return this.transform.pivot;
-        },
-        set: function(value) {
-            this.transform.pivot = value;
-        }
-    },
-});
+Sprite.prototype.getSize = function() {
+    if (this.frame)
+        return [this.frame[2], this.frame[3]];
+    return [this.texture.width, this.texture.height];
+}
+
+Sprite.prototype.begin = function(context) {
+    context.translate(this.pos[0], this.pos[1]);
+    context.rotate(this.angle);
+    context.scale(this.scale[0], this.scale[1]);
+    context.translate(-this.anchor[0] * this.getSize()[0], -this.anchor[1] * this.getSize()[1]);
+    context.translate(-this.pivot[0], -this.pivot[1]);
+    context.globalAlpha = this.alpha;
+}
+
+Sprite.prototype.end = function(context) {
+    context.globalAlpha = 0.0;
+    context.translate(this.pivot[0], this.pivot[1]);
+    context.translate(this.anchor[0] * this.getSize()[0], this.anchor[1] * this.getSize()[1]);
+    context.scale(1.0 / this.scale[0], 1.0 / this.scale[1]);
+    context.rotate(-this.angle);
+    context.translate(-this.pos[0], -this.pos[1]);
+}

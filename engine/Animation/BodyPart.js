@@ -5,13 +5,10 @@ BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, parent) {
     this.defaultOffset = [offsetX, offsetY, offsetRotation];
     this.cycleOffset = [0, 0, 0];
     if (pivot && (pivot[0] != 0 || pivot[1] != 0)) {
-        this.usePivot = true;
         this.pivot = pivot;
-        if (!isServer) {
-            //this.sprite.sprite.anchor.x = 0;
-            //this.sprite.sprite.anchor.y = 0;
-            this.sprite.pivot = pivot;
-        }
+        this.sprite.anchor[0] = 0;
+        this.sprite.anchor[1] = 0;
+        this.sprite.pivot = pivot;
     } else
         this.pivot = [0, 0];
     this.parent = parent;
@@ -75,7 +72,7 @@ BodyPart.prototype.animate = function(gameData, animation, fps, runToEnd) {
     if (!this.animInstance) {
         this.animInstance = {};
         this.animInstance.animation = gameData.animationManager.animations[animation];
-        this.sprite.frame = null;
+        this.sprite.frame = this.animInstance.animation.frames[0];
     }
     this.animInstance.mspf = 1000.0 / fps;
     if (!this.animInstance.lastFrame || !this.animInstance.animating)

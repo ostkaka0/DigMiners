@@ -1,6 +1,9 @@
 
-subscribeEvent = function(event, subscriber, callback) {
-    event.push([subscriber, callback]);
+subscribeEvent = function(event, subscriber, callback, first) {
+    if (first)
+        event.unshift([subscriber, callback]);
+    else
+        event.push([subscriber, callback]);
 }
 
 unsubscribeEvent = function(event, subscriber) {
