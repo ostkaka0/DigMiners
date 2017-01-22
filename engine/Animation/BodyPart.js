@@ -34,6 +34,8 @@ BodyPart.positionChild = function(child, parent) {
     child.sprite.pos[0] += rotatedOffset[0] + derivedOffset[0];
     child.sprite.pos[1] += rotatedOffset[1] + derivedOffset[1];
     child.sprite.angle = angle;
+    child.finalPos = [child.sprite.pos[0], child.sprite.pos[1]];
+    child.finalAngle = child.sprite.angle;
     child.children.forEach(function(child2) {
         BodyPart.positionChild(child2, child);
     }.bind(this));

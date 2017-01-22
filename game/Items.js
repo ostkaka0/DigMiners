@@ -108,20 +108,22 @@ ItemFunctions.RangedWeapon = function(entity, itemType) {
     gameData.world.events.trigger("bulletFired", entity, itemType);
 
     if (isServer) {
-        var angle = entity.physicsBody.angle;
-        var rotateAround = function(ax, ay, x, y, angle) {
-            var cos = Math.cos(angle),
-                sin = Math.sin(angle),
-                nx = (cos * (x - ax)) + (sin * (y - ay)) + ax,
-                ny = (cos * (y - ay)) - (sin * (x - ax)) + ay;
-            return [nx, ny];
-        }
-        var dir = rotateAround(0, 0, 0, -1.15, angle);
         var maxDistance = (itemType.projectileType.hitAtCursor && entity.movement.deltaWorldCursorPos) ?
             v2.length(entity.movement.deltaWorldCursorPos) : itemType.projectileType.maxDistance;
         for (var i = 0; i < numProjectiles; i++) {
+
+            entity.drawable.positionAll(0, 0, entity.physicsBody.angle, entity.bodyparts);
+            var tool = entity.bodyparts.bodyparts["tool"];
+            var toolUsePos = [0, 0];
+            v2.add(toolUsePos, tool.finalPos, toolUsePos);
+            toolUsePos = [toolUsePos[0], -toolUsePos[1]];
+            v2.mul(1 / 32, toolUsePos, toolUsePos);
+            v2.add(entity.physicsBody.getPos(), toolUsePos, toolUsePos);
+            // Put your offsets here:
+            v2.add(toolUsePos, [0, 0], toolUsePos);
+
             var scatter = itemType.projectileScatter;
-            var projectileAngle = angle;
+            var projectileAngle = tool.finalAngle;
             var projectileSpeed = itemType.projectileType.speed;
             var projectileMaxDistance = maxDistance;
             if (scatter > 0) {
@@ -129,8 +131,8 @@ ItemFunctions.RangedWeapon = function(entity, itemType) {
                 projectileSpeed *= 1.0 - 2 * scatter + 4 * scatter * Math.random();
                 projectileMaxDistance *= 1.0 - 0.5 * scatter + scatter * Math.random();
             }
-            var toolUsePos = [entity.physicsBody.getPos()[0] + 0.5 * dir[0], entity.physicsBody.getPos()[1] + 0.5 * dir[1]];
-            gameData.world.commands.push(new CommandProjectileSpawn(gameData.world.idList.next(), v2.clone(toolUsePos), projectileAngle, projectileSpeed, projectileMaxDistance, itemType.projectileType, entity.id));
+
+            gameData.world.commands.push(new CommandProjectileSpawn(gameData.world.idList.next(), toolUsePos, projectileAngle, projectileSpeed, projectileMaxDistance, itemType.projectileType, entity.id));
         }
     }
 }
