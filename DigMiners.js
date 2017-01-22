@@ -3,17 +3,15 @@ var canvas = document.getElementById("canvas");
 var spriteCanvas = document.getElementById("spriteCanvas");
 var context2d = spriteCanvas.getContext("2d", { antialias: true });
 var gl = canvasInitGL(canvas);
-//var renderer = new PIXI.WebGLRenderer(window.innerWidth, window.innerHeight, { 'transparent': false, 'antialias': true, 'view': canvas, 'clearBeforeRender': false });
+
 canvasUpdateSize(canvas);
 canvasUpdateSize(spriteCanvas);
 
 window.zindices = new Array(3);
 for (var i = 0; i < window.zindices.length; ++i)
     window.zindices[i] = new SpriteContainer();
-//window.particleContainer = new PIXI.Container();
 
 window.addEventListener('resize', function() {
-    //renderer.resize(window.innerWidth, window.innerHeight);
     canvasUpdateSize(canvas);
     canvasUpdateSize(spriteCanvas);
     camera.width = window.innerWidth;
@@ -229,9 +227,6 @@ render = function(tickFracTime) {
         }
     });
 
-    //particleContainer.position.x = -camera.pos[0] + canvas.width / 2;
-    //particleContainer.position.y = camera.pos[1] + canvas.height / 2;
-
     if (global.player && global.playerEntity && global.playerEntity.isBuilding) {
         var worldCursorPos = [Math.floor((mouseX + camera.pos[0] - camera.width / 2) / 32), Math.floor((canvas.height - mouseY + camera.pos[1] - camera.height / 2) / 32)];
         var chunkPos = [0, 0];
@@ -265,17 +260,6 @@ render = function(tickFracTime) {
     viewMatrix = viewMatrix.scale(2 / canvas.width, 2 / canvas.height);
     chunkRenderer.render(gameData.world.tileWorld, projectionMatrix.clone().append(viewMatrix), camera);
     blockChunkRenderer.render(gameData, gameData.world.blockWorld, projectionMatrix.clone().append(viewMatrix), camera);
-
-    // Render entities
-    /*for (var i = 0; i < window.zindices.length; ++i)
-        renderer.render(window.zindices[i]);
-    renderer.render(particleContainer);
-
-    renderer._activeShader = null;
-    renderer._activeRenderTarget = renderer.rootRenderTarget;
-    renderer._activeTextureLocation = 999;
-    renderer._activeTexture = null;
-    renderer.state.resetToDefault();*/
 
     context2d.clearRect(0, 0, spriteCanvas.width, spriteCanvas.height);
     for (var i = 0; i < zindices.length; ++i) {

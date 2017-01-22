@@ -36,7 +36,7 @@ TextureManager = function() {
     loader.queue("particles/particle.png");
 
     subscribeEvent(TextureLoaderEvents.onProgress, this, function(file, progress) {
-        console.log(progress + "% complete");
+        console.log(Math.round(progress) + "% complete");
     }.bind(this));
 
     subscribeEvent(TextureLoaderEvents.onComplete, this, function(textures) {
@@ -64,7 +64,6 @@ TextureManager = function() {
         }
 
         gameData.textures = texturesOutput;
-        console.log(texturesOutput);
     }.bind(this), true);
 
     this.loader.loadTextures();
