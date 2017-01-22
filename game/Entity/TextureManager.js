@@ -42,22 +42,29 @@ TextureManager = function() {
     subscribeEvent(TextureLoaderEvents.onComplete, this, function(textures) {
         console.log("Textures loaded.");
 
+        var texturesOutput = {};
+
+        Object.keys(textures).forEach(function(key) {
+            texturesOutput[key] = new Texture(textures[key]);
+        });
+
         for (var name in Items) {
             var itemType = Items[name];
             if (!itemType.texture.dimX)
-                textures[itemType.name] = textures[itemType.texture.path];
+                texturesOutput[itemType.name] = new Texture(textures[itemType.texture.path]);
             else {
                 var offsetWidth = (itemType.texture.offsetWidth ? itemType.texture.offsetWidth : 0);
                 var offsetHeight = (itemType.texture.offsetHeight ? itemType.texture.offsetHeight : 0);
-                var rect = new PIXI.Rectangle((itemType.spriteId % itemType.texture.dimX) * (itemType.texture.spriteWidth + offsetWidth),
+                texturesOutput[itemType.name] = new Texture(textures[itemType.texture.path],
+                    (itemType.spriteId % itemType.texture.dimX) * (itemType.texture.spriteWidth + offsetWidth),
                     Math.floor(itemType.spriteId / itemType.texture.dimX) * (itemType.texture.spriteHeight + offsetHeight),
                     itemType.texture.spriteWidth,
                     itemType.texture.spriteHeight);
-                textures[itemType.name] = new PIXI.Texture(textures[itemType.texture.path], rect);
             }
         }
 
-        gameData.textures = textures;
+        gameData.textures = texturesOutput;
+        console.log(texturesOutput);
     }.bind(this));
 
     this.loader.loadTextures();
