@@ -4,6 +4,13 @@ body {
 	padding: 0
 }
 
+* { 
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
 canvas {
     background-color: rgb(0, 0, 0);
     position: absolute;

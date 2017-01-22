@@ -32,6 +32,11 @@
             <div class="crafting" id="crafting"></div>
             <!--<div class="chat" id="chat">chat</div>-->
         </div>
-        <script type="text/javascript" src="src.js"></script>
+        <?php
+            function scriptVersion($fileName){
+                return $fileName . "?" . filemtime($fileName);
+            }
+        ?>
+        <script type="text/javascript" src="<?php echo scriptVersion("src.js")?>"></script>
     </body>
 </html>
