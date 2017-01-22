@@ -4,8 +4,8 @@ Drawable = function(zindex) {
     if (isServer)
         return;
 
-    this.container = new PIXI.Container();
-    zindices[this.zindex].addChild(this.container);
+    this.container = new SpriteContainer();
+    zindices[this.zindex].add(this.container);
 }
 
 Drawable.prototype.name = drawable.name; function drawable() { };
@@ -28,8 +28,8 @@ Drawable.prototype.deserialize = function(byteArray, index, gameData) {
     this.zindex = deserializeInt32(byteArray, index);
     this.zindex = (!this.zindex ? 0 : this.zindex);
     if (!isServer) {
-        this.container = new PIXI.Container();
-        zindices[this.zindex].addChild(this.container);
+        this.container = new SpriteContainer();
+        zindices[this.zindex].add(this.container);
     }
 
     // Sprites
@@ -49,7 +49,7 @@ Drawable.prototype.deserialize = function(byteArray, index, gameData) {
             noAnchor = true;
         else
             noAnchor = false;
-        this.addSprite(spriteName, new Sprite(textureName, null, noAnchor), offset, rotateWithBody);
+        this.addSprite(spriteName, new Sprite(textureName), offset, rotateWithBody);
     }
 }
 
@@ -73,35 +73,31 @@ Drawable.prototype.addSprite = function(name, sprite, offset, rotateWithBody) {
     if (this.sprites[name])
         this.removeSprite(name);
     this.sprites[name] = sprite;
-    //if(!isServer && offset) {
-    //this.sprites[name].sprite.pivot.x = -offset[0];
-    //this.sprites[name].sprite.pivot.y = -offset[1];
-    //}
     this.sprites[name].offset = offset;
     this.sprites[name].rotateWithBody = rotateWithBody;
     if (!isServer)
-        this.container.addChild(this.sprites[name].sprite);
+        this.container.add(this.sprites[name]);
 }
 
 Drawable.prototype.removeSprite = function(name) {
     var sprite = this.sprites[name];
     if (sprite) {
         if (!isServer)
-            this.container.removeChild(sprite.sprite);
+            this.container.remove(sprite);
         delete this.sprites[name];
     }
 }
 
-Drawable.prototype.positionSprites = function(x, y, rotation) {
+Drawable.prototype.positionSprites = function(x, y, angle) {
     if (isServer)
         return;
 
-    for (var sprite in this.sprites) {
-        sprite = this.sprites[sprite];
-        sprite.sprite.position.x = x + (sprite.offset ? sprite.offset[0] : 0);
-        sprite.sprite.position.y = y + (sprite.offset ? sprite.offset[1] : 0);
+    for (var key in this.sprites) {
+        sprite = this.sprites[key];
+        sprite.pos[0] = x + (sprite.offset ? sprite.offset[0] : 0);
+        sprite.pos[1] = y + (sprite.offset ? sprite.offset[1] : 0);
         if (sprite.rotateWithBody)
-            sprite.sprite.rotation = rotation;
+            sprite.angle = angle;
     }
 }
 
@@ -112,20 +108,18 @@ Drawable.prototype.positionAll = function(x, y, rotation, bodyparts) {
 }
 
 Drawable.prototype.setBodypartSprite = function(bodypart, sprite) {
-    var childIndex = -1;
-    if (!isServer && !bodypart.sprite.sprite.fake) {
-        childIndex = this.container.getChildIndex(bodypart.sprite.sprite);
-        this.container.removeChild(bodypart.sprite.sprite);
-    }
+    var index = -1;
+    if (!isServer && !bodypart.sprite.fake)
+        this.container.remove(bodypart.sprite);
     bodypart.sprite = sprite;
     bodypart.offset[0] = bodypart.defaultOffset[0];
     bodypart.offset[1] = bodypart.defaultOffset[1];
     bodypart.offset[2] = bodypart.defaultOffset[2];
     if (!isServer) {
-        if (childIndex != -1)
-            this.container.addChildAt(sprite.sprite, childIndex);
+        if (index != -1)
+            this.container[index] = sprite;
         else
-            this.container.addChild(sprite.sprite);
+            this.container.add(sprite);
     }
 }
 
@@ -133,7 +127,7 @@ Drawable.prototype.initializeBodyparts = function(bodyparts) {
     // Add bodypart sprite to world
     for (var key in bodyparts) {
         var bodypart = bodyparts[key];
-        this.container.addChild(bodypart.sprite.sprite);
+        this.container.add(bodypart.sprite);
     }
 }
 
@@ -141,14 +135,14 @@ Drawable.prototype.remove = function(bodyparts) {
     for (var sprite in this.sprites) {
         sprite = this.sprites[sprite];
         if (!isServer)
-            this.container.removeChild(sprite.sprite);
+            this.container.remove(sprite);
     }
 
     if (bodyparts) {
         for (var bodypart in bodyparts) {
             bodypart = bodyparts[bodypart];
             if (!isServer)
-                this.container.removeChild(bodypart.sprite.sprite);
+                this.container.remove(bodypart.sprite);
         }
     }
 }

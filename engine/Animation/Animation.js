@@ -14,7 +14,7 @@ Animation.prototype.load = function() {
     for (var y = 0; y < this.texture.height / this.frameHeight; y++) {
         for (var x = 0; x < this.texture.width / this.frameWidth; x++) {
             if (currentFrames < this.numFrames) {
-                var rect = new PIXI.Rectangle(x * this.frameWidth, y * this.frameHeight, this.frameWidth, this.frameHeight);
+                var rect = [x * this.frameWidth, y * this.frameHeight, this.frameWidth, this.frameHeight];
                 this.frames.push(rect);
                 currentFrames++;
             }

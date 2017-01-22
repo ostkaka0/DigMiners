@@ -21,6 +21,7 @@ Spawner = function(entityTemplate, pos, maxEntities, radius, duration, items, eq
 Spawner.prototype.name = spawner.name; function spawner() { };
 
 Spawner.prototype.update = function(entity) {
+    return;
     if (this.numEntities >= this.maxEntities) return;
     if (gameData.world.tickId - this.nextSpawnTickId <= 0) return;
     if (!isServer) return;

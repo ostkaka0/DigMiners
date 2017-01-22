@@ -22,7 +22,7 @@ CommandProjectileSpawn.prototype.execute = function() {
         entity.projectile.sprite.scale.x = this.projectileType.scaleX;
         entity.projectile.sprite.scale.y = this.projectileType.scaleY;
         entity.projectile.sprite.visible = false;
-        zindices[2].addChild(entity.projectile.sprite);
+        zindices[2].add(entity.projectile.sprite);
     }
     projectileEntitySimulate(entity, Config.tickDuration / 1000.0);
     gameData.world.entityWorld.add(entity, this.entityId);

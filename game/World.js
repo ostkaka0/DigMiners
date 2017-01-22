@@ -108,9 +108,9 @@ World.prototype.initializeEvents = function() {
 
     subscribeEvent(HealthEvents.onChange, this, function(entity) {
         var sprite = entity.drawable.sprites["healthbar"];
-        if (!sprite || !sprite.sprite) return;
+        if (!sprite) return;
         var defaultHealthbarWidth = 64;
-        sprite.sprite.width = (entity.health.health / entity.health.maxHealth) * defaultHealthbarWidth;
+        sprite.frame = [0, 0, (entity.health.health / entity.health.maxHealth) * defaultHealthbarWidth, null];
     }.bind(this));
 
     subscribeEvent(HealthEvents.onDeath, this, function(entity) {
