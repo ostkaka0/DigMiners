@@ -29,14 +29,14 @@ projectileEntitySimulate = function(entity, dt) {
     // Simulate steps
     for (var i = 0; i < numSteps; i++) {
         v2.add(deltaPos, pos, pos);
-        
+
         var distance = v2.distance(projectile.startPos, projectile.pos);
 
         if (distance > projectile.maxDistance) {
             projectile.hit = true;
             break;
         }
-        
+
         var bodies = [];
         var bodyDistances = [];
         gameData.world.physicsWorld.getBodiesInRadiusSorted(bodies, bodyDistances, pos, projectile.projectileType.radius);
@@ -75,12 +75,12 @@ projectileEntitySimulate = function(entity, dt) {
     if (projectile.hit) {
         triggerEvent(ProjectileEvents.onHit, entity, v2.clone(pos));
         if (!isServer && projectile.sprite) {
-            projectile.sprite.anchor.x = 1.0;
+            projectile.sprite.anchor[0] = 1.0;
             if (!projectile.sprite.visible) {
                 projectile.posClient = v2.clone(pos);
                 projectile.posClientOld = v2.clone(pos);
                 projectile.sprite.visible = true;
-                projectile.sprite.scale.x = 4.0*v2.distance(projectile.startPos, pos);
+                projectile.sprite.scale[0] = 4.0 * v2.distance(projectile.startPos, pos);
             }
         }
     }

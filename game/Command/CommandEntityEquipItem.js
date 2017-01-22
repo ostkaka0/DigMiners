@@ -20,21 +20,21 @@ CommandEntityEquipItem.prototype.execute = function() {
         entity.equippedItems.items[itemType.type] = null;
 
     var sprite = entity.bodyparts.bodyparts[itemType.type].sprite;
-    if (!isServer && sprite.sprite && !this.equipped)
-        sprite.sprite.visible = false;
+    if (!isServer && sprite && !this.equipped)
+        sprite.visible = false;
     else if (this.equipped) {
         entity.drawable.setBodypartSprite(entity.bodyparts.bodyparts[itemType.type], new Sprite(itemType.name));
         var equippedOffset = (itemType.texture.equippedOffset ? itemType.texture.equippedOffset : [0, 0]);
         entity.bodyparts.bodyparts[itemType.type].offset[0] += equippedOffset[0];
         entity.bodyparts.bodyparts[itemType.type].offset[1] += equippedOffset[1];
     }
-    
+
     if (entity.inventory) {
         var item = entity.inventory.items[this.stackId];
         if (item && itemType.itemFunction == ItemFunctions.RangedWeapon && (item.magazine == undefined || item.magazine == null)) {
             item.magazine = itemType.ammoCapacity;
         }
-        
+
 
         if (isServer || (global.playerEntity && this.entityId == global.playerEntity.id)) {
             if (item && item.id == this.itemId) {

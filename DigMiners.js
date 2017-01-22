@@ -1,19 +1,22 @@
 
 var canvas = document.getElementById("canvas");
-canvasInitGL(canvas);
-var renderer = new PIXI.WebGLRenderer(window.innerWidth, window.innerHeight, { 'transparent': false, 'antialias': true, 'view': canvas, 'clearBeforeRender': false });
-var gl = renderer.gl;
+var spriteCanvas = document.getElementById("spriteCanvas");
+var context2d = spriteCanvas.getContext("2d", { antialias: true });
+var gl = canvasInitGL(canvas);
+
+canvasUpdateSize(canvas);
+canvasUpdateSize(spriteCanvas);
 
 window.zindices = new Array(3);
-for (var i = 0; i < window.zindices.length; ++i) {
-    window.zindices[i] = new PIXI.Container();
-}
-window.particleContainer = new PIXI.Container();
+for (var i = 0; i < window.zindices.length; ++i)
+    window.zindices[i] = new SpriteContainer();
 
 window.addEventListener('resize', function() {
-    renderer.resize(window.innerWidth, window.innerHeight);
+    canvasUpdateSize(canvas);
+    canvasUpdateSize(spriteCanvas);
     camera.width = window.innerWidth;
     camera.height = window.innerHeight;
+
 }, false);
 
 var lastMouseSync = 0;
@@ -21,12 +24,15 @@ var mouseX = 0;
 var mouseY = 0;
 
 gameData.init();
-gameData.world.events.on("texturesLoaded", function(textures) {
+
+subscribeEvent(TextureLoaderEvents.onComplete, this, function(textures) {
     // Must wait until all textures have loaded to continue! important
-    this.blockPosGood = new PIXI.Sprite(textures["blockPosGood.png"]);
-    window.zindices[2].addChild(this.blockPosGood);
-    this.blockPosBad = new PIXI.Sprite(textures["blockPosBad.png"]);
-    window.zindices[2].addChild(this.blockPosBad);
+    window.blockPosGood = new Sprite("blockPosGood.png");
+    window.blockPosGood.anchor = [0, 0];
+    window.zindices[2].add(window.blockPosGood);
+    window.blockPosBad = new Sprite("blockPosBad.png");
+    window.blockPosBad.anchor = [0, 0];
+    window.zindices[2].add(window.blockPosBad);
     $("*").mousemove(function(event) {
         mouseX = event.pageX;
         mouseY = event.pageY;
@@ -46,7 +52,7 @@ var player = null;
 var playerEntity = null;
 var keysDown = {};
 var loadingScreen = new LoadingScreen();
-var textureManager = new TextureManager(gameData);
+var textureManager = new TextureManager();
 window.global = {};
 
 
@@ -205,24 +211,21 @@ render = function(tickFracTime) {
             var y = camera.pos[1] + canvas.height / 2 - 32.0 * pos[1];
 
             if (entity.projectile.sprite) {
-                entity.projectile.sprite.position.x = x;
-                entity.projectile.sprite.position.y = y;
-                entity.projectile.sprite.rotation = entity.projectile.angle;
+                entity.projectile.sprite.pos[0] = x;
+                entity.projectile.sprite.pos[1] = y;
+                entity.projectile.sprite.angle = entity.projectile.angle;
                 var distance = v2.distance(pos, entity.projectile.startPos)
                 if (distance >= entity.projectile.projectileType.scaleX / 4)
                     entity.projectile.sprite.visible = true;
             }
         } else if (entity.blockPlacer && entity.blockPlacer.sprite) {
-            entity.blockPlacer.sprite.position.x = -camera.pos[0] + canvas.width / 2 + 32 * (entity.blockPlacer.blockPos[0] + 0.5);
-            entity.blockPlacer.sprite.position.y = camera.pos[1] + canvas.height / 2 - 32 * (entity.blockPlacer.blockPos[1] + 0.5);
+            entity.blockPlacer.sprite.pos[0] = -camera.pos[0] + canvas.width / 2 + 32 * (entity.blockPlacer.blockPos[0] + 0.5);
+            entity.blockPlacer.sprite.pos[1] = camera.pos[1] + canvas.height / 2 - 32 * (entity.blockPlacer.blockPos[1] + 0.5);
             var factor = 1.0 - entity.blockPlacer.duration / Config.blockRegister[entity.blockPlacer.blockId].buildDuration;
-            entity.blockPlacer.sprite.scale.x = factor;
-            entity.blockPlacer.sprite.scale.y = factor;
+            entity.blockPlacer.sprite.scale[0] = factor;
+            entity.blockPlacer.sprite.scale[1] = factor;
         }
     });
-
-    particleContainer.position.x = -camera.pos[0] + canvas.width / 2;
-    particleContainer.position.y = camera.pos[1] + canvas.height / 2;
 
     if (global.player && global.playerEntity && global.playerEntity.isBuilding) {
         var worldCursorPos = [Math.floor((mouseX + camera.pos[0] - camera.width / 2) / 32), Math.floor((canvas.height - mouseY + camera.pos[1] - camera.height / 2) / 32)];
@@ -232,19 +235,19 @@ render = function(tickFracTime) {
         var blockPos = [chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0], chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1]];
         global.player.buildPos = blockPos;
         if (global.player.canPlaceBlock(gameData, blockPos[0], blockPos[1])) {
-            this.blockPosBad.visible = false;
-            this.blockPosGood.visible = true;
-            this.blockPosGood.position.x = blockPos[0] * 32 - camera.pos[0] + camera.width / 2;
-            this.blockPosGood.position.y = canvas.height - ((blockPos[1] + 1) * 32 - camera.pos[1] + camera.height / 2);
+            window.blockPosBad.visible = false;
+            window.blockPosGood.visible = true;
+            window.blockPosGood.pos[0] = blockPos[0] * 32 - camera.pos[0] + camera.width / 2;
+            window.blockPosGood.pos[1] = canvas.height - ((blockPos[1] + 1) * 32 - camera.pos[1] + camera.height / 2);
         } else {
-            this.blockPosGood.visible = false;
-            this.blockPosBad.visible = true;
-            this.blockPosBad.position.x = blockPos[0] * 32 - camera.pos[0] + camera.width / 2;
-            this.blockPosBad.position.y = canvas.height - ((blockPos[1] + 1) * 32 - camera.pos[1] + camera.height / 2);
+            window.blockPosGood.visible = false;
+            window.blockPosBad.visible = true;
+            window.blockPosBad.pos[0] = blockPos[0] * 32 - camera.pos[0] + camera.width / 2;
+            window.blockPosBad.pos[1] = canvas.height - ((blockPos[1] + 1) * 32 - camera.pos[1] + camera.height / 2);
         }
     } else {
-        this.blockPosGood.visible = false;
-        this.blockPosBad.visible = false;
+        window.blockPosGood.visible = false;
+        window.blockPosBad.visible = false;
     }
 
     //TODO: animationmanager use dt? maybe not needed
@@ -258,16 +261,27 @@ render = function(tickFracTime) {
     chunkRenderer.render(gameData.world.tileWorld, projectionMatrix.clone().append(viewMatrix), camera);
     blockChunkRenderer.render(gameData, gameData.world.blockWorld, projectionMatrix.clone().append(viewMatrix), camera);
 
-    // Render entities
-    for (var i = 0; i < window.zindices.length; ++i)
-        renderer.render(window.zindices[i]);
-    renderer.render(particleContainer);
-
-    renderer._activeShader = null;
-    renderer._activeRenderTarget = renderer.rootRenderTarget;
-    renderer._activeTextureLocation = 999;
-    renderer._activeTexture = null;
-    renderer.state.resetToDefault();
+    context2d.clearRect(0, 0, spriteCanvas.width, spriteCanvas.height);
+    for (var i = 0; i < zindices.length; ++i) {
+        var arr = zindices[i].getAll();
+        for (var j = 0; j < arr.length; ++j) {
+            var sprite = arr[j];
+            if (sprite.visible && sprite.texture) {
+                sprite.begin(context2d);
+                context2d.drawImage(
+                    sprite.texture.baseImage,
+                    (sprite.frame ? sprite.frame[0] : sprite.texture.x),
+                    (sprite.frame ? sprite.frame[1] : sprite.texture.y),
+                    (sprite.frame ? sprite.frame[2] : sprite.texture.width),
+                    (sprite.frame ? sprite.frame[3] : sprite.texture.height),
+                    0,
+                    0,
+                    (sprite.frame ? sprite.frame[2] : sprite.texture.width),
+                    (sprite.frame ? sprite.frame[3] : sprite.texture.height));
+                sprite.end(context2d);
+            }
+        }
+    }
 }
 
 loadChunk = function(world, x, y) {
@@ -349,11 +363,12 @@ subscribeEvent(gameData.world.entityWorld.onAdd, window, function(entity) {
     if (entity.nameComponent && entity.drawable)
         entity.nameComponent.applyName(entity);
 
-    if (entity.item && entity.item.amount > 1) {
+    // Text on items on ground
+    /*if (entity.item && entity.item.amount > 1) {
         var text = new PIXI.Text(entity.item.amount, { fontFamily: 'Monospace', fontSize: 15, fill: 0xffffff, align: 'center' });
         var textSprite = new Sprite(null, text, false);
         entity.drawable.addSprite("textAmount", textSprite, null, false);
-    }
+    }*/
 });
 
 gameData.world.physicsWorld.onCollision.push(function(collisions) {
