@@ -5,6 +5,7 @@ var context2d = spriteCanvas.getContext("2d", { antialias: true });
 var gl = canvasInitGL(canvas);
 //var renderer = new PIXI.WebGLRenderer(window.innerWidth, window.innerHeight, { 'transparent': false, 'antialias': true, 'view': canvas, 'clearBeforeRender': false });
 canvasUpdateSize(canvas);
+canvasUpdateSize(spriteCanvas);
 
 window.zindices = new Array(3);
 for (var i = 0; i < window.zindices.length; ++i)
@@ -14,8 +15,10 @@ for (var i = 0; i < window.zindices.length; ++i)
 window.addEventListener('resize', function() {
     //renderer.resize(window.innerWidth, window.innerHeight);
     canvasUpdateSize(canvas);
+    canvasUpdateSize(spriteCanvas);   
     camera.width = window.innerWidth;
     camera.height = window.innerHeight;
+    
 }, false);
 
 var lastMouseSync = 0;
@@ -278,8 +281,9 @@ render = function(tickFracTime) {
         for (var j = 0; j < arr.length; ++j) {
             var sprite = arr[j];
             if (sprite.texture) {
+                //console.log(sprite);
                 sprite.transform.begin(context2d);
-                context2d.drawImage(sprite.texture.baseImage, 0, 0, sprite.texture.baseImage.width, sprite.texture.baseImage.height);
+                context2d.drawImage(sprite.texture.baseImage, 0, 0, sprite.texture.width, sprite.texture.height);
                 sprite.transform.end(context2d);
             }
         }
