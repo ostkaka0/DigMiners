@@ -1,6 +1,9 @@
 <html>
     <head>
     <title>DigMiners</title>
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
     <link rel="stylesheet" type="text/css" href="tether.min.css"/>
     <link rel="stylesheet" type="text/css" href="bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="style.css"/>
@@ -31,7 +34,7 @@
                 if (isset($includedScripts[$path]))
                     return;
                 $includedScripts[$path] = true;
-                echo "\n\t\t" . '<script type="text/javascript" src="' . $path . '"></script>';
+                echo "\n\t\t" . '<script type="text/javascript" src="' . $path . '?' . time() . '"></script>';
             }
 
             function addScriptsRecursive($path) {
