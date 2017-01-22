@@ -102,9 +102,6 @@ Bodyparts.prototype.getChildren = function(parentName) {
 }
 
 Bodyparts.prototype.positionBodyparts = function(x, y, rotation) {
-    if (isServer)
-        return;
-
     for (var bodypart in this.bodyparts) {
         bodypart = this.bodyparts[bodypart];
         if (!bodypart.parent)
