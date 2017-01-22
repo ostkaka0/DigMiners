@@ -5,7 +5,7 @@ entityTemplates = {};
 entityTemplates.player = function(playerId, entityId, name, playerClass, teamId) {
     var entity = {};
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
-    entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 20.0, 1.0, 0.3);
+    entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 20.0, 1.0, 0.45);
     entity.movement = new Movement(playerClass.speed * 30.0);
     entity.nameComponent = new NameComponent(name);
     entity.inventory = new Inventory();
@@ -22,13 +22,14 @@ entityTemplates.player = function(playerId, entityId, name, playerClass, teamId)
     // Order of bodyparts is draw order
     // Parameters: sprite, offsetX, offsetY, offsetAngle, pivot(v2), parent name
     var bodyparts = {
-        "feet": new BodyPart(feetSprite, 0, 0, 0, null, null),
+        "player": new BodyPart(new Sprite(), 0, 0, 0, null, null),
+        "feet": new BodyPart(feetSprite, 0, 0, 0, null, "player"),
+        "leftArm": new BodyPart(leftArmSprite, 5, -4, 0, [10, 23], "body"),
         "tool": new BodyPart(new Sprite(), -10, 15, 0, null, "rightArm"),
         "rightArm": new BodyPart(rightArmSprite, 5, 4, 0, [10, 11], "body"),
-        "leftArm": new BodyPart(leftArmSprite, 5, -4, 0, [10, 23], "body"),
-        "body": new BodyPart(new Sprite(), 0, 0, 0, null, null),
-        "head": new BodyPart(headSprite, 1, 0, 0, null, null),
-        "hat": new BodyPart(hatSprite, 1, 0, 0, null, null)
+        "body": new BodyPart(new Sprite(), 0, 0, 0, null, "player"),
+        "head": new BodyPart(headSprite, 1, 0, 0, null, "player"),
+        "hat": new BodyPart(hatSprite, 1, 0, 0, null, "player")
     };
 
     entity.bodyparts = new Bodyparts(bodyparts);

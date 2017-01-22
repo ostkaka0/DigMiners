@@ -21,9 +21,9 @@ BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, parent) {
 }
 
 BodyPart.prototype.position = function(x, y, rotation) {
-    this.sprite.sprite.position.x = x;
-    this.sprite.sprite.position.y = y;
-    this.sprite.sprite.rotation = rotation;
+    this.sprite.sprite.position.x = x + this.offset[0];
+    this.sprite.sprite.position.y = y + this.offset[1];
+    this.sprite.sprite.rotation = rotation + this.offset[2];
     this.children.forEach(function(child) {
         BodyPart.positionChild(child, this);
     }.bind(this));
