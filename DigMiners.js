@@ -278,9 +278,8 @@ render = function(tickFracTime) {
         for (var j = 0; j < arr.length; ++j) {
             var sprite = arr[j];
             if (sprite.texture) {
-                //sprite.transform.size = [sprite.texture.width, sprite.texture.height];
                 sprite.transform.begin(context2d);
-                context2d.drawImage(sprite.texture.baseImage, sprite.pos[0], sprite.pos[1]);
+                context2d.drawImage(sprite.texture.baseImage, 0, 0, sprite.texture.baseImage.width, sprite.texture.baseImage.height);
                 sprite.transform.end(context2d);
             }
         }
