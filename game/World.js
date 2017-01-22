@@ -107,10 +107,12 @@ World.prototype.initializeEvents = function() {
     }.bind(this));
 
     subscribeEvent(HealthEvents.onChange, this, function(entity) {
-        var sprite = entity.drawable.sprites["healthbar"];
-        if (!sprite || !sprite.sprite) return;
-        var defaultHealthbarWidth = 64;
-        sprite.sprite.width = (entity.health.health / entity.health.maxHealth) * defaultHealthbarWidth;
+        if (!isServer) {
+            var sprite = entity.drawable.sprites["healthbar"];
+            if (!sprite) return;
+            var defaultHealthbarWidth = 64;
+            sprite.frame = [0, 0, (entity.health.health / entity.health.maxHealth) * defaultHealthbarWidth, sprite.texture.height];
+        }
     }.bind(this));
 
     subscribeEvent(HealthEvents.onDeath, this, function(entity) {

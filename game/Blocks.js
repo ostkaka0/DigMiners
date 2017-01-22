@@ -16,7 +16,7 @@ BlockFunctions.createEntity = function(blockPos, block) {
     }
 }
 BlockFunctions.createEntityBox = function(blockPos, block) {
-        if (isServer) {
+    if (isServer) {
         var entity = {};
         var entityId = gameData.world.idList.next();
         entity.physicsBody = new PhysicsBody(v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), 0.01);
@@ -28,12 +28,12 @@ BlockFunctions.createEntityBox = function(blockPos, block) {
         };
         entity.bodyparts = new Bodyparts(bodyparts);
         entity.drawable = new Drawable(1);
-        var healthbarSprite = new Sprite("healthbar", null, false);
+        var healthbarSprite = new Sprite("healthbar.png");
         entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
-        
+
         if (block.onCreateEntity)
             block.onCreateEntity(entity);
-            
+
         sendCommand(new CommandPlaceBlock(blockPos, 0));
         sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
     }
@@ -181,7 +181,7 @@ Blocks.StoneWall = {
     buildDuration: 20
 };
 
-Blocks.WoodCrate =  {
+Blocks.WoodCrate = {
     name: "Wood Crate",
     isSolid: true,
     hardness: 0.50,
@@ -266,7 +266,7 @@ Blocks.RedForcefieldOpen = {
     type: BlockTypes.FOREGROUND
 }
 
-Blocks.HealthBox =  {
+Blocks.HealthBox = {
     name: "Health Box",
     isSolid: true,
     hardness: 1.0,
@@ -275,12 +275,12 @@ Blocks.HealthBox =  {
     onPlace: BlockFunctions.createEntityBox,
     onCreateEntity: function(entity) {
         entity.potionEffects = new PotionEffects();
-        entity.potionEffects.add(PotionEffectTypes.HealNearEntities, -1); 
+        entity.potionEffects.add(PotionEffectTypes.HealNearEntities, -1);
         return entity;
     }
 }
 
-Blocks.AmmoBox =  {
+Blocks.AmmoBox = {
     name: "Ammo Box",
     isSolid: true,
     hardness: 1.0,
@@ -289,7 +289,7 @@ Blocks.AmmoBox =  {
     onPlace: BlockFunctions.createEntityBox,
     onCreateEntity: function(entity) {
         entity.potionEffects = new PotionEffects();
-        entity.potionEffects.add(PotionEffectTypes.SupplyAmmoNearEntities, -1); 
+        entity.potionEffects.add(PotionEffectTypes.SupplyAmmoNearEntities, -1);
         return entity;
     }
 }

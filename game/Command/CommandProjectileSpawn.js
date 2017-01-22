@@ -16,13 +16,13 @@ CommandProjectileSpawn.prototype.execute = function() {
     var entity = {};
     entity.projectile = new Projectile(this.pos, this.angle, this.speed, this.maxDistance, this.projectileType, this.shooterEntityId);
     if (!isServer) {
-        entity.projectile.sprite = new PIXI.Sprite(gameData.textures[entity.projectile.projectileType.textureName]);
-        entity.projectile.sprite.anchor.x = 1.0;
-        entity.projectile.sprite.anchor.y = 0.5;
-        entity.projectile.sprite.scale.x = this.projectileType.scaleX;
-        entity.projectile.sprite.scale.y = this.projectileType.scaleY;
+        entity.projectile.sprite = new Sprite(entity.projectile.projectileType.textureName);
+        entity.projectile.sprite.anchor[0] = 1.0;
+        entity.projectile.sprite.anchor[1] = 0.5;
+        entity.projectile.sprite.scale[0] = this.projectileType.scaleX;
+        entity.projectile.sprite.scale[1] = this.projectileType.scaleY;
         entity.projectile.sprite.visible = false;
-        zindices[2].addChild(entity.projectile.sprite);
+        zindices[2].add(entity.projectile.sprite);
     }
     projectileEntitySimulate(entity, Config.tickDuration / 1000.0);
     gameData.world.entityWorld.add(entity, this.entityId);

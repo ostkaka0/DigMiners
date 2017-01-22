@@ -8,6 +8,9 @@ gameData.init = function(idList) {
     initItems(this);
     initConfig();
 
+    // gameData.textures is set in TextureManager.js when textures are loaded
+    this.textures = {};
+
     this.timeouts = {};
     this.timeoutIdList = new IdList();
     this.playerIdList = (isServer) ? new IdList() : null;

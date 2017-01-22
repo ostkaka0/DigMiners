@@ -13,10 +13,10 @@ entityTemplates.player = function(playerId, entityId, name, playerClass, teamId)
     entity.potionEffects = new PotionEffects();
 
     var teamEnum = teamId;
-    var feetSprite = new Sprite("feet");
-    var rightArmSprite = new Sprite("rightArm");
-    var leftArmSprite = new Sprite("leftArm");
-    var headSprite = new Sprite("head");
+    var feetSprite = new Sprite("feet.png");
+    var rightArmSprite = new Sprite("rightArm.png");
+    var leftArmSprite = new Sprite("leftArm.png");
+    var headSprite = new Sprite("head.png");
     var hatSprite = new Sprite();//((teamEnum == Teams.Blue) ? "egg" : "bigEgg");
 
     // Order of bodyparts is draw order
@@ -34,7 +34,7 @@ entityTemplates.player = function(playerId, entityId, name, playerClass, teamId)
 
     entity.bodyparts = new Bodyparts(bodyparts);
     entity.drawable = new Drawable(1);
-    var healthbarSprite = new Sprite("healthbar", null, false);
+    var healthbarSprite = new Sprite("healthbar.png", null, false);
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
     entity.health = new Health(playerClass.health, playerClass.health, playerClass.armor);
     entity.team = new Team(teamEnum);
@@ -87,11 +87,11 @@ entityTemplates.testMonster = function(entityId, pos, teamId) {
     entity.potionEffects = new PotionEffects();
 
     var teamEnum = teamId || Teams.None;
-    var feetSprite = new Sprite("monster/feet");
-    var rightArmSprite = new Sprite("monster/rightArm");
-    var leftArmSprite = new Sprite("monster/leftArm");
-    var headSprite = new Sprite("monster/head");
-    var hatSprite = new Sprite((teamEnum == Teams.Blue) ? "egg" : "bigEgg");
+    var feetSprite = new Sprite("monster/feet.png");
+    var rightArmSprite = new Sprite("monster/rightArm.png");
+    var leftArmSprite = new Sprite("monster/leftArm.png");
+    var headSprite = new Sprite("monster/head.png");
+    var hatSprite = new Sprite((teamEnum == Teams.Blue) ? "egg.png" : "bigEgg.png");
 
     var bodyparts = {
         "feet": new BodyPart(feetSprite, 0, 0, 0, null, null),
@@ -105,7 +105,7 @@ entityTemplates.testMonster = function(entityId, pos, teamId) {
 
     entity.bodyparts = new Bodyparts(bodyparts);
     entity.drawable = new Drawable(1);
-    var healthbarSprite = new Sprite("healthbar", null, false);
+    var healthbarSprite = new Sprite("healthbar.png", null, false);
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
 
     entity.health = new Health(50, 50, 0.0);
@@ -132,10 +132,10 @@ entityTemplates.zombie = function(entityId, pos, teamId) {
     entity.potionEffects = new PotionEffects();
 
     var teamEnum = teamId || Teams.None;
-    var feetSprite = new Sprite("monster/feet");
-    var rightArmSprite = new Sprite("monster/rightArm");
-    var leftArmSprite = new Sprite("monster/leftArm");
-    var headSprite = new Sprite("monster/head");
+    var feetSprite = new Sprite("monster/feet.png");
+    var rightArmSprite = new Sprite("monster/rightArm.png");
+    var leftArmSprite = new Sprite("monster/leftArm.png");
+    var headSprite = new Sprite("monster/head.png");
     var hatSprite = new Sprite();//((teamEnum == Teams.Blue) ? "egg" : "bigEgg");
 
     var bodyparts = {
@@ -150,7 +150,7 @@ entityTemplates.zombie = function(entityId, pos, teamId) {
 
     entity.bodyparts = new Bodyparts(bodyparts);
     entity.drawable = new Drawable(1);
-    var healthbarSprite = new Sprite("healthbar", null, false);
+    var healthbarSprite = new Sprite("healthbar.png", null, false);
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
 
     entity.health = new Health(50, 50, 0.0);
@@ -183,11 +183,11 @@ entityTemplates.TeamBase = function(entityId, pos, teamId, maxEntities, radius, 
     entity.nameComponent = new NameComponent("Base");
 
     var teamEnum = teamId;
-    var feetSprite = new Sprite("monster/feet");
-    var rightArmSprite = new Sprite("monster/rightArm");
-    var leftArmSprite = new Sprite("monster/leftArm");
-    var headSprite = new Sprite("monster/head");
-    var hatSprite = new Sprite((teamEnum == Teams.Blue) ? "egg" : "bigEgg");
+    var feetSprite = new Sprite("monster/feet.png");
+    var rightArmSprite = new Sprite("monster/rightArm.png");
+    var leftArmSprite = new Sprite("monster/leftArm.png");
+    var headSprite = new Sprite("monster/head.png");
+    var hatSprite = new Sprite((teamEnum == Teams.Blue) ? "egg.png" : "bigEgg.png");
 
     var bodyparts = {
         "feet": new BodyPart(feetSprite, 0, 0, 0, null, null),
@@ -201,7 +201,7 @@ entityTemplates.TeamBase = function(entityId, pos, teamId, maxEntities, radius, 
 
     entity.bodyparts = new Bodyparts(bodyparts);
     entity.drawable = new Drawable(1);
-    var healthbarSprite = new Sprite("healthbar", null, false);
+    var healthbarSprite = new Sprite("healthbar.png", null, false);
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
 
     entity.health = new Health(2000, 2000, 0.0);
@@ -215,11 +215,11 @@ entityTemplates.humanBase = function(entityId, pos, teamId) {
     entity.nameComponent = new NameComponent("Base");
 
     var teamEnum = teamId || Teams.Human;
-    var feetSprite = new Sprite("monster/feet");
-    var rightArmSprite = new Sprite("monster/rightArm");
-    var leftArmSprite = new Sprite("monster/leftArm");
-    var headSprite = new Sprite("monster/head");
-    var hatSprite = new Sprite((teamEnum == Teams.Blue) ? "egg" : "bigEgg");
+    var feetSprite = new Sprite("monster/feet.png");
+    var rightArmSprite = new Sprite("monster/rightArm.png");
+    var leftArmSprite = new Sprite("monster/leftArm.png");
+    var headSprite = new Sprite("monster/head.png");
+    var hatSprite = new Sprite((teamEnum == Teams.Blue) ? "egg.png" : "bigEgg.png");
 
     var bodyparts = {
         "feet": new BodyPart(feetSprite, 0, 0, 0, null, null),
@@ -233,7 +233,7 @@ entityTemplates.humanBase = function(entityId, pos, teamId) {
 
     entity.bodyparts = new Bodyparts(bodyparts);
     entity.drawable = new Drawable(1);
-    var healthbarSprite = new Sprite("healthbar", null, false);
+    var healthbarSprite = new Sprite("healthbar.png", null, false);
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
 
     entity.health = new Health(2000, 2000, 0.0);

@@ -50,8 +50,9 @@ LoadingScreen = function() {
     })
 
     this.resize = function(percentage) {
-        this.progressbar.css({ "width": (percentage + "%") });
-        this.progressbar.text(percentage + "%");
+        var percentage2 = Math.round(percentage);
+        this.progressbar.css({ "width": (percentage2 + "%") });
+        this.progressbar.text(percentage2 + "%");
     }.bind(this);
 
     this.root.hide();
@@ -60,11 +61,11 @@ LoadingScreen = function() {
         this.root.show();
     }.bind(this));
 
-    gameData.world.events.on("texturesLoadProgress", function(name, file, progress) {
+    subscribeEvent(TextureLoaderEvents.onProgress, this, function(file, progress) {
         this.resize(progress);
     }.bind(this));
 
-    gameData.world.events.on("texturesLoaded", function(textures) {
+    subscribeEvent(TextureLoaderEvents.onComplete, this, function(textures) {
         this.root.hide();
     }.bind(this));
 }

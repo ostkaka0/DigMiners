@@ -4,7 +4,7 @@ AnimationManager = function() {
 }
 
 AnimationManager.prototype.load = function() {
-    this.animations["feet"] = new Animation("feet", gameData.textures.feet, 60, 75, 75);
+    this.animations["feet"] = new Animation("feet", gameData.textures["feet.png"], 60, 75, 75);
     //this.animations["dynamite"] = new Animation("dynamite", textures.DynamiteSheet, 64, 32, 32);
 
     this.cycles["rightArm"] = new Cycle([
@@ -110,7 +110,7 @@ AnimationManager.prototype.update = function() {
                         bodypart.animInstance.currentFrame += 1;
                         if (bodypart.animInstance.currentFrame >= bodypart.animInstance.animation.numFrames)
                             bodypart.animInstance.currentFrame = 0;
-                        bodypart.sprite.sprite.texture.frame = bodypart.animInstance.animation.frames[bodypart.animInstance.currentFrame];
+                        bodypart.sprite.frame = bodypart.animInstance.animation.frames[bodypart.animInstance.currentFrame];
 
                         if (bodypart.animInstance.runToEnd && bodypart.animInstance.currentFrame == 0) {
                             bodypart.animInstance.animating = false;
