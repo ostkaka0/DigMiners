@@ -337,8 +337,12 @@ $("*").mousemove(function(e) {
 }.bind(this));
 
 gameData.world.events.on("ownPlayerSpawned", function(entity, player) {
-    //$("#hud").unbind("mousemove");
-
+    if (gameData.HUD.inventory)
+        gameData.HUD.inventory.remove();
+    if (entity.inventory) {
+        gameData.HUD.inventory = new InventoryHUD(entity.inventory, 10, 1, "Your amazing inventory", 10);
+        gameData.HUD.inventory.update();
+    }
 }.bind(this));
 
 subscribeEvent(gameData.world.entityWorld.onAdd, window, function(entity) {
