@@ -1,5 +1,6 @@
 // Place your settings in this file to overwrite default and user settings.
 {
     "typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
-    "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false
+    "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+    "php.validate.executablePath": "C:/xampp/php/php.exe",
 }
