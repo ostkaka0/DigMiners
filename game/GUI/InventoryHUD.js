@@ -1,7 +1,7 @@
 
-InventoryHUD = function(text, bottom) {
-    this.inventoryWidth = 10;
-    this.inventoryHeight = 1;
+InventoryHUD = function(width, height, text, bottom) {
+    this.inventoryWidth = width;
+    this.inventoryHeight = height;
     this.HUDClosures = [];
 
     // create inventory
@@ -55,7 +55,6 @@ InventoryHUD = function(text, bottom) {
         var slot = $("<div>", {
             "class": "inventorySlot",
             "id": "slot" + i,
-            "title": "Empty slot"
         });
         slot.css({
             "margin-left": "0px",
