@@ -10,7 +10,7 @@ PointWorld = function(size) {
     this.radiusArray = [];
 }
 
-PointWorld.maxNodePoints = 1; // Max points per node / page
+PointWorld.maxNodePoints = 4; // Max points per node / page
 
 PointWorld.prototype.getRadius = function(pointId) {
     return this.radiusArray[pointId];
@@ -126,17 +126,19 @@ PointWorld.prototype._insertToTree = function(pos, radius, pointId) {
     var nodePos = [0, 0, 0];
     var node = this._findNodeV2(pos, radius, nodePos);
     var nodeArray = this.nodeArrays[node >> 2];
+    
+    console.log(nodePos);
     if (!nodeArray) {
         this.nodeArrays[node >> 2] = [pointId];
         return;
     }
     nodeArray.push(pointId);
-    if (nodeArray.length > PointWorld.maxNodePoints && this.quadtree.isLeaf(node) && nodePos[2] < 16) {
+    if (nodeArray.length > PointWorld.maxNodePoints && this.quadtree.isLeaf(node) && nodePos[2] < 32) {
         this.quadtree.insertChildren(node);
         while (this.nodeParents.length < this.quadtree.array.length >> 2) this.nodeParents.push(0);
         while (this.nodeArrays.length < this.quadtree.array.length >> 2) this.nodeArrays.push(null);
         for (var i = 0; i < 8; i++)
-            this.nodeParents[this.quadtree.array[node | i] >> 2 ] = node;
+            this.nodeParents[this.quadtree.array[node | i] >> 2] = node;
         this.nodeArrays[node >> 2] = null;
         
         for (var i = 0; i < nodeArray.length; i++) {
