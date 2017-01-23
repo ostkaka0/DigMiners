@@ -9,7 +9,7 @@ InventoryHUD = function(inventory, width, height, text, bottom) {
 
     // create inventory
     this.inventoryHUD = $("<div>", {
-        "id": "inventory"
+        "id": "inventory" + this.inventory.inventoryId,
     });
     this.inventoryHUD.css({
         "position": "fixed",
@@ -57,7 +57,7 @@ InventoryHUD = function(inventory, width, height, text, bottom) {
 
         var slot = $("<div>", {
             "class": "inventorySlot",
-            "id": "slot" + i,
+            "id": this.inventory.inventoryId + "slot" + i,
             "slotId": i,
         });
         slot.css({
@@ -145,7 +145,7 @@ InventoryHUD = function(inventory, width, height, text, bottom) {
 
 InventoryHUD.prototype.update = function() {
     for (var i = 0; i < this.inventoryWidth * this.inventoryHeight; ++i) {
-        var slot = document.getElementById("slot" + i);
+        var slot = document.getElementById(this.inventory.inventoryId + "slot" + i);
         var slotDescriptionContainer = slot.childNodes[0];
         var slotImageContainer = slot.childNodes[1];
         var slotImageContainerOverlay = slot.childNodes[2];
