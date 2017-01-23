@@ -1,73 +1,142 @@
 
-InventoryHUD = function() {
-    /*this.dugItems = $("<div>");
-    this.dugItems.css({
-        "position": "fixed",
-        "right": "70px",
-        "top": "100px",
-        "background-color": "rgba(64, 64, 64, 0.5)",
-        "-moz-user-select": "none",
-        "-khtml-user-select": "none",
-        "-webkit-user-select": "none",
-        "-ms-user-select": "none",
-        "user-select": "none",
-    });
-
-
-    this.dugItems.appendTo("#hud");*/
-
+InventoryHUD = function(text, bottom) {
     this.inventoryWidth = 10;
     this.inventoryHeight = 1;
     this.HUDClosures = [];
 
     // create inventory
-    var inventory = document.getElementById("inventory");
-    inventory.style.width = this.inventoryWidth * 34;
-    inventory.style.height = 22 + this.inventoryHeight * 34;
-    $(inventory).click(function(e) {
+    this.inventory = $("<div>", {
+        "id": "inventory"
+    });
+    this.inventory.css({
+        "position": "fixed",
+        "width": this.inventoryWidth * 34 + "px",
+        "height": 22 + this.inventoryHeight * 34 + "px",
+        "bottom": bottom + "px",
+        "margin-left": "auto",
+        "margin-right": "auto",
+        "left": "0",
+        "right": "0",
+        "border-width": "4px",
+        "border-style": "solid",
+        "border-color": "rgb(64, 64, 64)",
+        "-moz-user-select": "none",
+        "-khtml-user-select": "none",
+        "-webkit-user-select": "none",
+        "-ms-user-select": "none",
+        "user-select": "none",
+        "pointer-events": "all",
+    });
+    this.inventory.click(function(e) {
         e.stopPropagation();
     });
-    inventory.innerHTML = '<div class="inventoryHeader">Your amazing inventory</div>';
-    var inventoryContent = document.createElement("div");
-    inventoryContent.setAttribute("class", "inventoryContent");
-    for (var i = 0; i < this.inventoryWidth * this.inventoryHeight; ++i) {
-        var slot = document.createElement("div");
-        slot.setAttribute("class", "inventorySlot");
-        slot.setAttribute("id", "slot" + i);
-        slot.setAttribute("title", "Empty slot");
-        var describer = document.createElement("div");
-        describer.setAttribute("class", "slotDescriber");
-        slot.appendChild(describer);
 
-        var slotImageContainer = document.createElement("div");
-        slotImageContainer.setAttribute("class", "slotImageContainer");
-        slotImageContainer.style.backgroundRepeat = "no-repeat";
-        slot.appendChild(slotImageContainer);
-
-        var slotImageContainerOverlay = document.createElement("div");
-        slotImageContainerOverlay.setAttribute("class", "slotImageContainerOverlay");
-        slot.appendChild(slotImageContainerOverlay);
-
-        var slotTextContainer = document.createElement("div");
-        slotTextContainer.setAttribute("class", "slotTextContainer");
-        slot.appendChild(slotTextContainer);
-
-        inventoryContent.appendChild(slot);
-    }
-    inventory.appendChild(inventoryContent);
-
-    // Slot item name text visible on mouse hover
-    $('.inventorySlot').mouseenter(function() {
-        var text = $(this).find('.slotDescriber');
-        text.fadeIn(50);
-        var amount = $(this).find('.slotTextContainer');
-        amount.fadeOut(50);
-    }).mouseleave(function() {
-        var text = $(this).find('.slotDescriber');
-        text.fadeOut(50);
-        var amount = $(this).find('.slotTextContainer');
-        amount.fadeIn(50);
+    this.inventoryHeader = $("<div>", {
+        "text": text,
+    }).appendTo(this.inventory);
+    this.inventoryHeader.css({
+        "position": "relative",
+        "width": "100%",
+        "height": "22px",
+        "background-color": "rgb(64, 64, 64)",
+        "color": "rgb(200,200,200)",
+        "font-family": "Monospace",
     });
+
+    this.inventoryContent = $("<div>", {
+        "class": "inventoryContent"
+    });
+    this.inventoryContent.css({
+        "position": "relative",
+    });
+
+    for (var i = 0; i < this.inventoryWidth * this.inventoryHeight; ++i) {
+
+        var slot = $("<div>", {
+            "class": "inventorySlot",
+            "id": "slot" + i,
+            "title": "Empty slot"
+        });
+        slot.css({
+            "margin-left": "0px",
+            "position": "relative",
+            "float": "left",
+            "width": "34px",
+            "height": "34px",
+            "background-image": "url(\"data/textures/inventorySlotSmall2.png\")",
+        });
+        slot.mouseenter(function() {
+            var text = $(this).find('.slotDescriber');
+            text.fadeIn(50);
+            var amount = $(this).find('.slotTextContainer');
+            amount.fadeOut(50);
+        }).mouseleave(function() {
+            var text = $(this).find('.slotDescriber');
+            text.fadeOut(50);
+            var amount = $(this).find('.slotTextContainer');
+            amount.fadeIn(50);
+        });
+
+        var describer = $("<div>", {
+            "class": "slotDescriber",
+        }).appendTo(slot);
+        describer.css({
+            "position": "absolute",
+            "display": "none",
+            "z-index": "50",
+            "color": "white",
+            "font-family": "Monospace",
+            "font-size": "10px",
+        });
+
+        var slotImageContainer = $("<div>", {
+            "class": "slotImageContainer",
+        }).appendTo(slot);
+        slotImageContainer.css({
+            "position": "relative",
+            "width": "32px",
+            "height": "32px",
+            "left": "1px",
+            "margin-top": "1px",
+            "box-sizing": "border-box",
+            "-moz-box-sizing": "border-box",
+            "-webkit-box-sizing": "border-box",
+            "background-clip": "padding-box",
+            "background-repeat": "no-repeat",
+        });
+
+        var slotImageContainerOverlay = $("<div>", {
+            "class": "slotImageContainerOverlay",
+        }).appendTo(slot);
+        slotImageContainerOverlay.css({
+            "position": "absolute",
+            "width": "32px",
+            "height": "32px",
+            "top": "1",
+            "left": "1",
+            "box-sizing": "border-box",
+            "-moz-box-sizing": "border-box",
+            "-webkit-box-sizing": "border-box",
+            "border": "2px solid rgba(255, 215, 0, 0.5)",
+            "display": "none",
+        });
+
+        var slotTextContainer = $("<div>", {
+            "class": "slotTextContainer",
+        }).appendTo(slot);
+        slotTextContainer.css({
+            "position": "relative",
+            "width": "34px",
+            "height": "12px",
+            "text-align": "center",
+            "top": "-23px",
+            "color": "white",
+            "font-family": "Monospace",
+        });
+
+        slot.appendTo(this.inventoryContent);
+    }
+    this.inventoryContent.appendTo(this.inventory);
 
     var createClickSlotFunc = function(slotId, clickType, returnValue) {
         return function() {
@@ -83,6 +152,8 @@ InventoryHUD = function() {
         this.HUDClosures[i][0] = createClickSlotFunc(i, InventoryClickTypes.LEFT_CLICK, true);
         this.HUDClosures[i][1] = createClickSlotFunc(i, InventoryClickTypes.RIGHT_CLICK, false);
     }
+
+    this.inventory.appendTo("#hud");
 }
 
 InventoryHUD.prototype.update = function() {

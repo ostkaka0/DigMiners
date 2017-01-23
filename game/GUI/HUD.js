@@ -25,7 +25,7 @@ HUD = function(gameData) {
         e.preventDefault();
     });
 
-    this.inventory = new InventoryHUD();
+    this.inventory = new InventoryHUD("Your amazing inventory", 10);
 
     this.dugItems = new DugItems();
 

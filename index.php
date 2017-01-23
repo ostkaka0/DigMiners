@@ -24,7 +24,6 @@
         };
         </script>
         <div class="hud" id="hud">
-            <div class="inventory" id="inventory"></div>
             <div class="crafting" id="crafting"></div>
         </div>
         <?php
