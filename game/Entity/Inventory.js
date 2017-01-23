@@ -1,11 +1,38 @@
 
-Inventory = function() {
+Inventory = function(inventoryId, entityId) {
     this.items = [];
+    this.inventoryId = inventoryId;
+    this.entityId = entityId;
+}
+
+Inventory.createInventory = function(entityId) {
+    if (!isServer)
+        throw ("Tried to create inventory on client.")
+    var inventoryId = gameData.world.inventoryIdList.next();
+    var inventory = new Inventory(inventoryId, entityId);
+    gameData.world.inventories[inventoryId] = inventory;
+    if (!gameData.world.entityInventories[entityId])
+        gameData.world.entityInventories[entityId] = [];
+    gameData.world.entityInventories[entityId].push(inventory);
+    return inventory;
+}
+
+Inventory.prototype.destroy = function(entity) {
+    if (isServer) {
+        delete gameData.world.inventories[this.inventoryId];
+        var entityInventories = gameData.world.entityInventories[entity.id];
+        if (entityInventories) {
+            var index = entityInventories.indexOf(this.inventoryId);
+            if (index != -1)
+                entityInventories.splice(index, 1);
+        }
+    }
 }
 
 Inventory.prototype.name = inventory.name; function inventory() { };
 
 Inventory.prototype.serialize = function(byteArray, index) {
+    serializeInt32(byteArray, index, this.inventoryId);
     serializeInt32(byteArray, index, this.items.length);
     for (var i = 0; i < this.items.length; ++i) {
         serializeInt32(byteArray, index, this.items[i].id);
@@ -16,6 +43,7 @@ Inventory.prototype.serialize = function(byteArray, index) {
 }
 
 Inventory.prototype.deserialize = function(byteArray, index) {
+    this.inventoryId = deserializeInt32(byteArray, index);
     this.items = [];
     var itemsLength = deserializeInt32(byteArray, index);
     for (var i = 0; i < itemsLength; ++i) {
@@ -33,7 +61,7 @@ Inventory.prototype.deserialize = function(byteArray, index) {
 }
 
 Inventory.prototype.getSerializationSize = function() {
-    return 4 + this.items.length * 9;
+    return 8 + this.items.length * 9;
 }
 
 Inventory.prototype.sortItems = function() {

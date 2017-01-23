@@ -1,13 +1,19 @@
 
-MessageRequestClickSlot = function(slotId, clickType) {
+MessageRequestClickSlot = function(inventoryId, slotId, clickType) {
+    this.inventoryId = inventoryId;
     this.slotId = slotId;
     this.clickType = clickType;
 }
 
 MessageRequestClickSlot.prototype.execute = function(gameData, player) {
     var entity = gameData.world.entityWorld.objects[player.entityId];
-    if (!entity || !entity.inventory) return;
-    var item = entity.inventory.items[this.slotId];
+    if (!entity) return;
+    //TODO: Make sure players don't hack into other entities inventories.
+    var inventory = gameData.world.inventories[this.inventoryId];
+    if (!inventory) return;
+    if (entity.inventory && entity.inventory.inventoryId != this.inventoryId)
+        console.log("entity tried to access other than self inventory!");
+    var item = inventory.items[this.slotId];
     if (!item) return;
     /*if (this.clickType == InventoryClickTypes.RIGHT_CLICK) {
         // Drop stack
@@ -36,30 +42,34 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
         if (item.equipped)
             sendCommand(new CommandEntityEquipItem(player.entityId, this.slotId, item.id, false));
     } else if (this.clickType == InventoryClickTypes.LEFT_CLICK)*/ {
-        // Equip stack
-        var itemType = Config.itemRegister[item.id];
-        if (itemType && itemType.isEquipable) {
-            if (item.equipped == null || item.equipped == undefined)
-                item.equipped = false;
-            var equipped = !item.equipped;
-            if (equipped && entity.inventory) {
-                // Dequip all other items of the same type
-                var dequippedItems = entity.inventory.dequipAll(gameData, itemType.type, entity.id);
-                for (var i = 0; i < dequippedItems.length; ++i) {
-                    var entry = dequippedItems[i];
-                    sendCommand(new CommandEntityEquipItem(player.entityId, entry[0], entry[1], false));
-                };
+        // Only equip items in own inventory
+        if (entity.inventory && entity.inventory.inventoryId == this.inventoryId) {
+            // Equip stack
+            var itemType = Config.itemRegister[item.id];
+            if (itemType && itemType.isEquipable) {
+                if (item.equipped == null || item.equipped == undefined)
+                    item.equipped = false;
+                var equipped = !item.equipped;
+                if (equipped && inventory) {
+                    // Dequip all other items of the same type
+                    var dequippedItems = inventory.dequipAll(gameData, itemType.type, entity.id);
+                    for (var i = 0; i < dequippedItems.length; ++i) {
+                        var entry = dequippedItems[i];
+                        sendCommand(new CommandEntityEquipItem(player.entityId, entry[0], entry[1], false));
+                    };
+                }
+                sendCommand(new CommandEntityEquipItem(player.entityId, this.slotId, item.id, equipped));
             }
-            sendCommand(new CommandEntityEquipItem(player.entityId, this.slotId, item.id, equipped));
         }
     }
 }
 
 MessageRequestClickSlot.prototype.send = function(socket) {
-    socket.emit(this.idString, [this.slotId, this.clickType]);
+    socket.emit(this.idString, [this.inventoryId, this.slotId, this.clickType]);
 }
 
 MessageRequestClickSlot.prototype.receive = function(gameData, data) {
-    this.slotId = data[0];
-    this.clickType = data[1];
+    this.inventoryId = data[0];
+    this.slotId = data[1];
+    this.clickType = data[2];
 }

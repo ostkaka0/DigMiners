@@ -12,6 +12,10 @@ World = function() {
     this.physicsEntities = {};
     this.generator = new Generator(Math.random() * 1000000 >> 0);
 
+    this.inventoryIdList = new IdList();
+    this.inventories = {};
+    this.entityInventories = {};
+
     this.commands = [];
     this.pendingCommands = {};
     this.commandCallbacks = [];

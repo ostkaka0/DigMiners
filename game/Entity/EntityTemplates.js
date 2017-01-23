@@ -8,7 +8,7 @@ entityTemplates.player = function(playerId, entityId, name, playerClass, teamId)
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 20.0, 1.0, 0.45);
     entity.movement = new Movement(playerClass.speed * 30.0);
     entity.nameComponent = new NameComponent(name);
-    entity.inventory = new Inventory();
+    entity.inventory = Inventory.createInventory(entityId);
     entity.equippedItems = new EquippedItems();
     entity.potionEffects = new PotionEffects();
 
@@ -82,7 +82,7 @@ entityTemplates.testMonster = function(entityId, pos, teamId) {
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0, 1.0, 0.3);
     entity.movement = new Movement(20.0, 0.25, 1.0, 0.5);
     entity.nameComponent = new NameComponent(entityId);
-    entity.inventory = new Inventory();
+    entity.inventory = Inventory.createInventory(entityId);
     entity.equippedItems = new EquippedItems();
     entity.potionEffects = new PotionEffects();
 
@@ -127,7 +127,7 @@ entityTemplates.zombie = function(entityId, pos, teamId) {
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0, 1.0, 0.3);
     entity.movement = new Movement(20.0, 0.25, 1.0, 0.5);
     entity.nameComponent = new NameComponent("Zombie");
-    entity.inventory = new Inventory();
+    entity.inventory = Inventory.createInventory(entityId);
     entity.equippedItems = new EquippedItems();
     entity.potionEffects = new PotionEffects();
 

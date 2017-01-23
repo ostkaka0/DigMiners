@@ -1,14 +1,17 @@
 
-InventoryHUD = function(width, height, text, bottom) {
+InventoryHUDEvents = {};
+InventoryHUDEvents.click = [];
+
+InventoryHUD = function(inventory, width, height, text, bottom) {
+    this.inventory = inventory;
     this.inventoryWidth = width;
     this.inventoryHeight = height;
-    this.HUDClosures = [];
 
     // create inventory
-    this.inventory = $("<div>", {
+    this.inventoryHUD = $("<div>", {
         "id": "inventory"
     });
-    this.inventory.css({
+    this.inventoryHUD.css({
         "position": "fixed",
         "width": this.inventoryWidth * 34 + "px",
         "height": 22 + this.inventoryHeight * 34 + "px",
@@ -27,13 +30,13 @@ InventoryHUD = function(width, height, text, bottom) {
         "user-select": "none",
         "pointer-events": "all",
     });
-    this.inventory.click(function(e) {
+    this.inventoryHUD.click(function(e) {
         e.stopPropagation();
     });
 
     this.inventoryHeader = $("<div>", {
         "text": text,
-    }).appendTo(this.inventory);
+    }).appendTo(this.inventoryHUD);
     this.inventoryHeader.css({
         "position": "relative",
         "width": "100%",
@@ -55,6 +58,7 @@ InventoryHUD = function(width, height, text, bottom) {
         var slot = $("<div>", {
             "class": "inventorySlot",
             "id": "slot" + i,
+            "slotId": i,
         });
         slot.css({
             "margin-left": "0px",
@@ -135,24 +139,8 @@ InventoryHUD = function(width, height, text, bottom) {
 
         slot.appendTo(this.inventoryContent);
     }
-    this.inventoryContent.appendTo(this.inventory);
-
-    var createClickSlotFunc = function(slotId, clickType, returnValue) {
-        return function() {
-            var message = new MessageRequestClickSlot(slotId, clickType);
-            message.send(socket);
-            return returnValue;
-        };
-    }
-
-    // Initialize closures
-    for (var i = 0; i < this.inventoryWidth * this.inventoryHeight; ++i) {
-        this.HUDClosures[i] = [];
-        this.HUDClosures[i][0] = createClickSlotFunc(i, InventoryClickTypes.LEFT_CLICK, true);
-        this.HUDClosures[i][1] = createClickSlotFunc(i, InventoryClickTypes.RIGHT_CLICK, false);
-    }
-
-    this.inventory.appendTo("#hud");
+    this.inventoryContent.appendTo(this.inventoryHUD);
+    this.inventoryHUD.appendTo("#hud");
 }
 
 InventoryHUD.prototype.update = function() {
@@ -164,8 +152,7 @@ InventoryHUD.prototype.update = function() {
         var slotTextContainer = slot.childNodes[3];
 
         slotImageContainerOverlay.style.backgroundImage = "";
-        if (!global.playerEntity) return;
-        var item = global.playerEntity.inventory.items[i];
+        var item = this.inventory.items[i];
         if (item) {
             slotImageContainer.style.width = 34;
             slotImageContainer.style.height = 34;
@@ -183,9 +170,18 @@ InventoryHUD.prototype.update = function() {
             if (item.equipped)
                 slotImageContainerOverlay.style.display = "block";
 
-            slot.onclick = this.HUDClosures[i][0];
-            $(slot).off("contextmenu");
-            $(slot).on("contextmenu", this.HUDClosures[i][1]);
+            var context = this;
+            $(slot).off();
+            $(slot).click(function() {
+                var slotId = $(this).attr("slotId");
+                var message = new MessageRequestClickSlot(context.inventory.inventoryId, slotId, InventoryClickTypes.LEFT_CLICK);
+                message.send(socket);
+            });
+            $(slot).contextmenu(function() {
+                var slotId = $(this).attr("slotId");
+                var message = new MessageRequestClickSlot(context.inventory.inventoryId, slotId, InventoryClickTypes.RIGHT_CLICK);
+                message.send(socket);
+            });
         } else {
             slotImageContainer.style.backgroundImage = "";
             slotTextContainer.innerText = "";
@@ -193,6 +189,10 @@ InventoryHUD.prototype.update = function() {
             slot.onclick = null;
         }
     }
+}
+
+InventoryHUD.prototype.remove = function() {
+    this.inventoryHUD.remove();
 }
 
 InventoryHUD.putItemImage = function(container, itemType, containerWidth, containerHeight, angle, offset, scale) {

@@ -25,7 +25,6 @@ HUD = function(gameData) {
         e.preventDefault();
     });
 
-    this.inventory = new InventoryHUD(10, 1, "Your amazing inventory", 10);
     //this.inventory2 = new InventoryHUD(8, 8, "Chest", 80);
 
     this.dugItems = new DugItems();
@@ -40,7 +39,8 @@ HUD = function(gameData) {
 
 HUD.prototype.update = function() {
     // update inventory
-    this.inventory.update();
+    if (this.inventory)
+        this.inventory.update();
 
     // update dugItems
     this.dugItems.update();
