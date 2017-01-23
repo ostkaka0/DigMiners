@@ -26,7 +26,7 @@ Quadtree.calcParentPos = function(pos) {
 Quadtree.posToV2 = function(pos) {
     if (pos[2] > 32 || pos[2] < 0)
         console.error("Invalid lod");
-    var scale = 1.0 / (1 << pos[2]);
+    var scale = 1.0 / Math.pow(2, pos[2]);
     return [pos[0] * scale, pos[1] * scale];
 }
 

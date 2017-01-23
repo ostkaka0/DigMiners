@@ -42,9 +42,14 @@
             return r;
         })(array);
         var t3 = performance.now();
-        for (let value of array) {
-            sumA += value;
-        }
+        sumC += (function(inArray) { 
+            var r = 0;
+            var length = inArray.length;
+            for(var k = 0; k < length; k++) {
+                r += inArray[k];
+            }
+            return r;
+        })(array);
         var t4 = performance.now();
         
         console.log(sumA + " " + sumB + " " + sumC);
