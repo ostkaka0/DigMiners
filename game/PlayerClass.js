@@ -2,7 +2,7 @@ initPlayerClasses = function() {
     PlayerClasses = {
         Assault: {
             name: "Assault",
-            blocks: [Items.StoneWall, Items.WoodCrate, Items.BlueForcefield],
+            blocks: [Items.StoneWall, Items.WoodCrate, Items.BlueForcefield, Items.Chest],
             weapons: [Items.WeaponAssaultRifle, Items.WeaponPistol, Items.Knife, Items.CopperShovel],
             speed: 1.0,
             health: 120.0,

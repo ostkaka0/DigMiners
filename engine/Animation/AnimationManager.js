@@ -18,6 +18,29 @@ AnimationManager.prototype.load = function() {
             32]
     ]);
 
+    var actionAngle = 1.0;
+    this.cycles["rightArmAction"] = new Cycle([
+        [0,        // x
+            0,     // y
+            -actionAngle,      // angle
+            32],    // num frames
+        [0,
+            0,
+            0,
+            32]
+    ]);
+
+    this.cycles["leftArmAction"] = new Cycle([
+        [0,        // x
+            0,     // y
+            actionAngle,      // angle
+            32],    // num frames
+        [0,
+            0,
+            0,
+            32]
+    ]);
+
     this.cycles["rightArmGun"] = new Cycle([
         [3,        // x
             0,     // y

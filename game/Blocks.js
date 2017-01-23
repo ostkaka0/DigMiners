@@ -32,7 +32,7 @@ BlockFunctions.createEntityBox = function(blockPos, block) {
         entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
 
         if (block.onCreateEntity)
-            block.onCreateEntity(entity);
+            entity = block.onCreateEntity(entity, entityId);
 
         sendCommand(new CommandPlaceBlock(blockPos, 0));
         sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
@@ -290,6 +290,20 @@ Blocks.AmmoBox = {
     onCreateEntity: function(entity) {
         entity.potionEffects = new PotionEffects();
         entity.potionEffects.add(PotionEffectTypes.SupplyAmmoNearEntities, -1);
+        return entity;
+    }
+}
+
+Blocks.Chest = {
+    name: "Chest",
+    isSolid: true,
+    hardness: 1.0,
+    type: BlockTypes.FOREGROUND,
+    buildDuration: 5,
+    onPlace: BlockFunctions.createEntityBox,
+    onCreateEntity: function(entity, entityId) {
+        entity.chest = new Chest();
+        entity.inventory = Inventory.createInventory(entityId);
         return entity;
     }
 }

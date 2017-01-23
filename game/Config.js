@@ -19,12 +19,12 @@ initConfig = function() {
     Config.commandTypes = typeRegisterAddByArray([], [CommandEntityMove, CommandDig, CommandEntityDig, CommandEntityEquipItem, CommandEntityBuild, CommandEntityHealthChange,
         CommandEntitySpawn, CommandCollisions, CommandEntityDestroy, CommandPlayerJoin, CommandPlayerLeave, CommandPlayerSpawn, CommandKeyStatusUpdate,
         CommandEntityInventory, CommandPlayerOreInventory, CommandEntityRotate, CommandBlockStrength, CommandProjectileSpawn, CommandParticles, CommandPlaceBlock,
-        CommandEntityReloadWeapon, CommandEntityBeginReloadWeapon, CommandBuild, CommandEntityLookAtEntity, CommandPopupMessage]);
+        CommandEntityReloadWeapon, CommandEntityBeginReloadWeapon, CommandBuild, CommandEntityLookAtEntity, CommandPopupMessage, CommandEntityOpenChest]);
     Config.messagesToClient = [MessageInit, MessageCommands, MessageChunk, MessageChangeGameMode, MessageSpectate, MessageAmmoChange];
     Config.messagesToServer = [MessageRequestKeyStatusUpdate, MessageRequestItemPickup, MessageRequestClickSlot, MessageRequestCraft, MessageRequestPlaceBlock,
         MessageRequestClickEntity, MessageRequestRotate, MessageRequestClickBlock, MessageRequestSpawn];
     Config.messageTypes = typeRegisterAddByArray([], Config.messagesToClient.concat(Config.messagesToServer));
     Config.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent,
-        EquippedItems, Projectile, BlockPlacer, PotionEffects, Team, Inventory, Ammo]);
+        EquippedItems, Projectile, BlockPlacer, PotionEffects, Team, Inventory, Ammo, Chest]);
     Config.gameModeRegister = typeRegisterAddByArray([], [/*GameModeBaseWar, */GameModeZombieInvasion]);
 }
