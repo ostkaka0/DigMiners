@@ -1,7 +1,5 @@
 entityTemplates = {};
 
-
-
 entityTemplates.player = function(playerId, entityId, name, playerClass, teamId) {
     var entity = {};
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
@@ -48,6 +46,31 @@ entityTemplates.player = function(playerId, entityId, name, playerClass, teamId)
     playerClass.blocks.forEach(function(blockItem) {
         entity.inventory.addStaticItem(gameData, blockItem.id);
     });
+
+    return entity;
+}
+
+entityTemplates.ghost = function(playerId, entityId, name, playerClass, teamId) {
+    var entity = {};
+    entity.controlledByPlayer = new ControlledByPlayer(playerId);
+    entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 20.0, 1.0, 0.45);
+    entity.movement = new Movement(playerClass.speed * 30.0);
+
+    // Order of bodyparts is draw order
+    // Parameters: sprite, offsetX, offsetY, offsetAngle, pivot(v2), parent name
+    var bodyparts = {
+        "player": new BodyPart(new Sprite("ghost.png"), 0, 0, 0, null, null),
+        "feet": new BodyPart(new Sprite(), 0, 0, 0, null, "player"),
+        "leftArm": new BodyPart(new Sprite(), 5, -4, 0, [10, 23], "body"),
+        "tool": new BodyPart(new Sprite(), -10, 15, 0, null, "rightArm"),
+        "rightArm": new BodyPart(new Sprite(), 5, 4, 0, [10, 11], "body"),
+        "body": new BodyPart(new Sprite(), 0, 0, 0, null, "player"),
+        "head": new BodyPart(new Sprite(), 1, 0, 0, null, "player"),
+        "hat": new BodyPart(new Sprite(), 1, 0, 0, null, "player")
+    };
+
+    entity.bodyparts = new Bodyparts(bodyparts);
+    entity.drawable = new Drawable(1);
 
     return entity;
 }

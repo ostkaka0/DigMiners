@@ -94,7 +94,7 @@ GameModeZombieInvasion.prototype.init = function() {
 GameModeZombieInvasion.prototype.createEntity = function(player, entityId, classId) {
     if (this.playerSpawning) {
         var classType = PlayerClassRegister[classId];
-        var entity = entityTemplates.player(player.id, entityId, player.name, classType, Teams.Human);
+        var entity = entityTemplates.ghost(player.id, entityId, player.name, classType, Teams.Human);
 
         // Set spawn position
         var pos = this.playerSpawns[Teams.Human][Math.random() * this.playerSpawns[Teams.Human].length >> 0];
