@@ -20,7 +20,7 @@ MessageRequestKeyStatusUpdate.prototype.execute = function(gameData, player) {
         if (bodies.length > 0) {
             var targetEntity = gameData.world.physicsEntities[bodies[0]];
             // Open only if player has nothing equipped in hands
-            if (targetEntity.chest && entity.equippedItems && !entity.equippedItems.items["tool"])
+            if (targetEntity && targetEntity.chest && entity.equippedItems && !entity.equippedItems.items["tool"])
                 sendCommand(new CommandEntityOpenChest(entity.id, targetEntity.id));
         }
     }
