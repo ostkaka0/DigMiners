@@ -144,6 +144,17 @@ World.prototype.initializeEvents = function() {
         });
     }.bind(this));
 
+    subscribeEvent(InteractableEvents.onInteract, this, function(interactableEntity, interactingEntity) {
+        //console.log(interactingEntity.id + " is now interacting with " + interactableEntity.id);
+        if (isServer) {
+
+        }
+    });
+
+    subscribeEvent(InteractableEvents.onFinishInteract, this, function(interactableEntity, interactingEntity) {
+        //console.log(interactingEntity.id + " is no longer interacting with " + interactableEntity.id);
+    });
+
     this.events.on("entityHitBlockSide", function(entity, blockPos, blockType, blockCollisionSide) {
         if (isServer && blockType && blockType.isDoor)
             blockType.clickFunction(blockPos, blockType, entity, 0);

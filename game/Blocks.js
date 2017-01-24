@@ -302,6 +302,7 @@ Blocks.Chest = {
     buildDuration: 5,
     onPlace: BlockFunctions.createEntityBox,
     onCreateEntity: function(entity, entityId) {
+        entity.interactable = new Interactable();
         entity.chest = new Chest();
         entity.inventory = Inventory.createInventory(entityId);
         return entity;
