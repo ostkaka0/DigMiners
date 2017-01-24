@@ -150,7 +150,7 @@ World.prototype.initializeEvents = function() {
             if (global.playerEntity && global.playerEntity.id == interactingEntity.id) {
                 if (interactableEntity.chest && interactableEntity.inventory) {
                     //TODO: inventory size
-                    gameData.HUD.inventory2 = new InventoryHUD(interactableEntity.inventory, 10, 1, "Chest", 80);
+                    gameData.HUD.inventory2 = new InventoryHUD(interactableEntity.inventory, "Chest", 80);
                     gameData.HUD.inventory2.update();
                 }
             }
