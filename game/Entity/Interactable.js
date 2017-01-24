@@ -3,8 +3,10 @@ InteractableEvents = {};
 InteractableEvents.onInteract = [];
 InteractableEvents.onFinishInteract = [];
 
-Interactable = function() {
+Interactable = function(canInteractFunction) {
     this.interacting = [];
+    this.canInteractFunction = canInteractFunction || (function(entity) { return true; });
+    this.canInteractFunction.bind(this);
 }
 
 Interactable.prototype.name = interactable.name; function interactable() { };
@@ -26,25 +28,29 @@ Interactable.prototype.getSerializationSize = function() {
     return 4 + this.interacting.length;
 }
 
-Interactable.prototype.destroy = function(entity) {
+Interactable.prototype.destroy = function(interactableEntity) {
     for (var i = 0; i < this.interacting.length; ++i) {
-        var entity = gameData.world.entityWorld.objects[i];
-        triggerEvent(InteractableEvents.onFinishInteract, this, entity);
+        var interactingEntity = gameData.world.entityWorld.objects[i];
+        triggerEvent(InteractableEvents.onFinishInteract, interactableEntity, interactingEntity);
     }
-
 }
 
-Interactable.prototype.isInteracting = function(entity) {
-    return this.interacting.indexOf(entity.id) != -1;
+Interactable.isInteracting = function(interactableEntity, entity) {
+    return interactableEntity.interactable.interacting.indexOf(entity.id) != -1;
 }
 
-Interactable.prototype.setInteracting = function(entity, booleanValue) {
-    var index = this.interacting.indexOf(entity.id);
-    if (booleanValue && index == -1) {
-        this.interacting.push(entity.id);
-        triggerEvent(InteractableEvents.onInteract, this, entity);
-    } else if (!booleanValue && index != -1) {
-        this.interacting.splice(index, 1);
-        triggerEvent(InteractableEvents.onFinishInteract, this, entity);
+Interactable.canInteract = function(interactableEntity, entity) {
+    return interactableEntity.interactable.canInteractFunction(entity);
+}
+
+Interactable.setInteracting = function(interactableEntity, entity, booleanValue) {
+    if (booleanValue) {
+        interactableEntity.interactable.interacting.push(entity.id);
+        triggerEvent(InteractableEvents.onInteract, interactableEntity, entity);
+    } else if (!booleanValue) {
+        var index = interactableEntity.interactable.interacting.indexOf(entity.id);
+        if (index != -1)
+            interactableEntity.interactable.interacting.splice(index, 1);
+        triggerEvent(InteractableEvents.onFinishInteract, interactableEntity, entity);
     }
 }

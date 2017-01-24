@@ -13,15 +13,20 @@ MessageRequestKeyStatusUpdate.prototype.execute = function(gameData, player) {
     if (this.key == Keys.SPACEBAR && this.pressed) {
         var angle = physicsBody.angle;
         var dir = [Math.cos(-angle), Math.sin(-angle)];
-        var chestOpenPos = [physicsBody.getPos()[0] + 1.0 * dir[0], physicsBody.getPos()[1] + 1.0 * dir[1]];
+        var interactablePos = [physicsBody.getPos()[0] + 1.0 * dir[0], physicsBody.getPos()[1] + 1.0 * dir[1]];
         var bodies = [];
         var distances = [];
-        gameData.world.physicsWorld.getBodiesInRadiusSorted(bodies, distances, chestOpenPos, 0.25);
+        gameData.world.physicsWorld.getBodiesInRadiusSorted(bodies, distances, interactablePos, 0.25);
         if (bodies.length > 0) {
             var targetEntity = gameData.world.physicsEntities[bodies[0]];
-            // Open only if player has nothing equipped in hands
-            if (targetEntity && targetEntity.chest && entity.equippedItems && !entity.equippedItems.items["tool"])
-                sendCommand(new CommandEntityOpenChest(entity.id, targetEntity.id));
+            // Interact only if player has nothing equipped in hands
+            if (targetEntity && targetEntity.interactable && entity.equippedItems && !entity.equippedItems.items["tool"]) {
+                if (!Interactable.isInteracting(targetEntity, entity)) {
+                    if (Interactable.canInteract(targetEntity, entity))
+                        sendCommand(new CommandEntityInteractEntity(entity.id, targetEntity.id, true));
+                } else
+                    sendCommand(new CommandEntityInteractEntity(entity.id, targetEntity.id, false));
+            }
         }
     }
 
