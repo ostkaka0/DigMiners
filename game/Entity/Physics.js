@@ -87,7 +87,7 @@ physicsBodySimulate = function(physicsBody, dt) {
             var dx = pos[0] - (worldBlockPos[0] + 0.5);
             var dy = pos[1] - (worldBlockPos[1] + 0.5);
 
-            if (Math.abs(dx) < radius + 0.5 && Math.abs(dy) < radius + 0.5) {
+            if (radius > 0 && Math.abs(dx) < radius + 0.5 && Math.abs(dy) < radius + 0.5) {
                 if (dy > dx) {
                     if (dy > -dx)
                         gameData.world.events.trigger("entityHitBlockSide", gameData.world.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.TOP);
@@ -115,7 +115,7 @@ physicsBodySimulate = function(physicsBody, dt) {
             var dx = pos[0] - (worldBlockPos[0] + 0.5);
             var dy = pos[1] - (worldBlockPos[1] + 0.5);
 
-            if (Math.abs(dx) < radius + 0.5 && Math.abs(dy) < radius + 0.5) {
+            if (radius > 0 && Math.abs(dx) < radius + 0.5 && Math.abs(dy) < radius + 0.5) {
                 var blockLeft = worldBlockPos[0];
                 var blockRight = worldBlockPos[0] + 1.0
                 var blockTop = worldBlockPos[1] + 1.0;
