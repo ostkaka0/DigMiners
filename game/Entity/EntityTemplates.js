@@ -11,6 +11,7 @@ entityTemplates.player = function(playerId, entityId, name, playerClass, teamId)
     entity.inventory = Inventory.createInventory(entityId);
     entity.equippedItems = new EquippedItems();
     entity.potionEffects = new PotionEffects();
+    entity.interacter = new Interacter(); // Server only used component
 
     var teamEnum = teamId;
     var feetSprite = new Sprite("feet.png");

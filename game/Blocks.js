@@ -302,9 +302,14 @@ Blocks.Chest = {
     buildDuration: 5,
     onPlace: BlockFunctions.createEntityBox,
     onCreateEntity: function(entity, entityId) {
-        entity.interactable = new Interactable();
+        entity.interactable = new Interactable(function(interactableEntity, entity) {
+            if (v2.distance(interactableEntity.physicsBody.getPos(), entity.physicsBody.getPos()) > 1.5)
+                return false;
+            return true;
+        });
         entity.chest = new Chest();
         entity.inventory = Inventory.createInventory(entityId);
+        entity.inventory.addItem(gameData, Items.RustyShovel.id, Math.floor(Math.random() * 8));
         return entity;
     }
 }

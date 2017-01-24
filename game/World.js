@@ -146,13 +146,30 @@ World.prototype.initializeEvents = function() {
 
     subscribeEvent(InteractableEvents.onInteract, this, function(interactableEntity, interactingEntity) {
         //console.log(interactingEntity.id + " is now interacting with " + interactableEntity.id);
-        if (isServer) {
+        if (!isServer) {
+            if (global.playerEntity && global.playerEntity.id == interactingEntity.id) {
+                if (interactableEntity.chest && interactableEntity.inventory) {
+                    //TODO: inventory size
+                    gameData.HUD.inventory2 = new InventoryHUD(interactableEntity.inventory, 10, 1, "Chest", 80);
+                    gameData.HUD.inventory2.update();
+                }
+            }
 
+            interactingEntity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArmAction", 200, true);
+            interactingEntity.bodyparts.bodyparts["leftArm"].cycle(gameData, "leftArmAction", 200, true);
         }
     });
 
     subscribeEvent(InteractableEvents.onFinishInteract, this, function(interactableEntity, interactingEntity) {
         //console.log(interactingEntity.id + " is no longer interacting with " + interactableEntity.id);
+        if (!isServer) {
+            if (global.playerEntity && global.playerEntity.id == interactingEntity.id) {
+                if (interactableEntity.chest && interactableEntity.inventory) {
+                    gameData.HUD.inventory2.remove();
+                    gameData.HUD.inventory2 = null;
+                }
+            }
+        }
     });
 
     this.events.on("entityHitBlockSide", function(entity, blockPos, blockType, blockCollisionSide) {
