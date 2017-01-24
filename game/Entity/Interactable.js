@@ -5,7 +5,7 @@ InteractableEvents.onFinishInteract = [];
 
 Interactable = function(canInteractFunction) {
     this.interacting = [];
-    this.canInteractFunction = canInteractFunction || (function(entity) { return true; });
+    this.canInteractFunction = canInteractFunction || (function(interactableEntity, entity) { return true; });
     this.canInteractFunction.bind(this);
 }
 
@@ -40,7 +40,7 @@ Interactable.isInteracting = function(interactableEntity, entity) {
 }
 
 Interactable.canInteract = function(interactableEntity, entity) {
-    return interactableEntity.interactable.canInteractFunction(entity);
+    return interactableEntity.interactable.canInteractFunction(interactableEntity, entity);
 }
 
 Interactable.setInteracting = function(interactableEntity, entity, booleanValue) {

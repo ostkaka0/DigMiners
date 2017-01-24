@@ -25,6 +25,6 @@ initConfig = function() {
         MessageRequestClickEntity, MessageRequestRotate, MessageRequestClickBlock, MessageRequestSpawn];
     Config.messageTypes = typeRegisterAddByArray([], Config.messagesToClient.concat(Config.messagesToServer));
     Config.componentTypes = typeRegisterAddByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent,
-        EquippedItems, Projectile, BlockPlacer, PotionEffects, Team, Inventory, Ammo, Chest, Interactable]);
+        EquippedItems, Projectile, BlockPlacer, PotionEffects, Team, Inventory, Ammo, Chest, Interactable, Interacter]);
     Config.gameModeRegister = typeRegisterAddByArray([], [/*GameModeBaseWar, */GameModeZombieInvasion]);
 }
