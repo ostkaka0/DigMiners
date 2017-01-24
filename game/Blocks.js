@@ -308,7 +308,7 @@ Blocks.Chest = {
             return true;
         });
         entity.chest = new Chest();
-        entity.inventory = Inventory.createInventory(entityId);
+        entity.inventory = Inventory.createInventory(entityId, 4, 4);
         entity.inventory.addItem(gameData, Items.RustyShovel.id, Math.floor(Math.random() * 8));
         return entity;
     }

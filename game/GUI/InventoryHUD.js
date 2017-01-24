@@ -2,10 +2,10 @@
 InventoryHUDEvents = {};
 InventoryHUDEvents.click = [];
 
-InventoryHUD = function(inventory, width, height, text, bottom) {
+InventoryHUD = function(inventory, text, bottom) {
     this.inventory = inventory;
-    this.inventoryWidth = width;
-    this.inventoryHeight = height;
+    this.inventoryWidth = inventory.width;
+    this.inventoryHeight = inventory.height;
 
     // create inventory
     this.inventoryHUD = $("<div>", {
