@@ -50,14 +50,12 @@ entityTemplates.player = function(playerId, entityId, name, playerClass, teamId)
     return entity;
 }
 
-entityTemplates.ghost = function(playerId, entityId, name, playerClass, teamId) {
+entityTemplates.ghost = function(playerId, entityId) {
     var entity = {};
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
-    entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 20.0, 1.0, 0.45);
-    entity.movement = new Movement(playerClass.speed * 30.0);
+    entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 5.0, 1.0, 0);
+    entity.movement = new Movement(5.0);
 
-    // Order of bodyparts is draw order
-    // Parameters: sprite, offsetX, offsetY, offsetAngle, pivot(v2), parent name
     var bodyparts = {
         "player": new BodyPart(new Sprite("ghost.png"), 0, 0, 0, null, null),
         "feet": new BodyPart(new Sprite(), 0, 0, 0, null, "player"),
