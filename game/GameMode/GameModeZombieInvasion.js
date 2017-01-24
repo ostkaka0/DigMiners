@@ -79,7 +79,7 @@ GameModeZombieInvasion.prototype.init = function() {
                 gameData.setTimeout(gameData.changeGameMode.bind(gameData), 5000);
         }
     }.bind(this));
-    
+
     subscribeEvent(gameData.playerWorld.onRemove, this, function(player) {
         if (this.survivors[player.id]) {
             delete this.survivors[player.id];
@@ -94,13 +94,13 @@ GameModeZombieInvasion.prototype.init = function() {
 GameModeZombieInvasion.prototype.createEntity = function(player, entityId, classId) {
     if (this.playerSpawning) {
         var classType = PlayerClassRegister[classId];
-        var entity = entityTemplates.ghost(player.id, entityId, player.name, classType, Teams.Human);
+        var entity = entityTemplates.player(player.id, entityId, player.name, classType, Teams.Human);
 
         // Set spawn position
         var pos = this.playerSpawns[Teams.Human][Math.random() * this.playerSpawns[Teams.Human].length >> 0];
         entity.physicsBody.setPos(pos);
         entity.physicsBody.posOld = v2.clone(pos);
-        
+
         this.survivors[player.id] = player;
         return entity;
     } else {
@@ -132,13 +132,13 @@ GameModeZombieInvasion.prototype.endWave = function() {
     this.playerSpawning = true;
     gameData.setTimeout(this.startWave.bind(this), this.wavePauseDuration);
     sendCommand(new CommandPopupMessage("Zombies are mutating"));
-    
+
 
 }
 
 GameModeZombieInvasion.prototype.startWave = function() {
     this.forceRespawnPlayers();
-    
+
     this.playerSpawning = false;
     this.waveNum++;
 
@@ -149,7 +149,7 @@ GameModeZombieInvasion.prototype.startWave = function() {
         entity.spawner.maxEntities = 5; //Math.max(1, Math.min(5, this.waveNum/4 + gameData.playerWorld.objectArray.length - 1));
     }.bind(this));
 
-    this.numZombiesToSpawn = 10 + 10 * Math.pow(2, this.waveNum/3);
+    this.numZombiesToSpawn = 10 + 10 * Math.pow(2, this.waveNum / 3);
     this.endingWave = false;
 }
 
@@ -179,7 +179,7 @@ GameModeZombieInvasion.prototype.forceRespawnPlayers = function() {
             console.error("entity is null");
             return;
         }
-        
+
         sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
         sendCommand(new CommandPlayerSpawn(player.id, entityId, player.name));
     }.bind(this));
