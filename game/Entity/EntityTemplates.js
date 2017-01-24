@@ -53,8 +53,8 @@ entityTemplates.player = function(playerId, entityId, name, playerClass, teamId)
 entityTemplates.ghost = function(playerId, entityId) {
     var entity = {};
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
-    entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 5.0, 1.0, 0);
-    entity.movement = new Movement(5.0);
+    entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 10.0, 1.0, 0);
+    entity.movement = new Movement(40.0);
 
     var bodyparts = {
         "player": new BodyPart(new Sprite("ghost.png"), 0, 0, 0, null, null),
