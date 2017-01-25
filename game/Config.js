@@ -15,6 +15,7 @@ initConfig = function() {
     Config.blockRegister = objectRegisterAddByObject([], Blocks);
     Config.projectileRegister = objectRegisterAddByObject([], Projectiles);
     Config.particleRegister = objectRegisterAddByObject([], Particles);
+    Config.particleFunctionRegister = objectRegisterAddByObject([], ParticleFunctions);
     Config.potionEffectTypeRegister = objectRegisterAddByObject([], PotionEffectTypes);
     Config.commandTypes = typeRegisterAddByArray([], [CommandEntityMove, CommandDig, CommandEntityDig, CommandEntityEquipItem, CommandEntityBuild, CommandEntityHealthChange,
         CommandEntitySpawn, CommandCollisions, CommandEntityDestroy, CommandPlayerJoin, CommandPlayerLeave, CommandPlayerSpawn, CommandKeyStatusUpdate,

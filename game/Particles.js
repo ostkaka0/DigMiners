@@ -2,9 +2,9 @@
 Particles = {};
 
 Particles.Egg = {
-    size: 2,
+    size: 1,
     alphaStart: 1.0,
-    alphaEnd: 1.0,
+    alphaEnd: 0.0,
     angleStart: 0.0,
     angleEnd: 10.0,
     scaleStart: [1.0, 1.0],
@@ -13,5 +13,5 @@ Particles.Egg = {
     colorEnd: [0, 0, 0],
     accelerationStart: 1.0,
     accelerationEnd: 1.0,
-    lifeTime: 500,
+    lifeTime: 200,
 }
