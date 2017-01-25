@@ -1,40 +1,36 @@
 
 ParticleWorld = function() {
-    this.numBodies = 0;
-    this.usedIds = [];
-
-    this.pos = [];
-    this.posOld = [];
-    this.velocity = [];
-    this.beginTime = [];
-    this.particleType = [];
+    this.particles = [];
 }
 
 ParticleWorld.prototype.update = function(dt) {
     var time = new Date().getTime();
-    this.forEach(function(id) {
-        var particleType = Config.particleRegister[this.particleType[id]];
-        var fracTime = (time - this.beginTime[id]) / particleType.lifeTime;
+    this.particles.forEach(function(particle) {
+        var particleType = Config.particleRegister[particle[4]];
+        var fracTime = (time - particle[3]) / particleType.lifeTime;
         var acceleration = fracTime * particleType.accelerationEnd + (1 - fracTime) * particleType.accelerationStart;
-        this.velocity[id * 2] *= acceleration;
-        this.velocity[id * 2 + 1] *= acceleration;
-        this.posOld[id * 2] = this.pos[id * 2];
-        this.posOld[id * 2 + 1] = this.pos[id * 2 + 1];
-        this.pos[id * 2] += dt * this.velocity[id * 2];
-        this.pos[id * 2 + 1] += dt * this.velocity[id * 2 + 1];
+        var newVelocity = [0, 0];
+        v2.mul(acceleration, particle[2], newVelocity);
+        particle[2] = newVelocity;
+        particle[1] = v2.clone(particle[0]);
+        var dtVel = [0, 0];
+        v2.mul(dt, newVelocity, dtVel);
+        var newPos = [0, 0];
+        v2.add(particle[0], dtVel, newPos);
+        particle[0] = newPos;
     }.bind(this));
 }
 
 ParticleWorld.prototype.render = function(tickFracTime) {
     var time = new Date().getTime();
-    this.forEach(function(id) {
-        var particleType = Config.particleRegister[this.particleType[id]];
-        var fracTime = (time - this.beginTime[id]) / particleType.lifeTime;
+    this.particles.forEach(function(particle) {
+        var particleType = Config.particleRegister[particle[4]];
+        var fracTime = (time - particle[3]) / particleType.lifeTime;
         if (fracTime >= 1.0)
-            this.remove(id);
+            this.remove(particle);
         else {
-            var x = -camera.pos[0] + canvas.width / 2 + 32.0 * (tickFracTime * this.pos[2 * id] + (1 - tickFracTime) * this.posOld[2 * id]);
-            var y = camera.pos[1] + canvas.height / 2 - 32.0 * (tickFracTime * this.pos[2 * id + 1] + (1 - tickFracTime) * this.posOld[2 * id + 1]);
+            var x = -camera.pos[0] + canvas.width / 2 + 32.0 * (tickFracTime * particle[0][0] + (1 - tickFracTime) * particle[1][0]);
+            var y = camera.pos[1] + canvas.height / 2 - 32.0 * (tickFracTime * particle[0][1] + (1 - tickFracTime) * particle[1][1]);
             var scale = [fracTime * particleType.scaleEnd[0] + (1 - fracTime) * particleType.scaleStart[0], fracTime * particleType.scaleEnd[1] + (1 - fracTime) * particleType.scaleStart[1]];
             var angle = fracTime * particleType.angleEnd + (1 - fracTime) * particleType.angleStart;
 
@@ -62,28 +58,11 @@ ParticleWorld.prototype.render = function(tickFracTime) {
 }
 
 ParticleWorld.prototype.add = function(pos, velocity, particleType) {
-    var id = this.numBodies++;
-    this.pos.push(pos[0], pos[1]);
-    this.posOld.push(pos[0], pos[1]);
-    this.velocity.push(velocity[0], velocity[1]);
-    this.beginTime.push(new Date().getTime());
-    this.particleType.push(particleType.id);
-    return id;
+    this.particles.push([pos, pos, velocity, new Date().getTime(), particleType.id]);
 }
 
-ParticleWorld.prototype.remove = function(id) {
-    this.usedIds.push(id);
-}
-
-ParticleWorld.prototype.forEach = function(userFunction) {
-    var usedId = this.usedIds[0];
-    var usedIdsIndex = 0;
-    for (var id = 0; id < this.numBodies; id++) {
-        if (id == usedId) {
-            usedIdsIndex++;
-            usedId = this.usedIds[usedIdsIndex];
-            continue;
-        }
-        userFunction(id);
-    }
+ParticleWorld.prototype.remove = function(particle) {
+    var index = this.particles.indexOf(particle);
+    if (index != -1)
+        this.particles.splice(index, 1);
 }
