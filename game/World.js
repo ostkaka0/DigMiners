@@ -4,8 +4,7 @@ World = function() {
     this.tickId = 0;
     this.idList = (isServer) ? new IdList() : null;
     this.entityWorld = new ObjectWorld(true);
-    this.particleEmitterWorld = new ObjectWorld();
-    this.particleEmitterIdList = new IdList();
+    this.particleWorld = new ParticleWorld();
     this.tileWorld = new Map2D();
     this.blockWorld = new Map2D();
     this.physicsWorld = new PhysicsWorld();
@@ -49,7 +48,6 @@ World.prototype.tick = function(dt) {
         });
     });
     this.entityWorld.update();
-    this.particleEmitterWorld.update();
     this.tickId++;
 }
 
@@ -78,7 +76,7 @@ World.prototype.initializeEvents = function() {
             this.entityWorld.remove(projectileEntity);
         }.bind(this, projectileEntity), projectileEntity.projectile.projectileType.stayTime);
         if (!isServer)
-            createDespawningParticles(projectileEntity.projectile.projectileType.hitParticle(), hitPos, 200);
+            createParticles(ParticleFunctions.BulletHitParticles, hitPos, projectileEntity.projectile.angle);
     }.bind(this));
 
     subscribeEvent(ProjectileEvents.onHitEntity, this, function(projectileEntity, hitEntity) {
