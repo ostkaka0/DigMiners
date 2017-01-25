@@ -28,43 +28,11 @@ PointWorld.prototype.add = function(pos, radius) {
     this.radiusArray[pointId] = radius;
     this._insertToTree(pos, radius, pointId);
     return pointId;
-    
-    /*var nodePos = [0, 0, 0];
-    var node = 0;
-    var nodeSize = this.size * 2;
-    var localV2Pos = [pos[0] / 2.0 / this.size + 0.5, pos[1] / 2.0 / this.size + 0.5]
-    
-    while(true) {
-        if (4 * radius > nodeSize) break;
-        if (this.quadtree.isChild(node);
-        
-        var index = ((localV2Pos[0] < 0.5)? 0 : 1) + ((localV2Pos[1] < 0.5)? 0 : 2);
-        var child = this.quadtree.array[node | index];
-        if (!child) return;
-        node = child;
-        
-        v2.mul(2, nodePos);
-        nodeSize /= 2;
-        
-        var index = 0;
-        if (index & 1) {
-            index += 1;
-            nodePos[0] += 1;
-            localV2Pos[0] -= 0.5;
-        }
-        if (index & 2) {
-            index += 2;
-            nodePos[1] += 1;
-            localV2Pos[1] -= 0.5;
-        }
-        v2.mul(2, localV2Pos, localV2Pos);
-    }*/
-    
 }
 
 PointWorld.prototype.remove = function(pointId) {
     this._eraseFromTree(pointId, this.getPos(pointId), this.getRadius(pointId));
-    this.idList.remove(pointId);
+    this.idList.removeSorted(pointId);
 }
 
 PointWorld.prototype.movePoint = function(pointId, pos, radius) {
@@ -73,6 +41,10 @@ PointWorld.prototype.movePoint = function(pointId, pos, radius) {
     this.posArray[2 * pointId + 1] = pos[1];
     this.radiusArray[pointId] = radius;
     this._insertToTree(pos, radius, pointId);
+}
+
+PointWorld.prototype.forEach = function(callback) {
+    this.idList.forEach(callback);
 }
 
 PointWorld.prototype.findInRadius = function(points, pos, radius, node, nodePos) {

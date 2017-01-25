@@ -21,19 +21,13 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         
-        pointWorld.quadtree.forEach(function(nodePos, node) {
-            var nodeArray = pointWorld.nodeArrays[node >> 2];
-            if (!nodeArray || nodeArray.length == 0) return;
-            (function(context, nodeArray) { 
-                for(var i = 0; i < nodeArray.length; i++) {
-                    var pointId = nodeArray[i];
-                    var pointPos = pointWorld.getPos(pointId);
-                    var pointRadius = pointWorld.getRadius(pointId);
-                    var transform = new DrawTransform([(0.5 + 0.5 *pointPos[0]) * canvas.width, (0.5 + 0.5 *pointPos[1]) * canvas.height], 0, [canvas.width*pointRadius, canvas.height*pointRadius]);
-                    var newPos = [-0.5 + Math.random(), -0.5 + Math.random()];
-                    newPos = [0.999 * pointPos[0] - 0.01 * newPos[1], 0.999 * pointPos[1] + 0.01 * newPos[0]];
-                    pointWorld.movePoint(pointId, newPos, pointRadius);
-            }})(context, nodeArray);
+        pointWorld.forEach(function(pointId) {
+            var pointPos = pointWorld.getPos(pointId);
+            var pointRadius = pointWorld.getRadius(pointId);
+            var transform = new DrawTransform([(0.5 + 0.5 *pointPos[0]) * canvas.width, (0.5 + 0.5 *pointPos[1]) * canvas.height], 0, [canvas.width*pointRadius, canvas.height*pointRadius]);
+            var newPos = [-0.5 + Math.random(), -0.5 + Math.random()];
+            newPos = [0.999 * pointPos[0] - 0.01 * newPos[1], 0.999 * pointPos[1] + 0.01 * newPos[0]];
+            pointWorld.movePoint(pointId, newPos, pointRadius);
         });
         
         render();
