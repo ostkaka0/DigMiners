@@ -79,7 +79,7 @@ World.prototype.initializeEvents = function() {
             createParticles(ParticleFunctions.BulletHitParticles, hitPos, projectileEntity.projectile.angle);
     }.bind(this));
 
-    subscribeEvent(ProjectileEvents.onHitEntity, this, function(projectileEntity, hitEntity) {
+    subscribeEvent(ProjectileEvents.onHitEntity, this, function(projectileEntity, hitEntity, hitPos) {
         if (isServer) {
             if (hitEntity && hitEntity.health && projectileEntity.projectile.projectileType.damage > 0) {
                 var damage = projectileEntity.projectile.projectileType.damage * projectileEntity.projectile.damageFactor;
@@ -87,6 +87,7 @@ World.prototype.initializeEvents = function() {
                 var shooterId = projectileEntity.projectile.shooterEntityId;
                 var shooter = this.entityWorld.objects[shooterId];
                 hitEntity.health.hurt(hitEntity, shooter, damage, armorPenentration);
+                sendCommand(new CommandParticles(ParticleFunctions.BloodHitParticles.id, hitPos, projectileEntity.projectile.angle));
             }
         }
     }.bind(this));
