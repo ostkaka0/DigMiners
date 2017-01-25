@@ -170,6 +170,18 @@ tick = function(dt) {
     gameData.world.entityWorld.objectArray.forEach(function(entity) {
         if (entity.behaviourContainer)
             entity.behaviourContainer.update();
+        //TODO: 20 magic number
+        if (entity.interacter && entity.interacter.interacting && (!entity.interacter.lastCheck || gameData.world.tickId - entity.interacter.lastCheck > 20)) {
+            var interactableEntity = gameData.world.entityWorld.objects[entity.interacter.interacting];
+            if (interactableEntity) {
+                if (!Interactable.canInteract(interactableEntity, entity)) {
+                    sendCommand(new CommandEntityInteractEntity(entity.id, interactableEntity.id, false));
+                    entity.interacter.interacting = null;
+                    entity.interacter.lastCheck = null;
+                }
+            }
+            entity.interacter.lastCheck = gameData.world.tickId;
+        }
     });
     var tick_end = process.hrtime(tick_begin);
     totalTickTime += (tick_end[0] * 1e3 + tick_end[1] / 1e6);

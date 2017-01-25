@@ -1,15 +1,17 @@
 
-Inventory = function(inventoryId, entityId) {
+Inventory = function(inventoryId, entityId, width, height) {
     this.items = [];
     this.inventoryId = inventoryId;
     this.entityId = entityId;
+    this.width = width;
+    this.height = height;
 }
 
-Inventory.createInventory = function(entityId) {
+Inventory.createInventory = function(entityId, width, height) {
     if (!isServer)
         throw ("Tried to create inventory on client.")
     var inventoryId = gameData.world.inventoryIdList.next();
-    var inventory = new Inventory(inventoryId, entityId);
+    var inventory = new Inventory(inventoryId, entityId, width, height);
     gameData.world.inventories[inventoryId] = inventory;
     if (!gameData.world.entityInventories[entityId])
         gameData.world.entityInventories[entityId] = [];
@@ -33,6 +35,8 @@ Inventory.prototype.name = inventory.name; function inventory() { };
 
 Inventory.prototype.serialize = function(byteArray, index) {
     serializeInt32(byteArray, index, this.inventoryId);
+    serializeInt32(byteArray, index, this.width);
+    serializeInt32(byteArray, index, this.height);
     serializeInt32(byteArray, index, this.items.length);
     for (var i = 0; i < this.items.length; ++i) {
         serializeInt32(byteArray, index, this.items[i].id);
@@ -44,6 +48,8 @@ Inventory.prototype.serialize = function(byteArray, index) {
 
 Inventory.prototype.deserialize = function(byteArray, index) {
     this.inventoryId = deserializeInt32(byteArray, index);
+    this.width = deserializeInt32(byteArray, index);
+    this.height = deserializeInt32(byteArray, index);
     this.items = [];
     var itemsLength = deserializeInt32(byteArray, index);
     for (var i = 0; i < itemsLength; ++i) {
@@ -61,7 +67,7 @@ Inventory.prototype.deserialize = function(byteArray, index) {
 }
 
 Inventory.prototype.getSerializationSize = function() {
-    return 8 + this.items.length * 9;
+    return 16 + this.items.length * 9;
 }
 
 Inventory.prototype.sortItems = function() {
@@ -87,7 +93,7 @@ Inventory.prototype.sortItems = function() {
 Inventory.prototype.addItem = function(gameData, id, amount) {
     //console.log("adding " + amount + " " + id);
     var maxStack = Config.itemRegister[id].maxStackSize;
-    for (var i = 0; true; ++i) {
+    for (var i = 0; i < this.width * this.height; ++i) {
         if (amount < 0) {
             console.log("inventory bad thing happens!");
             this.sortItems();

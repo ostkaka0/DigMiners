@@ -2,10 +2,10 @@
 InventoryHUDEvents = {};
 InventoryHUDEvents.click = [];
 
-InventoryHUD = function(inventory, width, height, text, bottom) {
+InventoryHUD = function(inventory, text, bottom) {
     this.inventory = inventory;
-    this.inventoryWidth = width;
-    this.inventoryHeight = height;
+    this.inventoryWidth = inventory.width;
+    this.inventoryHeight = inventory.height;
 
     // create inventory
     this.inventoryHUD = $("<div>", {
@@ -67,17 +67,6 @@ InventoryHUD = function(inventory, width, height, text, bottom) {
             "width": "34px",
             "height": "34px",
             "background-image": "url(\"data/textures/inventorySlotSmall2.png\")",
-        });
-        slot.mouseenter(function() {
-            var text = $(this).find('.slotDescriber');
-            text.fadeIn(50);
-            var amount = $(this).find('.slotTextContainer');
-            amount.fadeOut(50);
-        }).mouseleave(function() {
-            var text = $(this).find('.slotDescriber');
-            text.fadeOut(50);
-            var amount = $(this).find('.slotTextContainer');
-            amount.fadeIn(50);
         });
 
         var describer = $("<div>", {
@@ -181,6 +170,18 @@ InventoryHUD.prototype.update = function() {
                 var slotId = $(this).attr("slotId");
                 var message = new MessageRequestClickSlot(context.inventory.inventoryId, slotId, InventoryClickTypes.RIGHT_CLICK);
                 message.send(socket);
+            });
+            $(slot).mouseenter(function() {
+                var text = $(this).find('.slotDescriber');
+                text.fadeIn(50);
+                var amount = $(this).find('.slotTextContainer');
+                amount.fadeOut(50);
+            });
+            $(slot).mouseleave(function() {
+                var text = $(this).find('.slotDescriber');
+                text.fadeOut(50);
+                var amount = $(this).find('.slotTextContainer');
+                amount.fadeIn(50);
             });
         } else {
             slotImageContainer.style.backgroundImage = "";

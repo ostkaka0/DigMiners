@@ -1,6 +1,6 @@
 
 DeathScreen = function() {
-    this.width = 320;
+    this.width = 490;
     this.height = 200;
 
     this.root = $("<div>").appendTo("body");
@@ -65,7 +65,9 @@ DeathScreen = function() {
             "text": classType.name,
             "classnumber": currentClass
         }).appendTo(this.checkboxHolder);
-        buttonLabel.css({ "width": (100 / keys.length) + "%", });
+        buttonLabel.css({
+            "width": (100 / keys.length) + "%",
+        });
 
         var buttonInput = $("<input>", {
             "type": "radio",

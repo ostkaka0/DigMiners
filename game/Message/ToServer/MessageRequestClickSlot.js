@@ -8,11 +8,18 @@ MessageRequestClickSlot = function(inventoryId, slotId, clickType) {
 MessageRequestClickSlot.prototype.execute = function(gameData, player) {
     var entity = gameData.world.entityWorld.objects[player.entityId];
     if (!entity) return;
-    //TODO: Make sure players don't hack into other entities inventories.
     var inventory = gameData.world.inventories[this.inventoryId];
     if (!inventory) return;
-    if (entity.inventory && entity.inventory.inventoryId != this.inventoryId)
-        console.log("entity tried to access other than self inventory!");
+    if (entity.inventory && entity.inventory.inventoryId != this.inventoryId) {
+        if (!entity.interacter || !entity.interacter.interacting)
+            return;
+        var interactableEntity = gameData.world.entityWorld.objects[entity.interacter.interacting];
+        if (!interactableEntity || !interactableEntity.inventory)
+            return;
+        if (interactableEntity.inventory.inventoryId != this.inventoryId)
+            return;
+        return;
+    }
     var item = inventory.items[this.slotId];
     if (!item) return;
     /*if (this.clickType == InventoryClickTypes.RIGHT_CLICK) {

@@ -52,7 +52,7 @@ Entity.canReload = function(entity, itemType) {
 }
 
 Entity.canUseTool = function(entity, itemType) {
-    if (!itemType) return false;
+    if (!itemType || itemType.typeOfType == "block") return false;
     if (itemType.typeOfType != "rangedWeapon") return true;
     if (!entity.inventory) return false;
     var stackId = entity.inventory.getEquippedStackId("tool");
