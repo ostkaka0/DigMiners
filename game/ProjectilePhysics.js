@@ -43,7 +43,7 @@ projectileEntitySimulate = function(entity, dt) {
         for (var j = 0; j < bodies.length; ++j) {
             var hitEntity = gameData.world.physicsEntities[bodies[j]];
             if (hitEntity && (!projectile.shooterEntityId || hitEntity.id != projectile.shooterEntityId)) {
-                triggerEvent(ProjectileEvents.onHitEntity, entity, hitEntity);
+                triggerEvent(ProjectileEvents.onHitEntity, entity, hitEntity, pos);
                 projectile.hit = true;
                 break;
             }

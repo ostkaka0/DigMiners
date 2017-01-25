@@ -31,13 +31,14 @@ Health.prototype.destroy = function(entity) {
 
 Health.prototype.hurt = function(entity, attacker, damage, armorPenentration) {
     if (!isServer)
-        return;
+        return false;
     if (attacker && entity.id != attacker.id && entity.team && attacker.team && entity.team.value != Teams.None && entity.team.value == attacker.team.value)
-        return;
+        return false;
     if (attacker && attacker.movement)
         damage *= attacker.movement.damageMultiplier;
-        
+
     armorPenentration = armorPenentration || 0.0;
-        
+
     sendCommand(new CommandEntityHealthChange(entity.id, -Math.min(1.0, (1.0 - this.armor + armorPenentration)) * damage));
+    return true;
 }
