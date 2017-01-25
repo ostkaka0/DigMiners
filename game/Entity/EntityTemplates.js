@@ -1,16 +1,15 @@
 entityTemplates = {};
 
-
-
 entityTemplates.player = function(playerId, entityId, name, playerClass, teamId) {
     var entity = {};
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 20.0, 1.0, 0.45);
     entity.movement = new Movement(playerClass.speed * 30.0);
     entity.nameComponent = new NameComponent(name);
-    entity.inventory = Inventory.createInventory(entityId);
+    entity.inventory = Inventory.createInventory(entityId, 10, 1);
     entity.equippedItems = new EquippedItems();
     entity.potionEffects = new PotionEffects();
+    entity.interacter = new Interacter(); // Server only used component
 
     var teamEnum = teamId;
     var feetSprite = new Sprite("feet.png");
@@ -51,6 +50,29 @@ entityTemplates.player = function(playerId, entityId, name, playerClass, teamId)
     return entity;
 }
 
+entityTemplates.ghost = function(playerId, entityId) {
+    var entity = {};
+    entity.controlledByPlayer = new ControlledByPlayer(playerId);
+    entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 10.0, 1.0, 0);
+    entity.movement = new Movement(40.0);
+
+    var bodyparts = {
+        "player": new BodyPart(new Sprite("ghost.png"), 0, 0, 0, null, null),
+        "feet": new BodyPart(new Sprite(), 0, 0, 0, null, "player"),
+        "leftArm": new BodyPart(new Sprite(), 5, -4, 0, [10, 23], "body"),
+        "tool": new BodyPart(new Sprite(), -10, 15, 0, null, "rightArm"),
+        "rightArm": new BodyPart(new Sprite(), 5, 4, 0, [10, 11], "body"),
+        "body": new BodyPart(new Sprite(), 0, 0, 0, null, "player"),
+        "head": new BodyPart(new Sprite(), 1, 0, 0, null, "player"),
+        "hat": new BodyPart(new Sprite(), 1, 0, 0, null, "player")
+    };
+
+    entity.bodyparts = new Bodyparts(bodyparts);
+    entity.drawable = new Drawable(1);
+
+    return entity;
+}
+
 entityTemplates.playerZombie = function(playerId, entityId, name, pos, playerClass) {
     var entity = entityTemplates.zombie(entityId, pos, Teams.Zombie);
     entity.behaviourContainer = undefined;
@@ -82,7 +104,7 @@ entityTemplates.testMonster = function(entityId, pos, teamId) {
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0, 1.0, 0.3);
     entity.movement = new Movement(20.0, 0.25, 1.0, 0.5);
     entity.nameComponent = new NameComponent(entityId);
-    entity.inventory = Inventory.createInventory(entityId);
+    entity.inventory = Inventory.createInventory(entityId), 10, 1;
     entity.equippedItems = new EquippedItems();
     entity.potionEffects = new PotionEffects();
 
@@ -127,7 +149,7 @@ entityTemplates.zombie = function(entityId, pos, teamId) {
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0, 1.0, 0.3);
     entity.movement = new Movement(20.0, 0.25, 1.0, 0.5);
     entity.nameComponent = new NameComponent("Zombie");
-    entity.inventory = Inventory.createInventory(entityId);
+    entity.inventory = Inventory.createInventory(entityId, 10, 1);
     entity.equippedItems = new EquippedItems();
     entity.potionEffects = new PotionEffects();
 

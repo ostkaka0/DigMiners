@@ -25,8 +25,6 @@ HUD = function(gameData) {
         e.preventDefault();
     });
 
-    //this.inventory2 = new InventoryHUD(8, 8, "Chest", 80);
-
     this.dugItems = new DugItems();
 
     this.chat = new Chat();
