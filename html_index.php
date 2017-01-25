@@ -1,12 +1,5 @@
 <html>
     <head>
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-    (adsbygoogle = window.adsbygoogle || []).push({
-        google_ad_client: "ca-pub-9476867787742374",
-        enable_page_level_ads: true
-    });
-    </script>
     <title>DigMiners</title>
     <link rel="stylesheet" type="text/css" href="tether.min.css"/>
     <link rel="stylesheet" type="text/css" href="bootstrap.min.css"/>
@@ -29,7 +22,6 @@
         </script>
         <div class="hud" id="hud">
             <div class="crafting" id="crafting"></div>
-            <!--<div class="chat" id="chat">chat</div>-->
         </div>
         <?php
             function scriptVersion($fileName){
