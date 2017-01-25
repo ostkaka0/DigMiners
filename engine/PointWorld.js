@@ -10,7 +10,7 @@ PointWorld = function(size) {
     this.radiusArray = [];
 }
 
-PointWorld.maxNodePoints = 1; // Max points per node / page
+PointWorld.maxNodePoints = 4; // Max points per node / page
 
 PointWorld.prototype.getRadius = function(pointId) {
     return this.radiusArray[pointId];
@@ -224,10 +224,10 @@ PointWorld.prototype._mergeParent = function(childToMerge) {
         var child = this.quadtree.array[parent | i];
         var childArray = this.nodeArrays[child >> 2];
         if (!childArray) continue;
-        //if (parentArray == null)
-        //    this.nodeArrays[parent >> 2] = childArray;
-        //else
-        //    this.nodeArrays[parent >> 2] = parentArray.concat(childArray);
+        if (parentArray == null)
+            this.nodeArrays[parent >> 2] = childArray;
+        else
+            this.nodeArrays[parent >> 2] = parentArray.concat(childArray);
         parentArray = this.nodeArrays[parent >> 2];
         this.nodeArrays[child >> 2] = null;
     }
@@ -257,8 +257,8 @@ PointWorld.prototype._eraseFromTree = function(pointId, pos, radius) {
     if (nodeArray.length == 1) {
         this.nodeArrays[node >> 2] = null;
     } else {
-        for (var i = 0; i < nodeArray.length; i++) {
-            if (i == nodeArray.length - 1 && nodeArray[i] != pointId)
+        for (var i = 0; true; i++) {
+            if (i == nodeArray.length)
                 console.error("Could not find node!!!");
             if (nodeArray[i] != pointId) continue;
             nodeArray.splice(i, 1);
