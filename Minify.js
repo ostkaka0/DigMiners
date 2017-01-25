@@ -420,7 +420,6 @@ loadRecursive("lib", loadExternalScript);
 loadRecursive("lib_front_end", loadExternalScript);
 
 loadScript("lib/perlin.js");
-loadScript("lib_front_end/bpixi-particles.min.js");
 loadRecursive("engine", loadScript);
 loadRecursive("game", loadScript);
 loadScript("DigMiners.js");

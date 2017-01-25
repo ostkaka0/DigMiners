@@ -30,7 +30,7 @@ Sprite.prototype.begin = function(context) {
 }
 
 Sprite.prototype.end = function(context) {
-    context.globalAlpha = 0.0;
+    context.globalAlpha = 1.0;
     context.translate(this.pivot[0], this.pivot[1]);
     context.translate(this.anchor[0] * this.getSize()[0], this.anchor[1] * this.getSize()[1]);
     context.scale(1.0 / this.scale[0], 1.0 / this.scale[1]);
