@@ -94,9 +94,9 @@ Quadtree.prototype.eraseChildren = function(node, erasedNodes) {
         if (child == node) console.error("Child equals parent");
         if (erasedNodes)
             erasedNodes.push(child);
-        this.eraseChildren(child, erasedNodes);
-        this.idList.remove(child / 2 >> 0);
+        this.idList.remove(child >> 2);
         this.array[node | i] = 0;
+        this.eraseChildren(child, erasedNodes);
     }
 }
 

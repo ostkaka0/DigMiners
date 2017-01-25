@@ -5,8 +5,8 @@
     var startTime = Date.now();
     var textures = null;
     var pointWorld = new PointWorld(1.0)
-    for (var i = 0; i < 0; i++) {
-        pointWorld.add([-1 + 2 * Math.random(), -1 + 2 * Math.random()], 0.0);
+    for (var i = 0; i < 100; i++) {
+        pointWorld.add([-1 + 2 * Math.random(), -1 + 2 * Math.random()], 0.1);
     }
     
     preload = function() {
@@ -20,6 +20,22 @@
     update = function() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
+        
+        pointWorld.quadtree.forEach(function(nodePos, node) {
+            var nodeArray = pointWorld.nodeArrays[node >> 2];
+            if (!nodeArray || nodeArray.length == 0) return;
+            (function(context, nodeArray) { 
+                for(var i = 0; i < nodeArray.length; i++) {
+                    var pointId = nodeArray[i];
+                    var pointPos = pointWorld.getPos(pointId);
+                    var pointRadius = pointWorld.getRadius(pointId);
+                    var transform = new DrawTransform([(0.5 + 0.5 *pointPos[0]) * canvas.width, (0.5 + 0.5 *pointPos[1]) * canvas.height], 0, [canvas.width*pointRadius, canvas.height*pointRadius]);
+                    var newPos = [-0.5 + Math.random(), -0.5 + Math.random()];
+                    newPos = [0.999 * pointPos[0] - 0.01 * newPos[1], 0.999 * pointPos[1] + 0.01 * newPos[0]];
+                    pointWorld.movePoint(pointId, newPos, pointRadius);
+            }})(context, nodeArray);
+        });
+        
         render();
         window.requestAnimationFrame(update, 1000.0/60.0);
     }
@@ -56,7 +72,8 @@
                 for(var i = 0; i < nodeArray.length; i++) {
                     var pointId = nodeArray[i];
                     var pointPos = pointWorld.getPos(pointId);
-                    var transform = new DrawTransform([(0.5 + 0.5 *pointPos[0]) * canvas.width, (0.5 + 0.5 *pointPos[1]) * canvas.height], time, [32.0, 32.0]);
+                    var pointRadius = pointWorld.getRadius(pointId);
+                    var transform = new DrawTransform([(0.5 + 0.5 *pointPos[0]) * canvas.width, (0.5 + 0.5 *pointPos[1]) * canvas.height], 0, [canvas.width*pointRadius, canvas.height*pointRadius]);
                     transform.begin(context);
                     context.drawImage(textures["egg.png"], 0, 0, 1, 1);
                     transform.end(context);
@@ -70,12 +87,23 @@
     $("body").mousedown(function(event) {
         var x = -1 + 2 * event.pageX / canvas.width;
         var y = 1 - 2 * event.pageY / canvas.height;
-        var radius = 0.00;
-        var pointId = pointWorld.add([x, y], radius);
-        // Validate:
-        var pointPos = pointWorld.getPos(pointId);
-        if (pointPos[0] != x || pointPos[1] != y)
-            console.error("Point position is incorrect!");
+        
+        var points = [];
+        pointWorld.findInRadius(points, [x, y], 0.0);
+        
+        for (var i = 0; i < points.length; i++) {
+            var pointId = points[i];
+            pointWorld.remove(pointId);
+        }
+        
+        if (points.length == 0) {
+            var radius = 0.2 / Math.pow(2, 6 * Math.random());
+            var pointId = pointWorld.add([x, y], radius);
+            // Validate:
+            var pointPos = pointWorld.getPos(pointId);
+            if (pointPos[0] != x || pointPos[1] != y)
+                console.error("Point position is incorrect!");
+        }
     });
     
     preload();
