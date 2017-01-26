@@ -110,7 +110,6 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
             var blockPos = doors[i];
             sendCommand(new CommandBuild(blockPos[0], blockPos[1], Blocks.RedForcefieldOpen.id, BlockTypes.FOREGROUND));
             sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], checked[blockPos[0]][blockPos[1]]));
-            //sendCommand(new CommandParticles(Particles.Door.id, [blockPos[0] + 0.5, blockPos[1] + 0.5], 100));
         }
 
         var blockTypeId = blockType.id;
@@ -148,7 +147,6 @@ BlockDoorFunctions.blueForcefield = function(blockPos, blockType, entity, clickT
     gameData.setTimeout(function() {
         sendCommand(new CommandBuild(blockPos[0], blockPos[1], Blocks.BlueForcefieldOpen.id, BlockTypes.FOREGROUND));
         sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], startStrength));
-        //sendCommand(new CommandParticles(Particles.Door.id, [startBlockPos[0] + 0.5, startBlockPos[1] + 0.5], 100));
 
         var checkDoorClose = function() {
             gameData.setTimeout(function() {
