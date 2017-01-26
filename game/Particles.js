@@ -13,7 +13,7 @@ Particles.Bullet = {
     colorEnd: [0, 0, 0],
     accelerationStart: 1.0,
     accelerationEnd: 1.0,
-    lifeTime: 200,
+    lifeTime: 100,
 }
 
 Particles.Blood = {
