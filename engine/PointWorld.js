@@ -33,6 +33,7 @@ PointWorld.prototype.add = function(pos, radius) {
 PointWorld.prototype.remove = function(pointId) {
     this._eraseFromTree(pointId, this.getPos(pointId), this.getRadius(pointId));
     this.idList.removeSorted(pointId);
+    console.log(this.idList);
 }
 
 PointWorld.prototype.movePoint = function(pointId, pos, radius) {
@@ -50,7 +51,7 @@ PointWorld.prototype.forEach = function(callback) {
 PointWorld.prototype.findInRadius = function(points, pos, radius, node, nodePos) {
     node = node || 0;
     nodePos = nodePos || [0, 0, 0];
-    
+
     nodeArray = this.nodeArrays[node >> 2];
     if (nodeArray) {
         for (var i = 0; i < nodeArray.length; i++) {
@@ -62,7 +63,7 @@ PointWorld.prototype.findInRadius = function(points, pos, radius, node, nodePos)
                 points.push(pointId);
         }
     }
-    
+
     for (var i = 0; i < 4; i++) {
         var child = this.quadtree.array[node | i];
         if (child)
@@ -81,13 +82,13 @@ PointWorld.prototype._expand = function(size) {
 PointWorld.prototype._findNodeV2 = function(refNodePos, node, pos, radius) {
     var nodeSize = this.size/2;
     var localV2Pos = [pos[0] / 2.0 / this.size + 0.5, pos[1] / 2.0 / this.size + 0.5]
-    
+
     //var index = (((0.5 + otherPos[0] / 2 / this.size - nodePos[0]) * (1 << nodePos[2]) < 0.5)? 0 : 1) | (((0.5 + otherPos[1] / 2 / this.size - nodePos[1]) * (1 << nodePos[2]) < 0.5)? 0 : 2);
-    
+
     while(true) {
         if (radius >= nodeSize) break;
         if (this.quadtree.isLeaf(node)) break;
-        
+
         var index = ((localV2Pos[0] < 0.5)? 0 : 1) | ((localV2Pos[1] < 0.5)? 0 : 2);
         var child = this.quadtree.array[node | index];
         if (!child) return;
@@ -96,7 +97,7 @@ PointWorld.prototype._findNodeV2 = function(refNodePos, node, pos, radius) {
         refNodePos[0] *= 2;
         refNodePos[1] *= 2;
         refNodePos[2]++;
-        
+
         if (index & 1) {
             localV2Pos[0] -= 0.5;
             refNodePos[0]++;
@@ -114,21 +115,21 @@ PointWorld.prototype._insertToTree = function(pos, radius, pointId) {
     var nodePos = [0, 0, 0];
     var node = this._findNodeV2(nodePos, 0, pos, radius);
     var nodeArray = this.nodeArrays[node >> 2];
-    
+
     if (!nodeArray) {
         this.nodeArrays[node >> 2] = [pointId];
         return;
     }
     nodeArray.push(pointId);
-    
+
     ////////////////////////////////////////////////////////
     // Split node:
     ////////////////////////////////////////////////////////
-    
+
     // Deny split
     if (nodeArray.length <= PointWorld.maxNodePoints || this.quadtree.isBranch(node) || nodePos[2] == 32)
         return;
-    
+
     // Deny split when too large
     var nodeSize = this.size / 2 * Math.pow(2, -nodePos[2]);
     for (var i = 0; true; i++) {
@@ -136,7 +137,7 @@ PointWorld.prototype._insertToTree = function(pos, radius, pointId) {
         var radius = this.getRadius(nodeArray[i]);
         if (radius < nodeSize) break; // Split
     }
-        
+
     // Split:
     this.quadtree.insertChildren(node);
     while (this.nodeParents.length < (this.quadtree.array.length >> 2)) this.nodeParents.push(0);
@@ -144,7 +145,7 @@ PointWorld.prototype._insertToTree = function(pos, radius, pointId) {
     for (var i = 0; i < 4; i++)
         this.nodeParents[this.quadtree.array[node | i] >> 2] = node;
     this.nodeArrays[node >> 2] = null;
-    
+
     for (var i = 0; i < nodeArray.length; i++) {
         var otherPointId = nodeArray[i];
         var otherRadius = this.getRadius(otherPointId);
@@ -167,18 +168,18 @@ PointWorld.prototype._insertToTree = function(pos, radius, pointId) {
 PointWorld.prototype._mergeParent = function(childToMerge) {
     // Deny merge of root
     if (!childToMerge) return;
-    
+
     var parent = this.nodeParents[childToMerge >> 2];
-    
+
     // Deny merge of grandparents, only parents should merge
     for (var i = 0; i < 4; i++) {
         if (this.quadtree.isBranch(this.quadtree.array[parent | i]) && !this.quadtree.array[this.quadtree.array[parent | i]])
             console.error("Something WEIRD");
         if (this.quadtree.isBranch(this.quadtree.array[parent | i]))
             return;
-        
+
     }
-    
+
     // Count the number of points, deny merge when too many
     var parentArray = this.nodeArrays[parent >> 2];
     var numPoints = (parentArray)? parentArray.length : 0;
@@ -190,7 +191,7 @@ PointWorld.prototype._mergeParent = function(childToMerge) {
         numPoints += childArray.length;
         if (numPoints > PointWorld.maxNodePoints) return;
     }
-    
+
     // Finally merge the children
     for (var i = 0; i < 4; i++) {
         var child = this.quadtree.array[parent | i];
@@ -217,7 +218,7 @@ PointWorld.prototype._mergeParent = function(childToMerge) {
         parentArray = this.nodeArrays[parent >> 2];
         this.nodeArrays[child >> 2] = null;
     }*/
-    
+
     // Merge grandParent
     this._mergeParent(parent);
 }
@@ -231,7 +232,7 @@ PointWorld.prototype._eraseFromTree = function(pointId, pos, radius) {
     } else {
         for (var i = 0; true; i++) {
             if (i == nodeArray.length)
-                console.error("Could not find node!!!");
+                throw Error("Could not find node!!!");
             if (nodeArray[i] != pointId) continue;
             nodeArray.splice(i, 1);
             break;
@@ -240,4 +241,3 @@ PointWorld.prototype._eraseFromTree = function(pointId, pos, radius) {
 
     this._mergeParent(node);
 }
-

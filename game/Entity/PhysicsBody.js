@@ -1,6 +1,6 @@
 
 PhysicsBody = function(pos, damping, rotationSpeed, mass, radius) {
-    this.bodyId = gameData.world.physicsWorld.add(pos, 0.0, mass, radius);
+    this.bodyId = gameData.world.physicsWorld.add(pos, [0.0, 0.0], mass, radius);
     if (pos) {
         this.posOld = v2.clone(pos);
         this.posClient = v2.clone(pos);
