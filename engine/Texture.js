@@ -15,7 +15,7 @@ loadTextures = function(parentFolder, paths, finishCallback, callback) {
         texture.addEventListener("load", function() {
             numPathsToLoad--;
             if (callback)
-                callback((paths.length - numPathsToLoad) / paths.length * 100.0, texture.name);
+                callback(Math.floor((paths.length - numPathsToLoad) / paths.length * 100.0), texture.name);
             if (numPathsToLoad == 0 && finishCallback)
                 finishCallback(textures);
         }, false);
@@ -25,3 +25,5 @@ loadTextures = function(parentFolder, paths, finishCallback, callback) {
     });
     return textures;
 }
+
+export { loadTexture, loadTextures };

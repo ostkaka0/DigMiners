@@ -5,6 +5,7 @@ ObjectWorld = function(useDestroyFunc) {
     this.onAdd = [];
     this.onRemove = [];
 }
+export default ObjectWorld;
 
 ObjectWorld.prototype.add = function(object, id) {
     object.isActive = false;

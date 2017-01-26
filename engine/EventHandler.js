@@ -4,6 +4,8 @@ EventHandler = function() {
         this[arguments[i]] = [];
 }
 
+export default EventHandler;
+
 EventHandler.prototype.trigger = function() {
     var eventName = arguments[0];
     var args = (Array.from(arguments)).slice(1, arguments.length + 1);

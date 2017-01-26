@@ -1,4 +1,8 @@
-DisField = {};
+import fix from "./Core/Fix.js"
+import v2 from "./Core/v2.js"
+
+var DisField = {};
+export default DisField;
 
 DisField.getPageAndIndex = function(disField, pos) {
 	var pageX = Math.floor(pos[0] / PATH_PAGE_DIM);

@@ -1,5 +1,11 @@
+import "../lib_front_end/apixi.js"
+import '../lib_front_end/ajquery-3.1.1.min.js';
+import Canvas from "../engine/Canvas.js"
+import PhysicsWorld from "../engine/PhysicsWorld.js"
+import gameLoop from "../engine/GameLoop.js"
+
 var canvas = document.getElementById("canvas");
-var gl = canvasInitGL(canvas);
+var gl = Canvas.initGL(canvas);
 
 var lastFrameTime = Date();
 var camera = {
@@ -30,7 +36,7 @@ tick = function(dt) {
 }
 
 render = function() {
-    canvasUpdateSize(canvas);
+    Canvas.updateSize(canvas);
     camera.width = canvas.width;
     camera.height = canvas.height;
     gl.viewport(0, 0, canvas.width, canvas.height);

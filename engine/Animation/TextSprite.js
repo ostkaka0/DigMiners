@@ -11,6 +11,7 @@ TextSprite = function(text, font, fontSize, color) {
     this.scale = [1.0, 1.0];
     this.alpha = 1.0;
 }
+export default TextSprite;
 
 TextSprite.prototype.getSize = function() {
     if (this.frame)

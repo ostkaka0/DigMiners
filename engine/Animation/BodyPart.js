@@ -15,6 +15,7 @@ BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, parent) {
     this.children = [];
     this.animInstance = null;
 }
+export default BodyPart;
 
 BodyPart.prototype.position = function(x, y, angle) {
     this.sprite.pos[0] = x + this.offset[0];

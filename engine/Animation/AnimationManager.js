@@ -1,7 +1,11 @@
+import Animation from "./Animation.js"
+import Cycle from "./Cycle.js"
+
 AnimationManager = function() {
     this.animations = {};
     this.cycles = {};
 }
+export default AnimationManager;
 
 AnimationManager.prototype.load = function() {
     this.animations["feet"] = new Animation("feet", gameData.textures["feet.png"], 60, 75, 75);

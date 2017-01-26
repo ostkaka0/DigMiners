@@ -1,5 +1,10 @@
+import fix from "./core/Fix.js"
+import v2 from "./core/v2.js"
 
-serializeBooleans = function(byteArray, index, booleans) {
+var serialization = {};
+export default serialization;
+
+serialization.serializeBooleans = function(byteArray, index, booleans) {
     var bitField = (booleans[0] ? 1 : 0) |
         (booleans[1] ? 2 : 0) |
         (booleans[2] ? 4 : 0) |
@@ -11,7 +16,7 @@ serializeBooleans = function(byteArray, index, booleans) {
     serializeInt8(byteArray, index, bitField);
 }
 
-deserializeBooleans = function(byteArray, index) {
+serialization.deserializeBooleans = function(byteArray, index) {
     var bitField = deserializeInt8(byteArray, index);
     var booleans = [];
     booleans[0] = ((bitField & 1) != 0);
@@ -25,18 +30,18 @@ deserializeBooleans = function(byteArray, index) {
     return booleans;
 }
 
-serializeInt8 = function(byteArray, index, value) {
+serialization.serializeInt8 = function(byteArray, index, value) {
     byteArray[index.value] = value & 0XFF;
     index.add(1);
 }
 
-deserializeInt8 = function(byteArray, index) {
+serialization.deserializeInt8 = function(byteArray, index) {
     var value = byteArray[index.value];
     index.add(1);
     return value;
 }
 
-serializeInt32 = function(byteArray, index, value) {
+serialization.serializeInt32 = function(byteArray, index, value) {
     byteArray[index.value] = (value >> 24) & 0xFF;
     byteArray[index.value + 1] = (value >> 16) & 0xFF;
     byteArray[index.value + 2] = (value >> 8) & 0xFF;
@@ -44,7 +49,7 @@ serializeInt32 = function(byteArray, index, value) {
     index.add(4);
 }
 
-deserializeInt32 = function(byteArray, index) {
+serialization.deserializeInt32 = function(byteArray, index) {
     var value = (byteArray[index.value] << 24)
         | (byteArray[index.value + 1] << 16)
         | (byteArray[index.value + 2] << 8)
@@ -53,30 +58,30 @@ deserializeInt32 = function(byteArray, index) {
     return value;
 }
 
-serializeFix = function(byteArray, index, value) {
-    serializeInt32(byteArray, index, toFix(value) * fix.denominator);
+serialization.serializeFix = function(byteArray, index, value) {
+    serializeInt32(byteArray, index, fix.toFix(value) * fix.denominator);
 }
 
-deserializeFix = function(byteArray, index) {
-    return toFix(deserializeInt32(byteArray, index) / fix.denominator);
+serialization.deserializeFix = function(byteArray, index) {
+    return fix.toFix(deserializeInt32(byteArray, index) / fix.denominator);
 }
 
-serializeV2 = function(byteArray, index, value) {
+serialization.serializeV2 = function(byteArray, index, value) {
     serializeFix(byteArray, index, value[0]);
     serializeFix(byteArray, index, value[1]);
 }
 
-deserializeV2 = function(byteArray, index) {
+serialization.deserializeV2 = function(byteArray, index) {
     return v2.create(deserializeFix(byteArray, index), deserializeFix(byteArray, index));
 }
 
-serializeUint8Array = function(byteArray, index, value) {
+serialization.serializeUint8Array = function(byteArray, index, value) {
     for (var i = index.value; i < index.value + value.length; ++i)
         byteArray[i] = value[i - index.value];
     index.add(value.length);
 }
 
-deserializeUint8Array = function(byteArray, index, arrayLength) {
+serialization.deserializeUint8Array = function(byteArray, index, arrayLength) {
     var out = new Uint8Array(arrayLength);
     for (var i = index.value; i < index.value + arrayLength; ++i)
         out[i - index.value] = byteArray[i];
@@ -84,7 +89,7 @@ deserializeUint8Array = function(byteArray, index, arrayLength) {
     return out;
 }
 
-getUTF8SerializationSize = function(value) {
+serialization.getUTF8SerializationSize = function(value) {
     var out = [], p = 0;
     for (var i = 0; i < value.length; i++) {
         var c = value.charCodeAt(i);
@@ -111,7 +116,7 @@ getUTF8SerializationSize = function(value) {
 };
 
 
-serializeUTF8 = function(byteArray, index, value) {
+serialization.serializeUTF8 = function(byteArray, index, value) {
     var out = [], p = 0;
     for (var i = 0; i < value.length; i++) {
         var c = value.charCodeAt(i);
@@ -134,11 +139,11 @@ serializeUTF8 = function(byteArray, index, value) {
             out[p++] = (c & 63) | 128;
         }
     }
-    serializeInt32(byteArray, index, out.length);
-    serializeUint8Array(byteArray, index, out);
+    serialization.serializeInt32(byteArray, index, out.length);
+    serialization.serializeUint8Array(byteArray, index, out);
 };
 
-deserializeUTF8 = function(byteArray, index) {
+serialization.deserializeUTF8 = function(byteArray, index) {
     var length = deserializeInt32(byteArray, index);
     var bytes = deserializeUint8Array(byteArray, index, length);
 

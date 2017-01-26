@@ -1,3 +1,8 @@
+import BlockChunk from "BlockChunk"
+BLOCK_CHUNK_DIM = BlockChunk.dim;
+BLOCK_CHUNK_DIM_2 = BlockChunk.dim2;
+BLOCK_CHUNK_SIZE = BlockChunk.size;
+
 BlockChunkRenderer = function(gl, world, tileSize) {
     this.gl = gl;
     this.tileSize = tileSize;
@@ -25,7 +30,7 @@ BlockChunkRenderer = function(gl, world, tileSize) {
 
     this.isReady = false; // False until shaders, buffers, attributes and uniforms are loaded.
 }
-
+export default BlockChunkRenderer;
 
 BlockChunkRenderer.prototype.lazyInit = function() {
     if (this.isReady)

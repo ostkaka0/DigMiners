@@ -1,12 +1,14 @@
+var Event = {};
+export default Event;
 
-subscribeEvent = function(event, subscriber, callback, first) {
+Event.subscribe = function(event, subscriber, callback, first) {
     if (first)
         event.unshift([subscriber, callback]);
     else
         event.push([subscriber, callback]);
 }
 
-unsubscribeEvent = function(event, subscriber) {
+Event.unsubscribe = function(event, subscriber) {
     for (var i = 0; i < event.length; i++) {
         if (event[i][0] !== subscriber) continue;
         event.splice(i, 1);
@@ -14,13 +16,13 @@ unsubscribeEvent = function(event, subscriber) {
     }
 }
 
-unsubscribeEvents = function(events, subscriber) {
+Event.unsubscribeAll = function(events, subscriber) {
     Object.keys(events).forEach(function(key) {
         unsubscribeEvent(events[key], subscriber);
     });
 }
 
-triggerEvent = function(event) {
+Event.triggerEvent = function(event) {
     var args = Array.from(arguments).slice(1);
     event.forEach(function(callback) {
         callback[1].apply(null, args);

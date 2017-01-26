@@ -1,4 +1,15 @@
-getDensity = function(terrainWorld, x, y) {
+import Chunk from "./Chunk.js"
+import fix from "./Core/Fix.js"
+import v2 from "./Core/v2.js"
+
+CHUNK_DIM = Chunk.dim;
+CHUNK_DIM_2 = Chunk.dim2;
+CHUNK_SIZE = Chunk.size;
+
+var TileWorld = {};
+export default TileWorld;
+
+TileWorld.getDensity = function(terrainWorld, x, y) {
     var chunkX = Math.floor(x / CHUNK_DIM);
     var chunkY = Math.floor(y / CHUNK_DIM);
     var localX = Math.floor(x) - chunkX * CHUNK_DIM;
@@ -12,7 +23,7 @@ getDensity = function(terrainWorld, x, y) {
     return chunk.getDensity(localX, localY);
 }
 
-setDensity = function(tileWorld, x, y, density) {
+TileWorld.setDensity = function(tileWorld, x, y, density) {
     var chunkX = Math.floor(x / CHUNK_DIM);
     var chunkY = Math.floor(y / CHUNK_DIM);
     var localX = Math.floor(x) - chunkX * CHUNK_DIM;
@@ -24,7 +35,7 @@ setDensity = function(tileWorld, x, y, density) {
     chunk.setDensity(localX, localY, density);
 }
 
-getTileId = function(tileWorld, x, y) {
+TileWorld.getTileId = function(tileWorld, x, y) {
     var chunkX = Math.floor(x / CHUNK_DIM);
     var chunkY = Math.floor(y / CHUNK_DIM);
     var localX = Math.floor(x) - chunkX * CHUNK_DIM;
@@ -37,7 +48,7 @@ getTileId = function(tileWorld, x, y) {
     return chunk.getTileId(localX, localY);
 }
 
-setTileId = function(tileWorld, x, y, value) {
+TileWorld.setTileId = function(tileWorld, x, y, value) {
     var chunkX = Math.floor(x / CHUNK_DIM);
     var chunkY = Math.floor(y / CHUNK_DIM);
     var localX = Math.floor(x) - chunkX * CHUNK_DIM;
@@ -53,7 +64,7 @@ setTileId = function(tileWorld, x, y, value) {
     //this.on("onChunkChange", chunkX, chunkY, chunk);
 }
 
-calcDensity = function(terrainWorld, x, y) {
+TileWorld.calcDensity = function(terrainWorld, x, y) {
     var x1 = Math.floor(x - 0.5);
     var y1 = Math.floor(y - 0.5);
     var x2 = x1 + 1;
@@ -81,7 +92,7 @@ calcDensity = function(terrainWorld, x, y) {
         a[2] * a[3] * b[3];
 }
 
-calcDir = function(terrainWorld, x, y) {
+TileWorld.calcDir = function(terrainWorld, x, y) {
     var epsilon = 0.1;
     var a = -calcDensity(terrainWorld, x + epsilon, y + epsilon);
     var b = -calcDensity(terrainWorld, x - epsilon, y + epsilon);
@@ -103,7 +114,7 @@ calcDir = function(terrainWorld, x, y) {
     return vec;
 }
 
-calcNormal = function(terrainWorld, x, y) {
+TileWorld.calcNormal = function(terrainWorld, x, y) {
     var vec = calcDir(terrainWorld, x, y)
     if (v2.sqrLength(vec) > 0.0)
         v2.normalize(vec, vec);
@@ -111,7 +122,7 @@ calcNormal = function(terrainWorld, x, y) {
     return vec;
 }
 
-carveCircle = function(gameData, x, y, radius, digSpeed, maxHardness, onDensityChange) {
+TileWorld.carveCircle = function(gameData, x, y, radius, digSpeed, maxHardness, onDensityChange) {
     if (digSpeed == undefined || digSpeed == null)
         digSpeed = 1.0;
 

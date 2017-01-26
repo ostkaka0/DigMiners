@@ -5,6 +5,7 @@ DrawTransform = function(pos, angle, scale, pivot) {
     this.scale = scale || [1.0, 1.0];
     this.pivot = pivot || [0.5, 0.5];
 }
+export default DrawTransform;
 
 DrawTransform.prototype.begin = function(context) {
     context.translate(this.pos[0], this.pos[1]);

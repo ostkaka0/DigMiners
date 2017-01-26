@@ -1,4 +1,12 @@
-getForeground = function(blockWorld, x, y) {
+import BlockChunk from "BlockChunk"
+BLOCK_CHUNK_DIM = BlockChunk.dim;
+BLOCK_CHUNK_DIM_2 = BlockChunk.dim2;
+BLOCK_CHUNK_SIZE = BlockChunk.size;
+
+var BlockWorld = {};
+export default BlockWorld;
+
+BlockWorld.getForeground = function(blockWorld, x, y) {
     var blockChunkX = Math.floor(x / BLOCK_CHUNK_DIM);
     var blockChunkY = Math.floor(y / BLOCK_CHUNK_DIM);
     var localX = Math.floor(x) - blockChunkX * BLOCK_CHUNK_DIM;
@@ -11,7 +19,7 @@ getForeground = function(blockWorld, x, y) {
     return blockChunk.getForeground(localX, localY);
 }
 
-setForeground = function(blockWorld, x, y, value) {
+BlockWorld.setForeground = function(blockWorld, x, y, value) {
     var blockChunkX = Math.floor(x / BLOCK_CHUNK_DIM);
     var blockChunkY = Math.floor(y / BLOCK_CHUNK_DIM);
     var localX = Math.floor(x) - blockChunkX * BLOCK_CHUNK_DIM;
@@ -57,7 +65,7 @@ setForeground = function(blockWorld, x, y, value) {
 
 }
 
-getBackground = function(blockWorld, x, y) {
+BlockWorld.getBackground = function(blockWorld, x, y) {
     var blockChunkX = Math.floor(x / BLOCK_CHUNK_DIM);
     var blockChunkY = Math.floor(y / BLOCK_CHUNK_DIM);
     var localX = Math.floor(x) - blockChunkX * BLOCK_CHUNK_DIM;
@@ -70,7 +78,7 @@ getBackground = function(blockWorld, x, y) {
     return blockChunk.getBackground(localX, localY);
 }
 
-setBackground = function(blockWorld, x, y, value) {
+BlockWorld.setBackground = function(blockWorld, x, y, value) {
     var blockChunkX = Math.floor(x / BLOCK_CHUNK_DIM);
     var blockChunkY = Math.floor(y / BLOCK_CHUNK_DIM);
     var localX = Math.floor(x) - blockChunkX * BLOCK_CHUNK_DIM;
@@ -94,7 +102,7 @@ setBackground = function(blockWorld, x, y, value) {
     }
 }
 
-getStrength = function(blockWorld, x, y) {
+BlockWorld.getStrength = function(blockWorld, x, y) {
     var blockChunkX = Math.floor(x / BLOCK_CHUNK_DIM);
     var blockChunkY = Math.floor(y / BLOCK_CHUNK_DIM);
     var localX = Math.floor(x) - blockChunkX * BLOCK_CHUNK_DIM;
@@ -107,7 +115,7 @@ getStrength = function(blockWorld, x, y) {
     return blockChunk.getStrength(localX, localY);
 }
 
-setStrength = function(blockWorld, x, y, value) {
+BlockWorld.setStrength = function(blockWorld, x, y, value) {
     var blockChunkX = Math.floor(x / BLOCK_CHUNK_DIM);
     var blockChunkY = Math.floor(y / BLOCK_CHUNK_DIM);
     var localX = Math.floor(x) - blockChunkX * BLOCK_CHUNK_DIM;
@@ -120,5 +128,3 @@ setStrength = function(blockWorld, x, y, value) {
     }
     blockChunk.setStrength(localX, localY, value);
 }
-
-

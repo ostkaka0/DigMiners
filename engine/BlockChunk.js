@@ -7,6 +7,10 @@ BlockChunk = function() {
     this.strength = new Uint8Array(BLOCK_CHUNK_SIZE);
     var isChanged = true;
 }
+export default BlockChunk;
+
+BlockChunk.dim = BLOCK_CHUNK_DIM;
+BlockChunk.size = BLOCK_CHUNK_SIZE;
 
 BlockChunk.prototype.getForeground = function(x, y) {
     return this.foreground[x + y * BLOCK_CHUNK_DIM];
@@ -36,7 +40,7 @@ BlockChunk.prototype.setStrength = function(x, y, value) {
     this.isChanged = true;
 }
 
-v2WorldToBlockChunk = function(worldPos, outBlockChunkPos, outLocalPos) {
+BlockChunk.fromV2World = function(worldPos, outBlockChunkPos, outLocalPos) {
     v2.div(worldPos, BLOCK_CHUNK_DIM, outBlockChunkPos);
     v2.floor(outBlockChunkPos, outBlockChunkPos);
     if (!outLocalPos) return;
@@ -46,7 +50,7 @@ v2WorldToBlockChunk = function(worldPos, outBlockChunkPos, outLocalPos) {
     v2.sub(outLocalPos, blockChunkWorldPos, outLocalPos);
 }
 
-v2WorldFromBlockChunk = function(outWorldPos, blockChunkPos, localPos) {
+BlockChunk.toV2World = function(outWorldPos, blockChunkPos, localPos) {
     v2.mul(BLOCK_CHUNK_DIM, blockChunkPos, outWorldPos);
     if (!localPos) return;
     v2.add(localPos, outWorldPos, outWorldPos);
