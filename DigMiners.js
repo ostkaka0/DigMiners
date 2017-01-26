@@ -171,9 +171,7 @@ tick = function(dt) {
         }
     }.bind(this));
 
-    gameData.world.particleEmitterWorld.objectArray.forEach(function(emitter) {
-        emitter.update(dt);
-    });
+    gameData.world.particleWorld.update(dt);
 }
 
 render = function(tickFracTime) {
@@ -261,27 +259,19 @@ render = function(tickFracTime) {
     chunkRenderer.render(gameData.world.tileWorld, projectionMatrix.clone().append(viewMatrix), camera);
     blockChunkRenderer.render(gameData, gameData.world.blockWorld, projectionMatrix.clone().append(viewMatrix), camera);
 
+    // Render entities
     context2d.clearRect(0, 0, spriteCanvas.width, spriteCanvas.height);
     for (var i = 0; i < zindices.length; ++i) {
         var arr = zindices[i].getAll();
         for (var j = 0; j < arr.length; ++j) {
             var sprite = arr[j];
-            if (sprite.visible && sprite.texture) {
-                sprite.begin(context2d);
-                context2d.drawImage(
-                    sprite.texture.baseImage,
-                    (sprite.frame ? sprite.frame[0] : sprite.texture.x),
-                    (sprite.frame ? sprite.frame[1] : sprite.texture.y),
-                    (sprite.frame ? sprite.frame[2] : sprite.texture.width),
-                    (sprite.frame ? sprite.frame[3] : sprite.texture.height),
-                    0,
-                    0,
-                    (sprite.frame ? sprite.frame[2] : sprite.texture.width),
-                    (sprite.frame ? sprite.frame[3] : sprite.texture.height));
-                sprite.end(context2d);
-            }
+            if (sprite.visible)
+                sprite.draw(context2d);
         }
     }
+
+    // Render particles
+    gameData.world.particleWorld.render(tickFracTime);
 }
 
 loadChunk = function(world, x, y) {
