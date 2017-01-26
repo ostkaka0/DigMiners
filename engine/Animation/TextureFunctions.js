@@ -25,3 +25,5 @@ loadTextures = function(parentFolder, paths, finishCallback, callback) {
     });
     return textures;
 }
+
+export { loadTexture, loadTextures };

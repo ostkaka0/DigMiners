@@ -7,6 +7,7 @@ Animation = function(name, texture, numFrames, frameWidth, frameHeight) {
     this.frames = [];
     this.load();
 }
+export default Animation;
 
 Animation.prototype.load = function() {
     var currentFrames = 0;

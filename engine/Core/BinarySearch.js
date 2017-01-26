@@ -1,5 +1,5 @@
 
-binarySearch = function(array, value, compareFunction, start, end) {
+export default binarySearch = function(array, value, compareFunction, start, end) {
     compareFunction = (compareFunction != undefined) ? compareFunction : function(a, b) { a - b };
     start = (start != undefined) ? start : 0;
     end = (end != undefined) ? end : array.length;

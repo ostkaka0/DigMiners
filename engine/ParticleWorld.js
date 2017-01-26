@@ -2,6 +2,7 @@
 ParticleWorld = function() {
     this.particles = [];
 }
+export default ParticleWorld;
 
 ParticleWorld.prototype.update = function(dt) {
     var time = new Date().getTime();

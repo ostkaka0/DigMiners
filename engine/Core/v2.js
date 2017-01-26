@@ -1,7 +1,10 @@
+import fix from "./Fix"
+
 v2 = {};
+export default v2;
 
 v2.create = function(x, y) {
-    var v = [toFix(x), toFix(y)];
+    var v = [fix.toFix(x), fix.toFix(y)];
 
     //  // Temporary properties
     //  Object.defineProperties(v, {
@@ -23,7 +26,7 @@ v2.clone = function(a) {
 }
 
 v2.cloneFix = function(a) {
-    return [toFix(a[0]), toFix(a[1])];
+    return [fix.toFix(a[0]), fix.toFix(a[1])];
 }
 
 v2.copy = function(a, out) {
@@ -61,8 +64,8 @@ v2.div = function(a, c, out) {
  * a: v2     - float[2]
  */
 v2.mod = function(a, c, out) {
-    out[0] = a[0] % toFix(c);
-    out[1] = a[1] % toFix(c);
+    out[0] = a[0] % fix.toFix(c);
+    out[1] = a[1] % fix.toFix(c);
 }
 
 
@@ -103,8 +106,8 @@ v2.dot = function(a, b) {
 }
 
 v2.clampF = function(a, min, max) {
-    min = toFix(min);
-    max = toFix(max);
+    min = fix.toFix(min);
+    max = fix.toFix(max);
     if (min <= max) {
         return Math.max(Math.min(a, max), min);
     }

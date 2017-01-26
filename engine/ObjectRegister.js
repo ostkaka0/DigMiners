@@ -1,17 +1,20 @@
-objectRegisterAdd = function(array, object) {
+var ObjectRegister = {};
+export default ObjectRegister;
+
+ObjectRegister.add = function(array, object) {
     object.id = array.length;
     array.push(object);
     return array;
 }
 
-objectRegisterAddByArray = function(array, objectArray) {
+ObjectRegister.addByArray = function(array, objectArray) {
     objectArray.forEach(function(object) {
         registerObject(array, object);
     }.bind(this));
     return array;
 }
 
-objectRegisterAddByObject = function(array, object) {
+ObjectRegister.addByObject = function(array, object) {
     for (key in object)
         objectRegisterAdd(array, object[key]);
     return array;

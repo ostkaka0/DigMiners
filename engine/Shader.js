@@ -1,8 +1,11 @@
+var Shader =  {};
+export default Shader;
+
 /* Loads and compiles a shader.
  * filePath: a path relative to /shaders/.
  * type: a shader type.
  */
-ShaderRequest = function(filePath, type) {
+Shader.Request = function(filePath, type) {
 
     this.shader = null;
     this.source = null;
@@ -18,7 +21,7 @@ ShaderRequest = function(filePath, type) {
 
 /* Compiles the shader, but only if the source has been loaded from the server.
  */
-ShaderRequest.prototype.tryCompile = function(gl) {
+Shader.Request.prototype.tryCompile = function(gl) {
 
     if (this.shader == null && this.source != null) {
         var shader = gl.createShader(this.type);
@@ -36,7 +39,7 @@ ShaderRequest.prototype.tryCompile = function(gl) {
 
 /* Links the shaders to create a useable shader program, but only if all shaders are loaded! The shaderprogram will attempt to compile any uncompiled shader.
  */
-function tryLinkShaderProgram(gl, shaderRequests) {
+Shader.tryLinkShaderProgram = function(gl, shaderRequests) {
     // Check all the shaders. Compile them if needed.
     var ready = true;
     //for (shader in shaders) {
@@ -57,4 +60,3 @@ function tryLinkShaderProgram(gl, shaderRequests) {
     gl.linkProgram(shaderProgram);
     return shaderProgram;
 }
-

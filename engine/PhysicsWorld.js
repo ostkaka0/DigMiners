@@ -1,4 +1,6 @@
-var pageDim = 4;
+import PointWorld from "./PointWorld.js"
+import fix from "./Core/Fix.js"
+import v2 from "./Core/v2.js"
 
 PhysicsWorld = function(size) {
     this.pointWorld = new PointWorld(size || 1024);
@@ -7,6 +9,7 @@ PhysicsWorld = function(size) {
     this.mass = [];
     this.onCollision = [];
 }
+export default PhysicsWorld;
 
 PhysicsWorld.prototype.update = function(dt) {
     // Update pos, velocity, posOld and pages
@@ -30,7 +33,7 @@ PhysicsWorld.prototype.update = function(dt) {
 
     var collisions = [];
 
-    var velocityEpsilon = toFix(0.01);
+    var velocityEpsilon = fix.toFix(0.01);
     // Collision:
     this.forEach(this, function(id) {
         var radius = this.getRadius(id);

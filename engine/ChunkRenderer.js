@@ -1,3 +1,8 @@
+import Chunk from "./Chunk.js"
+CHUNK_DIM = Chunk.dim;
+CHUNK_DIM_2 = Chunk.dim2;
+CHUNK_SIZE = Chunk.size;
+
 ChunkRenderer = function(gl, world, tileSize) {
     this.gl = gl;
     this.tileSize = tileSize;
@@ -28,6 +33,8 @@ ChunkRenderer = function(gl, world, tileSize) {
 
     this.isReady = false; // False until shaders, buffers, attributes and uniforms are loaded.
 }
+
+export default ChunkRenderer;
 
 ChunkRenderer.prototype.lazyInit = function() {
     if (this.isReady)

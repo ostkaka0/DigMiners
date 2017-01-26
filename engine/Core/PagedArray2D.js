@@ -6,6 +6,7 @@ PagedArray2D = function(sizeX, sizeY, defaultValue) {
     this.pages = {};
     this.onPageCreate = function(x, y, page) { };
 }
+export default PagedArray2D;
 
 PagedArray2D.prototype.get = function(x, y, value) {
     var localX = x % this.sizeX;

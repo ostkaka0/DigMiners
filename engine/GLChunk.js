@@ -25,6 +25,8 @@ GLChunk = function(gl, chunk) {
     chunk.isChanged = false;
 }
 
+export default GLChunk;
+
 GLChunk.prototype.update = function(gl, chunk) {
     gl.bindTexture(gl.TEXTURE_2D, this.textureDensity);
     //gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, this._chunkSizeX, this.chunkSizeY, gl.LUMINANCE, gl.UNSIGNED_BYTE, chunk.data);
@@ -85,5 +87,5 @@ GLChunk.prototype.updateBorder = function(gl, chunkNeighbor, x1, y1, x2, y2) {
     gl.texSubImage2D(gl.TEXTURE_2D, 0, textureX1, textureY1, textureX2 - textureX1 + 1, textureY2 - textureY1 + 1, gl.LUMINANCE, gl.UNSIGNED_BYTE, tileData);
     gl.bindTexture(gl.TEXTURE_2D, null);
 
-    //chunk.isChanged = false; 
+    //chunk.isChanged = false;
 }

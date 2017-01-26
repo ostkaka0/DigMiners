@@ -1,4 +1,7 @@
-typeRegisterAdd = function(array, type) {
+var TypeRegister = {};
+export default TypeRegister;
+
+TypeRegister.add = function(array, type) {
     if (type.prototype.id != undefined) return;
 
     type.prototype.id = array.length;
@@ -7,7 +10,7 @@ typeRegisterAdd = function(array, type) {
     return array;
 }
 
-typeRegisterAddByArray = function(array, typeArray) {
+TypeRegister.addByArray = function(array, typeArray) {
     typeArray.forEach(function(type) {
         typeRegisterAdd(array, type);
     }.bind(this));

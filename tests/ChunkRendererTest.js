@@ -51,7 +51,7 @@ $(canvas).click(function(event) {
     if(chunk)
         chunk.setDensity(localX, localY, 0);
 
-};
+}
 
 init();
 gameLoop(tick, render);

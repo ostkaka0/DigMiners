@@ -14,6 +14,12 @@ Chunk = function() {
         }
     }
 }
+export default Chunk;
+
+Chunk.dim = CHUNK_DIM;
+Chunk.dim2 = CHUNK_DIM_2;
+Chunk.size = CHUNK_SIZE;
+
 Chunk.prototype.getDensity = function(x, y) {
     return this.densityData[x + y * CHUNK_DIM];
 }
