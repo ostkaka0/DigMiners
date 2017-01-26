@@ -49,6 +49,7 @@ BlockCollisionSide = {
 
 entityFunctionPhysicsBodySimulate = function(dt) {
     gameData.world.entityWorld.objectArray.forEach(function(entity) {
+        if (entity.isDead || !entity.isActive) return;
         if (entity.physicsBody)
             physicsBodySimulate(entity.physicsBody, dt);
     });
