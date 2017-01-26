@@ -265,20 +265,8 @@ render = function(tickFracTime) {
         var arr = zindices[i].getAll();
         for (var j = 0; j < arr.length; ++j) {
             var sprite = arr[j];
-            if (sprite.visible && sprite.texture) {
-                sprite.begin(context2d);
-                context2d.drawImage(
-                    sprite.texture.baseImage,
-                    (sprite.frame ? sprite.frame[0] : sprite.texture.x),
-                    (sprite.frame ? sprite.frame[1] : sprite.texture.y),
-                    (sprite.frame ? sprite.frame[2] : sprite.texture.width),
-                    (sprite.frame ? sprite.frame[3] : sprite.texture.height),
-                    0,
-                    0,
-                    (sprite.frame ? sprite.frame[2] : sprite.texture.width),
-                    (sprite.frame ? sprite.frame[3] : sprite.texture.height));
-                sprite.end(context2d);
-            }
+            if (sprite.visible)
+                sprite.draw(context2d);
         }
     }
 
