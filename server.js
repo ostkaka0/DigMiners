@@ -98,6 +98,12 @@ for (var i = 0; i < 10; i++) {
     carveCircle(gameData, pos[0], pos[1], 6.0, 100.0);
 }*/
 
+var turretEntityId = gameData.world.idList.next();
+var turret = entityTemplates.Turret(turretEntityId, [0, 0], Teams.Zombie);
+sendCommand(new CommandEntitySpawn(gameData, turret, turretEntityId));
+var weaponId = Items.WeaponMachineGun.id;
+sendCommand(new CommandEntityInventory(turretEntityId, InventoryActions.ADD_ITEM, weaponId, 1));
+
 gameData.world.physicsWorld.onCollision.push(function(collisions) {
     sendCommand(new CommandCollisions(collisions));
 });
@@ -123,13 +129,6 @@ subscribeEvent(gameData.world.entityWorld.onAdd, global, function(entity) {
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponAssaultRifle.id, 1));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponShotgun.id, 1));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponSniperRifle.id, 1));*/
-
-        var turretEntityId = gameData.world.idList.next();
-        var turret = entityTemplates.Turret(turretEntityId, [0, 0], Teams.Zombie);
-        sendCommand(new CommandEntitySpawn(gameData, turret, turretEntityId));
-        var weaponId = Items.WeaponMachineGun.id;
-        sendCommand(new CommandEntityInventory(turretEntityId, InventoryActions.ADD_ITEM, weaponId, 1));
-        //sendCommand(new CommandEntityEquipItem(turretEntityId, 0, weaponId, true));
 
         // (TEMPORARY) spawn monsters on player join
         for (var i = 0; i < 0; ++i) {
