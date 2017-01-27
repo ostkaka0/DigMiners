@@ -1,8 +1,8 @@
 
-InventoryHUDEvents = {};
-InventoryHUDEvents.click = [];
+export InventoryHUDEvents = {};
+export InventoryHUDEvents.click = [];
 
-InventoryHUD = function(inventory, text, bottom) {
+export var InventoryHUD = function(inventory, text, bottom) {
     this.inventory = inventory;
     this.inventoryWidth = inventory.width;
     this.inventoryHeight = inventory.height;
@@ -131,6 +131,7 @@ InventoryHUD = function(inventory, text, bottom) {
     this.inventoryContent.appendTo(this.inventoryHUD);
     this.inventoryHUD.appendTo("#hud");
 }
+export default InventoryHUD
 
 InventoryHUD.prototype.update = function() {
     for (var i = 0; i < this.inventoryWidth * this.inventoryHeight; ++i) {

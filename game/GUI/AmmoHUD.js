@@ -1,5 +1,5 @@
 
-AmmoHUD = function() {
+export default function() {
     this.root = $("<div>", { "text": "No weapon equipped" });
     this.root.css({
         "position": "fixed",
@@ -26,7 +26,7 @@ AmmoHUD = function() {
         if (entity && entity.id == global.playerEntityId)
             this.updateFunction(entity, null)
     }.bind(this));
-    
+
     gameData.world.events.on("beginReload", function(entity) {
         if (entity && entity.id == global.playerEntityId)
             this.root.text("Reloading...");

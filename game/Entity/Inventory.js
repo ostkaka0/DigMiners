@@ -1,3 +1,4 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
 Inventory = function(inventoryId, entityId, width, height) {
     this.items = [];
@@ -6,6 +7,7 @@ Inventory = function(inventoryId, entityId, width, height) {
     this.width = width;
     this.height = height;
 }
+export default Inventory
 
 Inventory.createInventory = function(entityId, width, height) {
     if (!isServer)
@@ -34,27 +36,27 @@ Inventory.prototype.destroy = function(entity) {
 Inventory.prototype.name = inventory.name; function inventory() { };
 
 Inventory.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.inventoryId);
-    serializeInt32(byteArray, index, this.width);
-    serializeInt32(byteArray, index, this.height);
-    serializeInt32(byteArray, index, this.items.length);
+    Serialize.int32(byteArray, index, this.inventoryId);
+    Serialize.int32(byteArray, index, this.width);
+    Serialize.int32(byteArray, index, this.height);
+    Serialize.int32(byteArray, index, this.items.length);
     for (var i = 0; i < this.items.length; ++i) {
-        serializeInt32(byteArray, index, this.items[i].id);
-        serializeInt32(byteArray, index, this.items[i].amount);
+        Serialize.int32(byteArray, index, this.items[i].id);
+        Serialize.int32(byteArray, index, this.items[i].amount);
         var booleans = [this.items[i].equipped, this.items[i].static];
         serializeBooleans(byteArray, index, booleans);
     }
 }
 
 Inventory.prototype.deserialize = function(byteArray, index) {
-    this.inventoryId = deserializeInt32(byteArray, index);
-    this.width = deserializeInt32(byteArray, index);
-    this.height = deserializeInt32(byteArray, index);
+    this.inventoryId = Deserialize.int32(byteArray, index);
+    this.width = Deserialize.int32(byteArray, index);
+    this.height = Deserialize.int32(byteArray, index);
     this.items = [];
-    var itemsLength = deserializeInt32(byteArray, index);
+    var itemsLength = Deserialize.int32(byteArray, index);
     for (var i = 0; i < itemsLength; ++i) {
-        var id = deserializeInt32(byteArray, index);
-        var amount = deserializeInt32(byteArray, index);
+        var id = Deserialize.int32(byteArray, index);
+        var amount = Deserialize.int32(byteArray, index);
         var booleans = deserializeBooleans(byteArray, index);
         this.items[i] = {
             "id": id,

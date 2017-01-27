@@ -1,5 +1,5 @@
 
-createExplosion = function(startPos, radius, entityDamage, blockDamage, tileDamage, attacker) {
+export var createExplosion = function(startPos, radius, entityDamage, blockDamage, tileDamage, attacker) {
     if (isServer) {
         // Damage terrain
         for (var i = 0; i < tileDamage; ++i)

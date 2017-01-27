@@ -1,5 +1,5 @@
 
-TextureManager = function() {
+export default function() {
     this.loader = new TextureLoader();
     var loader = this.loader;
 

@@ -1,10 +1,12 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-CommandBuild = function(x, y, blockId, type) {
+var CommandBuild = function(x, y, blockId, type) {
     this.x = x;
     this.y = y;
     this.blockId = blockId;
     this.type = type;
 }
+export CommandBuild
 
 CommandBuild.prototype.execute = function() {
     if (this.type == BlockTypes.FOREGROUND)
@@ -14,17 +16,17 @@ CommandBuild.prototype.execute = function() {
 }
 
 CommandBuild.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.x);
-    serializeInt32(byteArray, index, this.y);
-    serializeInt32(byteArray, index, this.blockId);
-    serializeInt32(byteArray, index, this.type);
+    Serialize.int32(byteArray, index, this.x);
+    Serialize.int32(byteArray, index, this.y);
+    Serialize.int32(byteArray, index, this.blockId);
+    Serialize.int32(byteArray, index, this.type);
 }
 
 CommandBuild.prototype.deserialize = function(byteArray, index) {
-    this.x = deserializeInt32(byteArray, index);
-    this.y = deserializeInt32(byteArray, index);
-    this.blockId = deserializeInt32(byteArray, index);
-    this.type = deserializeInt32(byteArray, index);
+    this.x = Deserialize.int32(byteArray, index);
+    this.y = Deserialize.int32(byteArray, index);
+    this.blockId = Deserialize.int32(byteArray, index);
+    this.type = Deserialize.int32(byteArray, index);
 }
 
 CommandBuild.prototype.getSerializationSize = function() {

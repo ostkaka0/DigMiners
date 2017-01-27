@@ -1,8 +1,10 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-CommandEntityHealthChange = function(entityId, healthChange) {
+var CommandEntityHealthChange = function(entityId, healthChange) {
     this.entityId = entityId;
     this.healthChange = toFix(healthChange);
 }
+export default CommandEntityHealthChange
 
 CommandEntityHealthChange.prototype.execute = function() {
     var entity = gameData.world.entityWorld.objects[this.entityId];
@@ -16,13 +18,13 @@ CommandEntityHealthChange.prototype.execute = function() {
 }
 
 CommandEntityHealthChange.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.entityId);
-    serializeFix(byteArray, index, this.healthChange);
+    Serialize.int32(byteArray, index, this.entityId);
+    Serialize.fix(byteArray, index, this.healthChange);
 }
 
 CommandEntityHealthChange.prototype.deserialize = function(byteArray, index) {
-    this.entityId = deserializeInt32(byteArray, index);
-    this.healthChange = deserializeFix(byteArray, index);
+    this.entityId = Deserialize.int32(byteArray, index);
+    this.healthChange = Deserialize.fix(byteArray, index);
 }
 
 CommandEntityHealthChange.prototype.getSerializationSize = function() {

@@ -1,8 +1,10 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-MessageRequestRotate = function(deltaWorldCursorPos) {
+var MessageRequestRotate = function(deltaWorldCursorPos) {
     this.deltaWorldCursorPos = deltaWorldCursorPos;
     //this.direction = direction;
 }
+export default MessageRequestRotate
 
 MessageRequestRotate.prototype.execute = function(gameData, player) {
     if (!this.deltaWorldCursorPos) return;

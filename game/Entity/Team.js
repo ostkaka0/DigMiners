@@ -1,7 +1,8 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-Teams = {
+export var Teams = {
     None: 0,
-    Human: 1, 
+    Human: 1,
     Zombie: 2,
     Blue: 3,
     Red: 4,
@@ -9,18 +10,19 @@ Teams = {
     Brown: 6,
 }
 
-Team = function(value) {
+export var Team = function(value) {
     this.value = value;
 }
+export default Team
 
 Team.prototype.name = team.name; function team() { };
 
 Team.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.value);
+    Serialize.int32(byteArray, index, this.value);
 }
 
 Team.prototype.deserialize = function(byteArray, index) {
-    this.value = deserializeInt32(byteArray, index);
+    this.value = Deserialize.int32(byteArray, index);
 }
 
 Team.prototype.getSerializationSize = function() {

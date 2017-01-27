@@ -1,10 +1,12 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-CommandEntityMove = function(entityId, direction, pos) {
+var CommandEntityMove = function(entityId, direction, pos) {
     this.entityId = entityId;
     this.direction = direction;
     if (pos)
         this.pos = v2.cloneFix(pos);
 }
+export default CommandEntityMove
 
 CommandEntityMove.prototype.execute = function() {
     var entity = gameData.world.entityWorld.objects[this.entityId];
@@ -19,15 +21,15 @@ CommandEntityMove.prototype.execute = function() {
 }
 
 CommandEntityMove.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.entityId);
-    serializeV2(byteArray, index, this.direction);
-    serializeV2(byteArray, index, this.pos);
+    Serialize.int32(byteArray, index, this.entityId);
+    Serialize.v2(byteArray, index, this.direction);
+    Serialize.v2(byteArray, index, this.pos);
 }
 
 CommandEntityMove.prototype.deserialize = function(byteArray, index) {
-    this.entityId = deserializeInt32(byteArray, index);
-    this.direction = deserializeV2(byteArray, index);
-    this.pos = deserializeV2(byteArray, index);
+    this.entityId = Deserialize.int32(byteArray, index);
+    this.direction = Deserialize.v2(byteArray, index);
+    this.pos = Deserialize.v2(byteArray, index);
 }
 
 CommandEntityMove.prototype.getSerializationSize = function() {

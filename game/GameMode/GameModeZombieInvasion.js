@@ -1,5 +1,5 @@
 
-GameModeZombieInvasion = function() {
+var GameModeZombieInvasion = function() {
     this.wavePauseDuration = 30000;
     this.numEndWaveZombies = 5;
     this.waveNum = 0;
@@ -19,6 +19,7 @@ GameModeZombieInvasion = function() {
     this.startSeconds = this.startSecondsDuration;
     this.playerSpawning = true;
 }
+export default GameModeZombieInvasion
 
 GameModeZombieInvasion.prototype.init = function() {
     if (!isServer) return;

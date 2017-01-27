@@ -1,9 +1,11 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-CommandPlayerSpawn = function(playerId, entityId, playerName) {
+var CommandPlayerSpawn = function(playerId, entityId, playerName) {
     this.playerId = playerId;
     this.entityId = entityId;
     this.playerName = playerName;
 }
+export default CommandPlayerSpawn
 
 CommandPlayerSpawn.prototype.execute = function() {
     // Associate with existing, already spawned entity (from MessageRequestSpawn)
@@ -23,17 +25,17 @@ CommandPlayerSpawn.prototype.execute = function() {
 }
 
 CommandPlayerSpawn.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.playerId);
-    serializeInt32(byteArray, index, this.entityId);
-    serializeUTF8(byteArray, index, this.playerName);
+    Serialize.int32(byteArray, index, this.playerId);
+    Serialize.int32(byteArray, index, this.entityId);
+    Serialize.utf8(byteArray, index, this.playerName);
 }
 
 CommandPlayerSpawn.prototype.deserialize = function(byteArray, index) {
-    this.playerId = deserializeInt32(byteArray, index);
-    this.entityId = deserializeInt32(byteArray, index);
-    this.playerName = deserializeUTF8(byteArray, index);
+    this.playerId = Deserialize.int32(byteArray, index);
+    this.entityId = Deserialize.int32(byteArray, index);
+    this.playerName = Deserialize.utf8(byteArray, index);
 }
 
 CommandPlayerSpawn.prototype.getSerializationSize = function() {
-    return 8 + getUTF8SerializationSize(this.playerName);
+    return 8 + Serialize.utf8Size(this.playerName);
 }

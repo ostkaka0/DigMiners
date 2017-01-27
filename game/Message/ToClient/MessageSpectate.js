@@ -1,7 +1,9 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-MessageSpectate = function(entityId) {
+var MessageSpectate = function(entityId) {
     this.entityId = entityId;
 }
+export default MessageSpectate
 
 MessageSpectate.prototype.execute = function(gameData) {
     global.spectateEntity = gameData.world.entityWorld.objects[this.entityId];
@@ -12,12 +14,12 @@ MessageSpectate.prototype.send = function(socket) {
     var serializationSize = 4;
     var byteArray = new Buffer(serializationSize);
     var counter = new IndexCounter();
-    serializeInt32(byteArray, counter, this.entityId);
+    Serialize.int32(byteArray, counter, this.entityId);
     socket.emit(this.idString, byteArray);
 }
 
 MessageSpectate.prototype.receive = function(gameData, byteArray) {
     byteArray = new Uint8Array(byteArray);
     var counter = new IndexCounter();
-    this.entityId = deserializeInt32(byteArray, counter);
+    this.entityId = Deserialize.int32(byteArray, counter);
 }

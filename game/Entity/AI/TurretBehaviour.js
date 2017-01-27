@@ -11,6 +11,7 @@ TurretBehaviour = function(entity, maxRadius) {
     this.isAiming = false;
     this.nextCanRunTickId = gameData.world.tickId;
 }
+export default TurretBehaviour
 
 TurretBehaviour.prototype.canRun = function() {
     if (gameData.world.tickId < this.nextCanRunTickId)
@@ -70,7 +71,7 @@ TurretBehaviour.prototype.run = function() {
     var attackDotAngle = this.getAttackDotAngle();
     var dotAngle = v2.dot(targetDir, angleVec);
 
-    if (dis < attackDistance && !this.spacebar && 1.0 - dotAngle < attackDotAngle) {// 1.0 limit for punch 
+    if (dis < attackDistance && !this.spacebar && 1.0 - dotAngle < attackDotAngle) {// 1.0 limit for punch
         sendCommand(new CommandKeyStatusUpdate(this.entity.id, Keys.SPACEBAR, true, this.entity.physicsBody.getPos()));
         this.spacebar = true;
     } else if ((dis >= attackDistance || 1.0 - dotAngle > 1.5 * attackDotAngle) && this.spacebar) {

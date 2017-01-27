@@ -13,6 +13,7 @@ TargetPlayerBehaviour = function(entity, maxRadius) {
     this.isAiming = false;
     this.nextCanRunTickId = gameData.world.tickId;
 }
+export default TargetPlayerBehaviour
 
 TargetPlayerBehaviour.prototype.canRun = function() {
     if (gameData.world.tickId < this.nextCanRunTickId)
@@ -39,7 +40,7 @@ TargetPlayerBehaviour.prototype.initialize = function() {
 
 TargetPlayerBehaviour.prototype.run = function() {
     if (gameData.world.tickId % 5 != this.nextCanRunTickId % 5) return true;
-    
+
     if (!this.target || this.target.isDead || !this.target.isActive) {
         this.target = this.getTarget();
         // If it can't find a new target we must stop this behaviour
@@ -69,7 +70,7 @@ TargetPlayerBehaviour.prototype.run = function() {
     var targetDir = [0, 0];
     v2.sub(this.target.physicsBody.getPos(), this.entity.physicsBody.getPos(), targetDir);
     v2.normalize(targetDir, targetDir);
-    
+
     var flowFieldDir = DisField.calcTileDir(this.flowField, tilePos);
     var dir = flowFieldDir
     if (dir[0] == 0 && dir[1] == 0)
@@ -85,11 +86,11 @@ TargetPlayerBehaviour.prototype.run = function() {
     //v2.normalize(dir, normalized);
     var tickInterval = Math.floor(20 * Math.min(1.0, dis / 40.0));
     tickInterval = Math.max(5, tickInterval);
-    
+
     if (gameData.world.tickId < this.lastUpdateTickId + tickInterval)
         return true;
     this.lastUpdateTickId = gameData.world.tickId;
-    
+
     var currentDir = this.entity.movement.direction;
     var angle = this.entity.physicsBody.angle;
     var angleVec = [Math.cos(-angle), Math.sin(-angle)];
@@ -97,7 +98,7 @@ TargetPlayerBehaviour.prototype.run = function() {
     var attackDotAngle = this.getAttackDotAngle();
     var dotAngle = v2.dot(targetDir, angleVec);
 
-    if (dis < attackDistance && !this.spacebar && 1.0 - dotAngle < attackDotAngle) {// 1.0 limit for punch 
+    if (dis < attackDistance && !this.spacebar && 1.0 - dotAngle < attackDotAngle) {// 1.0 limit for punch
         sendCommand(new CommandKeyStatusUpdate(this.entity.id, Keys.SPACEBAR, true, this.entity.physicsBody.getPos()));
         sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.getPos()));
         this.spacebar = true;
@@ -153,19 +154,19 @@ TargetPlayerBehaviour.prototype.getTarget = function() {
         if (this.entity.team && this.entity.team.value != Teams.None && (!otherEntity.team || otherEntity.team.value == this.entity.team.value)) return;
         if (otherEntity.id == this.entity.id) return;
         if (hasMovement && !otherEntity.movement) return;
-        
+
         var dis = v2.distance(this.entity.physicsBody.getPos(), otherEntity.physicsBody.getPos());
-        
+
         if (dis > this.maxRadius) return;
-        
+
         if (otherEntity.controlledByPlayer)
             dis /= 4;
-            
+
         if (dis >= shortestDistance) {
             if (hasMovement || !otherEntity.movement)
                 return;
         }
-        
+
         shortestDistance = dis;
         shortestDistanceEntity = otherEntity;
         hasMovement = (otherEntity.movement)? true : false;
@@ -185,7 +186,7 @@ TargetPlayerBehaviour.prototype.getAttackDistance = function(pos, dir) {
         for (var i = 0; i < 40; i++) {
             if (getDensity(gameData.world.tileWorld, rayPos[0], rayPos[1]) > 127) break;
             if (getForeground(gameData.world.blockWorld, rayPos[0], rayPos[1]) != 0) break;
-            
+
             v2.add(step, rayPos, rayPos);
             dis += stepLength;
         }

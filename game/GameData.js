@@ -1,4 +1,5 @@
-gameData = {};
+var gameData = {};
+export default gameData
 
 gameData.destroy = function() {
     gameData = {};
@@ -120,4 +121,3 @@ gameData.clearTimeouts = function() {
     }.bind(this));
     this.timeouts = {};
 }
-

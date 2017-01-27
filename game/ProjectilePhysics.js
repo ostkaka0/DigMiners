@@ -1,13 +1,14 @@
 PROJECTILE_MAX_STEP_LENGTH = 0.125;
 
-entityFunctionProjectileSimulate = function(dt) {
+var entityFunctionProjectileSimulate = function(dt) {
     gameData.world.entityWorld.objectArray.forEach(function(entity) {
         if (entity.projectile)
             projectileEntitySimulate(entity, dt);
     });
 }
+export default entityFunctionProjectileSimulate
 
-projectileEntitySimulate = function(entity, dt) {
+var projectileEntitySimulate = function(entity, dt) {
     var projectile = entity.projectile;
     if (!projectile || projectile.hit) return;
 

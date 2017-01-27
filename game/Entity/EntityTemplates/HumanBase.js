@@ -1,5 +1,5 @@
 
-entityTemplates.HumanBase = function(entityId, pos, teamId) {
+export default function(entityId, pos, teamId) {
     var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, null, 1000.0);
     entity.nameComponent = new NameComponent("Base");

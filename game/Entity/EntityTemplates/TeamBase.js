@@ -1,5 +1,5 @@
 
-entityTemplates.TeamBase = function(entityId, pos, teamId, maxEntities, radius, duration) {
+export default function(entityId, pos, teamId, maxEntities, radius, duration) {
     maxEntities = maxEntities || 10;
     radius = radius || 4.0;
     duration = duration || 60;

@@ -1,9 +1,10 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-
-CommandEntityLookAtEntity = function(entityId, targetEntityId) {
+var CommandEntityLookAtEntity = function(entityId, targetEntityId) {
     this.entityId = entityId;
     this.targetEntityId = targetEntityId;
 }
+export default CommandEntityLookAtEntity
 
 CommandEntityLookAtEntity.prototype.execute = function() {
     var entity = gameData.world.entityWorld.objects[this.entityId];
@@ -15,13 +16,13 @@ CommandEntityLookAtEntity.prototype.execute = function() {
 }
 
 CommandEntityLookAtEntity.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.entityId);
-    serializeInt32(byteArray, index, this.targetEntityId);
+    Serialize.int32(byteArray, index, this.entityId);
+    Serialize.int32(byteArray, index, this.targetEntityId);
 }
 
 CommandEntityLookAtEntity.prototype.deserialize = function(byteArray, index) {
-    this.entityId = deserializeInt32(byteArray, index);
-    this.targetEntityId = deserializeInt32(byteArray, index);
+    this.entityId = Deserialize.int32(byteArray, index);
+    this.targetEntityId = Deserialize.int32(byteArray, index);
 }
 
 CommandEntityLookAtEntity.prototype.getSerializationSize = function() {

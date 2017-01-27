@@ -1,27 +1,29 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-InteractableEvents = {};
+export InteractableEvents = {};
 InteractableEvents.onInteract = [];
 InteractableEvents.onFinishInteract = [];
 
-Interactable = function(canInteractFunction) {
+export var Interactable = function(canInteractFunction) {
     this.interacting = [];
     this.canInteractFunction = canInteractFunction || (function(interactableEntity, entity) { return true; });
     this.canInteractFunction.bind(this);
 }
+export default Interactable
 
 Interactable.prototype.name = interactable.name; function interactable() { };
 
 Interactable.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.interacting.length);
+    Serialize.int32(byteArray, index, this.interacting.length);
     for (var i = 0; i < this.interacting.length; ++i)
-        serializeInt32(byteArray, index, this.interacting[i]);
+        Serialize.int32(byteArray, index, this.interacting[i]);
 }
 
 Interactable.prototype.deserialize = function(byteArray, index) {
     this.interacting = [];
-    var length = deserializeInt32(byteArray, index);
+    var length = Deserialize.int32(byteArray, index);
     for (var i = 0; i < length; ++i)
-        this.interacting[i] = deserializeInt32(byteArray, index);
+        this.interacting[i] = Deserialize.int32(byteArray, index);
 }
 
 Interactable.prototype.getSerializationSize = function() {

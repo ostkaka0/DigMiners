@@ -22,6 +22,7 @@ World = function() {
     this.events = new EventHandler();
     this.initializeEvents();
 }
+export default World
 
 World.prototype.tick = function(dt) {
     if (this.pendingCommands[this.tickId])

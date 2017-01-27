@@ -1,9 +1,11 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-MessageRequestPlaceBlock = function(stackId, x, y) {
+var MessageRequestPlaceBlock = function(stackId, x, y) {
     this.stackId = stackId;
     this.x = Math.floor(x);
     this.y = Math.floor(y);
 }
+export default MessageRequestPlaceBlock
 
 MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
     var entity = gameData.world.entityWorld.objects[player.entityId];

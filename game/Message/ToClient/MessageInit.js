@@ -1,5 +1,6 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-MessageInit = function(gameData, player) {
+var MessageInit = function(gameData, player) {
     this.players = [];
     this.tickId = (gameData) ? gameData.world.tickId : 0;
     if (player) {
@@ -10,6 +11,7 @@ MessageInit = function(gameData, player) {
     if (!gameData) return;
     gameData.world.entityWorld.update();
 }
+export default MessageInit
 
 MessageInit.prototype.execute = function(gameData) {
     gameData.world.tickId = this.tickId;
@@ -56,30 +58,30 @@ MessageInit.prototype.send = function(gameData, socket) {
     var byteArray = new Array(this.getSerializationSize(gameData));//new Buffer(this.getSerializationSize());
     var index = new IndexCounter();
 
-    serializeInt32(byteArray, index, this.tickId);
-    serializeInt32(byteArray, index, this.playerId);
-    serializeInt32(byteArray, index, this.entityId);
-    serializeInt32(byteArray, index, gameData.world.generator.seed);
+    Serialize.int32(byteArray, index, this.tickId);
+    Serialize.int32(byteArray, index, this.playerId);
+    Serialize.int32(byteArray, index, this.entityId);
+    Serialize.int32(byteArray, index, gameData.world.generator.seed);
 
     // Serialize entities
-    serializeInt32(byteArray, index, gameData.world.entityWorld.objectArray.length);
+    Serialize.int32(byteArray, index, gameData.world.entityWorld.objectArray.length);
     gameData.world.entityWorld.objectArray.forEach(function(entity) {
-        serializeInt32(byteArray, index, entity.id);
-        serializeInt32(byteArray, index, this.entitySizes[entity.id]);
+        Serialize.int32(byteArray, index, entity.id);
+        Serialize.int32(byteArray, index, this.entitySizes[entity.id]);
         Object.keys(entity).forEach(function(key) {
             var component = entity[key];
             if (!component || !component.serialize) return;
-            serializeInt32(byteArray, index, component.id);
+            Serialize.int32(byteArray, index, component.id);
             component.serialize(byteArray, index);
         }.bind(this));
     }.bind(this));
 
     // Serialize players
-    serializeInt32(byteArray, index, gameData.playerWorld.objectArray.length);
+    Serialize.int32(byteArray, index, gameData.playerWorld.objectArray.length);
     gameData.playerWorld.objectArray.forEach(function(player) {
         if (player.id == this.playerId) return;
-        serializeInt32(byteArray, index, player.id);
-        serializeInt32(byteArray, index, player.entityId);
+        Serialize.int32(byteArray, index, player.id);
+        Serialize.int32(byteArray, index, player.entityId);
     }.bind(this));
 
     socket.emit(this.idString, new Buffer(byteArray));
@@ -89,21 +91,21 @@ MessageInit.prototype.receive = function(gameData, byteArray) {
     byteArray = new Uint8Array(byteArray);
     var index = new IndexCounter();
 
-    this.tickId = deserializeInt32(byteArray, index);
-    this.playerId = deserializeInt32(byteArray, index);
-    this.entityId = deserializeInt32(byteArray, index);
-    gameData.world.generator = new Generator(deserializeInt32(byteArray, index));
+    this.tickId = Deserialize.int32(byteArray, index);
+    this.playerId = Deserialize.int32(byteArray, index);
+    this.entityId = Deserialize.int32(byteArray, index);
+    gameData.world.generator = new Generator(Deserialize.int32(byteArray, index));
 
     // Deserialize entities
-    var amountOfEntities = deserializeInt32(byteArray, index);
+    var amountOfEntities = Deserialize.int32(byteArray, index);
     for (var i = 0; i < amountOfEntities; ++i) {
-        var entityId = deserializeInt32(byteArray, index);
+        var entityId = Deserialize.int32(byteArray, index);
 
-        var entitySize = deserializeInt32(byteArray, index);
+        var entitySize = Deserialize.int32(byteArray, index);
         var entityEnd = index.value + entitySize;
         var entity = {};
         while (index.value < entityEnd) {
-            var componentId = deserializeInt32(byteArray, index);
+            var componentId = Deserialize.int32(byteArray, index);
             var ComponentType = Config.componentTypes[componentId];
             var componentName = ComponentType.prototype.name;
             entity[componentName] = new ComponentType();
@@ -117,10 +119,10 @@ MessageInit.prototype.receive = function(gameData, byteArray) {
     }
 
     // Deserialize players
-    var amountOfPlayers = deserializeInt32(byteArray, index);
+    var amountOfPlayers = Deserialize.int32(byteArray, index);
     for (var i = 0; i < amountOfPlayers; ++i) {
-        var playerId = deserializeInt32(byteArray, index);
-        var entityId = deserializeInt32(byteArray, index);
+        var playerId = Deserialize.int32(byteArray, index);
+        var entityId = Deserialize.int32(byteArray, index);
         this.players.push([playerId, entityId]);
     }
 

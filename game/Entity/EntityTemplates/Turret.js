@@ -1,5 +1,5 @@
 
-entityTemplates.Turret = function(entityId, pos, teamId) {
+export default function(entityId, pos, teamId) {
     var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0, 1000, 0.5);
     entity.movement = new Movement(0);

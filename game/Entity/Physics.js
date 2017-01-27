@@ -1,6 +1,6 @@
-PHYSICS_MAX_STEP_LENGTH = 1.0;
+var PHYSICS_MAX_STEP_LENGTH = 1.0;
 
-COLLISION_BLOCKS = [
+var COLLISION_BLOCKS = [
     [0, 0],
     [0, -1],
     [0, 1],
@@ -12,7 +12,7 @@ COLLISION_BLOCKS = [
     [-1, -1]
 ];
 
-COLLISION_BLOCKS_LARGE = [
+var COLLISION_BLOCKS_LARGE = [
     [0, 0],
     [0, -1],
     [0, 1],
@@ -40,22 +40,23 @@ COLLISION_BLOCKS_LARGE = [
     [1, -2],
 ];
 
-BlockCollisionSide = {
+var BlockCollisionSide = {
     TOP: 0,
     LEFT: 1,
     RIGHT: 2,
     BOTTOM: 3
 }
 
-entityFunctionPhysicsBodySimulate = function(dt) {
+var entityFunctionPhysicsBodySimulate = function(dt) {
     gameData.world.entityWorld.objectArray.forEach(function(entity) {
         if (entity.isDead || !entity.isActive) return;
         if (entity.physicsBody)
             physicsBodySimulate(entity.physicsBody, dt);
     });
 }
+export default entityFunctionPhysicsBodySimulate
 
-physicsBodySimulate = function(physicsBody, dt) {
+var physicsBodySimulate = function(physicsBody, dt) {
     var radius = physicsBody.getRadius();
 
     // Calculate deltaPos and number of steps

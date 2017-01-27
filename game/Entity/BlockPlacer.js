@@ -1,3 +1,4 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
 BlockPlacer = function(blockPos, blockId, duration, entityId) {
     this.blockPos = blockPos;
@@ -5,6 +6,7 @@ BlockPlacer = function(blockPos, blockId, duration, entityId) {
     this.duration = duration;
     this.entityId = entityId;
 }
+export default BlockPlacer
 
 BlockPlacer.prototype.name = blockPlacer.name; function blockPlacer() { };
 
@@ -63,18 +65,18 @@ BlockPlacer.prototype.update = function(entity) {
 }
 
 BlockPlacer.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.blockPos[0]);
-    serializeInt32(byteArray, index, this.blockPos[1]);
-    serializeInt32(byteArray, index, this.blockId);
-    serializeInt32(byteArray, index, this.duration);
-    serializeInt32(byteArray, index, this.entityId);
+    Serialize.int32(byteArray, index, this.blockPos[0]);
+    Serialize.int32(byteArray, index, this.blockPos[1]);
+    Serialize.int32(byteArray, index, this.blockId);
+    Serialize.int32(byteArray, index, this.duration);
+    Serialize.int32(byteArray, index, this.entityId);
 }
 
 BlockPlacer.prototype.deserialize = function(byteArray, index) {
-    this.blockPos = [deserializeInt32(byteArray, index), deserializeInt32(byteArray, index)]
-    this.blockId = deserializeInt32(byteArray, index);
-    this.duration = deserializeInt32(byteArray, index);
-    this.entityId = deserializeInt32(byteArray, index);
+    this.blockPos = [Deserialize.int32(byteArray, index), Deserialize.int32(byteArray, index)]
+    this.blockId = Deserialize.int32(byteArray, index);
+    this.duration = Deserialize.int32(byteArray, index);
+    this.entityId = Deserialize.int32(byteArray, index);
 }
 
 BlockPlacer.prototype.getSerializationSize = function() {

@@ -1,5 +1,6 @@
 
 Particles = {};
+export default Particles
 
 Particles.Bullet = {
     size: 1,

@@ -1,8 +1,10 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-MessageRequestSpawn = function(playerName, classId) {
+var MessageRequestSpawn = function(playerName, classId) {
     this.playerName = playerName;
     this.classId = classId;
 }
+export default MessageRequestSpawn
 
 MessageRequestSpawn.prototype.execute = function(gameData, player) {
     if (player.entity != null && player.entityId != null) return;

@@ -1,10 +1,12 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-CommandEntityEquipItem = function(entityId, stackId, itemId, equipped) {
+var CommandEntityEquipItem = function(entityId, stackId, itemId, equipped) {
     this.entityId = entityId;
     this.stackId = stackId;
     this.itemId = itemId;
     this.equipped = equipped;
 }
+export default CommandEntityEquipItem
 
 CommandEntityEquipItem.prototype.execute = function() {
     var entity = gameData.world.entityWorld.objects[this.entityId];
@@ -52,18 +54,18 @@ CommandEntityEquipItem.prototype.execute = function() {
 }
 
 CommandEntityEquipItem.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.entityId);
-    serializeInt32(byteArray, index, this.stackId);
-    serializeInt32(byteArray, index, this.itemId);
+    Serialize.int32(byteArray, index, this.entityId);
+    Serialize.int32(byteArray, index, this.stackId);
+    Serialize.int32(byteArray, index, this.itemId);
     var booleans = [];
     booleans[0] = this.equipped;
     serializeBooleans(byteArray, index, booleans);
 }
 
 CommandEntityEquipItem.prototype.deserialize = function(byteArray, index) {
-    this.entityId = deserializeInt32(byteArray, index);
-    this.stackId = deserializeInt32(byteArray, index);
-    this.itemId = deserializeInt32(byteArray, index);
+    this.entityId = Deserialize.int32(byteArray, index);
+    this.stackId = Deserialize.int32(byteArray, index);
+    this.itemId = Deserialize.int32(byteArray, index);
     this.equipped = deserializeBooleans(byteArray, index)[0];
 }
 

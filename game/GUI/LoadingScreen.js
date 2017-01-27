@@ -1,5 +1,5 @@
 
-LoadingScreen = function() {
+var LoadingScreen = function() {
 
     this.root = $("<div>").appendTo("body");
     this.root.css({
@@ -69,3 +69,4 @@ LoadingScreen = function() {
         this.root.hide();
     }.bind(this));
 }
+export default LoadingScreen

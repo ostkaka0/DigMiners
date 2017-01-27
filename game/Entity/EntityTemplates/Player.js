@@ -1,5 +1,5 @@
 
-entityTemplates.PlayerZombie = function(playerId, entityId, name, pos, playerClass) {
+export default function(playerId, entityId, name, pos, playerClass) {
     var entity = entityTemplates.Zombie(entityId, pos, Teams.Zombie);
     entity.behaviourContainer = undefined;
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
