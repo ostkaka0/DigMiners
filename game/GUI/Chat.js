@@ -103,6 +103,10 @@ Chat = function() {
         this.write(text);
     }.bind(this));
 
+    gameData.world.events.on("playerSpawned", function(entity, player) {
+        this.write(entity.nameComponent.entityName + " spawned.");
+    }.bind(this));
+
     this.blurAll = function() {
         var tmp = document.createElement("input");
         document.body.appendChild(tmp);
@@ -119,7 +123,7 @@ Chat = function() {
         }
     }.bind(this));
 
-    return this.root;
+    this.root.appendTo("#hud");
 }
 
 Chat.prototype.write = function(text) {

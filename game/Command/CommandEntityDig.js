@@ -61,7 +61,7 @@ CommandEntityDig.prototype.execute = function() {
                     var physicsBody = entity.physicsBody;
 
                     var itemEntityId = gameData.world.idList.next();
-                    var itemEntity = entityTemplates.item(itemId, 1, gameData);
+                    var itemEntity = entityTemplates.Item(itemId, 1, gameData);
                     itemEntity.physicsBody.setPos(v2.clone(physicsBody.getPos()));
                     itemEntity.physicsBody.angle = physicsBody.angle;
                     itemEntity.physicsBody.angleOld = physicsBody.angle;

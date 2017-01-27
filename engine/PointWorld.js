@@ -37,7 +37,6 @@ PointWorld.prototype.add = function(pos, radius) {
 PointWorld.prototype.remove = function(pointId) {
     this._eraseFromTree(pointId, this.getPos(pointId), this.getRadius(pointId));
     this.idList.removeSorted(pointId);
-    console.log(this.idList);
 }
 
 PointWorld.prototype.movePoint = function(pointId, pos, radius) {

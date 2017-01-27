@@ -178,23 +178,18 @@ World.prototype.initializeEvents = function() {
 
     this.events.on("equip", function(entity, stackId, itemType) {
         if (itemType.type == "tool" && itemType.typeOfType == "rangedWeapon") {
-            /*entity.bodyparts.bodyparts["tool"].offset[2] = Config.shootAngle;
-            entity.bodyparts.bodyparts["leftArm"].offset[2] = Config.shootAngle;
-            entity.bodyparts.bodyparts["rightArm"].offset[2] = -Config.shootAngle;*/
-
-
-
             var shoulderAngle = Math.PI / 4.0;
-            var pos = BodyPart.rotate(0, 0, entity.bodyparts.bodyparts["leftArm"].offset[0], entity.bodyparts.bodyparts["leftArm"].offset[1], shoulderAngle + 1.0);
-            entity.bodyparts.bodyparts["leftArm"].offset[0] = -pos[0];
-            entity.bodyparts.bodyparts["leftArm"].offset[1] = pos[1];
-
-            pos = BodyPart.rotate(0, 0, entity.bodyparts.bodyparts["rightArm"].offset[0], entity.bodyparts.bodyparts["rightArm"].offset[1], shoulderAngle);
-            entity.bodyparts.bodyparts["rightArm"].offset[0] = -pos[0];
-            entity.bodyparts.bodyparts["rightArm"].offset[1] = pos[1];
-
-            entity.bodyparts.bodyparts["leftArm"].offset[2] = 2.5;
-
+            if (entity.bodyparts.bodyparts["leftArm"]) {
+                var pos = BodyPart.rotate(0, 0, entity.bodyparts.bodyparts["leftArm"].offset[0], entity.bodyparts.bodyparts["leftArm"].offset[1], shoulderAngle + 1.0);
+                entity.bodyparts.bodyparts["leftArm"].offset[0] = -pos[0];
+                entity.bodyparts.bodyparts["leftArm"].offset[1] = pos[1];
+                entity.bodyparts.bodyparts["leftArm"].offset[2] = 2.5;
+            }
+            if (entity.bodyparts.bodyparts["rightArm"]) {
+                pos = BodyPart.rotate(0, 0, entity.bodyparts.bodyparts["rightArm"].offset[0], entity.bodyparts.bodyparts["rightArm"].offset[1], shoulderAngle);
+                entity.bodyparts.bodyparts["rightArm"].offset[0] = -pos[0];
+                entity.bodyparts.bodyparts["rightArm"].offset[1] = pos[1];
+            }
         }
     }.bind(this));
 
