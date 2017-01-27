@@ -13,8 +13,8 @@ CommandPlayerLeave.prototype.execute = function() {
         gameData.world.entityWorld.remove(entity);
     if (isServer)
         console.log(player.name + " disconnected.");
-    else if (player && player.name)
-        gameData.HUD.chat.write(player.name + " disconnected.");
+    else if (entity && entity.nameComponent)
+        gameData.HUD.chat.write(entity.nameComponent.entityName + " disconnected.");
 }
 
 CommandPlayerLeave.prototype.serialize = function(byteArray, index) {
