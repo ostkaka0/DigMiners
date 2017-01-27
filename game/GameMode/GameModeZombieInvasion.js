@@ -46,7 +46,7 @@ GameModeZombieInvasion.prototype.init = function() {
         for (var j = 0; j < 10 && v2.length(pos) < 20.0; j++)
             pos = [60.0 * (-1 + 2 * Math.random()), 60.0 * (-1 + 2 * Math.random())];
         var entityId = gameData.world.idList.next();
-        var entity = entityTemplates.monsterSpawner(entityId, pos, this.spawnZombie.bind(this), 0, 2.0, 40, null, null, Teams.Zombie);
+        var entity = entityTemplates.MonsterSpawner(entityId, pos, this.spawnZombie.bind(this), 0, 2.0, 40, null, null, Teams.Zombie);
         sendCommand(new CommandEntitySpawn(gameData, entity, entityId, Teams.Zombie));
         sendCommand(new CommandDig(pos, 5.0));
         this.zombieSpawners.push(entity);
@@ -94,7 +94,7 @@ GameModeZombieInvasion.prototype.init = function() {
 GameModeZombieInvasion.prototype.createEntity = function(player, entityId, classId) {
     if (this.playerSpawning) {
         var classType = PlayerClassRegister[classId];
-        var entity = entityTemplates.player(player.id, entityId, player.name, classType, Teams.Human);
+        var entity = entityTemplates.Player(player.id, entityId, player.name, classType, Teams.Human);
 
         // Set spawn position
         var pos = this.playerSpawns[Teams.Human][Math.random() * this.playerSpawns[Teams.Human].length >> 0];
@@ -105,7 +105,7 @@ GameModeZombieInvasion.prototype.createEntity = function(player, entityId, class
         return entity;
     } else {
         /*var pos = this.zombieSpawns[Math.random() * this.zombieSpawns.length >> 0];
-        var entity = entityTemplates.playerZombie(player.id, entityId, player.name, pos, classId);
+        var entity = entityTemplates.PlayerZombie(player.id, entityId, player.name, pos, classId);
         entity.inventory.addItem(gameData, Items.RustyShovel.id, 1);
         return entity;*/
         return null;
@@ -186,7 +186,7 @@ GameModeZombieInvasion.prototype.forceRespawnPlayers = function() {
 }
 
 GameModeZombieInvasion.prototype.spawnZombie = function(entityId, pos, teamId) {
-    var entity = entityTemplates.zombie(entityId, pos, teamId);
+    var entity = entityTemplates.Zombie(entityId, pos, teamId);
     this.zombies[entityId] = entity;
     // Make zombie stronger for each wave
     for (var i = 0; i < this.waveNum - 1; i++) {

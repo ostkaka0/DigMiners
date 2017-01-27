@@ -27,11 +27,11 @@ GameModeSurvivalWar.prototype.init = function() {
     this.playerSpawns[Teams.Blue] = [[-60, -60], [-60, 0], [-60, 60]];
     this.playerSpawns[Teams.Red] = [[60, -60],[60, 0],[60, 60]];
     
-    var templates = [entityTemplates.testMonster, entityTemplates.zombie];
+    var templates = [entityTemplates.Monster, entityTemplates.Zombie];
     for (var i = 0; i < 25; i++) {
         var pos = [90 * (1.0 - 2.0 * Math.random()), 90 * (1.0 - 2.0 * Math.random())]
         var entityId = gameData.world.idList.next();
-        var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.zombie, 2, 2.0, 600, null, null, Teams.None);
+        var entity = entityTemplates.MonsterSpawner(entityId, pos, entityTemplates.Zombie, 2, 2.0, 600, null, null, Teams.None);
         this.spawnEntities[entityId] = entity;
         sendCommand(new CommandEntitySpawn(gameData, entity, entityId, Teams.none));
         sendCommand(new CommandDig(pos, 5.0));

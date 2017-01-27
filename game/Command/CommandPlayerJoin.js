@@ -7,7 +7,8 @@ CommandPlayerJoin = function(playerId, entityId, playerName, socketId) {
 
 CommandPlayerJoin.prototype.execute = function() {
     var player = new Player(this.playerId);
-    player.name = this.playerName;
+    if (isServer)
+        player.name = this.playerName;
     if (isServer || this.playerId != global.player.id)
         gameData.playerWorld.add(player, this.playerId);
 
@@ -31,7 +32,8 @@ CommandPlayerJoin.prototype.execute = function() {
             }
         }
     }
-    console.log(this.playerName + " connected with playerId " + this.playerId);
+    if (isServer)
+        console.log(this.playerName + " connected with playerId " + this.playerId);
 }
 
 CommandPlayerJoin.prototype.serialize = function(byteArray, index) {

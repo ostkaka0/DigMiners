@@ -10,7 +10,8 @@ CommandPlayerSpawn.prototype.execute = function() {
     var entity = gameData.world.entityWorld.objects[this.entityId];
     var player = gameData.playerWorld.objects[this.playerId];
     player.entityId = this.entityId;
-    player.name = this.playerName;
+    if (isServer)
+        player.name = this.playerName;
 
     if (!isServer && global.player.id == this.playerId) {
         global.playerEntityId = this.entityId;
