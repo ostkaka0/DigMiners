@@ -119,7 +119,7 @@ Chat = function() {
         }
     }.bind(this));
 
-    return this.root;
+    this.root.appendTo("#hud");
 }
 
 Chat.prototype.write = function(text) {
