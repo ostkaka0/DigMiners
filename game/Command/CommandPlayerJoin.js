@@ -31,7 +31,10 @@ CommandPlayerJoin.prototype.execute = function() {
             }
         }
     }
-    console.log(this.playerName + " connected with playerId " + this.playerId);
+    if (isServer)
+        console.log(this.playerName + " connected with playerId " + this.playerId);
+    else
+        gameData.HUD.chat.write(this.playerName + " connected.");
 }
 
 CommandPlayerJoin.prototype.serialize = function(byteArray, index) {

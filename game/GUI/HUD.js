@@ -28,7 +28,6 @@ HUD = function(gameData) {
     this.dugItems = new DugItems();
 
     this.chat = new Chat();
-    this.chat.appendTo("#hud");
 
     this.ammo = new AmmoHUD();
 
