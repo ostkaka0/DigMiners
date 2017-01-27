@@ -1,5 +1,5 @@
 
-Chat = function() {
+var Chat = function() {
     this.root = $("<div>", {
     });
     this.root.css({
@@ -125,6 +125,7 @@ Chat = function() {
 
     this.root.appendTo("#hud");
 }
+export default Chat
 
 Chat.prototype.write = function(text) {
     var p = $("<p>", {

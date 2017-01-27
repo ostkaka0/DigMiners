@@ -1,5 +1,6 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-CommandCollisions = function(collisions) {
+var CommandCollisions = function(collisions) {
     var physicsWorld = gameData.world.physicsWorld;
     var physicsEntities = gameData.world.physicsEntities;
 
@@ -26,6 +27,7 @@ CommandCollisions = function(collisions) {
         }.bind(this));
     }
 }
+export CommandCollisions
 
 CommandCollisions.prototype.execute = function() {
     var physicsWorld = gameData.world.physicsWorld;
@@ -41,17 +43,17 @@ CommandCollisions.prototype.execute = function() {
 }
 
 CommandCollisions.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.collisions.length);
+    Serialize.int32(byteArray, index, this.collisions.length);
     this.collisions.forEach((function(collisionData) {
-        serializeInt32(byteArray, index, collisionData[0]);
-        serializeV2(byteArray, index, collisionData[1]);
+        Serialize.int32(byteArray, index, collisionData[0]);
+        Serialize.v2(byteArray, index, collisionData[1]);
     }).bind(this));
 }
 
 CommandCollisions.prototype.deserialize = function(byteArray, index) {
-    var numCollisions = deserializeInt32(byteArray, index);
+    var numCollisions = Deserialize.int32(byteArray, index);
     for (var i = 0; i < numCollisions; i++) {
-        this.collisions.push([deserializeInt32(byteArray, index), deserializeV2(byteArray, index)]);
+        this.collisions.push([Deserialize.int32(byteArray, index), Deserialize.v2(byteArray, index)]);
     }
 }
 

@@ -1,9 +1,11 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-CommandEntityInteractEntity = function(entityId, interactableEntityId, interacting) {
+var CommandEntityInteractEntity = function(entityId, interactableEntityId, interacting) {
     this.entityId = entityId;
     this.interactableEntityId = interactableEntityId;
     this.interacting = interacting;
 }
+export default CommandEntityInteractEntity
 
 CommandEntityInteractEntity.prototype.execute = function() {
     var entity = gameData.world.entityWorld.objects[this.entityId];
@@ -14,16 +16,16 @@ CommandEntityInteractEntity.prototype.execute = function() {
 }
 
 CommandEntityInteractEntity.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.entityId);
-    serializeInt32(byteArray, index, this.interactableEntityId);
+    Serialize.int32(byteArray, index, this.entityId);
+    Serialize.int32(byteArray, index, this.interactableEntityId);
     var booleans = [];
     booleans[0] = this.interacting;
     serializeBooleans(byteArray, index, booleans);
 }
 
 CommandEntityInteractEntity.prototype.deserialize = function(byteArray, index) {
-    this.entityId = deserializeInt32(byteArray, index);
-    this.interactableEntityId = deserializeInt32(byteArray, index);
+    this.entityId = Deserialize.int32(byteArray, index);
+    this.interactableEntityId = Deserialize.int32(byteArray, index);
     this.interacting = deserializeBooleans(byteArray, index)[0];
 }
 

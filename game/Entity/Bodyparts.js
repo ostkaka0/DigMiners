@@ -1,3 +1,4 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
 Bodyparts = function(bodyparts) {
     this.bodyparts = bodyparts;
@@ -17,23 +18,24 @@ Bodyparts = function(bodyparts) {
         bodypart.children = this.getChildren(bodypart.name);
     }
 }
+export default Bodyparts
 
 Bodyparts.prototype.name = bodyparts.name; function bodyparts() { };
 
 Bodyparts.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, Object.keys(this.bodyparts).length);
+    Serialize.int32(byteArray, index, Object.keys(this.bodyparts).length);
     for (var key in this.bodyparts) {
         var bodypart = this.bodyparts[key];
-        serializeUTF8(byteArray, index, key);
-        serializeUTF8(byteArray, index, (!bodypart.parent ? "" : bodypart.parent.name));
-        serializeUTF8(byteArray, index, bodypart.sprite.textureName);
-        serializeFix(byteArray, index, bodypart.offset[0]);
-        serializeFix(byteArray, index, bodypart.offset[1]);
-        serializeFix(byteArray, index, bodypart.offset[2]);
-        serializeFix(byteArray, index, bodypart.defaultOffset[0]);
-        serializeFix(byteArray, index, bodypart.defaultOffset[1]);
-        serializeFix(byteArray, index, bodypart.defaultOffset[2]);
-        serializeV2(byteArray, index, bodypart.pivot);
+        Serialize.utf8(byteArray, index, key);
+        Serialize.utf8(byteArray, index, (!bodypart.parent ? "" : bodypart.parent.name));
+        Serialize.utf8(byteArray, index, bodypart.sprite.textureName);
+        Serialize.fix(byteArray, index, bodypart.offset[0]);
+        Serialize.fix(byteArray, index, bodypart.offset[1]);
+        Serialize.fix(byteArray, index, bodypart.offset[2]);
+        Serialize.fix(byteArray, index, bodypart.defaultOffset[0]);
+        Serialize.fix(byteArray, index, bodypart.defaultOffset[1]);
+        Serialize.fix(byteArray, index, bodypart.defaultOffset[2]);
+        Serialize.v2(byteArray, index, bodypart.pivot);
         var booleans = [];
         booleans[0] = bodypart.disableRotation;
         serializeBooleans(byteArray, index, booleans);
@@ -42,14 +44,14 @@ Bodyparts.prototype.serialize = function(byteArray, index) {
 
 Bodyparts.prototype.deserialize = function(byteArray, index, gameData) {
     this.bodyparts = {};
-    var bodypartsLength = deserializeInt32(byteArray, index);
+    var bodypartsLength = Deserialize.int32(byteArray, index);
     for (var i = 0; i < bodypartsLength; ++i) {
-        var key = deserializeUTF8(byteArray, index);
-        var parent = deserializeUTF8(byteArray, index);
-        var textureName = deserializeUTF8(byteArray, index);
-        var offset = [deserializeFix(byteArray, index), deserializeFix(byteArray, index), deserializeFix(byteArray, index)];
-        var defaultOffset = [deserializeFix(byteArray, index), deserializeFix(byteArray, index), deserializeFix(byteArray, index)];
-        var pivot = deserializeV2(byteArray, index);
+        var key = Deserialize.utf8(byteArray, index);
+        var parent = Deserialize.utf8(byteArray, index);
+        var textureName = Deserialize.utf8(byteArray, index);
+        var offset = [Deserialize.fix(byteArray, index), Deserialize.fix(byteArray, index), Deserialize.fix(byteArray, index)];
+        var defaultOffset = [Deserialize.fix(byteArray, index), Deserialize.fix(byteArray, index), Deserialize.fix(byteArray, index)];
+        var pivot = Deserialize.v2(byteArray, index);
         var disableRotation = deserializeBooleans(byteArray, index)[0];
         var sprite = new Sprite(textureName);
         this.bodyparts[key] = new BodyPart(sprite, defaultOffset[0], defaultOffset[1], defaultOffset[2], pivot, null, disableRotation);
@@ -83,9 +85,9 @@ Bodyparts.prototype.getSerializationSize = function() {
         var bodypart = this.bodyparts[key];
         var parent = (!bodypart.parent ? "" : bodypart.parent.name);
         var textureName = bodypart.sprite.textureName;
-        size += getUTF8SerializationSize(key);
-        size += getUTF8SerializationSize(parent);
-        size += getUTF8SerializationSize((!textureName ? "" : textureName));
+        size += Serialize.utf8Size(key);
+        size += Serialize.utf8Size(parent);
+        size += Serialize.utf8Size((!textureName ? "" : textureName));
         size += 33;
     }
     return size;

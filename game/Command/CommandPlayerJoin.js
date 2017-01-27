@@ -1,9 +1,11 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-CommandPlayerJoin = function(playerId, entityId, playerName, socketId) {
+var CommandPlayerJoin = function(playerId, entityId, playerName, socketId) {
     this.playerId = playerId;
     this.playerName = playerName;
     this.socketId = socketId;
 }
+export default CommandPlayerJoin
 
 CommandPlayerJoin.prototype.execute = function() {
     var player = new Player(this.playerId);
@@ -37,15 +39,15 @@ CommandPlayerJoin.prototype.execute = function() {
 }
 
 CommandPlayerJoin.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.playerId);
-    serializeUTF8(byteArray, index, this.playerName);
+    Serialize.int32(byteArray, index, this.playerId);
+    Serialize.utf8(byteArray, index, this.playerName);
 }
 
 CommandPlayerJoin.prototype.deserialize = function(byteArray, index) {
-    this.playerId = deserializeInt32(byteArray, index);
-    this.playerName = deserializeUTF8(byteArray, index);
+    this.playerId = Deserialize.int32(byteArray, index);
+    this.playerName = Deserialize.utf8(byteArray, index);
 }
 
 CommandPlayerJoin.prototype.getSerializationSize = function() {
-    return 4 + getUTF8SerializationSize(this.playerName);
+    return 4 + Serialize.utf8Size(this.playerName);
 }

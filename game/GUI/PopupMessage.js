@@ -1,5 +1,5 @@
 
-PopupMessage = function(text, timeout) {
+var PopupMessage = function(text, timeout) {
     this.timeout = timeout;
     this.outer = $("<div>", {
         "id": "popup",
@@ -49,3 +49,4 @@ PopupMessage.prototype.show = function() {
         }.bind(this), fadeTime);
     }.bind(this), this.timeout);
 }
+export default PopupMessage

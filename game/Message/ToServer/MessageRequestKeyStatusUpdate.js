@@ -1,8 +1,10 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-MessageRequestKeyStatusUpdate = function(key, pressed) {
+var MessageRequestKeyStatusUpdate = function(key, pressed) {
     this.key = key;
     this.pressed = pressed;
 }
+export default MessageRequestKeyStatusUpdate
 
 MessageRequestKeyStatusUpdate.prototype.execute = function(gameData, player) {
     var entity = gameData.world.entityWorld.objects[player.entityId];

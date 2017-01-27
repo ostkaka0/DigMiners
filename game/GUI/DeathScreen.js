@@ -1,5 +1,5 @@
 
-DeathScreen = function() {
+var DeathScreen = function() {
     this.width = 490;
     this.height = 200;
 
@@ -130,6 +130,7 @@ DeathScreen = function() {
 
     this.btnSpawn.setDisabledCountdown(Config.respawnTime)
 }
+export default DeathScreen
 
 DeathScreen.prototype.getClass = function() {
     var pickedClass = 0;

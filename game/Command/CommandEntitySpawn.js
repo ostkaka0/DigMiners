@@ -1,8 +1,10 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-CommandEntitySpawn = function(gameData, entity, entityId, teamId) {
+var CommandEntitySpawn = function(gameData, entity, entityId, teamId) {
     this.entity = entity;
     this.entityId = entityId;
 }
+export default CommandEntitySpawn
 
 CommandEntitySpawn.prototype.execute = function() {
     if (gameData.world.entityWorld.objects[this.entityId])
@@ -11,23 +13,23 @@ CommandEntitySpawn.prototype.execute = function() {
 }
 
 CommandEntitySpawn.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.entityId);
-    serializeInt32(byteArray, index, this.numComponents);
+    Serialize.int32(byteArray, index, this.entityId);
+    Serialize.int32(byteArray, index, this.numComponents);
     Object.keys(this.entity).forEach(function(key) {
         var component = this.entity[key];
         if (!component || !component.serialize) return;
-        serializeInt32(byteArray, index, component.id);
+        Serialize.int32(byteArray, index, component.id);
         component.serialize(byteArray, index);
     }.bind(this));
 }
 
 CommandEntitySpawn.prototype.deserialize = function(byteArray, index) {
-    var entityId = deserializeInt32(byteArray, index);
-    var numComponents = deserializeInt32(byteArray, index);
+    var entityId = Deserialize.int32(byteArray, index);
+    var numComponents = Deserialize.int32(byteArray, index);
     var entity = {};
     for (var i = 0; i < numComponents; ++i) {
 
-        var componentId = deserializeInt32(byteArray, index);
+        var componentId = Deserialize.int32(byteArray, index);
         var ComponentType = Config.componentTypes[componentId];
         var componentName = ComponentType.prototype.name;
         entity[componentName] = new ComponentType();

@@ -1,7 +1,9 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-CommandEntityBeginReloadWeapon = function(entityId) {
+var CommandEntityBeginReloadWeapon = function(entityId) {
     this.entityId = entityId;
 }
+export default CommandEntityBeginReloadWeapon
 
 CommandEntityBeginReloadWeapon.prototype.execute = function() {
     var entity = gameData.world.entityWorld.objects[this.entityId];
@@ -11,11 +13,11 @@ CommandEntityBeginReloadWeapon.prototype.execute = function() {
 }
 
 CommandEntityBeginReloadWeapon.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.entityId);
+    Serialize.int32(byteArray, index, this.entityId);
 }
 
 CommandEntityBeginReloadWeapon.prototype.deserialize = function(byteArray, index) {
-    this.entityId = deserializeInt32(byteArray, index);
+    this.entityId = Deserialize.int32(byteArray, index);
 }
 
 CommandEntityBeginReloadWeapon.prototype.getSerializationSize = function() {

@@ -1,8 +1,10 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-Interacter = function() {
+var Interacter = function() {
     this.lastCheck = null;
     this.interacting = null;
 }
+export default Interacter
 
 Interacter.prototype.name = interacter.name; function interacter() { };
 

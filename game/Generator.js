@@ -1,4 +1,4 @@
-Generator = function(seed) {
+var Generator = function(seed) {
     if (!seed)
         seed = 0;
     this.seed = seed;
@@ -7,6 +7,7 @@ Generator = function(seed) {
     this.oreNoise2 = this.seed + 331;
     this.oreNoise3 = this.seed + 71117;
 }
+export default Generator
 
 Generator.prototype.generate = function(chunk, chunkX, chunkY) {
     for (var yy = 0; yy < CHUNK_DIM; ++yy) {
@@ -88,4 +89,3 @@ Generator.prototype.generateDungeons = function(blockWorld, chunk, chunkX, chunk
         }
     }
 }
-

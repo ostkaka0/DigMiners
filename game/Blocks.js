@@ -1,12 +1,13 @@
 
-BlockTypes = {
+export var BlockTypes = {
     FOREGROUND: 0,
     BACKGROUND: 1
 }
 
-Blocks = {};
+export var Blocks = {};
+export default Blocks
 
-BlockFunctions = {};
+export var BlockFunctions = {};
 BlockFunctions.createEntity = function(blockPos, block) {
     if (isServer) {
         var entity = block.createEntity(blockPos, block);

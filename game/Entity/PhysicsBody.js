@@ -1,5 +1,6 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-PhysicsBody = function(pos, damping, rotationSpeed, mass, radius) {
+var PhysicsBody = function(pos, damping, rotationSpeed, mass, radius) {
     this.bodyId = gameData.world.physicsWorld.add(pos, [0.0, 0.0], mass, radius);
     if (pos) {
         this.posOld = v2.clone(pos);
@@ -21,30 +22,31 @@ PhysicsBody = function(pos, damping, rotationSpeed, mass, radius) {
     this.angle = 0;
     this.angleOld = 0;
 }
+export default PhysicsBody
 
 PhysicsBody.prototype.name = physicsBody.name; function physicsBody() { };
 
 PhysicsBody.prototype.serialize = function(byteArray, index) {
-    serializeV2(byteArray, index, this.getPos());
-    serializeV2(byteArray, index, this.getVelocity());
-    serializeFix(byteArray, index, this.getMass());
-    serializeFix(byteArray, index, this.getRadius());
-    serializeFix(byteArray, index, this.angle);
-    serializeFix(byteArray, index, this.rotationSpeed);
-    serializeFix(byteArray, index, this.damping);
+    Serialize.v2(byteArray, index, this.getPos());
+    Serialize.v2(byteArray, index, this.getVelocity());
+    Serialize.fix(byteArray, index, this.getMass());
+    Serialize.fix(byteArray, index, this.getRadius());
+    Serialize.fix(byteArray, index, this.angle);
+    Serialize.fix(byteArray, index, this.rotationSpeed);
+    Serialize.fix(byteArray, index, this.damping);
 }
 
 PhysicsBody.prototype.deserialize = function(byteArray, index) {
-    this.setPos(deserializeV2(byteArray, index));
+    this.setPos(Deserialize.v2(byteArray, index));
     this.posOld = v2.clone(this.getPos());
-    this.setVelocity(deserializeV2(byteArray, index));
+    this.setVelocity(Deserialize.v2(byteArray, index));
     this.speedOld = v2.clone(this.getVelocity());
-    this.setMass(deserializeFix(byteArray, index));
-    this.setRadius(deserializeFix(byteArray, index));
-    this.angle = deserializeFix(byteArray, index);
+    this.setMass(Deserialize.fix(byteArray, index));
+    this.setRadius(Deserialize.fix(byteArray, index));
+    this.angle = Deserialize.fix(byteArray, index);
     this.angleOld = this.angle;
-    this.rotationSpeed = deserializeFix(byteArray, index);
-    this.damping = deserializeFix(byteArray, index);
+    this.rotationSpeed = Deserialize.fix(byteArray, index);
+    this.damping = Deserialize.fix(byteArray, index);
 
     this.posClient = v2.clone(this.getPos());
     this.posClientOld = v2.clone(this.getPos());

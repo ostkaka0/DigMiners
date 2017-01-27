@@ -1,13 +1,14 @@
 
-TextureLoaderEvents = {};
+export var TextureLoaderEvents = {};
 TextureLoaderEvents.onComplete = [];
 TextureLoaderEvents.onProgress = [];
 
-TextureLoader = function() {
+export var TextureLoader = function() {
     this.texturesToLoad = [];
     this.total = 0;
     this.current = 0;
 }
+export default TextureLoader
 
 TextureLoader.prototype.queue = function(texture) {
     this.texturesToLoad[this.total] = texture;

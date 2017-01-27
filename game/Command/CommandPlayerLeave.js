@@ -1,8 +1,10 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-CommandPlayerLeave = function(playerId, entityId) {
+var CommandPlayerLeave = function(playerId, entityId) {
     this.playerId = playerId;
     this.entityId = entityId;
 }
+export default CommandPlayerLeave
 
 CommandPlayerLeave.prototype.execute = function() {
     var player = gameData.playerWorld.objects[this.playerId];
@@ -18,13 +20,13 @@ CommandPlayerLeave.prototype.execute = function() {
 }
 
 CommandPlayerLeave.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.playerId);
-    serializeInt32(byteArray, index, this.entityId);
+    Serialize.int32(byteArray, index, this.playerId);
+    Serialize.int32(byteArray, index, this.entityId);
 }
 
 CommandPlayerLeave.prototype.deserialize = function(byteArray, index) {
-    this.playerId = deserializeInt32(byteArray, index);
-    this.entityId = deserializeInt32(byteArray, index);
+    this.playerId = Deserialize.int32(byteArray, index);
+    this.entityId = Deserialize.int32(byteArray, index);
 }
 
 CommandPlayerLeave.prototype.getSerializationSize = function() {

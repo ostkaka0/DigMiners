@@ -1,5 +1,5 @@
 
-SpriteGroup = {
+export default {
     Items: 0,
     Players: 1,
     //???: 2,

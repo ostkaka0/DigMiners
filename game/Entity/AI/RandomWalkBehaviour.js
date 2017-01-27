@@ -12,6 +12,7 @@ RandomWalkBehaviour = function(entity) {
         [0, -1]
     ];
 }
+export default RandomWalkBehaviour
 
 RandomWalkBehaviour.prototype.canRun = function() {
     return true;

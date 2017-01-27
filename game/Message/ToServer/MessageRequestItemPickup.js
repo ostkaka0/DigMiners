@@ -1,7 +1,9 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-MessageRequestItemPickup = function(entityId) {
+var MessageRequestItemPickup = function(entityId) {
     this.entityId = entityId;
 }
+export default MessageRequestItemPickup
 
 MessageRequestItemPickup.prototype.execute = function(gameData, player) {
     var entity = gameData.world.entityWorld.objects[this.entityId];

@@ -1,11 +1,12 @@
 
-Player = function(playerId, entityId) {
+var Player = function(playerId, entityId) {
     this.playerId = playerId;
     this.entityId = entityId;
     this.text = null;
     this.deathTick = gameData.world.tickId;
     this.oreInventory = new Array();
 }
+export default Player
 
 Player.prototype.hasRequiredRecipeResources = function(recipe) {
     var entity = gameData.world.entityWorld.objects[this.entityId];

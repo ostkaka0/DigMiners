@@ -1,7 +1,9 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-MessageRequestCraft = function(recipeId) {
+var MessageRequestCraft = function(recipeId) {
     this.recipeId = recipeId;
 }
+export defautl MessageRequestCraft
 
 MessageRequestCraft.prototype.execute = function(gameData, player) {
     var playerEntity = gameData.entityWorld.objects[player.entityId];

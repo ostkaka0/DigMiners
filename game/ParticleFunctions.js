@@ -1,10 +1,11 @@
 
-createParticles = function(particleFunction, pos, angle) {
+export var createParticles = function(particleFunction, pos, angle) {
     if (!isServer)
         particleFunction(pos, angle);
 }
+export default createParticles
 
-ParticleFunctions = {};
+export var ParticleFunctions = {};
 
 ParticleFunctions.BulletHitParticles = function(pos, angle) {
     for (var i = 0; i < 10; ++i) {

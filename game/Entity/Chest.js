@@ -1,7 +1,9 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
 Chest = function() {
 
 }
+export default Chest
 
 Chest.prototype.name = chest.name; function chest() { };
 

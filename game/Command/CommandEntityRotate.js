@@ -1,8 +1,10 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-CommandEntityRotate = function(entityId, direction) {
+var CommandEntityRotate = function(entityId, direction) {
     this.entityId = entityId;
     this.direction = direction;
 }
+export default CommandEntityRotate
 
 CommandEntityRotate.prototype.execute = function() {
     var entity = gameData.world.entityWorld.objects[this.entityId];
@@ -13,13 +15,13 @@ CommandEntityRotate.prototype.execute = function() {
 }
 
 CommandEntityRotate.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.entityId);
-    serializeV2(byteArray, index, this.direction);
+    Serialize.int32(byteArray, index, this.entityId);
+    Serialize.v2(byteArray, index, this.direction);
 }
 
 CommandEntityRotate.prototype.deserialize = function(byteArray, index) {
-    this.entityId = deserializeInt32(byteArray, index);
-    this.direction = deserializeV2(byteArray, index);
+    this.entityId = Deserialize.int32(byteArray, index);
+    this.direction = Deserialize.v2(byteArray, index);
 }
 
 CommandEntityRotate.prototype.getSerializationSize = function() {

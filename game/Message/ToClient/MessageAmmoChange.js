@@ -1,5 +1,6 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-MessageAmmoChange = function(entity, itemIds) {
+var MessageAmmoChange = function(entity, itemIds) {
     this.ammo = {};
     if (entity && itemIds) {
         itemIds.forEach(function(itemId) {
@@ -7,6 +8,7 @@ MessageAmmoChange = function(entity, itemIds) {
         }.bind(this));
     }
 }
+export default MessageAmmoChange
 
 MessageAmmoChange.prototype.execute = function(gameData) {
 
@@ -17,10 +19,10 @@ MessageAmmoChange.prototype.send = function(socket) {
     var serializationSize = 4 + 8 * keys.length;
     var byteArray = new Buffer(serializationSize);
     var counter = new IndexCounter();
-    serializeInt32(byteArray, counter, keys.length);
+    Serialize.int32(byteArray, counter, keys.length);
     keys.forEach(function(itemId) {
-        serializeInt32(byteArray, counter, itemId);
-        serializeInt32(byteArray, counter, this.ammo[itemId]);
+        Serialize.int32(byteArray, counter, itemId);
+        Serialize.int32(byteArray, counter, this.ammo[itemId]);
     }.bind(this));
     socket.emit(this.idString, byteArray);
 }
@@ -30,10 +32,10 @@ MessageAmmoChange.prototype.receive = function(gameData, byteArray) {
     var entity = global.playerEntity;
     byteArray = new Uint8Array(byteArray);
     var counter = new IndexCounter();
-    var length = deserializeInt32(byteArray, counter);
+    var length = Deserialize.int32(byteArray, counter);
     for (var i = 0; i < length; i++)  {
-        var itemId = deserializeInt32(byteArray, counter);
-        var amount = deserializeInt32(byteArray, counter);
+        var itemId = Deserialize.int32(byteArray, counter);
+        var amount = Deserialize.int32(byteArray, counter);
         entity.ammo[itemId] = amount;
     }
     triggerEvent(AmmoEvents.onChange, entity);

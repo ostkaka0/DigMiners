@@ -1,9 +1,11 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-MessageRequestClickSlot = function(inventoryId, slotId, clickType) {
+var MessageRequestClickSlot = function(inventoryId, slotId, clickType) {
     this.inventoryId = inventoryId;
     this.slotId = slotId;
     this.clickType = clickType;
 }
+export default MessageRequestClickSlot
 
 MessageRequestClickSlot.prototype.execute = function(gameData, player) {
     var entity = gameData.world.entityWorld.objects[player.entityId];

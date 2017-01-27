@@ -1,9 +1,11 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-CommandBlockStrength = function(x, y, strength) {
+var CommandBlockStrength = function(x, y, strength) {
     this.x = x;
     this.y = y;
     this.strength = Math.max(strength, 0);
 }
+export CommandBlockStrength
 
 CommandBlockStrength.prototype.execute = function() {
     if (this.strength > 0)
@@ -13,15 +15,15 @@ CommandBlockStrength.prototype.execute = function() {
 }
 
 CommandBlockStrength.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.x);
-    serializeInt32(byteArray, index, this.y);
-    serializeInt8(byteArray, index, this.strength);
+    Serialize.int32(byteArray, index, this.x);
+    Serialize.int32(byteArray, index, this.y);
+    Serialize.int8(byteArray, index, this.strength);
 }
 
 CommandBlockStrength.prototype.deserialize = function(byteArray, index) {
-    this.x = deserializeInt32(byteArray, index);
-    this.y = deserializeInt32(byteArray, index);
-    this.strength = deserializeInt8(byteArray, index);
+    this.x = Deserialize.int32(byteArray, index);
+    this.y = Deserialize.int32(byteArray, index);
+    this.strength = Deserialize.int8(byteArray, index);
 }
 
 CommandBlockStrength.prototype.getSerializationSize = function() {

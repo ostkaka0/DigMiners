@@ -1,9 +1,11 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-CommandDig = function(pos, radius) {
+var CommandDig = function(pos, radius) {
     if (pos)
         this.pos = v2.cloneFix(pos);
     this.radius = toFix(radius);
 }
+export CommandDig
 
 CommandDig.prototype.execute = function() {
     var tileWorld = gameData.world.tileWorld;
@@ -11,13 +13,13 @@ CommandDig.prototype.execute = function() {
 }
 
 CommandDig.prototype.serialize = function(byteArray, index) {
-    serializeV2(byteArray, index, this.pos);
-    serializeFix(byteArray, index, this.radius);
+    Serialize.v2(byteArray, index, this.pos);
+    Serialize.fix(byteArray, index, this.radius);
 }
 
 CommandDig.prototype.deserialize = function(byteArray, index) {
-    this.pos = deserializeV2(byteArray, index);
-    this.radius = deserializeFix(byteArray, index);
+    this.pos = Deserialize.v2(byteArray, index);
+    this.radius = Deserialize.fix(byteArray, index);
 }
 
 CommandDig.prototype.getSerializationSize = function() {

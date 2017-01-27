@@ -1,5 +1,6 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHardness) {
+var CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHardness) {
     this.entityId = entityId;
     if (pos)
         this.pos = v2.cloneFix(pos);
@@ -8,6 +9,7 @@ CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHardness
     this.digSpeed = digSpeed;
     this.maxDigHardness = maxDigHardness;
 }
+export default CommandEntityDig
 
 CommandEntityDig.prototype.execute = function() {
     var entity = gameData.world.entityWorld.objects[this.entityId];
@@ -73,21 +75,21 @@ CommandEntityDig.prototype.execute = function() {
 }
 
 CommandEntityDig.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.entityId);
-    serializeV2(byteArray, index, this.pos);
-    serializeV2(byteArray, index, this.dir);
-    serializeFix(byteArray, index, this.radius);
-    serializeFix(byteArray, index, this.digSpeed);
-    serializeFix(byteArray, index, this.maxDigHardness);
+    Serialize.int32(byteArray, index, this.entityId);
+    Serialize.v2(byteArray, index, this.pos);
+    Serialize.v2(byteArray, index, this.dir);
+    Serialize.fix(byteArray, index, this.radius);
+    Serialize.fix(byteArray, index, this.digSpeed);
+    Serialize.fix(byteArray, index, this.maxDigHardness);
 }
 
 CommandEntityDig.prototype.deserialize = function(byteArray, index) {
-    this.entityId = deserializeInt32(byteArray, index);
-    this.pos = deserializeV2(byteArray, index);
-    this.dir = deserializeV2(byteArray, index);
-    this.radius = deserializeFix(byteArray, index);
-    this.digSpeed = deserializeFix(byteArray, index);
-    this.maxDigHardness = deserializeFix(byteArray, index);
+    this.entityId = Deserialize.int32(byteArray, index);
+    this.pos = Deserialize.v2(byteArray, index);
+    this.dir = Deserialize.v2(byteArray, index);
+    this.radius = Deserialize.fix(byteArray, index);
+    this.digSpeed = Deserialize.fix(byteArray, index);
+    this.maxDigHardness = Deserialize.fix(byteArray, index);
 }
 
 CommandEntityDig.prototype.getSerializationSize = function() {

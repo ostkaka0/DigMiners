@@ -1,10 +1,12 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-CommandKeyStatusUpdate = function(entityId, key, pressed, pos) {
+var CommandKeyStatusUpdate = function(entityId, key, pressed, pos) {
     this.entityId = entityId;
     this.key = key;
     this.pressed = pressed;
     this.pos = pos;
 }
+export default CommandKeyStatusUpdate
 
 CommandKeyStatusUpdate.prototype.execute = function() {
     var entity = gameData.world.entityWorld.objects[this.entityId];
@@ -31,19 +33,19 @@ CommandKeyStatusUpdate.prototype.execute = function() {
 }
 
 CommandKeyStatusUpdate.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.entityId);
-    serializeInt8(byteArray, index, this.key);
-    serializeInt8(byteArray, index, (this.pressed == true ? 1 : 0));
-    serializeV2(byteArray, index, this.pos);
+    Serialize.int32(byteArray, index, this.entityId);
+    Serialize.int8(byteArray, index, this.key);
+    Serialize.int8(byteArray, index, (this.pressed == true ? 1 : 0));
+    Serialize.v2(byteArray, index, this.pos);
 }
 
 CommandKeyStatusUpdate.prototype.deserialize = function(byteArray, index) {
-    this.entityId = deserializeInt32(byteArray, index);
-    this.key = deserializeInt8(byteArray, index);
-    var pressed = deserializeInt8(byteArray, index);
+    this.entityId = Deserialize.int32(byteArray, index);
+    this.key = Deserialize.int8(byteArray, index);
+    var pressed = Deserialize.int8(byteArray, index);
     pressed = (pressed == 1 ? true : false);
     this.pressed = pressed;
-    this.pos = deserializeV2(byteArray, index, this.pos);
+    this.pos = Deserialize.v2(byteArray, index, this.pos);
 }
 
 CommandKeyStatusUpdate.prototype.getSerializationSize = function() {

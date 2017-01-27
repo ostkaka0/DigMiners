@@ -1,11 +1,12 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-ProjectileEvents = {};
+export var ProjectileEvents = {};
 ProjectileEvents.onHit = [];
 ProjectileEvents.onHitEntity = [];
 ProjectileEvents.onHitBlock = [];
 ProjectileEvents.onHitTile = [];
 
-Projectile = function(pos, angle, speed, maxDistance, projectileType, shooterEntityId) {
+export var Projectile = function(pos, angle, speed, maxDistance, projectileType, shooterEntityId) {
     this.pos = pos;
     this.angle = angle;
     this.speed = speed;
@@ -27,25 +28,26 @@ Projectile = function(pos, angle, speed, maxDistance, projectileType, shooterEnt
         this.posClientOld = [0, 0];
     }
 }
+export default Projectile
 
 Projectile.prototype.name = projectile.name; function projectile() { };
 
 Projectile.prototype.serialize = function(byteArray, index) {
-    serializeV2(byteArray, index, this.pos);
-    serializeFix(byteArray, index, this.angle);
-    serializeFix(byteArray, index, this.speed);
-    serializeFix(byteArray, index, this.maxDistance);
-    serializeInt8(byteArray, index, this.projectileType.id);
+    Serialize.v2(byteArray, index, this.pos);
+    Serialize.fix(byteArray, index, this.angle);
+    Serialize.fix(byteArray, index, this.speed);
+    Serialize.fix(byteArray, index, this.maxDistance);
+    Serialize.int8(byteArray, index, this.projectileType.id);
 }
 
 Projectile.prototype.deserialize = function(byteArray, index) {
-    this.pos = deserializeV2(byteArray, index);
+    this.pos = Deserialize.v2(byteArray, index);
     this.startPos = v2.clone(this.pos);
     this.posOld = v2.clone(this.pos);
-    this.angle = deserializeFix(byteArray, index);
-    this.speed = deserializeFix(byteArray, index);
-    this.maxDistance = deserializeFix(byteArray, index);
-    this.projectileType = Config.projectileRegister[deserializeInt8(byteArray, index)];
+    this.angle = Deserialize.fix(byteArray, index);
+    this.speed = Deserialize.fix(byteArray, index);
+    this.maxDistance = Deserialize.fix(byteArray, index);
+    this.projectileType = Config.projectileRegister[Deserialize.int8(byteArray, index)];
     this.posClient = v2.create(0, 0);
     this.posClientOld = v2.create(0, 0);
 }

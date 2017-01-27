@@ -1,32 +1,34 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-PotionEffects = function() {
+var PotionEffects = function() {
     this.effects = {};
 }
+export default PotionEffects
 
 PotionEffects.prototype.name = potionEffects.name; function potionEffects() { };
 
 PotionEffects.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, Object.keys(this.effects).length);
+    Serialize.int32(byteArray, index, Object.keys(this.effects).length);
     Object.keys(this.effects).forEach(function(potionEffectTypeId) {
         var effect = this.effects[potionEffectTypeId];
         if (!effect) {
-            serializeInt32(byteArray, index, potionEffectTypeId);
-            serializeInt32(byteArray, index, 1);
-            serializeInt32(byteArray, index, 0);
+            Serialize.int32(byteArray, index, potionEffectTypeId);
+            Serialize.int32(byteArray, index, 1);
+            Serialize.int32(byteArray, index, 0);
         } else {
-            serializeInt32(byteArray, index, potionEffectTypeId);
-            serializeInt32(byteArray, index, effect.startDuration);
-            serializeInt32(byteArray, index, effect.duration);
+            Serialize.int32(byteArray, index, potionEffectTypeId);
+            Serialize.int32(byteArray, index, effect.startDuration);
+            Serialize.int32(byteArray, index, effect.duration);
         }
     }.bind(this));
 }
 
 PotionEffects.prototype.deserialize = function(byteArray, index) {
-    var length = deserializeInt32(byteArray, index);
+    var length = Deserialize.int32(byteArray, index);
     for (var i = 0; i < length; i++) {
-        var potionEffectTypeId = deserializeInt32(byteArray, index);
-        var startDuration = deserializeInt32(byteArray, index);
-        var duration = deserializeInt32(byteArray, index);
+        var potionEffectTypeId = Deserialize.int32(byteArray, index);
+        var startDuration = Deserialize.int32(byteArray, index);
+        var duration = Deserialize.int32(byteArray, index);
         this.effects[potionEffectTypeId] = { startDuration: startDuration, duration: duration };
     }
 }
@@ -50,7 +52,7 @@ PotionEffects.prototype.update = function(entity) {
                 potionEffectType.onStop(entity);
             this.effects[potionEffectTypeId] = undefined;
         }
-        
+
     }.bind(this));
 }
 

@@ -1,5 +1,6 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-CommandProjectileSpawn = function(entityId, pos, angle, speed, maxDistance, projectileType, shooterEntityId) {
+var CommandProjectileSpawn = function(entityId, pos, angle, speed, maxDistance, projectileType, shooterEntityId) {
     this.entityId = entityId;
     if (pos)
         this.pos = v2.cloneFix(pos);
@@ -9,6 +10,7 @@ CommandProjectileSpawn = function(entityId, pos, angle, speed, maxDistance, proj
     this.projectileType = projectileType;
     this.shooterEntityId = shooterEntityId;
 }
+export default CommandProjectileSpawn
 
 CommandProjectileSpawn.prototype.execute = function() {
     if (gameData.world.entityWorld.objects[this.entityId])
@@ -29,23 +31,23 @@ CommandProjectileSpawn.prototype.execute = function() {
 }
 
 CommandProjectileSpawn.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.entityId);
-    serializeV2(byteArray, index, this.pos);
-    serializeFix(byteArray, index, this.angle);
-    serializeFix(byteArray, index, this.speed);
-    serializeFix(byteArray, index, this.maxDistance);
-    serializeInt8(byteArray, index, this.projectileType.id);
-    serializeInt32(byteArray, index, this.shooterEntityId);
+    Serialize.int32(byteArray, index, this.entityId);
+    Serialize.v2(byteArray, index, this.pos);
+    Serialize.fix(byteArray, index, this.angle);
+    Serialize.fix(byteArray, index, this.speed);
+    Serialize.fix(byteArray, index, this.maxDistance);
+    Serialize.int8(byteArray, index, this.projectileType.id);
+    Serialize.int32(byteArray, index, this.shooterEntityId);
 }
 
 CommandProjectileSpawn.prototype.deserialize = function(byteArray, index) {
-    this.entityId = deserializeInt32(byteArray, index);
-    this.pos = deserializeV2(byteArray, index);
-    this.angle = deserializeFix(byteArray, index);
-    this.speed = deserializeFix(byteArray, index);
-    this.maxDistance = deserializeFix(byteArray, index);
-    this.projectileType = Config.projectileRegister[deserializeInt8(byteArray, index)];
-    this.shooterEntityId = deserializeInt32(byteArray, index);
+    this.entityId = Deserialize.int32(byteArray, index);
+    this.pos = Deserialize.v2(byteArray, index);
+    this.angle = Deserialize.fix(byteArray, index);
+    this.speed = Deserialize.fix(byteArray, index);
+    this.maxDistance = Deserialize.fix(byteArray, index);
+    this.projectileType = Config.projectileRegister[Deserialize.int8(byteArray, index)];
+    this.shooterEntityId = Deserialize.int32(byteArray, index);
 }
 
 CommandProjectileSpawn.prototype.getSerializationSize = function() {

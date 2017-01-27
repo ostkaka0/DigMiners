@@ -11,6 +11,7 @@ DigObstacleBehaviour = function(entity, maxWalkDis) {
     this.oldItemId = 0;
     this.digPauseDuration = 10; // Duration between finish digging and start digging again
 }
+export default DigObstacleBehaviour
 
 DigObstacleBehaviour.prototype.canRun = function() {
     if (!this.entity.inventory) return false;
@@ -19,7 +20,7 @@ DigObstacleBehaviour.prototype.canRun = function() {
     if (gameData.world.tickId < this.nextCanRunTickId)
         return false;
     this.nextCanRunTickId = gameData.world.tickId + 5;
-    
+
     // Change equipped item to shovel
     var shovelSlotId = -1;
     if (!this.entity.equippedItems.items["tool"] || this.entity.equippedItems.items["tool"].itemFunction != ItemFunctions.Shovel) {
@@ -32,13 +33,13 @@ DigObstacleBehaviour.prototype.canRun = function() {
     //if (v2.dot(moveDir, velocity) > 1.0)
     //    return false;
     var pos = this.entity.physicsBody.getPos();
-    
+
     if (this.canRunOldPos && v2.distance(this.canRunOldPos, pos) > this.maxWalkDis) {
         this.canRunOldPos = v2.clone(pos);
         return false;
     }
     this.canRunOldPos = v2.clone(pos);
-    
+
     var digPos = [pos[0] + moveDir[0] / 2, pos[1] + moveDir[1] / 2];
     var tilePos = [Math.floor(digPos[0] - 0.5), Math.floor(digPos[1] - 0.5)];
     for (var i = 0; i < 4; i++) {
@@ -99,7 +100,7 @@ DigObstacleBehaviour.prototype.finish = function() {
     sendCommand(new CommandKeyStatusUpdate(this.entity.id, Keys.SPACEBAR, false, this.entity.physicsBody.getPos()));
     sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.getPos()));
     sendCommand(new CommandEntityRotate(this.entity.id, this.oldMoveDir));
-    
+
     this.nextCanRunTickId = gameData.world.tickId + this.digPauseDuration;
     //if (this.oldItemId)
     //    sendCommand(new CommandEntityEquipItem(this.entity.id, 0, this.oldItemId, true));

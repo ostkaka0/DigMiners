@@ -1,8 +1,10 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-MessageRequestClickEntity = function(entityId, clickType) {
+var MessageRequestClickEntity = function(entityId, clickType) {
     this.entityId = entityId;
     this.clickType = clickType;
 }
+export default MessageRequestClickEntity
 
 MessageRequestClickEntity.prototype.execute = function(gameData, player) {
     var entity = gameData.world.entityWorld.objects[this.entityId];

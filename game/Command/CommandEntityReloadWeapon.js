@@ -1,8 +1,10 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-CommandEntityReloadWeapon = function(entityId, stackId) {
+var CommandEntityReloadWeapon = function(entityId, stackId) {
     this.entityId = entityId;
     this.stackId = stackId;
 }
+export default CommandEntityReloadWeapon
 
 CommandEntityReloadWeapon.prototype.execute = function() {
     var entity = gameData.world.entityWorld.objects[this.entityId];
@@ -20,15 +22,15 @@ CommandEntityReloadWeapon.prototype.execute = function() {
 }
 
 CommandEntityReloadWeapon.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.entityId);
-    serializeInt32(byteArray, index, this.stackId);
-    serializeInt32(byteArray, index, this.ammo);
+    Serialize.int32(byteArray, index, this.entityId);
+    Serialize.int32(byteArray, index, this.stackId);
+    Serialize.int32(byteArray, index, this.ammo);
 }
 
 CommandEntityReloadWeapon.prototype.deserialize = function(byteArray, index) {
-    this.entityId = deserializeInt32(byteArray, index);
-    this.stackId = deserializeInt32(byteArray, index);
-    this.ammo = deserializeInt32(byteArray, index);
+    this.entityId = Deserialize.int32(byteArray, index);
+    this.stackId = Deserialize.int32(byteArray, index);
+    this.ammo = Deserialize.int32(byteArray, index);
 }
 
 CommandEntityReloadWeapon.prototype.getSerializationSize = function() {

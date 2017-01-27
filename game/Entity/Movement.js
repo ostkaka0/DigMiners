@@ -1,3 +1,4 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
 Movement = function(speed, toolUseDuration, damageMultiplier, digHardnessMultiplier) {
     this.keyStatuses = {};
@@ -22,6 +23,7 @@ Movement = function(speed, toolUseDuration, damageMultiplier, digHardnessMultipl
     this.digHardnessMultiplier = (digHardnessMultiplier == null) ? 1.0 : digHardnessMultiplier;
     this.entityLookTarget = null;
 }
+export default Movement
 
 Movement.prototype.name = movement.name; function movement() { };
 
@@ -30,28 +32,28 @@ Movement.prototype.calcDigTickDuration = function(dt) {
 }
 
 Movement.prototype.serialize = function(byteArray, index) {
-    serializeV2(byteArray, index, this.direction);
+    Serialize.v2(byteArray, index, this.direction);
     var keys = Object.keys(this.keyStatuses);
-    serializeInt32(byteArray, index, keys.length);
+    Serialize.int32(byteArray, index, keys.length);
     keys.forEach(function(key) {
         var value = this.keyStatuses[key];
-        serializeInt8(byteArray, index, key);
-        serializeInt8(byteArray, index, (value == true ? 1 : 0));
+        Serialize.int8(byteArray, index, key);
+        Serialize.int8(byteArray, index, (value == true ? 1 : 0));
     }.bind(this));
-    serializeFix(byteArray, index, this.speed);
+    Serialize.fix(byteArray, index, this.speed);
 }
 
 Movement.prototype.deserialize = function(byteArray, index, gameData) {
-    this.direction = deserializeV2(byteArray, index);
-    var keyStatusesLength = deserializeInt32(byteArray, index);
+    this.direction = Deserialize.v2(byteArray, index);
+    var keyStatusesLength = Deserialize.int32(byteArray, index);
     this.keyStatuses = {};
     for (var i = 0; i < keyStatusesLength; ++i) {
-        var key = deserializeInt8(byteArray, index);
-        var pressed = deserializeInt8(byteArray, index);
+        var key = Deserialize.int8(byteArray, index);
+        var pressed = Deserialize.int8(byteArray, index);
         pressed = (pressed == 1 ? true : false);
         this.keyStatuses[i] = pressed;
     }
-    this.speed = deserializeFix(byteArray, index);
+    this.speed = Deserialize.fix(byteArray, index);
 }
 
 Movement.prototype.getSerializationSize = function() {

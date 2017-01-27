@@ -1,15 +1,16 @@
 
-GameModeSurvivalWar = function() {
+var GameModeSurvivalWar = function() {
     this.playerSpawns = {};
     this.spawnEntities = {};
     this.teams = [Teams.Blue, Teams.Red];
     this.spawnEntities[Teams.Blue] = [];
     this.spawnEntities[Teams.Red] = [];
 }
+export default GameModeSurvivalWar
 
 GameModeSurvivalWar.prototype.init = function() {
     if (!isServer) return;
-    
+
     var loadChunk = function(world, x, y) {
         var chunk = new Chunk();
         gameData.world.generator.generate(chunk, x, y);
@@ -23,10 +24,10 @@ GameModeSurvivalWar.prototype.init = function() {
             loadChunk(gameData.world.tileWorld, x, y);
         }
     }
-    
+
     this.playerSpawns[Teams.Blue] = [[-60, -60], [-60, 0], [-60, 60]];
     this.playerSpawns[Teams.Red] = [[60, -60],[60, 0],[60, 60]];
-    
+
     var templates = [entityTemplates.Monster, entityTemplates.Zombie];
     for (var i = 0; i < 25; i++) {
         var pos = [90 * (1.0 - 2.0 * Math.random()), 90 * (1.0 - 2.0 * Math.random())]
@@ -36,7 +37,7 @@ GameModeSurvivalWar.prototype.init = function() {
         sendCommand(new CommandEntitySpawn(gameData, entity, entityId, Teams.none));
         sendCommand(new CommandDig(pos, 5.0));
     }
-    
+
     // End gamemode after 15 minutes
     gameData.setTimeout(gameData.changeGameMode.bind(gameData), 15 * 60 * 1000);
 }

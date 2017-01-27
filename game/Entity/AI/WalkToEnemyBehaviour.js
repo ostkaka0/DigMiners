@@ -8,6 +8,7 @@ WalkToEnemyBehaviour = function(entity, maxRadius) {
     this.moving = false;
     this.nextCanRunTickId = gameData.world.tickId;
 }
+export default WalkToEnemyBehaviour;
 
 WalkToEnemyBehaviour.prototype.canRun = function() {
     if (gameData.world.tickId < this.nextCanRunTickId)
@@ -28,7 +29,7 @@ WalkToEnemyBehaviour.prototype.initialize = function() {
 WalkToEnemyBehaviour.prototype.run = function() {
     if (gameData.world.tickId < this.nextUpdateTickId) return true;
     this.nextUpdateTickId = gameData.world.tickId + 20;
-    
+
     if (!this.target || this.target.isDead || !this.target.isActive) {
         this.target = this.getTarget();
         // If it can't find a new target we must stop this behaviour
@@ -47,7 +48,7 @@ WalkToEnemyBehaviour.prototype.run = function() {
     v2.normalize(dir, dir);
     if (dir[0] == 0 && dir[1] == 0)
         return false;
-    
+
     if (v2.dot(dir, currentDir) < 0.9 && !this.spacebar) {
         sendCommand(new CommandEntityMove(this.entity.id, dir, this.entity.physicsBody.getPos()));
         this.moving = true;
@@ -74,7 +75,7 @@ WalkToEnemyBehaviour.prototype.getTarget = function() {
         if (!otherEntity.team && !otherEntity.movement) return;
         if (this.entity.team && this.entity.team.value != Teams.None && (!otherEntity.team || otherEntity.team.value == this.entity.team.value)) return;
         if (otherEntity.id == this.entity.id) return;
-        
+
         var dis = v2.distance(this.entity.physicsBody.getPos(), otherEntity.physicsBody.getPos());
         if (dis < shortestDistance) {
             if (otherEntity.controlledByPlayer)

@@ -1,15 +1,17 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-OreInventoryActions = {
+export var OreInventoryActions = {
     ADD_ORE: 0,
     REMOVE_ORE: 1
 }
 
-CommandPlayerOreInventory = function(playerId, actionId, itemId, amount) {
+var CommandPlayerOreInventory = function(playerId, actionId, itemId, amount) {
     this.playerId = playerId;
     this.actionId = actionId;
     this.itemId = itemId;
     this.amount = amount;
 }
+export default CommandPlayerOreInventory
 
 CommandPlayerOreInventory.prototype.execute = function() {
     var player = gameData.playerWorld.objects[this.playerId];
@@ -30,17 +32,17 @@ CommandPlayerOreInventory.prototype.execute = function() {
 }
 
 CommandPlayerOreInventory.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.playerId);
-    serializeInt32(byteArray, index, this.actionId);
-    serializeInt32(byteArray, index, this.itemId);
-    serializeInt32(byteArray, index, this.amount);
+    Serialize.int32(byteArray, index, this.playerId);
+    Serialize.int32(byteArray, index, this.actionId);
+    Serialize.int32(byteArray, index, this.itemId);
+    Serialize.int32(byteArray, index, this.amount);
 }
 
 CommandPlayerOreInventory.prototype.deserialize = function(byteArray, index) {
-    this.playerId = deserializeInt32(byteArray, index);
-    this.actionId = deserializeInt32(byteArray, index);
-    this.itemId = deserializeInt32(byteArray, index);
-    this.amount = deserializeInt32(byteArray, index);
+    this.playerId = Deserialize.int32(byteArray, index);
+    this.actionId = Deserialize.int32(byteArray, index);
+    this.itemId = Deserialize.int32(byteArray, index);
+    this.amount = Deserialize.int32(byteArray, index);
 }
 
 CommandPlayerOreInventory.prototype.getSerializationSize = function() {

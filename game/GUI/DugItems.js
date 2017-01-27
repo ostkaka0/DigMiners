@@ -1,5 +1,5 @@
 
-DugItems = function() {
+var DugItems = function() {
     this.dugItems = $("<div>");
     this.dugItems.css({
         "position": "fixed",
@@ -78,6 +78,7 @@ DugItems = function() {
 
     this.dugItems.appendTo("#hud");
 }
+export default DugItems
 
 DugItems.prototype.update = function() {
     for (var i = 0; i < Config.tileRegister.length; ++i) {

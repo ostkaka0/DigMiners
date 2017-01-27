@@ -1,4 +1,5 @@
 Tiles = {};
+export default Tiles
 
 Tiles.Dirt = {
     name: "Dirt",

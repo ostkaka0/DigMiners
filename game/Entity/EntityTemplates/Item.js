@@ -1,5 +1,5 @@
 
-entityTemplates.Item = function(itemId, amount) {
+export default function(itemId, amount) {
     var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
 

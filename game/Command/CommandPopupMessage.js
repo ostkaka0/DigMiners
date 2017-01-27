@@ -1,10 +1,12 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-CommandPopupMessage = function(text, timeout) {
+var CommandPopupMessage = function(text, timeout) {
     this.text = text;
     this.timeout = timeout;
     if (!timeout)
         this.timeout = 3000;
 }
+export default CommandPopupMessage
 
 CommandPopupMessage.prototype.execute = function() {
     if (!isServer)
@@ -14,15 +16,15 @@ CommandPopupMessage.prototype.execute = function() {
 }
 
 CommandPopupMessage.prototype.serialize = function(byteArray, index) {
-    serializeUTF8(byteArray, index, this.text);
-    serializeInt32(byteArray, index, this.timeout);
+    Serialize.utf8(byteArray, index, this.text);
+    Serialize.int32(byteArray, index, this.timeout);
 }
 
 CommandPopupMessage.prototype.deserialize = function(byteArray, index) {
-    this.text = deserializeUTF8(byteArray, index);
-    this.timeout = deserializeInt32(byteArray, index);
+    this.text = Deserialize.utf8(byteArray, index);
+    this.timeout = Deserialize.int32(byteArray, index);
 }
 
 CommandPopupMessage.prototype.getSerializationSize = function() {
-    return getUTF8SerializationSize(this.text) + 4;
+    return Serialize.utf8Size(this.text) + 4;
 }

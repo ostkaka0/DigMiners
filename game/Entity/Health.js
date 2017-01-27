@@ -1,24 +1,26 @@
+import { Serialize, Deserialize } from "engine/Serialization.js"
 
-HealthEvents = {};
+export var HealthEvents = {};
 HealthEvents.onChange = [];
 HealthEvents.onDeath = [];
 
-Health = function(health, maxHealth, armor) {
+export var Health = function(health, maxHealth, armor) {
     this.health = health;
     this.maxHealth = maxHealth;
     this.armor = armor;
 }
+export default Health
 
 Health.prototype.name = health.name; function health() { };
 
 Health.prototype.serialize = function(byteArray, index) {
-    serializeInt32(byteArray, index, this.health);
-    serializeInt32(byteArray, index, this.maxHealth);
+    Serialize.int32(byteArray, index, this.health);
+    Serialize.int32(byteArray, index, this.maxHealth);
 }
 
 Health.prototype.deserialize = function(byteArray, index) {
-    this.health = deserializeInt32(byteArray, index);
-    this.maxHealth = deserializeInt32(byteArray, index);
+    this.health = Deserialize.int32(byteArray, index);
+    this.maxHealth = Deserialize.int32(byteArray, index);
 }
 
 Health.prototype.getSerializationSize = function() {
