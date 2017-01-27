@@ -74,7 +74,7 @@ console.log(gameData.spawnPoints);
     spawnList.forEach(function(pos) {
         var entityId = gameData.world.idList.next();
         var entity = entityTemplates.TeamBase(entityId, pos, teamId, 10, 2.0, 40);
-        //entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 5, 2.0, 120, null, null, teamId);
+        //entityTemplates.MonsterSpawner(entityId, pos, entityTemplates.Monster, 5, 2.0, 120, null, null, teamId);
         gameData.world.entityWorld.add(entity, entityId);
         carveCircle(gameData, pos[0], pos[1], 5.0, 100.0);
     });
@@ -84,7 +84,7 @@ console.log(gameData.spawnPoints);
 for (var i = 0; i < 50; i++) {
     var pos = [Math.floor(80 * (1.0 - 2.0*Math.random())), Math.floor(80 * (1.0 - 2.0*Math.random()))];
     var entityId = gameData.idList.next();
-    var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 2, 2.0, 3000);
+    var entity = entityTemplates.MonsterSpawner(entityId, pos, entityTemplates.Monster, 2, 2.0, 3000);
     gameData.world.entityWorld.add(entity, entityId);
     carveCircle(gameData, pos[0], pos[1], 2.0, 100.0);
 }
@@ -93,7 +93,7 @@ for (var i = 0; i < 10; i++) {
     var pos = [Math.floor(80 * (1.0 - 2.0*Math.random())), Math.floor(80 * (1.0 - 2.0*Math.random()))];
     var entityId = gameData.idList.next();
     var weaponId = Items.WeaponPistol.id + Math.floor((Items.WeaponSniperRifle.id - Items.WeaponPistol.id + 1) * Math.random());
-    var entity = entityTemplates.monsterSpawner(entityId, pos, entityTemplates.testMonster, 2, 2.0, 3000, [{id: weaponId}, {id: Items.Egg.id, quantity: 1000}]);
+    var entity = entityTemplates.MonsterSpawner(entityId, pos, entityTemplates.Monster, 2, 2.0, 3000, [{id: weaponId}, {id: Items.Egg.id, quantity: 1000}]);
     gameData.world.entityWorld.add(entity, entityId);
     carveCircle(gameData, pos[0], pos[1], 6.0, 100.0);
 }*/
@@ -127,7 +127,7 @@ subscribeEvent(gameData.world.entityWorld.onAdd, global, function(entity) {
         // (TEMPORARY) spawn monsters on player join
         for (var i = 0; i < 0; ++i) {
             var monsterEntityId = gameData.world.idList.next();
-            var monster = entityTemplates.testMonster(monsterEntityId, [50 * (-1 + 2 * Math.random()), 50 * (-1 + 2 * Math.random())], gameData);
+            var monster = entityTemplates.monster(monsterEntityId, [50 * (-1 + 2 * Math.random()), 50 * (-1 + 2 * Math.random())], gameData);
             sendCommand(new CommandEntitySpawn(gameData, monster, monsterEntityId));
             var weaponId = Items.WeaponPistol.id + Math.floor((Items.WeaponGrenadeLauncher.id - Items.WeaponPistol.id + 1) * Math.random());
             sendCommand(new CommandEntityInventory(monsterEntityId, InventoryActions.ADD_ITEM, weaponId, 1));
