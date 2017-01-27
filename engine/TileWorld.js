@@ -1,6 +1,6 @@
-import Chunk from "./Chunk.js"
-import fix from "./Core/Fix.js"
-import v2 from "./Core/v2.js"
+import Chunk from "engine/Chunk.js"
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
 
 CHUNK_DIM = Chunk.dim;
 CHUNK_DIM_2 = Chunk.dim2;

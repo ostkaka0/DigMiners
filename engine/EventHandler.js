@@ -1,5 +1,5 @@
 
-EventHandler = function() {
+var EventHandler = function() {
     for (var i = 0; i < arguments.length; ++i)
         this[arguments[i]] = [];
 }

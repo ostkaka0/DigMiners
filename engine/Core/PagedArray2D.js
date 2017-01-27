@@ -1,4 +1,4 @@
-PagedArray2D = function(sizeX, sizeY, defaultValue) {
+var PagedArray2D = function(sizeX, sizeY, defaultValue) {
 
     this.sizeX = sizeX;
     this.sizeY = sizeY;

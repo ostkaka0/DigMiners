@@ -1,5 +1,5 @@
 
-import Quadtree from "../engine/Quadtree.js";
+import Quadtree from "engine/Quadtree.js";
 import $ from "jquery"
 var quadtree = new Quadtree();
 

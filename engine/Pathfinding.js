@@ -1,10 +1,7 @@
 PATH_PAGE_DIM = 8;
 
-var PathFinding = {};
-export default PathFinding;
-
 // Generate flowfield using backward a-star(from goal to start)
-PathFinding.aStarFlowField = function(disField, expandList, tileWorld, blockWorld, start, goal, maxDistance) {
+export function aStarFlowField(disField, expandList, tileWorld, blockWorld, start, goal, maxDistance) {
     expandList = expandList || [];
 
     var childDirs = [[1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1]];
@@ -96,7 +93,7 @@ PathFinding.aStarFlowField = function(disField, expandList, tileWorld, blockWorl
 
 }
 
-PathFinding.genFlowField = function(flowField, worldRect, tileWorld, blockWorld, goal, maxDistance) {
+export function genFlowField(flowField, worldRect, tileWorld, blockWorld, goal, maxDistance) {
     maxDistance = maxDistance | 0xF000;
     if (!flowField)
         flowField = new Uint16Array(worldRect[2] * worldRect[3]);

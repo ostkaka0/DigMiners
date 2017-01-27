@@ -1,4 +1,4 @@
-ObjectWorld = function(useDestroyFunc) {
+var ObjectWorld = function(useDestroyFunc) {
     this.useDestroyFunc = useDestroyFunc;
     this.objectArray = [];
     this.objects = {};

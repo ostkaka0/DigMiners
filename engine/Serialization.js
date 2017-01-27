@@ -1,5 +1,5 @@
-import fix from "./core/Fix.js"
-import v2 from "./core/v2.js"
+import fix from "engine/core/Fix.js"
+import v2 from "engine/core/v2.js"
 
 var serialization = {};
 export default serialization;

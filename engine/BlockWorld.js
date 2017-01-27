@@ -1,4 +1,4 @@
-import BlockChunk from "BlockChunk"
+import BlockChunk from "engine/BlockChunk.js"
 BLOCK_CHUNK_DIM = BlockChunk.dim;
 BLOCK_CHUNK_DIM_2 = BlockChunk.dim2;
 BLOCK_CHUNK_SIZE = BlockChunk.size;

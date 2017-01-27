@@ -39,7 +39,7 @@ init = function() {
 tick = function() { }
 
 render = function() {
-    canvasUpdateSize(canvas);
+    Canvas.updateSize(canvas);
     camera.width = canvas.width;
     camera.height = canvas.height;
     gl.viewport(0, 0, canvas.width, canvas.height);
@@ -50,7 +50,7 @@ render = function() {
     viewMatrix = viewMatrix.translate(-camera.pos[0], -camera.pos[1]);
     viewMatrix = viewMatrix.scale(2 / canvas.width, 2 / canvas.height);
     chunkRenderer.render(world, projectionMatrix.clone().append(viewMatrix), camera);
-    
+
 
     var stage = new PIXI.Container();
     var graphics = new PIXI.Graphics();
@@ -58,8 +58,8 @@ render = function() {
         for (var x = -32; x < 32; x++) {
             for (var y = -32; y < 32; y++) {
                 var dis = flowField[x - flowFieldRect[1] + (y - flowFieldRect[1]) * flowFieldRect[2]];
-                
-                
+
+
                 if (dis == 65535)
                     graphics.beginFill(0x000000, 0x00);
                 else
@@ -74,7 +74,7 @@ render = function() {
     graphics.drawRect(0, 0, 300, 200);*/
     stage.addChild(graphics);
     renderer.render(stage);
-    
+
 }
 
 $(document.getElementById("hud")).click(function(event) {

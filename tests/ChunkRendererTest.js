@@ -25,7 +25,7 @@ init = function() {
 tick = function() { }
 
 render = function() {
-    canvasUpdateSize(canvas);
+    Canvas.updateSize(canvas);
     camera.width = canvas.width;
     camera.height = canvas.height;
     gl.viewport(0, 0, canvas.width, canvas.height);

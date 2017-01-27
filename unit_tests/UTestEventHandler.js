@@ -1,3 +1,5 @@
+import EventHandler from "../engine/EventHandler.js"
+
 g_unitTests.testEventHandler = function() {
     var eventHandler = new EventHandler("test", "bert", "karl");
     eventHandler.on("bert", function(arg1, arg2, arg3) {

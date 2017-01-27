@@ -1,4 +1,4 @@
-Map2D = function() {
+var Map2D = function() {
     this.map = {};
 }
 export default Map2D;

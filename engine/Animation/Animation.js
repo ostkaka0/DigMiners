@@ -1,4 +1,4 @@
-Animation = function(name, texture, numFrames, frameWidth, frameHeight) {
+var Animation = function(name, texture, numFrames, frameWidth, frameHeight) {
     this.name = name;
     this.texture = texture;
     this.numFrames = numFrames;

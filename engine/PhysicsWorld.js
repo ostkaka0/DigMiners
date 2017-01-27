@@ -1,8 +1,8 @@
-import PointWorld from "./PointWorld.js"
-import fix from "./Core/Fix.js"
-import v2 from "./Core/v2.js"
+import PointWorld from "engine/PointWorld.js"
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
 
-PhysicsWorld = function(size) {
+var PhysicsWorld = function(size) {
     this.pointWorld = new PointWorld(size || 1024);
     this.posOld = [];
     this.velocity = [];
@@ -120,6 +120,7 @@ PhysicsWorld.prototype.add = function(pos, velocity, mass, radius) {
     this.setVelocity(id, velocity);
     this.setMass(id, mass);
 
+    this.
     console.log("pos: " + this.getPos(id));
     console.log("posOld: " + this.getPosOld(id));
     console.log("radius: " + this.getRadius(id));

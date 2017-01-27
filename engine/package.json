@@ -1,0 +1,6 @@
+{
+  "name": "engine",
+  "directories": {
+      "test": "tests"
+  }
+}

@@ -12,7 +12,7 @@ function start() {
     if (!gl) {
         return;
     }
-    
+
     gl.clearColor(0.2, 0.9, 0.0, 1.0);
     gl.enable(gl.DEPTH_TEST);
     // Near things obscure far things
@@ -65,10 +65,10 @@ function initBuffers() {
 }
 
 function render() {
-    canvasUpdateSize(canvas);
+    Canvas.updateSize(canvas);
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    
+
     gl.bindBuffer(gl.ARRAY_BUFFER, vboSquare);
     gl.vertexAttribPointer(attribPos, 3, gl.FLOAT, false, 0, 0);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);

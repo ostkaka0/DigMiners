@@ -1,10 +1,18 @@
-var canvas = document.getElementById("canvas");
-var gl = canvasInitGL(canvas);
+import Canvas from "../engine/Canvas.js"
+import Map2D from "../engine/Core/Map2d.js"
+import BlockChunk from "../engine/BlockChunk.js"
+import BlockChunkRenderer from "../engine/BlockChunkRenderer.js"
+import gameLoop from "../engine/GameLoop.js"
 
-var gameData = new GameData();
+import "../lib_front_end/apixi.js"
+
+var canvas = document.getElementById("canvas");
+var gl = Canvas.initGL(canvas);
+
+//var gameData = new GameData();
 var blockWorld = new Map2D();
 var blockRenderer = new BlockChunkRenderer(gl, blockWorld, 32.0);
-var camera = new Camera();
+//var camera = new Camera();
 
 init = function() {
     for(var x = -4; x < 4; ++x) {
@@ -20,7 +28,7 @@ init = function() {
 tick = function() { }
 
 render = function() {
-    canvasUpdateSize(canvas);
+    Canvas.updateSize(canvas);
     camera.width = canvas.width;
     camera.height = canvas.height;
     gl.viewport(0, 0, canvas.width, canvas.height);
@@ -38,7 +46,7 @@ $("#hud").click(function(event) {
     var worldPos = [(event.clientX + camera.pos[0] - camera.width / 2) / 32, (canvas.height - event.clientY + camera.pos[1] - camera.height / 2) / 32];
     var chunkPos = [0, 0];
     var localPos = [0, 0];
-    v2WorldToBlockChunk(worldPos, chunkPos, localPos);
+    BlockChunk.fromV2World(worldPos, chunkPos, localPos);
     var blockChunk = blockWorld.get(chunkPos[0], chunkPos[1]);
     if(blockChunk)
         blockChunk.setForeground(localPos[0], localPos[1], 1);

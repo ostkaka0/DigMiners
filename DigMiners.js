@@ -1,19 +1,25 @@
+import Canvas from "engine/Canvas.js"
+import Sprite from "engine/Animation/Sprite.js"
+//import Client from "./Client.js"
+import ChunkRenderer from "engine/ChunkRenderer.js"
+import BlockChunkRenderer from "engine/ChunkRenderer.js"
+import SpriteContainer from "engine/Animation/SpriteContainer.js"
 
 var canvas = document.getElementById("canvas");
 var spriteCanvas = document.getElementById("spriteCanvas");
 var context2d = spriteCanvas.getContext("2d", { antialias: true });
-var gl = canvasInitGL(canvas);
+var gl = Canvas.initGL(canvas);
 
-canvasUpdateSize(canvas);
-canvasUpdateSize(spriteCanvas);
+Canvas.updateSize(canvas);
+Canvas.updateSize(spriteCanvas);
 
 window.zindices = new Array(3);
 for (var i = 0; i < window.zindices.length; ++i)
     window.zindices[i] = new SpriteContainer();
 
 window.addEventListener('resize', function() {
-    canvasUpdateSize(canvas);
-    canvasUpdateSize(spriteCanvas);
+    Canvas.updateSize(canvas);
+    Canvas.updateSize(spriteCanvas);
     camera.width = window.innerWidth;
     camera.height = window.innerHeight;
 

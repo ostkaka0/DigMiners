@@ -1,5 +1,5 @@
 
-export default binarySearch = function(array, value, compareFunction, start, end) {
+export function binarySearch(array, value, compareFunction, start, end) {
     compareFunction = (compareFunction != undefined) ? compareFunction : function(a, b) { a - b };
     start = (start != undefined) ? start : 0;
     end = (end != undefined) ? end : array.length;
@@ -11,3 +11,4 @@ export default binarySearch = function(array, value, compareFunction, start, end
     else if (middleValue > 0) return binarySearch(array, value, compareFunction, start, middle);
     else return middle;
 }
+export default binarySearch;

@@ -1,4 +1,4 @@
-import IdList from "./IdList";
+import IdList from "engine/IdList.js";
 
 export default class {
     constructor() {
