@@ -15,6 +15,7 @@ BlockFunctions.createEntity = function(blockPos, block) {
         sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
     }
 }
+
 BlockFunctions.createEntityBox = function(blockPos, block) {
     if (isServer) {
         var entity = {};
@@ -36,6 +37,22 @@ BlockFunctions.createEntityBox = function(blockPos, block) {
 
         sendCommand(new CommandPlaceBlock(blockPos, 0));
         sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
+    }
+}
+
+BlockFunctions.createEntityTurret = function(blockPos, block) {
+    if (isServer) {
+        var turretEntityId = gameData.world.idList.next();
+        var turret = entityTemplates.Turret(turretEntityId, v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), Teams.Human);
+
+        if (block.onCreateEntity)
+            entity = block.onCreateEntity(turret, turretEntityId);
+
+        sendCommand(new CommandPlaceBlock(blockPos, 0));
+        sendCommand(new CommandEntitySpawn(gameData, turret, turretEntityId));
+
+        if (block.onEntityCreated)
+            block.onEntityCreated(turret, turretEntityId);
     }
 }
 
@@ -311,3 +328,36 @@ Blocks.Chest = {
         return entity;
     }
 }
+
+Blocks.MachineGunTurret = {
+    name: "Turret(Machinegun)",
+    isSolid: true,
+    hardness: 1.0,
+    type: BlockTypes.FOREGROUND,
+    buildDuration: 5,
+    onPlace: BlockFunctions.createEntityTurret,
+    onCreateEntity: null,
+    onEntityCreated: function(entity, entityId) {
+        var weaponId = Items.WeaponMachineGun.id;
+        sendCommand(new CommandEntityInventory(entityId, InventoryActions.ADD_ITEM, weaponId, 1));
+        sendCommand(new CommandEntityEquipItem(entityId, 0, weaponId, true));
+    }
+}
+
+Blocks.PistolTurret = {
+    name: "Turret(Pistol)",
+    sameTexture: "MachineGunTurret",
+    isSolid: true,
+    hardness: 1.0,
+    type: BlockTypes.FOREGROUND,
+    buildDuration: 5,
+    onPlace: BlockFunctions.createEntityTurret,
+    onCreateEntity: null,
+    onEntityCreated: function(entity, entityId) {
+        var weaponId = Items.WeaponPistol.id;
+        sendCommand(new CommandEntityInventory(entityId, InventoryActions.ADD_ITEM, weaponId, 1));
+        sendCommand(new CommandEntityEquipItem(entityId, 0, weaponId, true));
+    }
+}
+
+

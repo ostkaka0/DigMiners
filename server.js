@@ -98,13 +98,6 @@ for (var i = 0; i < 10; i++) {
     carveCircle(gameData, pos[0], pos[1], 6.0, 100.0);
 }*/
 
-var turretEntityId = gameData.world.idList.next();
-var turret = entityTemplates.Turret(turretEntityId, [0, 0], Teams.Human);
-sendCommand(new CommandEntitySpawn(gameData, turret, turretEntityId));
-var weaponId = Items.WeaponMachineGun.id;
-sendCommand(new CommandEntityInventory(turretEntityId, InventoryActions.ADD_ITEM, weaponId, 1));
-sendCommand(new CommandEntityEquipItem(turretEntityId, 0, weaponId, true));
-
 gameData.world.physicsWorld.onCollision.push(function(collisions) {
     sendCommand(new CommandCollisions(collisions));
 });

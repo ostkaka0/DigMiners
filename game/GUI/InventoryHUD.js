@@ -74,9 +74,12 @@ InventoryHUD = function(inventory, text, bottom) {
         }).appendTo(slot);
         describer.css({
             "position": "absolute",
+            "width": "34px",
+            "height": "34px",
             "display": "none",
             "z-index": "50",
             "color": "white",
+            "text-align": "center",
             "font-family": "Monospace",
             "font-size": "10px",
         });
@@ -143,8 +146,8 @@ InventoryHUD.prototype.update = function() {
         slotImageContainerOverlay.style.backgroundImage = "";
         var item = this.inventory.items[i];
         if (item) {
-            slotImageContainer.style.width = 34;
-            slotImageContainer.style.height = 34;
+            slotImageContainer.style.width = 32;
+            slotImageContainer.style.height = 32;
 
             var itemType = Config.itemRegister[item.id];
             InventoryHUD.putItemImage(slotImageContainer, itemType, 32, 32, itemType.texture.inventoryAngle, itemType.texture.inventoryOffset, itemType.texture.inventorySize);
@@ -205,21 +208,23 @@ InventoryHUD.putItemImage = function(container, itemType, containerWidth, contai
     var offsetWidth = (itemType.texture.offsetWidth ? itemType.texture.offsetWidth : 0);
     var sizeX = backgroundScale * (itemType.texture.spriteWidth + offsetWidth) * (itemType.texture.dimX || 1);
     var sizeY = backgroundScale * (itemType.texture.spriteHeight + offsetWidth) * (itemType.texture.dimY || 1);
-    container.style.backgroundSize = sizeX.toString() + "px " + sizeY.toString() + "px ";
     var borderWidth = Math.floor(Math.max(0, containerWidth / 2 - backgroundScale * itemType.texture.spriteWidth / 2));
     var borderHeight = Math.floor(Math.max(0, containerHeight / 2 - backgroundScale * itemType.texture.spriteHeight / 2));
-    container.style.borderLeftWidth = borderWidth.toString() + "px";
-    container.style.borderRightWidth = borderWidth.toString() + "px";
-    container.style.borderTopWidth = borderHeight.toString() + "px";
-    container.style.borderBottomWidth = borderHeight.toString() + "px";
-    container.style.borderStyle = "solid";
-    container.style.borderColor = "rgba(0,0,0,0)";
-    container.style.backgroundImage = "url('data/textures/" + itemType.texture.path + "')";
     var offset = (offset ? offset : v2.create(0, 0));
     var posX = -1 * backgroundScale * ((itemType.spriteId ? itemType.spriteId : 0) % (itemType.texture.dimX || 1)) * (itemType.texture.spriteWidth + offsetWidth) + offset[0];
     var posY = -1 * backgroundScale * (((itemType.spriteId ? itemType.spriteId : 0) / (itemType.texture.dimX || 1) >> 0) % (itemType.texture.dimY || 1)) * itemType.texture.spriteHeight + offset[1];
-    container.style.backgroundPosition = posX.toString() + "px " + posY.toString() + "px";
-    container.style.transform = "";
-    if (angle)
-        container.style.transform = "rotate(" + (angle * 180 / Math.PI) + "deg)";
+    console.log(borderWidth + " - " + borderHeight);
+
+    $(container).css({
+        "background-size": sizeX.toString() + "px " + sizeY.toString() + "px ",
+        "border-left-width": borderWidth.toString() + "px",
+        "border-right-width": borderWidth.toString() + "px",
+        "border-top-width": borderHeight.toString() + "px",
+        "border-bottom-width": borderHeight.toString() + "px",
+        "border-style": "solid",
+        "border-color": "rgba(0,0,0,0)",
+        "background-image": "url('data/textures/" + itemType.texture.path + "')",
+        "background-position": posX.toString() + "px " + posY.toString() + "px",
+        "transform": (angle ? "rotate(" + (angle * 180 / Math.PI) + "deg)" : "none"),
+    });
 }
