@@ -19,6 +19,9 @@ TextureManager = function() {
     loader.queue("monster/rightArm.png");
     loader.queue("monster/leftArm.png");
 
+    loader.queue("turret/top.png");
+    loader.queue("turret/bottom.png");
+
     loader.queue("ghost.png");
 
     loader.queue("shovelAtlas.png");

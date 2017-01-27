@@ -1,5 +1,5 @@
 
-BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, parent) {
+BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, parent, disableRotation) {
     this.sprite = sprite;
     this.offset = [offsetX, offsetY, offsetRotation];
     this.defaultOffset = [offsetX, offsetY, offsetRotation];
@@ -14,12 +14,14 @@ BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, parent) {
     this.parent = parent;
     this.children = [];
     this.animInstance = null;
+    this.disableRotation = (disableRotation ? true : false);
 }
 
 BodyPart.prototype.position = function(x, y, angle) {
     this.sprite.pos[0] = x + this.offset[0];
     this.sprite.pos[1] = y + this.offset[1];
-    this.sprite.angle = angle + this.offset[2];
+    if (!this.disableRotation)
+        this.sprite.angle = angle + this.offset[2];
     this.children.forEach(function(child) {
         BodyPart.positionChild(child, this);
     }.bind(this));
