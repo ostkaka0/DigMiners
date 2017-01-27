@@ -1,6 +1,6 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
-BlockPlacer = function(blockPos, blockId, duration, entityId) {
+var BlockPlacer = function(blockPos, blockId, duration, entityId) {
     this.blockPos = blockPos;
     this.blockId = blockId;
     this.duration = duration;

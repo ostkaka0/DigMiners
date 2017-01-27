@@ -201,7 +201,7 @@ PhysicsWorld.prototype.setVelocity = function(id, velocity) {
     this.velocity[2 * id] = velocity[0];
     this.velocity[2 * id + 1] = velocity[1];
 }
-s
+
 PhysicsWorld.prototype.getMass = function(id) {
     return this.mass[id];
 }

@@ -1,7 +1,7 @@
 import BlockChunk from "engine/BlockChunk.js"
-BLOCK_CHUNK_DIM = BlockChunk.dim;
-BLOCK_CHUNK_DIM_2 = BlockChunk.dim2;
-BLOCK_CHUNK_SIZE = BlockChunk.size;
+var BLOCK_CHUNK_DIM = BlockChunk.dim;
+var BLOCK_CHUNK_DIM_2 = BlockChunk.dim2;
+var BLOCK_CHUNK_SIZE = BlockChunk.size;
 
 var BlockChunkRenderer = function(gl, world, tileSize) {
     this.gl = gl;

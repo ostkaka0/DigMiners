@@ -12,7 +12,7 @@ TypeRegister.add = function(array, type) {
 
 TypeRegister.addByArray = function(array, typeArray) {
     typeArray.forEach(function(type) {
-        typeRegisterAdd(array, type);
+        TypeRegister.add(array, type);
     }.bind(this));
     return array;
 }

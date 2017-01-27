@@ -1,3 +1,11 @@
+import IdList from "engine/IdList.js"
+import ObjectWorld from "engine/ObjectWorld.js"
+
+import Config from "game/Config.js"
+import World from "game/World.js"
+import AnimationManager from "engine/Animation/AnimationManager.js"
+import MessageChangeGamemode from "game/Message/ToClient/MessageChangeGamemode.js"
+
 var gameData = {};
 export default gameData
 
@@ -6,8 +14,8 @@ gameData.destroy = function() {
 }
 
 gameData.init = function(idList) {
-    initItems(this);
-    initConfig();
+    //initItems(this);
+    //initConfig();
 
     // gameData.textures is set in TextureManager.js when textures are loaded
     this.textures = {};
@@ -71,7 +79,7 @@ gameData.init = function(idList) {
 
     if (this.playerIdList) {
         var onObjectRemove = function(object) { this.playerIdList.remove(object.id); }.bind(this);
-        subscribeEvent(this.playerWorld.onRemove, this, onObjectRemove);
+        Event.subscribe(this.playerWorld.onRemove, this, onObjectRemove);
     }
 }
 

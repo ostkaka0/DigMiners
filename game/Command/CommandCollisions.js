@@ -27,7 +27,7 @@ var CommandCollisions = function(collisions) {
         }.bind(this));
     }
 }
-export CommandCollisions
+export default CommandCollisions
 
 CommandCollisions.prototype.execute = function() {
     var physicsWorld = gameData.world.physicsWorld;

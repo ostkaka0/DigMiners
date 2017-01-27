@@ -40,7 +40,7 @@ BlockFunctions.createEntityBox = function(blockPos, block) {
     }
 }
 
-BlockBulletFunctions = {};
+export var BlockBulletFunctions = {};
 BlockBulletFunctions.bunker = function(blockPos, blockType, entity) {
     if (entity.projectile.projectileType.penentrateBunkerWindow)
         return;
@@ -71,7 +71,7 @@ BlockBulletFunctions.bunker = function(blockPos, blockType, entity) {
     }
 }
 
-BlockDoorFunctions = {};
+export var BlockDoorFunctions = {};
 BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, clickType) {
     var checked = [];
     var doors = [];

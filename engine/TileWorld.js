@@ -2,9 +2,9 @@ import Chunk from "engine/Chunk.js"
 import fix from "engine/Core/Fix.js"
 import v2 from "engine/Core/v2.js"
 
-CHUNK_DIM = Chunk.dim;
-CHUNK_DIM_2 = Chunk.dim2;
-CHUNK_SIZE = Chunk.size;
+var CHUNK_DIM = Chunk.dim;
+var CHUNK_DIM_2 = Chunk.dim2;
+var CHUNK_SIZE = Chunk.size;
 
 var TileWorld = {};
 export default TileWorld;

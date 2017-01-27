@@ -31,7 +31,7 @@ var mouseY = 0;
 
 gameData.init();
 
-subscribeEvent(TextureLoaderEvents.onComplete, this, function(textures) {
+Event.subscribe(TextureLoaderEvents.onComplete, this, function(textures) {
     // Must wait until all textures have loaded to continue! important
     window.blockPosGood = new Sprite("blockPosGood.png");
     window.blockPosGood.anchor = [0, 0];
@@ -341,7 +341,7 @@ gameData.world.events.on("ownPlayerSpawned", function(entity, player) {
     }
 }.bind(this));
 
-subscribeEvent(gameData.world.entityWorld.onAdd, window, function(entity) {
+Event.subscribe(gameData.world.entityWorld.onAdd, window, function(entity) {
     if (!isServer && entity.health && entity.drawable)
         triggerEvent(HealthEvents.onChange, entity);
 

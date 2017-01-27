@@ -38,7 +38,7 @@ GameModeBaseWar.prototype.init = function() {
         }.bind(this));
     }.bind(this));
 
-    subscribeEvent(gameData.world.entityWorld.onRemove, this, function(entity) {
+    Event.subscribe(gameData.world.entityWorld.onRemove, this, function(entity) {
         var team = Teams.none;
 
         this.teams.forEach(function(currentTeam) {

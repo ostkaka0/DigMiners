@@ -1,6 +1,20 @@
+import Event from "engine/Core/Event.js"
+import Map2D from "engine/Core/Map2D.js"
 
+import IdList from "engine/IdList.js"
+import ObjectWorld from "engine/ObjectWorld.js"
+import ParticleWorld from "engine/ParticleWorld.js"
+import PhysicsWorld from "engine/PhysicsWorld.js"
+import Generator from "game/Generator.js"
+import EventHandler from "engine/EventHandler.js"
 
-World = function() {
+import {Projectile, ProjectileEvents} from "game/Entity/Projectile.js"
+import {Health, HealthEvents} from "game/Entity/Health.js"
+import Interacter from "game/Entity/Interacter.js"
+import {Interactable, InteractableEvents} from "game/Entity/Interactable.js"
+import EntityTemplates from "game/Entity/EntityTemplates/EntityTemplates.js"
+
+var World = function() {
     this.tickId = 0;
     this.idList = (isServer) ? new IdList() : null;
     this.entityWorld = new ObjectWorld(true);
@@ -55,21 +69,21 @@ World.prototype.tick = function(dt) {
 World.prototype.initializeEvents = function() {
     // Update physicsEntities
     // No unsubscribing is required, becuase world is owner of entityWorld
-    subscribeEvent(this.entityWorld.onAdd, this, function(entity) {
+    Event.subscribe(this.entityWorld.onAdd, this, function(entity) {
         if (entity.physicsBody)
             this.physicsEntities[entity.physicsBody.bodyId] = entity;
     }.bind(this));
-    subscribeEvent(this.entityWorld.onRemove, this, function(entity) {
+    Event.subscribe(this.entityWorld.onRemove, this, function(entity) {
         if (entity.physicsBody)
             this.physicsEntities[entity.physicsBody.bodyId] = undefined;
     }.bind(this));
 
     if (this.idList) {
         var onObjectRemove = function(object) { this.idList.remove(object.id); }.bind(this);
-        subscribeEvent(this.entityWorld.onRemove, this, onObjectRemove);
+        Event.subscribe(this.entityWorld.onRemove, this, onObjectRemove);
     }
 
-    subscribeEvent(ProjectileEvents.onHit, this, function(projectileEntity, hitPos) {
+    Event.subscribe(ProjectileEvents.onHit, this, function(projectileEntity, hitPos) {
         gameData.setTimeout(function(projectileEntity) {
             var type = projectileEntity.projectile.projectileType;
             if (type.isExplosive)
@@ -80,7 +94,7 @@ World.prototype.initializeEvents = function() {
             createParticles(ParticleFunctions.BulletHitParticles, hitPos, projectileEntity.projectile.angle);
     }.bind(this));
 
-    subscribeEvent(ProjectileEvents.onHitEntity, this, function(projectileEntity, hitEntity, hitPos) {
+    Event.subscribe(ProjectileEvents.onHitEntity, this, function(projectileEntity, hitEntity, hitPos) {
         if (isServer) {
             if (hitEntity && hitEntity.health && projectileEntity.projectile.projectileType.damage > 0) {
                 var damage = projectileEntity.projectile.projectileType.damage * projectileEntity.projectile.damageFactor;
@@ -93,7 +107,7 @@ World.prototype.initializeEvents = function() {
         }
     }.bind(this));
 
-    subscribeEvent(ProjectileEvents.onHitBlock, this, function(projectileEntity, blockPos) {
+    Event.subscribe(ProjectileEvents.onHitBlock, this, function(projectileEntity, blockPos) {
         if (isServer) {
             if (projectileEntity.projectile.projectileType.blockDamage > 0) {
                 var strength = getStrength(this.blockWorld, blockPos[0], blockPos[1]);
@@ -106,11 +120,11 @@ World.prototype.initializeEvents = function() {
         }
     }.bind(this));
 
-    subscribeEvent(ProjectileEvents.onHitTile, this, function(projectileEntity, tilePos) {
+    Event.subscribe(ProjectileEvents.onHitTile, this, function(projectileEntity, tilePos) {
 
     }.bind(this));
 
-    subscribeEvent(HealthEvents.onChange, this, function(entity) {
+    Event.subscribe(HealthEvents.onChange, this, function(entity) {
         if (!isServer) {
             var sprite = entity.drawable.sprites["healthbar"];
             if (!sprite) return;
@@ -119,7 +133,7 @@ World.prototype.initializeEvents = function() {
         }
     }.bind(this));
 
-    subscribeEvent(HealthEvents.onDeath, this, function(entity) {
+    Event.subscribe(HealthEvents.onDeath, this, function(entity) {
         if (!entity.isDead) {
             entity.isDead = true;
             this.entityWorld.remove(entity);
@@ -144,7 +158,7 @@ World.prototype.initializeEvents = function() {
         });
     }.bind(this));
 
-    subscribeEvent(InteractableEvents.onInteract, this, function(interactableEntity, interactingEntity) {
+    Event.subscribe(InteractableEvents.onInteract, this, function(interactableEntity, interactingEntity) {
         //console.log(interactingEntity.id + " is now interacting with " + interactableEntity.id);
         if (!isServer) {
             if (global.playerEntity && global.playerEntity.id == interactingEntity.id) {
@@ -160,7 +174,7 @@ World.prototype.initializeEvents = function() {
         }
     });
 
-    subscribeEvent(InteractableEvents.onFinishInteract, this, function(interactableEntity, interactingEntity) {
+    Event.subscribe(InteractableEvents.onFinishInteract, this, function(interactableEntity, interactingEntity) {
         //console.log(interactingEntity.id + " is no longer interacting with " + interactableEntity.id);
         if (!isServer) {
             if (global.playerEntity && global.playerEntity.id == interactingEntity.id) {
@@ -209,6 +223,6 @@ World.prototype.initializeEvents = function() {
 }
 
 World.prototype.destroy = function() {
-    unsubscribeEvents(HealthEvents, this);
-    unsubscribeEvents(ProjectileEvents, this);
+    Event.unsubscribeAll(HealthEvents, this);
+    Event.unsubscribeAll(ProjectileEvents, this);
 }

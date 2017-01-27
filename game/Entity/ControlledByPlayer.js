@@ -1,6 +1,6 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
-ControlledByPlayer = function(playerId) {
+var ControlledByPlayer = function(playerId) {
     this.playerId = playerId;
 }
 export default ControlledByPlayer

@@ -1,6 +1,6 @@
-CHUNK_DIM = 30;
-CHUNK_DIM_2 = CHUNK_DIM + 2;
-CHUNK_SIZE = 30 * 30;
+var CHUNK_DIM = 30;
+var CHUNK_DIM_2 = CHUNK_DIM + 2;
+var CHUNK_SIZE = 30 * 30;
 
 var Chunk = function() {
     this.tileData = new Uint8Array(CHUNK_SIZE);
@@ -38,7 +38,7 @@ Chunk.prototype.setTileId = function(x, y, value) {
     this.isChanged = true;
 }
 
-v2WorldToChunk = function(worldPos, outChunkPos, outLocalPos) {
+Chunk.fromV2 = function(worldPos, outChunkPos, outLocalPos) {
     v2.div(worldPos, CHUNK_DIM, outChunkPos);
     v2.floor(outChunkPos, outChunkPos);
     if (!outLocalPos) return;
@@ -48,7 +48,7 @@ v2WorldToChunk = function(worldPos, outChunkPos, outLocalPos) {
     v2.sub(outLocalPos, chunkWorldPos, outLocalPos);
 }
 
-v2WorldFromChunk = function(outWorldPos, chunkPos, localPos) {
+Chunk.toV2 = function(outWorldPos, chunkPos, localPos) {
     v2.mul(CHUNK_DIM, chunkPos, outWorldPos);
     if (!localPos) return;
     v2.add(localPos, outWorldPos, outWorldPos);

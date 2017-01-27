@@ -29,7 +29,7 @@ Spawner.prototype.update = function(entity) {
     // Lazy init
     if (!this.initialized) {
         this.initialized = true;
-        subscribeEvent(gameData.world.entityWorld.onRemove, this, function(entity) {
+        Event.subscribe(gameData.world.entityWorld.onRemove, this, function(entity) {
             if (this.entityTable[entity.id] == undefined) return;
 
             if (this.numEntities == this.maxEntities)
@@ -64,7 +64,7 @@ Spawner.prototype.update = function(entity) {
 }
 
 Spawner.prototype.onDestroy = function(entity) {
-    unsubscribeEvent(gameData.world.entityWorld.onRemove, this);
+    Event.unsubscribe(gameData.world.entityWorld.onRemove, this);
 }
 
 Spawner.prototype.updateDuration = function() {

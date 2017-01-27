@@ -1,3 +1,12 @@
+import Chunk from "engine/Chunk.js"
+
+import gameData from "game/GameData.js"
+import { Team, Teams } from "game/Entity/Team.js"
+import CommandEntitySpawn from "game/Command/CommandEntitySpawn.js"
+import CommandDig from "game/Command/CommandDig.js"
+import CommandPopupMessage from "game/Command/CommandPopupMessage.js"
+import CommandPlayerJoin from "game/Command/CommandPlayerJoin.js"
+import CommandPlayerSPawn from "game/Command/CommandPlayerSpawn.js"
 
 var GameModeZombieInvasion = function() {
     this.wavePauseDuration = 30000;
@@ -54,7 +63,7 @@ GameModeZombieInvasion.prototype.init = function() {
         this.zombieSpawns.push(pos);
     }
 
-    subscribeEvent(gameData.world.entityWorld.onRemove, this, function(entity) {
+    Event.subscribe(gameData.world.entityWorld.onRemove, this, function(entity) {
         if (this.zombies[entity.id]) {
             delete this.zombies[entity.id];
             if (Object.keys(this.zombies).length <= this.numEndWaveZombies && this.numZombiesToSpawn <= 0 && !this.endingWave) {
@@ -81,7 +90,7 @@ GameModeZombieInvasion.prototype.init = function() {
         }
     }.bind(this));
 
-    subscribeEvent(gameData.playerWorld.onRemove, this, function(player) {
+    Event.subscribe(gameData.playerWorld.onRemove, this, function(player) {
         if (this.survivors[player.id]) {
             delete this.survivors[player.id];
             if (Object.keys(this.survivors).length == 0 && !this.playerSpawning)

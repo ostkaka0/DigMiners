@@ -18,7 +18,7 @@ Event.unsubscribe = function(event, subscriber) {
 
 Event.unsubscribeAll = function(events, subscriber) {
     Object.keys(events).forEach(function(key) {
-        unsubscribeEvent(events[key], subscriber);
+        Event.unsubscribe(events[key], subscriber);
     });
 }
 
