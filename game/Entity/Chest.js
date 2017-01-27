@@ -1,6 +1,6 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
-Chest = function() {
+var Chest = function() {
 
 }
 export default Chest

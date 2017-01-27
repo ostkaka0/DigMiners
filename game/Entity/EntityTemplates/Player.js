@@ -1,5 +1,7 @@
 
-export default function(playerId, entityId, name, pos, playerClass) {
+import EntityTemplates from "./EntityTemplates.js"
+
+export default EntityTemplates.Player = function(playerId, entityId, name, pos, playerClass) {
     var entity = entityTemplates.Zombie(entityId, pos, Teams.Zombie);
     entity.behaviourContainer = undefined;
     entity.controlledByPlayer = new ControlledByPlayer(playerId);

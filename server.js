@@ -1,20 +1,24 @@
-console = require("console");
-fs = require("fs");
-path = require("path");
-app = require("express")();
-http = require("http").Server(app);
-io = require("socket.io")(http);
-present = require('present');
+global.isServer = true;
+
+import gameData from "game/GameData.js"
+
+var console = require("console");
+var fs = require("fs");
+var path = require("path");
+var app = require("express")();
+var http = require("http").Server(app);
+var io = require("socket.io")(http);
+var present = require('present');
 
 var isServer = true;
 
-loadScript = function(filePath) {
+var loadScript = function(filePath) {
     console.log("Loading " + filePath + "...");
     var content = fs.readFileSync(filePath, "utf8");
     eval(content);
 }
 
-loadScriptsRecursive = function(dir) {
+var loadScriptsRecursive = function(dir) {
     var files = fs.readdirSync(dir);
     for (var i = 0; i < files.length; ++i) {
         var filePath = dir + "/" + files[i];
@@ -27,7 +31,7 @@ loadScriptsRecursive = function(dir) {
     }
 }
 
-loadScriptsRecursive("lib");
+/*loadScriptsRecursive("lib");
 loadScriptsRecursive("engine");
 loadScriptsRecursive("game");
 
@@ -35,12 +39,12 @@ loadScriptsRecursive("game");
 loadScript("UnitTest.js");
 loadScriptsRecursive("unit_tests");
 runUnitTests();
-
+*/
 var commandsToSend = [];
-sendCommand = function(command) {
+var sendCommand = function(command) {
     commandsToSend.push(command);
 }
-clearCommands = function() {
+global.clearCommands = function() {
     commandsToSend.length = 0;
 }
 
@@ -109,7 +113,7 @@ gameData.world.physicsWorld.onCollision.push(function(collisions) {
     sendCommand(new CommandCollisions(collisions));
 });
 
-subscribeEvent(gameData.world.entityWorld.onAdd, global, function(entity) {
+Event.subscribe(gameData.world.entityWorld.onAdd, global, function(entity) {
     if (entity.controlledByPlayer) {
 
         /*// give player shovel at join

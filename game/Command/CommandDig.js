@@ -5,7 +5,7 @@ var CommandDig = function(pos, radius) {
         this.pos = v2.cloneFix(pos);
     this.radius = toFix(radius);
 }
-export CommandDig
+export default CommandDig
 
 CommandDig.prototype.execute = function() {
     var tileWorld = gameData.world.tileWorld;

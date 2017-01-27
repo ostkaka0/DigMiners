@@ -22,7 +22,7 @@ export default function() {
         }
     }
 
-    subscribeEvent(AmmoEvents.onChange, this, function(entity) {
+    Event.subscribe(AmmoEvents.onChange, this, function(entity) {
         if (entity && entity.id == global.playerEntityId)
             this.updateFunction(entity, null)
     }.bind(this));

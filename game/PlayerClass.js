@@ -51,4 +51,4 @@ var PlayerClasses = {
 }
 export default PlayerClasses
 
-PlayerClasses.Register = objectRegisterAddByObject([], PlayerClasses);
+PlayerClasses.Register = ObjectRegister.addByObject([], PlayerClasses);

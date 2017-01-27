@@ -1,5 +1,5 @@
 
-Particles = {};
+var Particles = {};
 export default Particles
 
 Particles.Bullet = {

@@ -1,6 +1,6 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
-ItemComponent = function(itemId, amount) {
+var ItemComponent = function(itemId, amount) {
     this.itemId = itemId;
     this.amount = amount;
     this.dropped = new Date();

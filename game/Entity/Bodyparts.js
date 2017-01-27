@@ -1,6 +1,6 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
-Bodyparts = function(bodyparts) {
+var Bodyparts = function(bodyparts) {
     this.bodyparts = bodyparts;
 
     // Set parents

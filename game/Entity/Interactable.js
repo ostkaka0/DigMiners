@@ -1,6 +1,6 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
-export InteractableEvents = {};
+export var InteractableEvents = {};
 InteractableEvents.onInteract = [];
 InteractableEvents.onFinishInteract = [];
 

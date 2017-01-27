@@ -1,6 +1,7 @@
-import entityTemplates from "game/Entity/EntityTemplates/EntityTemplate.js"
 
-export default function(playerId, entityId) {
+import EntityTemplates from "./EntityTemplates.js"
+
+export default EntityTemplates.Ghost = function (playerId, entityId) {
     var entity = {};
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 10.0, 1.0, 0);

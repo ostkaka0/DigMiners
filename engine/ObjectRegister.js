@@ -9,13 +9,13 @@ ObjectRegister.add = function(array, object) {
 
 ObjectRegister.addByArray = function(array, objectArray) {
     objectArray.forEach(function(object) {
-        registerObject(array, object);
+        ObjectRegister.add(array, object);
     }.bind(this));
     return array;
 }
 
 ObjectRegister.addByObject = function(array, object) {
-    for (key in object)
-        objectRegisterAdd(array, object[key]);
+    for (var key in object)
+        ObjectRegister.add(array, object[key]);
     return array;
 }

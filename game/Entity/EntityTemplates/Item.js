@@ -1,5 +1,7 @@
 
-export default function(itemId, amount) {
+import EntityTemplates from "./EntityTemplates.js"
+
+export default EntityTemplates.Item = function(itemId, amount) {
     var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
 

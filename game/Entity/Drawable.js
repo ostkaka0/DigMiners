@@ -1,6 +1,6 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
-Drawable = function(zindex) {
+var Drawable = function(zindex) {
     this.sprites = {};
     this.zindex = (!zindex ? 0 : zindex);
     if (isServer)

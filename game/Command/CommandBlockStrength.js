@@ -5,7 +5,7 @@ var CommandBlockStrength = function(x, y, strength) {
     this.y = y;
     this.strength = Math.max(strength, 0);
 }
-export CommandBlockStrength
+export default CommandBlockStrength
 
 CommandBlockStrength.prototype.execute = function() {
     if (this.strength > 0)

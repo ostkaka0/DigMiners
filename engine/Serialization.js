@@ -1,5 +1,5 @@
-import fix from "engine/core/Fix.js"
-import v2 from "engine/core/v2.js"
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
 
 export var Serialize = {};
 export var Deserialize = {};
@@ -17,7 +17,7 @@ Serialize.booleans = function(byteArray, index, booleans) {
 }
 
 Deserialize.booleans = function(byteArray, index) {
-    var bitField = deserialize.int8(byteArray, index);
+    var bitField = Deserialize.int8(byteArray, index);
     var booleans = [];
     booleans[0] = ((bitField & 1) != 0);
     booleans[1] = ((bitField & 2) != 0);
@@ -49,7 +49,7 @@ Serialize.int32 = function(byteArray, index, value) {
     index.add(4);
 }
 
-deserialize.int32 = function(byteArray, index) {
+Deserialize.int32 = function(byteArray, index) {
     var value = (byteArray[index.value] << 24)
         | (byteArray[index.value + 1] << 16)
         | (byteArray[index.value + 2] << 8)
@@ -63,7 +63,7 @@ Serialize.fix = function(byteArray, index, value) {
 }
 
 Deserialize.fix = function(byteArray, index) {
-    return fix.toFix(deserialize.int32(byteArray, index) / fix.denominator);
+    return fix.toFix(Deserialize.int32(byteArray, index) / fix.denominator);
 }
 
 Serialize.v2 = function(byteArray, index, value) {
@@ -72,7 +72,7 @@ Serialize.v2 = function(byteArray, index, value) {
 }
 
 Deserialize.v2 = function(byteArray, index) {
-    return v2.create(deserialize.fix(byteArray, index), deserialize.fix(byteArray, index));
+    return v2.create(Deserialize.fix(byteArray, index), Deserialize.fix(byteArray, index));
 }
 
 Serialize.uint8Array = function(byteArray, index, value) {

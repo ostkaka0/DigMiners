@@ -6,7 +6,7 @@ var CommandBuild = function(x, y, blockId, type) {
     this.blockId = blockId;
     this.type = type;
 }
-export CommandBuild
+export default CommandBuild
 
 CommandBuild.prototype.execute = function() {
     if (this.type == BlockTypes.FOREGROUND)

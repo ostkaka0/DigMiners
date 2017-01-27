@@ -36,11 +36,11 @@ export default function() {
     loader.queue("egg.png");
     loader.queue("bigEgg.png");
 
-    subscribeEvent(TextureLoaderEvents.onProgress, this, function(file, progress) {
+    Event.subscribe(TextureLoaderEvents.onProgress, this, function(file, progress) {
         console.log(Math.round(progress) + "% complete");
     }.bind(this));
 
-    subscribeEvent(TextureLoaderEvents.onComplete, this, function(textures) {
+    Event.subscribe(TextureLoaderEvents.onComplete, this, function(textures) {
         console.log("Textures loaded.");
 
         var texturesOutput = {};

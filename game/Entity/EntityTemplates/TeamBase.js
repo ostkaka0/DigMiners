@@ -1,5 +1,7 @@
 
-export default function(entityId, pos, teamId, maxEntities, radius, duration) {
+import EntityTemplates from "./EntityTemplates.js"
+
+export default EntityTemplates.TeamBase = function(entityId, pos, teamId, maxEntities, radius, duration) {
     maxEntities = maxEntities || 10;
     radius = radius || 4.0;
     duration = duration || 60;

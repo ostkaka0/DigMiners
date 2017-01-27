@@ -1,5 +1,5 @@
 
-Entity = {};
+var Entity = {};
 export default Entity
 
 Entity.onEquip = function(entity, stackId, itemType) {

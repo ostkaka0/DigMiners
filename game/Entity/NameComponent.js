@@ -1,6 +1,6 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
-NameComponent = function(entityName) {
+var NameComponent = function(entityName) {
     this.entityName = entityName + "";
 }
 export default NameComponent

@@ -1,11 +1,13 @@
 import Blocks from "game/Blocks.js"
+import Tiles from "game/Tiles.js"
+import Projectiles from "game/Projectiles.js"
 
 export var Items = {};
 export default Items
 export var ItemFunctions = {};
 export var ItemTextures = {};
 export var ItemEvents = {};
-export var ItemEvents.onShoot = [];
+ItemEvents.onShoot = [];
 
 ItemFunctions.Shovel = function(entity, item) {
     // Shovels might be meele weapons

@@ -1,6 +1,6 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
-Inventory = function(inventoryId, entityId, width, height) {
+var Inventory = function(inventoryId, entityId, width, height) {
     this.items = [];
     this.inventoryId = inventoryId;
     this.entityId = entityId;

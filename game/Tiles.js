@@ -1,4 +1,4 @@
-Tiles = {};
+var Tiles = {};
 export default Tiles
 
 Tiles.Dirt = {

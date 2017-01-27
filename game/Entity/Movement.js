@@ -1,6 +1,6 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
-Movement = function(speed, toolUseDuration, damageMultiplier, digHardnessMultiplier) {
+export var Movement = function(speed, toolUseDuration, damageMultiplier, digHardnessMultiplier) {
     this.keyStatuses = {};
     this.direction = v2.create(0, 0);
     this.rotationDirection = v2.create(0, 0);
@@ -64,7 +64,7 @@ Movement.prototype.destroy = function(entity) {
 
 }
 
-entityFunctionEntityMovement = function(dt) {
+export var entityFunctionEntityMovement = function(dt) {
     gameData.world.entityWorld.objectArray.forEach(function(entity) {
         if (!entity || !entity.movement || !entity.physicsBody)
             return;

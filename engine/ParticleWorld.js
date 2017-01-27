@@ -1,5 +1,5 @@
 
-ParticleWorld = function() {
+var ParticleWorld = function() {
     this.particles = [];
 }
 export default ParticleWorld;

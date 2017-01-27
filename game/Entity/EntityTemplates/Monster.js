@@ -1,5 +1,7 @@
 
-export default function(entityId, pos, teamId) {
+import EntityTemplates from "./EntityTemplates.js"
+
+export default EntityTemplates.Monster = function(entityId, pos, teamId) {
     var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0, 1.0, 0.3);
     entity.movement = new Movement(20.0, 0.25, 1.0, 0.5);
