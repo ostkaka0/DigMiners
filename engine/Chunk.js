@@ -2,7 +2,7 @@ CHUNK_DIM = 30;
 CHUNK_DIM_2 = CHUNK_DIM + 2;
 CHUNK_SIZE = 30 * 30;
 
-Chunk = function() {
+var Chunk = function() {
     this.tileData = new Uint8Array(CHUNK_SIZE);
     this.densityData = new Uint8Array(CHUNK_SIZE);
     var isChanged = true;

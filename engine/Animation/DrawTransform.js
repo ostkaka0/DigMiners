@@ -1,5 +1,5 @@
 
-DrawTransform = function(pos, angle, scale, pivot) {
+var DrawTransform = function(pos, angle, scale, pivot) {
     this.pos = pos || [0, 0];
     this.angle = angle || 0;
     this.scale = scale || [1.0, 1.0];

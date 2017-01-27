@@ -1,5 +1,5 @@
 
-Sprite = function(textureName) {
+var Sprite = function(textureName) {
     if (textureName) {
         this.textureName = textureName;
         this.visible = true;

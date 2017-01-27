@@ -1,7 +1,7 @@
 BLOCK_CHUNK_DIM = 30;
 BLOCK_CHUNK_SIZE = BLOCK_CHUNK_DIM * BLOCK_CHUNK_DIM;
 
-BlockChunk = function() {
+var BlockChunk = function() {
     this.foreground = new Uint8Array(BLOCK_CHUNK_SIZE);
     this.background = new Uint8Array(BLOCK_CHUNK_SIZE);
     this.strength = new Uint8Array(BLOCK_CHUNK_SIZE);

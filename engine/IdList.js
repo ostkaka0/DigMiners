@@ -1,3 +1,5 @@
+import binarySearch from "engine/Core/BinarySearch.js"
+
 export default class {
     constructor(firstId) {
         this.firstId = firstId || 1;

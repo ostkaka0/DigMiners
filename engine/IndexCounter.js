@@ -1,5 +1,5 @@
 
-IndexCounter = function(initial) {
+var IndexCounter = function(initial) {
     if (initial)
         this.value = initial;
     else

@@ -1,5 +1,5 @@
 
-TextSprite = function(text, font, fontSize, color) {
+var TextSprite = function(text, font, fontSize, color) {
     this.text = text;
     this.font = font;
     this.fontSize = fontSize;

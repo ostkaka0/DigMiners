@@ -1,8 +1,8 @@
-import Quadtree from "./Quadtree"
-import IdList from "./IdList"
-import v2 from "./Core/v2"
+import Quadtree from "engine/Quadtree.js"
+import IdList from "engine/IdList.js"
+import v2 from "engine/Core/v2.js"
 
-PointWorld = function(size) {
+var PointWorld = function(size) {
     this.size = size;
     this.quadtree = new Quadtree();
     this.nodeParents = [0]; // Find parent node from node
@@ -25,7 +25,7 @@ PointWorld.prototype.getPos = function(pointId) {
 }
 
 PointWorld.prototype.add = function(pos, radius) {
-    pointId = this.idList.next();
+    var pointId = this.idList.next();
     this._expand(this.idList.nextId);
     this.posArray[2 * pointId + 0] = pos[0];
     this.posArray[2 * pointId + 1] = pos[1];
@@ -52,11 +52,8 @@ PointWorld.prototype.forEach = function(callback) {
     this.idList.forEach(callback);
 }
 
-PointWorld.prototype.findInRadius = function(points, pos, radius, node, nodePos) {
-    node = node || 0;
-    nodePos = nodePos || [0, 0, 0];
-
-    nodeArray = this.nodeArrays[node >> 2];
+PointWorld.prototype.findInRadius = function(points, pos, radius, node = 0, nodePos = [0, 0, 0]) {
+    var nodeArray = this.nodeArrays[node >> 2];
     if (nodeArray) {
         for (var i = 0; i < nodeArray.length; i++) {
             var pointId = nodeArray[i];

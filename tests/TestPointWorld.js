@@ -1,8 +1,8 @@
-import Quadtree from "../engine/Quadtree.js"
-import PointWorld from "../engine/PointWorld.js"
-import DrawTransform from "../engine/Animation/DrawTransform.js"
-import { loadTextures } from "../engine/Animation/TextureFunctions.js"
-import '../lib_front_end/ajquery-3.1.1.min.js';
+import Quadtree from "engine/Quadtree.js"
+import PointWorld from "engine/PointWorld.js"
+import DrawTransform from "engine/Animation/DrawTransform.js"
+import { loadTextures } from "engine/Animation/TextureFunctions.js"
+import "jquery"//'../lib_front_end/ajquery-3.1.1.min.js';
 
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d", {antialias: true});
@@ -10,19 +10,19 @@ var image = new Image();
 var startTime = Date.now();
 var textures = null;
 var pointWorld = new PointWorld(1.0)
-for (var i = 0; i < 100; i++) {
+for (var i = 0; i < 1; i++) {
     pointWorld.add([-1 + 2 * Math.random(), -1 + 2 * Math.random()], 0.1);
 }
 
-preload = function() {
+var preload = function() {
     textures = loadTextures("data/textures/", ["block.png", "egg.png"], load);
 }
 
-load = function() {
+var load = function() {
     update();
 }
 
-update = function() {
+var update = function() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
@@ -39,7 +39,7 @@ update = function() {
     window.requestAnimationFrame(update, 1000.0/60.0);
 }
 
-render = function() {
+var render = function() {
     var time = (Date.now() - startTime) / 1000.0;
     context.clearRect(0, 0, canvas.width, canvas.height);
 

@@ -1,7 +1,7 @@
-import Animation from "./Animation.js"
-import Cycle from "./Cycle.js"
+import Animation from "engine/Animation/Animation.js"
+import Cycle from "engine/Animation/Cycle.js"
 
-AnimationManager = function() {
+var AnimationManager = function() {
     this.animations = {};
     this.cycles = {};
 }

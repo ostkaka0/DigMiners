@@ -1,9 +1,9 @@
-import Chunk from "./Chunk.js"
+import Chunk from "engine/Chunk.js"
 CHUNK_DIM = Chunk.dim;
 CHUNK_DIM_2 = Chunk.dim2;
 CHUNK_SIZE = Chunk.size;
 
-ChunkRenderer = function(gl, world, tileSize) {
+var ChunkRenderer = function(gl, world, tileSize) {
     this.gl = gl;
     this.tileSize = tileSize;
     this.world = world;

@@ -1,5 +1,5 @@
 
-Texture = function(baseImage, x, y, width, height) {
+var Texture = function(baseImage, x, y, width, height) {
     if (!baseImage)
         throw ("Texture.js baseImage undefined");
     this.baseImage = baseImage;

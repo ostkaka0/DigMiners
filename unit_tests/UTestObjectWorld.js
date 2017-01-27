@@ -1,3 +1,5 @@
+import ObjectWorld from "../engine/ObjectWorld.js"
+
 g_unitTests.testobjectWorld = function() {
     var idList = new IdList();
     var objectWorld = new ObjectWorld();

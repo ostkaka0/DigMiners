@@ -1,5 +1,5 @@
 
-BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, parent) {
+var BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, parent) {
     this.sprite = sprite;
     this.offset = [offsetX, offsetY, offsetRotation];
     this.defaultOffset = [offsetX, offsetY, offsetRotation];

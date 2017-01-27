@@ -1,5 +1,5 @@
 
-SpriteContainer = function() {
+var SpriteContainer = function() {
     this.container = [];
     this.isSpriteContainer = true;
 }

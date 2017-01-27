@@ -1,4 +1,4 @@
-fix = {};
+var fix = {};
 export default fix;
 fix.denominator = 0x10000;
 // Convert float to 32 bit fixed point with 16 bit fraction.

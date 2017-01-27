@@ -1,4 +1,4 @@
-GLChunk = function(gl, chunk) {
+var GLChunk = function(gl, chunk) {
     this.textureTiles = gl.createTexture();
     this.textureDensity = gl.createTexture();
 

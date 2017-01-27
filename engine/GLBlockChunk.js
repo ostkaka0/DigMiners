@@ -1,4 +1,4 @@
-GLBlockChunk = function(gl, blockChunk) {
+var GLBlockChunk = function(gl, blockChunk) {
     this.vbo = null;
     this.vboSize = 0;
     //this.textureRendered = gl.createTexture();

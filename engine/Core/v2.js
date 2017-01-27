@@ -1,6 +1,6 @@
-import fix from "./Fix"
+import fix from "engine/Core/Fix.js"
 
-v2 = {};
+var v2 = {};
 export default v2;
 
 v2.create = function(x, y) {
