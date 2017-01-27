@@ -5,7 +5,6 @@ TurretBehaviour = function(entity, maxRadius) {
     this.target = null;
     this.flowField = null;
     this.lastUpdateTickId = gameData.world.tickId;
-    this.nextPathUpdateTick = gameData.world.tickId;
     this.lastTargetPos = null;
     this.spacebar = false;
     this.foundGun = false;
@@ -52,35 +51,11 @@ TurretBehaviour.prototype.run = function() {
 
     if (dis > this.maxRadius)
         return false;
-    if (gameData.world.tickId >= this.nextPathUpdateTick) {
-        if (!this.lastTargetPos || !this.flowField || v2.sqrDistance(this.lastTargetPos, this.target.physicsBody.getPos()) > v2.sqrDistance(this.entity.physicsBody.getPos(), this.target.physicsBody.getPos())) {
-            this.flowField = new Map2D();
-            var expandList = [];
-            aStarFlowField(this.flowField, expandList, gameData.world.tileWorld, gameData.world.blockWorld, tilePos, tilePosTarget, 25600);
-            var delay = Math.min(2000, expandList.length * 10 + Math.floor(dis * 10));
-            this.nextPathUpdateTick = gameData.world.tickId + (delay / Config.tickDuration >> 0);
-            this.lastTargetPos = v2.clone(this.target.physicsBody.getPos());
-        }
-    }
-    if (!this.flowField) return false;
 
     var targetDir = [0, 0];
     v2.sub(this.target.physicsBody.getPos(), this.entity.physicsBody.getPos(), targetDir);
     v2.normalize(targetDir, targetDir);
 
-    var flowFieldDir = DisField.calcTileDir(this.flowField, tilePos);
-    var dir = flowFieldDir
-    if (dir[0] == 0 && dir[1] == 0)
-        dir = v2.clone(targetDir);
-    if (dir[0] == 0 && dir[1] == 0)
-        return false;
-
-    //var diffX = dir[0];//(getDis([tilePos[0] - 1, tilePos[1]]) - getDis([tilePos[0] + 1, tilePos[1]])) / 10;
-    //var diffY = dir[1];//(getDis([tilePos[0], tilePos[1] - 1]) - getDis([tilePos[0], tilePos[1] + 1])) / 10;
-
-    //var dir = v2.create(diffX, diffY);
-    //var normalized = v2.create(0, 0);
-    //v2.normalize(dir, normalized);
     var tickInterval = Math.floor(20 * Math.min(1.0, dis / 40.0));
     tickInterval = Math.max(5, tickInterval);
 

@@ -6,12 +6,11 @@ entityTemplates.Turret = function(entityId, pos, teamId) {
     entity.inventory = Inventory.createInventory(entityId, 10, 1);
     entity.equippedItems = new EquippedItems();
 
-    var topSprite = new Sprite("turret/top.png");
     var bottomSprite = new Sprite("turret/bottom.png");
 
     var bodyparts = {
         "bottom": new BodyPart(bottomSprite, 0, 0, 0, null, null, true),
-        "top": new BodyPart(topSprite, 0, 0, 0, null, null),
+        "top": new BodyPart(new Sprite(), 0, 0, 0, null, null),
         "tool": new BodyPart(new Sprite(), 0, 0, 0, null, "top"),
     };
 
@@ -26,6 +25,7 @@ entityTemplates.Turret = function(entityId, pos, teamId) {
 
     entity.behaviourContainer = new BehaviourContainer();
     entity.behaviourContainer.behaviours.push(new TurretBehaviour(entity, 10.0));
+    entity.behaviourContainer.behaviours.push(new TurretIdleBehaviour(entity));
 
     return entity;
 }
