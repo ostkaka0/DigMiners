@@ -117,14 +117,6 @@ PhysicsWorld.prototype.add = function(pos, velocity, mass, radius) {
     this.setVelocity(id, velocity);
     this.setMass(id, mass);
 
-    console.log("pos: " + this.getPos(id));
-    console.log("posOld: " + this.getPosOld(id));
-    console.log("radius: " + this.getRadius(id));
-    console.log("velocity: " + this.getVelocity(id));
-    console.log("mass: " + this.getMass(id));
-
-    console.log("input vel: " + velocity);
-
     return id;
 }
 
