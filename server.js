@@ -124,10 +124,17 @@ subscribeEvent(gameData.world.entityWorld.onAdd, global, function(entity) {
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponShotgun.id, 1));
         sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponSniperRifle.id, 1));*/
 
+        var turretEntityId = gameData.world.idList.next();
+        var turret = entityTemplates.Turret(turretEntityId, [0, 0], Teams.Zombie);
+        sendCommand(new CommandEntitySpawn(gameData, turret, turretEntityId));
+        var weaponId = Items.WeaponMachineGun.id;
+        sendCommand(new CommandEntityInventory(turretEntityId, InventoryActions.ADD_ITEM, weaponId, 1));
+        //sendCommand(new CommandEntityEquipItem(turretEntityId, 0, weaponId, true));
+
         // (TEMPORARY) spawn monsters on player join
         for (var i = 0; i < 0; ++i) {
             var monsterEntityId = gameData.world.idList.next();
-            var monster = entityTemplates.monster(monsterEntityId, [50 * (-1 + 2 * Math.random()), 50 * (-1 + 2 * Math.random())], gameData);
+            var monster = entityTemplates.Monster(monsterEntityId, [50 * (-1 + 2 * Math.random()), 50 * (-1 + 2 * Math.random())], gameData);
             sendCommand(new CommandEntitySpawn(gameData, monster, monsterEntityId));
             var weaponId = Items.WeaponPistol.id + Math.floor((Items.WeaponGrenadeLauncher.id - Items.WeaponPistol.id + 1) * Math.random());
             sendCommand(new CommandEntityInventory(monsterEntityId, InventoryActions.ADD_ITEM, weaponId, 1));
