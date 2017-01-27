@@ -2,7 +2,7 @@ initPlayerClasses = function() {
     PlayerClasses = {
         Assault: {
             name: "Assault",
-            blocks: [Items.StoneWall, Items.WoodCrate, Items.BlueForcefield, Items.Chest],
+            blocks: [Items.StoneWall, Items.WoodCrate, Items.BlueForcefield],
             weapons: [Items.WeaponAssaultRifle, Items.WeaponPistol, Items.Knife, Items.CopperShovel],
             speed: 1.0,
             health: 120.0,
@@ -31,7 +31,7 @@ initPlayerClasses = function() {
             speed: 1.0,
             health: 100.0,
             armor: 0.2,
-        }, 
+        },
         Assassin: {
             name: "Assassin",
             blocks: [Items.StoneWall, Items.WoodCrate, Items.BlueForcefield],
@@ -42,7 +42,7 @@ initPlayerClasses = function() {
         },
         Miner: {
             name: "Miner",
-            blocks: [Items.StoneWall, Items.WoodCrate, Items.BlueForcefield],
+            blocks: [Items.StoneWall, Items.WoodCrate, Items.BlueForcefield, Items.PistolTurret, Items.MachineGunTurret],
             weapons: [Items.WeaponShotgun, Items.WeaponSmg, Items.SteelShovel],
             speed: 1.0,
             health: 120.0,
