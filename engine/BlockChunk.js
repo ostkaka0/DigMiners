@@ -1,3 +1,6 @@
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
+
 var BLOCK_CHUNK_DIM = 30;
 var BLOCK_CHUNK_SIZE = BLOCK_CHUNK_DIM * BLOCK_CHUNK_DIM;
 
@@ -44,7 +47,7 @@ BlockChunk.fromV2World = function(worldPos, outBlockChunkPos, outLocalPos) {
     v2.div(worldPos, BLOCK_CHUNK_DIM, outBlockChunkPos);
     v2.floor(outBlockChunkPos, outBlockChunkPos);
     if (!outLocalPos) return;
-    blockChunkWorldPos = v2.clone(outBlockChunkPos);
+    var blockChunkWorldPos = v2.clone(outBlockChunkPos);
     v2.mul(BLOCK_CHUNK_DIM, blockChunkWorldPos, blockChunkWorldPos);
     v2.floor(worldPos, outLocalPos);
     v2.sub(outLocalPos, blockChunkWorldPos, outLocalPos);

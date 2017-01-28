@@ -1,9 +1,10 @@
 import fix from "engine/Core/Fix.js"
 import v2 from "engine/Core/v2.js"
 import BlockWorld from "engine/BlockWorld.js"
-import TileWOrld from "engine/TileWorld.js"
+import TileWorld from "engine/TileWorld.js"
 
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
+import { Team, Teams } from "game/Entity/Team.js"
 import CommandEntityEquipItem from "game/Command/CommandEntityEquipItem.js"
 import CommandKeyStatusUpdate from "game/Command/CommandKeyStatusUpdate.js"
 import CommandEntityMove from "game/Command/CommandEntityMove.js"
@@ -14,16 +15,16 @@ var WalkToEnemyBehaviour = function(entity, maxRadius) {
     this.entity = entity;
     this.maxRadius = maxRadius;
     this.target = null;
-    this.nextUpdateTickId = gameData.world.tickId;
+    this.nextUpdateTickId = Global.gameData.world.tickId;
     this.moving = false;
-    this.nextCanRunTickId = gameData.world.tickId;
+    this.nextCanRunTickId = Global.gameData.world.tickId;
 }
 export default WalkToEnemyBehaviour;
 
 WalkToEnemyBehaviour.prototype.canRun = function() {
-    if (gameData.world.tickId < this.nextCanRunTickId)
+    if (Global.gameData.world.tickId < this.nextCanRunTickId)
         return false;
-    this.nextCanRunTickId = gameData.world.tickId + 40 + 40 * Math.random() >> 0;
+    this.nextCanRunTickId = Global.gameData.world.tickId + 40 + 40 * Math.random() >> 0;
     this.target = this.getTarget();
     if (this.target == null)
         return false;
@@ -37,8 +38,8 @@ WalkToEnemyBehaviour.prototype.initialize = function() {
 }
 
 WalkToEnemyBehaviour.prototype.run = function() {
-    if (gameData.world.tickId < this.nextUpdateTickId) return true;
-    this.nextUpdateTickId = gameData.world.tickId + 20;
+    if (Global.gameData.world.tickId < this.nextUpdateTickId) return true;
+    this.nextUpdateTickId = Global.gameData.world.tickId + 20;
 
     if (!this.target || this.target.isDead || !this.target.isActive) {
         this.target = this.getTarget();
@@ -80,7 +81,7 @@ WalkToEnemyBehaviour.prototype.destroy = function(entity) {
 WalkToEnemyBehaviour.prototype.getTarget = function() {
     var shortestDistance = Number.MAX_VALUE;
     var shortestDistanceEntity = null;
-    gameData.world.entityWorld.objectArray.forEach(function(otherEntity) {
+    Global.gameData.world.entityWorld.objectArray.forEach(function(otherEntity) {
         if (!otherEntity.health || !otherEntity.physicsBody) return;
         if (!otherEntity.team && !otherEntity.movement) return;
         if (this.entity.team && this.entity.team.value != Teams.None && (!otherEntity.team || otherEntity.team.value == this.entity.team.value)) return;

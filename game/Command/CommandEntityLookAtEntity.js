@@ -1,7 +1,7 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
 
 var CommandEntityLookAtEntity = function(entityId, targetEntityId) {
     this.entityId = entityId;
@@ -10,8 +10,8 @@ var CommandEntityLookAtEntity = function(entityId, targetEntityId) {
 export default CommandEntityLookAtEntity
 
 CommandEntityLookAtEntity.prototype.execute = function() {
-    var entity = gameData.world.entityWorld.objects[this.entityId];
-    var targetEntity = gameData.world.entityWorld.objects[this.targetEntityId];
+    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
+    var targetEntity = Global.gameData.world.entityWorld.objects[this.targetEntityId];
     if (!entity) return;
     var movement = entity.movement;
     if (!movement) return;

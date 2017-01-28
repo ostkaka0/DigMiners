@@ -4,6 +4,8 @@ import Chunk from "engine/Chunk.js"
 import BlockChunk from "engine/BlockChunk.js"
 import { compressRLE, decompressRLE } from "engine/Compress.js"
 
+import Global from "game/Global.js"
+
 var MessageChunk = function(chunk, blockChunk, x, y) {
     this.chunk = chunk || new Chunk();
     this.blockChunk = blockChunk || new BlockChunk();
@@ -14,11 +16,11 @@ var MessageChunk = function(chunk, blockChunk, x, y) {
 export default MessageChunk
 
 MessageChunk.prototype.execute = function(gameData) {
-    if (gameData.world.generator)
-        gameData.world.generator.generate(this.chunk, this.x, this.y);
-    gameData.world.tileWorld.set(this.x, this.y, this.chunk);
+    if (Global.gameData.world.generator)
+        Global.gameData.world.generator.generate(this.chunk, this.x, this.y);
+    Global.gameData.world.tileWorld.set(this.x, this.y, this.chunk);
     if (!this.blockChunkEmpty)
-        gameData.world.blockWorld.set(this.x, this.y, this.blockChunk);
+        Global.gameData.world.blockWorld.set(this.x, this.y, this.blockChunk);
 }
 
 MessageChunk.prototype.send = function(socket) {

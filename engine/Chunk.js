@@ -1,3 +1,6 @@
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
+
 var CHUNK_DIM = 30;
 var CHUNK_DIM_2 = CHUNK_DIM + 2;
 var CHUNK_SIZE = 30 * 30;

@@ -1,9 +1,9 @@
 import fix from "engine/Core/Fix.js"
 import v2 from "engine/Core/v2.js"
 import BlockWorld from "engine/BlockWorld.js"
-import TileWOrld from "engine/TileWorld.js"
+import TileWorld from "engine/TileWorld.js"
 
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
 import CommandEntityEquipItem from "game/Command/CommandEntityEquipItem.js"
 import CommandKeyStatusUpdate from "game/Command/CommandKeyStatusUpdate.js"
 import CommandEntityMove from "game/Command/CommandEntityMove.js"
@@ -14,7 +14,7 @@ var WalkToPointBehaviour = function(entity, goalPoint, radius) {
     this.entity = entity;
     this.goalPoint = goalPoint;
     this.radius = radius || 5.0;
-    this.nextUpdateTickId = gameData.world.tickId;
+    this.nextUpdateTickId = Global.gameData.world.tickId;
     this.inverval = 20;
 }
 export default WalkToPointBehaviour;
@@ -29,13 +29,13 @@ WalkToPointBehaviour.prototype.initialize = function() {
     v2.sub(this.goalPoint, physicsBody.getPos(), dir);
     v2.normalize(dir, dir);
     sendCommand(new CommandEntityMove(this.entity.id, dir, physicsBody.getPos()));
-    this.nextUpdateTickId = gameData.world.tickId + this.inverval;
+    this.nextUpdateTickId = Global.gameData.world.tickId + this.inverval;
 }
 
 WalkToPointBehaviour.prototype.run = function() {
-    if (gameData.world.tickId < this.nextUpdateTickId)
+    if (Global.gameData.world.tickId < this.nextUpdateTickId)
         return true;
-    this.nextUpdateTickId = gameData.world.tickId + this.inverval;
+    this.nextUpdateTickId = Global.gameData.world.tickId + this.inverval;
 
     var physicsBody = this.entity.physicsBody;
     var movement = this.entity.movement;

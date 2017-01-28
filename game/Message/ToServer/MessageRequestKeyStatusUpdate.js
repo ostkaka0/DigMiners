@@ -1,4 +1,10 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import IndexCounter from "engine/IndexCounter.js"
+import Keys from "engine/Keys.js"
+
+import Global from "game/Global.js"
+import CommandEntityInteractEntity from  "game/Command/CommandEntityInteractEntity.js"
+import CommandKeyStatusUpdate from "game/Command/CommandKeyStatusUpdate.js"
 
 var MessageRequestKeyStatusUpdate = function(key, pressed) {
     this.key = key;
@@ -7,7 +13,7 @@ var MessageRequestKeyStatusUpdate = function(key, pressed) {
 export default MessageRequestKeyStatusUpdate
 
 MessageRequestKeyStatusUpdate.prototype.execute = function(gameData, player) {
-    var entity = gameData.world.entityWorld.objects[player.entityId];
+    var entity = Global.gameData.world.entityWorld.objects[player.entityId];
     if (!entity) return;
     var physicsBody = entity.physicsBody;
     if (!physicsBody) return;
@@ -18,9 +24,9 @@ MessageRequestKeyStatusUpdate.prototype.execute = function(gameData, player) {
         var interactablePos = [physicsBody.getPos()[0] + 1.0 * dir[0], physicsBody.getPos()[1] + 1.0 * dir[1]];
         var bodies = [];
         var distances = [];
-        gameData.world.physicsWorld.getBodiesInRadiusSorted(bodies, distances, interactablePos, 0.25);
+        Global.gameData.world.physicsWorld.getBodiesInRadiusSorted(bodies, distances, interactablePos, 0.25);
         if (bodies.length > 0) {
-            var targetEntity = gameData.world.physicsEntities[bodies[0]];
+            var targetEntity = Global.gameData.world.physicsEntities[bodies[0]];
             // Interact only if player has nothing equipped in hands
             if (targetEntity && targetEntity.interactable && entity.equippedItems && !entity.equippedItems.items["tool"]) {
                 if (!Interactable.isInteracting(targetEntity, entity)) {
@@ -31,7 +37,7 @@ MessageRequestKeyStatusUpdate.prototype.execute = function(gameData, player) {
                     if (Interactable.canInteract(targetEntity, entity)) {
                         sendCommand(new CommandEntityInteractEntity(entity.id, targetEntity.id, true));
                         entity.interacter.interacting = targetEntity.id;
-                        entity.interacter.lastCheck = gameData.world.tickId;
+                        entity.interacter.lastCheck = Global.gameData.world.tickId;
                     }
                 } else {
                     sendCommand(new CommandEntityInteractEntity(entity.id, targetEntity.id, false));

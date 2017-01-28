@@ -1,14 +1,14 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
 
 export var OreInventoryActions = {
     ADD_ORE: 0,
     REMOVE_ORE: 1
 }
 
-var CommandPlayerOreInventory = function(playerId, actionId, itemId, amount) {
+export var CommandPlayerOreInventory = function(playerId, actionId, itemId, amount) {
     this.playerId = playerId;
     this.actionId = actionId;
     this.itemId = itemId;
@@ -17,7 +17,7 @@ var CommandPlayerOreInventory = function(playerId, actionId, itemId, amount) {
 export default CommandPlayerOreInventory
 
 CommandPlayerOreInventory.prototype.execute = function() {
-    var player = gameData.playerWorld.objects[this.playerId];
+    var player = Global.gameData.playerWorld.objects[this.playerId];
     if (!player) return;
     if (this.actionId == OreInventoryActions.ADD_ORE) {
         if (!player.oreInventory[this.itemId])
@@ -29,8 +29,8 @@ CommandPlayerOreInventory.prototype.execute = function() {
         player.oreInventory[this.itemId] -= this.amount;
     }
     if (!isServer && global.player && this.playerId == global.player.playerId) {
-        gameData.HUD.update();
-        gameData.HUD.checkCanAffordRecipe();
+        Global.gameData.HUD.update();
+        Global.gameData.HUD.checkCanAffordRecipe();
     }
 }
 

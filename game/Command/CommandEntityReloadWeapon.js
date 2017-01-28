@@ -1,7 +1,9 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import Event from "engine/Core/Event.js"
 
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
+import { Ammo, AmmoEvents } from "game/Entity/Ammo.js"
 
 var CommandEntityReloadWeapon = function(entityId, stackId) {
     this.entityId = entityId;
@@ -10,7 +12,7 @@ var CommandEntityReloadWeapon = function(entityId, stackId) {
 export default CommandEntityReloadWeapon
 
 CommandEntityReloadWeapon.prototype.execute = function() {
-    var entity = gameData.world.entityWorld.objects[this.entityId];
+    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity || !entity.inventory) return;
     var item = entity.inventory.items[this.stackId];
     var itemType = Config.itemRegister[item.id];

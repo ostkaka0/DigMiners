@@ -78,7 +78,10 @@ var messagesToClient = [MessageInit, MessageCommands, MessageChunk, MessageChang
 var messagesToServer = [MessageRequestKeyStatusUpdate, MessageRequestItemPickup, MessageRequestClickSlot, MessageRequestCraft, MessageRequestPlaceBlock,
     MessageRequestClickEntity, MessageRequestRotate, MessageRequestClickBlock, MessageRequestSpawn];
 
-export default {
+export var Config = {};
+export default Config
+
+export var initConfig = () => Object.assign(Config, {
     port: 3000,
     itemPickupDistance: 2.0,
     blockPlaceDistance: 96, //Pixels
@@ -105,4 +108,4 @@ export default {
         EquippedItems, Projectile, BlockPlacer, PotionEffects, Team, Inventory, Ammo, Chest, Interactable, Interacter]),
     gameModeRegister: TypeRegister.addByArray([], [/*GameModeBaseWar, */GameModeZombieInvasion]),
 
-}
+});

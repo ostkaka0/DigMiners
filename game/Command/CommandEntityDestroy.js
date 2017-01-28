@@ -1,7 +1,7 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
 
 var CommandEntityDestroy = function(entityId) {
     this.entityId = entityId;
@@ -9,9 +9,9 @@ var CommandEntityDestroy = function(entityId) {
 export default CommandEntityDestroy
 
 CommandEntityDestroy.prototype.execute = function() {
-    var entity = gameData.world.entityWorld.objects[this.entityId];
+    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity) return;
-    gameData.world.entityWorld.remove(entity);
+    Global.gameData.world.entityWorld.remove(entity);
 }
 
 CommandEntityDestroy.prototype.serialize = function(byteArray, index) {

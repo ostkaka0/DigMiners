@@ -5,16 +5,23 @@ import Chunk from "engine/Chunk.js"
 import TileWorld from "engine/TileWorld.js"
 import BlockWorld from "engine/BlockWorld.js"
 
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
+import Config from "game/Config.js"
+import Blocks from "game/Blocks.js"
+import Items from "game/Items.js"
 import { Team, Teams } from "game/Entity/Team.js"
+import { Ammo, AmmoEvents } from "game/Entity/Ammo.js"
+import PlayerClass from "game/PlayerClass.js"
 import CommandEntitySpawn from "game/Command/CommandEntitySpawn.js"
 import CommandDig from "game/Command/CommandDig.js"
 import CommandPopupMessage from "game/Command/CommandPopupMessage.js"
 import CommandPlayerJoin from "game/Command/CommandPlayerJoin.js"
-import CommandPlayerSPawn from "game/Command/CommandPlayerSpawn.js"
+import CommandPlayerSpawn from "game/Command/CommandPlayerSpawn.js"
 import entityTemplateMonsterSpawner from "game/Entity/EntityTemplates/MonsterSpawner.js"
 import entityTemplatePlayer from "game/Entity/EntityTemplates/Player.js"
 import entityTemplateZombie from "game/Entity/EntityTemplates/Zombie.js"
+import MessageAmmoChange from "game/Message/ToClient/MessageAmmoChange.js"
+import CommandEntityHealthChange from "game/Command/CommandEntityHealthChange.js"
 
 var GameModeZombieInvasion = function() {
     this.wavePauseDuration = 30000;
@@ -43,13 +50,13 @@ GameModeZombieInvasion.prototype.init = function() {
 
     var loadChunk = function(world, x, y) {
         var chunk = new Chunk();
-        gameData.world.generator.generate(chunk, x, y);
+        Global.gameData.world.generator.generate(chunk, x, y);
         world.set(x, y, chunk);
     }
 
     for (var x = -2; x < 2; ++x) {
         for (var y = -2; y < 2; ++y) {
-            loadChunk(gameData.world.tileWorld, x, y);
+            loadChunk(Global.gameData.world.tileWorld, x, y);
         }
     }
 
@@ -63,15 +70,15 @@ GameModeZombieInvasion.prototype.init = function() {
         // calculate random position at least 20 tiles from middle
         for (var j = 0; j < 10 && v2.length(pos) < 20.0; j++)
             pos = [60.0 * (-1 + 2 * Math.random()), 60.0 * (-1 + 2 * Math.random())];
-        var entityId = gameData.world.idList.next();
+        var entityId = Global.gameData.world.idList.next();
         var entity = entityTemplateMonsterSpawner(entityId, pos, this.spawnZombie.bind(this), 0, 2.0, 40, null, null, Teams.Zombie);
-        sendCommand(new CommandEntitySpawn(gameData, entity, entityId, Teams.Zombie));
+        sendCommand(new CommandEntitySpawn(Global.gameData, entity, entityId, Teams.Zombie));
         sendCommand(new CommandDig(pos, 5.0));
         this.zombieSpawners.push(entity);
         this.zombieSpawns.push(pos);
     }
 
-    Event.subscribe(gameData.world.entityWorld.onRemove, this, function(entity) {
+    Event.subscribe(Global.gameData.world.entityWorld.onRemove, this, function(entity) {
         if (this.zombies[entity.id]) {
             delete this.zombies[entity.id];
             if (Object.keys(this.zombies).length <= this.numEndWaveZombies && this.numZombiesToSpawn <= 0 && !this.endingWave) {
@@ -84,7 +91,7 @@ GameModeZombieInvasion.prototype.init = function() {
             }
             // start wave with timer when there are few zombies
             else if (Object.keys(this.zombies).length <= this.numEndWaveZombies + 5 && this.numZombiesToSpawn <= 0 && !this.endingWave && !this.endingWaveTimer) {
-                this.endingWaveTimer = gameData.setTimeout(function() {
+                this.endingWaveTimer = Global.gameData.setTimeout(function() {
                     this.endingWaveTimer = null;
                     if (this.endingWave) return;
                     this.endingWave = true;
@@ -94,15 +101,15 @@ GameModeZombieInvasion.prototype.init = function() {
         } else if (entity.controlledByPlayer && this.survivors[entity.controlledByPlayer.playerId]) {
             delete this.survivors[entity.controlledByPlayer.playerId];
             if (Object.keys(this.survivors).length == 0 && !this.playerSpawning)
-                gameData.setTimeout(gameData.changeGameMode.bind(gameData), 5000);
+                Global.gameData.setTimeout(Global.gameData.changeGameMode.bind(Global.gameData), 5000);
         }
     }.bind(this));
 
-    Event.subscribe(gameData.playerWorld.onRemove, this, function(player) {
+    Event.subscribe(Global.gameData.playerWorld.onRemove, this, function(player) {
         if (this.survivors[player.id]) {
             delete this.survivors[player.id];
             if (Object.keys(this.survivors).length == 0 && !this.playerSpawning)
-                gameData.setTimeout(gameData.changeGameMode.bind(gameData), 5000);
+                Global.gameData.setTimeout(Global.gameData.changeGameMode.bind(Global.gameData), 5000);
         }
     }.bind(this));
 
@@ -111,7 +118,7 @@ GameModeZombieInvasion.prototype.init = function() {
 
 GameModeZombieInvasion.prototype.createEntity = function(player, entityId, classId) {
     if (this.playerSpawning) {
-        var classType = PlayerClassRegister[classId];
+        var classType = PlayerClass.Register[classId];
         var entity = entityTemplatePlayer(player.id, entityId, player.name, classType, Teams.Human);
 
         // Set spawn position
@@ -124,7 +131,7 @@ GameModeZombieInvasion.prototype.createEntity = function(player, entityId, class
     } else {
         /*var pos = this.zombieSpawns[Math.random() * this.zombieSpawns.length >> 0];
         var entity = entityTemplatePlayerZombie(player.id, entityId, player.name, pos, classId);
-        entity.inventory.addItem(gameData, Items.RustyShovel.id, 1);
+        entity.inventory.addItem(Global.gameData, Items.RustyShovel.id, 1);
         return entity;*/
         return null;
     }
@@ -148,7 +155,7 @@ GameModeZombieInvasion.prototype.name = "Zombie Invasion";
 
 GameModeZombieInvasion.prototype.endWave = function() {
     this.playerSpawning = true;
-    gameData.setTimeout(this.startWave.bind(this), this.wavePauseDuration);
+    Global.gameData.setTimeout(this.startWave.bind(this), this.wavePauseDuration);
     sendCommand(new CommandPopupMessage("Zombies are mutating"));
 
 
@@ -164,7 +171,7 @@ GameModeZombieInvasion.prototype.startWave = function() {
 
     // Enable spawns
     this.zombieSpawners.forEach(function(entity) {
-        entity.spawner.maxEntities = 5; //Math.max(1, Math.min(5, this.waveNum/4 + gameData.playerWorld.objectArray.length - 1));
+        entity.spawner.maxEntities = 5; //Math.max(1, Math.min(5, this.waveNum/4 + Global.gameData.playerWorld.objectArray.length - 1));
     }.bind(this));
 
     this.numZombiesToSpawn = 10 + 10 * Math.pow(2, this.waveNum / 3);
@@ -172,10 +179,10 @@ GameModeZombieInvasion.prototype.startWave = function() {
 }
 
 GameModeZombieInvasion.prototype.forceRespawnPlayers = function() {
-    gameData.playerWorld.objectArray.forEach(function(player) {
+    Global.gameData.playerWorld.objectArray.forEach(function(player) {
         if (player.entityId) {
             // Heal and supply ammo
-            var entity = gameData.world.entityWorld.objects[player.entityId];
+            var entity = Global.gameData.world.entityWorld.objects[player.entityId];
             if (!entity || !entity.inventory || !entity.ammo || !entity.health)
                 return;
             entity.inventory.items.forEach(function(item) {
@@ -190,15 +197,15 @@ GameModeZombieInvasion.prototype.forceRespawnPlayers = function() {
             return;
         }
 
-        var entityId = gameData.world.idList.next();
-        var entity = this.createEntity(player, entityId, PlayerClasses.Assault.id);
+        var entityId = Global.gameData.world.idList.next();
+        var entity = this.createEntity(player, entityId, PlayerClass.Assault.id);
 
         if (!entity) {
             console.error("entity is null");
             return;
         }
 
-        sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
+        sendCommand(new CommandEntitySpawn(Global.gameData, entity, entityId));
         sendCommand(new CommandPlayerSpawn(player.id, entityId, player.name));
     }.bind(this));
 }
@@ -260,13 +267,13 @@ GameModeZombieInvasion.prototype.generateDungeon = function(tileX, tileY) {
             else if (xx <= 0 || xx >= width - 1)
                 tileId = 1;
 
-            TileWorld.setDensity(gameData.world.tileWorld, x, y, 0);
-            BlockWorld.setForeground(gameData.world.blockWorld, x, y, tileId);
+            TileWorld.setDensity(Global.gameData.world.tileWorld, x, y, 0);
+            BlockWorld.setForeground(Global.gameData.world.blockWorld, x, y, tileId);
         }
     }
 
 
-    //setForeground(gameData.world.blockWorld, tileX - width / 2 + Math.random() * width / 2 >> 0, tileY + ((Math.random() > 0.5)? -1: 1) * Math.height / 2 >> 0, Blocks.BlueForcefield.id);
-    //setForeground(gameData.world.blockWorld, tileX + ((Math.random() > 0.5)? -1: 1) * Math.width / 2 >> 0, tileY - height / 2 + Math.random() * height / 2 >> 0, Blocks.BlueForcefield.id);
-    //setForeground(gameData.world.blockWorld, tileX - width / 2 + Math.random() * width / 2 >> 0 >> 0, tileY - height / 2 + Math.random() * height / 2 >> 0, Blocks.WoodCrate.id);
+    //BlockWorld.setForeground(Global.gameData.world.blockWorld, tileX - width / 2 + Math.random() * width / 2 >> 0, tileY + ((Math.random() > 0.5)? -1: 1) * Math.height / 2 >> 0, Blocks.BlueForcefield.id);
+    //BlockWorld.setForeground(Global.gameData.world.blockWorld, tileX + ((Math.random() > 0.5)? -1: 1) * Math.width / 2 >> 0, tileY - height / 2 + Math.random() * height / 2 >> 0, Blocks.BlueForcefield.id);
+    //BlockWorld.setForeground(Global.gameData.world.blockWorld, tileX - width / 2 + Math.random() * width / 2 >> 0 >> 0, tileY - height / 2 + Math.random() * height / 2 >> 0, Blocks.WoodCrate.id);
 }

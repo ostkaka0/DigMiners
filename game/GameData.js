@@ -2,26 +2,29 @@ import IdList from "engine/IdList.js"
 import ObjectWorld from "engine/ObjectWorld.js"
 import Event from "engine/Core/Event.js"
 
-import Config from "game/Config.js"
+import Global from "game/Global.js"
+import { Config, initConfig } from "game/Config.js"
 import World from "game/World.js"
-import Items from "game/Items.js"
-import Blocks from "game/Blocks.js"
+import { Items, initItems } from "game/Items.js"
+import { Blocks, initBlocks} from "game/Blocks.js"
+import { PlayerClass, initPlayerClass } from "game/PlayerClass.js"
 import Tiles from "game/Tiles.js"
 import AnimationManager from "engine/Animation/AnimationManager.js"
 import MessageChangeGameMode from "game/Message/ToClient/MessageChangeGamemode.js"
 
-var gameData = {};
-export default gameData
+Global.gameData = {};
+export default Global.gameData
 
-gameData.destroy = function() {
-    gameData = {};
+Global.gameData.destroy = function() {
+    Global.gameData = {};
 }
 
-gameData.init = function(idList) {
-    //initItems(this);
-    //initConfig();
+Global.gameData.init = function(idList) {
+    initBlocks();
+    initItems(this);
+    initConfig();
 
-    // gameData.textures is set in TextureManager.js when textures are loaded
+    // Global.gameData.textures is set in TextureManager.js when textures are loaded
     this.textures = {};
 
     this.timeouts = {};
@@ -41,7 +44,7 @@ gameData.init = function(idList) {
 
     this.messageCallbacks = {};
 
-    //initPlayerClasses();
+    initPlayerClass();
 
     var Recipes = [];
 
@@ -87,7 +90,7 @@ gameData.init = function(idList) {
     }
 }
 
-gameData.tick = function(dt) {
+Global.gameData.tick = function(dt) {
     if (this.nextGameMode) {
         this.clearTimeouts();
         if (isServer)
@@ -111,23 +114,22 @@ gameData.tick = function(dt) {
         this.gameMode.tick(dt);
 }
 
-gameData.changeGameMode = function() {
+Global.gameData.changeGameMode = function() {
     this.nextGameMode = new Config.gameModeRegister[Config.gameModeRegister.length * Math.random() >> 0]();
     console.log("Changing game mode to: " + this.nextGameMode.name);
 }
 
-gameData.setTimeout = function(callback, duration) {
-    var gameData = this;
+Global.gameData.setTimeout = function(callback, duration) {
     var timeoutId = this.timeoutIdList.next();
     var timeout = setTimeout(function() {
-        delete gameData.timeouts[timeoutId];
+        delete Global.gameData.timeouts[timeoutId];
         callback();
     }, duration);
     this.timeouts[timeoutId] = timeout;
     return timeout;
 }
 
-gameData.clearTimeouts = function() {
+Global.gameData.clearTimeouts = function() {
     Object.keys(this.timeouts).forEach(function(timeoutId) {
         clearTimeout(this.timeouts[timeoutId]);
     }.bind(this));

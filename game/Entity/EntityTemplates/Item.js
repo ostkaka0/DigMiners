@@ -1,3 +1,7 @@
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
+
+import Config from "game/Config.js"
 import PhysicsBody from "game/Entity/PhysicsBody.js"
 import Bodyparts from "game/Entity/Bodyparts.js"
 import Drawable from "game/Entity/Drawable.js"

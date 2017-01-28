@@ -1,7 +1,7 @@
 import fix from "engine/Core/Fix.js"
 import v2 from "engine/Core/v2.js"
 
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
 import CommandEntityMove from "game/Command/CommandEntityMove.js"
 
 var RandomWalkBehaviour = function(entity) {

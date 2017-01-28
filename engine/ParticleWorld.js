@@ -1,3 +1,5 @@
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
 
 var ParticleWorld = function() {
     this.particles = [];

@@ -1,14 +1,16 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 import IndexCounter from "engine/IndexCounter.js"
 
+import Global from "game/Global.js"
+
 var MessageSpectate = function(entityId) {
     this.entityId = entityId;
 }
 export default MessageSpectate
 
 MessageSpectate.prototype.execute = function(gameData) {
-    global.spectateEntity = gameData.world.entityWorld.objects[this.entityId];
-    gameData.world.events.trigger("spectate", global.spectateEntity);
+    global.spectateEntity = Global.gameData.world.entityWorld.objects[this.entityId];
+    Global.gameData.world.events.trigger("spectate", global.spectateEntity);
 }
 
 MessageSpectate.prototype.send = function(socket) {

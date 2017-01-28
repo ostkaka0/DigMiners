@@ -1,7 +1,9 @@
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
 
 var CommandEntityMove = function(entityId, direction, pos) {
     this.entityId = entityId;
@@ -12,7 +14,7 @@ var CommandEntityMove = function(entityId, direction, pos) {
 export default CommandEntityMove
 
 CommandEntityMove.prototype.execute = function() {
-    var entity = gameData.world.entityWorld.objects[this.entityId];
+    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity) return;
     var movement = entity.movement;
     if (!movement) return;

@@ -1,9 +1,10 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 import Sprite from "engine/Animation/Sprite.js"
 
-import CommandEntityInventory from "game/Command/CommandEntityInventory.js"
+import Config from "game/Config.js"
+import { CommandEntityInventory, InventoryActions } from "game/Command/CommandEntityInventory.js"
 import CommandPlaceBlock from "game/Command/CommandPlaceBlock.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
 
 var BlockPlacer = function(blockPos, blockId, duration, entityId) {
     this.blockPos = blockPos;
@@ -20,7 +21,7 @@ BlockPlacer.prototype.update = function(entity) {
 
     if (!this.isInitialized) {
         this.isInitialized = true;
-        var placerEntity = gameData.world.entityWorld.objects[this.entityId];
+        var placerEntity = Global.gameData.world.entityWorld.objects[this.entityId];
         if (placerEntity)
             placerEntity.blockPlacerId = entity.id;
         if (!isServer) {
@@ -32,15 +33,15 @@ BlockPlacer.prototype.update = function(entity) {
             zindices[2].add(this.sprite);
         }
     }
-    var placerEntity = gameData.world.entityWorld.objects[this.entityId];
+    var placerEntity = Global.gameData.world.entityWorld.objects[this.entityId];
     var playerId = (placerEntity && placerEntity.controlledByPlayer) ? placerEntity.controlledByPlayer.playerId : undefined;
-    var player = (playerId != undefined) ? gameData.playerWorld.objects[playerId] : undefined;
+    var player = (playerId != undefined) ? Global.gameData.playerWorld.objects[playerId] : undefined;
     var inventoryItem = (placerEntity && placerEntity.inventory) ? placerEntity.inventory.getEquippedItemType("tool") : undefined;
     var buildFailure = false;
 
     if (!placerEntity || placerEntity.blockPlacerId != entity.id)
         buildFailure = true;
-    if (player && !player.canPlaceBlock(gameData, this.blockPos[0], this.blockPos[1]))
+    if (player && !player.canPlaceBlock(Global.gameData, this.blockPos[0], this.blockPos[1]))
         buildFailure = true;
     if (inventoryItem && inventoryItem.blockId != this.blockId)
         buildFailure = true;
@@ -53,7 +54,7 @@ BlockPlacer.prototype.update = function(entity) {
     if (shouldDestroy) {
         if (placerEntity && placerEntity.blockPlacerId == entity.id)
             placerEntity.blockPlacerId = undefined;
-        gameData.world.entityWorld.remove(entity);
+        Global.gameData.world.entityWorld.remove(entity);
         return;
     }
 
@@ -65,7 +66,7 @@ BlockPlacer.prototype.update = function(entity) {
     if (shouldDestroy) {
         if (placerEntity)
             placerEntity.blockPlacerId = undefined;
-        gameData.world.entityWorld.remove(entity);
+        Global.gameData.world.entityWorld.remove(entity);
     }
 }
 

@@ -1,4 +1,9 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import IndexCounter from "engine/IndexCounter.js"
+
+import Global from "game/Global.js"
+import { CommandEntityInventory, InventoryActions } from "game/Command/CommandEntityInventory.js"
+import { CommandPlayerOreInventory, OreInventoryActions } from "game/Command/CommandPlayerOreInventory.js"
 
 var MessageRequestCraft = function(recipeId) {
     this.recipeId = recipeId;
@@ -6,7 +11,7 @@ var MessageRequestCraft = function(recipeId) {
 export default MessageRequestCraft
 
 MessageRequestCraft.prototype.execute = function(gameData, player) {
-    var playerEntity = gameData.entityWorld.objects[player.entityId];
+    var playerEntity = Global.gameData.entityWorld.objects[player.entityId];
     if (!playerEntity) return;
     var recipe = Recipes[this.recipeId];
     if (!recipe) return;

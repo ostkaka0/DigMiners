@@ -1,7 +1,10 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import BlockWorld from "engine/BlockWorld.js"
+import TileWorld from "engine/TileWorld.js"
 
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
+import { Blocks, BlockTypes } from "game/Blocks.js"
 
 var CommandBuild = function(x, y, blockId, type) {
     this.x = x;
@@ -13,9 +16,9 @@ export default CommandBuild
 
 CommandBuild.prototype.execute = function() {
     if (this.type == BlockTypes.FOREGROUND)
-        setForeground(gameData.world.blockWorld, this.x, this.y, this.blockId);
+        BlockWorld.setForeground(Global.gameData.world.blockWorld, this.x, this.y, this.blockId);
     else if (this.type == BlockTypes.BACKGROUND)
-        setBackground(gameData.world.blockWorld, this.x, this.y, this.blockId);
+        setBackground(Global.gameData.world.blockWorld, this.x, this.y, this.blockId);
 }
 
 CommandBuild.prototype.serialize = function(byteArray, index) {

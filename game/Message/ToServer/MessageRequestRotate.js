@@ -1,4 +1,10 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import IndexCounter from "engine/IndexCounter.js"
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
+
+import Global from "game/Global.js"
+import CommandEntityRotate from "game/Command/CommandEntityRotate.js"
 
 var MessageRequestRotate = function(deltaWorldCursorPos) {
     this.deltaWorldCursorPos = deltaWorldCursorPos;
@@ -9,7 +15,7 @@ export default MessageRequestRotate
 MessageRequestRotate.prototype.execute = function(gameData, player) {
     if (!this.deltaWorldCursorPos) return;
     if (player.entityId == null) return;
-    var entity = gameData.world.entityWorld.objects[player.entityId];
+    var entity = Global.gameData.world.entityWorld.objects[player.entityId];
     if (!entity) return;
     var movement = entity.movement;
     if (!movement) return;

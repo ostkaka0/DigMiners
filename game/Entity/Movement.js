@@ -3,7 +3,8 @@ import fix from "engine/Core/Fix.js"
 import v2 from "engine/Core/v2.js"
 import Keys from "engine/Keys.js"
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
+import Entity from "game/Entity/Entity.js"
 import CommandEntityBeginReloadWeapon from "game/Command/CommandEntityBeginReloadWeapon.js"
 
 export var Movement = function(speed, toolUseDuration, damageMultiplier, digHardnessMultiplier) {
@@ -71,7 +72,7 @@ Movement.prototype.destroy = function(entity) {
 }
 
 export var entityFunctionEntityMovement = function(dt) {
-    gameData.world.entityWorld.objectArray.forEach(function(entity) {
+    Global.gameData.world.entityWorld.objectArray.forEach(function(entity) {
         if (!entity || !entity.movement || !entity.physicsBody)
             return;
         var movement = entity.movement;
@@ -125,9 +126,9 @@ export var entityFunctionEntityMovement = function(dt) {
                 entity.movement.toolUseTickTimeout = useCooldown;
                 if (!isServer) {
                     var useCycleName = (tool.useCycle ? tool.useCycle : "rightArm");
-                    var useCycle = gameData.animationManager.cycles[useCycleName];
+                    var useCycle = Global.gameData.animationManager.cycles[useCycleName];
                     if (useCycle)
-                        entity.bodyparts.bodyparts["rightArm"].cycle(gameData, useCycleName, useCycle.numFrames / useCooldown * 20, true);
+                        entity.bodyparts.bodyparts["rightArm"].cycle(Global.gameData, useCycleName, useCycle.numFrames / useCooldown * 20, true);
                 }
             }
 
@@ -137,15 +138,15 @@ export var entityFunctionEntityMovement = function(dt) {
                     var reloadCycleRightArmName = (tool.reloadCycleRightArm ? tool.reloadCycleRightArm : "rightArm");
                     var reloadCycleLeftArmName = (tool.reloadCycleLeftArm ? tool.reloadCycleLeftArm : "leftArm");
                     var reloadCycleGunName = (tool.reloadCycleGun ? tool.reloadCycleGun : "");
-                    var reloadCycleRightArm = gameData.animationManager.cycles[reloadCycleRightArmName];
-                    var reloadCycleLeftArm = gameData.animationManager.cycles[reloadCycleLeftArmName];
-                    var reloadCycleGun = gameData.animationManager.cycles[reloadCycleGunName];
+                    var reloadCycleRightArm = Global.gameData.animationManager.cycles[reloadCycleRightArmName];
+                    var reloadCycleLeftArm = Global.gameData.animationManager.cycles[reloadCycleLeftArmName];
+                    var reloadCycleGun = Global.gameData.animationManager.cycles[reloadCycleGunName];
                     if (reloadCycleRightArm)
-                        entity.bodyparts.bodyparts["rightArm"].cycle(gameData, reloadCycleRightArmName, reloadCycleRightArm.numFrames / reloadCooldown * 20, true);
+                        entity.bodyparts.bodyparts["rightArm"].cycle(Global.gameData, reloadCycleRightArmName, reloadCycleRightArm.numFrames / reloadCooldown * 20, true);
                     if (reloadCycleLeftArm)
-                        entity.bodyparts.bodyparts["leftArm"].cycle(gameData, reloadCycleLeftArmName, reloadCycleLeftArm.numFrames / reloadCooldown * 20, true);
+                        entity.bodyparts.bodyparts["leftArm"].cycle(Global.gameData, reloadCycleLeftArmName, reloadCycleLeftArm.numFrames / reloadCooldown * 20, true);
                     if (reloadCycleGun)
-                        entity.bodyparts.bodyparts["tool"].cycle(gameData, reloadCycleGunName, reloadCycleGun.numFrames / reloadCooldown * 20, true);
+                        entity.bodyparts.bodyparts["tool"].cycle(Global.gameData, reloadCycleGunName, reloadCycleGun.numFrames / reloadCooldown * 20, true);
                 }
             }
 
@@ -174,7 +175,7 @@ export var entityFunctionEntityMovement = function(dt) {
 
         if (entity.movement.toolReloadTickTimeout == 0 && entity.movement.isReloading) {// || (!entity.movement.keyStatuses[Keys.R] && entity.movement.isReloading)) {
             entity.movement.isReloading = false;
-            gameData.world.events.trigger("finishReload", entity, tool);
+            Global.gameData.world.events.trigger("finishReload", entity, tool);
         }
         //}
     });

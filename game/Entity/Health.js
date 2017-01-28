@@ -1,4 +1,6 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+
+import { Team, Teams } from "game/Entity/Team.js"
 import CommandEntityHealthChange from "game/Command/CommandEntityHealthChange.js"
 
 export var HealthEvents = {};

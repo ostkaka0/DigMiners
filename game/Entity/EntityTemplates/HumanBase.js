@@ -1,3 +1,5 @@
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
 import PhysicsBody from "game/Entity/PhysicsBody.js"
 import Movement from "game/Entity/Movement.js"
 import Bodyparts from "game/Entity/Bodyparts.js"

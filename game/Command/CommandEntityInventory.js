@@ -1,7 +1,8 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
+import Entity from "game/Entity/Entity.js"
 
 export var InventoryActions = {
     ADD_ITEM: 0,
@@ -18,12 +19,12 @@ export var CommandEntityInventory = function(entityId, actionId, itemId, amount)
 export default CommandEntityInventory
 
 CommandEntityInventory.prototype.execute = function() {
-    var entity = gameData.world.entityWorld.objects[this.entityId];
+    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity || !entity.inventory) return;
     if (this.actionId == InventoryActions.ADD_ITEM) {
-        entity.inventory.addItem(gameData, this.itemId, this.amount);
+        entity.inventory.addItem(Global.gameData, this.itemId, this.amount);
     } else if (this.actionId == InventoryActions.REMOVE_ITEM) {
-        var removed = entity.inventory.removeItem(gameData, this.itemId, this.amount);
+        var removed = entity.inventory.removeItem(Global.gameData, this.itemId, this.amount);
         for (var i = 0; i < removed.length; ++i) {
             // Dequip item when removed from inventory
             var entry = removed[i];
@@ -37,8 +38,8 @@ CommandEntityInventory.prototype.execute = function() {
         var item = entity.inventory.removeStack(this.itemId);
     }
     if (!isServer && global.playerEntity && this.entityId == global.playerEntity.id) {
-        gameData.HUD.update();
-        gameData.HUD.checkCanAffordRecipe();
+        Global.gameData.HUD.update();
+        Global.gameData.HUD.checkCanAffordRecipe();
     }
 }
 

@@ -1,9 +1,12 @@
 import fix from "engine/Core/Fix.js"
 import v2 from "engine/Core/v2.js"
 import BlockWorld from "engine/BlockWorld.js"
-import TileWOrld from "engine/TileWorld.js"
+import TileWorld from "engine/TileWorld.js"
+import Keys from "engine/Keys.js"
 
-import gameData from "game/GameData.js"
+import Config from "game/Config.js"
+import Global from "game/Global.js"
+import { Items, ItemFunctions } from "game/Items.js"
 import CommandEntityEquipItem from "game/Command/CommandEntityEquipItem.js"
 import CommandKeyStatusUpdate from "game/Command/CommandKeyStatusUpdate.js"
 import CommandEntityMove from "game/Command/CommandEntityMove.js"
@@ -17,7 +20,7 @@ var DigObstacleBehaviour = function(entity, maxWalkDis) {
     this.oldMoveDir = null;
     this.stopTick = null;
     this.nextRunTick = null;
-    this.nextCanRunTickId = gameData.world.tickId;
+    this.nextCanRunTickId = Global.gameData.world.tickId;
     this.canRunOldPos = null;
     this.oldItemId = 0;
     this.digPauseDuration = 10; // Duration between finish digging and start digging again
@@ -26,11 +29,11 @@ export default DigObstacleBehaviour
 
 DigObstacleBehaviour.prototype.canRun = function() {
     if (!this.entity.inventory) return false;
-    if (this.nextRunTick && gameData.world.tickId < this.nextRunTick)
+    if (this.nextRunTick && Global.gameData.world.tickId < this.nextRunTick)
         return false;
-    if (gameData.world.tickId < this.nextCanRunTickId)
+    if (Global.gameData.world.tickId < this.nextCanRunTickId)
         return false;
-    this.nextCanRunTickId = gameData.world.tickId + 5;
+    this.nextCanRunTickId = Global.gameData.world.tickId + 5;
 
     // Change equipped item to shovel
     var shovelSlotId = -1;
@@ -55,8 +58,8 @@ DigObstacleBehaviour.prototype.canRun = function() {
     var tilePos = [Math.floor(digPos[0] - 0.5), Math.floor(digPos[1] - 0.5)];
     for (var i = 0; i < 4; i++) {
         var itPos = [tilePos[0] + (i & 1), tilePos[1] + (i >> 1)];
-        var blockId = BlockWorld.getForeground(gameData.world.blockWorld, itPos[0], itPos[1]);
-        var density = getDensity(gameData.world.tileWorld, itPos[0], itPos[1]);
+        var blockId = BlockWorld.getForeground(Global.gameData.world.blockWorld, itPos[0], itPos[1]);
+        var density = TileWorld.getDensity(Global.gameData.world.tileWorld, itPos[0], itPos[1]);
         if (blockId != 0 || density > 127) {
             this.targetTilePos = itPos;
             if (shovelSlotId != -1) {
@@ -79,16 +82,16 @@ DigObstacleBehaviour.prototype.initialize = function() {
     var normalized = v2.create(0, 0);
     v2.normalize(diff, normalized);
     sendCommand(new CommandEntityRotate(this.entity.id, normalized));
-    this.stopTick = gameData.world.tickId + (4000 / Config.tickDuration >> 0);
+    this.stopTick = Global.gameData.world.tickId + (4000 / Config.tickDuration >> 0);
     this.nextRunTick = null;
 }
 
 DigObstacleBehaviour.prototype.run = function() {
-    var blockId = BlockWorld.getForeground(gameData.world.blockWorld, this.targetTilePos[0], this.targetTilePos[1]);
-    var density = getDensity(gameData.world.tileWorld, this.targetTilePos[0], this.targetTilePos[1]);
-    if (gameData.world.tickId >= this.stopTick) {
+    var blockId = BlockWorld.getForeground(Global.gameData.world.blockWorld, this.targetTilePos[0], this.targetTilePos[1]);
+    var density = TileWorld.getDensity(Global.gameData.world.tileWorld, this.targetTilePos[0], this.targetTilePos[1]);
+    if (Global.gameData.world.tickId >= this.stopTick) {
         // No digging for 2 seconds
-        this.nextRunTick = gameData.world.tickId + (2000 / Config.tickDuration >> 0);
+        this.nextRunTick = Global.gameData.world.tickId + (2000 / Config.tickDuration >> 0);
         return false;
     }
 
@@ -112,7 +115,7 @@ DigObstacleBehaviour.prototype.finish = function() {
     sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.getPos()));
     sendCommand(new CommandEntityRotate(this.entity.id, this.oldMoveDir));
 
-    this.nextCanRunTickId = gameData.world.tickId + this.digPauseDuration;
+    this.nextCanRunTickId = Global.gameData.world.tickId + this.digPauseDuration;
     //if (this.oldItemId)
     //    sendCommand(new CommandEntityEquipItem(this.entity.id, 0, this.oldItemId, true));
 }

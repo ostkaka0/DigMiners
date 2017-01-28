@@ -1,9 +1,11 @@
 import fix from "engine/Core/Fix.js"
 import v2 from "engine/Core/v2.js"
 import BlockWorld from "engine/BlockWorld.js"
-import TileWOrld from "engine/TileWorld.js"
+import TileWorld from "engine/TileWorld.js"
+import Keys from "engine/Keys.js"
 
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
+import { Items, ItemFunctions } from "game/Items.js"
 import { Team, Teams } from "game/Entity/Team.js"
 import CommandEntityEquipItem from "game/Command/CommandEntityEquipItem.js"
 import CommandKeyStatusUpdate from "game/Command/CommandKeyStatusUpdate.js"
@@ -16,19 +18,19 @@ var TurretBehaviour = function(entity, maxRadius) {
     this.maxRadius = maxRadius;
     this.target = null;
     this.flowField = null;
-    this.lastUpdateTickId = gameData.world.tickId;
+    this.lastUpdateTickId = Global.gameData.world.tickId;
     this.lastTargetPos = null;
     this.spacebar = false;
     this.foundGun = false;
     this.isAiming = false;
-    this.nextCanRunTickId = gameData.world.tickId;
+    this.nextCanRunTickId = Global.gameData.world.tickId;
 }
 export default TurretBehaviour
 
 TurretBehaviour.prototype.canRun = function() {
-    if (gameData.world.tickId < this.nextCanRunTickId)
+    if (Global.gameData.world.tickId < this.nextCanRunTickId)
         return false;
-    this.nextCanRunTickId = gameData.world.tickId + 40 + 40 * Math.random() >> 0;
+    this.nextCanRunTickId = Global.gameData.world.tickId + 40 + 40 * Math.random() >> 0;
     this.target = this.getTarget();
     if (this.target == null)
         return false;
@@ -48,7 +50,7 @@ TurretBehaviour.prototype.initialize = function() {
 }
 
 TurretBehaviour.prototype.run = function() {
-    if (gameData.world.tickId % 5 != this.nextCanRunTickId % 5) return true;
+    if (Global.gameData.world.tickId % 5 != this.nextCanRunTickId % 5) return true;
 
     if (!this.target || this.target.isDead || !this.target.isActive) {
         this.target = this.getTarget();
@@ -72,9 +74,9 @@ TurretBehaviour.prototype.run = function() {
     var tickInterval = Math.floor(20 * Math.min(1.0, dis / 40.0));
     tickInterval = Math.max(5, tickInterval);
 
-    if (gameData.world.tickId < this.lastUpdateTickId + tickInterval)
+    if (Global.gameData.world.tickId < this.lastUpdateTickId + tickInterval)
         return true;
-    this.lastUpdateTickId = gameData.world.tickId;
+    this.lastUpdateTickId = Global.gameData.world.tickId;
 
     var currentDir = this.entity.movement.direction;
     var angle = this.entity.physicsBody.angle;
@@ -119,7 +121,7 @@ TurretBehaviour.prototype.getTarget = function() {
     var hasMovement = false;
     var shortestDistance = Number.MAX_VALUE;
     var shortestDistanceEntity = null;
-    gameData.world.entityWorld.objectArray.forEach(function(otherEntity) {
+    Global.gameData.world.entityWorld.objectArray.forEach(function(otherEntity) {
         if (!otherEntity.health || !otherEntity.physicsBody) return;
         if (!otherEntity.team && !otherEntity.movement) return;
         if (this.entity.team && this.entity.team.value != Teams.None && (!otherEntity.team || otherEntity.team.value == this.entity.team.value)) return;
@@ -154,8 +156,8 @@ TurretBehaviour.prototype.getAttackDistance = function(pos, dir) {
     var step = [stepLength * dir[0], stepLength * dir[1]];
     v2.add(step, rayPos, rayPos);
     for (var i = 0; i < 40; i++) {
-        if (getDensity(gameData.world.tileWorld, rayPos[0], rayPos[1]) > 127) break;
-        if (BlockWorld.getForeground(gameData.world.blockWorld, rayPos[0], rayPos[1]) != 0) break;
+        if (TileWorld.getDensity(Global.gameData.world.tileWorld, rayPos[0], rayPos[1]) > 127) break;
+        if (BlockWorld.getForeground(Global.gameData.world.blockWorld, rayPos[0], rayPos[1]) != 0) break;
 
         v2.add(step, rayPos, rayPos);
         dis += stepLength;
