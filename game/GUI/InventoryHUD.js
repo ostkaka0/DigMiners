@@ -213,7 +213,6 @@ InventoryHUD.putItemImage = function(container, itemType, containerWidth, contai
     var offset = (offset ? offset : v2.create(0, 0));
     var posX = -1 * backgroundScale * ((itemType.spriteId ? itemType.spriteId : 0) % (itemType.texture.dimX || 1)) * (itemType.texture.spriteWidth + offsetWidth) + offset[0];
     var posY = -1 * backgroundScale * (((itemType.spriteId ? itemType.spriteId : 0) / (itemType.texture.dimX || 1) >> 0) % (itemType.texture.dimY || 1)) * itemType.texture.spriteHeight + offset[1];
-    console.log(borderWidth + " - " + borderHeight);
 
     $(container).css({
         "background-size": sizeX.toString() + "px " + sizeY.toString() + "px ",
