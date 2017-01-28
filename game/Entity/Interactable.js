@@ -1,4 +1,6 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import gameData from "game/GameData.js"
+import Event from "engine/Core/Event.js"
 
 export var InteractableEvents = {};
 InteractableEvents.onInteract = [];
@@ -33,7 +35,7 @@ Interactable.prototype.getSerializationSize = function() {
 Interactable.prototype.destroy = function(interactableEntity) {
     for (var i = 0; i < this.interacting.length; ++i) {
         var interactingEntity = gameData.world.entityWorld.objects[i];
-        triggerEvent(InteractableEvents.onFinishInteract, interactableEntity, interactingEntity);
+        Event.trigger(InteractableEvents.onFinishInteract, interactableEntity, interactingEntity);
     }
 }
 
@@ -48,11 +50,11 @@ Interactable.canInteract = function(interactableEntity, entity) {
 Interactable.setInteracting = function(interactableEntity, entity, booleanValue) {
     if (booleanValue) {
         interactableEntity.interactable.interacting.push(entity.id);
-        triggerEvent(InteractableEvents.onInteract, interactableEntity, entity);
+        Event.trigger(InteractableEvents.onInteract, interactableEntity, entity);
     } else if (!booleanValue) {
         var index = interactableEntity.interactable.interacting.indexOf(entity.id);
         if (index != -1)
             interactableEntity.interactable.interacting.splice(index, 1);
-        triggerEvent(InteractableEvents.onFinishInteract, interactableEntity, entity);
+        Event.trigger(InteractableEvents.onFinishInteract, interactableEntity, entity);
     }
 }

@@ -1,15 +1,28 @@
+import Sprite from "engine/Animation/Sprite.js"
+import BodyPart from "engine/Animation/BodyPart.js"
+import PhysicsBody from "game/Entity/PhysicsBody.js"
+import Movement from "game/Entity/Movement.js"
+import Bodyparts from "game/Entity/Bodyparts.js"
+import Drawable from "game/Entity/Drawable.js"
+import NameComponent from "game/Entity/NameComponent.js"
+import { Team, Teams } from "game/Entity/Team.js"
+import Health from "game/Entity/Health.js"
+import Ammo from "game/Entity/Ammo.js"
+import Inventory from "game/Entity/Inventory.js"
+import EquippedItems from "game/Entity/EquippedItems.js"
+import PotionEffects from "game/Entity/PotionEffects.js"
+import ControlledByPlayer from "game/Entity/ControlledByPlayer.js"
+import gameData from "game/GameData.js"
 
-import EntityTemplates from "./EntityTemplates.js"
-
-export default EntityTemplates.Player = function(playerId, entityId, name, pos, playerClass) {
-    var entity = entityTemplates.Zombie(entityId, pos, Teams.Zombie);
+export var entityTemplatePlayerZombie = function(playerId, entityId, name, pos, playerClass) {
+    var entity = entityTemplateZombie(entityId, pos, Teams.Zombie);
     entity.behaviourContainer = undefined;
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
     entity.nameComponent = new NameComponent(name);
     return entity;
 }
 
-entityTemplates.Player = function(playerId, entityId, name, playerClass, teamId) {
+export var entityTemplatePlayer = function(playerId, entityId, name, playerClass, teamId) {
     var entity = {};
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 20.0, 1.0, 0.45);
@@ -58,3 +71,5 @@ entityTemplates.Player = function(playerId, entityId, name, playerClass, teamId)
 
     return entity;
 }
+
+export default entityTemplatePlayer;

@@ -1,5 +1,5 @@
 
-export {
+export default {
     UP: 0,
     LEFT: 1,
     DOWN: 2,

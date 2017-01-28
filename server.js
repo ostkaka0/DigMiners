@@ -1,13 +1,33 @@
 global.isServer = true;
 
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
+import Event from "engine/Core/Event.js"
+
+import Config from "game/Config.js"
 import gameData from "game/GameData.js"
+import Items from "game/Items.js"
+import Blocks from "game/Blocks.js"
+import Tiles from "game/Tiles.js"
+import entityTemplateTurret from "game/Entity/EntityTemplates/Turret.js"
+import {Team, Teams} from "game/Entity/Team.js"
+
+import CommandEntitySpawn from "game/Command/CommandEntitySpawn.js"
+import { CommandEntityInventory, InventoryActions } from "game/Command/CommandEntityInventory.js"
+import CommandEntityEquipItem from "game/Command/CommandEntityEquipItem.js"
+import CommandCollisions from "game/Command/CommandCollisions.js"
+import MessageCommands from "game/Message/ToClient/MessageCommands.js"
+import CommandEntityInteractEntity from "game/Command/CommandEntityInteractEntity.js"
+import CommandPlayerJoin from "game/Command/CommandPlayerJoin.js"
+import CommandPlayerLeave from "game/Command/CommandPlayerLeave.js"
+import IndexCounter from "engine/IndexCounter.js"
 
 var console = require("console");
 var fs = require("fs");
 var path = require("path");
 var app = require("express")();
 var http = require("http").Server(app);
-var io = require("socket.io")(http);
+global.io = require("socket.io")(http);
 var present = require('present');
 
 var isServer = true;
@@ -41,14 +61,14 @@ loadScriptsRecursive("unit_tests");
 runUnitTests();
 */
 var commandsToSend = [];
-var sendCommand = function(command) {
+global.sendCommand = function(command) {
     commandsToSend.push(command);
 }
 global.clearCommands = function() {
     commandsToSend.length = 0;
 }
 
-var connections = new Array(); // key socketId, value player object
+global.connections = new Array(); // key socketId, value player object
 gameData.init();
 var zindices = {};
 
@@ -77,8 +97,8 @@ console.log(gameData.spawnPoints);
     var spawnList = gameData.spawnPoints[teamId];
     spawnList.forEach(function(pos) {
         var entityId = gameData.world.idList.next();
-        var entity = entityTemplates.TeamBase(entityId, pos, teamId, 10, 2.0, 40);
-        //entityTemplates.MonsterSpawner(entityId, pos, entityTemplates.Monster, 5, 2.0, 120, null, null, teamId);
+        var entity = entityTemplateTeamBase(entityId, pos, teamId, 10, 2.0, 40);
+        //entityTemplateMonsterSpawner(entityId, pos, entityTemplateMonster, 5, 2.0, 120, null, null, teamId);
         gameData.world.entityWorld.add(entity, entityId);
         carveCircle(gameData, pos[0], pos[1], 5.0, 100.0);
     });
@@ -88,7 +108,7 @@ console.log(gameData.spawnPoints);
 for (var i = 0; i < 50; i++) {
     var pos = [Math.floor(80 * (1.0 - 2.0*Math.random())), Math.floor(80 * (1.0 - 2.0*Math.random()))];
     var entityId = gameData.idList.next();
-    var entity = entityTemplates.MonsterSpawner(entityId, pos, entityTemplates.Monster, 2, 2.0, 3000);
+    var entity = entityTemplateMonsterSpawner(entityId, pos, entityTemplateMonster, 2, 2.0, 3000);
     gameData.world.entityWorld.add(entity, entityId);
     carveCircle(gameData, pos[0], pos[1], 2.0, 100.0);
 }
@@ -97,13 +117,13 @@ for (var i = 0; i < 10; i++) {
     var pos = [Math.floor(80 * (1.0 - 2.0*Math.random())), Math.floor(80 * (1.0 - 2.0*Math.random()))];
     var entityId = gameData.idList.next();
     var weaponId = Items.WeaponPistol.id + Math.floor((Items.WeaponSniperRifle.id - Items.WeaponPistol.id + 1) * Math.random());
-    var entity = entityTemplates.MonsterSpawner(entityId, pos, entityTemplates.Monster, 2, 2.0, 3000, [{id: weaponId}, {id: Items.Egg.id, quantity: 1000}]);
+    var entity = entityTemplateMonsterSpawner(entityId, pos, entityTemplateMonster, 2, 2.0, 3000, [{id: weaponId}, {id: Items.Egg.id, quantity: 1000}]);
     gameData.world.entityWorld.add(entity, entityId);
     carveCircle(gameData, pos[0], pos[1], 6.0, 100.0);
 }*/
 
 var turretEntityId = gameData.world.idList.next();
-var turret = entityTemplates.Turret(turretEntityId, [0, 0], Teams.Human);
+var turret = entityTemplateTurret(turretEntityId, [0, 0], Teams.Human);
 sendCommand(new CommandEntitySpawn(gameData, turret, turretEntityId));
 var weaponId = Items.WeaponMachineGun.id;
 sendCommand(new CommandEntityInventory(turretEntityId, InventoryActions.ADD_ITEM, weaponId, 1));
@@ -138,7 +158,7 @@ Event.subscribe(gameData.world.entityWorld.onAdd, global, function(entity) {
         // (TEMPORARY) spawn monsters on player join
         for (var i = 0; i < 0; ++i) {
             var monsterEntityId = gameData.world.idList.next();
-            var monster = entityTemplates.Monster(monsterEntityId, [50 * (-1 + 2 * Math.random()), 50 * (-1 + 2 * Math.random())], gameData);
+            var monster = entityTemplateMonster(monsterEntityId, [50 * (-1 + 2 * Math.random()), 50 * (-1 + 2 * Math.random())], gameData);
             sendCommand(new CommandEntitySpawn(gameData, monster, monsterEntityId));
             var weaponId = Items.WeaponPistol.id + Math.floor((Items.WeaponGrenadeLauncher.id - Items.WeaponPistol.id + 1) * Math.random());
             sendCommand(new CommandEntityInventory(monsterEntityId, InventoryActions.ADD_ITEM, weaponId, 1));
@@ -148,7 +168,7 @@ Event.subscribe(gameData.world.entityWorld.onAdd, global, function(entity) {
     }
 });
 
-update = function() {
+var update = function() {
     var server_has_players = (Object.keys(connections).length > 0);//!gameData.playerWorld || gameData.playerWorld.length > 0);
     var diff = process.hrtime(firstTickTime);
     var diff_ms = diff[0] * 1e3 + diff[1] / 1e6;
@@ -167,7 +187,7 @@ update = function() {
 var measureTicks = 100;
 var currentMeasureTicks = 0;
 var totalTickTime = 0;
-tick = function(dt) {
+var tick = function(dt) {
     var tick_begin = process.hrtime();
     gameData.world.commands = gameData.world.commands.concat(commandsToSend);
     //console.log("sheduled " + commandsToSend.length + " commands to be sent in tick " + gameData.world.tickId);
@@ -209,7 +229,7 @@ io.on("connection", function(socket) {
     connections[socket.id] = { 'socket': socket };
 
     connections[socket.id].pingIntervalId = setInterval(function() {
-        startTime = Date.now();
+        //startTime = Date.now();
         socket.emit('ping');
     }, 2000);
 

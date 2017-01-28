@@ -1,4 +1,9 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import Sprite from "engine/Animation/Sprite.js"
+
+import CommandEntityInventory from "game/Command/CommandEntityInventory.js"
+import CommandPlaceBlock from "game/Command/CommandPlaceBlock.js"
+import gameData from "game/GameData.js"
 
 var BlockPlacer = function(blockPos, blockId, duration, entityId) {
     this.blockPos = blockPos;

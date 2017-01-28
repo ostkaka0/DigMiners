@@ -1,4 +1,8 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import IndexCounter from "engine/IndexCounter.js"
+import Chunk from "engine/Chunk.js"
+import BlockChunk from "engine/BlockChunk.js"
+import { compressRLE, decompressRLE } from "engine/Compress.js"
 
 var MessageChunk = function(chunk, blockChunk, x, y) {
     this.chunk = chunk || new Chunk();
@@ -26,22 +30,22 @@ MessageChunk.prototype.send = function(socket) {
     // Chunk
     var compressed = compressRLE(this.chunk.densityData);
     Serialize.int32(byteArray, index, compressed.length);
-    serializeUint8Array(byteArray, index, compressed);
+    Serialize.uint8Array(byteArray, index, compressed);
 
     // BlockChunk foreground
     compressed = compressRLE(this.blockChunk.foreground);
     Serialize.int32(byteArray, index, compressed.length);
-    serializeUint8Array(byteArray, index, compressed);
+    Serialize.uint8Array(byteArray, index, compressed);
 
     // BlockChunk background
     compressed = compressRLE(this.blockChunk.background);
     Serialize.int32(byteArray, index, compressed.length);
-    serializeUint8Array(byteArray, index, compressed);
+    Serialize.uint8Array(byteArray, index, compressed);
 
     // BlockChunk strength
     compressed = compressRLE(this.blockChunk.strength);
     Serialize.int32(byteArray, index, compressed.length);
-    serializeUint8Array(byteArray, index, compressed);
+    Serialize.uint8Array(byteArray, index, compressed);
 
     socket.emit(this.idString, new Buffer(byteArray));
 }

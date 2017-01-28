@@ -22,7 +22,7 @@ Event.unsubscribeAll = function(events, subscriber) {
     });
 }
 
-Event.triggerEvent = function(event) {
+Event.trigger = function(event) {
     var args = Array.from(arguments).slice(1);
     event.forEach(function(callback) {
         callback[1].apply(null, args);

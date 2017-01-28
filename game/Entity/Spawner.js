@@ -1,4 +1,12 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
+import Event from "engine/Core/Event.js"
+import gameData from "game/GameData.js"
+import CommandEntitySpawn from "game/Command/CommandEntitySpawn.js"
+import CommandEntityInventory from "game/Command/CommandEntityInventory.js"
+import CommandEntityEquipItem from "game/Command/CommandEntityEquipItem.js"
+import Items from "game/Items.js"
 
 var Spawner = function(entityTemplate, pos, maxEntities, radius, duration, items, equippedItemId, randomDuration, teamId) {
     this.entityTemplate = entityTemplate;

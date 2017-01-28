@@ -1,4 +1,10 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import Sprite from "engine/Animation/Sprite.js"
+
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
+import { Items, ItemFunctions } from "game/Items.js"
+import Entity from "game/Entity/Entity.js"
 
 var CommandEntityEquipItem = function(entityId, stackId, itemId, equipped) {
     this.entityId = entityId;
@@ -59,14 +65,14 @@ CommandEntityEquipItem.prototype.serialize = function(byteArray, index) {
     Serialize.int32(byteArray, index, this.itemId);
     var booleans = [];
     booleans[0] = this.equipped;
-    serializeBooleans(byteArray, index, booleans);
+    Serialize.booleans(byteArray, index, booleans);
 }
 
 CommandEntityEquipItem.prototype.deserialize = function(byteArray, index) {
     this.entityId = Deserialize.int32(byteArray, index);
     this.stackId = Deserialize.int32(byteArray, index);
     this.itemId = Deserialize.int32(byteArray, index);
-    this.equipped = deserializeBooleans(byteArray, index)[0];
+    this.equipped = Deserialize.booleans(byteArray, index)[0];
 }
 
 CommandEntityEquipItem.prototype.getSerializationSize = function() {

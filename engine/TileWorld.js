@@ -2,6 +2,8 @@ import Chunk from "engine/Chunk.js"
 import fix from "engine/Core/Fix.js"
 import v2 from "engine/Core/v2.js"
 
+import Config from "game/Config.js"
+
 var CHUNK_DIM = Chunk.dim;
 var CHUNK_DIM_2 = Chunk.dim2;
 var CHUNK_SIZE = Chunk.size;
@@ -80,10 +82,10 @@ TileWorld.calcDensity = function(terrainWorld, x, y) {
         fractY
     ];
     var b = [
-        getDensity(terrainWorld, x1, y1),
-        getDensity(terrainWorld, x2, y1),
-        getDensity(terrainWorld, x1, y2),
-        getDensity(terrainWorld, x2, y2)
+        TileWorld.getDensity(terrainWorld, x1, y1),
+        TileWorld.getDensity(terrainWorld, x2, y1),
+        TileWorld.getDensity(terrainWorld, x1, y2),
+        TileWorld.getDensity(terrainWorld, x2, y2)
     ];
 
     return a[0] * a[1] * b[0] +
@@ -94,10 +96,10 @@ TileWorld.calcDensity = function(terrainWorld, x, y) {
 
 TileWorld.calcDir = function(terrainWorld, x, y) {
     var epsilon = 0.1;
-    var a = -calcDensity(terrainWorld, x + epsilon, y + epsilon);
-    var b = -calcDensity(terrainWorld, x - epsilon, y + epsilon);
-    var c = -calcDensity(terrainWorld, x - epsilon, y - epsilon);
-    var d = -calcDensity(terrainWorld, x + epsilon, y - epsilon);
+    var a = -TileWorld.calcDensity(terrainWorld, x + epsilon, y + epsilon);
+    var b = -TileWorld.calcDensity(terrainWorld, x - epsilon, y + epsilon);
+    var c = -TileWorld.calcDensity(terrainWorld, x - epsilon, y - epsilon);
+    var d = -TileWorld.calcDensity(terrainWorld, x + epsilon, y - epsilon);
 
     var f = v2.create(+a, +a);
     var g = v2.create(-b, +b);
@@ -115,7 +117,7 @@ TileWorld.calcDir = function(terrainWorld, x, y) {
 }
 
 TileWorld.calcNormal = function(terrainWorld, x, y) {
-    var vec = calcDir(terrainWorld, x, y)
+    var vec = TileWorld.calcDir(terrainWorld, x, y)
     if (v2.sqrLength(vec) > 0.0)
         v2.normalize(vec, vec);
 
@@ -145,8 +147,8 @@ TileWorld.carveCircle = function(gameData, x, y, radius, digSpeed, maxHardness, 
             if (dis > radius)
                 continue;
 
-            var oldDensity = getDensity(tileWorld, tileX, tileY);
-            var tileId = getTileId(tileWorld, tileX, tileY);
+            var oldDensity = TileWorld.getDensity(tileWorld, tileX, tileY);
+            var tileId = TileWorld.getTileId(tileWorld, tileX, tileY);
             var tile = tileRegister[tileId];
             if (!tile) {
                 console.log("Tile is undefined! TileID: " + tileId);
@@ -163,7 +165,7 @@ TileWorld.carveCircle = function(gameData, x, y, radius, digSpeed, maxHardness, 
             var densityDiff = oldDensity - newDensity;
 
             dug[tileId] += densityDiff;
-            setDensity(tileWorld, tileX, tileY, newDensity, true);
+            TileWorld.setDensity(tileWorld, tileX, tileY, newDensity, true);
         }
     }
     return dug;

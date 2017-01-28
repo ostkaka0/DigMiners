@@ -1,5 +1,8 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
+
 export var InventoryActions = {
     ADD_ITEM: 0,
     REMOVE_ITEM: 1,

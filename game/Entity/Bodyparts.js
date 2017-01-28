@@ -38,7 +38,7 @@ Bodyparts.prototype.serialize = function(byteArray, index) {
         Serialize.v2(byteArray, index, bodypart.pivot);
         var booleans = [];
         booleans[0] = bodypart.disableRotation;
-        serializeBooleans(byteArray, index, booleans);
+        Serialize.booleans(byteArray, index, booleans);
     }
 }
 
@@ -52,7 +52,7 @@ Bodyparts.prototype.deserialize = function(byteArray, index, gameData) {
         var offset = [Deserialize.fix(byteArray, index), Deserialize.fix(byteArray, index), Deserialize.fix(byteArray, index)];
         var defaultOffset = [Deserialize.fix(byteArray, index), Deserialize.fix(byteArray, index), Deserialize.fix(byteArray, index)];
         var pivot = Deserialize.v2(byteArray, index);
-        var disableRotation = deserializeBooleans(byteArray, index)[0];
+        var disableRotation = Deserialize.booleans(byteArray, index)[0];
         var sprite = new Sprite(textureName);
         this.bodyparts[key] = new BodyPart(sprite, defaultOffset[0], defaultOffset[1], defaultOffset[2], pivot, null, disableRotation);
         this.bodyparts[key].offset = offset;

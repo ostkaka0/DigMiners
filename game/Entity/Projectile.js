@@ -1,4 +1,5 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import Config from "game/Config.js"
 
 export var ProjectileEvents = {};
 ProjectileEvents.onHit = [];

@@ -1,5 +1,8 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
+
 var CommandEntityBuild = function(entityId, x, y, blockId, type) {
     this.entityId = entityId;
     this.x = x;

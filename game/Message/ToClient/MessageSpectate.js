@@ -1,4 +1,5 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import IndexCounter from "engine/IndexCounter.js"
 
 var MessageSpectate = function(entityId) {
     this.entityId = entityId;

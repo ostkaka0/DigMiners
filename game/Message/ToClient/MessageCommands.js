@@ -1,4 +1,8 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import IndexCounter from "engine/IndexCounter.js"
+
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
 
 var MessageCommands = function() {
     this.tickId = (isServer) ? gameData.world.tickId : 0;

@@ -89,6 +89,6 @@ DugItems.prototype.update = function() {
             amount = global.player.oreInventory[i];
         var dugItemsEntry = document.getElementById("entry" + i);
         var dugItemsEntryText = dugItemsEntry.childNodes[1];
-        dugItemsEntryText.innerText = parseFloat(Math.floor((amount / 256.0) * 10) / 10).toFixed(1);
+        dugItemsEntryText.innerText = parseFloat(Math.floor((amount / 256.0) * 10) / 10).fix.toFixed(1);
     }
 }

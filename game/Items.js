@@ -2,6 +2,9 @@ import Blocks from "game/Blocks.js"
 import Tiles from "game/Tiles.js"
 import Projectiles from "game/Projectiles.js"
 
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
+
 export var Items = {};
 export default Items
 export var ItemFunctions = {};

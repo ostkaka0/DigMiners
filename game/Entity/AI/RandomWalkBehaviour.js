@@ -1,5 +1,10 @@
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
 
-RandomWalkBehaviour = function(entity) {
+import gameData from "game/GameData.js"
+import CommandEntityMove from "game/Command/CommandEntityMove.js"
+
+var RandomWalkBehaviour = function(entity) {
     this.entity = entity;
     this.isWalking = false;
 

@@ -1,5 +1,8 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
+
 var CommandPlayerLeave = function(playerId, entityId) {
     this.playerId = playerId;
     this.entityId = entityId;

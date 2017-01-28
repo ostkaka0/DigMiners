@@ -1,7 +1,22 @@
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
+import Sprite from "engine/Animation/Sprite.js"
+import BodyPart from "engine/Animation/BodyPart.js"
+import PhysicsBody from "game/Entity/PhysicsBody.js"
+import Bodyparts from "game/Entity/Bodyparts.js"
+import Drawable from "game/Entity/Drawable.js"
+import { Team, Teams } from "game/Entity/Team.js"
+import Health from "game/Entity/Health.js"
+import Ammo from "game/Entity/Ammo.js"
+import Movement from "game/Entity/Movement.js"
+import Inventory from "game/Entity/Inventory.js"
+import EquippedItems from "game/Entity/EquippedItems.js"
+import PotionEffects from "game/Entity/PotionEffects.js"
+import BehaviourContainer from "game/Entity/AI/BehaviourContainer.js"
+import TurretBehaviour from "game/Entity/AI/TurretBehaviour.js"
+import TurretIdleBehaviour from "game/Entity/AI/TurretIdleBehaviour.js"
 
-import EntityTemplates from "./EntityTemplates.js"
-
-export default EntityTemplates.Turret = function(entityId, pos, teamId) {
+export default function(entityId, pos, teamId) {
     var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0, 1000, 0.5);
     entity.movement = new Movement(0);

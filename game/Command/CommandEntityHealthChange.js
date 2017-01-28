@@ -1,8 +1,11 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
+
 var CommandEntityHealthChange = function(entityId, healthChange) {
     this.entityId = entityId;
-    this.healthChange = toFix(healthChange);
+    this.healthChange = fix.toFix(healthChange);
 }
 export default CommandEntityHealthChange
 
@@ -12,9 +15,9 @@ CommandEntityHealthChange.prototype.execute = function() {
     if (entity.movement)
         entity.movement.disabledCooldown = 40;
     entity.health.health = (entity.health.health + this.healthChange < 0 ? 0 : entity.health.health + this.healthChange);
-    triggerEvent(HealthEvents.onChange, entity);
+    Event.trigger(HealthEvents.onChange, entity);
     if (entity.health.health <= 0)
-        triggerEvent(HealthEvents.onDeath, entity);
+        Event.trigger(HealthEvents.onDeath, entity);
 }
 
 CommandEntityHealthChange.prototype.serialize = function(byteArray, index) {

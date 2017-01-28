@@ -1,5 +1,8 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
+
 var CommandEntityInteractEntity = function(entityId, interactableEntityId, interacting) {
     this.entityId = entityId;
     this.interactableEntityId = interactableEntityId;
@@ -20,13 +23,13 @@ CommandEntityInteractEntity.prototype.serialize = function(byteArray, index) {
     Serialize.int32(byteArray, index, this.interactableEntityId);
     var booleans = [];
     booleans[0] = this.interacting;
-    serializeBooleans(byteArray, index, booleans);
+    Serialize.booleans(byteArray, index, booleans);
 }
 
 CommandEntityInteractEntity.prototype.deserialize = function(byteArray, index) {
     this.entityId = Deserialize.int32(byteArray, index);
     this.interactableEntityId = Deserialize.int32(byteArray, index);
-    this.interacting = deserializeBooleans(byteArray, index)[0];
+    this.interacting = Deserialize.booleans(byteArray, index)[0];
 }
 
 CommandEntityInteractEntity.prototype.getSerializationSize = function() {

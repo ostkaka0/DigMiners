@@ -1,3 +1,6 @@
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
+
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
 export default function(gameData, ip) {
@@ -24,7 +27,7 @@ export default function(gameData, ip) {
     socket.on('connect', function() {
 
         setInterval(function() {
-            startTime = Date.now();
+            //startTime = Date.now();
             socket.emit('ping');
         }, 2000);
 

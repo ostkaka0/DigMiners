@@ -1,4 +1,10 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
+import Keys from "engine/Keys.js"
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
+import CommandEntityBeginReloadWeapon from "game/Command/CommandEntityBeginReloadWeapon.js"
 
 export var Movement = function(speed, toolUseDuration, damageMultiplier, digHardnessMultiplier) {
     this.keyStatuses = {};

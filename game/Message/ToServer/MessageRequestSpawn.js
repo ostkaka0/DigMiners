@@ -20,7 +20,7 @@ MessageRequestSpawn.prototype.execute = function(gameData, player) {
     else {
         var classType = PlayerClassRegister[this.classId];
         var teamId = gameData.gameMode.teams[Math.random() * gameData.gameMode.teams.length >> 0];
-        entity = entityTemplates.Player(player.id, entityId, player.name, classType, teamId);
+        entity = entityTemplatePlayer(player.id, entityId, player.name, classType, teamId);
 
         // Set spawn position
         var pos = gameData.gameMode.playerSpawns[teamId][Math.random() * gameData.gameMode.playerSpawns[teamId].length >> 0];

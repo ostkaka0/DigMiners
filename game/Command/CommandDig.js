@@ -1,15 +1,21 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
+import TileWorld from "engine/TileWorld.js"
+
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
 
 var CommandDig = function(pos, radius) {
     if (pos)
         this.pos = v2.cloneFix(pos);
-    this.radius = toFix(radius);
+    this.radius = fix.toFix(radius);
 }
 export default CommandDig
 
 CommandDig.prototype.execute = function() {
     var tileWorld = gameData.world.tileWorld;
-    carveCircle(gameData, this.pos[0], this.pos[1], this.radius, 5000.0, 5000.0);
+    TileWorld.carveCircle(gameData, this.pos[0], this.pos[1], this.radius, 5000.0, 5000.0);
 }
 
 CommandDig.prototype.serialize = function(byteArray, index) {

@@ -1,3 +1,7 @@
+import Event from "engine/Core/Event.js"
+import Texture from "engine/Animation/Texture.js"
+import gameData from "game/GameData.js"
+import TextureLoader  from "game/Entity/TextureLoader.js"
 
 export default function() {
     this.loader = new TextureLoader();

@@ -1,5 +1,8 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
+
 var CommandCollisions = function(collisions) {
     var physicsWorld = gameData.world.physicsWorld;
     var physicsEntities = gameData.world.physicsEntities;

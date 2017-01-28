@@ -1,5 +1,8 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
+
 var CommandKeyStatusUpdate = function(entityId, key, pressed, pos) {
     this.entityId = entityId;
     this.key = key;

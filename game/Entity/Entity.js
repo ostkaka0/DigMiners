@@ -1,3 +1,4 @@
+import gameData from "game/GameData.js"
 
 var Entity = {};
 export default Entity
