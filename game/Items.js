@@ -233,7 +233,7 @@ initItems = function() {
         Items[name] = {
             name: block.name,
             texture: ItemTextures.BlockAtlas,
-            spriteId: (block.sameTexture ? Items[block.sameTexture].spriteId : num),
+            spriteId: num,
             isEquipable: true,
             isDropable: true,
             maxStackSize: 100,

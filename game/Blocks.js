@@ -346,7 +346,6 @@ Blocks.MachineGunTurret = {
 
 Blocks.PistolTurret = {
     name: "Turret(Pistol)",
-    sameTexture: "MachineGunTurret",
     isSolid: true,
     hardness: 1.0,
     type: BlockTypes.FOREGROUND,
