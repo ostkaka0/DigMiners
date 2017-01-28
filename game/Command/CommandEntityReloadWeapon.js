@@ -1,5 +1,8 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
+
 var CommandEntityReloadWeapon = function(entityId, stackId) {
     this.entityId = entityId;
     this.stackId = stackId;
@@ -17,7 +20,7 @@ CommandEntityReloadWeapon.prototype.execute = function() {
     item.magazine += ammoToReload;
     if (entity.ammo && entity.ammo[item.id]) {
         entity.ammo[item.id] -= ammoToReload;
-        triggerEvent(AmmoEvents.onChange, entity);
+        Event.trigger(AmmoEvents.onChange, entity);
     }
 }
 

@@ -1,4 +1,6 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import SpriteContainer from "engine/Animation/SpriteContainer.js"
+import Sprite from "engine/Animation/Sprite.js"
 
 var Drawable = function(zindex) {
     this.sprites = {};

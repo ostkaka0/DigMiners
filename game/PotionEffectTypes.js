@@ -1,3 +1,7 @@
+import Event from "engine/Core/Event.js"
+
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
 
 var PotionEffectTypes = {};
 export default PotionEffectTypes
@@ -8,7 +12,7 @@ PotionEffectTypes.Healing = {
         var health = entity.health;
         if (health) {
             health.health = Math.min(health.maxHealth, health.health + 1);
-            triggerEvent(HealthEvents.onChange, entity);
+            Event.trigger(HealthEvents.onChange, entity);
         }
     }
 }
@@ -24,7 +28,7 @@ PotionEffectTypes.SupplyAmmo = {
             var ammoToAdd = Math.min(itemType.ammoMax - amount, Math.max(1, itemType.ammoMax * 0.05 >> 0));
             if (ammoToAdd == 0) return;
             entity.ammo[itemId] += ammoToAdd;
-            triggerEvent(AmmoEvents.onChange, entity);
+            Event.trigger(AmmoEvents.onChange, entity);
             // TODO: Trigger event?
         });
     }

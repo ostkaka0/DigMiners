@@ -1,3 +1,6 @@
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
+
 
 export var createExplosion = function(startPos, radius, entityDamage, blockDamage, tileDamage, attacker) {
     if (isServer) {

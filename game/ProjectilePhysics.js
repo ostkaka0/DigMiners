@@ -1,4 +1,11 @@
-PROJECTILE_MAX_STEP_LENGTH = 0.125;
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
+import Event from "engine/Core/Event.js"
+
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
+
+var PROJECTILE_MAX_STEP_LENGTH = 0.125;
 
 var entityFunctionProjectileSimulate = function(dt) {
     gameData.world.entityWorld.objectArray.forEach(function(entity) {
@@ -44,18 +51,18 @@ var projectileEntitySimulate = function(entity, dt) {
         for (var j = 0; j < bodies.length; ++j) {
             var hitEntity = gameData.world.physicsEntities[bodies[j]];
             if (hitEntity && (!projectile.shooterEntityId || hitEntity.id != projectile.shooterEntityId)) {
-                triggerEvent(ProjectileEvents.onHitEntity, entity, hitEntity, pos);
+                Event.trigger(ProjectileEvents.onHitEntity, entity, hitEntity, pos);
                 projectile.hit = true;
                 break;
             }
         }
 
         var blockTilePos = [Math.floor(pos[0]), Math.floor(pos[1])];
-        var blockId = getForeground(gameData.world.blockWorld, blockTilePos[0], blockTilePos[1]);
+        var blockId = BlockWorld.getForeground(gameData.world.blockWorld, blockTilePos[0], blockTilePos[1]);
         var blockType = Config.blockRegister[blockId];
         var isBulletSolid = (blockType.isBulletSolid == undefined || entity.projectile.projectileType.isExplosive) ? blockType.isSolid : blockType.isBulletSolid;
         if (blockId != 0 && isBulletSolid && v2.dot([Math.cos(projectile.angle), -Math.sin(projectile.angle)], [blockTilePos[0] + 0.5 - pos[0], blockTilePos[1] + 0.5 - pos[1]]) > 0.0) {
-            triggerEvent(ProjectileEvents.onHitBlock, entity, blockTilePos);
+            Event.trigger(ProjectileEvents.onHitBlock, entity, blockTilePos);
             projectile.hit = true;
             break;
         }
@@ -64,7 +71,7 @@ var projectileEntitySimulate = function(entity, dt) {
 
         var density = getDensity(gameData.world.tileWorld, blockTilePos[0], blockTilePos[1]);
         if (density > 127) {
-            triggerEvent(ProjectileEvents.onHitTile, entity, blockTilePos);
+            Event.trigger(ProjectileEvents.onHitTile, entity, blockTilePos);
             projectile.hit = true;
             break;
         }
@@ -74,7 +81,7 @@ var projectileEntitySimulate = function(entity, dt) {
     }
 
     if (projectile.hit) {
-        triggerEvent(ProjectileEvents.onHit, entity, v2.clone(pos));
+        Event.trigger(ProjectileEvents.onHit, entity, v2.clone(pos));
         if (!isServer && projectile.sprite) {
             projectile.sprite.anchor[0] = 1.0;
             if (!projectile.sprite.visible) {

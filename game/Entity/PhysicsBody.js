@@ -1,4 +1,7 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
+import gameData from "game/GameData.js"
 
 var PhysicsBody = function(pos, damping, rotationSpeed, mass, radius) {
     this.bodyId = gameData.world.physicsWorld.add(pos, [0.0, 0.0], mass, radius);
@@ -18,7 +21,7 @@ var PhysicsBody = function(pos, damping, rotationSpeed, mass, radius) {
         this.rotationSpeed = 20.0;
     this.speedOld = [0, 0];
     if (damping)
-        this.damping = toFix(damping);
+        this.damping = fix.toFix(damping);
     this.angle = 0;
     this.angleOld = 0;
 }

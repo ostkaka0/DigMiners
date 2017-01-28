@@ -1,3 +1,6 @@
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
+
 
 export var createParticles = function(particleFunction, pos, angle) {
     if (!isServer)

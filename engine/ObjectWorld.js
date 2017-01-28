@@ -1,3 +1,5 @@
+import Event from "engine/Core/Event.js"
+
 var ObjectWorld = function(useDestroyFunc) {
     this.useDestroyFunc = useDestroyFunc;
     this.objectArray = [];
@@ -22,7 +24,7 @@ ObjectWorld.prototype.add = function(object, id) {
 
     this.objects[object.id] = object;
     object.isActive = true;
-    triggerEvent(this.onAdd, object);
+    Event.trigger(this.onAdd, object);
     return object;
 }
 
@@ -35,7 +37,7 @@ ObjectWorld.prototype.removeById = function(id) {
     var object = this.objects[id];
     if (!object) return;
     object.isActive = false;
-    triggerEvent(this.onRemove, object);
+    Event.trigger(this.onRemove, object);
     if (this.useDestroyFunc)
         object.destroy();
     delete this.objects[id];

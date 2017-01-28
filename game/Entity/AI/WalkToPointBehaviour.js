@@ -1,6 +1,16 @@
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
+import BlockWorld from "engine/BlockWorld.js"
+import TileWOrld from "engine/TileWorld.js"
 
+import gameData from "game/GameData.js"
+import CommandEntityEquipItem from "game/Command/CommandEntityEquipItem.js"
+import CommandKeyStatusUpdate from "game/Command/CommandKeyStatusUpdate.js"
+import CommandEntityMove from "game/Command/CommandEntityMove.js"
+import CommandEntityRotate from "game/Command/CommandEntityRotate.js"
+import CommandEntityLookAtEntity from "game/Command/CommandEntityLookAtEntity.js"
 
-WalkToPointBehaviour = function(entity, goalPoint, radius) {
+var WalkToPointBehaviour = function(entity, goalPoint, radius) {
     this.entity = entity;
     this.goalPoint = goalPoint;
     this.radius = radius || 5.0;

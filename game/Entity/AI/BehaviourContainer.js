@@ -1,5 +1,5 @@
 
-BehaviourContainer = function() {
+var BehaviourContainer = function() {
     this.behaviours = [];
     this.currentBehaviour = null;
     this.currentBehaviourPriority = Number.MAX_VALUE;

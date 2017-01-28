@@ -1,4 +1,5 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import IndexCounter from "engine/IndexCounter.js"
 
 var MessageInit = function(gameData, player) {
     this.players = [];
@@ -36,7 +37,7 @@ MessageInit.prototype.getSerializationSize = function(gameData) {
         size += 8; // Entity-id, entitySize
         var entitySize = 0;
         Object.keys(entity).forEach(function(componentKey) {
-            component = entity[componentKey];
+            var component = entity[componentKey];
             if (!component || !component.serialize) return;
             entitySize += 4 + component.getSerializationSize(); // component-id
         }.bind(this));

@@ -1,3 +1,5 @@
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
 
 var Player = function(playerId, entityId) {
     this.playerId = playerId;

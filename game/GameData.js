@@ -1,10 +1,14 @@
 import IdList from "engine/IdList.js"
 import ObjectWorld from "engine/ObjectWorld.js"
+import Event from "engine/Core/Event.js"
 
 import Config from "game/Config.js"
 import World from "game/World.js"
+import Items from "game/Items.js"
+import Blocks from "game/Blocks.js"
+import Tiles from "game/Tiles.js"
 import AnimationManager from "engine/Animation/AnimationManager.js"
-import MessageChangeGamemode from "game/Message/ToClient/MessageChangeGamemode.js"
+import MessageChangeGameMode from "game/Message/ToClient/MessageChangeGamemode.js"
 
 var gameData = {};
 export default gameData
@@ -37,9 +41,9 @@ gameData.init = function(idList) {
 
     this.messageCallbacks = {};
 
-    initPlayerClasses();
+    //initPlayerClasses();
 
-    Recipes = [];
+    var Recipes = [];
 
     Recipes.push({
         item: [[Items.SmallSticks, 1]],

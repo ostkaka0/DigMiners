@@ -1,7 +1,14 @@
+import PhysicsBody from "game/Entity/PhysicsBody.js"
+import Movement from "game/Entity/Movement.js"
+import Bodyparts from "game/Entity/Bodyparts.js"
+import Drawable from "game/Entity/Drawable.js"
+import NameComponent from "game/Entity/NameComponent.js"
+import { Team, Teams } from "game/Entity/Team.js"
+import Sprite from "engine/Animation/Sprite.js"
+import BodyPart from "engine/Animation/BodyPart.js"
+import Health from "game/Entity/Health.js"
 
-import EntityTemplates from "./EntityTemplates.js"
-
-export default EntityTemplates.HumanBase = function(entityId, pos, teamId) {
+export default HumanBase = function(entityId, pos, teamId) {
     var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, null, 1000.0);
     entity.nameComponent = new NameComponent("Base");

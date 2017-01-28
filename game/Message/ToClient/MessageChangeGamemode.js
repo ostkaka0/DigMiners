@@ -1,4 +1,7 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import IndexCounter from "engine/IndexCounter.js"
+
+import gameData from "game/GameData.js"
 
 var MessageChangeGameMode = function() {
     this.gameModeId = gameData.gameMode.id;

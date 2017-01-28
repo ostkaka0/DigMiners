@@ -1,7 +1,11 @@
+import PhysicsBody from "game/Entity/PhysicsBody.js"
+import Bodyparts from "game/Entity/Bodyparts.js"
+import Drawable from "game/Entity/Drawable.js"
+import Sprite from "engine/Animation/Sprite.js"
+import BodyPart from "engine/Animation/BodyPart.js"
+import Item from "game/Item.js"
 
-import EntityTemplates from "./EntityTemplates.js"
-
-export default EntityTemplates.Item = function(itemId, amount) {
+export default function(itemId, amount) {
     var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
 

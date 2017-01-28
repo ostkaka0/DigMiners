@@ -1,4 +1,5 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import CommandEntityHealthChange from "game/Command/CommandEntityHealthChange.js"
 
 export var HealthEvents = {};
 HealthEvents.onChange = [];

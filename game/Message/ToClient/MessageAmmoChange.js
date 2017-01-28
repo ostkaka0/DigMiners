@@ -1,4 +1,7 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import IndexCounter from "engine/IndexCounter.js"
+
+import gameData from "game/GameData.js"
 
 var MessageAmmoChange = function(entity, itemIds) {
     this.ammo = {};
@@ -38,5 +41,5 @@ MessageAmmoChange.prototype.receive = function(gameData, byteArray) {
         var amount = Deserialize.int32(byteArray, counter);
         entity.ammo[itemId] = amount;
     }
-    triggerEvent(AmmoEvents.onChange, entity);
+    Event.trigger(AmmoEvents.onChange, entity);
 }

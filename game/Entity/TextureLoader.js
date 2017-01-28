@@ -1,3 +1,4 @@
+import Event from "engine/Core/Event.js"
 
 export var TextureLoaderEvents = {};
 TextureLoaderEvents.onComplete = [];
@@ -19,8 +20,8 @@ TextureLoader.prototype.loadTextures = function() {
     var context = this;
 
     loadTextures("data/textures/", this.texturesToLoad, function(textures) {
-        triggerEvent(TextureLoaderEvents.onComplete, textures);
+        Event.trigger(TextureLoaderEvents.onComplete, textures);
     }, function(percentage, name) {
-        triggerEvent(TextureLoaderEvents.onProgress, name, percentage);
+        Event.trigger(TextureLoaderEvents.onProgress, name, percentage);
     });
 }

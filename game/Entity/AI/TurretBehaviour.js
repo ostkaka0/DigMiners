@@ -1,5 +1,17 @@
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
+import BlockWorld from "engine/BlockWorld.js"
+import TileWOrld from "engine/TileWorld.js"
 
-TurretBehaviour = function(entity, maxRadius) {
+import gameData from "game/GameData.js"
+import { Team, Teams } from "game/Entity/Team.js"
+import CommandEntityEquipItem from "game/Command/CommandEntityEquipItem.js"
+import CommandKeyStatusUpdate from "game/Command/CommandKeyStatusUpdate.js"
+import CommandEntityMove from "game/Command/CommandEntityMove.js"
+import CommandEntityRotate from "game/Command/CommandEntityRotate.js"
+import CommandEntityLookAtEntity from "game/Command/CommandEntityLookAtEntity.js"
+
+var TurretBehaviour = function(entity, maxRadius) {
     this.entity = entity;
     this.maxRadius = maxRadius;
     this.target = null;
@@ -143,7 +155,7 @@ TurretBehaviour.prototype.getAttackDistance = function(pos, dir) {
     v2.add(step, rayPos, rayPos);
     for (var i = 0; i < 40; i++) {
         if (getDensity(gameData.world.tileWorld, rayPos[0], rayPos[1]) > 127) break;
-        if (getForeground(gameData.world.blockWorld, rayPos[0], rayPos[1]) != 0) break;
+        if (BlockWorld.getForeground(gameData.world.blockWorld, rayPos[0], rayPos[1]) != 0) break;
 
         v2.add(step, rayPos, rayPos);
         dis += stepLength;

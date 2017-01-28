@@ -1,4 +1,5 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import TextSprite from "engine/Animation/TextSprite.js"
 
 var NameComponent = function(entityName) {
     this.entityName = entityName + "";

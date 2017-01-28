@@ -1,4 +1,9 @@
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
+import Event from "engine/Core/Event.js"
 import Chunk from "engine/Chunk.js"
+import TileWorld from "engine/TileWorld.js"
+import BlockWorld from "engine/BlockWorld.js"
 
 import gameData from "game/GameData.js"
 import { Team, Teams } from "game/Entity/Team.js"
@@ -7,6 +12,9 @@ import CommandDig from "game/Command/CommandDig.js"
 import CommandPopupMessage from "game/Command/CommandPopupMessage.js"
 import CommandPlayerJoin from "game/Command/CommandPlayerJoin.js"
 import CommandPlayerSPawn from "game/Command/CommandPlayerSpawn.js"
+import entityTemplateMonsterSpawner from "game/Entity/EntityTemplates/MonsterSpawner.js"
+import entityTemplatePlayer from "game/Entity/EntityTemplates/Player.js"
+import entityTemplateZombie from "game/Entity/EntityTemplates/Zombie.js"
 
 var GameModeZombieInvasion = function() {
     this.wavePauseDuration = 30000;
@@ -56,7 +64,7 @@ GameModeZombieInvasion.prototype.init = function() {
         for (var j = 0; j < 10 && v2.length(pos) < 20.0; j++)
             pos = [60.0 * (-1 + 2 * Math.random()), 60.0 * (-1 + 2 * Math.random())];
         var entityId = gameData.world.idList.next();
-        var entity = entityTemplates.MonsterSpawner(entityId, pos, this.spawnZombie.bind(this), 0, 2.0, 40, null, null, Teams.Zombie);
+        var entity = entityTemplateMonsterSpawner(entityId, pos, this.spawnZombie.bind(this), 0, 2.0, 40, null, null, Teams.Zombie);
         sendCommand(new CommandEntitySpawn(gameData, entity, entityId, Teams.Zombie));
         sendCommand(new CommandDig(pos, 5.0));
         this.zombieSpawners.push(entity);
@@ -104,7 +112,7 @@ GameModeZombieInvasion.prototype.init = function() {
 GameModeZombieInvasion.prototype.createEntity = function(player, entityId, classId) {
     if (this.playerSpawning) {
         var classType = PlayerClassRegister[classId];
-        var entity = entityTemplates.Player(player.id, entityId, player.name, classType, Teams.Human);
+        var entity = entityTemplatePlayer(player.id, entityId, player.name, classType, Teams.Human);
 
         // Set spawn position
         var pos = this.playerSpawns[Teams.Human][Math.random() * this.playerSpawns[Teams.Human].length >> 0];
@@ -115,7 +123,7 @@ GameModeZombieInvasion.prototype.createEntity = function(player, entityId, class
         return entity;
     } else {
         /*var pos = this.zombieSpawns[Math.random() * this.zombieSpawns.length >> 0];
-        var entity = entityTemplates.PlayerZombie(player.id, entityId, player.name, pos, classId);
+        var entity = entityTemplatePlayerZombie(player.id, entityId, player.name, pos, classId);
         entity.inventory.addItem(gameData, Items.RustyShovel.id, 1);
         return entity;*/
         return null;
@@ -175,7 +183,7 @@ GameModeZombieInvasion.prototype.forceRespawnPlayers = function() {
                 if (entity.ammo[item.id] != undefined)
                     entity.ammo[item.id] = itemType.ammoMax;
             });
-            triggerEvent(AmmoEvents.onChange, entity);
+            Event.trigger(AmmoEvents.onChange, entity);
             new MessageAmmoChange(entity, Object.keys(entity.ammo)).send(player.socket);
             var healthChange = entity.health.maxHealth - entity.health.health;
             sendCommand(new CommandEntityHealthChange(entity.id, healthChange));
@@ -196,7 +204,7 @@ GameModeZombieInvasion.prototype.forceRespawnPlayers = function() {
 }
 
 GameModeZombieInvasion.prototype.spawnZombie = function(entityId, pos, teamId) {
-    var entity = entityTemplates.Zombie(entityId, pos, teamId);
+    var entity = entityTemplateZombie(entityId, pos, teamId);
     this.zombies[entityId] = entity;
     // Make zombie stronger for each wave
     for (var i = 0; i < this.waveNum - 1; i++) {
@@ -252,8 +260,8 @@ GameModeZombieInvasion.prototype.generateDungeon = function(tileX, tileY) {
             else if (xx <= 0 || xx >= width - 1)
                 tileId = 1;
 
-            setDensity(gameData.world.tileWorld, x, y, 0);
-            setForeground(gameData.world.blockWorld, x, y, tileId);
+            TileWorld.setDensity(gameData.world.tileWorld, x, y, 0);
+            BlockWorld.setForeground(gameData.world.blockWorld, x, y, tileId);
         }
     }
 

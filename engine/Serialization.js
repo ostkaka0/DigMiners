@@ -13,7 +13,7 @@ Serialize.booleans = function(byteArray, index, booleans) {
         (booleans[5] ? 32 : 0) |
         (booleans[6] ? 64 : 0) |
         (booleans[7] ? 128 : 0);
-    serialize.int8(byteArray, index, bitField);
+    Serialize.int8(byteArray, index, bitField);
 }
 
 Deserialize.booleans = function(byteArray, index) {
@@ -59,7 +59,7 @@ Deserialize.int32 = function(byteArray, index) {
 }
 
 Serialize.fix = function(byteArray, index, value) {
-    serialize.int32(byteArray, index, fix.toFix(value) * fix.denominator);
+    Serialize.int32(byteArray, index, fix.toFix(value) * fix.denominator);
 }
 
 Deserialize.fix = function(byteArray, index) {
@@ -67,8 +67,8 @@ Deserialize.fix = function(byteArray, index) {
 }
 
 Serialize.v2 = function(byteArray, index, value) {
-    serialize.fix(byteArray, index, value[0]);
-    serialize.fix(byteArray, index, value[1]);
+    Serialize.fix(byteArray, index, value[0]);
+    Serialize.fix(byteArray, index, value[1]);
 }
 
 Deserialize.v2 = function(byteArray, index) {

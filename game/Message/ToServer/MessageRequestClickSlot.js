@@ -36,7 +36,7 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
         v2.mul(10.0 * displacement3, speed, speed2);
 
         var itemEntityId = idList.next();
-        var itemEntity = entityTemplates.Item(item.id, item.amount, gameData);
+        var itemEntity = entityTemplateItem(item.id, item.amount, gameData);
         itemEntity.physicsBody.setPos(physicsBody.getPos());
         itemEntity.physicsBody.posOld = v2.clone(physicsBody.getPos());
         itemEntity.physicsBody.setVelocity([speed2[0], speed2[1]]);

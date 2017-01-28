@@ -1,4 +1,6 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
 
 var Inventory = function(inventoryId, entityId, width, height) {
     this.items = [];
@@ -44,7 +46,7 @@ Inventory.prototype.serialize = function(byteArray, index) {
         Serialize.int32(byteArray, index, this.items[i].id);
         Serialize.int32(byteArray, index, this.items[i].amount);
         var booleans = [this.items[i].equipped, this.items[i].static];
-        serializeBooleans(byteArray, index, booleans);
+        Serialize.booleans(byteArray, index, booleans);
     }
 }
 
@@ -57,7 +59,7 @@ Inventory.prototype.deserialize = function(byteArray, index) {
     for (var i = 0; i < itemsLength; ++i) {
         var id = Deserialize.int32(byteArray, index);
         var amount = Deserialize.int32(byteArray, index);
-        var booleans = deserializeBooleans(byteArray, index);
+        var booleans = Deserialize.booleans(byteArray, index);
         this.items[i] = {
             "id": id,
             "name": Config.itemRegister[id].name,

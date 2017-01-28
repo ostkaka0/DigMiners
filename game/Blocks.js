@@ -1,3 +1,5 @@
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
 
 export var BlockTypes = {
     FOREGROUND: 0,
@@ -65,7 +67,7 @@ BlockBulletFunctions.bunker = function(blockPos, blockType, entity) {
         damageFactor = blockType.bulletBunkerNearFactor;
 
     if (rand > damageFactor * 100) {
-        triggerEvent(ProjectileEvents.onHitBlock, entity, blockPos);
+        Event.trigger(ProjectileEvents.onHitBlock, entity, blockPos);
         entity.projectile.hit = true;
         return;
     }
@@ -91,7 +93,7 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
                 if (checked[pos[0]] == null)
                     checked[pos[0]] = [];
                 checked[pos[0]][pos[1]] = getStrength(gameData.world.blockWorld, pos[0], pos[1]);
-                var blockId = getForeground(gameData.world.blockWorld, pos[0], pos[1]);
+                var blockId = BlockWorld.getForeground(gameData.world.blockWorld, pos[0], pos[1]);
                 if (blockType.id == blockId)
                     runRecursively(pos, blockType);
             }

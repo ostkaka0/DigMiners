@@ -54,7 +54,7 @@ DisField.calcDis = function(disField, pos) {
 }
 
 DisField.calcDir = function(disField, pos) {
-	var epsilon = toFix(0.5);
+	var epsilon = fix.toFix(0.5);
 	var a = -DisField.calcDis(disField, v2.create(pos[0] + epsilon, pos[1]));
 	var b = -DisField.calcDis(disField, v2.create(pos[0] - epsilon, pos[1]));
 	var c = -DisField.calcDis(disField, v2.create(pos[0], pos[1] + epsilon));

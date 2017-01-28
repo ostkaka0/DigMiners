@@ -1,11 +1,16 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import v2 from "engine/Core/v2.js"
+import TileWorld from "engine/TileWorld.js"
+
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
 
 var CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHardness) {
     this.entityId = entityId;
     if (pos)
         this.pos = v2.cloneFix(pos);
     this.dir = dir;
-    this.radius = toFix(radius);
+    this.radius = fix.toFix(radius);
     this.digSpeed = digSpeed;
     this.maxDigHardness = maxDigHardness;
 }
@@ -45,7 +50,7 @@ CommandEntityDig.prototype.execute = function() {
         onDensityChange = function(tileX, tileY, tile, oldDensity, newDensity) { return (tile.isOre) ? oldDensity : newDensity; };
     }
 
-    var dug = carveCircle(gameData, this.pos[0] + digDis * this.dir[0], this.pos[1] + digDis * this.dir[1], this.radius, this.digSpeed, this.maxDigHardness, onDensityChange);
+    var dug = TileWorld.carveCircle(gameData, this.pos[0] + digDis * this.dir[0], this.pos[1] + digDis * this.dir[1], this.radius, this.digSpeed, this.maxDigHardness, onDensityChange);
     if (isServer) {
         // Only process dug ores on server
         for (var i = 0; i < dug.length; ++i) {
@@ -63,7 +68,7 @@ CommandEntityDig.prototype.execute = function() {
                     var physicsBody = entity.physicsBody;
 
                     var itemEntityId = gameData.world.idList.next();
-                    var itemEntity = entityTemplates.Item(itemId, 1, gameData);
+                    var itemEntity = entityTemplateItem(itemId, 1, gameData);
                     itemEntity.physicsBody.setPos(v2.clone(physicsBody.getPos()));
                     itemEntity.physicsBody.angle = physicsBody.angle;
                     itemEntity.physicsBody.angleOld = physicsBody.angle;

@@ -1,3 +1,11 @@
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
+import TileWorld from "engine/TileWorld.js"
+import BlockWorld from "engine/BlockWorld.js"
+
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
+
 var PHYSICS_MAX_STEP_LENGTH = 1.0;
 
 var COLLISION_BLOCKS = [
@@ -79,7 +87,7 @@ var physicsBodySimulate = function(physicsBody, dt) {
             var worldPos = v2.clone(pos);
             worldPos[0] += COLLISION_BLOCKS[j][0];
             worldPos[1] += COLLISION_BLOCKS[j][1];
-            var blockId = getForeground(gameData.world.blockWorld, worldPos[0], worldPos[1]);
+            var blockId = BlockWorld.getForeground(gameData.world.blockWorld, worldPos[0], worldPos[1]);
             if (!blockId) continue; // Air
             var block = Config.blockRegister[blockId];
             if (!block || !block.isSolid) continue;
@@ -107,7 +115,7 @@ var physicsBodySimulate = function(physicsBody, dt) {
             var worldPos = v2.clone(pos);
             worldPos[0] += COLLISION_BLOCKS[j][0];
             worldPos[1] += COLLISION_BLOCKS[j][1];
-            var blockId = getForeground(gameData.world.blockWorld, worldPos[0], worldPos[1]);
+            var blockId = BlockWorld.getForeground(gameData.world.blockWorld, worldPos[0], worldPos[1]);
             if (!blockId) continue; // Air
             var block = Config.blockRegister[blockId];
             if (!block || !block.isSolid) continue;
@@ -143,9 +151,9 @@ var physicsBodySimulate = function(physicsBody, dt) {
         }
 
         // Terrain collision
-        var density = calcDensity(gameData.world.tileWorld, pos[0], pos[1]);
+        var density = TileWorld.calcDensity(gameData.world.tileWorld, pos[0], pos[1]);
         if (density > 1) {
-            var dir = calcDir(gameData.world.tileWorld, pos[0], pos[1]);
+            var dir = TileWorld.calcDir(gameData.world.tileWorld, pos[0], pos[1]);
             //v2.mul(2.0, dir, dir);
             var tempDir = v2.clone(dir);
             v2.mul(0.5 + density / 255, tempDir, tempDir);

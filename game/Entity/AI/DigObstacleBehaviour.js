@@ -1,5 +1,16 @@
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
+import BlockWorld from "engine/BlockWorld.js"
+import TileWOrld from "engine/TileWorld.js"
 
-DigObstacleBehaviour = function(entity, maxWalkDis) {
+import gameData from "game/GameData.js"
+import CommandEntityEquipItem from "game/Command/CommandEntityEquipItem.js"
+import CommandKeyStatusUpdate from "game/Command/CommandKeyStatusUpdate.js"
+import CommandEntityMove from "game/Command/CommandEntityMove.js"
+import CommandEntityRotate from "game/Command/CommandEntityRotate.js"
+
+
+var DigObstacleBehaviour = function(entity, maxWalkDis) {
     this.entity = entity;
     this.maxWalkDis = maxWalkDis;
     this.targetTilePos = null;
@@ -44,7 +55,7 @@ DigObstacleBehaviour.prototype.canRun = function() {
     var tilePos = [Math.floor(digPos[0] - 0.5), Math.floor(digPos[1] - 0.5)];
     for (var i = 0; i < 4; i++) {
         var itPos = [tilePos[0] + (i & 1), tilePos[1] + (i >> 1)];
-        var blockId = getForeground(gameData.world.blockWorld, itPos[0], itPos[1]);
+        var blockId = BlockWorld.getForeground(gameData.world.blockWorld, itPos[0], itPos[1]);
         var density = getDensity(gameData.world.tileWorld, itPos[0], itPos[1]);
         if (blockId != 0 || density > 127) {
             this.targetTilePos = itPos;
@@ -73,7 +84,7 @@ DigObstacleBehaviour.prototype.initialize = function() {
 }
 
 DigObstacleBehaviour.prototype.run = function() {
-    var blockId = getForeground(gameData.world.blockWorld, this.targetTilePos[0], this.targetTilePos[1]);
+    var blockId = BlockWorld.getForeground(gameData.world.blockWorld, this.targetTilePos[0], this.targetTilePos[1]);
     var density = getDensity(gameData.world.tileWorld, this.targetTilePos[0], this.targetTilePos[1]);
     if (gameData.world.tickId >= this.stopTick) {
         // No digging for 2 seconds

@@ -13,6 +13,9 @@ import {Health, HealthEvents} from "game/Entity/Health.js"
 import Interacter from "game/Entity/Interacter.js"
 import {Interactable, InteractableEvents} from "game/Entity/Interactable.js"
 import EntityTemplates from "game/Entity/EntityTemplates/EntityTemplates.js"
+import { entityFunctionEntityMovement } from "game/Entity/Movement.js"
+import entityFunctionPhysicsBodySimulate from "game/Entity/Physics.js"
+import entityFunctionProjectileSimulate from "game/ProjectilePhysics.js"
 
 var World = function() {
     this.tickId = 0;
@@ -111,7 +114,7 @@ World.prototype.initializeEvents = function() {
         if (isServer) {
             if (projectileEntity.projectile.projectileType.blockDamage > 0) {
                 var strength = getStrength(this.blockWorld, blockPos[0], blockPos[1]);
-                var blockId = getForeground(this.blockWorld, blockPos[0], blockPos[1]);
+                var blockId = BlockWorld.getForeground(this.blockWorld, blockPos[0], blockPos[1]);
                 var block = Config.blockRegister[blockId];
                 var projectileArmor = (block.projectileArmor) ? block.projectileArmor : 0;
                 strength -= (1 / block.hardness) * Math.round((1.0 - projectileArmor) * projectileEntity.projectile.projectileType.blockDamage);

@@ -1,3 +1,8 @@
+import Chunk from "engine/Chunk.js"
+
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
+
 var Generator = function(seed) {
     if (!seed)
         seed = 0;
@@ -10,23 +15,23 @@ var Generator = function(seed) {
 export default Generator
 
 Generator.prototype.generate = function(chunk, chunkX, chunkY) {
-    for (var yy = 0; yy < CHUNK_DIM; ++yy) {
-        for (var xx = 0; xx < CHUNK_DIM; ++xx) {
-            var x = xx + chunkX * CHUNK_DIM;
-            var y = yy + chunkY * CHUNK_DIM;
+    for (var yy = 0; yy < Chunk.dim; ++yy) {
+        for (var xx = 0; xx < Chunk.dim; ++xx) {
+            var x = xx + chunkX * Chunk.dim;
+            var y = yy + chunkY * Chunk.dim;
 
             var distance = Math.sqrt(x * x + y * y) / 200.0
             distance -= 0.25;
 
-            noise.seed(this.seed);
-            var value = noise.perlin2(x / 20.0, y / 20.0);
+            //noise.seed(this.seed);
+            var value = Math.random();//noise.perlin2(x / 20.0, y / 20.0);
             value += distance;
-            noise.seed(this.oreNoise1);
-            var oreValue1 = noise.perlin2(x / 4.0, y / 4.0);
-            noise.seed(this.oreNoise2);
-            var oreValue2 = noise.perlin2(x / 4.0, y / 4.0);
-            noise.seed(this.oreNoise3);
-            var oreValue3 = noise.perlin2(x / 4.0, y / 4.0);
+            //noise.seed(this.oreNoise1);
+            var oreValue1 = Math.random();//noise.perlin2(x / 4.0, y / 4.0);
+            //noise.seed(this.oreNoise2);
+            var oreValue2 = Math.random();//noise.perlin2(x / 4.0, y / 4.0);
+            //noise.seed(this.oreNoise3);
+            var oreValue3 = Math.random();//noise.perlin2(x / 4.0, y / 4.0);
 
             var tileId = 0;
 

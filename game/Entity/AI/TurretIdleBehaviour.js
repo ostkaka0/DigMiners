@@ -1,5 +1,5 @@
 
-TurretIdleBehaviour = function(entity) {
+var TurretIdleBehaviour = function(entity) {
     this.entity = entity;
 }
 export default TurretIdleBehaviour

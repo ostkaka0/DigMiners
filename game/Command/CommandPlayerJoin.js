@@ -1,5 +1,11 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
+import Config from "game/Config.js"
+import gameData from "game/GameData.js"
+import Player from "game/Player.js"
+import MessageInit from "game/Message/ToClient/MessageInit.js"
+import MessageChunk from "game/Message/ToClient/MessageChunk.js"
+
 var CommandPlayerJoin = function(playerId, entityId, playerName, socketId) {
     this.playerId = playerId;
     this.playerName = playerName;

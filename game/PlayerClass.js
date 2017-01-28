@@ -1,3 +1,5 @@
+import Items from "game/Items.js"
+import Blocks from "game/Blocks.js"
 
 var PlayerClasses = {
     Assault: {
