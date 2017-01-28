@@ -1,3 +1,5 @@
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
 import Sprite from "engine/Animation/Sprite.js"
 import BodyPart from "engine/Animation/BodyPart.js"
 import PhysicsBody from "game/Entity/PhysicsBody.js"

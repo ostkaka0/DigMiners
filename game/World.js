@@ -1,13 +1,16 @@
 import Event from "engine/Core/Event.js"
 import Map2D from "engine/Core/Map2D.js"
-
 import IdList from "engine/IdList.js"
 import ObjectWorld from "engine/ObjectWorld.js"
 import ParticleWorld from "engine/ParticleWorld.js"
 import PhysicsWorld from "engine/PhysicsWorld.js"
 import Generator from "game/Generator.js"
 import EventHandler from "engine/EventHandler.js"
+import BodyPart from "engine/Animation/BodyPart.js"
+import BlockWorld from "engine/BlockWorld.js"
 
+import Global from "game/Global.js"
+import Config from "game/Config.js"
 import {Projectile, ProjectileEvents} from "game/Entity/Projectile.js"
 import {Health, HealthEvents} from "game/Entity/Health.js"
 import Interacter from "game/Entity/Interacter.js"
@@ -16,6 +19,10 @@ import EntityTemplates from "game/Entity/EntityTemplates/EntityTemplates.js"
 import { entityFunctionEntityMovement } from "game/Entity/Movement.js"
 import entityFunctionPhysicsBodySimulate from "game/Entity/Physics.js"
 import entityFunctionProjectileSimulate from "game/ProjectilePhysics.js"
+import CommandParticles from "game/Command/CommandParticles.js"
+import CommandBlockStrength from "game/Command/CommandBlockStrength.js"
+import InventoryHUD from "game/GUI/InventoryHUD.js"
+import ParticleFunctions from "game/ParticleFunctions.js"
 
 var World = function() {
     this.tickId = 0;
@@ -87,7 +94,7 @@ World.prototype.initializeEvents = function() {
     }
 
     Event.subscribe(ProjectileEvents.onHit, this, function(projectileEntity, hitPos) {
-        gameData.setTimeout(function(projectileEntity) {
+        Global.gameData.setTimeout(function(projectileEntity) {
             var type = projectileEntity.projectile.projectileType;
             if (type.isExplosive)
                 createExplosion(hitPos, type.explosiveRadius, type.explosiveEntityDamage, type.explosionBlockDamage, type.explosionTileDamage);
@@ -113,7 +120,7 @@ World.prototype.initializeEvents = function() {
     Event.subscribe(ProjectileEvents.onHitBlock, this, function(projectileEntity, blockPos) {
         if (isServer) {
             if (projectileEntity.projectile.projectileType.blockDamage > 0) {
-                var strength = getStrength(this.blockWorld, blockPos[0], blockPos[1]);
+                var strength = BlockWorld.getStrength(this.blockWorld, blockPos[0], blockPos[1]);
                 var blockId = BlockWorld.getForeground(this.blockWorld, blockPos[0], blockPos[1]);
                 var block = Config.blockRegister[blockId];
                 var projectileArmor = (block.projectileArmor) ? block.projectileArmor : 0;
@@ -142,7 +149,7 @@ World.prototype.initializeEvents = function() {
             this.entityWorld.remove(entity);
             if (entity.controlledByPlayer) {
                 var playerId = entity.controlledByPlayer.playerId;
-                var player = gameData.playerWorld.objects[playerId];
+                var player = Global.gameData.playerWorld.objects[playerId];
                 if (player) {
                     player.deathTick = this.tickId;
                     player.entityId = null;
@@ -167,13 +174,13 @@ World.prototype.initializeEvents = function() {
             if (global.playerEntity && global.playerEntity.id == interactingEntity.id) {
                 if (interactableEntity.chest && interactableEntity.inventory) {
                     //TODO: inventory size
-                    gameData.HUD.inventory2 = new InventoryHUD(interactableEntity.inventory, "Chest", 80);
-                    gameData.HUD.inventory2.update();
+                    Global.gameData.HUD.inventory2 = new InventoryHUD(interactableEntity.inventory, "Chest", 80);
+                    Global.gameData.HUD.inventory2.update();
                 }
             }
 
-            interactingEntity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArmAction", 200, true);
-            interactingEntity.bodyparts.bodyparts["leftArm"].cycle(gameData, "leftArmAction", 200, true);
+            interactingEntity.bodyparts.bodyparts["rightArm"].cycle(Global.gameData, "rightArmAction", 200, true);
+            interactingEntity.bodyparts.bodyparts["leftArm"].cycle(Global.gameData, "leftArmAction", 200, true);
         }
     });
 
@@ -182,8 +189,8 @@ World.prototype.initializeEvents = function() {
         if (!isServer) {
             if (global.playerEntity && global.playerEntity.id == interactingEntity.id) {
                 if (interactableEntity.chest && interactableEntity.inventory) {
-                    gameData.HUD.inventory2.remove();
-                    gameData.HUD.inventory2 = null;
+                    Global.gameData.HUD.inventory2.remove();
+                    Global.gameData.HUD.inventory2 = null;
                 }
             }
         }

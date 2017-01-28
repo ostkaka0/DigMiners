@@ -1,7 +1,7 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
 
 var CommandEntityBeginReloadWeapon = function(entityId) {
     this.entityId = entityId;
@@ -9,10 +9,10 @@ var CommandEntityBeginReloadWeapon = function(entityId) {
 export default CommandEntityBeginReloadWeapon
 
 CommandEntityBeginReloadWeapon.prototype.execute = function() {
-    var entity = gameData.world.entityWorld.objects[this.entityId];
+    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity || !entity.movement) return;
     entity.movement.isReloading = true;
-    gameData.world.events.trigger("beginReload", entity);
+    Global.gameData.world.events.trigger("beginReload", entity);
 }
 
 CommandEntityBeginReloadWeapon.prototype.serialize = function(byteArray, index) {

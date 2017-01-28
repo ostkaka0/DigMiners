@@ -4,18 +4,20 @@ import v2 from "engine/Core/v2.js"
 var DisField = {};
 export default DisField;
 
+DisField.pageDim = 8;
+
 DisField.getPageAndIndex = function(disField, pos) {
-	var pageX = Math.floor(pos[0] / PATH_PAGE_DIM);
-	var pageY = Math.floor(pos[1] / PATH_PAGE_DIM);
-	var localX = Math.floor(pos[0]) - pageX * PATH_PAGE_DIM;
-	var localY = Math.floor(pos[1]) - pageY * PATH_PAGE_DIM;
+	var pageX = Math.floor(pos[0] / DisField.pageDim);
+	var pageY = Math.floor(pos[1] / DisField.pageDim);
+	var localX = Math.floor(pos[0]) - pageX * DisField.pageDim;
+	var localY = Math.floor(pos[1]) - pageY * DisField.pageDim;
 	var page = disField.get(pageX, pageY);
 	if (!page) {
-		page = new Uint16Array(PATH_PAGE_DIM * PATH_PAGE_DIM);
+		page = new Uint16Array(DisField.pageDim * DisField.pageDim);
 		page.fill(65535);
 		disField.set(pageX, pageY, page);
 	}
-	return [page, localX + localY * PATH_PAGE_DIM];
+	return [page, localX + localY * DisField.pageDim];
 }
 
 DisField.getTileDis = function(disField, tilePos) {

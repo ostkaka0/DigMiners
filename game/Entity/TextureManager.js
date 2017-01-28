@@ -1,13 +1,13 @@
 import Event from "engine/Core/Event.js"
 import Texture from "engine/Animation/Texture.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
 import TextureLoader  from "game/Entity/TextureLoader.js"
 
 export default function() {
     this.loader = new TextureLoader();
     var loader = this.loader;
 
-    gameData.world.events.trigger("texturesBeginLoading");
+    Global.gameData.world.events.trigger("texturesBeginLoading");
     console.log("Loading textures...");
 
     loader.queue("healthbar.png");
@@ -68,7 +68,7 @@ export default function() {
             }
         }
 
-        gameData.textures = texturesOutput;
+        Global.gameData.textures = texturesOutput;
     }.bind(this), true);
 
     this.loader.loadTextures();

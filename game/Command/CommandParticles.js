@@ -1,7 +1,9 @@
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
 
 var CommandParticles = function(particleFunctionId, pos, angle) {
     this.particleFunctionId = particleFunctionId;

@@ -1,5 +1,5 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
 import Event from "engine/Core/Event.js"
 
 export var InteractableEvents = {};
@@ -34,7 +34,7 @@ Interactable.prototype.getSerializationSize = function() {
 
 Interactable.prototype.destroy = function(interactableEntity) {
     for (var i = 0; i < this.interacting.length; ++i) {
-        var interactingEntity = gameData.world.entityWorld.objects[i];
+        var interactingEntity = Global.gameData.world.entityWorld.objects[i];
         Event.trigger(InteractableEvents.onFinishInteract, interactableEntity, interactingEntity);
     }
 }

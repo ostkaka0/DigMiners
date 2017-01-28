@@ -1,6 +1,10 @@
+import Event from "engine/Core/Event.js"
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
+import Config from "game/Config.js"
 
-export InventoryHUDEvents = {};
-export InventoryHUDEvents.click = [];
+export var InventoryHUDEvents = {};
+InventoryHUDEvents.click = [];
 
 export var InventoryHUD = function(inventory, text, bottom) {
     this.inventory = inventory;

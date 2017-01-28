@@ -1,7 +1,12 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import BlockWorld from "engine/BlockWorld.js"
+import TileWorld from "engine/TileWorld.js"
 
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
+import { Blocks, BlockTypes } from "game/Blocks.js"
+import BlockPlacer from "game/Entity/BlockPlacer.js"
+import CommandEntitySpawn from "game/Command/CommandEntitySpawn.js"
 
 var CommandEntityBuild = function(entityId, x, y, blockId, type) {
     this.entityId = entityId;
@@ -14,19 +19,19 @@ export default CommandEntityBuild
 
 CommandEntityBuild.prototype.execute = function() {
     /*if (this.type == BlockTypes.FOREGROUND)
-        setForeground(gameData.world.blockWorld, this.x, this.y, this.blockId);
+        BlockWorld.setForeground(Global.gameData.world.blockWorld, this.x, this.y, this.blockId);
     else if (this.type == BlockTypes.BACKGROUND)
-        setBackground(gameData.world.blockWorld, this.x, this.y, this.blockId);*/
+        setBackground(Global.gameData.world.blockWorld, this.x, this.y, this.blockId);*/
 
-    var entity = gameData.world.entityWorld.objects[this.entityId];
+    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity) return;
     if (!isServer && this.blockId)
-        entity.bodyparts.bodyparts["rightArm"].cycle(gameData, "rightArm", 256, true);
+        entity.bodyparts.bodyparts["rightArm"].cycle(Global.gameData, "rightArm", 256, true);
     if (isServer) {
         var block = Config.blockRegister[this.blockId];
         var entityBlockPlacer = { blockPlacer: new BlockPlacer([this.x, this.y], this.blockId, block.buildDuration, entity.id) };
-        var entityBlockPlacerId = gameData.world.idList.next();
-        sendCommand(new CommandEntitySpawn(gameData, entityBlockPlacer, entityBlockPlacerId));
+        var entityBlockPlacerId = Global.gameData.world.idList.next();
+        sendCommand(new CommandEntitySpawn(Global.gameData, entityBlockPlacer, entityBlockPlacerId));
         entity.blockPlacerId = entityBlockPlacerId;
     }
 }

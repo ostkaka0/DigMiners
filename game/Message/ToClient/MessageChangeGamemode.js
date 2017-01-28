@@ -1,18 +1,18 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 import IndexCounter from "engine/IndexCounter.js"
 
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
 
 var MessageChangeGameMode = function() {
-    this.gameModeId = gameData.gameMode.id;
+    this.gameModeId = Global.gameData.gameMode.id;
 }
 export default MessageChangeGameMode
 
 MessageChangeGameMode.prototype.execute = function(gameData) {
     // TODO: Don't reload page
     location.reload(); // Reload page
-    gameData.changeGameMode(this.gameModeId);
-    gameData.tick(); // Change gameMode instantly
+    Global.gameData.changeGameMode(this.gameModeId);
+    Global.gameData.tick(); // Change gameMode instantly
 }
 
 MessageChangeGameMode.prototype.send = function(socket) {

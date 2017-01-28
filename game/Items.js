@@ -1,9 +1,21 @@
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
+import TileWorld from "engine/TileWorld.js"
+import BlockWorld from "engine/BlockWorld.js"
+import BlockChunk from "engine/BlockChunk.js"
+
 import Blocks from "game/Blocks.js"
 import Tiles from "game/Tiles.js"
 import Projectiles from "game/Projectiles.js"
+import Entity from "game/Entity/Entity.js"
 
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
+
+import CommandBlockStrength from "game/Command/CommandEntityReloadWeapon.js"
+import CommandEntityDig from "game/Command/CommandEntityDig.js"
+import CommandProjectileSpawn from "game/Command/CommandProjectileSpawn.js"
+import CommandEntityReloadWeapon from "game/Command/CommandEntityReloadWeapon.js"
 
 export var Items = {};
 export default Items
@@ -24,8 +36,8 @@ ItemFunctions.Shovel = function(entity, item) {
         // Break block
         var chunkPos = [];
         var localPos = [];
-        v2WorldToBlockChunk(toolUsePos, chunkPos, localPos);
-        var blockChunk = gameData.world.blockWorld.get(chunkPos[0], chunkPos[1]);
+        BlockChunk.fromV2World(toolUsePos, chunkPos, localPos);
+        var blockChunk = Global.gameData.world.blockWorld.get(chunkPos[0], chunkPos[1]);
         if (blockChunk) {
             var blockId = blockChunk.getForeground(localPos[0], localPos[1]);
             if (blockId) {
@@ -33,21 +45,21 @@ ItemFunctions.Shovel = function(entity, item) {
                 var strength = blockChunk.getStrength(localPos[0], localPos[1]);
                 // TODO: 16 magic value
                 strength -= 16 * (Entity.getBlockBreakSpeed(entity) / blockType.hardness);
-                var x = chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0];
-                var y = chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1];
+                var x = chunkPos[0] * BlockChunk.dim + localPos[0];
+                var y = chunkPos[1] * BlockChunk.dim + localPos[1];
                 sendCommand(new CommandBlockStrength(x, y, Math.max(strength, 0)));
                 return;
             }
         }
 
         // Dig terrain
-        gameData.world.commands.push(new CommandEntityDig(entity.id, entity.physicsBody.getPos(), dir, 1.5, Entity.getDigSpeed(entity), Entity.getMaxDigHardness(entity)));
+        Global.gameData.world.commands.push(new CommandEntityDig(entity.id, entity.physicsBody.getPos(), dir, 1.5, Entity.getDigSpeed(entity), Entity.getMaxDigHardness(entity)));
     }
 }
 
 ItemFunctions.Sword = function(entity, item) {
     if (isServer) {
-        var physicsWorld = gameData.world.physicsWorld;
+        var physicsWorld = Global.gameData.world.physicsWorld;
         var hitRange = item.hitRange || 1.0;
         var hitRadius = item.hitRadius || 0.5;
         var damage = item.damage || 10.0;
@@ -65,7 +77,7 @@ ItemFunctions.Sword = function(entity, item) {
 
         bodies.forEach(function(bodyId) {
             if (bodyId == entityBodyId) return;
-            var targetEntity = gameData.world.physicsEntities[bodyId];
+            var targetEntity = Global.gameData.world.physicsEntities[bodyId];
             if (!targetEntity) return;
 
             hitEntities.push(targetEntity.id);
@@ -75,7 +87,7 @@ ItemFunctions.Sword = function(entity, item) {
 
         // TODO: CommandEntityHit
         //if (isServer) {
-        //    gameData.world.commands.push(new CommandEntityHit(entity, hitEntities));
+        //    Global.gameData.world.commands.push(new CommandEntityHit(entity, hitEntities));
         //}
     }
 }
@@ -86,7 +98,7 @@ ItemFunctions.Potion = function(entity, item) {
         entity.potionEffects.add(potionEffectType, item.potionDuration);
     }
     if (entity.inventory) {
-        var removed = entity.inventory.removeItem(gameData, item.id, 1);
+        var removed = entity.inventory.removeItem(Global.gameData, item.id, 1);
         for (var i = 0; i < removed.length; ++i) {
             // Dequip item when removed from inventory
             var entry = removed[i];
@@ -97,8 +109,8 @@ ItemFunctions.Potion = function(entity, item) {
                 Entity.onDequip(entity, stackId, itemType);
         };
         if (!isServer && global.playerEntity && entity.id == global.playerEntity.id) {
-            gameData.HUD.update();
-            gameData.HUD.checkCanAffordRecipe();
+            Global.gameData.HUD.update();
+            Global.gameData.HUD.checkCanAffordRecipe();
         }
     }
 }
@@ -113,7 +125,7 @@ ItemFunctions.RangedWeapon = function(entity, itemType) {
     var numProjectiles = itemType.numProjectiles ? itemType.numProjectiles : 1;
     item.magazine -= 1;
 
-    gameData.world.events.trigger("bulletFired", entity, itemType);
+    Global.gameData.world.events.trigger("bulletFired", entity, itemType);
 
     if (isServer) {
         var maxDistance = (itemType.projectileType.hitAtCursor && entity.movement.deltaWorldCursorPos) ?
@@ -140,7 +152,7 @@ ItemFunctions.RangedWeapon = function(entity, itemType) {
                 projectileMaxDistance *= 1.0 - 0.5 * scatter + scatter * Math.random();
             }
 
-            gameData.world.commands.push(new CommandProjectileSpawn(gameData.world.idList.next(), toolUsePos, projectileAngle, projectileSpeed, projectileMaxDistance, itemType.projectileType, entity.id));
+            Global.gameData.world.commands.push(new CommandProjectileSpawn(Global.gameData.world.idList.next(), toolUsePos, projectileAngle, projectileSpeed, projectileMaxDistance, itemType.projectileType, entity.id));
         }
     }
 }
@@ -233,462 +245,465 @@ ItemTextures.BlockAtlas = {
     dimY: 16,
 }
 
-// Blocks
-var num = 0;
-for (var name in Blocks) {
-    var block = Blocks[name];
-    Items[name] = {
-        name: block.name,
-        texture: ItemTextures.BlockAtlas,
-        spriteId: num,
+export function initItems() {
+    // Blocks
+    console.log("Blocks:", Blocks);
+    var num = 0;
+    for (var name in Blocks) {
+        var block = Blocks[name];
+        Items[name] = {
+            name: block.name,
+            texture: ItemTextures.BlockAtlas,
+            spriteId: num,
+            isEquipable: true,
+            isDropable: true,
+            maxStackSize: 100,
+            type: "tool",
+            typeOfType: "block",
+            blockId: num
+        }
+        ++num;
+    }
+
+    // Hats
+    Items.UglyHat = {
+        name: "Ugly Hat",
+        texture: ItemTextures.HatAtlas,
+        spriteId: 3,
         isEquipable: true,
         isDropable: true,
-        maxStackSize: 100,
-        type: "tool",
-        typeOfType: "block",
-        blockId: num
+        maxStackSize: 1,
+        type: "hat",
     }
-    ++num;
-}
+    Items.BrokenHat = {
+        name: "Broken Hat",
+        texture: ItemTextures.HatAtlas,
+        spriteId: 0,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        type: "hat",
+    }
 
-// Hats
-Items.UglyHat = {
-    name: "Ugly Hat",
-    texture: ItemTextures.HatAtlas,
-    spriteId: 3,
-    isEquipable: true,
-    isDropable: true,
-    maxStackSize: 1,
-    type: "hat",
-}
-Items.BrokenHat = {
-    name: "Broken Hat",
-    texture: ItemTextures.HatAtlas,
-    spriteId: 0,
-    isEquipable: true,
-    isDropable: true,
-    maxStackSize: 1,
-    type: "hat",
-}
+    // Shovels
+    Items.RustyShovel = {
+        name: "Rusty Shovel",
+        texture: ItemTextures.ShovelAtlas,
+        spriteId: 0,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.Shovel,
+        useCooldown: 5,
+        useDuration: 2,
+        type: "tool",
+        typeOfType: "shovel",
+        digSpeed: 0.5,
+        maxDigHardness: Tiles.Copper.hardness,
+    }
+    Items.CopperShovel = {
+        name: "Copper Shovel",
+        texture: ItemTextures.ShovelAtlas,
+        spriteId: 1,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.Shovel,
+        useCooldown: 5,
+        useDuration: 2,
+        type: "tool",
+        typeOfType: "shovel",
+        digSpeed: 0.75,
+        maxDigHardness: Tiles.Iron.hardness,
+    }
+    Items.IronShovel = {
+        name: "Iron Shovel",
+        texture: ItemTextures.ShovelAtlas,
+        spriteId: 2,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.Shovel,
+        useCooldown: 5,
+        useDuration: 2,
+        type: "tool",
+        typeOfType: "shovel",
+        digSpeed: 1.0,
+        maxDigHardness: Tiles.Iron.hardness,
+    }
+    Items.SteelShovel = {
+        name: "Steel Shovel",
+        texture: ItemTextures.ShovelAtlas,
+        spriteId: 3,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.Shovel,
+        useCooldown: 5,
+        useDuration: 2,
+        type: "tool",
+        typeOfType: "shovel",
+        digSpeed: 2.0,
+        maxDigHardness: Tiles.Apatite.hardness,
+    }
 
-// Shovels
-Items.RustyShovel = {
-    name: "Rusty Shovel",
-    texture: ItemTextures.ShovelAtlas,
-    spriteId: 0,
-    isEquipable: true,
-    isDropable: true,
-    maxStackSize: 1,
-    itemFunction: ItemFunctions.Shovel,
-    useCooldown: 5,
-    useDuration: 2,
-    type: "tool",
-    typeOfType: "shovel",
-    digSpeed: 0.5,
-    maxDigHardness: Tiles.Copper.hardness,
-}
-Items.CopperShovel = {
-    name: "Copper Shovel",
-    texture: ItemTextures.ShovelAtlas,
-    spriteId: 1,
-    isEquipable: true,
-    isDropable: true,
-    maxStackSize: 1,
-    itemFunction: ItemFunctions.Shovel,
-    useCooldown: 5,
-    useDuration: 2,
-    type: "tool",
-    typeOfType: "shovel",
-    digSpeed: 0.75,
-    maxDigHardness: Tiles.Iron.hardness,
-}
-Items.IronShovel = {
-    name: "Iron Shovel",
-    texture: ItemTextures.ShovelAtlas,
-    spriteId: 2,
-    isEquipable: true,
-    isDropable: true,
-    maxStackSize: 1,
-    itemFunction: ItemFunctions.Shovel,
-    useCooldown: 5,
-    useDuration: 2,
-    type: "tool",
-    typeOfType: "shovel",
-    digSpeed: 1.0,
-    maxDigHardness: Tiles.Iron.hardness,
-}
-Items.SteelShovel = {
-    name: "Steel Shovel",
-    texture: ItemTextures.ShovelAtlas,
-    spriteId: 3,
-    isEquipable: true,
-    isDropable: true,
-    maxStackSize: 1,
-    itemFunction: ItemFunctions.Shovel,
-    useCooldown: 5,
-    useDuration: 2,
-    type: "tool",
-    typeOfType: "shovel",
-    digSpeed: 2.0,
-    maxDigHardness: Tiles.Apatite.hardness,
-}
+    // Melee
+    Items.Knife = {
+        name: "Knife",
+        texture: ItemTextures.SwordAtlas,
+        spriteId: 0,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.Sword,
+        useCooldown: 10,
+        useDuration: 0,
+        type: "tool",
+        typeOfType: "sword",
+        hitRange: 0.25,
+        hitRadius: 0.75,
+        damage: 40
+    }
+    Items.AssasinKnife = {
+        name: "Assassin Knife",
+        texture: ItemTextures.SwordAtlas,
+        spriteId: 1,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.Sword,
+        useCooldown: 10,
+        useDuration: 0,
+        type: "tool",
+        typeOfType: "sword",
+        hitRange: 0.25,
+        hitRadius: 0.75,
+        damage: 80
+    }
 
-// Melee
-Items.Knife = {
-    name: "Knife",
-    texture: ItemTextures.SwordAtlas,
-    spriteId: 0,
-    isEquipable: true,
-    isDropable: true,
-    maxStackSize: 1,
-    itemFunction: ItemFunctions.Sword,
-    useCooldown: 10,
-    useDuration: 0,
-    type: "tool",
-    typeOfType: "sword",
-    hitRange: 0.25,
-    hitRadius: 0.75,
-    damage: 40
-}
-Items.AssasinKnife = {
-    name: "Assassin Knife",
-    texture: ItemTextures.SwordAtlas,
-    spriteId: 1,
-    isEquipable: true,
-    isDropable: true,
-    maxStackSize: 1,
-    itemFunction: ItemFunctions.Sword,
-    useCooldown: 10,
-    useDuration: 0,
-    type: "tool",
-    typeOfType: "sword",
-    hitRange: 0.25,
-    hitRadius: 0.75,
-    damage: 80
-}
+    // Swords
+    Items.RustySword = {
+        name: "Rusty Sword",
+        texture: ItemTextures.SwordAtlas,
+        spriteId: 0,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.Sword,
+        useCooldown: 20,
+        useDuration: 4,
+        type: "tool",
+        typeOfType: "sword",
+        hitRange: 0.5,
+        hitRadius: 1.5,
+        damage: 40
+    }
+    Items.CopperSword = {
+        name: "Copper Sword",
+        texture: ItemTextures.SwordAtlas,
+        spriteId: 1,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.Sword,
+        useCooldown: 20,
+        useDuration: 4,
+        type: "tool",
+        typeOfType: "sword",
+        hitRange: 0.5,
+        hitRadius: 1.5,
+        damage: 60
+    }
+    Items.IronSword = {
+        name: "Iron Sword",
+        texture: ItemTextures.SwordAtlas,
+        spriteId: 2,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.Sword,
+        useCooldown: 20,
+        useDuration: 4,
+        type: "tool",
+        typeOfType: "sword",
+        hitRange: 0.5,
+        hitRadius: 1.5,
+        damage: 80
+    }
+    Items.SteelSword = {
+        name: "Steel Sword",
+        texture: ItemTextures.SwordAtlas,
+        spriteId: 3,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.Sword,
+        useCooldown: 20,
+        useDuration: 4,
+        type: "tool",
+        typeOfType: "sword",
+        hitRange: 0.5,
+        hitRadius: 1.5,
+        damage: 100
+    }
 
-// Swords
-Items.RustySword = {
-    name: "Rusty Sword",
-    texture: ItemTextures.SwordAtlas,
-    spriteId: 0,
-    isEquipable: true,
-    isDropable: true,
-    maxStackSize: 1,
-    itemFunction: ItemFunctions.Sword,
-    useCooldown: 20,
-    useDuration: 4,
-    type: "tool",
-    typeOfType: "sword",
-    hitRange: 0.5,
-    hitRadius: 1.5,
-    damage: 40
-}
-Items.CopperSword = {
-    name: "Copper Sword",
-    texture: ItemTextures.SwordAtlas,
-    spriteId: 1,
-    isEquipable: true,
-    isDropable: true,
-    maxStackSize: 1,
-    itemFunction: ItemFunctions.Sword,
-    useCooldown: 20,
-    useDuration: 4,
-    type: "tool",
-    typeOfType: "sword",
-    hitRange: 0.5,
-    hitRadius: 1.5,
-    damage: 60
-}
-Items.IronSword = {
-    name: "Iron Sword",
-    texture: ItemTextures.SwordAtlas,
-    spriteId: 2,
-    isEquipable: true,
-    isDropable: true,
-    maxStackSize: 1,
-    itemFunction: ItemFunctions.Sword,
-    useCooldown: 20,
-    useDuration: 4,
-    type: "tool",
-    typeOfType: "sword",
-    hitRange: 0.5,
-    hitRadius: 1.5,
-    damage: 80
-}
-Items.SteelSword = {
-    name: "Steel Sword",
-    texture: ItemTextures.SwordAtlas,
-    spriteId: 3,
-    isEquipable: true,
-    isDropable: true,
-    maxStackSize: 1,
-    itemFunction: ItemFunctions.Sword,
-    useCooldown: 20,
-    useDuration: 4,
-    type: "tool",
-    typeOfType: "sword",
-    hitRange: 0.5,
-    hitRadius: 1.5,
-    damage: 100
-}
+    // Other items
+    Items.RottenRoot = {
+        name: "Rotten Root",
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 0,
+        isEquipable: false,
+        isDropable: true,
+        maxStackSize: 4,
+        type: "resource",
+    }
+    Items.SmallSticks = {
+        name: "Small Sticks",
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 1,
+        isEquipable: false,
+        isDropable: true,
+        maxStackSize: 100,
+        type: "resource"
+    }
+    Items.Dynamite = {
+        name: "Dynamite",
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 2,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 8,
+        type: "tool",
+        typeOfType: "explosive"
+    }
+    Items.Torch = {
+        name: "Torch",
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 4,
+        isEquipable: false,
+        isDropable: true,
+        maxStackSize: 10,
+        type: "resource"
+    }
+    Items.Egg = {
+        name: "Egg",
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 3,
+        isEquipable: false,
+        isDropable: true,
+        maxStackSize: 100,
+        type: "resource"
+    }
+    Items.PotionHealth = {
+        name: "Health Potion",
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 3,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 8,
+        type: "tool",
+        typeOfType: "potion",
+        useCooldown: 30,
+        useDuration: 20,
+        itemFunction: ItemFunctions.Potion,
+        getPotionEffect: function() { return PotionEffectTypes.Healing; },
+        potionDuration: 80
+    }
+    Items.HealFriend = {
+        name: "Heal Friend",
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 3,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 8,
+        type: "tool",
+        typeOfType: "potion",
+        useCooldown: 30,
+        useDuration: 20,
+        itemFunction: ItemFunctions.Potion,
+        getPotionEffect: function() { return PotionEffectTypes.HealNearEntities; },
+        potionDuration: 80
+    }
 
-// Other items
-Items.RottenRoot = {
-    name: "Rotten Root",
-    texture: ItemTextures.ItemAtlas,
-    spriteId: 0,
-    isEquipable: false,
-    isDropable: true,
-    maxStackSize: 4,
-    type: "resource",
-}
-Items.SmallSticks = {
-    name: "Small Sticks",
-    texture: ItemTextures.ItemAtlas,
-    spriteId: 1,
-    isEquipable: false,
-    isDropable: true,
-    maxStackSize: 100,
-    type: "resource"
-}
-Items.Dynamite = {
-    name: "Dynamite",
-    texture: ItemTextures.ItemAtlas,
-    spriteId: 2,
-    isEquipable: true,
-    isDropable: true,
-    maxStackSize: 8,
-    type: "tool",
-    typeOfType: "explosive"
-}
-Items.Torch = {
-    name: "Torch",
-    texture: ItemTextures.ItemAtlas,
-    spriteId: 4,
-    isEquipable: false,
-    isDropable: true,
-    maxStackSize: 10,
-    type: "resource"
-}
-Items.Egg = {
-    name: "Egg",
-    texture: ItemTextures.ItemAtlas,
-    spriteId: 3,
-    isEquipable: false,
-    isDropable: true,
-    maxStackSize: 100,
-    type: "resource"
-}
-Items.PotionHealth = {
-    name: "Health Potion",
-    texture: ItemTextures.ItemAtlas,
-    spriteId: 3,
-    isEquipable: true,
-    isDropable: true,
-    maxStackSize: 8,
-    type: "tool",
-    typeOfType: "potion",
-    useCooldown: 30,
-    useDuration: 20,
-    itemFunction: ItemFunctions.Potion,
-    getPotionEffect: function() { return PotionEffectTypes.Healing; },
-    potionDuration: 80
-}
-Items.HealFriend = {
-    name: "Heal Friend",
-    texture: ItemTextures.ItemAtlas,
-    spriteId: 3,
-    isEquipable: true,
-    isDropable: true,
-    maxStackSize: 8,
-    type: "tool",
-    typeOfType: "potion",
-    useCooldown: 30,
-    useDuration: 20,
-    itemFunction: ItemFunctions.Potion,
-    getPotionEffect: function() { return PotionEffectTypes.HealNearEntities; },
-    potionDuration: 80
-}
+    // Ranged weapons
+    Items.WeaponPistol = {
+        name: "Pistol",
+        texture: ItemTextures.GunAtlas,
+        spriteId: 0,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.RangedWeapon,
+        useCooldown: 10,
+        useDuration: 0,
+        useCycle: "rightArmGun",
+        canReload: true,
+        reloadFunction: ItemFunctions.Reload,
+        reloadCycleRightArm: "rightArmGunReload",
+        reloadCycleLeftArm: "leftArmGunReload",
+        reloadCycleGun: "gunReload",
+        reloadCooldown: 20,
+        ammoCapacity: 10,
+        ammoItem: Items.Egg,
+        ammoMax: 100,
+        type: "tool",
+        typeOfType: "rangedWeapon",
+        projectileType: Projectiles.Pistol,
+        projectileScatter: 0.02
+    }
 
-// Ranged weapons
-Items.WeaponPistol = {
-    name: "Pistol",
-    texture: ItemTextures.GunAtlas,
-    spriteId: 0,
-    isEquipable: true,
-    isDropable: true,
-    maxStackSize: 1,
-    itemFunction: ItemFunctions.RangedWeapon,
-    useCooldown: 10,
-    useDuration: 0,
-    useCycle: "rightArmGun",
-    canReload: true,
-    reloadFunction: ItemFunctions.Reload,
-    reloadCycleRightArm: "rightArmGunReload",
-    reloadCycleLeftArm: "leftArmGunReload",
-    reloadCycleGun: "gunReload",
-    reloadCooldown: 20,
-    ammoCapacity: 10,
-    ammoItem: Items.Egg,
-    ammoMax: 100,
-    type: "tool",
-    typeOfType: "rangedWeapon",
-    projectileType: Projectiles.Pistol,
-    projectileScatter: 0.02
-}
+    Items.WeaponSmg = {
+        name: "Smg",
+        texture: ItemTextures.GunAtlas,
+        spriteId: 1,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.RangedWeapon,
+        useCooldown: 3,
+        useDuration: 0,
+        useCycle: "rightArmGun",
+        canReload: true,
+        reloadFunction: ItemFunctions.Reload,
+        reloadCycleRightArm: "rightArmGunReload",
+        reloadCycleLeftArm: "leftArmGunReload",
+        reloadCycleGun: "gunReload",
+        reloadCooldown: 20,
+        ammoCapacity: 25,
+        ammoMax: 250,
+        ammoInfinite: true,
+        type: "tool",
+        typeOfType: "rangedWeapon",
+        projectileType: Projectiles.Smg,
+        projectileScatter: 0.1
+    }
 
-Items.WeaponSmg = {
-    name: "Smg",
-    texture: ItemTextures.GunAtlas,
-    spriteId: 1,
-    isEquipable: true,
-    isDropable: true,
-    maxStackSize: 1,
-    itemFunction: ItemFunctions.RangedWeapon,
-    useCooldown: 3,
-    useDuration: 0,
-    useCycle: "rightArmGun",
-    canReload: true,
-    reloadFunction: ItemFunctions.Reload,
-    reloadCycleRightArm: "rightArmGunReload",
-    reloadCycleLeftArm: "leftArmGunReload",
-    reloadCycleGun: "gunReload",
-    reloadCooldown: 20,
-    ammoCapacity: 25,
-    ammoMax: 250,
-    ammoInfinite: true,
-    type: "tool",
-    typeOfType: "rangedWeapon",
-    projectileType: Projectiles.Smg,
-    projectileScatter: 0.1
-}
+    Items.WeaponAssaultRifle = {
+        name: "Assault Rifle",
+        texture: ItemTextures.GunAtlas,
+        spriteId: 2,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.RangedWeapon,
+        useCooldown: 3,
+        useDuration: 0,
+        useCycle: "rightArmGun",
+        canReload: true,
+        reloadFunction: ItemFunctions.Reload,
+        reloadCycleRightArm: "rightArmGunReload",
+        reloadCycleLeftArm: "leftArmGunReload",
+        reloadCycleGun: "gunReload",
+        reloadCooldown: 40,
+        ammoCapacity: 35,
+        ammoItem: Items.Egg,
+        ammoMax: 280,
+        type: "tool",
+        typeOfType: "rangedWeapon",
+        projectileType: Projectiles.AssaultRifle,
+        projectileScatter: 0.03
+    }
 
-Items.WeaponAssaultRifle = {
-    name: "Assault Rifle",
-    texture: ItemTextures.GunAtlas,
-    spriteId: 2,
-    isEquipable: true,
-    isDropable: true,
-    maxStackSize: 1,
-    itemFunction: ItemFunctions.RangedWeapon,
-    useCooldown: 3,
-    useDuration: 0,
-    useCycle: "rightArmGun",
-    canReload: true,
-    reloadFunction: ItemFunctions.Reload,
-    reloadCycleRightArm: "rightArmGunReload",
-    reloadCycleLeftArm: "leftArmGunReload",
-    reloadCycleGun: "gunReload",
-    reloadCooldown: 40,
-    ammoCapacity: 35,
-    ammoItem: Items.Egg,
-    ammoMax: 280,
-    type: "tool",
-    typeOfType: "rangedWeapon",
-    projectileType: Projectiles.AssaultRifle,
-    projectileScatter: 0.03
-}
-
-Items.WeaponMachineGun = {
-    name: "Machine Gun",
-    texture: ItemTextures.GunAtlas,
-    spriteId: 3,
-    isEquipable: true,
-    isDropable: true,
-    maxStackSize: 1,
-    itemFunction: ItemFunctions.RangedWeapon,
-    useCooldown: 2,
-    useDuration: 0,
-    useCycle: "rightArmGun",
-    canReload: true,
-    reloadFunction: ItemFunctions.Reload,
-    reloadCycleRightArm: "rightArmGunReload",
-    reloadCycleLeftArm: "leftArmGunReload",
-    reloadCycleGun: "gunReload",
-    reloadCooldown: 160,
-    ammoCapacity: 150,
-    ammoItem: Items.Egg,
-    ammoMax: 300,
-    numProjectiles: 1,
-    type: "tool",
-    typeOfType: "rangedWeapon",
-    projectileType: Projectiles.MachineGun,
-    projectileScatter: 0.06
-}
-Items.WeaponShotgun = {
-    name: "Shotgun",
-    texture: ItemTextures.GunAtlas,
-    spriteId: 4,
-    isEquipable: true,
-    isDropable: true,
-    maxStackSize: 1,
-    itemFunction: ItemFunctions.RangedWeapon,
-    useCooldown: 12,
-    useDuration: 0,
-    useCycle: "rightArmGun",
-    canReload: true,
-    reloadFunction: ItemFunctions.Reload,
-    reloadCycleRightArm: "rightArmGunReload",
-    reloadCycleLeftArm: "leftArmGunReload",
-    reloadCycleGun: "gunReload",
-    reloadCooldown: 40,
-    ammoCapacity: 8,
-    ammoItem: Items.Egg,
-    ammoMax: 64,
-    type: "tool",
-    typeOfType: "rangedWeapon",
-    numProjectiles: 8,
-    projectileType: Projectiles.Shotgun,
-    projectileScatter: 0.15
-}
-Items.WeaponSniperRifle = {
-    name: "Sniper Rifle",
-    texture: ItemTextures.GunAtlas,
-    spriteId: 5,
-    isEquipable: true,
-    isDropable: true,
-    maxStackSize: 1,
-    itemFunction: ItemFunctions.RangedWeapon,
-    useCooldown: 2,
-    useDuration: 0,
-    useCycle: "rightArmGun",
-    canReload: true,
-    reloadFunction: ItemFunctions.Reload,
-    reloadCycleRightArm: "rightArmGunReload",
-    reloadCycleLeftArm: "leftArmGunReload",
-    reloadCycleGun: "gunReload",
-    reloadCooldown: 60,
-    ammoCapacity: 1,
-    ammoItem: Items.Egg,
-    ammoMax: 15,
-    type: "tool",
-    typeOfType: "rangedWeapon",
-    projectileType: Projectiles.SniperRifle,
-    projectileScatter: 0.0
-}
-Items.WeaponGrenadeLauncher = {
-    name: "Grenade Launcher",
-    texture: ItemTextures.GunAtlas,
-    spriteId: 6,
-    isEquipable: true,
-    isDropable: true,
-    maxStackSize: 1,
-    itemFunction: ItemFunctions.RangedWeapon,
-    useCooldown: 20,
-    useDuration: 0,
-    useCycle: "rightArmGun",
-    canReload: true,
-    reloadFunction: ItemFunctions.Reload,
-    reloadCycleRightArm: "rightArmGunReload",
-    reloadCycleLeftArm: "leftArmGunReload",
-    reloadCycleGun: "gunReload",
-    reloadCooldown: 80,
-    ammoCapacity: 6,
-    ammoItem: Items.Egg,
-    ammoMax: 6,
-    type: "tool",
-    typeOfType: "rangedWeapon",
-    projectileType: Projectiles.GrenadeLauncher,
-    projectileScatter: 0.05
+    Items.WeaponMachineGun = {
+        name: "Machine Gun",
+        texture: ItemTextures.GunAtlas,
+        spriteId: 3,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.RangedWeapon,
+        useCooldown: 2,
+        useDuration: 0,
+        useCycle: "rightArmGun",
+        canReload: true,
+        reloadFunction: ItemFunctions.Reload,
+        reloadCycleRightArm: "rightArmGunReload",
+        reloadCycleLeftArm: "leftArmGunReload",
+        reloadCycleGun: "gunReload",
+        reloadCooldown: 160,
+        ammoCapacity: 150,
+        ammoItem: Items.Egg,
+        ammoMax: 300,
+        numProjectiles: 1,
+        type: "tool",
+        typeOfType: "rangedWeapon",
+        projectileType: Projectiles.MachineGun,
+        projectileScatter: 0.06
+    }
+    Items.WeaponShotgun = {
+        name: "Shotgun",
+        texture: ItemTextures.GunAtlas,
+        spriteId: 4,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.RangedWeapon,
+        useCooldown: 12,
+        useDuration: 0,
+        useCycle: "rightArmGun",
+        canReload: true,
+        reloadFunction: ItemFunctions.Reload,
+        reloadCycleRightArm: "rightArmGunReload",
+        reloadCycleLeftArm: "leftArmGunReload",
+        reloadCycleGun: "gunReload",
+        reloadCooldown: 40,
+        ammoCapacity: 8,
+        ammoItem: Items.Egg,
+        ammoMax: 64,
+        type: "tool",
+        typeOfType: "rangedWeapon",
+        numProjectiles: 8,
+        projectileType: Projectiles.Shotgun,
+        projectileScatter: 0.15
+    }
+    Items.WeaponSniperRifle = {
+        name: "Sniper Rifle",
+        texture: ItemTextures.GunAtlas,
+        spriteId: 5,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.RangedWeapon,
+        useCooldown: 2,
+        useDuration: 0,
+        useCycle: "rightArmGun",
+        canReload: true,
+        reloadFunction: ItemFunctions.Reload,
+        reloadCycleRightArm: "rightArmGunReload",
+        reloadCycleLeftArm: "leftArmGunReload",
+        reloadCycleGun: "gunReload",
+        reloadCooldown: 60,
+        ammoCapacity: 1,
+        ammoItem: Items.Egg,
+        ammoMax: 15,
+        type: "tool",
+        typeOfType: "rangedWeapon",
+        projectileType: Projectiles.SniperRifle,
+        projectileScatter: 0.0
+    }
+    Items.WeaponGrenadeLauncher = {
+        name: "Grenade Launcher",
+        texture: ItemTextures.GunAtlas,
+        spriteId: 6,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 1,
+        itemFunction: ItemFunctions.RangedWeapon,
+        useCooldown: 20,
+        useDuration: 0,
+        useCycle: "rightArmGun",
+        canReload: true,
+        reloadFunction: ItemFunctions.Reload,
+        reloadCycleRightArm: "rightArmGunReload",
+        reloadCycleLeftArm: "leftArmGunReload",
+        reloadCycleGun: "gunReload",
+        reloadCooldown: 80,
+        ammoCapacity: 6,
+        ammoItem: Items.Egg,
+        ammoMax: 6,
+        type: "tool",
+        typeOfType: "rangedWeapon",
+        projectileType: Projectiles.GrenadeLauncher,
+        projectileScatter: 0.05
+    }
 }

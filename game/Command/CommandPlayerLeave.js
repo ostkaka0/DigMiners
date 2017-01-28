@@ -1,7 +1,7 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
 
 var CommandPlayerLeave = function(playerId, entityId) {
     this.playerId = playerId;
@@ -10,16 +10,16 @@ var CommandPlayerLeave = function(playerId, entityId) {
 export default CommandPlayerLeave
 
 CommandPlayerLeave.prototype.execute = function() {
-    var player = gameData.playerWorld.objects[this.playerId];
-    var entity = gameData.world.entityWorld.objects[this.entityId];
+    var player = Global.gameData.playerWorld.objects[this.playerId];
+    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
     if (player)
-        gameData.playerWorld.remove(player);
+        Global.gameData.playerWorld.remove(player);
     if (entity)
-        gameData.world.entityWorld.remove(entity);
+        Global.gameData.world.entityWorld.remove(entity);
     if (isServer)
         console.log(player.name + " disconnected.");
     else if (entity && entity.nameComponent)
-        gameData.HUD.chat.write(entity.nameComponent.entityName + " disconnected.");
+        Global.gameData.HUD.chat.write(entity.nameComponent.entityName + " disconnected.");
 }
 
 CommandPlayerLeave.prototype.serialize = function(byteArray, index) {

@@ -1,5 +1,7 @@
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
 
 
 export var createParticles = function(particleFunction, pos, angle) {
@@ -15,7 +17,7 @@ ParticleFunctions.BulletHitParticles = function(pos, angle) {
         var angle2 = angle + (Math.random() - 0.5) * 1.0;
         var velocity = [-Math.cos(angle2), Math.sin(angle2)];
         v2.mul(Math.random() * 12.0, velocity, velocity);
-        gameData.world.particleWorld.add(pos, velocity, Particles.Bullet);
+        Global.gameData.world.particleWorld.add(pos, velocity, Particles.Bullet);
     }
 }
 
@@ -24,6 +26,6 @@ ParticleFunctions.BloodHitParticles = function(pos, angle) {
         var angle2 = angle + (Math.random() - 0.5) * 1.0;
         var velocity = [Math.cos(angle2), -Math.sin(angle2)];
         v2.mul(Math.random() * 6.0, velocity, velocity);
-        gameData.world.particleWorld.add(pos, velocity, Particles.Blood);
+        Global.gameData.world.particleWorld.add(pos, velocity, Particles.Blood);
     }
 }

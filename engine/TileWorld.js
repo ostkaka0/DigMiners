@@ -2,6 +2,7 @@ import Chunk from "engine/Chunk.js"
 import fix from "engine/Core/Fix.js"
 import v2 from "engine/Core/v2.js"
 
+import Global from "game/Global.js"
 import Config from "game/Config.js"
 
 var CHUNK_DIM = Chunk.dim;
@@ -128,7 +129,7 @@ TileWorld.carveCircle = function(gameData, x, y, radius, digSpeed, maxHardness, 
     if (digSpeed == undefined || digSpeed == null)
         digSpeed = 1.0;
 
-    var tileWorld = gameData.world.tileWorld;
+    var tileWorld = Global.gameData.world.tileWorld;
     var tileRegister = Config.tileRegister;
 
     var dug = [];

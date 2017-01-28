@@ -1,3 +1,6 @@
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
+
 import Sprite from "engine/Animation/Sprite.js"
 import BodyPart from "engine/Animation/BodyPart.js"
 import PhysicsBody from "game/Entity/PhysicsBody.js"
@@ -12,7 +15,8 @@ import Inventory from "game/Entity/Inventory.js"
 import EquippedItems from "game/Entity/EquippedItems.js"
 import PotionEffects from "game/Entity/PotionEffects.js"
 import ControlledByPlayer from "game/Entity/ControlledByPlayer.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
+import Interacter from "game/Entity/Interacter.js"
 
 export var entityTemplatePlayerZombie = function(playerId, entityId, name, pos, playerClass) {
     var entity = entityTemplateZombie(entityId, pos, Teams.Zombie);
@@ -62,11 +66,13 @@ export var entityTemplatePlayer = function(playerId, entityId, name, playerClass
     entity.ammo = new Ammo();
 
     playerClass.weapons.forEach(function(weapon) {
-        entity.inventory.addStaticItem(gameData, weapon.id);
+        entity.inventory.addStaticItem(Global.gameData, weapon.id);
         entity.ammo[weapon.id] = weapon.ammoMax || 0;
     });
+    console.log(playerClass);
     playerClass.blocks.forEach(function(blockItem) {
-        entity.inventory.addStaticItem(gameData, blockItem.id);
+        console.log(blockItem );
+        entity.inventory.addStaticItem(Global.gameData, blockItem.id);
     });
 
     return entity;

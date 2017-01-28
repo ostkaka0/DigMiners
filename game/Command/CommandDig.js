@@ -4,7 +4,7 @@ import v2 from "engine/Core/v2.js"
 import TileWorld from "engine/TileWorld.js"
 
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
 
 var CommandDig = function(pos, radius) {
     if (pos)
@@ -14,8 +14,8 @@ var CommandDig = function(pos, radius) {
 export default CommandDig
 
 CommandDig.prototype.execute = function() {
-    var tileWorld = gameData.world.tileWorld;
-    TileWorld.carveCircle(gameData, this.pos[0], this.pos[1], this.radius, 5000.0, 5000.0);
+    var tileWorld = Global.gameData.world.tileWorld;
+    TileWorld.carveCircle(Global.gameData, this.pos[0], this.pos[1], this.radius, 5000.0, 5000.0);
 }
 
 CommandDig.prototype.serialize = function(byteArray, index) {

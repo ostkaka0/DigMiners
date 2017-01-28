@@ -4,7 +4,7 @@ import TileWorld from "engine/TileWorld.js"
 import BlockWorld from "engine/BlockWorld.js"
 
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
 
 var PHYSICS_MAX_STEP_LENGTH = 1.0;
 
@@ -56,7 +56,7 @@ var BlockCollisionSide = {
 }
 
 var entityFunctionPhysicsBodySimulate = function(dt) {
-    gameData.world.entityWorld.objectArray.forEach(function(entity) {
+    Global.gameData.world.entityWorld.objectArray.forEach(function(entity) {
         if (entity.isDead || !entity.isActive) return;
         if (entity.physicsBody)
             physicsBodySimulate(entity.physicsBody, dt);
@@ -87,7 +87,7 @@ var physicsBodySimulate = function(physicsBody, dt) {
             var worldPos = v2.clone(pos);
             worldPos[0] += COLLISION_BLOCKS[j][0];
             worldPos[1] += COLLISION_BLOCKS[j][1];
-            var blockId = BlockWorld.getForeground(gameData.world.blockWorld, worldPos[0], worldPos[1]);
+            var blockId = BlockWorld.getForeground(Global.gameData.world.blockWorld, worldPos[0], worldPos[1]);
             if (!blockId) continue; // Air
             var block = Config.blockRegister[blockId];
             if (!block || !block.isSolid) continue;
@@ -100,13 +100,13 @@ var physicsBodySimulate = function(physicsBody, dt) {
             if (radius > 0 && Math.abs(dx) < radius + 0.5 && Math.abs(dy) < radius + 0.5) {
                 if (dy > dx) {
                     if (dy > -dx)
-                        gameData.world.events.trigger("entityHitBlockSide", gameData.world.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.TOP);
+                        Global.gameData.world.events.trigger("entityHitBlockSide", Global.gameData.world.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.TOP);
                     else
-                        gameData.world.events.trigger("entityHitBlockSide", gameData.world.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.LEFT);
+                        Global.gameData.world.events.trigger("entityHitBlockSide", Global.gameData.world.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.LEFT);
                 } else if (dy > -dx)
-                    gameData.world.events.trigger("entityHitBlockSide", gameData.world.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.RIGHT);
+                    Global.gameData.world.events.trigger("entityHitBlockSide", Global.gameData.world.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.RIGHT);
                 else
-                    gameData.world.events.trigger("entityHitBlockSide", gameData.world.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.BOTTOM);
+                    Global.gameData.world.events.trigger("entityHitBlockSide", Global.gameData.world.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.BOTTOM);
             }
         }
 
@@ -115,7 +115,7 @@ var physicsBodySimulate = function(physicsBody, dt) {
             var worldPos = v2.clone(pos);
             worldPos[0] += COLLISION_BLOCKS[j][0];
             worldPos[1] += COLLISION_BLOCKS[j][1];
-            var blockId = BlockWorld.getForeground(gameData.world.blockWorld, worldPos[0], worldPos[1]);
+            var blockId = BlockWorld.getForeground(Global.gameData.world.blockWorld, worldPos[0], worldPos[1]);
             if (!blockId) continue; // Air
             var block = Config.blockRegister[blockId];
             if (!block || !block.isSolid) continue;
@@ -151,9 +151,9 @@ var physicsBodySimulate = function(physicsBody, dt) {
         }
 
         // Terrain collision
-        var density = TileWorld.calcDensity(gameData.world.tileWorld, pos[0], pos[1]);
+        var density = TileWorld.calcDensity(Global.gameData.world.tileWorld, pos[0], pos[1]);
         if (density > 1) {
-            var dir = TileWorld.calcDir(gameData.world.tileWorld, pos[0], pos[1]);
+            var dir = TileWorld.calcDir(Global.gameData.world.tileWorld, pos[0], pos[1]);
             //v2.mul(2.0, dir, dir);
             var tempDir = v2.clone(dir);
             v2.mul(0.5 + density / 255, tempDir, tempDir);

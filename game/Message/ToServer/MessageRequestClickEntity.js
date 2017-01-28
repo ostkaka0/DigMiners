@@ -1,4 +1,7 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import IndexCounter from "engine/IndexCounter.js"
+
+import Global from "game/Global.js"
 
 var MessageRequestClickEntity = function(entityId, clickType) {
     this.entityId = entityId;
@@ -7,7 +10,7 @@ var MessageRequestClickEntity = function(entityId, clickType) {
 export default MessageRequestClickEntity
 
 MessageRequestClickEntity.prototype.execute = function(gameData, player) {
-    var entity = gameData.world.entityWorld.objects[this.entityId];
+    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity) return;
     console.log("player " + player.playerId + " clicked entity " + this.entityId + ", clicktype: " + this.clickType);
 }

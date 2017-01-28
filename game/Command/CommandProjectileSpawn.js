@@ -1,7 +1,12 @@
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import Sprite from "engine/Animation/Sprite.js"
 
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
+import Projectile from "game/Entity/Projectile.js"
+import { projectileEntitySimulate } from "game/ProjectilePhysics.js"
 
 var CommandProjectileSpawn = function(entityId, pos, angle, speed, maxDistance, projectileType, shooterEntityId) {
     this.entityId = entityId;
@@ -16,8 +21,8 @@ var CommandProjectileSpawn = function(entityId, pos, angle, speed, maxDistance, 
 export default CommandProjectileSpawn
 
 CommandProjectileSpawn.prototype.execute = function() {
-    if (gameData.world.entityWorld.objects[this.entityId])
-        gameData.world.entityWorld.remove(gameData.world.entityWorld.objects[this.entityId]);
+    if (Global.gameData.world.entityWorld.objects[this.entityId])
+        Global.gameData.world.entityWorld.remove(Global.gameData.world.entityWorld.objects[this.entityId]);
     var entity = {};
     entity.projectile = new Projectile(this.pos, this.angle, this.speed, this.maxDistance, this.projectileType, this.shooterEntityId);
     if (!isServer) {
@@ -30,7 +35,7 @@ CommandProjectileSpawn.prototype.execute = function() {
         zindices[2].add(entity.projectile.sprite);
     }
     projectileEntitySimulate(entity, Config.tickDuration / 1000.0);
-    gameData.world.entityWorld.add(entity, this.entityId);
+    Global.gameData.world.entityWorld.add(entity, this.entityId);
 }
 
 CommandProjectileSpawn.prototype.serialize = function(byteArray, index) {

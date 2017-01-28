@@ -1,7 +1,10 @@
 import Chunk from "engine/Chunk.js"
+import BlockChunk from "engine/BlockChunk.js"
 
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
+import Blocks from "game/Blocks.js"
+import Tiles from "game/Blocks.js"
 
 var Generator = function(seed) {
     if (!seed)

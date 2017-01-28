@@ -1,7 +1,7 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
 
 var CommandPlayerSpawn = function(playerId, entityId, playerName) {
     this.playerId = playerId;
@@ -12,8 +12,8 @@ export default CommandPlayerSpawn
 
 CommandPlayerSpawn.prototype.execute = function() {
     // Associate with existing, already spawned entity (from MessageRequestSpawn)
-    var entity = gameData.world.entityWorld.objects[this.entityId];
-    var player = gameData.playerWorld.objects[this.playerId];
+    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
+    var player = Global.gameData.playerWorld.objects[this.playerId];
     player.entityId = this.entityId;
     if (isServer)
         player.name = this.playerName;
@@ -21,10 +21,10 @@ CommandPlayerSpawn.prototype.execute = function() {
     if (!isServer && global.player.id == this.playerId) {
         global.playerEntityId = this.entityId;
         global.playerEntity = entity;
-        gameData.HUD.update();
-        gameData.world.events.trigger("ownPlayerSpawned", entity, player);
+        Global.gameData.HUD.update();
+        Global.gameData.world.events.trigger("ownPlayerSpawned", entity, player);
     }
-    gameData.world.events.trigger("playerSpawned", entity, player);
+    Global.gameData.world.events.trigger("playerSpawned", entity, player);
 }
 
 CommandPlayerSpawn.prototype.serialize = function(byteArray, index) {

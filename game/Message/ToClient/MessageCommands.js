@@ -2,20 +2,20 @@ import { Serialize, Deserialize } from "engine/Serialization.js"
 import IndexCounter from "engine/IndexCounter.js"
 
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
 
 var MessageCommands = function() {
-    this.tickId = (isServer) ? gameData.world.tickId : 0;
-    this.commands = (isServer) ? gameData.world.commands : [];
+    this.tickId = (isServer) ? Global.gameData.world.tickId : 0;
+    this.commands = (isServer) ? Global.gameData.world.commands : [];
 }
 export default MessageCommands
 
 MessageCommands.prototype.execute = function(gameData) {
     if (Config.fakeLag == 0 && Config.fakeJitter == 0) {
-        gameData.world.pendingCommands[this.tickId] = this.commands;
+        Global.gameData.world.pendingCommands[this.tickId] = this.commands;
     } else {
-        gameData.setTimeout(function() {
-            gameData.world.pendingCommands[this.tickId] = this.commands;
+        Global.gameData.setTimeout(function() {
+            Global.gameData.world.pendingCommands[this.tickId] = this.commands;
         }.bind(this), Config.fakeLag + Config.fakeJitter * Math.random());
     }
 }

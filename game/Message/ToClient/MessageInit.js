@@ -1,31 +1,34 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 import IndexCounter from "engine/IndexCounter.js"
 
+import Global from "game/Global.js"
+import Config from "game/Config.js"
+
 var MessageInit = function(gameData, player) {
     this.players = [];
-    this.tickId = (gameData) ? gameData.world.tickId : 0;
+    this.tickId = (Global.gameData) ? Global.gameData.world.tickId : 0;
     if (player) {
         this.playerId = player.id;
         this.entityId = player.entityId;
     }
 
     if (!gameData) return;
-    gameData.world.entityWorld.update();
+    Global.gameData.world.entityWorld.update();
 }
 export default MessageInit
 
 MessageInit.prototype.execute = function(gameData) {
-    gameData.world.tickId = this.tickId;
-    var player = gameData.playerWorld.add(new Player(this.playerId, this.entityId), this.playerId);
+    Global.gameData.world.tickId = this.tickId;
+    var player = Global.gameData.playerWorld.add(new Player(this.playerId, this.entityId), this.playerId);
     global.player = player;
 
     for (var i = 0; i < this.players.length; ++i) {
         var playerData = this.players[i];
-        var player = gameData.playerWorld.add(new Player(playerData[0], playerData[1]), playerData[0]);
+        var player = Global.gameData.playerWorld.add(new Player(playerData[0], playerData[1]), playerData[0]);
     }
 
     loadGame();
-    gameData.HUD = new HUD(gameData);
+    Global.gameData.HUD = new HUD(Global.gameData);
 }
 
 MessageInit.prototype.getSerializationSize = function(gameData) {
@@ -33,7 +36,7 @@ MessageInit.prototype.getSerializationSize = function(gameData) {
 
     // Calculate serializationSize of entities
     var entitySizes = {};
-    gameData.world.entityWorld.objectArray.forEach(function(entity) {
+    Global.gameData.world.entityWorld.objectArray.forEach(function(entity) {
         size += 8; // Entity-id, entitySize
         var entitySize = 0;
         Object.keys(entity).forEach(function(componentKey) {
@@ -48,7 +51,7 @@ MessageInit.prototype.getSerializationSize = function(gameData) {
 
     // Calculate serializationSize of players
     size += 4;
-    gameData.playerWorld.objectArray.forEach(function(player) {
+    Global.gameData.playerWorld.objectArray.forEach(function(player) {
         if (player.id == this.playerId) return;
         size += 8;
     }.bind(this));
@@ -56,17 +59,17 @@ MessageInit.prototype.getSerializationSize = function(gameData) {
 }
 
 MessageInit.prototype.send = function(gameData, socket) {
-    var byteArray = new Array(this.getSerializationSize(gameData));//new Buffer(this.getSerializationSize());
+    var byteArray = new Array(this.getSerializationSize(Global.gameData));//new Buffer(this.getSerializationSize());
     var index = new IndexCounter();
 
     Serialize.int32(byteArray, index, this.tickId);
     Serialize.int32(byteArray, index, this.playerId);
     Serialize.int32(byteArray, index, this.entityId);
-    Serialize.int32(byteArray, index, gameData.world.generator.seed);
+    Serialize.int32(byteArray, index, Global.gameData.world.generator.seed);
 
     // Serialize entities
-    Serialize.int32(byteArray, index, gameData.world.entityWorld.objectArray.length);
-    gameData.world.entityWorld.objectArray.forEach(function(entity) {
+    Serialize.int32(byteArray, index, Global.gameData.world.entityWorld.objectArray.length);
+    Global.gameData.world.entityWorld.objectArray.forEach(function(entity) {
         Serialize.int32(byteArray, index, entity.id);
         Serialize.int32(byteArray, index, this.entitySizes[entity.id]);
         Object.keys(entity).forEach(function(key) {
@@ -78,8 +81,8 @@ MessageInit.prototype.send = function(gameData, socket) {
     }.bind(this));
 
     // Serialize players
-    Serialize.int32(byteArray, index, gameData.playerWorld.objectArray.length);
-    gameData.playerWorld.objectArray.forEach(function(player) {
+    Serialize.int32(byteArray, index, Global.gameData.playerWorld.objectArray.length);
+    Global.gameData.playerWorld.objectArray.forEach(function(player) {
         if (player.id == this.playerId) return;
         Serialize.int32(byteArray, index, player.id);
         Serialize.int32(byteArray, index, player.entityId);
@@ -95,7 +98,7 @@ MessageInit.prototype.receive = function(gameData, byteArray) {
     this.tickId = Deserialize.int32(byteArray, index);
     this.playerId = Deserialize.int32(byteArray, index);
     this.entityId = Deserialize.int32(byteArray, index);
-    gameData.world.generator = new Generator(Deserialize.int32(byteArray, index));
+    Global.gameData.world.generator = new Generator(Deserialize.int32(byteArray, index));
 
     // Deserialize entities
     var amountOfEntities = Deserialize.int32(byteArray, index);
@@ -110,13 +113,13 @@ MessageInit.prototype.receive = function(gameData, byteArray) {
             var ComponentType = Config.componentTypes[componentId];
             var componentName = ComponentType.prototype.name;
             entity[componentName] = new ComponentType();
-            entity[componentName].deserialize(byteArray, index, gameData);
+            entity[componentName].deserialize(byteArray, index, Global.gameData);
         }
 
         // If entity received already exists, remove existing(convenience)
-        if (gameData.world.entityWorld.objects[entityId])
-            gameData.world.entityWorld.remove(gameData.world.entityWorld.objects[entityId]);
-        gameData.world.entityWorld.add(entity, entityId);
+        if (Global.gameData.world.entityWorld.objects[entityId])
+            Global.gameData.world.entityWorld.remove(Global.gameData.world.entityWorld.objects[entityId]);
+        Global.gameData.world.entityWorld.add(entity, entityId);
     }
 
     // Deserialize players

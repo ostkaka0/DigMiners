@@ -2,7 +2,7 @@ import { Serialize, Deserialize } from "engine/Serialization.js"
 import Sprite from "engine/Animation/Sprite.js"
 
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
 import { Items, ItemFunctions } from "game/Items.js"
 import Entity from "game/Entity/Entity.js"
 
@@ -15,7 +15,7 @@ var CommandEntityEquipItem = function(entityId, stackId, itemId, equipped) {
 export default CommandEntityEquipItem
 
 CommandEntityEquipItem.prototype.execute = function() {
-    var entity = gameData.world.entityWorld.objects[this.entityId];
+    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity) return;
 
     var itemType = Config.itemRegister[this.itemId];
@@ -48,7 +48,7 @@ CommandEntityEquipItem.prototype.execute = function() {
             if (item && item.id == this.itemId) {
                 item.equipped = this.equipped;
                 if (!isServer)
-                    gameData.HUD.update();
+                    Global.gameData.HUD.update();
             }
         }
     }

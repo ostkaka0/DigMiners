@@ -1,7 +1,9 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import BlockWorld from "engine/BlockWorld.js"
+import TileWorld from "engine/TileWorld.js"
 
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
 
 var CommandPlaceBlock = function(blockPos, blockId) {
     this.blockPos = blockPos;
@@ -10,7 +12,7 @@ var CommandPlaceBlock = function(blockPos, blockId) {
 export default CommandPlaceBlock
 
 CommandPlaceBlock.prototype.execute = function() {
-    setForeground(gameData.world.blockWorld, this.blockPos[0], this.blockPos[1], this.blockId);
+    BlockWorld.setForeground(Global.gameData.world.blockWorld, this.blockPos[0], this.blockPos[1], this.blockId);
     var block = Config.blockRegister[this.blockId];
     if (block.onPlace)
         block.onPlace(this.blockPos, block);

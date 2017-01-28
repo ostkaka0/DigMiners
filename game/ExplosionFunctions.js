@@ -1,5 +1,10 @@
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
+import TileWorld from "engine/TileWorld.js"
+import BlockWorld from "engine/BlockWorld.js"
+
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
 
 
 export var createExplosion = function(startPos, radius, entityDamage, blockDamage, tileDamage, attacker) {
@@ -18,7 +23,7 @@ export var createExplosion = function(startPos, radius, entityDamage, blockDamag
                     if (dis <= radius) {
                         v2.floor(pos, pos);
                         var damage = Math.floor((1 - dis / radius) * blockDamage);
-                        var strength = getStrength(gameData.world.blockWorld, pos[0], pos[1]);
+                        var strength = BlockWorld.getStrength(Global.gameData.world.blockWorld, pos[0], pos[1]);
                         sendCommand(new CommandBlockStrength(pos[0], pos[1], strength - damage));
                     }
                 }
@@ -27,7 +32,7 @@ export var createExplosion = function(startPos, radius, entityDamage, blockDamag
 
         // Hurt entities
         if (entityDamage > 0) {
-            gameData.world.entityWorld.objectArray.forEach(function(entity) {
+            Global.gameData.world.entityWorld.objectArray.forEach(function(entity) {
                 if (entity.physicsBody && entity.health) {
                     var dis = v2.distance(startPos, entity.physicsBody.getPos());
                     if (dis <= radius) {

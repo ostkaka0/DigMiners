@@ -1,3 +1,8 @@
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
+
+import Items from "game/Items.js"
+import { Team, Teams } from "game/Entity/Team.js"
 
 export default function(entityId, pos, teamId, maxEntities, radius, duration) {
     maxEntities = maxEntities || 10;

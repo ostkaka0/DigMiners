@@ -1,7 +1,9 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 import IndexCounter from "engine/IndexCounter.js"
+import Event from "engine/Core/Event.js"
 
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
+import { Ammo, AmmoEvents } from "game/Entity/Ammo.js"
 
 var MessageAmmoChange = function(entity, itemIds) {
     this.ammo = {};

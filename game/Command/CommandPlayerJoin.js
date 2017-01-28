@@ -1,7 +1,7 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
 import Player from "game/Player.js"
 import MessageInit from "game/Message/ToClient/MessageInit.js"
 import MessageChunk from "game/Message/ToClient/MessageChunk.js"
@@ -18,7 +18,7 @@ CommandPlayerJoin.prototype.execute = function() {
     if (isServer)
         player.name = this.playerName;
     if (isServer || this.playerId != global.player.id)
-        gameData.playerWorld.add(player, this.playerId);
+        Global.gameData.playerWorld.add(player, this.playerId);
 
     if (isServer) {
         var socket = connections[this.socketId].socket;
@@ -27,14 +27,14 @@ CommandPlayerJoin.prototype.execute = function() {
 
         // Send init message
         // Sends generator seed, chunks must be sent AFTERWARDS
-        new MessageInit(gameData, player).send(gameData, socket);
+        new MessageInit(Global.gameData, player).send(Global.gameData, socket);
 
         // Send chunks
         // TODO: client requests chunks instead
         for (var x = -3; x < 3; ++x) {
             for (var y = -3; y < 3; ++y) {
-                var chunk = gameData.world.tileWorld.get(x, y);
-                var blockChunk = gameData.world.blockWorld.get(x, y);
+                var chunk = Global.gameData.world.tileWorld.get(x, y);
+                var blockChunk = Global.gameData.world.blockWorld.get(x, y);
                 var message = new MessageChunk(chunk, blockChunk, x, y);
                 message.send(socket);
             }

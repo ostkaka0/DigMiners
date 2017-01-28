@@ -1,4 +1,9 @@
-PATH_PAGE_DIM = 8;
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
+import DisField from "engine/DisField.js"
+import BlockWorld from "engine/BlockWorld.js"
+import TileWorld from "engine/TileWorld.js"
+import binarySearch from "engine/Core/BinarySearch.js"
 
 // Generate flowfield using backward a-star(from goal to start)
 export function aStarFlowField(disField, expandList, tileWorld, blockWorld, start, goal, maxDistance) {
@@ -8,17 +13,17 @@ export function aStarFlowField(disField, expandList, tileWorld, blockWorld, star
     var childDirWeights = [10, 15, 10, 15, 10, 15, 10, 15];
 
     var getPageAndIndex = function(pos) {
-        var pageX = Math.floor(pos[0] / PATH_PAGE_DIM);
-        var pageY = Math.floor(pos[1] / PATH_PAGE_DIM);
-        var localX = Math.floor(pos[0]) - pageX * PATH_PAGE_DIM;
-        var localY = Math.floor(pos[1]) - pageY * PATH_PAGE_DIM;
+        var pageX = Math.floor(pos[0] / DisField.pageDim);
+        var pageY = Math.floor(pos[1] / DisField.pageDim);
+        var localX = Math.floor(pos[0]) - pageX * DisField.pageDim;
+        var localY = Math.floor(pos[1]) - pageY * DisField.pageDim;
         var page = disField.get(pageX, pageY);
         if (!page) {
-            page = new Uint16Array(PATH_PAGE_DIM * PATH_PAGE_DIM);
+            page = new Uint16Array(DisField.pageDim * DisField.pageDim);
             page.fill(65535);
             disField.set(pageX, pageY, page);
         }
-        return [page, localX + localY * PATH_PAGE_DIM];
+        return [page, localX + localY * DisField.pageDim];
     }
 
     var calcDis = function(a, b) {
@@ -73,13 +78,13 @@ export function aStarFlowField(disField, expandList, tileWorld, blockWorld, star
             var pageAndIndex = getPageAndIndex(pos);
             var page = pageAndIndex[0];
             var index = pageAndIndex[1];
-            var density = getDensity(tileWorld, pos[0], pos[1]);
+            var density = TileWorld.getDensity(tileWorld, pos[0], pos[1]);
             var dis = baseDis + childDirWeights[i] + 20 * density / 255;
             if (dis > maxDistance)
                 continue;
             if (density > 127)
                 continue;
-            if (getForeground(blockWorld, pos[0], pos[1]) != 0)
+            if (BlockWorld.getForeground(blockWorld, pos[0], pos[1]) != 0)
                 continue;
             if (page[index] > dis) {
                 page[index] = dis;
@@ -114,9 +119,9 @@ export function genFlowField(flowField, worldRect, tileWorld, blockWorld, goal, 
                 continue;
             var index = pos[0] - worldRect[0] + (pos[1] - worldRect[1]) * worldRect[2];
             var dis = baseDis + 1;
-            if (getDensity(tileWorld, pos[0], pos[1]) > 127)
+            if (TileWorld.getDensity(tileWorld, pos[0], pos[1]) > 127)
                 continue;
-            if (getForeground(blockWorld, pos[0], pos[1]) != 0)
+            if (BlockWorld.getForeground(blockWorld, pos[0], pos[1]) != 0)
                 continue;
             if (flowField[index] > dis && dis < maxDistance) {
                 flowField[index] = dis;

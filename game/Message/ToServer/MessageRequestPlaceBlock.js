@@ -1,4 +1,12 @@
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import IndexCounter from "engine/IndexCounter.js"
+import Chunk from "engine/Chunk.js"
+import BlockChunk from "engine/BlockChunk.js"
+
+import Global from "game/Global.js"
+import Config from "game/Config.js"
+import CommandEntityBuild from "game/Command/CommandEntityBuild.js"
+import { Blocks, BlockTypes } from "game/Blocks.js"
 
 var MessageRequestPlaceBlock = function(stackId, x, y) {
     this.stackId = stackId;
@@ -8,7 +16,7 @@ var MessageRequestPlaceBlock = function(stackId, x, y) {
 export default MessageRequestPlaceBlock
 
 MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
-    var entity = gameData.world.entityWorld.objects[player.entityId];
+    var entity = Global.gameData.world.entityWorld.objects[player.entityId];
     if (!entity) return;
     var item = entity.inventory.items[this.stackId];
     if (!item) return;
@@ -18,18 +26,18 @@ MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
         if (!entity.inventory.hasItem(item.id, 1))
             return;
 
-        if (!player.canPlaceBlock(gameData, this.x, this.y))
+        if (!player.canPlaceBlock(Global.gameData, this.x, this.y))
             return;
 
-        var blockChunkX = Math.floor(this.x / BLOCK_CHUNK_DIM);
-        var blockChunkY = Math.floor(this.y / BLOCK_CHUNK_DIM);
-        var localX = Math.floor(this.x) - blockChunkX * BLOCK_CHUNK_DIM;
-        var localY = Math.floor(this.y) - blockChunkY * BLOCK_CHUNK_DIM;
+        var blockChunkX = Math.floor(this.x / BlockChunk.dim);
+        var blockChunkY = Math.floor(this.y / BlockChunk.dim);
+        var localX = Math.floor(this.x) - blockChunkX * BlockChunk.dim;
+        var localY = Math.floor(this.y) - blockChunkY * BlockChunk.dim;
 
         var blockType = Config.blockRegister[itemType.blockId];
         var type = blockType.type;
 
-        var blockChunk = gameData.world.blockWorld.get(blockChunkX, blockChunkY);
+        var blockChunk = Global.gameData.world.blockWorld.get(blockChunkX, blockChunkY);
         if (type == BlockTypes.FOREGROUND) {
             if (blockChunk && blockChunk.getForeground(localX, localY) > 0)
                 return;

@@ -1,9 +1,15 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
+import fix from "engine/Core/Fix.js"
 import v2 from "engine/Core/v2.js"
+import { Serialize, Deserialize } from "engine/Serialization.js"
 import TileWorld from "engine/TileWorld.js"
 
 import Config from "game/Config.js"
-import gameData from "game/GameData.js"
+import Global from "game/Global.js"
+import Tiles from "game/Blocks.js"
+import Items from "game/Items.js"
+
+import { CommandPlayerOreInventory, OreInventoryActions } from "game/Command/CommandPlayerOreInventory.js"
+import CommandEntitySpawn from "game/Command/CommandEntitySpawn.js"
 
 var CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHardness) {
     this.entityId = entityId;
@@ -17,12 +23,12 @@ var CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHard
 export default CommandEntityDig
 
 CommandEntityDig.prototype.execute = function() {
-    var entity = gameData.world.entityWorld.objects[this.entityId];
+    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity || !entity.movement) return;
 
-    var tileWorld = gameData.world.tileWorld;
-    var targetTile = Config.tileRegister[getTileId(gameData.world.tileWorld, this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1])];
-    var targetDensity = getDensity(gameData.world.tileWorld, this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1]);
+    var tileWorld = Global.gameData.world.tileWorld;
+    var targetTile = Config.tileRegister[TileWorld.getTileId(Global.gameData.world.tileWorld, this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1])];
+    var targetDensity = TileWorld.getDensity(Global.gameData.world.tileWorld, this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1]);
     var onDensityChange = null;
     var digDis = 1.5;
 
@@ -50,7 +56,7 @@ CommandEntityDig.prototype.execute = function() {
         onDensityChange = function(tileX, tileY, tile, oldDensity, newDensity) { return (tile.isOre) ? oldDensity : newDensity; };
     }
 
-    var dug = TileWorld.carveCircle(gameData, this.pos[0] + digDis * this.dir[0], this.pos[1] + digDis * this.dir[1], this.radius, this.digSpeed, this.maxDigHardness, onDensityChange);
+    var dug = TileWorld.carveCircle(Global.gameData, this.pos[0] + digDis * this.dir[0], this.pos[1] + digDis * this.dir[1], this.radius, this.digSpeed, this.maxDigHardness, onDensityChange);
     if (isServer) {
         // Only process dug ores on server
         for (var i = 0; i < dug.length; ++i) {
@@ -67,12 +73,12 @@ CommandEntityDig.prototype.execute = function() {
                 if (itemId != null) {
                     var physicsBody = entity.physicsBody;
 
-                    var itemEntityId = gameData.world.idList.next();
-                    var itemEntity = entityTemplateItem(itemId, 1, gameData);
+                    var itemEntityId = Global.gameData.world.idList.next();
+                    var itemEntity = entityTemplateItem(itemId, 1, Global.gameData);
                     itemEntity.physicsBody.setPos(v2.clone(physicsBody.getPos()));
                     itemEntity.physicsBody.angle = physicsBody.angle;
                     itemEntity.physicsBody.angleOld = physicsBody.angle;
-                    sendCommand(new CommandEntitySpawn(gameData, itemEntity, itemEntityId));
+                    sendCommand(new CommandEntitySpawn(Global.gameData, itemEntity, itemEntityId));
                 }
             }*/
         }

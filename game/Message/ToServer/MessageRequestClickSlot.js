@@ -1,4 +1,13 @@
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import IndexCounter from "engine/IndexCounter.js"
+
+import Global from "game/Global.js"
+import Config from "game/Config.js"
+import CommandEntityEquipItem from "game/Command/CommandEntityEquipItem.js"
+import CommandEntitySpawn from "game/Command/CommandEntitySpawn.js"
+import { CommandEntityInventory, InventoryActions } from "game/Command/CommandEntityInventory.js"
 
 var MessageRequestClickSlot = function(inventoryId, slotId, clickType) {
     this.inventoryId = inventoryId;
@@ -8,14 +17,14 @@ var MessageRequestClickSlot = function(inventoryId, slotId, clickType) {
 export default MessageRequestClickSlot
 
 MessageRequestClickSlot.prototype.execute = function(gameData, player) {
-    var entity = gameData.world.entityWorld.objects[player.entityId];
+    var entity = Global.gameData.world.entityWorld.objects[player.entityId];
     if (!entity) return;
-    var inventory = gameData.world.inventories[this.inventoryId];
+    var inventory = Global.gameData.world.inventories[this.inventoryId];
     if (!inventory) return;
     if (entity.inventory && entity.inventory.inventoryId != this.inventoryId) {
         if (!entity.interacter || !entity.interacter.interacting)
             return;
-        var interactableEntity = gameData.world.entityWorld.objects[entity.interacter.interacting];
+        var interactableEntity = Global.gameData.world.entityWorld.objects[entity.interacter.interacting];
         if (!interactableEntity || !interactableEntity.inventory)
             return;
         if (interactableEntity.inventory.inventoryId != this.inventoryId)
@@ -36,7 +45,7 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
         v2.mul(10.0 * displacement3, speed, speed2);
 
         var itemEntityId = idList.next();
-        var itemEntity = entityTemplateItem(item.id, item.amount, gameData);
+        var itemEntity = entityTemplateItem(item.id, item.amount, Global.gameData);
         itemEntity.physicsBody.setPos(physicsBody.getPos());
         itemEntity.physicsBody.posOld = v2.clone(physicsBody.getPos());
         itemEntity.physicsBody.setVelocity([speed2[0], speed2[1]]);
@@ -44,7 +53,7 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
         itemEntity.physicsBody.angle = physicsBody.angle;
         itemEntity.physicsBody.angleOld = physicsBody.angle;
         itemEntity.item.dropped = new Date();
-        sendCommand(new CommandEntitySpawn(gameData, itemEntity, itemEntityId));
+        sendCommand(new CommandEntitySpawn(Global.gameData, itemEntity, itemEntityId));
 
         sendCommand(new CommandEntityInventory(player.entityId, InventoryActions.DROP_STACK, this.slotId, 0));
 
@@ -61,7 +70,7 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
                 var equipped = !item.equipped;
                 if (equipped && inventory) {
                     // Dequip all other items of the same type
-                    var dequippedItems = inventory.dequipAll(gameData, itemType.type, entity.id);
+                    var dequippedItems = inventory.dequipAll(Global.gameData, itemType.type, entity.id);
                     for (var i = 0; i < dequippedItems.length; ++i) {
                         var entry = dequippedItems[i];
                         sendCommand(new CommandEntityEquipItem(player.entityId, entry[0], entry[1], false));

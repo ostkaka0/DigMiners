@@ -1,3 +1,7 @@
+import Event from "engine/Core/Event.js"
+
+import Global from "game/Global.js"
+import { Ammo, AmmoEvents } from "game/Entity/Ammo.js"
 
 export default function() {
     this.root = $("<div>", { "text": "No weapon equipped" });
@@ -27,24 +31,24 @@ export default function() {
             this.updateFunction(entity, null)
     }.bind(this));
 
-    gameData.world.events.on("beginReload", function(entity) {
+    Global.gameData.world.events.on("beginReload", function(entity) {
         if (entity && entity.id == global.playerEntityId)
             this.root.text("Reloading...");
     }.bind(this));
 
-    gameData.world.events.on("finishReload", function(entity, itemType) {
+    Global.gameData.world.events.on("finishReload", function(entity, itemType) {
         this.updateFunction(entity, itemType);
     }.bind(this));
 
-    gameData.world.events.on("equip", function(entity, stackId, itemType) {
+    Global.gameData.world.events.on("equip", function(entity, stackId, itemType) {
         this.updateFunction(entity, itemType);
     }.bind(this));
 
-    gameData.world.events.on("dequip", function(entity, stackId, itemType) {
+    Global.gameData.world.events.on("dequip", function(entity, stackId, itemType) {
         this.updateFunction(entity, itemType);
     }.bind(this));
 
-    gameData.world.events.on("bulletFired", function(entity, itemType) {
+    Global.gameData.world.events.on("bulletFired", function(entity, itemType) {
         this.updateFunction(entity, itemType);
     }.bind(this));
 }
