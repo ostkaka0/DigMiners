@@ -173,8 +173,6 @@ ItemFunctions.ThrowableDynamite = function(entity, itemType) {
         v2.mul(5, speed2, speed2);
 
         var itemEntityId = gameData.world.idList.next();
-        //var itemEntity = entityTemplates.Item(item.id, item.amount, gameData);
-
         var itemEntity = {};
         itemEntity.physicsBody = new PhysicsBody(physicsBody.getPos(), 0.01, 0, 1, 0.3);
         itemEntity.physicsBody.setVelocity([speed2[0], speed2[1]]);
@@ -190,10 +188,10 @@ ItemFunctions.ThrowableDynamite = function(entity, itemType) {
         itemEntity.bodyparts = new Bodyparts(bodyparts);
         itemEntity.drawable = new Drawable(0);
 
-        var timeOut = 2000;
+        var timeout = 2000;
 
         sendCommand(new CommandEntitySpawn(gameData, itemEntity, itemEntityId));
-        sendCommand(new CommandEntityAnimate(itemEntityId, "body", "dynamite", 64000.0 / timeOut));
+        sendCommand(new CommandEntityAnimate(itemEntityId, "body", "dynamite", 64000.0 / timeout));
 
         gameData.setTimeout(function(attacker) {
             if (this.isActive && !this.isDead) {
@@ -201,7 +199,7 @@ ItemFunctions.ThrowableDynamite = function(entity, itemType) {
                 sendCommand(new CommandEntityDestroy(this.id));
                 createExplosion(this.physicsBody.getPos(), 3.0, 50.0, 250.0, 1.0, attacker);
             }
-        }.bind(itemEntity, entity), timeOut);
+        }.bind(itemEntity, entity), timeout);
     }
 }
 
