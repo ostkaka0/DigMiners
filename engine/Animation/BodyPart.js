@@ -51,7 +51,7 @@ BodyPart.rotate = function(ax, ay, x, y, angle) {
     return [-nx, ny];
 }
 
-BodyPart.prototype.cycle = function(gameData, cycle, fps, runToEnd) {
+BodyPart.prototype.cycle = function(cycle, fps, runToEnd) {
     if (!this.cycleInstance)
         this.cycleInstance = {};
     this.cycleInstance.cycle = gameData.animationManager.cycles[cycle];
@@ -72,7 +72,7 @@ BodyPart.prototype.finishCycle = function() {
     }
 }
 
-BodyPart.prototype.animate = function(gameData, animation, fps, runToEnd) {
+BodyPart.prototype.animate = function(animation, fps, runToEnd) {
     if (!this.animInstance) {
         this.animInstance = {};
         this.animInstance.animation = gameData.animationManager.animations[animation];
