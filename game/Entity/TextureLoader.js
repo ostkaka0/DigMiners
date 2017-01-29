@@ -1,4 +1,5 @@
 import Event from "engine/Core/Event.js"
+import { loadTextures } from "engine/Animation/TextureFunctions.js"
 
 export var TextureLoaderEvents = {};
 TextureLoaderEvents.onComplete = [];

@@ -1,3 +1,5 @@
+import $ from "jquery"
+
 import Event from "engine/Core/Event.js"
 import fix from "engine/Core/Fix.js"
 import v2 from "engine/Core/v2.js"

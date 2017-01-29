@@ -32,7 +32,7 @@ var present = require('present');
 
 var isServer = true;
 
-var loadScript = function(filePath) {
+/*var loadScript = function(filePath) {
     console.log("Loading " + filePath + "...");
     var content = fs.readFileSync(filePath, "utf8");
     eval(content);
@@ -49,7 +49,7 @@ var loadScriptsRecursive = function(dir) {
         else if (stat.isFile() && path.extname(filePath) == ".js")
             loadScript(filePath)
     }
-}
+}*/
 
 /*loadScriptsRecursive("lib");
 loadScriptsRecursive("engine");

@@ -5,8 +5,9 @@ import PhysicsBody from "game/Entity/PhysicsBody.js"
 import Movement from "game/Entity/Movement.js"
 import Bodyparts from "game/Entity/Bodyparts.js"
 import Drawable from "game/Entity/Drawable.js"
+import BodyPart from "engine/Animation/BodyPart.js"
 
-export default = function (playerId, entityId) {
+export default function (playerId, entityId) {
     var entity = {};
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 10.0, 1.0, 0);

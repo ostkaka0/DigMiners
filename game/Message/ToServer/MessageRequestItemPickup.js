@@ -6,7 +6,7 @@ import IndexCounter from "engine/IndexCounter.js"
 import Global from "game/Global.js"
 import Config from "game/Config.js"
 import { CommandEntityInventory, InventoryActions } from "game/Command/CommandEntityInventory.js"
-import { CommandPlayerOreInventory, InventoryOreActions } from "game/Command/CommandPlayerOreInventory.js"
+import { CommandPlayerOreInventory, OreInventoryActions } from "game/Command/CommandPlayerOreInventory.js"
 import CommandEntityDestroy from "game/Command/CommandEntityDestroy.js"
 
 var MessageRequestItemPickup = function(entityId) {

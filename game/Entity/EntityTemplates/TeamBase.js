@@ -1,5 +1,6 @@
 import fix from "engine/Core/Fix.js"
 import v2 from "engine/Core/v2.js"
+import BodyPart from "engine/Animation/BodyPart.js"
 
 import Items from "game/Items.js"
 import { Team, Teams } from "game/Entity/Team.js"

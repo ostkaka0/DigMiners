@@ -247,7 +247,6 @@ ItemTextures.BlockAtlas = {
 
 export function initItems() {
     // Blocks
-    console.log("Blocks:", Blocks);
     var num = 0;
     for (var name in Blocks) {
         var block = Blocks[name];

@@ -1,6 +1,7 @@
 import fix from "engine/Core/Fix.js"
 import v2 from "engine/Core/v2.js"
 import { Serialize, Deserialize } from "engine/Serialization.js"
+import BodyPart from "engine/Animation/BodyPart.js"
 
 var Bodyparts = function(bodyparts) {
     this.bodyparts = bodyparts;

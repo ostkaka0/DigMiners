@@ -1,3 +1,5 @@
+import $ from "jquery"
+
 import Event from "engine/Core/Event.js"
 
 import Global from "game/Global.js"

@@ -4,6 +4,7 @@ import { Serialize, Deserialize } from "engine/Serialization.js"
 
 import Config from "game/Config.js"
 import Global from "game/Global.js"
+import { createParticles } from "game/ParticleFunctions"
 
 var CommandParticles = function(particleFunctionId, pos, angle) {
     this.particleFunctionId = particleFunctionId;

@@ -1,6 +1,9 @@
+import $ from "jquery"
+
 import Event from "engine/Core/Event.js"
 
 import Global from "game/Global.js"
+import { TextureLoader, TextureLoaderEvents } from "game/Entity/TextureLoader.js"
 
 var LoadingScreen = function() {
 

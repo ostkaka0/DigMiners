@@ -1,7 +1,7 @@
 import { rollup } from "rollup";
 import nodeResolve from "rollup-plugin-node-resolve";
 
-rollup({
+/*rollup({
   entry: 'main.js',
   plugins: [
     nodeResolve({
@@ -38,13 +38,13 @@ rollup({
 
     })
   ]
-}).then( bundle => bundle.write({ dest: 'bundle.js', format: 'iife' }) );
+}).then( bundle => bundle.write({ dest: 'bundle.js', format: 'iife' }) ); */
 
 // alongside rollup-plugin-commonjs, for using non-ES6 third party modules
 import commonjs from 'rollup-plugin-commonjs';
 
 rollup({
-  entry: 'tests/TestPointWorld.js',
+  entry: "DigMiners.js",
   plugins: [
     nodeResolve({ jsnext: true, main: true }),
     commonjs()

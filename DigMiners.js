@@ -1,9 +1,30 @@
+
+import $ from "jquery"
+
+import fix from "engine/Core/Fix.js"
+import v2 from "engine/Core/v2.js"
 import Canvas from "engine/Canvas.js"
 import Sprite from "engine/Animation/Sprite.js"
-//import Client from "./Client.js"
 import ChunkRenderer from "engine/ChunkRenderer.js"
 import BlockChunkRenderer from "engine/ChunkRenderer.js"
 import SpriteContainer from "engine/Animation/SpriteContainer.js"
+import Event from "engine/Core/Event.js"
+import Chunk from "engine/Chunk.js"
+import { loadTextures } from "engine/Animation/TextureFunctions.js"
+
+import gameData from "game/GameData.js"
+import Client from "game/Client.js"
+import { TextureLoader, TextureLoaderEvents } from "game/Entity/TextureLoader.js"
+import TextureManager from "game/Entity/TextureManager.js"
+import LoadingScreen from "game/GUI/LoadingScreen.js"
+import DeathScreen from "game/GUI/DeathScreen.js"
+import InventoryHUD from "game/GUI/InventoryHUD.js"
+import MessageRequestKeyStatusUpdate from "game/Message/ToServer/MessageRequestKeyStatusUpdate.js"
+import MessageRequestPlaceBlock from "game/Message/ToServer/MessageRequestPlaceBlock.js"
+import MessageRequestClickBlock from "game/Message/ToServer/MessageRequestClickBlock.js"
+import MessageRequestRotate from "game/Message/ToServer/MessageRequestRotate.js"
+import MessageRequestItemPickup from "game/Message/ToServer/MessageRequestItemPickup.js"
+
 
 var canvas = document.getElementById("canvas");
 var spriteCanvas = document.getElementById("spriteCanvas");
@@ -28,10 +49,12 @@ window.addEventListener('resize', function() {
 var lastMouseSync = 0;
 var mouseX = 0;
 var mouseY = 0;
+var deathScreen = null;
+window.client = null;
 
 gameData.init();
 
-Event.subscribe(TextureLoaderEvents.onComplete, this, function(textures) {
+Event.subscribe(TextureLoaderEvents.onComplete, window, function(textures) {
     // Must wait until all textures have loaded to continue! important
     window.blockPosGood = new Sprite("blockPosGood.png");
     window.blockPosGood.anchor = [0, 0];
@@ -42,7 +65,7 @@ Event.subscribe(TextureLoaderEvents.onComplete, this, function(textures) {
     $("*").mousemove(function(event) {
         mouseX = event.pageX;
         mouseY = event.pageY;
-    }.bind(this));
+    });
     client = new Client(gameData, window.vars.ip);
 });
 
@@ -67,7 +90,7 @@ var keyCodeLeft = 38;
 var keyCodeLeft = 39;
 var keyCodeLeft = 37;
 
-loadGame = function() {
+var loadGame = function() {
     gameData.animationManager.load();
     // Player input
     $('*').keydown(function(event) {
@@ -149,7 +172,7 @@ loadGame = function() {
     gameLoop(tick, render, Config.tickDuration);
 }
 
-tick = function(dt) {
+var tick = function(dt) {
     var readyTicks = 0;
     for (var i = 0; i <= 6 && gameData.world.pendingCommands[gameData.world.tickId + i]; i++)
         readyTicks++;
@@ -175,12 +198,12 @@ tick = function(dt) {
             projectile.posClientOld = v2.clone(projectile.posClient);
             projectile.posClient = v2.clone(projectile.pos);
         }
-    }.bind(this));
+    });
 
     gameData.world.particleWorld.update(dt);
 }
 
-render = function(tickFracTime) {
+var render = function(tickFracTime) {
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -280,7 +303,7 @@ render = function(tickFracTime) {
     gameData.world.particleWorld.render(tickFracTime);
 }
 
-loadChunk = function(world, x, y) {
+var loadChunk = function(world, x, y) {
     if (gameData.world.generator) {
         var chunk = new Chunk();
         gameData.world.generator.generate(chunk, x, y);
@@ -288,7 +311,7 @@ loadChunk = function(world, x, y) {
     }
 }
 
-onMessage = function(messageType, callback) {
+var onMessage = function(messageType, callback) {
     gameData.messageCallbacks[messageType.prototype.id] = callback;
 }
 
@@ -317,8 +340,8 @@ $(document).mousedown(function(event) {
 });
 
 gameData.world.events.on("connected", function() {
-    this.deathScreen = new DeathScreen();
-}.bind(this));
+    deathScreen = new DeathScreen();
+});
 
 $("*").mousemove(function(e) {
     if (!global.player || !global.playerEntity) return;
@@ -330,7 +353,7 @@ $("*").mousemove(function(e) {
     var pos = entity.physicsBody.getPos();
     var diff = [worldCursorPos[0] - pos[0], worldCursorPos[1] - pos[1]];
     new MessageRequestRotate(diff).send(socket);
-}.bind(this));
+});
 
 gameData.world.events.on("ownPlayerSpawned", function(entity, player) {
     if (gameData.HUD.inventory)
@@ -339,7 +362,7 @@ gameData.world.events.on("ownPlayerSpawned", function(entity, player) {
         gameData.HUD.inventory = new InventoryHUD(entity.inventory, "Your amazing inventory", 10);
         gameData.HUD.inventory.update();
     }
-}.bind(this));
+});
 
 Event.subscribe(gameData.world.entityWorld.onAdd, window, function(entity) {
     if (!isServer && entity.health && entity.drawable)
