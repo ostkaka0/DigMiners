@@ -44,6 +44,7 @@ initPlayerClasses = function() {
             name: "Miner",
             blocks: [Items.StoneWall, Items.WoodCrate, Items.BlueForcefield, Items.PistolTurret, Items.MachineGunTurret],
             weapons: [Items.WeaponShotgun, Items.WeaponSmg, Items.SteelShovel],
+            items: [[Items.Dynamite, 8]],
             speed: 1.0,
             health: 120.0,
             armor: 0.2,

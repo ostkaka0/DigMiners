@@ -19,15 +19,18 @@ CommandEntityInventory.prototype.execute = function() {
         entity.inventory.addItem(gameData, this.itemId, this.amount);
     } else if (this.actionId == InventoryActions.REMOVE_ITEM) {
         var removed = entity.inventory.removeItem(gameData, this.itemId, this.amount);
-        for (var i = 0; i < removed.length; ++i) {
-            // Dequip item when removed from inventory
-            var entry = removed[i];
-            var stackId = entry[0];
-            var item = entry[1];
-            var itemType = Config.itemRegister[item.id];
-            if (item.equipped)
-                Entity.onDequip(entity, stackId, itemType);
-        };
+        if (isServer) {
+            for (var i = 0; i < removed.length; ++i) {
+                // Dequip item when removed from inventory
+                var entry = removed[i];
+                var stackId = entry[0];
+                var item = entry[1];
+                var itemType = Config.itemRegister[item.id];
+                //TODO: nested command. may cause inventory bugs.
+                if (item.equipped)
+                    sendCommand(new CommandEntityEquipItem(entity.id, stackId, itemType.id, false));
+            };
+        }
     } else if (this.actionId == InventoryActions.DROP_STACK) {
         var item = entity.inventory.removeStack(this.itemId);
     }

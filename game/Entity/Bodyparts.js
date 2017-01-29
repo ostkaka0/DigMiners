@@ -36,7 +36,14 @@ Bodyparts.prototype.serialize = function(byteArray, index) {
         serializeV2(byteArray, index, bodypart.pivot);
         var booleans = [];
         booleans[0] = bodypart.disableRotation;
+        booleans[1] = (bodypart.sprite && bodypart.sprite.frame ? true : false);
         serializeBooleans(byteArray, index, booleans);
+        if (bodypart.sprite && bodypart.sprite.frame) {
+            serializeInt32(byteArray, index, bodypart.sprite.frame[0]);
+            serializeInt32(byteArray, index, bodypart.sprite.frame[1]);
+            serializeInt32(byteArray, index, bodypart.sprite.frame[2]);
+            serializeInt32(byteArray, index, bodypart.sprite.frame[3]);
+        }
     }
 }
 
@@ -50,8 +57,12 @@ Bodyparts.prototype.deserialize = function(byteArray, index, gameData) {
         var offset = [deserializeFix(byteArray, index), deserializeFix(byteArray, index), deserializeFix(byteArray, index)];
         var defaultOffset = [deserializeFix(byteArray, index), deserializeFix(byteArray, index), deserializeFix(byteArray, index)];
         var pivot = deserializeV2(byteArray, index);
-        var disableRotation = deserializeBooleans(byteArray, index)[0];
+        var booleans = deserializeBooleans(byteArray, index);
+        var disableRotation = booleans[0];
+        var deserializeFrame = booleans[1];
         var sprite = new Sprite(textureName);
+        if (deserializeFrame)
+            sprite.frame = [deserializeInt32(byteArray, index), deserializeInt32(byteArray, index), deserializeInt32(byteArray, index), deserializeInt32(byteArray, index)];
         this.bodyparts[key] = new BodyPart(sprite, defaultOffset[0], defaultOffset[1], defaultOffset[2], pivot, null, disableRotation);
         this.bodyparts[key].offset = offset;
         if (parent && parent.length > 0)
@@ -87,6 +98,8 @@ Bodyparts.prototype.getSerializationSize = function() {
         size += getUTF8SerializationSize(parent);
         size += getUTF8SerializationSize((!textureName ? "" : textureName));
         size += 33;
+        if (bodypart.sprite && bodypart.sprite.frame)
+            size += 16;
     }
     return size;
 }
