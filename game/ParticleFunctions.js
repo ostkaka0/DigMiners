@@ -1,7 +1,7 @@
 
-createParticles = function(particleFunction, pos, angle) {
+createParticles = function(particleFunction, pos, variable) {
     if (!isServer)
-        particleFunction(pos, angle);
+        particleFunction(pos, variable);
 }
 
 ParticleFunctions = {};
@@ -21,5 +21,16 @@ ParticleFunctions.BloodHitParticles = function(pos, angle) {
         var velocity = [Math.cos(angle2), -Math.sin(angle2)];
         v2.mul(Math.random() * 6.0, velocity, velocity);
         gameData.world.particleWorld.add(pos, velocity, Particles.Blood);
+    }
+}
+
+ParticleFunctions.ExplosionParticles = function(pos, radius) {
+    for (var i = 0; i < 40; ++i) {
+        var angle = Math.random() * Math.PI * 2;
+        var velocity = [Math.cos(angle), -Math.sin(angle)];
+        v2.mul(Math.random() * 6.0, velocity, velocity);
+        var particleType = Particles.Smoke;
+        particleType.size = Math.random() * 15 + 20;
+        gameData.world.particleWorld.add(pos, velocity, particleType);
     }
 }

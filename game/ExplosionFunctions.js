@@ -33,7 +33,5 @@ createExplosion = function(startPos, radius, entityDamage, blockDamage, tileDama
                 }
             });
         }
-    } else {
-        // show explosion particle effect and sound
     }
 }

@@ -358,11 +358,10 @@ subscribeEvent(gameData.world.entityWorld.onAdd, window, function(entity) {
         entity.nameComponent.applyName(entity);
 
     // Text on items on ground
-    /*if (entity.item && entity.item.amount > 1) {
-        var text = new PIXI.Text(entity.item.amount, { fontFamily: 'Monospace', fontSize: 15, fill: 0xffffff, align: 'center' });
-        var textSprite = new Sprite(null, text, false);
+    if (entity.item && entity.item.amount > 1) {
+        var textSprite = new TextSprite(entity.item.amount, "Monospace", 15, "#ffffff");
         entity.drawable.addSprite("textAmount", textSprite, null, false);
-    }*/
+    }
 });
 
 gameData.world.physicsWorld.onCollision.push(function(collisions) {

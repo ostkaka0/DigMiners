@@ -143,7 +143,7 @@ InventoryHUD.prototype.update = function() {
         var slotImageContainerOverlay = slot.childNodes[2];
         var slotTextContainer = slot.childNodes[3];
 
-        slotImageContainerOverlay.style.backgroundImage = "";
+        slotImageContainerOverlay.style.display = "none";
         var item = this.inventory.items[i];
         if (item) {
             slotImageContainer.style.width = 32;
@@ -158,7 +158,6 @@ InventoryHUD.prototype.update = function() {
 
             slotDescriptionContainer.innerText = itemType.name;
 
-            slotImageContainerOverlay.style.display = "none";
             if (item.equipped)
                 slotImageContainerOverlay.style.display = "block";
 
@@ -191,6 +190,7 @@ InventoryHUD.prototype.update = function() {
             slotTextContainer.innerText = "";
             slotDescriptionContainer.innerText = "";
             slot.onclick = null;
+            slotImageContainerOverlay.style.display = "none";
         }
     }
 }
