@@ -35,6 +35,8 @@ TextureManager = function() {
 
     loader.queue("egg.png");
     loader.queue("bigEgg.png");
+    
+    loader.queue("dynamite.png");
 
     subscribeEvent(TextureLoaderEvents.onProgress, this, function(file, progress) {
         console.log(Math.round(progress) + "% complete");

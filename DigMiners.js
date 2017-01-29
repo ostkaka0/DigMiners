@@ -201,7 +201,7 @@ render = function(tickFracTime) {
 
             if (entity.bodyparts.bodyparts.feet) {
                 var speed = v2.distance(entity.physicsBody.posClient, entity.physicsBody.posClientOld);
-                entity.bodyparts.bodyparts["feet"].animate(gameData, "feet", speed * 450.0, false);
+                entity.bodyparts.bodyparts["feet"].animate("feet", speed * 500.0, false);
             }
         } else if (entity.projectile) {
             var pos = [tickFracTime * entity.projectile.posClient[0] + (1 - tickFracTime) * entity.projectile.posClientOld[0], tickFracTime * entity.projectile.posClient[1] + (1 - tickFracTime) * entity.projectile.posClientOld[1]]
