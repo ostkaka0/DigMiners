@@ -1,9 +1,11 @@
+import io from "socket.io-client"
+
 import Config from "game/Config.js"
 import Global from "game/Global.js"
 
 import { Serialize, Deserialize } from "engine/Serialization.js"
 
-export default function(gameData, ip) {
+var Client = function(gameData, ip) {
 
     // This is code to test serialization and deserialization of UTF-8 strings.
     /*var test = "test1 test2 123 !@,@£€$€734ÅÄÖ";
@@ -61,6 +63,7 @@ export default function(gameData, ip) {
         });
     });
 }
+export default Client
 
 Client.prototype.sendMessage = function(message) {
     var byteArray = new Uint8Array(command.getSerializationSize() + 4);

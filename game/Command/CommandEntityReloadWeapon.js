@@ -3,6 +3,7 @@ import Event from "engine/Core/Event.js"
 
 import Config from "game/Config.js"
 import Global from "game/Global.js"
+import Items from "game/Items.js"
 import { Ammo, AmmoEvents } from "game/Entity/Ammo.js"
 
 var CommandEntityReloadWeapon = function(entityId, stackId) {

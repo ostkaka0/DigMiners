@@ -69,9 +69,8 @@ export var entityTemplatePlayer = function(playerId, entityId, name, playerClass
         entity.inventory.addStaticItem(Global.gameData, weapon.id);
         entity.ammo[weapon.id] = weapon.ammoMax || 0;
     });
-    console.log(playerClass);
+
     playerClass.blocks.forEach(function(blockItem) {
-        console.log(blockItem );
         entity.inventory.addStaticItem(Global.gameData, blockItem.id);
     });
 

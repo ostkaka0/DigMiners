@@ -1,3 +1,5 @@
+import $ from "jquery"
+
 import Global from "game/Global.js"
 import AmmoHud from "game/GUI/AmmoHud.js"
 

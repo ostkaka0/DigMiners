@@ -1,4 +1,6 @@
+import Map2D from "engine/Core/Map2D.js"
 import Chunk from "engine/Chunk.js"
+import Shader from "engine/Shader.js"
 var CHUNK_DIM = Chunk.dim;
 var CHUNK_DIM_2 = Chunk.dim2;
 var CHUNK_SIZE = Chunk.size;
@@ -23,12 +25,12 @@ var ChunkRenderer = function(gl, world, tileSize) {
     this.bufferIndices = null;
 
     this.textureTerrain = null;
-    this.loadTexture();
+    this.loadTexture(gl);
 
     this.shaderProgram = null;
     this.shaderRequests = [
-        new ShaderRequest("data/shaders/terrain/vert.glsl", gl.VERTEX_SHADER),
-        new ShaderRequest("data/shaders/terrain/frag.glsl", gl.FRAGMENT_SHADER)
+        new Shader.Request("data/shaders/terrain/vert.glsl", gl.VERTEX_SHADER),
+        new Shader.Request("data/shaders/terrain/frag.glsl", gl.FRAGMENT_SHADER)
     ];
 
     this.isReady = false; // False until shaders, buffers, attributes and uniforms are loaded.
@@ -41,7 +43,7 @@ ChunkRenderer.prototype.lazyInit = function() {
         return;
 
     if (!this.shaderProgram)
-        this.shaderProgram = tryLinkShaderProgram(this.gl, this.shaderRequests);
+        this.shaderProgram = Shader.tryLinkShaderProgram(this.gl, this.shaderRequests);
 
     if (this.shaderProgram && !this.buffer) {
         var size = this.tileSize * CHUNK_DIM;
@@ -178,7 +180,7 @@ ChunkRenderer.prototype.renderChunks = function(matVP, chunksToRender) {
     }
 }
 
-ChunkRenderer.prototype.loadTexture = function() {
+ChunkRenderer.prototype.loadTexture = function(gl) {
     var image = new Image();
     image.src = "data/textures/ground.png";
     image.webglTexture = false;

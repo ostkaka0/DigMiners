@@ -8,13 +8,13 @@ gulp.task("rollup", function() {
       entry: "DigMiners.js",//"./tests/TestPointWorld.js",
       plugins: [
         nodeResolve({
-          module: true,
+          /*module: true,
           jsnext: false,
           main: true,
           skip: [],
           browser: true,  // Default: false
           extensions: [ ".js"],
-          preferBuiltins: false  // Default: true
+          preferBuiltins: false  // Default: true*/
         })
       ]
     })

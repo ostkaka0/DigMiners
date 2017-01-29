@@ -1,4 +1,6 @@
+import Map2D from "engine/Core/Map2D.js"
 import BlockChunk from "engine/BlockChunk.js"
+import Shader from "engine/Shader.js"
 var BLOCK_CHUNK_DIM = BlockChunk.dim;
 var BLOCK_CHUNK_DIM_2 = BlockChunk.dim2;
 var BLOCK_CHUNK_SIZE = BlockChunk.size;
@@ -24,8 +26,8 @@ var BlockChunkRenderer = function(gl, world, tileSize) {
 
     this.shaderProgram = null;
     this.shaderRequests = [
-        new ShaderRequest("data/shaders/block/vert.glsl", gl.VERTEX_SHADER),
-        new ShaderRequest("data/shaders/block/frag.glsl", gl.FRAGMENT_SHADER)
+        new Shader.Request("data/shaders/block/vert.glsl", gl.VERTEX_SHADER),
+        new Shader.Request("data/shaders/block/frag.glsl", gl.FRAGMENT_SHADER)
     ];
 
     this.isReady = false; // False until shaders, buffers, attributes and uniforms are loaded.
@@ -37,7 +39,7 @@ BlockChunkRenderer.prototype.lazyInit = function() {
         return;
 
     if (!this.shaderProgram)
-        this.shaderProgram = tryLinkShaderProgram(this.gl, this.shaderRequests);
+        this.shaderProgram = Shader.tryLinkShaderProgram(this.gl, this.shaderRequests);
 
     if (this.shaderProgram) {
         gl.useProgram(this.shaderProgram);

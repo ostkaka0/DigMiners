@@ -2,7 +2,7 @@ var Canvas = {};
 export default Canvas;
 
 Canvas.initGL = function(canvas) {
-    gl = null;
+    var gl = null;
 
     // Try to grab the standard context. If it fails, fallback to experimental.
     gl = canvas.getContext("webgl", { antialias: false }) || canvas.getContext("experimental-webgl", { antialias: false });

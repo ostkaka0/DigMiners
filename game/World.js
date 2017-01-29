@@ -22,7 +22,7 @@ import entityFunctionProjectileSimulate from "game/ProjectilePhysics.js"
 import CommandParticles from "game/Command/CommandParticles.js"
 import CommandBlockStrength from "game/Command/CommandBlockStrength.js"
 import InventoryHUD from "game/GUI/InventoryHUD.js"
-import ParticleFunctions from "game/ParticleFunctions.js"
+import { ParticleFunctions, createParticles } from "game/ParticleFunctions.js"
 
 var World = function() {
     this.tickId = 0;
