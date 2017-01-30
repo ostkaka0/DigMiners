@@ -34,7 +34,7 @@ CommandEntityInventory.prototype.execute = function() {
             var item = entry[1];
             var itemType = Config.itemRegister[item.id];
             if (item.equipped)
-                Entity.onDequip(entity, stackId, itemType);
+                sendCommand(new CommandEntityEquipItem(entity.id, stackId, itemType.id, false));
         };
     } else if (this.actionId == CommandEntityInventory.Actions.DROP_STACK) {
         var item = entity.inventory.removeStack(this.itemId);

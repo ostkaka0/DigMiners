@@ -3,15 +3,14 @@ var v2 = require("engine/Core/v2.js")
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
 
+
 var ParticleFunctions = {};
 module.exports = ParticleFunctions
 
-ParticleFunctions.create = function(particleFunction, pos, angle) {
+ParticleFunctions.create = function(particleFunction, pos, variable) {
     if (!isServer)
-        particleFunction(pos, angle);
+        particleFunction(pos, variable);
 }
-
-
 
 ParticleFunctions.BulletHitParticles = function(pos, angle) {
     for (var i = 0; i < 10; ++i) {
@@ -28,5 +27,16 @@ ParticleFunctions.BloodHitParticles = function(pos, angle) {
         var velocity = [Math.cos(angle2), -Math.sin(angle2)];
         v2.mul(Math.random() * 6.0, velocity, velocity);
         Global.gameData.world.particleWorld.add(pos, velocity, Particles.Blood);
+    }
+}
+
+ParticleFunctions.ExplosionParticles = function(pos, radius) {
+    for (var i = 0; i < 40; ++i) {
+        var angle = Math.random() * Math.PI * 2;
+        var velocity = [Math.cos(angle), -Math.sin(angle)];
+        v2.mul(Math.random() * 6.0, velocity, velocity);
+        var particleType = Particles.Smoke;
+        particleType.size = Math.random() * 15 + 20;
+        gameData.world.particleWorld.add(pos, velocity, particleType);
     }
 }

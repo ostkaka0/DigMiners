@@ -73,6 +73,11 @@ module.exports = function(playerId, entityId, name, playerClass, teamId) {
     playerClass.blocks.forEach(function(blockItem) {
         entity.inventory.addStaticItem(Global.gameData, blockItem.id);
     });
+    if (playerClass.items) {
+        playerClass.items.forEach(function(item) {
+            entity.inventory.addItem(gameData, item[0].id, item[1]);
+        });
+    }
 
     return entity;
 }

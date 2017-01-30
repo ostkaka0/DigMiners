@@ -180,8 +180,8 @@ World.prototype.initializeEvents = function() {
                 }
             }
 
-            interactingEntity.bodyparts.bodyparts["rightArm"].cycle(Global.gameData, "rightArmAction", 200, true);
-            interactingEntity.bodyparts.bodyparts["leftArm"].cycle(Global.gameData, "leftArmAction", 200, true);
+            interactingEntity.bodyparts.bodyparts["rightArm"].cycle("rightArmAction", 200, true);
+            interactingEntity.bodyparts.bodyparts["leftArm"].cycle("leftArmAction", 200, true);
         }
     });
 

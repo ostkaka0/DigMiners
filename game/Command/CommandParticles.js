@@ -7,10 +7,10 @@ var Config = require("game/Config.js")
 var Global = require("game/Global.js")
 var ParticleFunctions = require("game/ParticleFunctions.js")
 
-var CommandParticles = function(particleFunctionId, pos, angle) {
+var CommandParticles = function(particleFunctionId, pos, variable) {
     this.particleFunctionId = particleFunctionId;
     this.pos = pos;
-    this.angle = angle;
+    this.variable = variable;
 }
 module.exports = CommandParticles
 
