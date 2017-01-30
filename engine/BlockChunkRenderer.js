@@ -1,7 +1,8 @@
-var PIXI = require("pixi")
+var PIXI = require("pixi.js")
 
 var Map2D = require("engine/Core/Map2D.js")
 var BlockChunk = require("engine/BlockChunk.js")
+var GLBlockChunk = require("engine/GLBlockChunk.js")
 var Shader = require("engine/Shader.js")
 var BLOCK_CHUNK_DIM = BlockChunk.dim;
 var BLOCK_CHUNK_DIM_2 = BlockChunk.dim2;
@@ -28,8 +29,8 @@ var BlockChunkRenderer = function(gl, world, tileSize) {
 
     this.shaderProgram = null;
     this.shaderRequests = [
-        new Shader.Request("data/shaders/block/vert.glsl", gl.VERTEX_SHADER),
-        new Shader.Request("data/shaders/block/frag.glsl", gl.FRAGMENT_SHADER)
+        new Shader.Request("data/shaders/block/vert.glsl", this.gl.VERTEX_SHADER),
+        new Shader.Request("data/shaders/block/frag.glsl", this.gl.FRAGMENT_SHADER)
     ];
 
     this.isReady = false; // False until shaders, buffers, attributes and uniforms are loaded.
@@ -44,18 +45,18 @@ BlockChunkRenderer.prototype.lazyInit = function() {
         this.shaderProgram = Shader.tryLinkShaderProgram(this.gl, this.shaderRequests);
 
     if (this.shaderProgram) {
-        gl.useProgram(this.shaderProgram);
+        this.gl.useProgram(this.shaderProgram);
 
         // Get attribute locations
-        this.attribPos = gl.getAttribLocation(this.shaderProgram, "aPos");
-        this.attribUV = gl.getAttribLocation(this.shaderProgram, "aUV");
-        this.attribBreakUV = gl.getAttribLocation(this.shaderProgram, "aBreakUV");
+        this.attribPos = this.gl.getAttribLocation(this.shaderProgram, "aPos");
+        this.attribUV = this.gl.getAttribLocation(this.shaderProgram, "aUV");
+        this.attribBreakUV = this.gl.getAttribLocation(this.shaderProgram, "aBreakUV");
 
         // Get uniform locations
-        this.uniformTextureTiles = gl.getUniformLocation(this.shaderProgram, "textureTiles");
-        this.uniformTextureBlockBreak = gl.getUniformLocation(this.shaderProgram, "textureBlockBreak");
-        this.uniformMatVP = gl.getUniformLocation(this.shaderProgram, "matVP");
-        this.uniformMatM = gl.getUniformLocation(this.shaderProgram, "matM");
+        this.uniformTextureTiles = this.gl.getUniformLocation(this.shaderProgram, "textureTiles");
+        this.uniformTextureBlockBreak = this.gl.getUniformLocation(this.shaderProgram, "textureBlockBreak");
+        this.uniformMatVP = this.gl.getUniformLocation(this.shaderProgram, "matVP");
+        this.uniformMatM = this.gl.getUniformLocation(this.shaderProgram, "matM");
 
         this.isReady = true;
     }
@@ -87,14 +88,14 @@ BlockChunkRenderer.prototype.renderBlockChunks = function(gameData, matVP, block
     if (!this.isReady || !this.textureTiles || !this.textureBlockBreak)
         return;
 
-    gl.useProgram(this.shaderProgram);
+    this.gl.useProgram(this.shaderProgram);
 
     // Shared between all blockChunks:
     // Model-view matrix
-    gl.uniformMatrix3fv(this.uniformMatVP, false, matVP.toArray());
+    this.gl.uniformMatrix3fv(this.uniformMatVP, false, matVP.toArray());
     // Texture uniforms
-    gl.uniform1i(this.uniformTextureTiles, 0);
-    gl.uniform1i(this.uniformTextureBlockBreak, 1);
+    this.gl.uniform1i(this.uniformTextureTiles, 0);
+    this.gl.uniform1i(this.uniformTextureBlockBreak, 1);
 
     for (var i = 0; i < blockChunksToRender.length; ++i) {
         var x = blockChunksToRender[i].x;
@@ -115,36 +116,36 @@ BlockChunkRenderer.prototype.renderBlockChunks = function(gameData, matVP, block
             glBlockChunk.update(this.gl, gameData, blockChunk, x, y);
             blockChunk.isChanged = false;
         }
-        glBlockChunk.bind();
+        glBlockChunk.bind(this.gl);
 
         // * Render the blockChunk
         // Uniforms
         var matM = PIXI.Matrix.IDENTITY.clone().translate(x * BLOCK_CHUNK_DIM * this.tileSize, y * BLOCK_CHUNK_DIM * this.tileSize);
-        gl.uniformMatrix3fv(this.uniformMatM, false, matM.toArray());
+        this.gl.uniformMatrix3fv(this.uniformMatM, false, matM.toArray());
 
         // Texture
-        gl.activeTexture(gl.TEXTURE0);
-        gl.bindTexture(gl.TEXTURE_2D, this.textureTiles);
+        this.gl.activeTexture(this.gl.TEXTURE0);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.textureTiles);
 
-        gl.activeTexture(gl.TEXTURE1);
-        gl.bindTexture(gl.TEXTURE_2D, this.textureBlockBreak);
+        this.gl.activeTexture(this.gl.TEXTURE1);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.textureBlockBreak);
 
         // Attributes
-        gl.enableVertexAttribArray(this.attribPos);
-        gl.enableVertexAttribArray(this.attribUV);
-        gl.enableVertexAttribArray(this.attribBreakUV);
-        gl.vertexAttribPointer(this.attribPos, 2, gl.FLOAT, false, 2 * 4, 0);
-        gl.vertexAttribPointer(this.attribUV, 2, gl.FLOAT, false, 2 * 4, glBlockChunk.vboSize * 4 * 4);
-        gl.vertexAttribPointer(this.attribBreakUV, 2, gl.FLOAT, false, 2 * 4, 2 * (glBlockChunk.vboSize * 4 * 4));
+        this.gl.enableVertexAttribArray(this.attribPos);
+        this.gl.enableVertexAttribArray(this.attribUV);
+        this.gl.enableVertexAttribArray(this.attribBreakUV);
+        this.gl.vertexAttribPointer(this.attribPos, 2, this.gl.FLOAT, false, 2 * 4, 0);
+        this.gl.vertexAttribPointer(this.attribUV, 2, this.gl.FLOAT, false, 2 * 4, glBlockChunk.vboSize * 4 * 4);
+        this.gl.vertexAttribPointer(this.attribBreakUV, 2, this.gl.FLOAT, false, 2 * 4, 2 * (glBlockChunk.vboSize * 4 * 4));
 
         // Render vbo
-        gl.bindBuffer(gl.ARRAY_BUFFER, glBlockChunk.vbo);
-        gl.drawArrays(gl.TRIANGLES, 0, glBlockChunk.vboSize);
-        gl.bindBuffer(gl.ARRAY_BUFFER, null);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, glBlockChunk.vbo);
+        this.gl.drawArrays(this.gl.TRIANGLES, 0, glBlockChunk.vboSize);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);
 
-        gl.disableVertexAttribArray(this.attribPos);
-        gl.disableVertexAttribArray(this.attribUV);
-        gl.disableVertexAttribArray(this.attribBreakUV);
+        this.gl.disableVertexAttribArray(this.attribPos);
+        this.gl.disableVertexAttribArray(this.attribUV);
+        this.gl.disableVertexAttribArray(this.attribBreakUV);
     }
 }
 
@@ -154,15 +155,15 @@ BlockChunkRenderer.prototype.loadTextures = function() {
     image.webglTexture = false;
     //var that = this;
     image.onload = function(e) {
-        var texture = gl.createTexture();
-        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+        var texture = this.gl.createTexture();
+        this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, true);
 
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-        gl.bindTexture(gl.TEXTURE_2D, null);
-        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, image);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, null);
+        this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, false);
         this.textureTiles = texture;
     }.bind(this);
 
@@ -171,15 +172,15 @@ BlockChunkRenderer.prototype.loadTextures = function() {
     image2.webglTexture = false;
     //var that = this;
     image2.onload = function(e) {
-        var texture = gl.createTexture();
-        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+        var texture = this.gl.createTexture();
+        this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, true);
 
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image2);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-        gl.bindTexture(gl.TEXTURE_2D, null);
-        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, image2);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, null);
+        this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, false);
         this.textureBlockBreak = texture;
     }.bind(this);
 }

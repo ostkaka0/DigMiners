@@ -1,3 +1,7 @@
+var BlockChunk = require("engine/BlockChunk.js")
+var BlockWorld = require("engine/BlockWorld.js")
+var Config = require("game/Config.js")
+
 var GLBlockChunk = function(gl, blockChunk) {
     this.vbo = null;
     this.vboSize = 0;
@@ -8,23 +12,23 @@ module.exports = GLBlockChunk;
 
 GLBlockChunk.prototype.update = function(gl, gameData, blockChunk, chunkX, chunkY) {
     var tileSize = 32;
-    var size = tileSize * BLOCK_CHUNK_DIM;
+    var size = tileSize * BlockChunk.dim;
     var verticesPos = [];
     var verticesUV = [];
     var verticesBreakUV = [];
 
-    for (var x = 0; x < BLOCK_CHUNK_DIM; x++) {
-        for (var y = 0; y < BLOCK_CHUNK_DIM; y++) {
+    for (var x = 0; x < BlockChunk.dim; x++) {
+        for (var y = 0; y < BlockChunk.dim; y++) {
             blockIds = [blockChunk.getForeground(x - 1, y - 1),
             blockChunk.getForeground(x, y - 1),
             blockChunk.getForeground(x - 1, y),
             blockChunk.getForeground(x, y)];
             if (x - 1 < 0 || y - 1 < 0)
-                blockIds[0] = getForeground(gameData.world.blockWorld, chunkX * BLOCK_CHUNK_DIM + x - 1, chunkY * BLOCK_CHUNK_DIM + y - 1);
+                blockIds[0] = BlockWorld.getForeground(gameData.world.blockWorld, chunkX * BlockChunk.dim + x - 1, chunkY * BlockChunk.dim + y - 1);
             if (y - 1 < 0)
-                blockIds[1] = getForeground(gameData.world.blockWorld, chunkX * BLOCK_CHUNK_DIM + x, chunkY * BLOCK_CHUNK_DIM + y - 1);
+                blockIds[1] = BlockWorld.getForeground(gameData.world.blockWorld, chunkX * BlockChunk.dim + x, chunkY * BlockChunk.dim + y - 1);
             if (x - 1 < 0)
-                blockIds[2] = getForeground(gameData.world.blockWorld, chunkX * BLOCK_CHUNK_DIM + x - 1, chunkY * BLOCK_CHUNK_DIM + y);
+                blockIds[2] = BlockWorld.getForeground(gameData.world.blockWorld, chunkX * BlockChunk.dim + x - 1, chunkY * BlockChunk.dim + y);
 
             var tiles = [Config.blockRegister[blockIds[0]],
             Config.blockRegister[blockIds[1]],
@@ -55,7 +59,7 @@ GLBlockChunk.prototype.update = function(gl, gameData, blockChunk, chunkX, chunk
                 verticesUV.push((textureX + 1) / textureQuadDim, 1 - (textureY + 0) / textureQuadDim);
                 verticesUV.push((textureX + 0) / textureQuadDim, 1 - (textureY + 0) / textureQuadDim);
 
-                var strength = getStrength(gameData.world.blockWorld, chunkX * BLOCK_CHUNK_DIM + x + i % 2 - 1, chunkY * BLOCK_CHUNK_DIM + y + (i / 2 >> 0) - 1);
+                var strength = BlockWorld.getStrength(gameData.world.blockWorld, chunkX * BlockChunk.dim + x + i % 2 - 1, chunkY * BlockChunk.dim + y + (i / 2 >> 0) - 1);
                 textureX = 2 * Math.ceil(10 - (strength / 255.0) * 10) + 1 * (cornerIndex % 2);
                 textureY = 1 * (cornerIndex / 2 >> 0);
                 verticesBreakUV.push((textureX + 0) / textureQuadDim, 1 - (textureY + 1) / textureQuadDim);
@@ -79,6 +83,6 @@ GLBlockChunk.prototype.update = function(gl, gameData, blockChunk, chunkX, chunk
     gl.bufferSubData(gl.ARRAY_BUFFER, verticesPos.length * 2 * 4 * 2, new Float32Array(verticesBreakUV));
 }
 
-GLBlockChunk.prototype.bind = function() {
+GLBlockChunk.prototype.bind = function(gl) {
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vbo);
 }
