@@ -4,6 +4,9 @@ var IndexCounter = require("engine/IndexCounter.js")
 
 var Global = require("game/Global.js")
 var Config = require("game/Config.js")
+var Generator = require("game/Generator.js")
+var Player = require("game/Player.js")
+var HUD = require("game/GUI/HUD.js")
 
 var MessageInit = function(gameData, player) {
     this.players = [];
@@ -111,9 +114,9 @@ MessageInit.prototype.receive = function(gameData, byteArray) {
         var entity = {};
         while (index.value < entityEnd) {
             var componentId = Deserialize.int32(byteArray, index);
-            var ComponentType = Config.componentTypes[componentId];
-            var componentName = ComponentType.prototype.name;
-            entity[componentName] = new ComponentType();
+            var componentType = Config.componentTypes[componentId];
+            var componentName = componentType.prototype.name;
+            entity[componentName] = new componentType();
             entity[componentName].deserialize(byteArray, index, Global.gameData);
         }
 

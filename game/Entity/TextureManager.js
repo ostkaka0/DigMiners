@@ -41,11 +41,11 @@ module.exports = function() {
     loader.queue("egg.png");
     loader.queue("bigEgg.png");
 
-    Event.subscribe(TextureLoaderEvents.onProgress, this, function(file, progress) {
+    Event.subscribe(TextureLoader.Events.onProgress, this, function(file, progress) {
         console.log(Math.round(progress) + "% complete");
     }.bind(this));
 
-    Event.subscribe(TextureLoaderEvents.onComplete, this, function(textures) {
+    Event.subscribe(TextureLoader.Events.onComplete, this, function(textures) {
         console.log("Textures loaded.");
 
         var texturesOutput = {};
@@ -54,8 +54,8 @@ module.exports = function() {
             texturesOutput[key] = new Texture(textures[key]);
         });
 
-        for (var name in Items) {
-            var itemType = Items[name];
+        for (var name in Items.Types) {
+            var itemType = Items.Types[name];
             if (!itemType.texture.dimX)
                 texturesOutput[itemType.name] = new Texture(textures[itemType.texture.path]);
             else {

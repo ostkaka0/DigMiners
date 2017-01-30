@@ -1,5 +1,6 @@
 
-var $ = require("jquery"
+var $ = require("jquery")
+var PIXI = require("pixi")
 
 var fix = require("engine/Core/Fix.js")
 var v2 = require("engine/Core/v2.js")
@@ -10,8 +11,10 @@ var BlockChunkRenderer = require("engine/ChunkRenderer.js")
 var SpriteContainer = require("engine/Animation/SpriteContainer.js")
 var Event = require("engine/Core/Event.js")
 var Chunk = require("engine/Chunk.js")
-var loadTextures = require("engine/Animation/TextureFunctions.js")
+var loadTextures = require("engine/Animation/TextureFunctions.js").loadTextures
+var gameLoop = require("engine/GameLoop.js")
 
+var Config = require("game/Config.js")
 var gameData = require("game/GameData.js")
 var Client = require("game/Client.js")
 var TextureLoader = require("game/Entity/TextureLoader.js")
@@ -54,7 +57,7 @@ window.client = null;
 
 gameData.init();
 
-Event.subscribe(TextureLoaderEvents.onComplete, window, function(textures) {
+Event.subscribe(TextureLoader.Events.onComplete, window, function(textures) {
     // Must wait until all textures have loaded to continue! important
     window.blockPosGood = new Sprite("blockPosGood.png");
     window.blockPosGood.anchor = [0, 0];
@@ -90,7 +93,7 @@ var keyCodeLeft = 38;
 var keyCodeLeft = 39;
 var keyCodeLeft = 37;
 
-var loadGame = function() {
+window.loadGame = function() {
     gameData.animationManager.load();
     // Player input
     $('*').keydown(function(event) {

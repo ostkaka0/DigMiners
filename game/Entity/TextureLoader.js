@@ -1,16 +1,17 @@
 var Event = require("engine/Core/Event.js")
-var loadTextures = require("engine/Animation/TextureFunctions.js")
+var loadTextures = require("engine/Animation/TextureFunctions.js").loadTextures
 
-module.exports.TextureLoaderEvents = {};
-module.exports.TextureLoaderEvents.onComplete = [];
-module.exports.TextureLoaderEvents.onProgress = [];
+
 
 var TextureLoader = function() {
     this.texturesToLoad = [];
     this.total = 0;
     this.current = 0;
 }
-module.exports.TextureLoader = TextureLoader
+module.exports = TextureLoader
+TextureLoader.Events = {};
+TextureLoader.Events.onComplete = [];
+TextureLoader.Events.onProgress = [];
 
 TextureLoader.prototype.queue = function(texture) {
     this.texturesToLoad[this.total] = texture;
@@ -21,8 +22,8 @@ TextureLoader.prototype.loadTextures = function() {
     var context = this;
 
     loadTextures("data/textures/", this.texturesToLoad, function(textures) {
-        Event.trigger(TextureLoaderEvents.onComplete, textures);
+        Event.trigger(TextureLoader.Events.onComplete, textures);
     }, function(percentage, name) {
-        Event.trigger(TextureLoaderEvents.onProgress, name, percentage);
+        Event.trigger(TextureLoader.Events.onProgress, name, percentage);
     });
 }

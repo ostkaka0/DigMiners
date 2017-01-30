@@ -1,7 +1,7 @@
 var Quadtree = require("engine/Quadtree.js")
 var PointWorld = require("engine/PointWorld.js")
 var DrawTransform = require("engine/Animation/DrawTransform.js")
-var loadTextures = require("engine/Animation/TextureFunctions.js")
+var loadTextures = require("engine/Animation/TextureFunctions.js").loadTextures
 var "jquery"//'../lib_front_end/ajquery-3.1.1.min.js';
 
 var canvas = document.getElementById("canvas");
