@@ -3,6 +3,7 @@ var Deserialize = require("engine/Serialization.js").Deserialize
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var PopupMessage = require("game/GUI/PopupMessage.js")
 
 var CommandPopupMessage = function(text, timeout) {
     this.text = text;

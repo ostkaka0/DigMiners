@@ -3,6 +3,7 @@ var v2 = require("engine/Core/v2.js")
 var Serialize = require("engine/Serialization.js").Serialize
 var Deserialize = require("engine/Serialization.js").Deserialize
 var BodyPart = require("engine/Animation/BodyPart.js")
+var Sprite = require("engine/Animation/Sprite.js")
 
 var Bodyparts = function(bodyparts) {
     this.bodyparts = bodyparts;

@@ -1,7 +1,8 @@
-var PIXI = require("pixi")
+var PIXI = require("pixi.js")
 
 var Map2D = require("engine/Core/Map2D.js")
 var Chunk = require("engine/Chunk.js")
+var GLChunk = require("engine/GLChunk.js")
 var Shader = require("engine/Shader.js")
 var CHUNK_DIM = Chunk.dim;
 var CHUNK_DIM_2 = Chunk.dim2;
@@ -31,8 +32,8 @@ var ChunkRenderer = function(gl, world, tileSize) {
 
     this.shaderProgram = null;
     this.shaderRequests = [
-        new Shader.Request("data/shaders/terrain/vert.glsl", gl.VERTEX_SHADER),
-        new Shader.Request("data/shaders/terrain/frag.glsl", gl.FRAGMENT_SHADER)
+        new Shader.Request("data/shaders/terrain/vert.glsl", this.gl.VERTEX_SHADER),
+        new Shader.Request("data/shaders/terrain/frag.glsl", this.gl.FRAGMENT_SHADER)
     ];
 
     this.isReady = false; // False until shaders, buffers, attributes and uniforms are loaded.
@@ -60,32 +61,32 @@ ChunkRenderer.prototype.lazyInit = function() {
             1, 1,
         ];
 
-        this.buffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
-        gl.bufferData(gl.ARRAY_BUFFER,
+        this.buffer = this.gl.createBuffer();
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffer);
+        this.gl.bufferData(this.gl.ARRAY_BUFFER,
             new Float32Array(vertices),
-            gl.STATIC_DRAW);
+            this.gl.STATIC_DRAW);
 
         //FACES :
         var triangle_faces = [0, 1, 3, 0, 3, 2];
-        this.bufferIndices = gl.createBuffer();
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferIndices);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,
+        this.bufferIndices = this.gl.createBuffer();
+        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.bufferIndices);
+        this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER,
             new Uint16Array(triangle_faces),
-            gl.STATIC_DRAW);
+            this.gl.STATIC_DRAW);
 
-        gl.useProgram(this.shaderProgram);
+        this.gl.useProgram(this.shaderProgram);
 
         // Get attribute locations
-        this.attributePos = gl.getAttribLocation(this.shaderProgram, "aPos");
-        this.attributeUV = gl.getAttribLocation(this.shaderProgram, "aUV");
+        this.attributePos = this.gl.getAttribLocation(this.shaderProgram, "aPos");
+        this.attributeUV = this.gl.getAttribLocation(this.shaderProgram, "aUV");
 
         // Get uniform locations
-        this.uniformTextureDensity = gl.getUniformLocation(this.shaderProgram, "textureDensity");
-        this.uniformTextureTiles = gl.getUniformLocation(this.shaderProgram, "textureTiles");
-        this.uniformTextureTerrain = gl.getUniformLocation(this.shaderProgram, "textureTerrain");
-        this.uniformMatVP = gl.getUniformLocation(this.shaderProgram, "matVP");
-        this.uniformMatM = gl.getUniformLocation(this.shaderProgram, "matM");
+        this.uniformTextureDensity = this.gl.getUniformLocation(this.shaderProgram, "textureDensity");
+        this.uniformTextureTiles = this.gl.getUniformLocation(this.shaderProgram, "textureTiles");
+        this.uniformTextureTerrain = this.gl.getUniformLocation(this.shaderProgram, "textureTerrain");
+        this.uniformMatVP = this.gl.getUniformLocation(this.shaderProgram, "matVP");
+        this.uniformMatM = this.gl.getUniformLocation(this.shaderProgram, "matM");
 
         this.isReady = true;
     }
@@ -117,15 +118,15 @@ ChunkRenderer.prototype.renderChunks = function(matVP, chunksToRender) {
     if (!this.isReady || !this.textureTerrain)
         return;
 
-    gl.useProgram(this.shaderProgram);
+    this.gl.useProgram(this.shaderProgram);
 
     // Shared between all chunks:
     // Model-view matrix
-    gl.uniformMatrix3fv(this.uniformMatVP, false, matVP.toArray());
+    this.gl.uniformMatrix3fv(this.uniformMatVP, false, matVP.toArray());
     // Texture uniforms
-    gl.uniform1i(this.uniformTextureTerrain, 0);
-    gl.uniform1i(this.uniformTextureTiles, 1);
-    gl.uniform1i(this.uniformTextureDensity, 2);
+    this.gl.uniform1i(this.uniformTextureTerrain, 0);
+    this.gl.uniform1i(this.uniformTextureTiles, 1);
+    this.gl.uniform1i(this.uniformTextureDensity, 2);
 
     for (var i = 0; i < chunksToRender.length; ++i) {
         var x = chunksToRender[i].x;
@@ -153,32 +154,32 @@ ChunkRenderer.prototype.renderChunks = function(matVP, chunksToRender) {
 
         // Render the chunk
         var matM = PIXI.Matrix.IDENTITY.clone().translate(x * CHUNK_DIM * this.tileSize, y * CHUNK_DIM * this.tileSize);
-        gl.uniformMatrix3fv(this.uniformMatM, false, matM.toArray());
+        this.gl.uniformMatrix3fv(this.uniformMatM, false, matM.toArray());
 
         // Terrain texture:
-        gl.activeTexture(gl.TEXTURE0);
-        gl.bindTexture(gl.TEXTURE_2D, this.textureTerrain);
+        this.gl.activeTexture(this.gl.TEXTURE0);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.textureTerrain);
         // Chunk textures
-        gl.activeTexture(gl.TEXTURE1);
-        gl.bindTexture(gl.TEXTURE_2D, glChunk.textureTiles);
-        gl.activeTexture(gl.TEXTURE2);
-        gl.bindTexture(gl.TEXTURE_2D, glChunk.textureDensity);
+        this.gl.activeTexture(this.gl.TEXTURE1);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, glChunk.textureTiles);
+        this.gl.activeTexture(this.gl.TEXTURE2);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, glChunk.textureDensity);
 
         // Attributes
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffer);
 
-        gl.enableVertexAttribArray(this.attributePos);
-        gl.enableVertexAttribArray(this.attributeUV);
-        gl.vertexAttribPointer(this.attributePos, 2, gl.FLOAT, false, 4 * 4, 0);
-        gl.vertexAttribPointer(this.attributeUV, 2, gl.FLOAT, false, 4 * 4, 8);
+        this.gl.enableVertexAttribArray(this.attributePos);
+        this.gl.enableVertexAttribArray(this.attributeUV);
+        this.gl.vertexAttribPointer(this.attributePos, 2, this.gl.FLOAT, false, 4 * 4, 0);
+        this.gl.vertexAttribPointer(this.attributeUV, 2, this.gl.FLOAT, false, 4 * 4, 8);
 
         // Render chunk
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferIndices);
-        gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
+        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.bufferIndices);
+        this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 0);
 
         // Unbind buffers
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-        gl.bindBuffer(gl.ARRAY_BUFFER, null);
+        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, null);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);
     }
 }
 
@@ -203,7 +204,6 @@ ChunkRenderer.prototype.loadTexture = function(gl) {
 
 ChunkRenderer.prototype.handleChunkChange = function(chunk, x, y) {
     //console.log("onChunkChange event! x:" + x + " y:" + y);
-    var gl = this.gl;
     var that = this;
     var glChunk = that.chunkGLWorld.get(x, y);
 
@@ -214,12 +214,12 @@ ChunkRenderer.prototype.handleChunkChange = function(chunk, x, y) {
         var glChunk2 = that.chunkGLWorld.get(x2, y2);
         var chunk2 = that.world.get(x2, y2);
         if (chunk2 && glChunk2) {
-            glChunk.updateBorder(gl, chunk2, x, y, x2, y2);
-            glChunk2.updateBorder(gl, chunk, x2, y2, x, y);
-            //that.onChunkChange2(gl, ex, ey, x2, y2, chunk, chunk2);
-            //that.onChunkChange2(gl, x2, y2, ex, ey, chunk2, chunk);
+            glChunk.updateBorder(this.gl, chunk2, x, y, x2, y2);
+            glChunk2.updateBorder(this.gl, chunk, x2, y2, x, y);
+            //that.onChunkChange2(this.gl, ex, ey, x2, y2, chunk, chunk2);
+            //that.onChunkChange2(this.gl, x2, y2, ex, ey, chunk2, chunk);
         }
-    }
+    }.bind(this);
 
     notifyNeighbor(x, y + 1);
     notifyNeighbor(x - 1, y + 1);
