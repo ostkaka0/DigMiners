@@ -21,13 +21,9 @@ Global.gameData.destroy = function() {
 }
 
 Global.gameData.init = function(idList) {
-    console.log("Blocks", Blocks);
-    console.log("Items", Items);
-    console.log("Config", Config)
     Blocks.initBlocks();
     Items.initItems(this);
     Config.init();
-    console.log(Items)
 
     // Global.gameData.textures is set in TextureManager.js when textures are loaded
     this.textures = {};

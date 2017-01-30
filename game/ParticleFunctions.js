@@ -2,6 +2,7 @@ var fix = require("engine/Core/Fix.js")
 var v2 = require("engine/Core/v2.js")
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var Particles = require("game/Particles.js")
 
 
 var ParticleFunctions = {};
