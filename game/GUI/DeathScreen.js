@@ -62,9 +62,9 @@ var DeathScreen = function() {
     }).appendTo(this.divWindow);
 
     var currentClass = 0;
-    var keys = Object.keys(PlayerClasses);
+    var keys = Object.keys(PlayerClass);
     keys.forEach(function(key) {
-        var classType = PlayerClasses[key];
+        var classType = PlayerClass[key];
 
         var buttonLabel = $("<label>", {
             "class": "btn btn-primary" + (currentClass == 0 ? " active" : ""),

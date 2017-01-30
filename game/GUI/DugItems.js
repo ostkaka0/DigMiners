@@ -5,7 +5,7 @@ var Config = require("game/Config.js")
 
 var DugItems = function() {
     this.dugItems = $("<div>");
-    this.dugItems.Types.css({
+    this.dugItems.css({
         "position": "fixed",
         "right": "70px",
         "top": "100px",
@@ -80,11 +80,11 @@ var DugItems = function() {
         "height": "10px",
     });
 
-    this.dugItems.Types.appendTo("#hud");
+    this.dugItems.appendTo("#hud");
 }
 module.exports = DugItems
 
-DugItems.Types.prototype.update = function() {
+DugItems.prototype.update = function() {
     for (var i = 0; i < Config.tileRegister.length; ++i) {
         var tileType = Config.tileRegister[i];
         if (!tileType.isOre) continue;

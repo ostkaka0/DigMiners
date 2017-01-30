@@ -34,9 +34,9 @@ CommandEntitySpawn.prototype.deserialize = function(byteArray, index) {
     for (var i = 0; i < numComponents; ++i) {
 
         var componentId = Deserialize.int32(byteArray, index);
-        var ComponentType = Config.componentTypes[componentId];
+        var componentType = Config.componentTypes[componentId];
         var componentName = ComponentType.prototype.name;
-        entity[componentName] = new ComponentType();
+        entity[componentName] = new componentType();
         entity[componentName].deserialize(byteArray, index, Global.gameData);
     }
     this.entityId = entityId;

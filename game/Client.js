@@ -1,4 +1,4 @@
-var io = require("socket.io-client"
+var io = require("socket.io-client")
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")

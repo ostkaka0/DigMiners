@@ -8,7 +8,7 @@ var AnimationManager = function() {
 module.exports = AnimationManager;
 
 AnimationManager.prototype.load = function() {
-    this.animations["feet"] = new Animation("feet", gameData.textures["feet.png"], 60, 75, 75);
+    this.animations["feet"] = new Animation("feet", global.gameData.textures["feet.png"], 60, 75, 75);
     //this.animations["dynamite"] = new Animation("dynamite", textures.DynamiteSheet, 64, 32, 32);
 
     this.cycles["rightArm"] = new Cycle([
@@ -120,7 +120,7 @@ AnimationManager.prototype.load = function() {
 }
 
 AnimationManager.prototype.update = function() {
-    var entityWorld = gameData.world.entityWorld;
+    var entityWorld = global.gameData.world.entityWorld;
     if (!entityWorld)
         console.error("Missing gameData.world.entityWorld");
     entityWorld.objectArray.forEach(function(entity) {

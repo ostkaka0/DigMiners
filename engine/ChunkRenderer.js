@@ -1,3 +1,5 @@
+var PIXI = require("pixi")
+
 var Map2D = require("engine/Core/Map2D.js")
 var Chunk = require("engine/Chunk.js")
 var Shader = require("engine/Shader.js")

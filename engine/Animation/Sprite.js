@@ -1,4 +1,4 @@
-var gameData = require("game/GameData.js")
+var Global = require("game/Global.js")
 
 var Sprite = function(textureName) {
     if (textureName) {
