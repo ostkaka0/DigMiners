@@ -3,6 +3,7 @@ var Deserialize = require("engine/Serialization.js").Deserialize
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var Command = require("game/Command/Command.js")
 var PopupMessage = require("game/GUI/PopupMessage.js")
 
 var CommandPopupMessage = function(text, timeout) {
@@ -12,6 +13,7 @@ var CommandPopupMessage = function(text, timeout) {
         this.timeout = 3000;
 }
 module.exports = CommandPopupMessage
+Command.Register.push(module.exports)
 
 CommandPopupMessage.prototype.execute = function() {
     if (!isServer)

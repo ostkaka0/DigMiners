@@ -6,6 +6,7 @@ var TileWorld = require("engine/TileWorld.js")
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var Command = require("game/Command/Command.js")
 
 var CommandDig = function(pos, radius) {
     if (pos)
@@ -13,6 +14,7 @@ var CommandDig = function(pos, radius) {
     this.radius = fix.toFix(radius);
 }
 module.exports = CommandDig
+Command.Register.push(module.exports)
 
 CommandDig.prototype.execute = function() {
     var tileWorld = Global.gameData.world.tileWorld;

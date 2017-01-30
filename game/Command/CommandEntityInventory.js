@@ -3,6 +3,7 @@ var Deserialize = require("engine/Serialization.js").Deserialize
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var Command = require("game/Command/Command.js")
 var Entity = require("game/Entity/Entity.js")
 
 var CommandEntityInventoryActions = {
@@ -18,6 +19,7 @@ var CommandEntityInventory = function(entityId, actionId, itemId, amount) {
     this.amount = amount;
 }
 module.exports = CommandEntityInventory
+Command.Register.push(module.exports)
 CommandEntityInventory.Actions = CommandEntityInventoryActions;
 
 CommandEntityInventory.prototype.execute = function() {

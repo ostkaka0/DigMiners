@@ -6,6 +6,7 @@ var Event = require("engine/Core/Event.js")
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var Command = require("game/Command/Command.js")
 var Health = require("game/Entity/Health.js")
 
 var CommandEntityHealthChange = function(entityId, healthChange) {
@@ -13,6 +14,7 @@ var CommandEntityHealthChange = function(entityId, healthChange) {
     this.healthChange = fix.toFix(healthChange);
 }
 module.exports = CommandEntityHealthChange
+Command.Register.push(module.exports)
 
 CommandEntityHealthChange.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

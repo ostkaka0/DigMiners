@@ -5,12 +5,14 @@ var Deserialize = require("engine/Serialization.js").Deserialize
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var Command = require("game/Command/Command.js")
 
 var CommandEntityRotate = function(entityId, direction) {
     this.entityId = entityId;
     this.direction = direction;
 }
 module.exports = CommandEntityRotate
+Command.Register.push(module.exports)
 
 CommandEntityRotate.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

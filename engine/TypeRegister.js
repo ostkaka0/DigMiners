@@ -19,10 +19,9 @@ TypeRegister.addByArray = function(array, typeArray) {
 }
 
 TypeRegister.sort = function(array) {
-    array.sort((a,b) => (a.name < b.name)? -1 : 1);
+    array.sort((a,b) => a.name.localeCompare(b.name));
     for(var i = 0; i < array.length; i++) {
-        var type = array[i];
-        type.prototype.id = i;
-        type.prototype.idString = i.toString(36);
+        array[i].prototype.id = i;
+        array[i].prototype.idString = i.toString(36);
     }
 }

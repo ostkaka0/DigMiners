@@ -6,6 +6,7 @@ var Sprite = require("engine/Animation/Sprite.js")
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var Command = require("game/Command/Command.js")
 var Projectile = require("game/Entity/Projectile.js")
 var projectileEntitySimulate = require("game/ProjectilePhysics.js").projectileEntitySimulate
 
@@ -20,6 +21,7 @@ var CommandProjectileSpawn = function(entityId, pos, angle, speed, maxDistance, 
     this.shooterEntityId = shooterEntityId;
 }
 module.exports = CommandProjectileSpawn
+Command.Register.push(module.exports)
 
 CommandProjectileSpawn.prototype.execute = function() {
     if (Global.gameData.world.entityWorld.objects[this.entityId])

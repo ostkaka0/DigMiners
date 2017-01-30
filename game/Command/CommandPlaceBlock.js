@@ -5,12 +5,14 @@ var TileWorld = require("engine/TileWorld.js")
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var Command = require("game/Command/Command.js")
 
 var CommandPlaceBlock = function(blockPos, blockId) {
     this.blockPos = blockPos;
     this.blockId = blockId;
 }
 module.exports = CommandPlaceBlock
+Command.Register.push(module.exports)
 
 CommandPlaceBlock.prototype.execute = function() {
     BlockWorld.setForeground(Global.gameData.world.blockWorld, this.blockPos[0], this.blockPos[1], this.blockId);

@@ -5,6 +5,7 @@ var Deserialize = require("engine/Serialization.js").Deserialize
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var Command = require("game/Command/Command.js")
 var ParticleFunctions = require("game/ParticleFunctions.js")
 
 var CommandParticles = function(particleFunctionId, pos, variable) {
@@ -13,6 +14,7 @@ var CommandParticles = function(particleFunctionId, pos, variable) {
     this.variable = variable;
 }
 module.exports = CommandParticles
+Command.Register.push(module.exports)
 
 CommandParticles.prototype.execute = function() {
     if (!isServer)

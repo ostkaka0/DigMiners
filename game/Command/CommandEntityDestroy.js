@@ -3,11 +3,13 @@ var Deserialize = require("engine/Serialization.js").Deserialize
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var Command = require("game/Command/Command.js")
 
 var CommandEntityDestroy = function(entityId) {
     this.entityId = entityId;
 }
 module.exports = CommandEntityDestroy
+Command.Register.push(module.exports)
 
 CommandEntityDestroy.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

@@ -3,12 +3,14 @@ var Deserialize = require("engine/Serialization.js").Deserialize
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var Command = require("game/Command/Command.js")
 
 var CommandPlayerLeave = function(playerId, entityId) {
     this.playerId = playerId;
     this.entityId = entityId;
 }
 module.exports = CommandPlayerLeave
+Command.Register.push(module.exports)
 
 CommandPlayerLeave.prototype.execute = function() {
     var player = Global.gameData.playerWorld.objects[this.playerId];
