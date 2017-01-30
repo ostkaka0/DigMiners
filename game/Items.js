@@ -175,6 +175,55 @@ Items.Functions.Reload = function(entity, itemType) {
     }
 }
 
+Items.Functions.ThrowableDynamite = function(entity, itemType) {
+    if (isServer) {
+        if (!itemType || !entity.inventory) return;
+        var stackId = entity.inventory.getEquippedStackId("tool");
+        if (stackId == null) return;
+        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.REMOVE_ITEM, itemType.id, 1));
+
+        // Eject entity from playerEntity
+        var physicsBody = entity.physicsBody;
+        if (!physicsBody) return;
+        var displacement1 = Math.random() / 5 - 0.1;
+        var displacement2 = Math.random() / 5 - 0.1;
+        var displacement3 = Math.random() / 5 - 0.1 + 1;
+        var speed = v2.create(Math.cos(displacement1 + physicsBody.angle), -Math.sin(displacement2 + physicsBody.angle));
+        var speed2 = {};
+        v2.mul(10.0 * displacement3, speed, speed2);
+        v2.mul(5, speed2, speed2);
+
+        var itemEntityId = gameData.world.idList.next();
+        var itemEntity = {};
+        itemEntity.physicsBody = new PhysicsBody(physicsBody.getPos(), 0.01, 0, 1, 0.3);
+        itemEntity.physicsBody.setVelocity([speed2[0], speed2[1]]);
+        itemEntity.physicsBody.speedOld = v2.create(speed2[0], speed2[1]);
+        itemEntity.physicsBody.angle = physicsBody.angle;
+        itemEntity.physicsBody.angleOld = physicsBody.angle;
+
+        var bodySprite = new Sprite(itemType.throwEntityTexture);
+        bodySprite.frame = [0, 0, 32, 32];
+        var bodyparts = {
+            "body": new BodyPart(bodySprite, 0, 0, 0),
+        };
+        itemEntity.bodyparts = new Bodyparts(bodyparts);
+        itemEntity.drawable = new Drawable(0);
+
+        var timeout = 2000;
+
+        sendCommand(new CommandEntitySpawn(gameData, itemEntity, itemEntityId));
+        sendCommand(new CommandEntityAnimate(itemEntityId, "body", "dynamite", 64000.0 / timeout));
+
+        gameData.setTimeout(function(attacker) {
+            if (this.isActive && !this.isDead) {
+                sendCommand(new CommandParticles(ParticleFunctions.ExplosionParticles.id, this.physicsBody.getPos(), 10.0));
+                sendCommand(new CommandEntityDestroy(this.id));
+                createExplosion(this.physicsBody.getPos(), 3.0, 50.0, 250.0, 1.0, attacker);
+            }
+        }.bind(itemEntity, entity), timeout);
+    }
+}
+
 ItemTextures.ShovelAtlas = {
     path: "shovelAtlas.png",
     spriteWidth: 64,
@@ -467,16 +516,6 @@ Items.initItems = function() {
         maxStackSize: 100,
         type: "resource"
     }
-    Items.Types.Dynamite = {
-        name: "Dynamite",
-        texture: ItemTextures.ItemAtlas,
-        spriteId: 2,
-        isEquipable: true,
-        isDropable: true,
-        maxStackSize: 8,
-        type: "tool",
-        typeOfType: "explosive"
-    }
     Items.Types.Torch = {
         name: "Torch",
         texture: ItemTextures.ItemAtlas,
@@ -706,5 +745,24 @@ Items.initItems = function() {
         typeOfType: "rangedWeapon",
         projectileType: Projectiles.GrenadeLauncher,
         projectileScatter: 0.05
+    }
+
+    // Throwable items
+    Items.Types.Dynamite = {
+        name: "Dynamite",
+        texture: ItemTextures.ItemAtlas,
+        spriteId: 2,
+        isEquipable: true,
+        isDropable: true,
+        maxStackSize: 8,
+        type: "tool",
+        typeOfType: "explosive",
+        //tool
+        useCooldown: 4,
+        useDuration: 3,
+        itemFunction: Items.Functions.ThrowableDynamite,
+        //throwable
+        throwEntityTexture: "dynamite.png",
+
     }
 }

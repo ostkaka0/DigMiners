@@ -42,7 +42,5 @@ module.exports.createExplosion = function(startPos, radius, entityDamage, blockD
                 }
             });
         }
-    } else {
-        // show explosion particle effect and sound
     }
 }

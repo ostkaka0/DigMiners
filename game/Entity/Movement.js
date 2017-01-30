@@ -129,7 +129,7 @@ Movement.entityFunction = function(dt) {
                     var useCycleName = (tool.useCycle ? tool.useCycle : "rightArm");
                     var useCycle = Global.gameData.animationManager.cycles[useCycleName];
                     if (useCycle)
-                        entity.bodyparts.bodyparts["rightArm"].cycle(Global.gameData, useCycleName, useCycle.numFrames / useCooldown * 20, true);
+                        entity.bodyparts.bodyparts["rightArm"].cycle(useCycleName, useCycle.numFrames / useCooldown * 20, true);
                 }
             }
 
@@ -143,11 +143,11 @@ Movement.entityFunction = function(dt) {
                     var reloadCycleLeftArm = Global.gameData.animationManager.cycles[reloadCycleLeftArmName];
                     var reloadCycleGun = Global.gameData.animationManager.cycles[reloadCycleGunName];
                     if (reloadCycleRightArm)
-                        entity.bodyparts.bodyparts["rightArm"].cycle(Global.gameData, reloadCycleRightArmName, reloadCycleRightArm.numFrames / reloadCooldown * 20, true);
+                        entity.bodyparts.bodyparts["rightArm"].cycle(reloadCycleRightArmName, reloadCycleRightArm.numFrames / reloadCooldown * 20, true);
                     if (reloadCycleLeftArm)
-                        entity.bodyparts.bodyparts["leftArm"].cycle(Global.gameData, reloadCycleLeftArmName, reloadCycleLeftArm.numFrames / reloadCooldown * 20, true);
+                        entity.bodyparts.bodyparts["leftArm"].cycle(reloadCycleLeftArmName, reloadCycleLeftArm.numFrames / reloadCooldown * 20, true);
                     if (reloadCycleGun)
-                        entity.bodyparts.bodyparts["tool"].cycle(Global.gameData, reloadCycleGunName, reloadCycleGun.numFrames / reloadCooldown * 20, true);
+                        entity.bodyparts.bodyparts["tool"].cycle(reloadCycleGunName, reloadCycleGun.numFrames / reloadCooldown * 20, true);
                 }
             }
 

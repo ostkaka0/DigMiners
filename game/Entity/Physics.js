@@ -6,7 +6,7 @@ var BlockWorld = require("engine/BlockWorld.js")
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
 
-var PHYSICS_MAX_STEP_LENGTH = 1.0;
+var PHYSICS_MAX_STEP_LENGTH = 0.25;
 
 var COLLISION_BLOCKS = [
     [0, 0],

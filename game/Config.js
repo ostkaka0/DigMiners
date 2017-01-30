@@ -35,6 +35,7 @@ var CommandBuild = require("game/Command/CommandBuild.js")
 var CommandEntityLookAtEntity = require("game/Command/CommandEntityLookAtEntity.js")
 var CommandPopupMessage = require("game/Command/CommandPopupMessage.js")
 var CommandEntityInteractEntity = require("game/Command/CommandEntityInteractEntity.js")
+var CommandEntityAnimate = require("game/Command/CommandEntityAnimate.js")
 
 var MessageInit = require("game/Message/ToClient/MessageInit.js")
 var MessageCommands = require("game/Message/ToClient/MessageCommands.js")
@@ -100,7 +101,7 @@ Config.init = () => Object.assign(Config, {
     commandTypes: TypeRegister.addByArray([], [CommandEntityMove, CommandDig, CommandEntityDig, CommandEntityEquipItem, CommandEntityBuild, CommandEntityHealthChange,
         CommandEntitySpawn, CommandCollisions, CommandEntityDestroy, CommandPlayerJoin, CommandPlayerLeave, CommandPlayerSpawn, CommandKeyStatusUpdate,
         CommandEntityInventory, CommandPlayerOreInventory, CommandEntityRotate, CommandBlockStrength, CommandProjectileSpawn, CommandParticles, CommandPlaceBlock,
-        CommandEntityReloadWeapon, CommandEntityBeginReloadWeapon, CommandBuild, CommandEntityLookAtEntity, CommandPopupMessage, CommandEntityInteractEntity]),
+        CommandEntityReloadWeapon, CommandEntityBeginReloadWeapon, CommandBuild, CommandEntityLookAtEntity, CommandPopupMessage, CommandEntityInteractEntity, CommandEntityAnimate]),
     messagesToClient,
     messagesToServer,
     messageTypes: TypeRegister.addByArray([], messagesToClient.concat(messagesToServer)),

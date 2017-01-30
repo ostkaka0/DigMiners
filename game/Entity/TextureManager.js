@@ -40,6 +40,8 @@ module.exports = function() {
 
     loader.queue("egg.png");
     loader.queue("bigEgg.png");
+    
+    loader.queue("dynamite.png");
 
     Event.subscribe(TextureLoader.Events.onProgress, this, function(file, progress) {
         console.log(Math.round(progress) + "% complete");

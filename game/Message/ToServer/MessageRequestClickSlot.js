@@ -34,6 +34,7 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
     }
     var item = inventory.items[this.slotId];
     if (!item) return;
+    // Uncomment to enable throwing items on the ground
     /*if (this.clickType == InventoryClickTypes.RIGHT_CLICK) {
         // Drop stack
         var physicsBody = entity.physicsBody;
@@ -45,8 +46,13 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
         var speed2 = {};
         v2.mul(10.0 * displacement3, speed, speed2);
 
+<<<<<<< HEAD
         var itemEntityId = idList.next();
         var itemEntity = entityTemplateItem(item.id, item.amount, Global.gameData);
+=======
+        var itemEntityId = gameData.world.idList.next();
+        var itemEntity = entityTemplates.Item(item.id, item.amount, gameData);
+>>>>>>> master
         itemEntity.physicsBody.setPos(physicsBody.getPos());
         itemEntity.physicsBody.posOld = v2.clone(physicsBody.getPos());
         itemEntity.physicsBody.setVelocity([speed2[0], speed2[1]]);

@@ -233,7 +233,7 @@ var render = function(tickFracTime) {
 
             if (entity.bodyparts.bodyparts.feet) {
                 var speed = v2.distance(entity.physicsBody.posClient, entity.physicsBody.posClientOld);
-                entity.bodyparts.bodyparts["feet"].animate(gameData, "feet", speed * 450.0, false);
+                entity.bodyparts.bodyparts["feet"].animate("feet", speed * 500.0, false);
             }
         } else if (entity.projectile) {
             var pos = [tickFracTime * entity.projectile.posClient[0] + (1 - tickFracTime) * entity.projectile.posClientOld[0], tickFracTime * entity.projectile.posClient[1] + (1 - tickFracTime) * entity.projectile.posClientOld[1]]
@@ -390,11 +390,10 @@ Event.subscribe(gameData.world.entityWorld.onAdd, window, function(entity) {
         entity.nameComponent.applyName(entity);
 
     // Text on items on ground
-    /*if (entity.item && entity.item.amount > 1) {
-        var text = new PIXI.Text(entity.item.amount, { fontFamily: 'Monospace', fontSize: 15, fill: 0xffffff, align: 'center' });
-        var textSprite = new Sprite(null, text, false);
+    if (entity.item && entity.item.amount > 1) {
+        var textSprite = new TextSprite(entity.item.amount, "Monospace", 15, "#ffffff");
         entity.drawable.addSprite("textAmount", textSprite, null, false);
-    }*/
+    }
 });
 
 gameData.world.physicsWorld.onCollision.push(function(collisions) {
