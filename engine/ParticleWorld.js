@@ -1,10 +1,10 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
 
 var ParticleWorld = function() {
     this.particles = [];
 }
-export default ParticleWorld;
+module.exports = ParticleWorld;
 
 ParticleWorld.prototype.update = function(dt) {
     var time = new Date().getTime();

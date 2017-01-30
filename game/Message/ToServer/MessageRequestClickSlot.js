@@ -1,20 +1,21 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import IndexCounter from "engine/IndexCounter.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var IndexCounter = require("engine/IndexCounter.js")
 
-import Global from "game/Global.js"
-import Config from "game/Config.js"
-import CommandEntityEquipItem from "game/Command/CommandEntityEquipItem.js"
-import CommandEntitySpawn from "game/Command/CommandEntitySpawn.js"
-import { CommandEntityInventory, InventoryActions } from "game/Command/CommandEntityInventory.js"
+var Global = require("game/Global.js")
+var Config = require("game/Config.js")
+var CommandEntityEquipItem = require("game/Command/CommandEntityEquipItem.js")
+var CommandEntitySpawn = require("game/Command/CommandEntitySpawn.js")
+var CommandEntityInventory = require("game/Command/CommandEntityInventory.js")
 
 var MessageRequestClickSlot = function(inventoryId, slotId, clickType) {
     this.inventoryId = inventoryId;
     this.slotId = slotId;
     this.clickType = clickType;
 }
-export default MessageRequestClickSlot
+module.exports = MessageRequestClickSlot
 
 MessageRequestClickSlot.prototype.execute = function(gameData, player) {
     var entity = Global.gameData.world.entityWorld.objects[player.entityId];
@@ -55,7 +56,7 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
         itemEntity.item.dropped = new Date();
         sendCommand(new CommandEntitySpawn(Global.gameData, itemEntity, itemEntityId));
 
-        sendCommand(new CommandEntityInventory(player.entityId, InventoryActions.DROP_STACK, this.slotId, 0));
+        sendCommand(new CommandEntityInventory(player.entityId, CommandEntityInventory.Actions.DROP_STACK, this.slotId, 0));
 
         if (item.equipped)
             sendCommand(new CommandEntityEquipItem(player.entityId, this.slotId, item.id, false));

@@ -1,28 +1,33 @@
-import IdList from "engine/IdList.js"
-import ObjectWorld from "engine/ObjectWorld.js"
-import Event from "engine/Core/Event.js"
+var IdList = require("engine/IdList.js")
+var ObjectWorld = require("engine/ObjectWorld.js")
+var Event = require("engine/Core/Event.js")
 
-import Global from "game/Global.js"
-import { Config, initConfig } from "game/Config.js"
-import World from "game/World.js"
-import { Items, initItems } from "game/Items.js"
-import { Blocks, initBlocks} from "game/Blocks.js"
-import { PlayerClass, initPlayerClass } from "game/PlayerClass.js"
-import Tiles from "game/Tiles.js"
-import AnimationManager from "engine/Animation/AnimationManager.js"
-import MessageChangeGameMode from "game/Message/ToClient/MessageChangeGamemode.js"
+var Global = require("game/Global.js")
+var Config = require("game/Config.js")
+var World = require("game/World.js")
+var Items = require("game/Items.js")
+var Blocks = require("game/Blocks.js")
+
+var PlayerClass = require("game/PlayerClass.js")
+var Tiles = require("game/Tiles.js")
+var AnimationManager = require("engine/Animation/AnimationManager.js")
+var MessageChangeGameMode = require("game/Message/ToClient/MessageChangeGamemode.js")
 
 Global.gameData = {};
-export default Global.gameData
+module.exports = Global.gameData;
 
 Global.gameData.destroy = function() {
     Global.gameData = {};
 }
 
 Global.gameData.init = function(idList) {
-    initBlocks();
-    initItems(this);
-    initConfig();
+    console.log("Blocks", Blocks);
+    console.log("Items", Items);
+    console.log("Config", Config)
+    Blocks.initBlocks();
+    Items.initItems(this);
+    Config.init();
+    console.log(Items)
 
     // Global.gameData.textures is set in TextureManager.js when textures are loaded
     this.textures = {};
@@ -44,44 +49,44 @@ Global.gameData.init = function(idList) {
 
     this.messageCallbacks = {};
 
-    initPlayerClass();
+    PlayerClass.init();
 
     var Recipes = [];
 
     Recipes.push({
-        item: [[Items.SmallSticks, 1]],
+        item: [[Items.Types.SmallSticks, 1]],
         requiredOres: [],
-        requiredItems: [[Items.RottenRoot, 1]],
+        requiredItems: [[Items.Types.RottenRoot, 1]],
     });
 
     Recipes.push({
-        item: [[Items.Torch, 1]],
+        item: [[Items.Types.Torch, 1]],
         requiredOres: [[Tiles.Coal, 1]],
-        requiredItems: [[Items.SmallSticks, 1]],
+        requiredItems: [[Items.Types.SmallSticks, 1]],
     });
 
     Recipes.push({
-        item: [[Items.CopperShovel, 1]],
+        item: [[Items.Types.CopperShovel, 1]],
         requiredOres: [[Tiles.Copper, 10]],
-        requiredItems: [[Items.SmallSticks, 10], [Items.RottenRoot, 4]],
+        requiredItems: [[Items.Types.SmallSticks, 10], [Items.Types.RottenRoot, 4]],
     });
 
     Recipes.push({
-        item: [[Items.IronShovel, 1]],
+        item: [[Items.Types.IronShovel, 1]],
         requiredOres: [[Tiles.Iron, 10]],
-        requiredItems: [[Items.SmallSticks, 10], [Items.RottenRoot, 4]],
+        requiredItems: [[Items.Types.SmallSticks, 10], [Items.Types.RottenRoot, 4]],
     });
 
     Recipes.push({
-        item: [[Items.SteelShovel, 1]],
+        item: [[Items.Types.SteelShovel, 1]],
         requiredOres: [[Tiles.Coal, 10], [Tiles.Iron, 10]],
-        requiredItems: [[Items.SmallSticks, 10], [Items.RottenRoot, 4]],
+        requiredItems: [[Items.Types.SmallSticks, 10], [Items.Types.RottenRoot, 4]],
     });
 
     Recipes.push({
-        item: [[Items.CopperSword, 1]],
+        item: [[Items.Types.CopperSword, 1]],
         requiredOres: [[Tiles.Copper, 10]],
-        requiredItems: [[Items.SmallSticks, 10], [Items.RottenRoot, 4]],
+        requiredItems: [[Items.Types.SmallSticks, 10], [Items.Types.RottenRoot, 4]],
     });
 
     if (this.playerIdList) {

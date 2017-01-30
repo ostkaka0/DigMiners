@@ -373,7 +373,7 @@ loadRecursive = function(dir, load) {
 
         if(stat.isDirectory())
             loadRecursive(filePath, load);
-        else if(stat.isFile() && path.extname(filePath) == ".js")
+        else if(stat.isFile() && path.extname(filePath) == ".js"))
             load(filePath)
     }
 }
@@ -412,17 +412,17 @@ loadExternalScriptsRecursive = loadRecursive.bind(null, loadExternalScript);
 loadScriptRecursive = loadRecursive.bind(null, loadScript);
 
 // Libraries to mangle:
-//loadScript("lib_front_end/apixi.js");
-loadExternalScript("lib_front_end/ajquery-3.1.1.min.js");
-loadExternalScript("lib_front_end/atether.min.js");
-loadExternalScript("lib_front_end/bootstrap.min.js");
+//loadScript("lib_front_end/apixi.js"));
+loadExternalScript("lib_front_end/ajquery-3.1.1.min.js"));
+loadExternalScript("lib_front_end/atether.min.js"));
+loadExternalScript("lib_front_end/bootstrap.min.js"));
 loadRecursive("lib", loadExternalScript);
 loadRecursive("lib_front_end", loadExternalScript);
 
-loadScript("lib/perlin.js");
+loadScript("lib/perlin.js"));
 loadRecursive("engine", loadScript);
 loadRecursive("game", loadScript);
-loadScript("DigMiners.js");
+loadScript("DigMiners.js"));
 //loadRecursive("src", loadScript);
 
 //loadRecursive("game", loadScript);
@@ -455,7 +455,7 @@ copyFile("bootstrap.min.css", outputPath + "bootstrap.min.css");
 copyFile("tether.min.css", outputPath + "tether.min.css");
 copyRecursive("data/", outputPath + "data");
 
-fs.writeFile(outputPath + "src.js", output, function(err){
+fs.writeFile(outputPath + "src.js"), output, function(err){
     if (err)
         console.log(err);
 })

@@ -1,6 +1,6 @@
-import $ from "jquery"
+var $ = require("jquery")
 
-import Global from "game/Global.js"
+var Global = require("game/Global.js")
 
 var Chat = function() {
     this.root = $("<div>", {
@@ -128,7 +128,7 @@ var Chat = function() {
 
     this.root.appendTo("#hud");
 }
-export default Chat
+module.exports = Chat
 
 Chat.prototype.write = function(text) {
     var p = $("<p>", {

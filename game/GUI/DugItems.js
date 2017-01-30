@@ -1,11 +1,11 @@
-import $ from "jquery"
+var $ = require("jquery")
 
-import Global from "game/Global.js"
-import Config from "game/Config.js"
+var Global = require("game/Global.js")
+var Config = require("game/Config.js")
 
 var DugItems = function() {
     this.dugItems = $("<div>");
-    this.dugItems.css({
+    this.dugItems.Types.css({
         "position": "fixed",
         "right": "70px",
         "top": "100px",
@@ -80,11 +80,11 @@ var DugItems = function() {
         "height": "10px",
     });
 
-    this.dugItems.appendTo("#hud");
+    this.dugItems.Types.appendTo("#hud");
 }
-export default DugItems
+module.exports = DugItems
 
-DugItems.prototype.update = function() {
+DugItems.Types.prototype.update = function() {
     for (var i = 0; i < Config.tileRegister.length; ++i) {
         var tileType = Config.tileRegister[i];
         if (!tileType.isOre) continue;

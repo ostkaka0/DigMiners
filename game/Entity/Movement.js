@@ -1,13 +1,14 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import Keys from "engine/Keys.js"
-import Config from "game/Config.js"
-import Global from "game/Global.js"
-import Entity from "game/Entity/Entity.js"
-import CommandEntityBeginReloadWeapon from "game/Command/CommandEntityBeginReloadWeapon.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Keys = require("engine/Keys.js")
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
+var Entity = require("game/Entity/Entity.js")
+var CommandEntityBeginReloadWeapon = require("game/Command/CommandEntityBeginReloadWeapon.js")
 
-export var Movement = function(speed, toolUseDuration, damageMultiplier, digHardnessMultiplier) {
+var Movement = function(speed, toolUseDuration, damageMultiplier, digHardnessMultiplier) {
     this.keyStatuses = {};
     this.direction = v2.create(0, 0);
     this.rotationDirection = v2.create(0, 0);
@@ -30,7 +31,7 @@ export var Movement = function(speed, toolUseDuration, damageMultiplier, digHard
     this.digHardnessMultiplier = (digHardnessMultiplier == null) ? 1.0 : digHardnessMultiplier;
     this.entityLookTarget = null;
 }
-export default Movement
+module.exports = Movement
 
 Movement.prototype.name = movement.name; function movement() { };
 
@@ -71,7 +72,7 @@ Movement.prototype.destroy = function(entity) {
 
 }
 
-export var entityFunctionEntityMovement = function(dt) {
+Movement.entityFunction = function(dt) {
     Global.gameData.world.entityWorld.objectArray.forEach(function(entity) {
         if (!entity || !entity.movement || !entity.physicsBody)
             return;

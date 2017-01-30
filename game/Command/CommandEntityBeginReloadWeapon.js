@@ -1,12 +1,13 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
 
 var CommandEntityBeginReloadWeapon = function(entityId) {
     this.entityId = entityId;
 }
-export default CommandEntityBeginReloadWeapon
+module.exports = CommandEntityBeginReloadWeapon
 
 CommandEntityBeginReloadWeapon.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

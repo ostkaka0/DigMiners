@@ -1,10 +1,10 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import TileWorld from "engine/TileWorld.js"
-import BlockWorld from "engine/BlockWorld.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var TileWorld = require("engine/TileWorld.js")
+var BlockWorld = require("engine/BlockWorld.js")
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
 
 var PHYSICS_MAX_STEP_LENGTH = 1.0;
 
@@ -62,7 +62,7 @@ var entityFunctionPhysicsBodySimulate = function(dt) {
             physicsBodySimulate(entity.physicsBody, dt);
     });
 }
-export default entityFunctionPhysicsBodySimulate
+module.exports = entityFunctionPhysicsBodySimulate
 
 var physicsBodySimulate = function(physicsBody, dt) {
     var radius = physicsBody.getRadius();

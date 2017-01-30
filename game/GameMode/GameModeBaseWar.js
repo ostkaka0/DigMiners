@@ -1,19 +1,19 @@
-import Event from "engine/Core/Event.js"
-import Chunk from "engine/Chunk.js"
-import BlockChunk from "engine/BlockChunk.js"
+var Event = require("engine/Core/Event.js")
+var Chunk = require("engine/Chunk.js")
+var BlockChunk = require("engine/BlockChunk.js")
 
-import Global from "game/Global.js"
-import { Team, Teams } from "game/Entity/Team.js"
-import CommandEntitySpawn from "game/Command/CommandEntitySpawn.js"
+var Global = require("game/Global.js")
+var Team = require("game/Entity/Team.js")
+var CommandEntitySpawn = require("game/Command/CommandEntitySpawn.js")
 
 var GameModeBaseWar = function() {
     this.playerSpawns = {};
     this.spawnEntities = {};
-    this.teams = [Teams.Blue, Teams.Red];
-    this.spawnEntities[Teams.Blue] = [];
-    this.spawnEntities[Teams.Red] = [];
+    this.teams = [Team.Enum.Blue, Team.Enum.Red];
+    this.spawnEntities[Team.Enum.Blue] = [];
+    this.spawnEntities[Team.Enum.Red] = [];
 }
-export default GameModeBaseWar
+module.exports = GameModeBaseWar
 
 GameModeBaseWar.prototype.init = function() {
     if (!isServer) return;
@@ -32,8 +32,8 @@ GameModeBaseWar.prototype.init = function() {
         }
     }
 
-    this.playerSpawns[Teams.Blue] = [[-60, -40], [-60, 0], [-60, 40]];
-    this.playerSpawns[Teams.Red] = [[60, -40],[60, 0],[60, 40]];
+    this.playerSpawns[Team.Enum.Blue] = [[-60, -40], [-60, 0], [-60, 40]];
+    this.playerSpawns[Team.Enum.Red] = [[60, -40],[60, 0],[60, 40]];
 
     Object.keys(this.playerSpawns).forEach(function(teamId) {
         this.playerSpawns[teamId].forEach(function(pos) {
@@ -46,13 +46,13 @@ GameModeBaseWar.prototype.init = function() {
     }.bind(this));
 
     Event.subscribe(Global.gameData.world.entityWorld.onRemove, this, function(entity) {
-        var team = Teams.none;
+        var team = Team.Enum.none;
 
         this.teams.forEach(function(currentTeam) {
             if (this.spawnEntities[currentTeam] && this.spawnEntities[currentTeam][entity.id])
                 team = currentTeam;
         }.bind(this));
-        if (team == Teams.none) return;
+        if (team == Team.Enum.none) return;
 
         console.log("Base destroyed! " + Object.keys(this.spawnEntities[team]).length-1 + " bases remaining.");
 

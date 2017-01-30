@@ -1,10 +1,11 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import Keys from "engine/Keys.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Keys = require("engine/Keys.js")
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
 
 var CommandKeyStatusUpdate = function(entityId, key, pressed, pos) {
     this.entityId = entityId;
@@ -12,7 +13,7 @@ var CommandKeyStatusUpdate = function(entityId, key, pressed, pos) {
     this.pressed = pressed;
     this.pos = pos;
 }
-export default CommandKeyStatusUpdate
+module.exports = CommandKeyStatusUpdate
 
 CommandKeyStatusUpdate.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

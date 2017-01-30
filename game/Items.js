@@ -1,32 +1,33 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import TileWorld from "engine/TileWorld.js"
-import BlockWorld from "engine/BlockWorld.js"
-import BlockChunk from "engine/BlockChunk.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var TileWorld = require("engine/TileWorld.js")
+var BlockWorld = require("engine/BlockWorld.js")
+var BlockChunk = require("engine/BlockChunk.js")
 
-import Blocks from "game/Blocks.js"
-import Tiles from "game/Tiles.js"
-import Projectiles from "game/Projectiles.js"
-import Entity from "game/Entity/Entity.js"
+var Blocks = require("game/Blocks.js")
+var Tiles = require("game/Tiles.js")
+var Projectiles = require("game/Projectiles.js")
+var Entity = require("game/Entity/Entity.js")
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
 
-import CommandBlockStrength from "game/Command/CommandEntityReloadWeapon.js"
-import CommandEntityDig from "game/Command/CommandEntityDig.js"
-import CommandProjectileSpawn from "game/Command/CommandProjectileSpawn.js"
-import CommandEntityReloadWeapon from "game/Command/CommandEntityReloadWeapon.js"
+var CommandBlockStrength = require("game/Command/CommandEntityReloadWeapon.js")
+var CommandEntityDig = require("game/Command/CommandEntityDig.js")
+var CommandProjectileSpawn = require("game/Command/CommandProjectileSpawn.js")
+var CommandEntityReloadWeapon = require("game/Command/CommandEntityReloadWeapon.js")
 
-export var Items = {};
-export default Items
-export var ItemFunctions = {};
-export var ItemTextures = {};
-export var ItemEvents = {};
-ItemEvents.onShoot = [];
+var Items = module.exports;
+Items.Types = {};
+Items.Functions = {};
+var ItemTextures = {};
+var ItemEvents = {};
+Items.Events = ItemEvents;
+Items.Events.onShoot = [];
 
-ItemFunctions.Shovel = function(entity, item) {
+Items.Functions.Shovel = function(entity, item) {
     // Shovels might be meele weapons
-    ItemFunctions.Sword(entity, item);
+    Items.Functions.Sword(entity, item);
 
     if (isServer) {
         var angle = entity.physicsBody.angle;
@@ -57,7 +58,7 @@ ItemFunctions.Shovel = function(entity, item) {
     }
 }
 
-ItemFunctions.Sword = function(entity, item) {
+Items.Functions.Sword = function(entity, item) {
     if (isServer) {
         var physicsWorld = Global.gameData.world.physicsWorld;
         var hitRange = item.hitRange || 1.0;
@@ -82,7 +83,7 @@ ItemFunctions.Sword = function(entity, item) {
 
             hitEntities.push(targetEntity.id);
             if (targetEntity.health)
-                targetEntity.health.hurt(targetEntity, entity, damage, 1.0);
+                Entity.hurt(targetEntity, entity, damage, 1.0);
         });
 
         // TODO: CommandEntityHit
@@ -92,7 +93,7 @@ ItemFunctions.Sword = function(entity, item) {
     }
 }
 
-ItemFunctions.Potion = function(entity, item) {
+Items.Functions.Potion = function(entity, item) {
     var potionEffectType = item.getPotionEffect();
     if (entity.potionEffects) {
         entity.potionEffects.add(potionEffectType, item.potionDuration);
@@ -115,7 +116,7 @@ ItemFunctions.Potion = function(entity, item) {
     }
 }
 
-ItemFunctions.RangedWeapon = function(entity, itemType) {
+Items.Functions.RangedWeapon = function(entity, itemType) {
     if (!itemType || !entity.inventory) return;
     var stackId = entity.inventory.getEquippedStackId("tool");
     if (stackId == null) return;
@@ -157,7 +158,7 @@ ItemFunctions.RangedWeapon = function(entity, itemType) {
     }
 }
 
-ItemFunctions.Reload = function(entity, itemType) {
+Items.Functions.Reload = function(entity, itemType) {
     if (isServer) {
         if (!itemType || !entity.inventory) return;
         var stackId = entity.inventory.getEquippedStackId("tool");
@@ -245,12 +246,13 @@ ItemTextures.BlockAtlas = {
     dimY: 16,
 }
 
-export function initItems() {
+Items.initItems = function() {
+    delete Items.initItems;
     // Blocks
     var num = 0;
     for (var name in Blocks) {
         var block = Blocks[name];
-        Items[name] = {
+        Items.Types[name] = {
             name: block.name,
             texture: ItemTextures.BlockAtlas,
             spriteId: num,
@@ -265,7 +267,7 @@ export function initItems() {
     }
 
     // Hats
-    Items.UglyHat = {
+    Items.Types.UglyHat = {
         name: "Ugly Hat",
         texture: ItemTextures.HatAtlas,
         spriteId: 3,
@@ -274,7 +276,7 @@ export function initItems() {
         maxStackSize: 1,
         type: "hat",
     }
-    Items.BrokenHat = {
+    Items.Types.BrokenHat = {
         name: "Broken Hat",
         texture: ItemTextures.HatAtlas,
         spriteId: 0,
@@ -285,14 +287,14 @@ export function initItems() {
     }
 
     // Shovels
-    Items.RustyShovel = {
+    Items.Types.RustyShovel = {
         name: "Rusty Shovel",
         texture: ItemTextures.ShovelAtlas,
         spriteId: 0,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        itemFunction: ItemFunctions.Shovel,
+        itemFunction: Items.Functions.Shovel,
         useCooldown: 5,
         useDuration: 2,
         type: "tool",
@@ -300,14 +302,14 @@ export function initItems() {
         digSpeed: 0.5,
         maxDigHardness: Tiles.Copper.hardness,
     }
-    Items.CopperShovel = {
+    Items.Types.CopperShovel = {
         name: "Copper Shovel",
         texture: ItemTextures.ShovelAtlas,
         spriteId: 1,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        itemFunction: ItemFunctions.Shovel,
+        itemFunction: Items.Functions.Shovel,
         useCooldown: 5,
         useDuration: 2,
         type: "tool",
@@ -315,14 +317,14 @@ export function initItems() {
         digSpeed: 0.75,
         maxDigHardness: Tiles.Iron.hardness,
     }
-    Items.IronShovel = {
+    Items.Types.IronShovel = {
         name: "Iron Shovel",
         texture: ItemTextures.ShovelAtlas,
         spriteId: 2,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        itemFunction: ItemFunctions.Shovel,
+        itemFunction: Items.Functions.Shovel,
         useCooldown: 5,
         useDuration: 2,
         type: "tool",
@@ -330,14 +332,14 @@ export function initItems() {
         digSpeed: 1.0,
         maxDigHardness: Tiles.Iron.hardness,
     }
-    Items.SteelShovel = {
+    Items.Types.SteelShovel = {
         name: "Steel Shovel",
         texture: ItemTextures.ShovelAtlas,
         spriteId: 3,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        itemFunction: ItemFunctions.Shovel,
+        itemFunction: Items.Functions.Shovel,
         useCooldown: 5,
         useDuration: 2,
         type: "tool",
@@ -347,14 +349,14 @@ export function initItems() {
     }
 
     // Melee
-    Items.Knife = {
+    Items.Types.Knife = {
         name: "Knife",
         texture: ItemTextures.SwordAtlas,
         spriteId: 0,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        itemFunction: ItemFunctions.Sword,
+        itemFunction: Items.Functions.Sword,
         useCooldown: 10,
         useDuration: 0,
         type: "tool",
@@ -363,14 +365,14 @@ export function initItems() {
         hitRadius: 0.75,
         damage: 40
     }
-    Items.AssasinKnife = {
+    Items.Types.AssasinKnife = {
         name: "Assassin Knife",
         texture: ItemTextures.SwordAtlas,
         spriteId: 1,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        itemFunction: ItemFunctions.Sword,
+        itemFunction: Items.Functions.Sword,
         useCooldown: 10,
         useDuration: 0,
         type: "tool",
@@ -381,14 +383,14 @@ export function initItems() {
     }
 
     // Swords
-    Items.RustySword = {
+    Items.Types.RustySword = {
         name: "Rusty Sword",
         texture: ItemTextures.SwordAtlas,
         spriteId: 0,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        itemFunction: ItemFunctions.Sword,
+        itemFunction: Items.Functions.Sword,
         useCooldown: 20,
         useDuration: 4,
         type: "tool",
@@ -397,14 +399,14 @@ export function initItems() {
         hitRadius: 1.5,
         damage: 40
     }
-    Items.CopperSword = {
+    Items.Types.CopperSword = {
         name: "Copper Sword",
         texture: ItemTextures.SwordAtlas,
         spriteId: 1,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        itemFunction: ItemFunctions.Sword,
+        itemFunction: Items.Functions.Sword,
         useCooldown: 20,
         useDuration: 4,
         type: "tool",
@@ -413,14 +415,14 @@ export function initItems() {
         hitRadius: 1.5,
         damage: 60
     }
-    Items.IronSword = {
+    Items.Types.IronSword = {
         name: "Iron Sword",
         texture: ItemTextures.SwordAtlas,
         spriteId: 2,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        itemFunction: ItemFunctions.Sword,
+        itemFunction: Items.Functions.Sword,
         useCooldown: 20,
         useDuration: 4,
         type: "tool",
@@ -429,14 +431,14 @@ export function initItems() {
         hitRadius: 1.5,
         damage: 80
     }
-    Items.SteelSword = {
+    Items.Types.SteelSword = {
         name: "Steel Sword",
         texture: ItemTextures.SwordAtlas,
         spriteId: 3,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        itemFunction: ItemFunctions.Sword,
+        itemFunction: Items.Functions.Sword,
         useCooldown: 20,
         useDuration: 4,
         type: "tool",
@@ -447,7 +449,7 @@ export function initItems() {
     }
 
     // Other items
-    Items.RottenRoot = {
+    Items.Types.RottenRoot = {
         name: "Rotten Root",
         texture: ItemTextures.ItemAtlas,
         spriteId: 0,
@@ -456,7 +458,7 @@ export function initItems() {
         maxStackSize: 4,
         type: "resource",
     }
-    Items.SmallSticks = {
+    Items.Types.SmallSticks = {
         name: "Small Sticks",
         texture: ItemTextures.ItemAtlas,
         spriteId: 1,
@@ -465,7 +467,7 @@ export function initItems() {
         maxStackSize: 100,
         type: "resource"
     }
-    Items.Dynamite = {
+    Items.Types.Dynamite = {
         name: "Dynamite",
         texture: ItemTextures.ItemAtlas,
         spriteId: 2,
@@ -475,7 +477,7 @@ export function initItems() {
         type: "tool",
         typeOfType: "explosive"
     }
-    Items.Torch = {
+    Items.Types.Torch = {
         name: "Torch",
         texture: ItemTextures.ItemAtlas,
         spriteId: 4,
@@ -484,7 +486,7 @@ export function initItems() {
         maxStackSize: 10,
         type: "resource"
     }
-    Items.Egg = {
+    Items.Types.Egg = {
         name: "Egg",
         texture: ItemTextures.ItemAtlas,
         spriteId: 3,
@@ -493,7 +495,7 @@ export function initItems() {
         maxStackSize: 100,
         type: "resource"
     }
-    Items.PotionHealth = {
+    Items.Types.PotionHealth = {
         name: "Health Potion",
         texture: ItemTextures.ItemAtlas,
         spriteId: 3,
@@ -504,11 +506,11 @@ export function initItems() {
         typeOfType: "potion",
         useCooldown: 30,
         useDuration: 20,
-        itemFunction: ItemFunctions.Potion,
+        itemFunction: Items.Functions.Potion,
         getPotionEffect: function() { return PotionEffectTypes.Healing; },
         potionDuration: 80
     }
-    Items.HealFriend = {
+    Items.Types.HealFriend = {
         name: "Heal Friend",
         texture: ItemTextures.ItemAtlas,
         spriteId: 3,
@@ -519,31 +521,31 @@ export function initItems() {
         typeOfType: "potion",
         useCooldown: 30,
         useDuration: 20,
-        itemFunction: ItemFunctions.Potion,
+        itemFunction: Items.Functions.Potion,
         getPotionEffect: function() { return PotionEffectTypes.HealNearEntities; },
         potionDuration: 80
     }
 
     // Ranged weapons
-    Items.WeaponPistol = {
+    Items.Types.WeaponPistol = {
         name: "Pistol",
         texture: ItemTextures.GunAtlas,
         spriteId: 0,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        itemFunction: ItemFunctions.RangedWeapon,
+        itemFunction: Items.Functions.RangedWeapon,
         useCooldown: 10,
         useDuration: 0,
         useCycle: "rightArmGun",
         canReload: true,
-        reloadFunction: ItemFunctions.Reload,
+        reloadFunction: Items.Functions.Reload,
         reloadCycleRightArm: "rightArmGunReload",
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
         reloadCooldown: 20,
         ammoCapacity: 10,
-        ammoItem: Items.Egg,
+        ammoItem: Items.Types.Egg,
         ammoMax: 100,
         type: "tool",
         typeOfType: "rangedWeapon",
@@ -551,19 +553,19 @@ export function initItems() {
         projectileScatter: 0.02
     }
 
-    Items.WeaponSmg = {
+    Items.Types.WeaponSmg = {
         name: "Smg",
         texture: ItemTextures.GunAtlas,
         spriteId: 1,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        itemFunction: ItemFunctions.RangedWeapon,
+        itemFunction: Items.Functions.RangedWeapon,
         useCooldown: 3,
         useDuration: 0,
         useCycle: "rightArmGun",
         canReload: true,
-        reloadFunction: ItemFunctions.Reload,
+        reloadFunction: Items.Functions.Reload,
         reloadCycleRightArm: "rightArmGunReload",
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
@@ -577,25 +579,25 @@ export function initItems() {
         projectileScatter: 0.1
     }
 
-    Items.WeaponAssaultRifle = {
+    Items.Types.WeaponAssaultRifle = {
         name: "Assault Rifle",
         texture: ItemTextures.GunAtlas,
         spriteId: 2,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        itemFunction: ItemFunctions.RangedWeapon,
+        itemFunction: Items.Functions.RangedWeapon,
         useCooldown: 3,
         useDuration: 0,
         useCycle: "rightArmGun",
         canReload: true,
-        reloadFunction: ItemFunctions.Reload,
+        reloadFunction: Items.Functions.Reload,
         reloadCycleRightArm: "rightArmGunReload",
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
         reloadCooldown: 40,
         ammoCapacity: 35,
-        ammoItem: Items.Egg,
+        ammoItem: Items.Types.Egg,
         ammoMax: 280,
         type: "tool",
         typeOfType: "rangedWeapon",
@@ -603,25 +605,25 @@ export function initItems() {
         projectileScatter: 0.03
     }
 
-    Items.WeaponMachineGun = {
+    Items.Types.WeaponMachineGun = {
         name: "Machine Gun",
         texture: ItemTextures.GunAtlas,
         spriteId: 3,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        itemFunction: ItemFunctions.RangedWeapon,
+        itemFunction: Items.Functions.RangedWeapon,
         useCooldown: 2,
         useDuration: 0,
         useCycle: "rightArmGun",
         canReload: true,
-        reloadFunction: ItemFunctions.Reload,
+        reloadFunction: Items.Functions.Reload,
         reloadCycleRightArm: "rightArmGunReload",
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
         reloadCooldown: 160,
         ammoCapacity: 150,
-        ammoItem: Items.Egg,
+        ammoItem: Items.Types.Egg,
         ammoMax: 300,
         numProjectiles: 1,
         type: "tool",
@@ -629,25 +631,25 @@ export function initItems() {
         projectileType: Projectiles.MachineGun,
         projectileScatter: 0.06
     }
-    Items.WeaponShotgun = {
+    Items.Types.WeaponShotgun = {
         name: "Shotgun",
         texture: ItemTextures.GunAtlas,
         spriteId: 4,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        itemFunction: ItemFunctions.RangedWeapon,
+        itemFunction: Items.Functions.RangedWeapon,
         useCooldown: 12,
         useDuration: 0,
         useCycle: "rightArmGun",
         canReload: true,
-        reloadFunction: ItemFunctions.Reload,
+        reloadFunction: Items.Functions.Reload,
         reloadCycleRightArm: "rightArmGunReload",
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
         reloadCooldown: 40,
         ammoCapacity: 8,
-        ammoItem: Items.Egg,
+        ammoItem: Items.Types.Egg,
         ammoMax: 64,
         type: "tool",
         typeOfType: "rangedWeapon",
@@ -655,50 +657,50 @@ export function initItems() {
         projectileType: Projectiles.Shotgun,
         projectileScatter: 0.15
     }
-    Items.WeaponSniperRifle = {
+    Items.Types.WeaponSniperRifle = {
         name: "Sniper Rifle",
         texture: ItemTextures.GunAtlas,
         spriteId: 5,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        itemFunction: ItemFunctions.RangedWeapon,
+        itemFunction: Items.Functions.RangedWeapon,
         useCooldown: 2,
         useDuration: 0,
         useCycle: "rightArmGun",
         canReload: true,
-        reloadFunction: ItemFunctions.Reload,
+        reloadFunction: Items.Functions.Reload,
         reloadCycleRightArm: "rightArmGunReload",
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
         reloadCooldown: 60,
         ammoCapacity: 1,
-        ammoItem: Items.Egg,
+        ammoItem: Items.Types.Egg,
         ammoMax: 15,
         type: "tool",
         typeOfType: "rangedWeapon",
         projectileType: Projectiles.SniperRifle,
         projectileScatter: 0.0
     }
-    Items.WeaponGrenadeLauncher = {
+    Items.Types.WeaponGrenadeLauncher = {
         name: "Grenade Launcher",
         texture: ItemTextures.GunAtlas,
         spriteId: 6,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        itemFunction: ItemFunctions.RangedWeapon,
+        itemFunction: Items.Functions.RangedWeapon,
         useCooldown: 20,
         useDuration: 0,
         useCycle: "rightArmGun",
         canReload: true,
-        reloadFunction: ItemFunctions.Reload,
+        reloadFunction: Items.Functions.Reload,
         reloadCycleRightArm: "rightArmGunReload",
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
         reloadCooldown: 80,
         ammoCapacity: 6,
-        ammoItem: Items.Egg,
+        ammoItem: Items.Types.Egg,
         ammoMax: 6,
         type: "tool",
         typeOfType: "rangedWeapon",

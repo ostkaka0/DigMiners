@@ -1,10 +1,11 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import Sprite from "engine/Animation/Sprite.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var Sprite = require("engine/Animation/Sprite.js")
 
-import Config from "game/Config.js"
-import { CommandEntityInventory, InventoryActions } from "game/Command/CommandEntityInventory.js"
-import CommandPlaceBlock from "game/Command/CommandPlaceBlock.js"
-import Global from "game/Global.js"
+var Config = require("game/Config.js")
+var CommandEntityInventory = require("game/Command/CommandEntityInventory.js")
+var CommandPlaceBlock = require("game/Command/CommandPlaceBlock.js")
+var Global = require("game/Global.js")
 
 var BlockPlacer = function(blockPos, blockId, duration, entityId) {
     this.blockPos = blockPos;
@@ -12,7 +13,7 @@ var BlockPlacer = function(blockPos, blockId, duration, entityId) {
     this.duration = duration;
     this.entityId = entityId;
 }
-export default BlockPlacer
+module.exports = BlockPlacer
 
 BlockPlacer.prototype.name = blockPlacer.name; function blockPlacer() { };
 
@@ -60,7 +61,7 @@ BlockPlacer.prototype.update = function(entity) {
 
     if (isServer && this.duration == 0 && inventoryItem && inventoryItem.id) {
         // Remove from inventory and place block
-        sendCommand(new CommandEntityInventory(player.entityId, InventoryActions.REMOVE_ITEM, inventoryItem.id, 1));
+        sendCommand(new CommandEntityInventory(player.entityId, CommandEntityInventory.Actions.REMOVE_ITEM, inventoryItem.id, 1));
         sendCommand(new CommandPlaceBlock(this.blockPos, this.blockId));
     }
     if (shouldDestroy) {

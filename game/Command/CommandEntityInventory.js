@@ -1,29 +1,31 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
-import Entity from "game/Entity/Entity.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
+var Entity = require("game/Entity/Entity.js")
 
-export var InventoryActions = {
+var CommandEntityInventoryActions = {
     ADD_ITEM: 0,
     REMOVE_ITEM: 1,
     DROP_STACK: 2
 }
 
-export var CommandEntityInventory = function(entityId, actionId, itemId, amount) {
+var CommandEntityInventory = function(entityId, actionId, itemId, amount) {
     this.entityId = entityId;
     this.actionId = actionId;
     this.itemId = itemId;
     this.amount = amount;
 }
-export default CommandEntityInventory
+module.exports = CommandEntityInventory
+CommandEntityInventory.Actions = CommandEntityInventoryActions;
 
 CommandEntityInventory.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity || !entity.inventory) return;
-    if (this.actionId == InventoryActions.ADD_ITEM) {
+    if (this.actionId == CommandEntityInventory.Actions.ADD_ITEM) {
         entity.inventory.addItem(Global.gameData, this.itemId, this.amount);
-    } else if (this.actionId == InventoryActions.REMOVE_ITEM) {
+    } else if (this.actionId == CommandEntityInventory.Actions.REMOVE_ITEM) {
         var removed = entity.inventory.removeItem(Global.gameData, this.itemId, this.amount);
         for (var i = 0; i < removed.length; ++i) {
             // Dequip item when removed from inventory
@@ -34,7 +36,7 @@ CommandEntityInventory.prototype.execute = function() {
             if (item.equipped)
                 Entity.onDequip(entity, stackId, itemType);
         };
-    } else if (this.actionId == InventoryActions.DROP_STACK) {
+    } else if (this.actionId == CommandEntityInventory.Actions.DROP_STACK) {
         var item = entity.inventory.removeStack(this.itemId);
     }
     if (!isServer && global.playerEntity && this.entityId == global.playerEntity.id) {

@@ -4,7 +4,7 @@ var BehaviourContainer = function() {
     this.currentBehaviour = null;
     this.currentBehaviourPriority = Number.MAX_VALUE;
 }
-export default BehaviourContainer
+module.exports = BehaviourContainer
 
 BehaviourContainer.prototype.update = function() {
     var currentBehaviourCanRun = !this.currentBehaviour ? false : this.currentBehaviour.run();

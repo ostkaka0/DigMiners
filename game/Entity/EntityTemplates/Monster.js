@@ -1,26 +1,26 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import Sprite from "engine/Animation/Sprite.js"
-import BodyPart from "engine/Animation/BodyPart.js"
-import PhysicsBody from "game/Entity/PhysicsBody.js"
-import Movement from "game/Entity/Movement.js"
-import Bodyparts from "game/Entity/Bodyparts.js"
-import Drawable from "game/Entity/Drawable.js"
-import NameComponent from "game/Entity/NameComponent.js"
-import { Team, Teams } from "game/Entity/Team.js"
-import Health from "game/Entity/Health.js"
-import Ammo from "game/Entity/Ammo.js"
-import Inventory from "game/Entity/Inventory.js"
-import EquippedItems from "game/Entity/EquippedItems.js"
-import PotionEffects from "game/Entity/PotionEffects.js"
-import BehaviourContainer from "game/Entity/AI/BehaviourContainer.js"
-import DigObstacleBehaviour from "game/Entity/AI/DigObstacleBehaviour.js"
-import TargetPlayerBehaviour from "game/Entity/AI/TargetPlayerBehaviour.js"
-import WalkToEnemyBehaviour from "game/Entity/AI/WalkToEnemyBehaviour.js"
-import WalkToPointBehaviour from "game/Entity/AI/WalkToPointBehaviour.js"
-import RandomWalkBehaviour from "game/Entity/AI/RandomWalkBehaviour.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Sprite = require("engine/Animation/Sprite.js")
+var BodyPart = require("engine/Animation/BodyPart.js")
+var PhysicsBody = require("game/Entity/PhysicsBody.js")
+var Movement = require("game/Entity/Movement.js")
+var Bodyparts = require("game/Entity/Bodyparts.js")
+var Drawable = require("game/Entity/Drawable.js")
+var NameComponent = require("game/Entity/NameComponent.js")
+var Team = require("game/Entity/Team.js")
+var Health = require("game/Entity/Health.js")
+var Ammo = require("game/Entity/Ammo.js")
+var Inventory = require("game/Entity/Inventory.js")
+var EquippedItems = require("game/Entity/EquippedItems.js")
+var PotionEffects = require("game/Entity/PotionEffects.js")
+var BehaviourContainer = require("game/Entity/AI/BehaviourContainer.js")
+var DigObstacleBehaviour = require("game/Entity/AI/DigObstacleBehaviour.js")
+var TargetPlayerBehaviour = require("game/Entity/AI/TargetPlayerBehaviour.js")
+var WalkToEnemyBehaviour = require("game/Entity/AI/WalkToEnemyBehaviour.js")
+var WalkToPointBehaviour = require("game/Entity/AI/WalkToPointBehaviour.js")
+var RandomWalkBehaviour = require("game/Entity/AI/RandomWalkBehaviour.js")
 
-export default function(entityId, pos, teamId) {
+module.exports = function(entityId, pos, teamId) {
     var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0, 1.0, 0.3);
     entity.movement = new Movement(20.0, 0.25, 1.0, 0.5);
@@ -29,12 +29,12 @@ export default function(entityId, pos, teamId) {
     entity.equippedItems = new EquippedItems();
     entity.potionEffects = new PotionEffects();
 
-    var teamEnum = teamId || Teams.None;
+    var teamEnum = teamId || Team.Enum.None;
     var feetSprite = new Sprite("monster/feet.png");
     var rightArmSprite = new Sprite("monster/rightArm.png");
     var leftArmSprite = new Sprite("monster/leftArm.png");
     var headSprite = new Sprite("monster/head.png");
-    var hatSprite = new Sprite((teamEnum == Teams.Blue) ? "egg.png" : "bigEgg.png");
+    var hatSprite = new Sprite((teamEnum == Team.Enum.Blue) ? "egg.png" : "bigEgg.png");
 
     var bodyparts = {
         "feet": new BodyPart(feetSprite, 0, 0, 0, null, null),

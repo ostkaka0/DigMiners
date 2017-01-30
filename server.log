@@ -1,5 +1,5 @@
 undefined:165
-            TriggerEvent(HealthEvents.onChange, entity);
+            TriggerEvent(Health.Events.onChange, entity);
             ^
 
 ReferenceError: TriggerEvent is not defined

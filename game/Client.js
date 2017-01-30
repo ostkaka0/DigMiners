@@ -1,9 +1,10 @@
-import io from "socket.io-client"
+var io = require("socket.io-client"
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
 
-import { Serialize, Deserialize } from "engine/Serialization.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
 
 var Client = function(gameData, ip) {
 
@@ -63,7 +64,7 @@ var Client = function(gameData, ip) {
         });
     });
 }
-export default Client
+module.exports = Client
 
 Client.prototype.sendMessage = function(message) {
     var byteArray = new Uint8Array(command.getSerializationSize() + 4);

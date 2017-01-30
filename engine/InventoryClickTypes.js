@@ -1,5 +1,5 @@
 
-export default {
+module.exports = {
     LEFT_CLICK: 0,
     RIGHT_CLICK: 1,
     SHIFT_LEFT_CLICK: 2,

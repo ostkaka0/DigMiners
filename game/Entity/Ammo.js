@@ -1,10 +1,10 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
 
-export var AmmoEvents = {};
-AmmoEvents.onChange = [];
-
-export var Ammo = function() { }
-export default Ammo
+var Ammo = function() { }
+module.exports = Ammo
+Ammo.Events = {};
+Ammo.Events.onChange = [];
 
 Ammo.prototype.name = ammo.name; function ammo() { };
 

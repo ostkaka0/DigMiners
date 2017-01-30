@@ -1,5 +1,5 @@
 
-export default {
+module.exports = {
     UP: 0,
     LEFT: 1,
     DOWN: 2,

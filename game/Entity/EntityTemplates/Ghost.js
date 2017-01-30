@@ -1,13 +1,13 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import ControlledByPlayer from "game/Entity/ControlledByPlayer.js"
-import PhysicsBody from "game/Entity/PhysicsBody.js"
-import Movement from "game/Entity/Movement.js"
-import Bodyparts from "game/Entity/Bodyparts.js"
-import Drawable from "game/Entity/Drawable.js"
-import BodyPart from "engine/Animation/BodyPart.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var ControlledByPlayer = require("game/Entity/ControlledByPlayer.js")
+var PhysicsBody = require("game/Entity/PhysicsBody.js")
+var Movement = require("game/Entity/Movement.js")
+var Bodyparts = require("game/Entity/Bodyparts.js")
+var Drawable = require("game/Entity/Drawable.js")
+var BodyPart = require("engine/Animation/BodyPart.js")
 
-export default function (playerId, entityId) {
+module.exports = function (playerId, entityId) {
     var entity = {};
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 10.0, 1.0, 0);

@@ -1,5 +1,5 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
 
 var CHUNK_DIM = 30;
 var CHUNK_DIM_2 = CHUNK_DIM + 2;
@@ -17,7 +17,7 @@ var Chunk = function() {
         }
     }
 }
-export default Chunk;
+module.exports = Chunk;
 
 Chunk.dim = CHUNK_DIM;
 Chunk.dim2 = CHUNK_DIM_2;

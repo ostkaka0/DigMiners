@@ -1,13 +1,14 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import IndexCounter from "engine/IndexCounter.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var IndexCounter = require("engine/IndexCounter.js")
 
-import Global from "game/Global.js"
+var Global = require("game/Global.js")
 
 var MessageRequestClickEntity = function(entityId, clickType) {
     this.entityId = entityId;
     this.clickType = clickType;
 }
-export default MessageRequestClickEntity
+module.exports = MessageRequestClickEntity
 
 MessageRequestClickEntity.prototype.execute = function(gameData, player) {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

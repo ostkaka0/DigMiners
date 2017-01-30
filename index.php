@@ -38,7 +38,7 @@
 
             function addScriptsRecursive($path) {
                 $it = new RecursiveDirectoryIterator($path);
-                $extensions = [".js"];
+                $extensions = [".js")];
                 foreach(new RecursiveIteratorIterator($it) as $file => $other) {
                     if (in_array(substr($file, strrpos($file, '.')), $extensions))
                         addScript($file);
@@ -46,24 +46,24 @@
             }
 
             addScriptsRecursive("lib");
-            addScript("lib_front_end/apixi.js");
-            addScript("lib_front_end/ajquery-3.1.1.min.js");
-            addScript("lib_front_end/atether.min.js");
-            addScript("lib_front_end/bootstrap.min.js");
+            addScript("lib_front_end/apixi.js"));
+            addScript("lib_front_end/ajquery-3.1.1.min.js"));
+            addScript("lib_front_end/atether.min.js"));
+            addScript("lib_front_end/bootstrap.min.js"));
             addScriptsRecursive("lib_front_end");
             addScriptsRecursive("engine");
             addScriptsRecursive("game");
 
             // Run unit tests:
-            addScript("UnitTest.js");
+            addScript("UnitTest.js"));
             addScriptsRecursive("unit_tests");
             echo '<script type="text/javascript"> runUnitTests(); </script>';
 
             // Run game/test
             if (isset($_GET["test"]) && preg_match("/^[a-zA-Z0-9_]*$/i", $_GET["test"]))
-                addScript("tests/" . $_GET["test"] . ".js", "text/javascript");
+                addScript("tests/" . $_GET["test"] . ".js"), "text/javascript");
             else
-                addScript("DigMiners.js");
+                addScript("DigMiners.js"));
         ?>
     </body>
 </html>

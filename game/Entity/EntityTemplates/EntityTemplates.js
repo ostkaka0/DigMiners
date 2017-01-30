@@ -1,5 +1,5 @@
 /*
 var entityTemplates = {};
-export default entityTemplates;
+module.exports = entityTemplates;
 */
-export default {}
+module.exports = {}

@@ -1,5 +1,5 @@
 var Shader =  {};
-export default Shader;
+module.exports = Shader;
 
 /* Loads and compiles a shader.
  * filePath: a path relative to /shaders/.

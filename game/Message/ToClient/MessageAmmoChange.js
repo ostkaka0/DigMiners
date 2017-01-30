@@ -1,9 +1,10 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import IndexCounter from "engine/IndexCounter.js"
-import Event from "engine/Core/Event.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var IndexCounter = require("engine/IndexCounter.js")
+var Event = require("engine/Core/Event.js")
 
-import Global from "game/Global.js"
-import { Ammo, AmmoEvents } from "game/Entity/Ammo.js"
+var Global = require("game/Global.js")
+var Ammo = require("game/Entity/Ammo.js")
 
 var MessageAmmoChange = function(entity, itemIds) {
     this.ammo = {};
@@ -13,7 +14,7 @@ var MessageAmmoChange = function(entity, itemIds) {
         }.bind(this));
     }
 }
-export default MessageAmmoChange
+module.exports = MessageAmmoChange
 
 MessageAmmoChange.prototype.execute = function(gameData) {
 
@@ -43,5 +44,5 @@ MessageAmmoChange.prototype.receive = function(gameData, byteArray) {
         var amount = Deserialize.int32(byteArray, counter);
         entity.ammo[itemId] = amount;
     }
-    Event.trigger(AmmoEvents.onChange, entity);
+    Event.trigger(Ammo.Events.onChange, entity);
 }

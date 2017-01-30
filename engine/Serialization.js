@@ -1,8 +1,10 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
 
-export var Serialize = {};
-export var Deserialize = {};
+var Serialize = {};
+var Deserialize = {};
+module.exports.Serialize = Serialize;
+module.exports.Deserialize = Deserialize;
 
 Serialize.booleans = function(byteArray, index, booleans) {
     var bitField = (booleans[0] ? 1 : 0) |

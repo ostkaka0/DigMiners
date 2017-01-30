@@ -1,18 +1,19 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import IndexCounter from "engine/IndexCounter.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var IndexCounter = require("engine/IndexCounter.js")
 
-import Global from "game/Global.js"
-import Config from "game/Config.js"
-import { CommandEntityInventory, InventoryActions } from "game/Command/CommandEntityInventory.js"
-import { CommandPlayerOreInventory, OreInventoryActions } from "game/Command/CommandPlayerOreInventory.js"
-import CommandEntityDestroy from "game/Command/CommandEntityDestroy.js"
+var Global = require("game/Global.js")
+var Config = require("game/Config.js")
+var CommandEntityInventory = require("game/Command/CommandEntityInventory.js")
+var CommandPlayerOreInventory= require("game/Command/CommandPlayerOreInventory.js")
+var CommandEntityDestroy = require("game/Command/CommandEntityDestroy.js")
 
 var MessageRequestItemPickup = function(entityId) {
     this.entityId = entityId;
 }
-export default MessageRequestItemPickup
+module.exports = MessageRequestItemPickup
 
 MessageRequestItemPickup.prototype.execute = function(gameData, player) {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];
@@ -27,7 +28,7 @@ MessageRequestItemPickup.prototype.execute = function(gameData, player) {
         if (dis <= Config.itemPickupDistance + 0.1) {
             entity.pickedUp = true;
             // Add item to player inventory
-            sendCommand(new CommandEntityInventory(player.entityId, InventoryActions.ADD_ITEM, entity.item.itemId, entity.item.amount));
+            sendCommand(new CommandEntityInventory(player.entityId, CommandEntityInventory.Actions.ADD_ITEM, entity.item.itemId, entity.item.amount));
             // Destroy entity
             sendCommand(new CommandEntityDestroy(this.entityId));
         }

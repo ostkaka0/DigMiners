@@ -1,12 +1,13 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import BlockWorld from "engine/BlockWorld.js"
-import TileWorld from "engine/TileWorld.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var BlockWorld = require("engine/BlockWorld.js")
+var TileWorld = require("engine/TileWorld.js")
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
-import { Blocks, BlockTypes } from "game/Blocks.js"
-import BlockPlacer from "game/Entity/BlockPlacer.js"
-import CommandEntitySpawn from "game/Command/CommandEntitySpawn.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
+var Blocks = require("game/Blocks.js")
+var BlockPlacer = require("game/Entity/BlockPlacer.js")
+var CommandEntitySpawn = require("game/Command/CommandEntitySpawn.js")
 
 var CommandEntityBuild = function(entityId, x, y, blockId, type) {
     this.entityId = entityId;
@@ -15,7 +16,7 @@ var CommandEntityBuild = function(entityId, x, y, blockId, type) {
     this.blockId = blockId;
     this.type = type;
 }
-export default CommandEntityBuild
+module.exports = CommandEntityBuild
 
 CommandEntityBuild.prototype.execute = function() {
     /*if (this.type == BlockTypes.FOREGROUND)

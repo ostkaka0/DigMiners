@@ -1,17 +1,17 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import Global from "game/Global.js"
-import Event from "engine/Core/Event.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var Global = require("game/Global.js")
+var Event = require("engine/Core/Event.js")
 
-export var InteractableEvents = {};
-InteractableEvents.onInteract = [];
-InteractableEvents.onFinishInteract = [];
-
-export var Interactable = function(canInteractFunction) {
+var Interactable = function(canInteractFunction) {
     this.interacting = [];
     this.canInteractFunction = canInteractFunction || (function(interactableEntity, entity) { return true; });
     this.canInteractFunction.bind(this);
 }
-export default Interactable
+module.exports = Interactable
+Interactable.Events = {};
+Interactable.Events.onInteract = [];
+Interactable.Events.onFinishInteract = [];
 
 Interactable.prototype.name = interactable.name; function interactable() { };
 
@@ -35,7 +35,7 @@ Interactable.prototype.getSerializationSize = function() {
 Interactable.prototype.destroy = function(interactableEntity) {
     for (var i = 0; i < this.interacting.length; ++i) {
         var interactingEntity = Global.gameData.world.entityWorld.objects[i];
-        Event.trigger(InteractableEvents.onFinishInteract, interactableEntity, interactingEntity);
+        Event.trigger(Interactable.Events.onFinishInteract, interactableEntity, interactingEntity);
     }
 }
 
@@ -50,11 +50,11 @@ Interactable.canInteract = function(interactableEntity, entity) {
 Interactable.setInteracting = function(interactableEntity, entity, booleanValue) {
     if (booleanValue) {
         interactableEntity.interactable.interacting.push(entity.id);
-        Event.trigger(InteractableEvents.onInteract, interactableEntity, entity);
+        Event.trigger(Interactable.Events.onInteract, interactableEntity, entity);
     } else if (!booleanValue) {
         var index = interactableEntity.interactable.interacting.indexOf(entity.id);
         if (index != -1)
             interactableEntity.interactable.interacting.splice(index, 1);
-        Event.trigger(InteractableEvents.onFinishInteract, interactableEntity, entity);
+        Event.trigger(Interactable.Events.onFinishInteract, interactableEntity, entity);
     }
 }

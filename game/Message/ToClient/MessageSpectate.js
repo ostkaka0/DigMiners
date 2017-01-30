@@ -1,12 +1,13 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import IndexCounter from "engine/IndexCounter.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var IndexCounter = require("engine/IndexCounter.js")
 
-import Global from "game/Global.js"
+var Global = require("game/Global.js")
 
 var MessageSpectate = function(entityId) {
     this.entityId = entityId;
 }
-export default MessageSpectate
+module.exports = MessageSpectate
 
 MessageSpectate.prototype.execute = function(gameData) {
     global.spectateEntity = Global.gameData.world.entityWorld.objects[this.entityId];

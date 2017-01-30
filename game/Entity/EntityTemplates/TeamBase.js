@@ -1,17 +1,17 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import BodyPart from "engine/Animation/BodyPart.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var BodyPart = require("engine/Animation/BodyPart.js")
 
-import Items from "game/Items.js"
-import { Team, Teams } from "game/Entity/Team.js"
+var Items = require("game/Items.js")
+var Team = require("game/Entity/Team.js")
 
-export default function(entityId, pos, teamId, maxEntities, radius, duration) {
+module.exports = function(entityId, pos, teamId, maxEntities, radius, duration) {
     maxEntities = maxEntities || 10;
     radius = radius || 4.0;
     duration = duration || 60;
 
     var entity = {};
-    entity.spawner = new Spawner(entityTemplateMonster, pos, maxEntities, radius, duration, [{ id: Items.WeaponPistol.id, quantity: 1 }, { id: Items.RustyShovel.id, quantity: 1 }, { id: Items.Egg.id, quantity: 1000 }], null, null, teamId);
+    entity.spawner = new Spawner(entityTemplateMonster, pos, maxEntities, radius, duration, [{ id: Items.Types.WeaponPistol.id, quantity: 1 }, { id: Items.Types.RustyShovel.id, quantity: 1 }, { id: Items.Types.Egg.id, quantity: 1000 }], null, null, teamId);
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, null, 1000.0);
     entity.nameComponent = new NameComponent("Base");
 
@@ -20,7 +20,7 @@ export default function(entityId, pos, teamId, maxEntities, radius, duration) {
     var rightArmSprite = new Sprite("monster/rightArm.png");
     var leftArmSprite = new Sprite("monster/leftArm.png");
     var headSprite = new Sprite("monster/head.png");
-    var hatSprite = new Sprite((teamEnum == Teams.Blue) ? "egg.png" : "bigEgg.png");
+    var hatSprite = new Sprite((teamEnum == Team.Enum.Blue) ? "egg.png" : "bigEgg.png");
 
     var bodyparts = {
         "feet": new BodyPart(feetSprite, 0, 0, 0, null, null),

@@ -1,10 +1,10 @@
-import BlockChunk from "engine/BlockChunk.js"
+var BlockChunk = require("engine/BlockChunk.js")
 var BLOCK_CHUNK_DIM = BlockChunk.dim;
 var BLOCK_CHUNK_DIM_2 = BlockChunk.dim2;
 var BLOCK_CHUNK_SIZE = BlockChunk.size;
 
 var BlockWorld = {};
-export default BlockWorld;
+module.exports = BlockWorld;
 
 BlockWorld.getForeground = function(blockWorld, x, y) {
     var blockChunkX = Math.floor(x / BLOCK_CHUNK_DIM);

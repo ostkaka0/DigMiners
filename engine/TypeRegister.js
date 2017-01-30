@@ -1,7 +1,8 @@
 var TypeRegister = {};
-export default TypeRegister;
+module.exports = TypeRegister;
 
 TypeRegister.add = function(array, type) {
+    console.log(type)
     if (type.prototype.id != undefined) return;
 
     type.prototype.id = array.length;

@@ -1,16 +1,16 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import BlockWorld from "engine/BlockWorld.js"
-import TileWorld from "engine/TileWorld.js"
-import Keys from "engine/Keys.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var BlockWorld = require("engine/BlockWorld.js")
+var TileWorld = require("engine/TileWorld.js")
+var Keys = require("engine/Keys.js")
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
-import { Items, ItemFunctions } from "game/Items.js"
-import CommandEntityEquipItem from "game/Command/CommandEntityEquipItem.js"
-import CommandKeyStatusUpdate from "game/Command/CommandKeyStatusUpdate.js"
-import CommandEntityMove from "game/Command/CommandEntityMove.js"
-import CommandEntityRotate from "game/Command/CommandEntityRotate.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
+var Items = require("game/Items.js")
+var CommandEntityEquipItem = require("game/Command/CommandEntityEquipItem.js")
+var CommandKeyStatusUpdate = require("game/Command/CommandKeyStatusUpdate.js")
+var CommandEntityMove = require("game/Command/CommandEntityMove.js")
+var CommandEntityRotate = require("game/Command/CommandEntityRotate.js")
 
 
 var DigObstacleBehaviour = function(entity, maxWalkDis) {
@@ -25,7 +25,7 @@ var DigObstacleBehaviour = function(entity, maxWalkDis) {
     this.oldItemId = 0;
     this.digPauseDuration = 10; // Duration between finish digging and start digging again
 }
-export default DigObstacleBehaviour
+module.exports = DigObstacleBehaviour
 
 DigObstacleBehaviour.prototype.canRun = function() {
     if (!this.entity.inventory) return false;
@@ -37,8 +37,8 @@ DigObstacleBehaviour.prototype.canRun = function() {
 
     // Change equipped item to shovel
     var shovelSlotId = -1;
-    if (!this.entity.equippedItems.items["tool"] || this.entity.equippedItems.items["tool"].itemFunction != ItemFunctions.Shovel) {
-        shovelSlotId = this.entity.inventory.findTool(ItemFunctions.Shovel);
+    if (!this.entity.equippedItems.items["tool"] || this.entity.equippedItems.items["tool"].itemFunction != Items.Functions.Shovel) {
+        shovelSlotId = this.entity.inventory.findTool(Items.Functions.Shovel);
         if (shovelSlotId == -1) return false;
     }
 

@@ -1,8 +1,8 @@
-import Quadtree from "engine/Quadtree.js"
-import PointWorld from "engine/PointWorld.js"
-import DrawTransform from "engine/Animation/DrawTransform.js"
-import { loadTextures } from "engine/Animation/TextureFunctions.js"
-import "jquery"//'../lib_front_end/ajquery-3.1.1.min.js';
+var Quadtree = require("engine/Quadtree.js")
+var PointWorld = require("engine/PointWorld.js")
+var DrawTransform = require("engine/Animation/DrawTransform.js")
+var loadTextures = require("engine/Animation/TextureFunctions.js")
+var "jquery"//'../lib_front_end/ajquery-3.1.1.min.js';
 
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d", {antialias: true});

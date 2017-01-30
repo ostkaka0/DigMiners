@@ -1,13 +1,14 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
 
 var CommandPlayerLeave = function(playerId, entityId) {
     this.playerId = playerId;
     this.entityId = entityId;
 }
-export default CommandPlayerLeave
+module.exports = CommandPlayerLeave
 
 CommandPlayerLeave.prototype.execute = function() {
     var player = Global.gameData.playerWorld.objects[this.playerId];

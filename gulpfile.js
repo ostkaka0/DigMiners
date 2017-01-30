@@ -5,7 +5,7 @@ var nodeResolve = require("rollup-plugin-node-resolve");
 
 gulp.task("rollup", function() {
   return rollup({
-      entry: "DigMiners.js",//"./tests/TestPointWorld.js",
+      entry: "DigMiners.js"),//"./tests/TestPointWorld.js"),
       plugins: [
         nodeResolve({
           /*module: true,
@@ -13,17 +13,17 @@ gulp.task("rollup", function() {
           main: true,
           skip: [],
           browser: true,  // Default: false
-          extensions: [ ".js"],
+          extensions: [ ".js")],
           preferBuiltins: false  // Default: true*/
         })
       ]
     })
-    .pipe(source("src.js"))
+    .pipe(source("src.js")))
     .pipe(gulp.dest("./html"));
 });
 
 
 gulp.task("watch", function() {
-    gulp.watch(["engine/**/*.js", "game/**/*.js", "tests/**/*.js", "DigMiners.js"], ["rollup"]);
+    gulp.watch(["engine/**/*.js"), "game/**/*.js"), "tests/**/*.js"), "DigMiners.js")], ["rollup"]);
 });
 gulp.task("default", [ "rollup", "watch" ]);

@@ -2,7 +2,7 @@ var Cycle = function(frames) {
     this.frames = [];
     this.load(frames);
 }
-export default Cycle;
+module.exports = Cycle;
 
 Cycle.prototype.load = function(frames) {
     for (var i = 0; i < frames.length; ++i) {

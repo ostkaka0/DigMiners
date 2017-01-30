@@ -1,8 +1,9 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import SpriteContainer from "engine/Animation/SpriteContainer.js"
-import Sprite from "engine/Animation/Sprite.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var SpriteContainer = require("engine/Animation/SpriteContainer.js")
+var Sprite = require("engine/Animation/Sprite.js")
 
 var Drawable = function(zindex) {
     this.sprites = {};
@@ -13,7 +14,7 @@ var Drawable = function(zindex) {
     this.container = new SpriteContainer();
     zindices[this.zindex].add(this.container);
 }
-export default Drawable
+module.exports = Drawable
 
 Drawable.prototype.name = drawable.name; function drawable() { };
 

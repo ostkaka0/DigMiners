@@ -1,26 +1,26 @@
 global.isServer = true;
 
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import Event from "engine/Core/Event.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Event = require("engine/Core/Event.js")
 
-import Config from "game/Config.js"
-import gameData from "game/GameData.js"
-import Items from "game/Items.js"
-import Blocks from "game/Blocks.js"
-import Tiles from "game/Tiles.js"
-import entityTemplateTurret from "game/Entity/EntityTemplates/Turret.js"
-import {Team, Teams} from "game/Entity/Team.js"
+var Config = require("game/Config.js")
+var gameData = require("game/GameData.js")
+var Items = require("game/Items.js")
+var Blocks = require("game/Blocks.js")
+var Tiles = require("game/Tiles.js")
+var entityTemplateTurret = require("game/Entity/EntityTemplates/Turret.js")
+var Team = require("game/Entity/Team.js")
 
-import CommandEntitySpawn from "game/Command/CommandEntitySpawn.js"
-import { CommandEntityInventory, InventoryActions } from "game/Command/CommandEntityInventory.js"
-import CommandEntityEquipItem from "game/Command/CommandEntityEquipItem.js"
-import CommandCollisions from "game/Command/CommandCollisions.js"
-import MessageCommands from "game/Message/ToClient/MessageCommands.js"
-import CommandEntityInteractEntity from "game/Command/CommandEntityInteractEntity.js"
-import CommandPlayerJoin from "game/Command/CommandPlayerJoin.js"
-import CommandPlayerLeave from "game/Command/CommandPlayerLeave.js"
-import IndexCounter from "engine/IndexCounter.js"
+var CommandEntitySpawn = require("game/Command/CommandEntitySpawn.js")
+var CommandEntityInventory = require("game/Command/CommandEntityInventory.js")
+var CommandEntityEquipItem = require("game/Command/CommandEntityEquipItem.js")
+var CommandCollisions = require("game/Command/CommandCollisions.js")
+var MessageCommands = require("game/Message/ToClient/MessageCommands.js")
+var CommandEntityInteractEntity = require("game/Command/CommandEntityInteractEntity.js")
+var CommandPlayerJoin = require("game/Command/CommandPlayerJoin.js")
+var CommandPlayerLeave = require("game/Command/CommandPlayerLeave.js")
+var IndexCounter = require("engine/IndexCounter.js")
 
 var console = require("console");
 var fs = require("fs");
@@ -46,7 +46,7 @@ var loadScriptsRecursive = function(dir) {
 
         if (stat.isDirectory())
             loadScriptsRecursive(filePath);
-        else if (stat.isFile() && path.extname(filePath) == ".js")
+        else if (stat.isFile() && path.extname(filePath) == ".js"))
             loadScript(filePath)
     }
 }*/
@@ -56,7 +56,7 @@ loadScriptsRecursive("engine");
 loadScriptsRecursive("game");
 
 //Unit testing
-loadScript("UnitTest.js");
+loadScript("UnitTest.js"));
 loadScriptsRecursive("unit_tests");
 runUnitTests();
 */
@@ -69,6 +69,7 @@ global.clearCommands = function() {
 }
 
 global.connections = new Array(); // key socketId, value player object
+console.log(gameData);
 gameData.init();
 var zindices = {};
 
@@ -116,8 +117,8 @@ for (var i = 0; i < 50; i++) {
 for (var i = 0; i < 10; i++) {
     var pos = [Math.floor(80 * (1.0 - 2.0*Math.random())), Math.floor(80 * (1.0 - 2.0*Math.random()))];
     var entityId = gameData.idList.next();
-    var weaponId = Items.WeaponPistol.id + Math.floor((Items.WeaponSniperRifle.id - Items.WeaponPistol.id + 1) * Math.random());
-    var entity = entityTemplateMonsterSpawner(entityId, pos, entityTemplateMonster, 2, 2.0, 3000, [{id: weaponId}, {id: Items.Egg.id, quantity: 1000}]);
+    var weaponId = Items.Types.WeaponPistol.id + Math.floor((Items.Types.WeaponSniperRifle.id - Items.Types.WeaponPistol.id + 1) * Math.random());
+    var entity = entityTemplateMonsterSpawner(entityId, pos, entityTemplateMonster, 2, 2.0, 3000, [{id: weaponId}, {id: Items.Types.Egg.id, quantity: 1000}]);
     gameData.world.entityWorld.add(entity, entityId);
     carveCircle(gameData, pos[0], pos[1], 6.0, 100.0);
 }*/
@@ -130,33 +131,33 @@ Event.subscribe(gameData.world.entityWorld.onAdd, global, function(entity) {
     if (entity.controlledByPlayer) {
 
         /*// give player shovel at join
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.SteelShovel.id, 1));
+        sendCommand(new CommandEntityInventory(entity.id, CommandEntityInventory.Actions.ADD_ITEM, Items.Types.SteelShovel.id, 1));
 
         // give player dynamite at join
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.Egg.id, 800));
+        sendCommand(new CommandEntityInventory(entity.id, CommandEntityInventory.Actions.ADD_ITEM, Items.Types.Egg.id, 800));
 
         // give player blocks at join
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.StoneWall.id, 100));
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.BlueForcefield.id, 10));
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.BunkerWindow.id, 10));
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WoodCrate.id, 100));
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.HealthBox.id, 10));
+        sendCommand(new CommandEntityInventory(entity.id, CommandEntityInventory.Actions.ADD_ITEM, Items.Types.StoneWall.id, 100));
+        sendCommand(new CommandEntityInventory(entity.id, CommandEntityInventory.Actions.ADD_ITEM, Items.Types.BlueForcefield.id, 10));
+        sendCommand(new CommandEntityInventory(entity.id, CommandEntityInventory.Actions.ADD_ITEM, Items.Types.BunkerWindow.id, 10));
+        sendCommand(new CommandEntityInventory(entity.id, CommandEntityInventory.Actions.ADD_ITEM, Items.Types.WoodCrate.id, 100));
+        sendCommand(new CommandEntityInventory(entity.id, CommandEntityInventory.Actions.ADD_ITEM, Items.Types.HealthBox.id, 10));
 
         // Give player weapons
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponPistol.id, 1));
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponAssaultRifle.id, 1));
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponShotgun.id, 1));
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.ADD_ITEM, Items.WeaponSniperRifle.id, 1));*/
+        sendCommand(new CommandEntityInventory(entity.id, CommandEntityInventory.Actions.ADD_ITEM, Items.Types.WeaponPistol.id, 1));
+        sendCommand(new CommandEntityInventory(entity.id, CommandEntityInventory.Actions.ADD_ITEM, Items.Types.WeaponAssaultRifle.id, 1));
+        sendCommand(new CommandEntityInventory(entity.id, CommandEntityInventory.Actions.ADD_ITEM, Items.Types.WeaponShotgun.id, 1));
+        sendCommand(new CommandEntityInventory(entity.id, CommandEntityInventory.Actions.ADD_ITEM, Items.Types.WeaponSniperRifle.id, 1));*/
 
         // (TEMPORARY) spawn monsters on player join
         for (var i = 0; i < 0; ++i) {
             var monsterEntityId = gameData.world.idList.next();
             var monster = entityTemplateMonster(monsterEntityId, [50 * (-1 + 2 * Math.random()), 50 * (-1 + 2 * Math.random())], gameData);
             sendCommand(new CommandEntitySpawn(gameData, monster, monsterEntityId));
-            var weaponId = Items.WeaponPistol.id + Math.floor((Items.WeaponGrenadeLauncher.id - Items.WeaponPistol.id + 1) * Math.random());
-            sendCommand(new CommandEntityInventory(monsterEntityId, InventoryActions.ADD_ITEM, weaponId, 1));
+            var weaponId = Items.Types.WeaponPistol.id + Math.floor((Items.Types.WeaponGrenadeLauncher.id - Items.Types.WeaponPistol.id + 1) * Math.random());
+            sendCommand(new CommandEntityInventory(monsterEntityId, CommandEntityInventory.Actions.ADD_ITEM, weaponId, 1));
             sendCommand(new CommandEntityEquipItem(monsterEntityId, 0, weaponId, true));
-            sendCommand(new CommandEntityInventory(monsterEntityId, InventoryActions.ADD_ITEM, Items.Egg.id, 1000));
+            sendCommand(new CommandEntityInventory(monsterEntityId, CommandEntityInventory.Actions.ADD_ITEM, Items.Types.Egg.id, 1000));
         }
     }
 });
@@ -242,7 +243,7 @@ io.on("connection", function(socket) {
     });
 
     socket.on('message', function(msg) {
-        console.log("Message from " + socket.id + ": " + msg);
+        console.log("Message = require(" + socket.id + ": " + msg);
     });
 
     socket.on('command', function(data) {

@@ -1,13 +1,14 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import Event from "engine/Core/Event.js"
-import Global from "game/Global.js"
-import { Team, Teams } from "game/Entity/Team.js"
-import CommandEntitySpawn from "game/Command/CommandEntitySpawn.js"
-import { CommandEntityInventory, InventoryActions } from "game/Command/CommandEntityInventory.js"
-import CommandEntityEquipItem from "game/Command/CommandEntityEquipItem.js"
-import Items from "game/Items.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Event = require("engine/Core/Event.js")
+var Global = require("game/Global.js")
+var Team = require("game/Entity/Team.js")
+var CommandEntitySpawn = require("game/Command/CommandEntitySpawn.js")
+var CommandEntityInventory = require("game/Command/CommandEntityInventory.js")
+var CommandEntityEquipItem = require("game/Command/CommandEntityEquipItem.js")
+var Items = require("game/Items.js")
 
 var Spawner = function(entityTemplate, pos, maxEntities, radius, duration, items, equippedItemId, randomDuration, teamId) {
     this.entityTemplate = entityTemplate;
@@ -15,10 +16,10 @@ var Spawner = function(entityTemplate, pos, maxEntities, radius, duration, items
     this.maxEntities = maxEntities;
     this.radius = radius || 1.0;
     this.duration = duration || 240;
-    this.items = items || [{id: Items.RustyShovel.id, quantity: 1}];
+    this.items = items || [{id: Items.Types.RustyShovel.id, quantity: 1}];
     this.equippedItemId = (equippedItemId != undefined)? equippedItemId : null;
     this.randomDuration = (randomDuration != undefined)? randomDuration : 0.5;
-    this.teamId = teamId || Teams.None;
+    this.teamId = teamId || Team.Enum.None;
 
     this.numEntities = 0;
     this.entityTable = {};
@@ -26,7 +27,7 @@ var Spawner = function(entityTemplate, pos, maxEntities, radius, duration, items
 
     this.initialized = false;
 }
-export default Spawner
+module.exports = Spawner
 
 Spawner.prototype.name = spawner.name; function spawner() { };
 
@@ -57,7 +58,7 @@ Spawner.prototype.update = function(entity) {
     // Add items
     if (this.items) {
         this.items.forEach(function(item) {
-            sendCommand(new CommandEntityInventory(monsterEntityId, InventoryActions.ADD_ITEM, item.id, item.quantity | 1));
+            sendCommand(new CommandEntityInventory(monsterEntityId, CommandEntityInventory.Actions.ADD_ITEM, item.id, item.quantity | 1));
         });
     }
 

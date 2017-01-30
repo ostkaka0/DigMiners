@@ -1,29 +1,29 @@
 
-import $ from "jquery"
+var $ = require("jquery"
 
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import Canvas from "engine/Canvas.js"
-import Sprite from "engine/Animation/Sprite.js"
-import ChunkRenderer from "engine/ChunkRenderer.js"
-import BlockChunkRenderer from "engine/ChunkRenderer.js"
-import SpriteContainer from "engine/Animation/SpriteContainer.js"
-import Event from "engine/Core/Event.js"
-import Chunk from "engine/Chunk.js"
-import { loadTextures } from "engine/Animation/TextureFunctions.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Canvas = require("engine/Canvas.js")
+var Sprite = require("engine/Animation/Sprite.js")
+var ChunkRenderer = require("engine/ChunkRenderer.js")
+var BlockChunkRenderer = require("engine/ChunkRenderer.js")
+var SpriteContainer = require("engine/Animation/SpriteContainer.js")
+var Event = require("engine/Core/Event.js")
+var Chunk = require("engine/Chunk.js")
+var loadTextures = require("engine/Animation/TextureFunctions.js")
 
-import gameData from "game/GameData.js"
-import Client from "game/Client.js"
-import { TextureLoader, TextureLoaderEvents } from "game/Entity/TextureLoader.js"
-import TextureManager from "game/Entity/TextureManager.js"
-import LoadingScreen from "game/GUI/LoadingScreen.js"
-import DeathScreen from "game/GUI/DeathScreen.js"
-import InventoryHUD from "game/GUI/InventoryHUD.js"
-import MessageRequestKeyStatusUpdate from "game/Message/ToServer/MessageRequestKeyStatusUpdate.js"
-import MessageRequestPlaceBlock from "game/Message/ToServer/MessageRequestPlaceBlock.js"
-import MessageRequestClickBlock from "game/Message/ToServer/MessageRequestClickBlock.js"
-import MessageRequestRotate from "game/Message/ToServer/MessageRequestRotate.js"
-import MessageRequestItemPickup from "game/Message/ToServer/MessageRequestItemPickup.js"
+var gameData = require("game/GameData.js")
+var Client = require("game/Client.js")
+var TextureLoader = require("game/Entity/TextureLoader.js")
+var TextureManager = require("game/Entity/TextureManager.js")
+var LoadingScreen = require("game/GUI/LoadingScreen.js")
+var DeathScreen = require("game/GUI/DeathScreen.js")
+var InventoryHUD = require("game/GUI/InventoryHUD.js")
+var MessageRequestKeyStatusUpdate = require("game/Message/ToServer/MessageRequestKeyStatusUpdate.js")
+var MessageRequestPlaceBlock = require("game/Message/ToServer/MessageRequestPlaceBlock.js")
+var MessageRequestClickBlock = require("game/Message/ToServer/MessageRequestClickBlock.js")
+var MessageRequestRotate = require("game/Message/ToServer/MessageRequestRotate.js")
+var MessageRequestItemPickup = require("game/Message/ToServer/MessageRequestItemPickup.js")
 
 
 var canvas = document.getElementById("canvas");
@@ -366,7 +366,7 @@ gameData.world.events.on("ownPlayerSpawned", function(entity, player) {
 
 Event.subscribe(gameData.world.entityWorld.onAdd, window, function(entity) {
     if (!isServer && entity.health && entity.drawable)
-        triggerEvent(HealthEvents.onChange, entity);
+        triggerEvent(Health.Events.onChange, entity);
 
     if (entity.drawable && entity.bodyparts) {
         entity.drawable.initializeBodyparts(entity.bodyparts.bodyparts);

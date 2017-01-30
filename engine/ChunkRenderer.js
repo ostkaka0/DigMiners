@@ -1,6 +1,6 @@
-import Map2D from "engine/Core/Map2D.js"
-import Chunk from "engine/Chunk.js"
-import Shader from "engine/Shader.js"
+var Map2D = require("engine/Core/Map2D.js")
+var Chunk = require("engine/Chunk.js")
+var Shader = require("engine/Shader.js")
 var CHUNK_DIM = Chunk.dim;
 var CHUNK_DIM_2 = Chunk.dim2;
 var CHUNK_SIZE = Chunk.size;
@@ -36,7 +36,7 @@ var ChunkRenderer = function(gl, world, tileSize) {
     this.isReady = false; // False until shaders, buffers, attributes and uniforms are loaded.
 }
 
-export default ChunkRenderer;
+module.exports = ChunkRenderer;
 
 ChunkRenderer.prototype.lazyInit = function() {
     if (this.isReady)

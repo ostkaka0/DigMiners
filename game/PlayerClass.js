@@ -1,64 +1,65 @@
-import ObjectRegister from "engine/ObjectRegister.js"
+var ObjectRegister = require("engine/ObjectRegister.js")
 
-import Items from "game/Items.js"
-import Blocks from "game/Blocks.js"
+var Items = require("game/Items.js")
+var Blocks = require("game/Blocks.js")
 
-export var PlayerClass = {};
-export default PlayerClass;
+var PlayerClass = {};
+module.exports = PlayerClass;
 
-export function initPlayerClass() {
+PlayerClass.init = function() {
+    delete PlayerClass.init;
     Object.assign(PlayerClass, {
         Assault: {
             name: "Assault",
-            blocks: [Items.StoneWall, Items.WoodCrate, Items.BlueForcefield],
-            weapons: [Items.WeaponAssaultRifle, Items.WeaponPistol, Items.Knife, Items.CopperShovel],
+            blocks: [Items.Types.StoneWall, Items.Types.WoodCrate, Items.Types.BlueForcefield],
+            weapons: [Items.Types.WeaponAssaultRifle, Items.Types.WeaponPistol, Items.Types.Knife, Items.Types.CopperShovel],
             speed: 1.0,
             health: 120.0,
             armor: 0.3,
         },
         Heavy: {
             name: "Heavy",
-            blocks: [Items.StoneWall, Items.WoodCrate, Items.BlueForcefield],
-            weapons: [Items.WeaponMachineGun, Items.WeaponPistol, Items.Knife, Items.CopperShovel],
+            blocks: [Items.Types.StoneWall, Items.Types.WoodCrate, Items.Types.BlueForcefield],
+            weapons: [Items.Types.WeaponMachineGun, Items.Types.WeaponPistol, Items.Types.Knife, Items.Types.CopperShovel],
             speed: 0.5,
             health: 150.0,
             armor: 0.5,
         },
         Sniper: {
             name: "Sniper",
-            blocks: [Items.StoneWall, Items.BunkerWindow, Items.BlueForcefield],
-            weapons: [Items.WeaponSniperRifle, Items.WeaponPistol, Items.Knife, Items.RustyShovel],
+            blocks: [Items.Types.StoneWall, Items.Types.BunkerWindow, Items.Types.BlueForcefield],
+            weapons: [Items.Types.WeaponSniperRifle, Items.Types.WeaponPistol, Items.Types.Knife, Items.Types.RustyShovel],
             speed: 1.2,
             health: 100.0,
             armor: 0.0,
         },
         Medic: {
             name: "Medic",
-            blocks: [Items.StoneWall, Items.BlueForcefield, Items.HealthBox, Items.AmmoBox],
-            weapons: [Items.WeaponShotgun, Items.WeaponSmg, Items.IronShovel],
+            blocks: [Items.Types.StoneWall, Items.Types.BlueForcefield, Items.Types.HealthBox, Items.Types.AmmoBox],
+            weapons: [Items.Types.WeaponShotgun, Items.Types.WeaponSmg, Items.Types.IronShovel],
             speed: 1.0,
             health: 100.0,
             armor: 0.2,
         },
         Assassin: {
             name: "Assassin",
-            blocks: [Items.StoneWall, Items.WoodCrate, Items.BlueForcefield],
-            weapons: [Items.WeaponSmg, Items.AssasinKnife, Items.RustyShovel],
+            blocks: [Items.Types.StoneWall, Items.Types.WoodCrate, Items.Types.BlueForcefield],
+            weapons: [Items.Types.WeaponSmg, Items.Types.AssasinKnife, Items.Types.RustyShovel],
             speed: 1.5,
             health: 80.0,
             armor: 0.0,
         },
         Miner: {
             name: "Miner",
-            blocks: [Items.StoneWall, Items.WoodCrate, Items.BlueForcefield, Items.PistolTurret, Items.MachineGunTurret],
-            weapons: [Items.WeaponShotgun, Items.WeaponSmg, Items.SteelShovel],
+            blocks: [Items.Types.StoneWall, Items.Types.WoodCrate, Items.Types.BlueForcefield, Items.Types.PistolTurret, Items.Types.MachineGunTurret],
+            weapons: [Items.Types.WeaponShotgun, Items.Types.WeaponSmg, Items.Types.SteelShovel],
             speed: 1.0,
             health: 120.0,
             armor: 0.2,
         }
     });
 
-    //export default PlayerClass
+    //module.exports = PlayerClass
 
     PlayerClass.Register = ObjectRegister.addByObject([], PlayerClass);
 }

@@ -1,19 +1,20 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import IndexCounter from "engine/IndexCounter.js"
-import Chunk from "engine/Chunk.js"
-import BlockChunk from "engine/BlockChunk.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var IndexCounter = require("engine/IndexCounter.js")
+var Chunk = require("engine/Chunk.js")
+var BlockChunk = require("engine/BlockChunk.js")
 
-import Global from "game/Global.js"
-import Config from "game/Config.js"
-import CommandEntityBuild from "game/Command/CommandEntityBuild.js"
-import { Blocks, BlockTypes } from "game/Blocks.js"
+var Global = require("game/Global.js")
+var Config = require("game/Config.js")
+var CommandEntityBuild = require("game/Command/CommandEntityBuild.js")
+var Blocks = require("game/Blocks.js")
 
 var MessageRequestPlaceBlock = function(stackId, x, y) {
     this.stackId = stackId;
     this.x = Math.floor(x);
     this.y = Math.floor(y);
 }
-export default MessageRequestPlaceBlock
+module.exports = MessageRequestPlaceBlock
 
 MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
     var entity = Global.gameData.world.entityWorld.objects[player.entityId];
@@ -38,13 +39,13 @@ MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
         var type = blockType.type;
 
         var blockChunk = Global.gameData.world.blockWorld.get(blockChunkX, blockChunkY);
-        if (type == BlockTypes.FOREGROUND) {
+        //if (type == BlockTypes.FOREGROUND) {
             if (blockChunk && blockChunk.getForeground(localX, localY) > 0)
                 return;
-        } else if (type == BlockTypes.BACKGROUND) {
-            if (blockChunk && blockChunk.getBackground(localX, localY) > 0)
-                return;
-        }
+        //} else if (type == BlockTypes.BACKGROUND) {
+        //    if (blockChunk && blockChunk.getBackground(localX, localY) > 0)
+        //        return;
+        //}
 
         // Send block change
         var command = new CommandEntityBuild(player.entityId, this.x, this.y, itemType.blockId, type);

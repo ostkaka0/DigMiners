@@ -1,5 +1,5 @@
-import {loadTextures} from "../engine/Animation/TextureFunctions.js"
-import DrawTransform from "../engine/Animation/DrawTransform.js"
+var {loadTextures} = require("../engine/Animation/TextureFunctions.js")
+var DrawTransform = require("../engine/Animation/DrawTransform.js")
 
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d", { antialias: true });

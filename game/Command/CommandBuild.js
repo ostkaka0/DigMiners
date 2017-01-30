@@ -1,10 +1,11 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import BlockWorld from "engine/BlockWorld.js"
-import TileWorld from "engine/TileWorld.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var BlockWorld = require("engine/BlockWorld.js")
+var TileWorld = require("engine/TileWorld.js")
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
-import { Blocks, BlockTypes } from "game/Blocks.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
+var Blocks = require("game/Blocks.js")
 
 var CommandBuild = function(x, y, blockId, type) {
     this.x = x;
@@ -12,13 +13,13 @@ var CommandBuild = function(x, y, blockId, type) {
     this.blockId = blockId;
     this.type = type;
 }
-export default CommandBuild
+module.exports = CommandBuild
 
 CommandBuild.prototype.execute = function() {
-    if (this.type == BlockTypes.FOREGROUND)
+    //if (this.type == BlockTypes.FOREGROUND)
         BlockWorld.setForeground(Global.gameData.world.blockWorld, this.x, this.y, this.blockId);
-    else if (this.type == BlockTypes.BACKGROUND)
-        setBackground(Global.gameData.world.blockWorld, this.x, this.y, this.blockId);
+    //else if (this.type == BlockTypes.BACKGROUND)
+    //    setBackground(Global.gameData.world.blockWorld, this.x, this.y, this.blockId);
 }
 
 CommandBuild.prototype.serialize = function(byteArray, index) {

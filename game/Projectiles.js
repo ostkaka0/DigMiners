@@ -1,6 +1,6 @@
 
 var Projectiles = {};
-export default Projectiles
+module.exports = Projectiles
 
 Projectiles.Pistol = {
     radius: 0.2,

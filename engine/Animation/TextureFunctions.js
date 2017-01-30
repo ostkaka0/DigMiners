@@ -1,12 +1,12 @@
 
-export function loadTexture(path, callback) {
+module.exports.loadTexture = function(path, callback) {
     var texture = new Image();
     texture.addEventListener("load", callback, false);
     texture.src = "data/textures/block.png"
     return texture;
 }
 
-export function loadTextures(parentFolder, paths, finishCallback, callback) {
+module.exports.loadTextures = function(parentFolder, paths, finishCallback, callback) {
     var textures = {};
     var numPathsToLoad = paths.length;
 

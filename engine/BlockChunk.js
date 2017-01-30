@@ -1,5 +1,5 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
 
 var BLOCK_CHUNK_DIM = 30;
 var BLOCK_CHUNK_SIZE = BLOCK_CHUNK_DIM * BLOCK_CHUNK_DIM;
@@ -10,7 +10,7 @@ var BlockChunk = function() {
     this.strength = new Uint8Array(BLOCK_CHUNK_SIZE);
     var isChanged = true;
 }
-export default BlockChunk;
+module.exports = BlockChunk;
 
 BlockChunk.dim = BLOCK_CHUNK_DIM;
 BlockChunk.size = BLOCK_CHUNK_SIZE;

@@ -1,4 +1,4 @@
-import Map2D from "..engine/Map2D.js"
+var Map2D = require("..engine/Map2D.js")
 
 g_unitTests.testMap2D = function() {
     var map = new Map2D();

@@ -1,26 +1,26 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import PhysicsBody from "game/Entity/PhysicsBody.js"
-import Movement from "game/Entity/Movement.js"
-import Bodyparts from "game/Entity/Bodyparts.js"
-import Drawable from "game/Entity/Drawable.js"
-import NameComponent from "game/Entity/NameComponent.js"
-import { Team, Teams } from "game/Entity/Team.js"
-import Sprite from "engine/Animation/Sprite.js"
-import BodyPart from "engine/Animation/BodyPart.js"
-import Health from "game/Entity/Health.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var PhysicsBody = require("game/Entity/PhysicsBody.js")
+var Movement = require("game/Entity/Movement.js")
+var Bodyparts = require("game/Entity/Bodyparts.js")
+var Drawable = require("game/Entity/Drawable.js")
+var NameComponent = require("game/Entity/NameComponent.js")
+var Team = require("game/Entity/Team.js")
+var Sprite = require("engine/Animation/Sprite.js")
+var BodyPart = require("engine/Animation/BodyPart.js")
+var Health = require("game/Entity/Health.js")
 
-export default HumanBase = function(entityId, pos, teamId) {
+module.exports = HumanBase = function(entityId, pos, teamId) {
     var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, null, 1000.0);
     entity.nameComponent = new NameComponent("Base");
 
-    var teamEnum = teamId || Teams.Human;
+    var teamEnum = teamId || Team.Enum.Human;
     var feetSprite = new Sprite("monster/feet.png");
     var rightArmSprite = new Sprite("monster/rightArm.png");
     var leftArmSprite = new Sprite("monster/leftArm.png");
     var headSprite = new Sprite("monster/head.png");
-    var hatSprite = new Sprite((teamEnum == Teams.Blue) ? "egg.png" : "bigEgg.png");
+    var hatSprite = new Sprite((teamEnum == Team.Enum.Blue) ? "egg.png" : "bigEgg.png");
 
     var bodyparts = {
         "feet": new BodyPart(feetSprite, 0, 0, 0, null, null),

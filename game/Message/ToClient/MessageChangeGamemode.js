@@ -1,12 +1,13 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import IndexCounter from "engine/IndexCounter.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var IndexCounter = require("engine/IndexCounter.js")
 
-import Global from "game/Global.js"
+var Global = require("game/Global.js")
 
 var MessageChangeGameMode = function() {
     this.gameModeId = Global.gameData.gameMode.id;
 }
-export default MessageChangeGameMode
+module.exports = MessageChangeGameMode
 
 MessageChangeGameMode.prototype.execute = function(gameData) {
     // TODO: Don't reload page

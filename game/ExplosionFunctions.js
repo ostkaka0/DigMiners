@@ -1,13 +1,14 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import TileWorld from "engine/TileWorld.js"
-import BlockWorld from "engine/BlockWorld.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var TileWorld = require("engine/TileWorld.js")
+var BlockWorld = require("engine/BlockWorld.js")
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
+var Entity = require("game/Entity/Entity.js")
 
 
-export var createExplosion = function(startPos, radius, entityDamage, blockDamage, tileDamage, attacker) {
+module.exports.createExplosion = function(startPos, radius, entityDamage, blockDamage, tileDamage, attacker) {
     if (isServer) {
         // Damage terrain
         for (var i = 0; i < tileDamage; ++i)
@@ -36,7 +37,7 @@ export var createExplosion = function(startPos, radius, entityDamage, blockDamag
                 if (entity.physicsBody && entity.health) {
                     var dis = v2.distance(startPos, entity.physicsBody.getPos());
                     if (dis <= radius) {
-                        entity.health.hurt(entity, attacker, entityDamage);
+                        Entity.hurt(entity, attacker, entityDamage);
                     }
                 }
             });

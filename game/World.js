@@ -1,28 +1,29 @@
-import Event from "engine/Core/Event.js"
-import Map2D from "engine/Core/Map2D.js"
-import IdList from "engine/IdList.js"
-import ObjectWorld from "engine/ObjectWorld.js"
-import ParticleWorld from "engine/ParticleWorld.js"
-import PhysicsWorld from "engine/PhysicsWorld.js"
-import Generator from "game/Generator.js"
-import EventHandler from "engine/EventHandler.js"
-import BodyPart from "engine/Animation/BodyPart.js"
-import BlockWorld from "engine/BlockWorld.js"
+var Event = require("engine/Core/Event.js")
+var Map2D = require("engine/Core/Map2D.js")
+var IdList = require("engine/IdList.js")
+var ObjectWorld = require("engine/ObjectWorld.js")
+var ParticleWorld = require("engine/ParticleWorld.js")
+var PhysicsWorld = require("engine/PhysicsWorld.js")
+var Generator = require("game/Generator.js")
+var EventHandler = require("engine/EventHandler.js")
+var BodyPart = require("engine/Animation/BodyPart.js")
+var BlockWorld = require("engine/BlockWorld.js")
 
-import Global from "game/Global.js"
-import Config from "game/Config.js"
-import {Projectile, ProjectileEvents} from "game/Entity/Projectile.js"
-import {Health, HealthEvents} from "game/Entity/Health.js"
-import Interacter from "game/Entity/Interacter.js"
-import {Interactable, InteractableEvents} from "game/Entity/Interactable.js"
-import EntityTemplates from "game/Entity/EntityTemplates/EntityTemplates.js"
-import { entityFunctionEntityMovement } from "game/Entity/Movement.js"
-import entityFunctionPhysicsBodySimulate from "game/Entity/Physics.js"
-import entityFunctionProjectileSimulate from "game/ProjectilePhysics.js"
-import CommandParticles from "game/Command/CommandParticles.js"
-import CommandBlockStrength from "game/Command/CommandBlockStrength.js"
-import InventoryHUD from "game/GUI/InventoryHUD.js"
-import { ParticleFunctions, createParticles } from "game/ParticleFunctions.js"
+var Global = require("game/Global.js")
+var Config = require("game/Config.js")
+var Entity = require("game/Entity/Entity.js")
+var Projectile = require("game/Entity/Projectile.js")
+var Health = require("game/Entity/Health.js")
+var Interacter = require("game/Entity/Interacter.js")
+var Interactable = require("game/Entity/Interactable.js")
+var EntityTemplates = require("game/Entity/EntityTemplates/EntityTemplates.js")
+var Movement = require("game/Entity/Movement.js")
+var entityFunctionPhysicsBodySimulate = require("game/Entity/Physics.js")
+var entityFunctionProjectileSimulate = require("game/ProjectilePhysics.js").entityFunctionProjectileSimulate
+var CommandParticles = require("game/Command/CommandParticles.js")
+var CommandBlockStrength = require("game/Command/CommandBlockStrength.js")
+var InventoryHUD = require("game/GUI/InventoryHUD.js")
+var ParticleFunctions = require("game/ParticleFunctions.js")
 
 var World = function() {
     this.tickId = 0;
@@ -46,7 +47,7 @@ var World = function() {
     this.events = new EventHandler();
     this.initializeEvents();
 }
-export default World
+module.exports = World
 
 World.prototype.tick = function(dt) {
     if (this.pendingCommands[this.tickId])
@@ -62,7 +63,7 @@ World.prototype.tick = function(dt) {
     }.bind(this));
     this.commands.length = 0;
     this.physicsWorld.update(dt);
-    entityFunctionEntityMovement(dt);
+    Movement.entityFunction(dt);
     entityFunctionPhysicsBodySimulate(dt);
     entityFunctionProjectileSimulate(dt);
     this.entityWorld.objectArray.forEach(function(entity) {
@@ -93,7 +94,7 @@ World.prototype.initializeEvents = function() {
         Event.subscribe(this.entityWorld.onRemove, this, onObjectRemove);
     }
 
-    Event.subscribe(ProjectileEvents.onHit, this, function(projectileEntity, hitPos) {
+    Event.subscribe(Projectile.Events.onHit, this, function(projectileEntity, hitPos) {
         Global.gameData.setTimeout(function(projectileEntity) {
             var type = projectileEntity.projectile.projectileType;
             if (type.isExplosive)
@@ -101,23 +102,23 @@ World.prototype.initializeEvents = function() {
             this.entityWorld.remove(projectileEntity);
         }.bind(this, projectileEntity), projectileEntity.projectile.projectileType.stayTime);
         if (!isServer)
-            createParticles(ParticleFunctions.BulletHitParticles, hitPos, projectileEntity.projectile.angle);
+            ParticleFunctions.create(ParticleFunctions.BulletHitParticles, hitPos, projectileEntity.projectile.angle);
     }.bind(this));
 
-    Event.subscribe(ProjectileEvents.onHitEntity, this, function(projectileEntity, hitEntity, hitPos) {
+    Event.subscribe(Projectile.Events.onHitEntity, this, function(projectileEntity, hitEntity, hitPos) {
         if (isServer) {
             if (hitEntity && hitEntity.health && projectileEntity.projectile.projectileType.damage > 0) {
                 var damage = projectileEntity.projectile.projectileType.damage * projectileEntity.projectile.damageFactor;
                 var armorPenentration = projectileEntity.projectile.projectileType.armorPenentration;
                 var shooterId = projectileEntity.projectile.shooterEntityId;
                 var shooter = this.entityWorld.objects[shooterId];
-                hitEntity.health.hurt(hitEntity, shooter, damage, armorPenentration);
+                Entity.hurt(hitEntity, shooter, damage, armorPenentration);
                 sendCommand(new CommandParticles(ParticleFunctions.BloodHitParticles.id, hitPos, projectileEntity.projectile.angle));
             }
         }
     }.bind(this));
 
-    Event.subscribe(ProjectileEvents.onHitBlock, this, function(projectileEntity, blockPos) {
+    Event.subscribe(Projectile.Events.onHitBlock, this, function(projectileEntity, blockPos) {
         if (isServer) {
             if (projectileEntity.projectile.projectileType.blockDamage > 0) {
                 var strength = BlockWorld.getStrength(this.blockWorld, blockPos[0], blockPos[1]);
@@ -130,11 +131,11 @@ World.prototype.initializeEvents = function() {
         }
     }.bind(this));
 
-    Event.subscribe(ProjectileEvents.onHitTile, this, function(projectileEntity, tilePos) {
+    Event.subscribe(Projectile.Events.onHitTile, this, function(projectileEntity, tilePos) {
 
     }.bind(this));
 
-    Event.subscribe(HealthEvents.onChange, this, function(entity) {
+    Event.subscribe(Health.Events.onChange, this, function(entity) {
         if (!isServer) {
             var sprite = entity.drawable.sprites["healthbar"];
             if (!sprite) return;
@@ -143,7 +144,7 @@ World.prototype.initializeEvents = function() {
         }
     }.bind(this));
 
-    Event.subscribe(HealthEvents.onDeath, this, function(entity) {
+    Event.subscribe(Health.Events.onDeath, this, function(entity) {
         if (!entity.isDead) {
             entity.isDead = true;
             this.entityWorld.remove(entity);
@@ -168,7 +169,7 @@ World.prototype.initializeEvents = function() {
         });
     }.bind(this));
 
-    Event.subscribe(InteractableEvents.onInteract, this, function(interactableEntity, interactingEntity) {
+    Event.subscribe(Interactable.Events.onInteract, this, function(interactableEntity, interactingEntity) {
         //console.log(interactingEntity.id + " is now interacting with " + interactableEntity.id);
         if (!isServer) {
             if (global.playerEntity && global.playerEntity.id == interactingEntity.id) {
@@ -184,7 +185,7 @@ World.prototype.initializeEvents = function() {
         }
     });
 
-    Event.subscribe(InteractableEvents.onFinishInteract, this, function(interactableEntity, interactingEntity) {
+    Event.subscribe(Interactable.Events.onFinishInteract, this, function(interactableEntity, interactingEntity) {
         //console.log(interactingEntity.id + " is no longer interacting with " + interactableEntity.id);
         if (!isServer) {
             if (global.playerEntity && global.playerEntity.id == interactingEntity.id) {
@@ -233,6 +234,6 @@ World.prototype.initializeEvents = function() {
 }
 
 World.prototype.destroy = function() {
-    Event.unsubscribeAll(HealthEvents, this);
-    Event.unsubscribeAll(ProjectileEvents, this);
+    Event.unsubscribeAll(Health.Events, this);
+    Event.unsubscribeAll(Projectile.Events, this);
 }

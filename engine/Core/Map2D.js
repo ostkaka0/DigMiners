@@ -1,7 +1,7 @@
 var Map2D = function() {
     this.map = {};
 }
-export default Map2D;
+module.exports = Map2D;
 
 Map2D.prototype.get = function(x, y) {
     return this.map[x + "|" + y];

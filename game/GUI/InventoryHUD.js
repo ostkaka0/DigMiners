@@ -1,14 +1,14 @@
-import $ from "jquery"
+var $ = require("jquery")
 
-import Event from "engine/Core/Event.js"
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import Config from "game/Config.js"
+var Event = require("engine/Core/Event.js")
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Config = require("game/Config.js")
 
-export var InventoryHUDEvents = {};
-InventoryHUDEvents.click = [];
+module.exports.InventoryHUDEvents = {};
+module.exports.InventoryHUDEvents.click = [];
 
-export var InventoryHUD = function(inventory, text, bottom) {
+var InventoryHUD = function(inventory, text, bottom) {
     this.inventory = inventory;
     this.inventoryWidth = inventory.width;
     this.inventoryHeight = inventory.height;
@@ -140,7 +140,7 @@ export var InventoryHUD = function(inventory, text, bottom) {
     this.inventoryContent.appendTo(this.inventoryHUD);
     this.inventoryHUD.appendTo("#hud");
 }
-export default InventoryHUD
+module.exports.InventoryHUD = InventoryHUD
 
 InventoryHUD.prototype.update = function() {
     for (var i = 0; i < this.inventoryWidth * this.inventoryHeight; ++i) {

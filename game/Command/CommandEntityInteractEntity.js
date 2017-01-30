@@ -1,14 +1,15 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
 
 var CommandEntityInteractEntity = function(entityId, interactableEntityId, interacting) {
     this.entityId = entityId;
     this.interactableEntityId = interactableEntityId;
     this.interacting = interacting;
 }
-export default CommandEntityInteractEntity
+module.exports = CommandEntityInteractEntity
 
 CommandEntityInteractEntity.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

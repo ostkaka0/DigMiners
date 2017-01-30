@@ -1,27 +1,27 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import Event from "engine/Core/Event.js"
-import Chunk from "engine/Chunk.js"
-import TileWorld from "engine/TileWorld.js"
-import BlockWorld from "engine/BlockWorld.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Event = require("engine/Core/Event.js")
+var Chunk = require("engine/Chunk.js")
+var TileWorld = require("engine/TileWorld.js")
+var BlockWorld = require("engine/BlockWorld.js")
 
-import Global from "game/Global.js"
-import Config from "game/Config.js"
-import Blocks from "game/Blocks.js"
-import Items from "game/Items.js"
-import { Team, Teams } from "game/Entity/Team.js"
-import { Ammo, AmmoEvents } from "game/Entity/Ammo.js"
-import PlayerClass from "game/PlayerClass.js"
-import CommandEntitySpawn from "game/Command/CommandEntitySpawn.js"
-import CommandDig from "game/Command/CommandDig.js"
-import CommandPopupMessage from "game/Command/CommandPopupMessage.js"
-import CommandPlayerJoin from "game/Command/CommandPlayerJoin.js"
-import CommandPlayerSpawn from "game/Command/CommandPlayerSpawn.js"
-import entityTemplateMonsterSpawner from "game/Entity/EntityTemplates/MonsterSpawner.js"
-import entityTemplatePlayer from "game/Entity/EntityTemplates/Player.js"
-import entityTemplateZombie from "game/Entity/EntityTemplates/Zombie.js"
-import MessageAmmoChange from "game/Message/ToClient/MessageAmmoChange.js"
-import CommandEntityHealthChange from "game/Command/CommandEntityHealthChange.js"
+var Global = require("game/Global.js")
+var Config = require("game/Config.js")
+var Blocks = require("game/Blocks.js")
+var Items = require("game/Items.js")
+var Team = require("game/Entity/Team.js")
+var Ammo = require("game/Entity/Ammo.js")
+var PlayerClass = require("game/PlayerClass.js")
+var CommandEntitySpawn = require("game/Command/CommandEntitySpawn.js")
+var CommandDig = require("game/Command/CommandDig.js")
+var CommandPopupMessage = require("game/Command/CommandPopupMessage.js")
+var CommandPlayerJoin = require("game/Command/CommandPlayerJoin.js")
+var CommandPlayerSpawn = require("game/Command/CommandPlayerSpawn.js")
+var entityTemplateMonsterSpawner = require("game/Entity/EntityTemplates/MonsterSpawner.js")
+var entityTemplatePlayer = require("game/Entity/EntityTemplates/Player.js")
+var entityTemplateZombie = require("game/Entity/EntityTemplates/Zombie.js")
+var MessageAmmoChange = require("game/Message/ToClient/MessageAmmoChange.js")
+var CommandEntityHealthChange = require("game/Command/CommandEntityHealthChange.js")
 
 var GameModeZombieInvasion = function() {
     this.wavePauseDuration = 30000;
@@ -34,7 +34,7 @@ var GameModeZombieInvasion = function() {
 
     this.playerSpawns = {};
     this.zombieSpawns = [];
-    this.teams = [Teams.Human];
+    this.teams = [Team.Enum.Human];
     this.zombieSpawners = [];
     this.survivors = {};
 
@@ -43,7 +43,7 @@ var GameModeZombieInvasion = function() {
     this.startSeconds = this.startSecondsDuration;
     this.playerSpawning = true;
 }
-export default GameModeZombieInvasion
+module.exports = GameModeZombieInvasion
 
 GameModeZombieInvasion.prototype.init = function() {
     if (!isServer) return;
@@ -60,7 +60,7 @@ GameModeZombieInvasion.prototype.init = function() {
         }
     }
 
-    this.playerSpawns[Teams.Human] = [[0, 0]];
+    this.playerSpawns[Team.Enum.Human] = [[0, 0]];
     sendCommand(new CommandDig([0, 0], 5.0));
     this.generateDungeon(0, 0);
 
@@ -71,8 +71,8 @@ GameModeZombieInvasion.prototype.init = function() {
         for (var j = 0; j < 10 && v2.length(pos) < 20.0; j++)
             pos = [60.0 * (-1 + 2 * Math.random()), 60.0 * (-1 + 2 * Math.random())];
         var entityId = Global.gameData.world.idList.next();
-        var entity = entityTemplateMonsterSpawner(entityId, pos, this.spawnZombie.bind(this), 0, 2.0, 40, null, null, Teams.Zombie);
-        sendCommand(new CommandEntitySpawn(Global.gameData, entity, entityId, Teams.Zombie));
+        var entity = entityTemplateMonsterSpawner(entityId, pos, this.spawnZombie.bind(this), 0, 2.0, 40, null, null, Team.Enum.Zombie);
+        sendCommand(new CommandEntitySpawn(Global.gameData, entity, entityId, Team.Enum.Zombie));
         sendCommand(new CommandDig(pos, 5.0));
         this.zombieSpawners.push(entity);
         this.zombieSpawns.push(pos);
@@ -119,10 +119,10 @@ GameModeZombieInvasion.prototype.init = function() {
 GameModeZombieInvasion.prototype.createEntity = function(player, entityId, classId) {
     if (this.playerSpawning) {
         var classType = PlayerClass.Register[classId];
-        var entity = entityTemplatePlayer(player.id, entityId, player.name, classType, Teams.Human);
+        var entity = entityTemplatePlayer(player.id, entityId, player.name, classType, Team.Enum.Human);
 
         // Set spawn position
-        var pos = this.playerSpawns[Teams.Human][Math.random() * this.playerSpawns[Teams.Human].length >> 0];
+        var pos = this.playerSpawns[Team.Enum.Human][Math.random() * this.playerSpawns[Team.Enum.Human].length >> 0];
         entity.physicsBody.setPos(pos);
         entity.physicsBody.posOld = v2.clone(pos);
 
@@ -131,7 +131,7 @@ GameModeZombieInvasion.prototype.createEntity = function(player, entityId, class
     } else {
         /*var pos = this.zombieSpawns[Math.random() * this.zombieSpawns.length >> 0];
         var entity = entityTemplatePlayerZombie(player.id, entityId, player.name, pos, classId);
-        entity.inventory.addItem(Global.gameData, Items.RustyShovel.id, 1);
+        entity.inventory.addItem(Global.gameData, Items.Types.RustyShovel.id, 1);
         return entity;*/
         return null;
     }
@@ -190,7 +190,7 @@ GameModeZombieInvasion.prototype.forceRespawnPlayers = function() {
                 if (entity.ammo[item.id] != undefined)
                     entity.ammo[item.id] = itemType.ammoMax;
             });
-            Event.trigger(AmmoEvents.onChange, entity);
+            Event.trigger(Ammo.Events.onChange, entity);
             new MessageAmmoChange(entity, Object.keys(entity.ammo)).send(player.socket);
             var healthChange = entity.health.maxHealth - entity.health.health;
             sendCommand(new CommandEntityHealthChange(entity.id, healthChange));

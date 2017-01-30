@@ -1,17 +1,18 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import Event from "engine/Core/Event.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var Event = require("engine/Core/Event.js")
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
-import { Health, HealthEvents } from "game/Entity/Health.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
+var Health = require("game/Entity/Health.js")
 
 var CommandEntityHealthChange = function(entityId, healthChange) {
     this.entityId = entityId;
     this.healthChange = fix.toFix(healthChange);
 }
-export default CommandEntityHealthChange
+module.exports = CommandEntityHealthChange
 
 CommandEntityHealthChange.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];
@@ -19,9 +20,10 @@ CommandEntityHealthChange.prototype.execute = function() {
     if (entity.movement)
         entity.movement.disabledCooldown = 40;
     entity.health.health = (entity.health.health + this.healthChange < 0 ? 0 : entity.health.health + this.healthChange);
-    Event.trigger(HealthEvents.onChange, entity);
+    console.log(Health);
+    Event.trigger(Health.Events.onChange, entity);
     if (entity.health.health <= 0)
-        Event.trigger(HealthEvents.onDeath, entity);
+        Event.trigger(Health.Events.onDeath, entity);
 }
 
 CommandEntityHealthChange.prototype.serialize = function(byteArray, index) {

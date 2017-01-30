@@ -1,20 +1,22 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import IndexCounter from "engine/IndexCounter.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var IndexCounter = require("engine/IndexCounter.js")
 
-import Global from "game/Global.js"
-import Config from "game/Config.js"
-import PlayerClass from "game/PlayerClass.js"
-import CommandEntitySpawn from "game/Command/CommandEntitySpawn.js"
-import CommandPlayerSpawn from "game/Command/CommandPlayerSpawn.js"
-import MessageSpectate from "game/Message/ToClient/MessageSpectate.js"
+var Global = require("game/Global.js")
+var Config = require("game/Config.js")
+var PlayerClass = require("game/PlayerClass.js")
+var CommandEntitySpawn = require("game/Command/CommandEntitySpawn.js")
+var CommandPlayerSpawn = require("game/Command/CommandPlayerSpawn.js")
+var MessageSpectate = require("game/Message/ToClient/MessageSpectate.js")
+var entityTemplatePlayer = require("game/Entity/EntityTemplates/Player.js")
 
 var MessageRequestSpawn = function(playerName, classId) {
     this.playerName = playerName;
     this.classId = classId;
 }
-export default MessageRequestSpawn
+module.exports = MessageRequestSpawn
 
 MessageRequestSpawn.prototype.execute = function(gameData, player) {
     if (player.entity != null && player.entityId != null) return;

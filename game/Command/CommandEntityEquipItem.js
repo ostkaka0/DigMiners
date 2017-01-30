@@ -1,10 +1,11 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import Sprite from "engine/Animation/Sprite.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var Sprite = require("engine/Animation/Sprite.js")
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
-import { Items, ItemFunctions } from "game/Items.js"
-import Entity from "game/Entity/Entity.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
+var Items = require("game/Items.js")
+var Entity = require("game/Entity/Entity.js")
 
 var CommandEntityEquipItem = function(entityId, stackId, itemId, equipped) {
     this.entityId = entityId;
@@ -12,7 +13,7 @@ var CommandEntityEquipItem = function(entityId, stackId, itemId, equipped) {
     this.itemId = itemId;
     this.equipped = equipped;
 }
-export default CommandEntityEquipItem
+module.exports = CommandEntityEquipItem
 
 CommandEntityEquipItem.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];
@@ -39,7 +40,7 @@ CommandEntityEquipItem.prototype.execute = function() {
 
     if (entity.inventory) {
         var item = entity.inventory.items[this.stackId];
-        if (item && itemType.itemFunction == ItemFunctions.RangedWeapon && (item.magazine == undefined || item.magazine == null)) {
+        if (item && itemType.itemFunction == Items.Functions.RangedWeapon && (item.magazine == undefined || item.magazine == null)) {
             item.magazine = itemType.ammoCapacity;
         }
 

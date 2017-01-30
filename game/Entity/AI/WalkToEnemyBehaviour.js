@@ -1,15 +1,15 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import BlockWorld from "engine/BlockWorld.js"
-import TileWorld from "engine/TileWorld.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var BlockWorld = require("engine/BlockWorld.js")
+var TileWorld = require("engine/TileWorld.js")
 
-import Global from "game/Global.js"
-import { Team, Teams } from "game/Entity/Team.js"
-import CommandEntityEquipItem from "game/Command/CommandEntityEquipItem.js"
-import CommandKeyStatusUpdate from "game/Command/CommandKeyStatusUpdate.js"
-import CommandEntityMove from "game/Command/CommandEntityMove.js"
-import CommandEntityRotate from "game/Command/CommandEntityRotate.js"
-import CommandEntityLookAtEntity from "game/Command/CommandEntityLookAtEntity.js"
+var Global = require("game/Global.js")
+var Team = require("game/Entity/Team.js")
+var CommandEntityEquipItem = require("game/Command/CommandEntityEquipItem.js")
+var CommandKeyStatusUpdate = require("game/Command/CommandKeyStatusUpdate.js")
+var CommandEntityMove = require("game/Command/CommandEntityMove.js")
+var CommandEntityRotate = require("game/Command/CommandEntityRotate.js")
+var CommandEntityLookAtEntity = require("game/Command/CommandEntityLookAtEntity.js")
 
 var WalkToEnemyBehaviour = function(entity, maxRadius) {
     this.entity = entity;
@@ -19,7 +19,7 @@ var WalkToEnemyBehaviour = function(entity, maxRadius) {
     this.moving = false;
     this.nextCanRunTickId = Global.gameData.world.tickId;
 }
-export default WalkToEnemyBehaviour;
+module.exports = WalkToEnemyBehaviour;
 
 WalkToEnemyBehaviour.prototype.canRun = function() {
     if (Global.gameData.world.tickId < this.nextCanRunTickId)
@@ -84,7 +84,7 @@ WalkToEnemyBehaviour.prototype.getTarget = function() {
     Global.gameData.world.entityWorld.objectArray.forEach(function(otherEntity) {
         if (!otherEntity.health || !otherEntity.physicsBody) return;
         if (!otherEntity.team && !otherEntity.movement) return;
-        if (this.entity.team && this.entity.team.value != Teams.None && (!otherEntity.team || otherEntity.team.value == this.entity.team.value)) return;
+        if (this.entity.team && this.entity.team.value != Team.Enum.None && (!otherEntity.team || otherEntity.team.value == this.entity.team.value)) return;
         if (otherEntity.id == this.entity.id) return;
 
         var dis = v2.distance(this.entity.physicsBody.getPos(), otherEntity.physicsBody.getPos());
