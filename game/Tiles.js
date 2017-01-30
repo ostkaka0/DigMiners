@@ -1,5 +1,5 @@
 var Tiles = {};
-export default Tiles
+module.exports = Tiles
 
 Tiles.Dirt = {
     name: "Dirt",

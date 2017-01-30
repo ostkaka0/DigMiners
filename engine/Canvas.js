@@ -1,5 +1,5 @@
 var Canvas = {};
-export default Canvas;
+module.exports = Canvas;
 
 Canvas.initGL = function(canvas) {
     var gl = null;

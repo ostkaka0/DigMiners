@@ -1,21 +1,22 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import { Serialize, Deserialize } from "engine/Serialization.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
-import { createParticles } from "game/ParticleFunctions"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
+var ParticleFunctions = require("game/ParticleFunctions.js")
 
 var CommandParticles = function(particleFunctionId, pos, angle) {
     this.particleFunctionId = particleFunctionId;
     this.pos = pos;
     this.angle = angle;
 }
-export default CommandParticles
+module.exports = CommandParticles
 
 CommandParticles.prototype.execute = function() {
     if (!isServer)
-        createParticles(Config.particleFunctionRegister[this.particleFunctionId], this.pos, this.angle);
+        ParticleFunctions.create(Config.particleFunctionRegister[this.particleFunctionId], this.pos, this.angle);
 }
 
 CommandParticles.prototype.serialize = function(byteArray, index) {

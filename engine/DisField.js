@@ -1,8 +1,8 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
 
 var DisField = {};
-export default DisField;
+module.exports = DisField;
 
 DisField.pageDim = 8;
 

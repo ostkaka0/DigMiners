@@ -1,12 +1,12 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import DisField from "engine/DisField.js"
-import BlockWorld from "engine/BlockWorld.js"
-import TileWorld from "engine/TileWorld.js"
-import binarySearch from "engine/Core/BinarySearch.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var DisField = require("engine/DisField.js")
+var BlockWorld = require("engine/BlockWorld.js")
+var TileWorld = require("engine/TileWorld.js")
+var binarySearch = require("engine/Core/BinarySearch.js")
 
 // Generate flowfield using backward a-star(from goal to start)
-export function aStarFlowField(disField, expandList, tileWorld, blockWorld, start, goal, maxDistance) {
+module.exports.aStarFlowField = function(disField, expandList, tileWorld, blockWorld, start, goal, maxDistance) {
     expandList = expandList || [];
 
     var childDirs = [[1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1]];
@@ -98,7 +98,7 @@ export function aStarFlowField(disField, expandList, tileWorld, blockWorld, star
 
 }
 
-export function genFlowField(flowField, worldRect, tileWorld, blockWorld, goal, maxDistance) {
+module.exports.genFlowField = function(flowField, worldRect, tileWorld, blockWorld, goal, maxDistance) {
     maxDistance = maxDistance | 0xF000;
     if (!flowField)
         flowField = new Uint16Array(worldRect[2] * worldRect[3]);

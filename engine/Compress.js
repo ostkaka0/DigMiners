@@ -1,5 +1,5 @@
 
-export function compressRLE(inputArray, outputArray, begin, end) {
+module.exports.compressRLE = function(inputArray, outputArray, begin, end) {
     var outputArray = outputArray || [];
     var begin = begin || 0
     var end = end || inputArray.byteLength || inputArray.length;
@@ -20,7 +20,7 @@ export function compressRLE(inputArray, outputArray, begin, end) {
     return outputArray;
 }
 
-export function decompressRLE(arrayBuffer, outputArray, begin, end) {
+module.exports.decompressRLE = function(arrayBuffer, outputArray, begin, end) {
     var begin = begin || 0
     var end = end || arrayBuffer.length || arrayBuffer.byteLength;
     var outputIndex = 0;

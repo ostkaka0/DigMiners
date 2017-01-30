@@ -1,17 +1,18 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import TileWorld from "engine/TileWorld.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var TileWorld = require("engine/TileWorld.js")
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
 
 var CommandDig = function(pos, radius) {
     if (pos)
         this.pos = v2.cloneFix(pos);
     this.radius = fix.toFix(radius);
 }
-export default CommandDig
+module.exports = CommandDig
 
 CommandDig.prototype.execute = function() {
     var tileWorld = Global.gameData.world.tileWorld;

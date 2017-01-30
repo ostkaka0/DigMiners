@@ -4,7 +4,7 @@ var GLBlockChunk = function(gl, blockChunk) {
     //this.textureRendered = gl.createTexture();
 }
 
-export default GLBlockChunk;
+module.exports = GLBlockChunk;
 
 GLBlockChunk.prototype.update = function(gl, gameData, blockChunk, chunkX, chunkY) {
     var tileSize = 32;

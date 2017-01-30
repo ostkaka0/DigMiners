@@ -1,21 +1,21 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import BlockWorld from "engine/BlockWorld.js"
-import TileWorld from "engine/TileWorld.js"
-import Keys from "engine/Keys.js"
-import Map2D from "engine/Core/Map2D.js"
-import { aStarFlowField } from "engine/Pathfinding.js"
-import DisField from "engine/DisField.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var BlockWorld = require("engine/BlockWorld.js")
+var TileWorld = require("engine/TileWorld.js")
+var Keys = require("engine/Keys.js")
+var Map2D = require("engine/Core/Map2D.js")
+var aStarFlowField = require("engine/Pathfinding.js").aStarFlowField
+var DisField = require("engine/DisField.js")
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
-import { Items, ItemFunctions } from "game/Items.js"
-import { Team, Teams } from "game/Entity/Team.js"
-import CommandEntityEquipItem from "game/Command/CommandEntityEquipItem.js"
-import CommandKeyStatusUpdate from "game/Command/CommandKeyStatusUpdate.js"
-import CommandEntityMove from "game/Command/CommandEntityMove.js"
-import CommandEntityRotate from "game/Command/CommandEntityRotate.js"
-import CommandEntityLookAtEntity from "game/Command/CommandEntityLookAtEntity.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
+var Items = require("game/Items.js")
+var Team = require("game/Entity/Team.js")
+var CommandEntityEquipItem = require("game/Command/CommandEntityEquipItem.js")
+var CommandKeyStatusUpdate = require("game/Command/CommandKeyStatusUpdate.js")
+var CommandEntityMove = require("game/Command/CommandEntityMove.js")
+var CommandEntityRotate = require("game/Command/CommandEntityRotate.js")
+var CommandEntityLookAtEntity = require("game/Command/CommandEntityLookAtEntity.js")
 
 var TargetPlayerBehaviour = function(entity, maxRadius) {
     this.entity = entity;
@@ -31,7 +31,7 @@ var TargetPlayerBehaviour = function(entity, maxRadius) {
     this.isAiming = false;
     this.nextCanRunTickId = Global.gameData.world.tickId;
 }
-export default TargetPlayerBehaviour
+module.exports = TargetPlayerBehaviour
 
 TargetPlayerBehaviour.prototype.canRun = function() {
     if (Global.gameData.world.tickId < this.nextCanRunTickId)
@@ -47,9 +47,9 @@ TargetPlayerBehaviour.prototype.canRun = function() {
 }
 
 TargetPlayerBehaviour.prototype.initialize = function() {
-    this.isGunner = (this.entity.equippedItems.items["tool"] && this.entity.equippedItems.items["tool"].itemFunction == ItemFunctions.RangedWeapon);
+    this.isGunner = (this.entity.equippedItems.items["tool"] && this.entity.equippedItems.items["tool"].itemFunction == Items.Functions.RangedWeapon);
     if (!this.isGunner) {
-        var slotId = this.entity.inventory.findTool(ItemFunctions.RangedWeapon);
+        var slotId = this.entity.inventory.findTool(Items.Functions.RangedWeapon);
         this.isGunner = (slotId != -1)
         if (this.isGunner)
             sendCommand(new CommandEntityEquipItem(this.entity.id, slotId, this.entity.inventory.items[slotId].id, true));
@@ -169,7 +169,7 @@ TargetPlayerBehaviour.prototype.getTarget = function() {
     Global.gameData.world.entityWorld.objectArray.forEach(function(otherEntity) {
         if (!otherEntity.health || !otherEntity.physicsBody) return;
         if (!otherEntity.team && !otherEntity.movement) return;
-        if (this.entity.team && this.entity.team.value != Teams.None && (!otherEntity.team || otherEntity.team.value == this.entity.team.value)) return;
+        if (this.entity.team && this.entity.team.value != Team.Enum.None && (!otherEntity.team || otherEntity.team.value == this.entity.team.value)) return;
         if (otherEntity.id == this.entity.id) return;
         if (hasMovement && !otherEntity.movement) return;
 
@@ -215,7 +215,7 @@ TargetPlayerBehaviour.prototype.getAttackDistance = function(pos, dir) {
 
 
 TargetPlayerBehaviour.prototype.getAttackDotAngle = function() {
-    if (this.entity.equippedItems.items["tool"] && this.entity.equippedItems.items["tool"].itemFunction == ItemFunctions.RangedWeapon) {
+    if (this.entity.equippedItems.items["tool"] && this.entity.equippedItems.items["tool"].itemFunction == Items.Functions.RangedWeapon) {
         return 0.05;
     }
     return 0.5;

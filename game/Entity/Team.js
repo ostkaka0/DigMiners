@@ -1,6 +1,7 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
 
-export var Teams = {
+var Teams = {
     None: 0,
     Human: 1,
     Zombie: 2,
@@ -10,10 +11,11 @@ export var Teams = {
     Brown: 6,
 }
 
-export var Team = function(value) {
+var Team = function(value) {
     this.value = value;
 }
-export default Team
+module.exports = Team
+Team.Enum = Teams
 
 Team.prototype.name = team.name; function team() { };
 

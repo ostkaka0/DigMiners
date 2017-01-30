@@ -1,4 +1,4 @@
-import gameData from "game/GameData.js"
+var gameData = require("game/GameData.js")
 
 var Sprite = function(textureName) {
     if (textureName) {
@@ -19,7 +19,7 @@ var Sprite = function(textureName) {
     this.anchor = [0.5, 0.5];
     this.alpha = 1.0;
 }
-export default Sprite;
+module.exports = Sprite;
 
 Sprite.prototype.getSize = function() {
     if (this.frame)

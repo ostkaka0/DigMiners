@@ -1,15 +1,16 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import TileWorld from "engine/TileWorld.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var TileWorld = require("engine/TileWorld.js")
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
-import Tiles from "game/Blocks.js"
-import Items from "game/Items.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
+var Tiles = require("game/Blocks.js")
+var Items = require("game/Items.js")
 
-import { CommandPlayerOreInventory, OreInventoryActions } from "game/Command/CommandPlayerOreInventory.js"
-import CommandEntitySpawn from "game/Command/CommandEntitySpawn.js"
+var CommandPlayerOreInventory= require("game/Command/CommandPlayerOreInventory.js")
+var CommandEntitySpawn = require("game/Command/CommandEntitySpawn.js")
 
 var CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHardness) {
     this.entityId = entityId;
@@ -20,7 +21,7 @@ var CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHard
     this.digSpeed = digSpeed;
     this.maxDigHardness = maxDigHardness;
 }
-export default CommandEntityDig
+module.exports = CommandEntityDig
 
 CommandEntityDig.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];
@@ -64,12 +65,12 @@ CommandEntityDig.prototype.execute = function() {
             var tileName = Config.tileRegister[i].name;
             var itemId = i;
             if (entity.inventory && entity.controlledByPlayer)
-                sendCommand(new CommandPlayerOreInventory(entity.controlledByPlayer.playerId, OreInventoryActions.ADD_ORE, itemId, dug[i]));
+                sendCommand(new CommandPlayerOreInventory(entity.controlledByPlayer.playerId, CommandPlayerOreInventory.Actions.ADD_ORE, itemId, dug[i]));
             /*if (tileName == Tiles.Dirt.name) {
                 var rand = Math.random() * 1000;
                 var itemId = null;
                 if (rand > 990)
-                    itemId = Items.RottenRoot.id;
+                    itemId = Items.Types.RottenRoot.id;
                 if (itemId != null) {
                     var physicsBody = entity.physicsBody;
 

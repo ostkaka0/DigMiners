@@ -2,7 +2,7 @@
   "name": "digminers",
   "version": "1.0.0",
   "description": "",
-  "main": "DigMiners.js",
+  "main": "DigMiners.js"),
   "directories": {
     "test": "tests"
   },
@@ -34,9 +34,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "node server.js",
+    "server": "node server.js"),
     "build": "babel --presets es2015 engine tests/TestQuadtree.js -d build",
-    "browserify": "browserify DigMiners.js -o html/bundle.js",
+    "browserify": "browserify DigMiners.js -o html/bundle.js"),
     "uglify": "uglifyjs html/bundle.js -o html/src.js --compress --mangle --mangle-props",
     "browserifyhelp": "browserify --help"
   },

@@ -1,16 +1,17 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import Config from "game/Config.js"
-import Global from "game/Global.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
 
+var ParticleFunctions = {};
+module.exports = ParticleFunctions
 
-export var createParticles = function(particleFunction, pos, angle) {
+ParticleFunctions.create = function(particleFunction, pos, angle) {
     if (!isServer)
         particleFunction(pos, angle);
 }
 
-export var ParticleFunctions = {};
-export default ParticleFunctions
+
 
 ParticleFunctions.BulletHitParticles = function(pos, angle) {
     for (var i = 0; i < 10; ++i) {

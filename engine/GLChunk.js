@@ -25,7 +25,7 @@ var GLChunk = function(gl, chunk) {
     chunk.isChanged = false;
 }
 
-export default GLChunk;
+module.exports = GLChunk;
 
 GLChunk.prototype.update = function(gl, chunk) {
     gl.bindTexture(gl.TEXTURE_2D, this.textureDensity);

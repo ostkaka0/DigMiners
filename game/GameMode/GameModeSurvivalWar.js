@@ -1,18 +1,18 @@
-import Global from "game/Global.js"
-import Chunk from "engine/Chunk.js"
-import BlockChunk from "engine/BlockChunk.js"
+var Global = require("game/Global.js")
+var Chunk = require("engine/Chunk.js")
+var BlockChunk = require("engine/BlockChunk.js")
 
-import { Team, Teams } from "game/Entity/Team.js"
-import CommandEntitySpawn from "game/Command/CommandEntitySpawn.js"
+var Team = require("game/Entity/Team.js")
+var CommandEntitySpawn = require("game/Command/CommandEntitySpawn.js")
 
 var GameModeSurvivalWar = function() {
     this.playerSpawns = {};
     this.spawnEntities = {};
-    this.teams = [Teams.Blue, Teams.Red];
-    this.spawnEntities[Teams.Blue] = [];
-    this.spawnEntities[Teams.Red] = [];
+    this.teams = [Team.Enum.Blue, Team.Enum.Red];
+    this.spawnEntities[Team.Enum.Blue] = [];
+    this.spawnEntities[Team.Enum.Red] = [];
 }
-export default GameModeSurvivalWar
+module.exports = GameModeSurvivalWar
 
 GameModeSurvivalWar.prototype.init = function() {
     if (!isServer) return;
@@ -31,16 +31,16 @@ GameModeSurvivalWar.prototype.init = function() {
         }
     }
 
-    this.playerSpawns[Teams.Blue] = [[-60, -60], [-60, 0], [-60, 60]];
-    this.playerSpawns[Teams.Red] = [[60, -60],[60, 0],[60, 60]];
+    this.playerSpawns[Team.Enum.Blue] = [[-60, -60], [-60, 0], [-60, 60]];
+    this.playerSpawns[Team.Enum.Red] = [[60, -60],[60, 0],[60, 60]];
 
     var templates = [entityTemplateMonster, entityTemplateZombie];
     for (var i = 0; i < 25; i++) {
         var pos = [90 * (1.0 - 2.0 * Math.random()), 90 * (1.0 - 2.0 * Math.random())]
         var entityId = Global.gameData.world.idList.next();
-        var entity = entityTemplateMonsterSpawner(entityId, pos, entityTemplateZombie, 2, 2.0, 600, null, null, Teams.None);
+        var entity = entityTemplateMonsterSpawner(entityId, pos, entityTemplateZombie, 2, 2.0, 600, null, null, Team.Enum.None);
         this.spawnEntities[entityId] = entity;
-        sendCommand(new CommandEntitySpawn(Global.gameData, entity, entityId, Teams.none));
+        sendCommand(new CommandEntitySpawn(Global.gameData, entity, entityId, Team.Enum.none));
         sendCommand(new CommandDig(pos, 5.0));
     }
 

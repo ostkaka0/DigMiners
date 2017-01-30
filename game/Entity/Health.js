@@ -1,18 +1,15 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
 
-import { Team, Teams } from "game/Entity/Team.js"
-import CommandEntityHealthChange from "game/Command/CommandEntityHealthChange.js"
-
-export var HealthEvents = {};
-HealthEvents.onChange = [];
-HealthEvents.onDeath = [];
-
-export var Health = function(health, maxHealth, armor) {
+var Health = function(health, maxHealth, armor) {
     this.health = health;
     this.maxHealth = maxHealth;
     this.armor = armor;
 }
-export default Health
+Health.Events = {};
+Health.Events.onChange = [];
+Health.Events.onDeath = [];
+module.exports = Health;
 
 Health.prototype.name = health.name; function health() { };
 
@@ -32,18 +29,4 @@ Health.prototype.getSerializationSize = function() {
 
 Health.prototype.destroy = function(entity) {
 
-}
-
-Health.prototype.hurt = function(entity, attacker, damage, armorPenentration) {
-    if (!isServer)
-        return false;
-    if (attacker && entity.id != attacker.id && entity.team && attacker.team && entity.team.value != Teams.None && entity.team.value == attacker.team.value)
-        return false;
-    if (attacker && attacker.movement)
-        damage *= attacker.movement.damageMultiplier;
-
-    armorPenentration = armorPenentration || 0.0;
-
-    sendCommand(new CommandEntityHealthChange(entity.id, -Math.min(1.0, (1.0 - this.armor + armorPenentration)) * damage));
-    return true;
 }

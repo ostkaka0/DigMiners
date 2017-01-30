@@ -1,9 +1,10 @@
-import Global from "game/Global.js"
+var Global = require("game/Global.js")
 
-import Items from "game/Items.js"
+var Items = require("game/Items.js")
+var Team = require("game/Entity/Team.js")
+var CommandEntityHealthChange = require("game/Command/CommandEntityHealthChange.js")
 
-var Entity = {};
-export default Entity
+var Entity = module.exports;
 
 Entity.onEquip = function(entity, stackId, itemType) {
     if (itemType.typeOfType == "block")
@@ -64,5 +65,20 @@ Entity.canUseTool = function(entity, itemType) {
     var item = entity.inventory.items[stackId];
     if (!item || item.magazine == null) return false;
     if (item.magazine <= 0) return false;
+    return true;
+}
+
+Entity.hurt = function(entity, attacker, damage, armorPenentration) {
+    if (!isServer)
+        return false;
+    if (attacker && entity.id != attacker.id && entity.team && attacker.team && entity.team.value != Team.Enum.None && entity.team.value == attacker.team.value)
+        return false;
+    if (attacker && attacker.movement)
+        damage *= attacker.movement.damageMultiplier;
+    var health = entity.health;
+    if (!health) return false;
+    armorPenentration = armorPenentration || 0.0;
+
+    sendCommand(new CommandEntityHealthChange(entity.id, -Math.min(1.0, (1.0 - health.armor + armorPenentration)) * damage));
     return true;
 }

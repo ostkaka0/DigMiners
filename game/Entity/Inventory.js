@@ -1,6 +1,7 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import Config from "game/Config.js"
-import Global from "game/Global.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
 
 var Inventory = function(inventoryId, entityId, width, height) {
     this.items = [];
@@ -9,7 +10,7 @@ var Inventory = function(inventoryId, entityId, width, height) {
     this.width = width;
     this.height = height;
 }
-export default Inventory
+module.exports = Inventory
 
 Inventory.createInventory = function(entityId, width, height) {
     if (!isServer)

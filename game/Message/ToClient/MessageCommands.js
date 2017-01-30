@@ -1,14 +1,15 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import IndexCounter from "engine/IndexCounter.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var IndexCounter = require("engine/IndexCounter.js")
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
 
 var MessageCommands = function() {
     this.tickId = (isServer) ? Global.gameData.world.tickId : 0;
     this.commands = (isServer) ? Global.gameData.world.commands : [];
 }
-export default MessageCommands
+module.exports = MessageCommands
 
 MessageCommands.prototype.execute = function(gameData) {
     if (Config.fakeLag == 0 && Config.fakeJitter == 0) {

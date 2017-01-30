@@ -36,6 +36,6 @@
                 return $fileName . "?" . filemtime($fileName);
             }
         ?>
-        <script type="text/javascript" src="<?php echo scriptVersion("src.js")?>"></script>
+        <script type="text/javascript" src="<?php echo scriptVersion("src.js"))?>"></script>
     </body>
 </html>

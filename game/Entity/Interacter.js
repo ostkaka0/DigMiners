@@ -1,10 +1,11 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
 
 var Interacter = function() {
     this.lastCheck = null;
     this.interacting = null;
 }
-export default Interacter
+module.exports = Interacter
 
 Interacter.prototype.name = interacter.name; function interacter() { };
 

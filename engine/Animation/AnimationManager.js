@@ -1,11 +1,11 @@
-import Animation from "engine/Animation/Animation.js"
-import Cycle from "engine/Animation/Cycle.js"
+var Animation = require("engine/Animation/Animation.js")
+var Cycle = require("engine/Animation/Cycle.js")
 
 var AnimationManager = function() {
     this.animations = {};
     this.cycles = {};
 }
-export default AnimationManager;
+module.exports = AnimationManager;
 
 AnimationManager.prototype.load = function() {
     this.animations["feet"] = new Animation("feet", gameData.textures["feet.png"], 60, 75, 75);

@@ -1,7 +1,8 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import BodyPart from "engine/Animation/BodyPart.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var BodyPart = require("engine/Animation/BodyPart.js")
 
 var Bodyparts = function(bodyparts) {
     this.bodyparts = bodyparts;
@@ -21,7 +22,7 @@ var Bodyparts = function(bodyparts) {
         bodypart.children = this.getChildren(bodypart.name);
     }
 }
-export default Bodyparts
+module.exports = Bodyparts
 
 Bodyparts.prototype.name = bodyparts.name; function bodyparts() { };
 

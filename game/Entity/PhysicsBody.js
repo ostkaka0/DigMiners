@@ -1,7 +1,8 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import Global from "game/Global.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Global = require("game/Global.js")
 
 var PhysicsBody = function(pos, damping, rotationSpeed, mass, radius) {
     this.bodyId = Global.gameData.world.physicsWorld.add(pos, [0.0, 0.0], mass, radius);
@@ -25,7 +26,7 @@ var PhysicsBody = function(pos, damping, rotationSpeed, mass, radius) {
     this.angle = 0;
     this.angleOld = 0;
 }
-export default PhysicsBody
+module.exports = PhysicsBody
 
 PhysicsBody.prototype.name = physicsBody.name; function physicsBody() { };
 

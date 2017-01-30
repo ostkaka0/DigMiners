@@ -1,32 +1,32 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
 
-import Sprite from "engine/Animation/Sprite.js"
-import BodyPart from "engine/Animation/BodyPart.js"
-import PhysicsBody from "game/Entity/PhysicsBody.js"
-import Movement from "game/Entity/Movement.js"
-import Bodyparts from "game/Entity/Bodyparts.js"
-import Drawable from "game/Entity/Drawable.js"
-import NameComponent from "game/Entity/NameComponent.js"
-import { Team, Teams } from "game/Entity/Team.js"
-import Health from "game/Entity/Health.js"
-import Ammo from "game/Entity/Ammo.js"
-import Inventory from "game/Entity/Inventory.js"
-import EquippedItems from "game/Entity/EquippedItems.js"
-import PotionEffects from "game/Entity/PotionEffects.js"
-import ControlledByPlayer from "game/Entity/ControlledByPlayer.js"
-import Global from "game/Global.js"
-import Interacter from "game/Entity/Interacter.js"
+var Sprite = require("engine/Animation/Sprite.js")
+var BodyPart = require("engine/Animation/BodyPart.js")
+var PhysicsBody = require("game/Entity/PhysicsBody.js")
+var Movement = require("game/Entity/Movement.js")
+var Bodyparts = require("game/Entity/Bodyparts.js")
+var Drawable = require("game/Entity/Drawable.js")
+var NameComponent = require("game/Entity/NameComponent.js")
+var Team = require("game/Entity/Team.js")
+var Health = require("game/Entity/Health.js")
+var Ammo = require("game/Entity/Ammo.js")
+var Inventory = require("game/Entity/Inventory.js")
+var EquippedItems = require("game/Entity/EquippedItems.js")
+var PotionEffects = require("game/Entity/PotionEffects.js")
+var ControlledByPlayer = require("game/Entity/ControlledByPlayer.js")
+var Global = require("game/Global.js")
+var Interacter = require("game/Entity/Interacter.js")
 
-export var entityTemplatePlayerZombie = function(playerId, entityId, name, pos, playerClass) {
-    var entity = entityTemplateZombie(entityId, pos, Teams.Zombie);
+/*module.exports.*/var entityTemplatePlayerZombie = function(playerId, entityId, name, pos, playerClass) {
+    var entity = entityTemplateZombie(entityId, pos, Team.Enum.Zombie);
     entity.behaviourContainer = undefined;
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
     entity.nameComponent = new NameComponent(name);
     return entity;
 }
 
-export var entityTemplatePlayer = function(playerId, entityId, name, playerClass, teamId) {
+module.exports = function(playerId, entityId, name, playerClass, teamId) {
     var entity = {};
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 20.0, 1.0, 0.45);
@@ -42,7 +42,7 @@ export var entityTemplatePlayer = function(playerId, entityId, name, playerClass
     var rightArmSprite = new Sprite("rightArm.png");
     var leftArmSprite = new Sprite("leftArm.png");
     var headSprite = new Sprite("head.png");
-    var hatSprite = new Sprite();//((teamEnum == Teams.Blue) ? "egg" : "bigEgg");
+    var hatSprite = new Sprite();//((teamEnum == Team.Enum.Blue) ? "egg" : "bigEgg");
 
     // Order of bodyparts is draw order
     // Parameters: sprite, offsetX, offsetY, offsetAngle, pivot(v2), parent name
@@ -76,5 +76,3 @@ export var entityTemplatePlayer = function(playerId, entityId, name, playerClass
 
     return entity;
 }
-
-export default entityTemplatePlayer;

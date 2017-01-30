@@ -1,16 +1,17 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import IndexCounter from "engine/IndexCounter.js"
-import Keys from "engine/Keys.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var IndexCounter = require("engine/IndexCounter.js")
+var Keys = require("engine/Keys.js")
 
-import Global from "game/Global.js"
-import CommandEntityInteractEntity from  "game/Command/CommandEntityInteractEntity.js"
-import CommandKeyStatusUpdate from "game/Command/CommandKeyStatusUpdate.js"
+var Global = require("game/Global.js")
+var CommandEntityInteractEntity = require("game/Command/CommandEntityInteractEntity.js")
+var CommandKeyStatusUpdate = require("game/Command/CommandKeyStatusUpdate.js")
 
 var MessageRequestKeyStatusUpdate = function(key, pressed) {
     this.key = key;
     this.pressed = pressed;
 }
-export default MessageRequestKeyStatusUpdate
+module.exports = MessageRequestKeyStatusUpdate
 
 MessageRequestKeyStatusUpdate.prototype.execute = function(gameData, player) {
     var entity = Global.gameData.world.entityWorld.objects[player.entityId];

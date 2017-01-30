@@ -1,15 +1,10 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import Config from "game/Config.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var Config = require("game/Config.js")
 
-export var ProjectileEvents = {};
-ProjectileEvents.onHit = [];
-ProjectileEvents.onHitEntity = [];
-ProjectileEvents.onHitBlock = [];
-ProjectileEvents.onHitTile = [];
-
-export var Projectile = function(pos, angle, speed, maxDistance, projectileType, shooterEntityId) {
+var Projectile = function(pos, angle, speed, maxDistance, projectileType, shooterEntityId) {
     this.pos = pos;
     this.angle = angle;
     this.speed = speed;
@@ -31,7 +26,12 @@ export var Projectile = function(pos, angle, speed, maxDistance, projectileType,
         this.posClientOld = [0, 0];
     }
 }
-export default Projectile
+module.exports = Projectile;
+Projectile.Events = {};
+Projectile.Events.onHit = [];
+Projectile.Events.onHitEntity = [];
+Projectile.Events.onHitBlock = [];
+Projectile.Events.onHitTile = [];
 
 Projectile.prototype.name = projectile.name; function projectile() { };
 

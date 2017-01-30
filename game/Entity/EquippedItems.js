@@ -1,10 +1,11 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import Config from "game/Config.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var Config = require("game/Config.js")
 
 var EquippedItems = function(items) {
     this.items = (items ? items : {});
 }
-export default EquippedItems
+module.exports = EquippedItems
 
 EquippedItems.prototype.name = equippedItems.name; function equippedItems() { };
 

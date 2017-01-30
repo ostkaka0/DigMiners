@@ -1,10 +1,11 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import Config from "game/Config.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var Config = require("game/Config.js")
 
 var PotionEffects = function() {
     this.effects = {};
 }
-export default PotionEffects
+module.exports = PotionEffects
 
 PotionEffects.prototype.name = potionEffects.name; function potionEffects() { };
 

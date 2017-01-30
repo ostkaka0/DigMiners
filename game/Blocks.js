@@ -1,39 +1,41 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import TileWorld from "engine/TileWorld.js"
-import BlockWorld from "engine/BlockWorld.js"
-import Sprite from "engine/Animation/Sprite.js"
-import Event from "engine/Core/Event.js"
-import BodyPart from "engine/Animation/BodyPart.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var TileWorld = require("engine/TileWorld.js")
+var BlockWorld = require("engine/BlockWorld.js")
+var Sprite = require("engine/Animation/Sprite.js")
+var Event = require("engine/Core/Event.js")
+var BodyPart = require("engine/Animation/BodyPart.js")
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
-import Items from "game/Items.js"
-import { Team, Teams } from "game/Entity/Team.js"
-import Chest from "game/Entity/Chest.js"
-import PhysicsBody from "game/Entity/PhysicsBody.js"
-import Health from "game/Entity/Health.js"
-import Bodyparts from "game/Entity/Bodyparts.js"
-import PotionEffects from "game/Entity/PotionEffects.js"
-import PotionEffectTypes from "game/PotionEffectTypes.js"
-import Interactable from "game/Entity/Interactable.js"
-import CommandPlaceBlock from "game/Command/CommandPlaceBlock.js"
-import CommandEntitySpawn from "game/Command/CommandEntitySpawn.js"
-import CommandBuild from "game/Command/CommandBuild.js"
-import CommandBlockStrength from "game/Command/CommandBlockStrength.js"
-import { CommandEntityInventory, InventoryActions } from "game/Command/CommandEntityInventory.js"
-import CommandEntityEquipItem from "game/Command/CommandEntityEquipItem.js"
-import entityTemplatesTurret from "game/Entity/EntityTemplates/Turret.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
+var Items = require("game/Items.js")
+var Team = require("game/Entity/Team.js")
+var Chest = require("game/Entity/Chest.js")
+var PhysicsBody = require("game/Entity/PhysicsBody.js")
+var Health = require("game/Entity/Health.js")
+var Bodyparts = require("game/Entity/Bodyparts.js")
+var PotionEffects = require("game/Entity/PotionEffects.js")
+var PotionEffectTypes = require("game/PotionEffectTypes.js")
+var Interactable = require("game/Entity/Interactable.js")
+var CommandPlaceBlock = require("game/Command/CommandPlaceBlock.js")
+var CommandEntitySpawn = require("game/Command/CommandEntitySpawn.js")
+var CommandBuild = require("game/Command/CommandBuild.js")
+var CommandBlockStrength = require("game/Command/CommandBlockStrength.js")
+var CommandEntityInventory = require("game/Command/CommandEntityInventory.js")
+var CommandEntityEquipItem = require("game/Command/CommandEntityEquipItem.js")
+var entityTemplatesTurret = require("game/Entity/EntityTemplates/Turret.js")
 
-export var BlockTypes = {
+var Blocks = exports;
+//module.exports = Blocks;
+
+var BlockTypes = {
     FOREGROUND: 0,
     BACKGROUND: 1
 }
 
-export var Blocks = {};
-export default Blocks
 
-export var BlockFunctions = {};
+
+var BlockFunctions = {};
 BlockFunctions.createEntity = function(blockPos, block) {
     if (isServer) {
         var entity = block.createEntity(blockPos, block);
@@ -67,11 +69,11 @@ BlockFunctions.createEntityBox = function(blockPos, block) {
     }
 }
 
-export var BlockBulletFunctions = {};
+var BlockBulletFunctions = {};
 BlockFunctions.createEntityTurret = function(blockPos, block) {
     if (isServer) {
         var turretEntityId = Global.gameData.world.idList.next();
-        var turret = entityTemplatesTurret(turretEntityId, v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), Teams.Human);
+        var turret = entityTemplatesTurret(turretEntityId, v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), Team.Enum.Human);
 
         if (block.onCreateEntity)
             entity = block.onCreateEntity(turret, turretEntityId);
@@ -108,13 +110,13 @@ BlockBulletFunctions.bunker = function(blockPos, blockType, entity) {
         damageFactor = blockType.bulletBunkerNearFactor;
 
     if (rand > damageFactor * 100) {
-        Event.trigger(ProjectileEvents.onHitBlock, entity, blockPos);
+        Event.trigger(Projectile.Events.onHitBlock, entity, blockPos);
         entity.projectile.hit = true;
         return;
     }
 }
 
-export var BlockDoorFunctions = {};
+var BlockDoorFunctions = {};
 BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, clickType) {
     var checked = [];
     var doors = [];
@@ -208,7 +210,8 @@ BlockDoorFunctions.blueForcefield = function(blockPos, blockType, entity, clickT
     }, blockType.doorOpenDelay);
 }
 
-export function initBlocks() {
+Blocks.initBlocks = function() {
+    delete Blocks.initBlocks;
     Blocks.Null = {
         name: "Air",
         isSolid: false,
@@ -352,7 +355,7 @@ export function initBlocks() {
             });
             entity.chest = new Chest();
             entity.inventory = Inventory.createInventory(entityId, 4, 4);
-            entity.inventory.addItem(Global.gameData, Items.RustyShovel.id, Math.floor(Math.random() * 8));
+            entity.inventory.addItem(Global.gameData, Items.Types.RustyShovel.id, Math.floor(Math.random() * 8));
             return entity;
         }
     }
@@ -366,8 +369,8 @@ export function initBlocks() {
         onPlace: BlockFunctions.createEntityTurret,
         onCreateEntity: null,
         onEntityCreated: function(entity, entityId) {
-            var weaponId = Items.WeaponMachineGun.id;
-            sendCommand(new CommandEntityInventory(entityId, InventoryActions.ADD_ITEM, weaponId, 1));
+            var weaponId = Items.Types.WeaponMachineGun.id;
+            sendCommand(new CommandEntityInventory(entityId, CommandEntityInventory.Actions.ADD_ITEM, weaponId, 1));
             sendCommand(new CommandEntityEquipItem(entityId, 0, weaponId, true));
         }
     }
@@ -381,8 +384,8 @@ export function initBlocks() {
         onPlace: BlockFunctions.createEntityTurret,
         onCreateEntity: null,
         onEntityCreated: function(entity, entityId) {
-            var weaponId = Items.WeaponPistol.id;
-            sendCommand(new CommandEntityInventory(entityId, InventoryActions.ADD_ITEM, weaponId, 1));
+            var weaponId = Items.Types.WeaponPistol.id;
+            sendCommand(new CommandEntityInventory(entityId, CommandEntityInventory.Actions.ADD_ITEM, weaponId, 1));
             sendCommand(new CommandEntityEquipItem(entityId, 0, weaponId, true));
         }
     }

@@ -1,9 +1,10 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
 
 var ControlledByPlayer = function(playerId) {
     this.playerId = playerId;
 }
-export default ControlledByPlayer
+module.exports = ControlledByPlayer
 
 ControlledByPlayer.prototype.name = controlledByPlayer.name; function controlledByPlayer() { };
 

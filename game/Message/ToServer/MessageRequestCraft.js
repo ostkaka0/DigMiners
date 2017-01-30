@@ -1,14 +1,15 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import IndexCounter from "engine/IndexCounter.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var IndexCounter = require("engine/IndexCounter.js")
 
-import Global from "game/Global.js"
-import { CommandEntityInventory, InventoryActions } from "game/Command/CommandEntityInventory.js"
-import { CommandPlayerOreInventory, OreInventoryActions } from "game/Command/CommandPlayerOreInventory.js"
+var Global = require("game/Global.js")
+var CommandEntityInventory = require("game/Command/CommandEntityInventory.js")
+var CommandPlayerOreInventory= require("game/Command/CommandPlayerOreInventory.js")
 
 var MessageRequestCraft = function(recipeId) {
     this.recipeId = recipeId;
 }
-export default MessageRequestCraft
+module.exports = MessageRequestCraft
 
 MessageRequestCraft.prototype.execute = function(gameData, player) {
     var playerEntity = Global.gameData.entityWorld.objects[player.entityId];
@@ -19,17 +20,17 @@ MessageRequestCraft.prototype.execute = function(gameData, player) {
     for (var j = 0; j < recipe.requiredItems.length; ++j) {
         var itemType = recipe.requiredItems[j][0];
         var amount = recipe.requiredItems[j][1];
-        sendCommand(new CommandEntityInventory(player.entityId, InventoryActions.REMOVE_ITEM, itemType.id, amount));
+        sendCommand(new CommandEntityInventory(player.entityId, CommandEntityInventory.Actions.REMOVE_ITEM, itemType.id, amount));
     }
     for (var j = 0; j < recipe.requiredOres.length; ++j) {
         var tileType = recipe.requiredOres[j][0];
         var amount = recipe.requiredOres[j][1] * 256.0;
-        sendCommand(new CommandPlayerOreInventory(player.playerId, OreInventoryActions.REMOVE_ORE, tileType.id, amount));
+        sendCommand(new CommandPlayerOreInventory(player.playerId, CommandPlayerOreInventory.Actions.REMOVE_ORE, tileType.id, amount));
     }
     for (var j = 0; j < recipe.item.length; ++j) {
         var resultItemType = recipe.item[j][0];
         var amount = recipe.item[j][1];
-        sendCommand(new CommandEntityInventory(player.entityId, InventoryActions.ADD_ITEM, resultItemType.id, amount));
+        sendCommand(new CommandEntityInventory(player.entityId, CommandEntityInventory.Actions.ADD_ITEM, resultItemType.id, amount));
     }
 }
 

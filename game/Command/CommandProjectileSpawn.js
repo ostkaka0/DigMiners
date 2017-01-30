@@ -1,12 +1,13 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import Sprite from "engine/Animation/Sprite.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var Sprite = require("engine/Animation/Sprite.js")
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
-import Projectile from "game/Entity/Projectile.js"
-import { projectileEntitySimulate } from "game/ProjectilePhysics.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
+var Projectile = require("game/Entity/Projectile.js")
+var projectileEntitySimulate = require("game/ProjectilePhysics.js").projectileEntitySimulate
 
 var CommandProjectileSpawn = function(entityId, pos, angle, speed, maxDistance, projectileType, shooterEntityId) {
     this.entityId = entityId;
@@ -18,7 +19,7 @@ var CommandProjectileSpawn = function(entityId, pos, angle, speed, maxDistance, 
     this.projectileType = projectileType;
     this.shooterEntityId = shooterEntityId;
 }
-export default CommandProjectileSpawn
+module.exports = CommandProjectileSpawn
 
 CommandProjectileSpawn.prototype.execute = function() {
     if (Global.gameData.world.entityWorld.objects[this.entityId])

@@ -1,14 +1,14 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import Event from "engine/Core/Event.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Event = require("engine/Core/Event.js")
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
-import { Ammo, AmmoEvents } from "game/Entity/Ammo.js"
-import { Health, HealthEvents } from "game/Entity/Health.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
+var Ammo = require("game/Entity/Ammo.js")
+var Health = require("game/Entity/Health.js")
 
 var PotionEffectTypes = {};
-export default PotionEffectTypes
+module.exports = PotionEffectTypes
 
 PotionEffectTypes.Healing = {
     interval: 5,
@@ -16,7 +16,7 @@ PotionEffectTypes.Healing = {
         var health = entity.health;
         if (health) {
             health.health = Math.min(health.maxHealth, health.health + 1);
-            Event.trigger(HealthEvents.onChange, entity);
+            Event.trigger(Health.Events.onChange, entity);
         }
     }
 }
@@ -32,7 +32,7 @@ PotionEffectTypes.SupplyAmmo = {
             var ammoToAdd = Math.min(itemType.ammoMax - amount, Math.max(1, itemType.ammoMax * 0.05 >> 0));
             if (ammoToAdd == 0) return;
             entity.ammo[itemId] += ammoToAdd;
-            Event.trigger(AmmoEvents.onChange, entity);
+            Event.trigger(Ammo.Events.onChange, entity);
             // TODO: Trigger event?
         });
     }

@@ -1,9 +1,10 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
 
 var Chest = function() {
 
 }
-export default Chest
+module.exports = Chest
 
 Chest.prototype.name = chest.name; function chest() { };
 

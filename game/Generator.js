@@ -1,10 +1,10 @@
-import Chunk from "engine/Chunk.js"
-import BlockChunk from "engine/BlockChunk.js"
+var Chunk = require("engine/Chunk.js")
+var BlockChunk = require("engine/BlockChunk.js")
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
-import Blocks from "game/Blocks.js"
-import Tiles from "game/Blocks.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
+var Blocks = require("game/Blocks.js")
+var Tiles = require("game/Blocks.js")
 
 var Generator = function(seed) {
     if (!seed)
@@ -15,7 +15,7 @@ var Generator = function(seed) {
     this.oreNoise2 = this.seed + 331;
     this.oreNoise3 = this.seed + 71117;
 }
-export default Generator
+module.exports = Generator
 
 Generator.prototype.generate = function(chunk, chunkX, chunkY) {
     for (var yy = 0; yy < Chunk.dim; ++yy) {

@@ -1,15 +1,16 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import BlockWorld from "engine/BlockWorld.js"
-import TileWorld from "engine/TileWorld.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var BlockWorld = require("engine/BlockWorld.js")
+var TileWorld = require("engine/TileWorld.js")
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
 
 var CommandPlaceBlock = function(blockPos, blockId) {
     this.blockPos = blockPos;
     this.blockId = blockId;
 }
-export default CommandPlaceBlock
+module.exports = CommandPlaceBlock
 
 CommandPlaceBlock.prototype.execute = function() {
     BlockWorld.setForeground(Global.gameData.world.blockWorld, this.blockPos[0], this.blockPos[1], this.blockId);

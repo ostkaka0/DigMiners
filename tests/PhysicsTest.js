@@ -1,8 +1,8 @@
-import "../lib_front_end/apixi.js"
-import '../lib_front_end/ajquery-3.1.1.min.js';
-import Canvas from "../engine/Canvas.js"
-import PhysicsWorld from "../engine/PhysicsWorld.js"
-import gameLoop from "../engine/GameLoop.js"
+var "../lib_front_end/apixi.js")
+var '../lib_front_end/ajquery-3.1.1.min.js';
+var Canvas = require("../engine/Canvas.js")
+var PhysicsWorld = require("../engine/PhysicsWorld.js")
+var gameLoop = require("../engine/GameLoop.js")
 
 var canvas = document.getElementById("canvas");
 var gl = Canvas.initGL(canvas);

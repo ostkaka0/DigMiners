@@ -1,6 +1,6 @@
-import IdList from "engine/IdList.js";
+var IdList = require("engine/IdList.js");
 
-export default class {
+module.exports = class {
     constructor() {
         this.array = [0, 0, 0, 0];
         this.idList = new IdList(1);

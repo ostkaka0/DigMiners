@@ -1,8 +1,9 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import IndexCounter from "engine/IndexCounter.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var IndexCounter = require("engine/IndexCounter.js")
 
-import Global from "game/Global.js"
-import Config from "game/Config.js"
+var Global = require("game/Global.js")
+var Config = require("game/Config.js")
 
 var MessageInit = function(gameData, player) {
     this.players = [];
@@ -15,7 +16,7 @@ var MessageInit = function(gameData, player) {
     if (!gameData) return;
     Global.gameData.world.entityWorld.update();
 }
-export default MessageInit
+module.exports = MessageInit
 
 MessageInit.prototype.execute = function(gameData) {
     Global.gameData.world.tickId = this.tickId;

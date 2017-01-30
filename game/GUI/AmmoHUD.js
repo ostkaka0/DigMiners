@@ -1,11 +1,11 @@
-import $ from "jquery"
+var $ = require("jquery")
 
-import Event from "engine/Core/Event.js"
+var Event = require("engine/Core/Event.js")
 
-import Global from "game/Global.js"
-import { Ammo, AmmoEvents } from "game/Entity/Ammo.js"
+var Global = require("game/Global.js")
+var Ammo = require("game/Entity/Ammo.js")
 
-export default function() {
+module.exports = function() {
     this.root = $("<div>", { "text": "No weapon equipped" });
     this.root.css({
         "position": "fixed",
@@ -28,7 +28,7 @@ export default function() {
         }
     }
 
-    Event.subscribe(AmmoEvents.onChange, this, function(entity) {
+    Event.subscribe(Ammo.Events.onChange, this, function(entity) {
         if (entity && entity.id == global.playerEntityId)
             this.updateFunction(entity, null)
     }.bind(this));

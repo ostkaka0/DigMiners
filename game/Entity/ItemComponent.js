@@ -1,11 +1,12 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
 
 var ItemComponent = function(itemId, amount) {
     this.itemId = itemId;
     this.amount = amount;
     this.dropped = new Date();
 }
-export default ItemComponent
+module.exports = ItemComponent
 
 ItemComponent.prototype.name = item.name; function item() { };
 

@@ -1,16 +1,17 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import Event from "engine/Core/Event.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var Event = require("engine/Core/Event.js")
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
-import Items from "game/Items.js"
-import { Ammo, AmmoEvents } from "game/Entity/Ammo.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
+var Items = require("game/Items.js")
+var Ammo = require("game/Entity/Ammo.js")
 
 var CommandEntityReloadWeapon = function(entityId, stackId) {
     this.entityId = entityId;
     this.stackId = stackId;
 }
-export default CommandEntityReloadWeapon
+module.exports = CommandEntityReloadWeapon
 
 CommandEntityReloadWeapon.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];
@@ -23,7 +24,7 @@ CommandEntityReloadWeapon.prototype.execute = function() {
     item.magazine += ammoToReload;
     if (entity.ammo && entity.ammo[item.id]) {
         entity.ammo[item.id] -= ammoToReload;
-        Event.trigger(AmmoEvents.onChange, entity);
+        Event.trigger(Ammo.Events.onChange, entity);
     }
 }
 

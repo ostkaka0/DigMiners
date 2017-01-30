@@ -1,29 +1,31 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
 
-export var OreInventoryActions = {
+var CommandPlayerOreInventoryActions = {
     ADD_ORE: 0,
     REMOVE_ORE: 1
 }
 
-export var CommandPlayerOreInventory = function(playerId, actionId, itemId, amount) {
+var CommandPlayerOreInventory = function(playerId, actionId, itemId, amount) {
     this.playerId = playerId;
     this.actionId = actionId;
     this.itemId = itemId;
     this.amount = amount;
 }
-export default CommandPlayerOreInventory
+CommandPlayerOreInventory.Actions = CommandPlayerOreInventoryActions
+module.exports = CommandPlayerOreInventory
 
 CommandPlayerOreInventory.prototype.execute = function() {
     var player = Global.gameData.playerWorld.objects[this.playerId];
     if (!player) return;
-    if (this.actionId == OreInventoryActions.ADD_ORE) {
+    if (this.actionId == CommandPlayerOreInventory.Actions.ADD_ORE) {
         if (!player.oreInventory[this.itemId])
             player.oreInventory[this.itemId] = 0;
         player.oreInventory[this.itemId] += this.amount;
-    } else if (this.actionId == OreInventoryActions.REMOVE_ORE) {
+    } else if (this.actionId == CommandPlayerOreInventory.Actions.REMOVE_ORE) {
         if (!player.oreInventory[this.itemId])
             player.oreInventory[this.itemId] = 0;
         player.oreInventory[this.itemId] -= this.amount;

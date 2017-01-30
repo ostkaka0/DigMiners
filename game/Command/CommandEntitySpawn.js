@@ -1,13 +1,14 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
 
 var CommandEntitySpawn = function(gameData, entity, entityId, teamId) {
     this.entity = entity;
     this.entityId = entityId;
 }
-export default CommandEntitySpawn
+module.exports = CommandEntitySpawn
 
 CommandEntitySpawn.prototype.execute = function() {
     if (Global.gameData.world.entityWorld.objects[this.entityId])

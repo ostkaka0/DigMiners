@@ -1,12 +1,13 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import TextSprite from "engine/Animation/TextSprite.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var TextSprite = require("engine/Animation/TextSprite.js")
 
 var NameComponent = function(entityName) {
     this.entityName = entityName + "";
 }
-export default NameComponent
+module.exports = NameComponent
 
 NameComponent.prototype.name = nameComponent.name; function nameComponent() { };
 

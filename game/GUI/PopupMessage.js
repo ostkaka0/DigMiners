@@ -1,4 +1,4 @@
-import $ from "jquery"
+var $ = require("jquery")
 
 var PopupMessage = function(text, timeout) {
     this.timeout = timeout;
@@ -50,4 +50,4 @@ PopupMessage.prototype.show = function() {
         }.bind(this), fadeTime);
     }.bind(this), this.timeout);
 }
-export default PopupMessage
+module.exports = PopupMessage

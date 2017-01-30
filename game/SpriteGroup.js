@@ -1,5 +1,5 @@
 
-export default {
+module.exports = {
     Items: 0,
     Players: 1,
     //???: 2,

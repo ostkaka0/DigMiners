@@ -1,4 +1,4 @@
-import EventHandler from "../engine/EventHandler.js"
+var EventHandler = require("../engine/EventHandler.js")
 
 g_unitTests.testEventHandler = function() {
     var eventHandler = new EventHandler("test", "bert", "karl");

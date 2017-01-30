@@ -1,24 +1,23 @@
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
-import Event from "engine/Core/Event.js"
-import BlockWorld from "engine/BlockWorld.js"
-import TileWorld from "engine/TileWorld.js"
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
+var Event = require("engine/Core/Event.js")
+var BlockWorld = require("engine/BlockWorld.js")
+var TileWorld = require("engine/TileWorld.js")
 
-import Config from "game/Config.js"
-import Global from "game/Global.js"
-import { ProjectileEvents }  from "game/Entity/Projectile.js"
+var Config = require("game/Config.js")
+var Global = require("game/Global.js")
+var Projectile  = require("game/Entity/Projectile.js")
 
 var PROJECTILE_MAX_STEP_LENGTH = 0.125;
 
-export var entityFunctionProjectileSimulate = function(dt) {
+module.exports.entityFunctionProjectileSimulate = function(dt) {
     Global.gameData.world.entityWorld.objectArray.forEach(function(entity) {
         if (entity.projectile)
-            projectileEntitySimulate(entity, dt);
+            module.exports.projectileEntitySimulate(entity, dt);
     });
 }
-export default entityFunctionProjectileSimulate
 
-export var projectileEntitySimulate = function(entity, dt) {
+module.exports.projectileEntitySimulate = function(entity, dt) {
     var projectile = entity.projectile;
     if (!projectile || projectile.hit) return;
 
@@ -54,7 +53,7 @@ export var projectileEntitySimulate = function(entity, dt) {
         for (var j = 0; j < bodies.length; ++j) {
             var hitEntity = Global.gameData.world.physicsEntities[bodies[j]];
             if (hitEntity && (!projectile.shooterEntityId || hitEntity.id != projectile.shooterEntityId)) {
-                Event.trigger(ProjectileEvents.onHitEntity, entity, hitEntity, pos);
+                Event.trigger(Projectile.Events.onHitEntity, entity, hitEntity, pos);
                 projectile.hit = true;
                 break;
             }
@@ -65,7 +64,7 @@ export var projectileEntitySimulate = function(entity, dt) {
         var blockType = Config.blockRegister[blockId];
         var isBulletSolid = (blockType.isBulletSolid == undefined || entity.projectile.projectileType.isExplosive) ? blockType.isSolid : blockType.isBulletSolid;
         if (blockId != 0 && isBulletSolid && v2.dot([Math.cos(projectile.angle), -Math.sin(projectile.angle)], [blockTilePos[0] + 0.5 - pos[0], blockTilePos[1] + 0.5 - pos[1]]) > 0.0) {
-            Event.trigger(ProjectileEvents.onHitBlock, entity, blockTilePos);
+            Event.trigger(Projectile.Events.onHitBlock, entity, blockTilePos);
             projectile.hit = true;
             break;
         }
@@ -74,7 +73,7 @@ export var projectileEntitySimulate = function(entity, dt) {
 
         var density = TileWorld.getDensity(Global.gameData.world.tileWorld, blockTilePos[0], blockTilePos[1]);
         if (density > 127) {
-            Event.trigger(ProjectileEvents.onHitTile, entity, blockTilePos);
+            Event.trigger(Projectile.Events.onHitTile, entity, blockTilePos);
             projectile.hit = true;
             break;
         }
@@ -84,7 +83,7 @@ export var projectileEntitySimulate = function(entity, dt) {
     }
 
     if (projectile.hit) {
-        Event.trigger(ProjectileEvents.onHit, entity, v2.clone(pos));
+        Event.trigger(Projectile.Events.onHit, entity, v2.clone(pos));
         if (!isServer && projectile.sprite) {
             projectile.sprite.anchor[0] = 1.0;
             if (!projectile.sprite.visible) {

@@ -1,16 +1,17 @@
-import { Serialize, Deserialize } from "engine/Serialization.js"
-import IndexCounter from "engine/IndexCounter.js"
-import fix from "engine/Core/Fix.js"
-import v2 from "engine/Core/v2.js"
+var Serialize = require("engine/Serialization.js").Serialize
+var Deserialize = require("engine/Serialization.js").Deserialize
+var IndexCounter = require("engine/IndexCounter.js")
+var fix = require("engine/Core/Fix.js")
+var v2 = require("engine/Core/v2.js")
 
-import Global from "game/Global.js"
-import CommandEntityRotate from "game/Command/CommandEntityRotate.js"
+var Global = require("game/Global.js")
+var CommandEntityRotate = require("game/Command/CommandEntityRotate.js")
 
 var MessageRequestRotate = function(deltaWorldCursorPos) {
     this.deltaWorldCursorPos = deltaWorldCursorPos;
     //this.direction = direction;
 }
-export default MessageRequestRotate
+module.exports = MessageRequestRotate
 
 MessageRequestRotate.prototype.execute = function(gameData, player) {
     if (!this.deltaWorldCursorPos) return;

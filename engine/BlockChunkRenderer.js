@@ -1,6 +1,6 @@
-import Map2D from "engine/Core/Map2D.js"
-import BlockChunk from "engine/BlockChunk.js"
-import Shader from "engine/Shader.js"
+var Map2D = require("engine/Core/Map2D.js")
+var BlockChunk = require("engine/BlockChunk.js")
+var Shader = require("engine/Shader.js")
 var BLOCK_CHUNK_DIM = BlockChunk.dim;
 var BLOCK_CHUNK_DIM_2 = BlockChunk.dim2;
 var BLOCK_CHUNK_SIZE = BlockChunk.size;
@@ -32,7 +32,7 @@ var BlockChunkRenderer = function(gl, world, tileSize) {
 
     this.isReady = false; // False until shaders, buffers, attributes and uniforms are loaded.
 }
-export default BlockChunkRenderer;
+module.exports = BlockChunkRenderer;
 
 BlockChunkRenderer.prototype.lazyInit = function() {
     if (this.isReady)
