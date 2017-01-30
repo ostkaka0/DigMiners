@@ -7,12 +7,15 @@ var v2 = require("engine/Core/v2.js")
 var Canvas = require("engine/Canvas.js")
 var Sprite = require("engine/Animation/Sprite.js")
 var ChunkRenderer = require("engine/ChunkRenderer.js")
-var BlockChunkRenderer = require("engine/ChunkRenderer.js")
+var BlockChunkRenderer = require("engine/BlockChunkRenderer.js")
 var SpriteContainer = require("engine/Animation/SpriteContainer.js")
 var Event = require("engine/Core/Event.js")
 var Chunk = require("engine/Chunk.js")
 var loadTextures = require("engine/Animation/TextureFunctions.js").loadTextures
 var gameLoop = require("engine/GameLoop.js")
+var Keys = require("engine/Keys.js")
+var ClickTypes = require("engine/ClickTypes.js")
+var BlockChunk = require("engine/BlockChunk.js")
 
 var Config = require("game/Config.js")
 var gameData = require("game/GameData.js")
@@ -22,6 +25,7 @@ var TextureManager = require("game/Entity/TextureManager.js")
 var LoadingScreen = require("game/GUI/LoadingScreen.js")
 var DeathScreen = require("game/GUI/DeathScreen.js")
 var InventoryHUD = require("game/GUI/InventoryHUD.js")
+var Health = require("game/Entity/Health.js")
 var MessageRequestKeyStatusUpdate = require("game/Message/ToServer/MessageRequestKeyStatusUpdate.js")
 var MessageRequestPlaceBlock = require("game/Message/ToServer/MessageRequestPlaceBlock.js")
 var MessageRequestClickBlock = require("game/Message/ToServer/MessageRequestClickBlock.js")
@@ -78,6 +82,7 @@ var camera = {
     pos: v2.create(0, 0)
 };
 var chunkRenderer = new ChunkRenderer(gl, gameData.world.tileWorld, 32.0);
+console.log(chunkRenderer);
 var blockChunkRenderer = new BlockChunkRenderer(gl, gameData.world.blockWorld, 32.0);
 var commands = [];
 var player = null;
@@ -261,8 +266,8 @@ var render = function(tickFracTime) {
         var worldCursorPos = [Math.floor((mouseX + camera.pos[0] - camera.width / 2) / 32), Math.floor((canvas.height - mouseY + camera.pos[1] - camera.height / 2) / 32)];
         var chunkPos = [0, 0];
         var localPos = [0, 0];
-        v2WorldToBlockChunk(worldCursorPos, chunkPos, localPos);
-        var blockPos = [chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0], chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1]];
+        BlockChunk.fromV2World(worldCursorPos, chunkPos, localPos);
+        var blockPos = [chunkPos[0] * BlockChunk.dim + localPos[0], chunkPos[1] * BlockChunk.dim + localPos[1]];
         global.player.buildPos = blockPos;
         if (global.player.canPlaceBlock(gameData, blockPos[0], blockPos[1])) {
             window.blockPosBad.visible = false;
@@ -303,7 +308,7 @@ var render = function(tickFracTime) {
     }
 
     // Render particles
-    gameData.world.particleWorld.render(tickFracTime);
+    gameData.world.particleWorld.render(camera, context2d, tickFracTime);
 }
 
 var loadChunk = function(world, x, y) {
@@ -335,8 +340,8 @@ $(document).mousedown(function(event) {
         if (v2.distance(global.playerEntity.physicsBody.getPos(), worldCursorPos) > 0.5) {
             var chunkPos = [0, 0];
             var localPos = [0, 0];
-            v2WorldToBlockChunk(worldCursorPos, chunkPos, localPos);
-            var blockPos = [chunkPos[0] * BLOCK_CHUNK_DIM + localPos[0], chunkPos[1] * BLOCK_CHUNK_DIM + localPos[1]];
+            BlockChunk.fromV2World(worldCursorPos, chunkPos, localPos);
+            var blockPos = [chunkPos[0] * BlockChunk.dim + localPos[0], chunkPos[1] * BlockChunk.dim + localPos[1]];
             new MessageRequestClickBlock(blockPos, (event.button == 0 ? ClickTypes.LEFT_CLICK : (event.button == 2 ? ClickTypes.RIGHT_CLICK : ClickTypes.UNKNOWN))).send(socket);
         }
     }
@@ -369,7 +374,7 @@ gameData.world.events.on("ownPlayerSpawned", function(entity, player) {
 
 Event.subscribe(gameData.world.entityWorld.onAdd, window, function(entity) {
     if (!isServer && entity.health && entity.drawable)
-        triggerEvent(Health.Events.onChange, entity);
+        Event.trigger(Health.Events.onChange, entity);
 
     if (entity.drawable && entity.bodyparts) {
         entity.drawable.initializeBodyparts(entity.bodyparts.bodyparts);

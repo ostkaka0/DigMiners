@@ -4,6 +4,7 @@ var Global = require("game/Global.js")
 var Config = require("game/Config.js")
 
 var PlayerClass = require("game/PlayerClass.js")
+var MessageRequestSpawn = require("game/Message/ToServer/MessageRequestSpawn.js")
 
 var DeathScreen = function() {
     this.width = 490;

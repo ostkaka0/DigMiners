@@ -1,6 +1,8 @@
 var fix = require("engine/Core/Fix.js")
 var v2 = require("engine/Core/v2.js")
 
+var Config = require("game/Config.js")
+
 var ParticleWorld = function() {
     this.particles = [];
 }
@@ -24,7 +26,7 @@ ParticleWorld.prototype.update = function(dt) {
     }.bind(this));
 }
 
-ParticleWorld.prototype.render = function(tickFracTime) {
+ParticleWorld.prototype.render = function(camera, context, tickFracTime) {
     var time = new Date().getTime();
     this.particles.forEach(function(particle) {
         var particleType = Config.particleRegister[particle[4]];
@@ -42,22 +44,22 @@ ParticleWorld.prototype.render = function(tickFracTime) {
             var g = Math.floor(fracTime * particleType.colorEnd[1] + (1 - fracTime) * particleType.colorStart[1]);
             var b = Math.floor(fracTime * particleType.colorEnd[2] + (1 - fracTime) * particleType.colorStart[2]);
 
-            context2d.translate(x, y);
-            context2d.rotate(angle);
-            context2d.scale(scale[0], scale[1]);
-            context2d.translate(-0.5 * particleType.size, -0.5 * particleType.size);
+            context.translate(x, y);
+            context.rotate(angle);
+            context.scale(scale[0], scale[1]);
+            context.translate(-0.5 * particleType.size, -0.5 * particleType.size);
 
-            context2d.globalAlpha = fracTime * particleType.alphaEnd + (1 - fracTime) * particleType.alphaStart;
-            context2d.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
-            context2d.fillRect(0, 0, particleType.size, particleType.size);
+            context.globalAlpha = fracTime * particleType.alphaEnd + (1 - fracTime) * particleType.alphaStart;
+            context.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
+            context.fillRect(0, 0, particleType.size, particleType.size);
 
-            context2d.translate(0.5 * particleType.size, 0.5 * particleType.size);
-            context2d.scale(1.0 / scale[0], 1.0 / scale[1]);
-            context2d.rotate(-angle);
-            context2d.translate(-x, -y);
+            context.translate(0.5 * particleType.size, 0.5 * particleType.size);
+            context.scale(1.0 / scale[0], 1.0 / scale[1]);
+            context.rotate(-angle);
+            context.translate(-x, -y);
         }
     }.bind(this));
-    context2d.globalAlpha = 1.0;
+    context.globalAlpha = 1.0;
 }
 
 ParticleWorld.prototype.add = function(pos, velocity, particleType) {

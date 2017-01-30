@@ -3,7 +3,9 @@ var $ = require("jquery")
 var Event = require("engine/Core/Event.js")
 var fix = require("engine/Core/Fix.js")
 var v2 = require("engine/Core/v2.js")
+var InventoryClickTypes = require("engine/InventoryClickTypes.js")
 var Config = require("game/Config.js")
+var MessageRequestClickSlot = require("game/Message/ToServer/MessageRequestClickSlot.js")
 
 module.exports.InventoryHUDEvents = {};
 module.exports.InventoryHUDEvents.click = [];
@@ -140,7 +142,7 @@ var InventoryHUD = function(inventory, text, bottom) {
     this.inventoryContent.appendTo(this.inventoryHUD);
     this.inventoryHUD.appendTo("#hud");
 }
-module.exports.InventoryHUD = InventoryHUD
+module.exports = InventoryHUD
 
 InventoryHUD.prototype.update = function() {
     for (var i = 0; i < this.inventoryWidth * this.inventoryHeight; ++i) {

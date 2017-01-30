@@ -3,7 +3,6 @@ var binarySearch = "engine/Core/BinarySearch.js"
 var TypeRegister = module.exports;
 
 TypeRegister.add = function(array, type) {
-    console.log(type)
     if (type.prototype.id != undefined) return;
 
     type.prototype.id = array.length;
