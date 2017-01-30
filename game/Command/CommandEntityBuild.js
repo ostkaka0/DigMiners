@@ -5,6 +5,7 @@ var TileWorld = require("engine/TileWorld.js")
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var Command = require("game/Command/Command.js")
 var Blocks = require("game/Blocks.js")
 var BlockPlacer = require("game/Entity/BlockPlacer.js")
 var CommandEntitySpawn = require("game/Command/CommandEntitySpawn.js")
@@ -17,6 +18,7 @@ var CommandEntityBuild = function(entityId, x, y, blockId, type) {
     this.type = type;
 }
 module.exports = CommandEntityBuild
+Command.Register.push(module.exports)
 
 CommandEntityBuild.prototype.execute = function() {
     /*if (this.type == BlockTypes.FOREGROUND)

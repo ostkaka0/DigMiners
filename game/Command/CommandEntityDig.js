@@ -6,6 +6,7 @@ var TileWorld = require("engine/TileWorld.js")
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var Command = require("game/Command/Command.js")
 var Tiles = require("game/Blocks.js")
 var Items = require("game/Items.js")
 
@@ -22,6 +23,7 @@ var CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHard
     this.maxDigHardness = maxDigHardness;
 }
 module.exports = CommandEntityDig
+Command.Register.push(module.exports)
 
 CommandEntityDig.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

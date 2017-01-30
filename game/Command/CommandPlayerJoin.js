@@ -3,6 +3,7 @@ var Deserialize = require("engine/Serialization.js").Deserialize
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var Command = require("game/Command/Command.js")
 var Player = require("game/Player.js")
 var MessageInit = require("game/Message/ToClient/MessageInit.js")
 var MessageChunk = require("game/Message/ToClient/MessageChunk.js")
@@ -13,6 +14,7 @@ var CommandPlayerJoin = function(playerId, entityId, playerName, socketId) {
     this.socketId = socketId;
 }
 module.exports = CommandPlayerJoin
+Command.Register.push(module.exports)
 
 CommandPlayerJoin.prototype.execute = function() {
     var player = new Player(this.playerId);

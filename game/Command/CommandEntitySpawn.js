@@ -3,12 +3,14 @@ var Deserialize = require("engine/Serialization.js").Deserialize
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var Command = require("game/Command/Command.js")
 
 var CommandEntitySpawn = function(gameData, entity, entityId, teamId) {
     this.entity = entity;
     this.entityId = entityId;
 }
 module.exports = CommandEntitySpawn
+Command.Register.push(module.exports)
 
 CommandEntitySpawn.prototype.execute = function() {
     if (Global.gameData.world.entityWorld.objects[this.entityId])

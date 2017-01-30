@@ -4,6 +4,7 @@ var Event = require("engine/Core/Event.js")
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var Command = require("game/Command/Command.js")
 var Items = require("game/Items.js")
 var Ammo = require("game/Entity/Ammo.js")
 
@@ -12,6 +13,7 @@ var CommandEntityReloadWeapon = function(entityId, stackId) {
     this.stackId = stackId;
 }
 module.exports = CommandEntityReloadWeapon
+Command.Register.push(module.exports)
 
 CommandEntityReloadWeapon.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

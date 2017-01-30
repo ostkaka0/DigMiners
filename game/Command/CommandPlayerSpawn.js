@@ -3,6 +3,7 @@ var Deserialize = require("engine/Serialization.js").Deserialize
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var Command = require("game/Command/Command.js")
 
 var CommandPlayerSpawn = function(playerId, entityId, playerName) {
     this.playerId = playerId;
@@ -10,6 +11,7 @@ var CommandPlayerSpawn = function(playerId, entityId, playerName) {
     this.playerName = playerName;
 }
 module.exports = CommandPlayerSpawn
+Command.Register.push(module.exports)
 
 CommandPlayerSpawn.prototype.execute = function() {
     // Associate with existing, already spawned entity (from MessageRequestSpawn)

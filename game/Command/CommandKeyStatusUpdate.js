@@ -6,6 +6,7 @@ var Keys = require("engine/Keys.js")
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var Command = require("game/Command/Command.js")
 
 var CommandKeyStatusUpdate = function(entityId, key, pressed, pos) {
     this.entityId = entityId;
@@ -14,6 +15,7 @@ var CommandKeyStatusUpdate = function(entityId, key, pressed, pos) {
     this.pos = pos;
 }
 module.exports = CommandKeyStatusUpdate
+Command.Register.push(module.exports)
 
 CommandKeyStatusUpdate.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

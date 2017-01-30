@@ -3,6 +3,7 @@ var Deserialize = require("engine/Serialization.js").Deserialize
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var Command = require("game/Command/Command.js")
 
 var CommandPlayerOreInventoryActions = {
     ADD_ORE: 0,
@@ -17,6 +18,7 @@ var CommandPlayerOreInventory = function(playerId, actionId, itemId, amount) {
 }
 CommandPlayerOreInventory.Actions = CommandPlayerOreInventoryActions
 module.exports = CommandPlayerOreInventory
+Command.Register.push(module.exports)
 
 CommandPlayerOreInventory.prototype.execute = function() {
     var player = Global.gameData.playerWorld.objects[this.playerId];

@@ -3,6 +3,7 @@ var Deserialize = require("engine/Serialization.js").Deserialize
 var BlockWorld = require("engine/BlockWorld.js")
 var TileWorld = require("engine/TileWorld.js")
 
+var Command = require("game/Command/Command.js")
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
 var Blocks = require("game/Blocks.js")
@@ -14,6 +15,7 @@ var CommandBuild = function(x, y, blockId, type) {
     this.type = type;
 }
 module.exports = CommandBuild
+Command.Register.push(module.exports)
 
 CommandBuild.prototype.execute = function() {
     //if (this.type == BlockTypes.FOREGROUND)

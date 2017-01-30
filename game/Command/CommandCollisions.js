@@ -3,6 +3,7 @@ var v2 = require("engine/Core/v2.js")
 var Serialize = require("engine/Serialization.js").Serialize
 var Deserialize = require("engine/Serialization.js").Deserialize
 
+var Command = require("game/Command/Command.js")
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
 
@@ -34,6 +35,7 @@ var CommandCollisions = function(collisions) {
     }
 }
 module.exports = CommandCollisions
+Command.Register.push(module.exports)
 
 CommandCollisions.prototype.execute = function() {
     var physicsWorld = Global.gameData.world.physicsWorld;

@@ -5,6 +5,7 @@ var Deserialize = require("engine/Serialization.js").Deserialize
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var Command = require("game/Command/Command.js")
 
 var CommandEntityMove = function(entityId, direction, pos) {
     this.entityId = entityId;
@@ -13,6 +14,7 @@ var CommandEntityMove = function(entityId, direction, pos) {
         this.pos = v2.cloneFix(pos);
 }
 module.exports = CommandEntityMove
+Command.Register.push(module.exports)
 
 CommandEntityMove.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

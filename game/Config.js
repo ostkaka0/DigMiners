@@ -9,33 +9,14 @@ var Particles = require("game/Particles.js")
 var ParticleFunctions = require("game/ParticleFunctions.js")
 var PotionEffectTypes = require("game/PotionEffectTypes.js")
 
-var CommandEntityMove = require("game/Command/CommandEntityMove.js")
-var CommandDig = require("game/Command/CommandDig.js")
-var CommandEntityDig = require("game/Command/CommandEntityDig.js")
-var CommandEntityEquipItem = require("game/Command/CommandEntityEquipItem.js")
-var CommandEntityBuild = require("game/Command/CommandEntityBuild.js")
-var CommandEntityHealthChange = require("game/Command/CommandEntityHealthChange.js")
+var Command = require("game/Command/Command.js")
 var CommandEntitySpawn = require("game/Command/CommandEntitySpawn.js")
+var CommandEntityInventory = require("game/Command/CommandEntityInventory.js")
+var CommandEntityEquipItem = require("game/Command/CommandEntityEquipItem.js")
 var CommandCollisions = require("game/Command/CommandCollisions.js")
-var CommandEntityDestroy = require("game/Command/CommandEntityDestroy.js")
+var CommandEntityInteractEntity = require("game/Command/CommandEntityInteractEntity.js")
 var CommandPlayerJoin = require("game/Command/CommandPlayerJoin.js")
 var CommandPlayerLeave = require("game/Command/CommandPlayerLeave.js")
-var CommandPlayerSpawn = require("game/Command/CommandPlayerSpawn.js")
-var CommandKeyStatusUpdate = require("game/Command/CommandKeyStatusUpdate.js")
-var CommandEntityInventory = require("game/Command/CommandEntityInventory.js")
-var CommandPlayerOreInventory = require("game/Command/CommandPlayerOreInventory.js")
-var CommandEntityRotate = require("game/Command/CommandEntityRotate.js")
-var CommandBlockStrength = require("game/Command/CommandBlockStrength.js")
-var CommandProjectileSpawn = require("game/Command/CommandProjectileSpawn.js")
-var CommandParticles = require("game/Command/CommandParticles.js")
-var CommandPlaceBlock = require("game/Command/CommandPlaceBlock.js")
-var CommandEntityReloadWeapon = require("game/Command/CommandEntityReloadWeapon.js")
-var CommandEntityBeginReloadWeapon = require("game/Command/CommandEntityBeginReloadWeapon.js")
-var CommandBuild = require("game/Command/CommandBuild.js")
-var CommandEntityLookAtEntity = require("game/Command/CommandEntityLookAtEntity.js")
-var CommandPopupMessage = require("game/Command/CommandPopupMessage.js")
-var CommandEntityInteractEntity = require("game/Command/CommandEntityInteractEntity.js")
-var CommandEntityAnimate = require("game/Command/CommandEntityAnimate.js")
 
 var MessageInit = require("game/Message/ToClient/MessageInit.js")
 var MessageCommands = require("game/Message/ToClient/MessageCommands.js")
@@ -82,31 +63,31 @@ var messagesToServer = [MessageRequestKeyStatusUpdate, MessageRequestItemPickup,
 var Config = exports;
 //module.exports = Config
 
-Config.init = () => Object.assign(Config, {
-    port: 3000,
-    itemPickupDistance: 2.0,
-    blockPlaceDistance: 96, //Pixels
-    tickDuration: 1000 / 20,
-    fakeLag: 0,
-    fakeJitter: 0,
-    respawnTime: 1,
+Config.init = function() {
+    TypeRegister.sort(Command.Register);
+    console.log(Command.Register);
+    Object.assign(Config, {
+        port: 3000,
+        itemPickupDistance: 2.0,
+        blockPlaceDistance: 96, //Pixels
+        tickDuration: 1000 / 20,
+        fakeLag: 0,
+        fakeJitter: 0,
+        respawnTime: 1,
 
-    tileRegister: ObjectRegister.addByObject([], Tiles),
-    itemRegister: ObjectRegister.addByObject([], Items.Types),
-    blockRegister: ObjectRegister.addByObject([], Blocks),
-    projectileRegister: ObjectRegister.addByObject([], Projectiles),
-    particleRegister: ObjectRegister.addByObject([], Particles),
-    particleFunctionRegister: ObjectRegister.addByObject([], ParticleFunctions),
-    potionEffectTypeRegister: ObjectRegister.addByObject([], PotionEffectTypes),
-    commandTypes: TypeRegister.addByArray([], [CommandEntityMove, CommandDig, CommandEntityDig, CommandEntityEquipItem, CommandEntityBuild, CommandEntityHealthChange,
-        CommandEntitySpawn, CommandCollisions, CommandEntityDestroy, CommandPlayerJoin, CommandPlayerLeave, CommandPlayerSpawn, CommandKeyStatusUpdate,
-        CommandEntityInventory, CommandPlayerOreInventory, CommandEntityRotate, CommandBlockStrength, CommandProjectileSpawn, CommandParticles, CommandPlaceBlock,
-        CommandEntityReloadWeapon, CommandEntityBeginReloadWeapon, CommandBuild, CommandEntityLookAtEntity, CommandPopupMessage, CommandEntityInteractEntity, CommandEntityAnimate]),
-    messagesToClient,
-    messagesToServer,
-    messageTypes: TypeRegister.addByArray([], messagesToClient.concat(messagesToServer)),
-    componentTypes: TypeRegister.addByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent,
-        EquippedItems, Projectile, BlockPlacer, PotionEffects, Team, Inventory, Ammo, Chest, Interactable, Interacter]),
-    gameModeRegister: TypeRegister.addByArray([], [/*GameModeBaseWar, */GameModeZombieInvasion]),
-
-});
+        tileRegister: ObjectRegister.addByObject([], Tiles),
+        itemRegister: ObjectRegister.addByObject([], Items.Types),
+        blockRegister: ObjectRegister.addByObject([], Blocks),
+        projectileRegister: ObjectRegister.addByObject([], Projectiles),
+        particleRegister: ObjectRegister.addByObject([], Particles),
+        particleFunctionRegister: ObjectRegister.addByObject([], ParticleFunctions),
+        potionEffectTypeRegister: ObjectRegister.addByObject([], PotionEffectTypes),
+        commandTypes: Command.Register,
+        messagesToClient,
+        messagesToServer,
+        messageTypes: TypeRegister.addByArray([], messagesToClient.concat(messagesToServer)),
+        componentTypes: TypeRegister.addByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent,
+            EquippedItems, Projectile, BlockPlacer, PotionEffects, Team, Inventory, Ammo, Chest, Interactable, Interacter]),
+        gameModeRegister: TypeRegister.addByArray([], [/*GameModeBaseWar, */GameModeZombieInvasion]),
+    });
+}

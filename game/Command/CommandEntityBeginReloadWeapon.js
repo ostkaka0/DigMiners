@@ -3,11 +3,13 @@ var Deserialize = require("engine/Serialization.js").Deserialize
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var Command = require("game/Command/Command.js")
 
 var CommandEntityBeginReloadWeapon = function(entityId) {
     this.entityId = entityId;
 }
 module.exports = CommandEntityBeginReloadWeapon
+Command.Register.push(module.exports)
 
 CommandEntityBeginReloadWeapon.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

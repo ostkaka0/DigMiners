@@ -4,6 +4,7 @@ var Sprite = require("engine/Animation/Sprite.js")
 
 var Config = require("game/Config.js")
 var Global = require("game/Global.js")
+var Command = require("game/Command/Command.js")
 var Items = require("game/Items.js")
 var Entity = require("game/Entity/Entity.js")
 
@@ -14,6 +15,7 @@ var CommandEntityEquipItem = function(entityId, stackId, itemId, equipped) {
     this.equipped = equipped;
 }
 module.exports = CommandEntityEquipItem
+Command.Register.push(module.exports)
 
 CommandEntityEquipItem.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];
