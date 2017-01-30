@@ -19,3 +19,12 @@ ObjectRegister.addByObject = function(array, object) {
         ObjectRegister.add(array, object[key]);
     return array;
 }
+
+ObjectRegister.sort = function(array) {
+    array.sort((a,b) => (a.name < b.name)? -1 : 1);
+    for(var i = 0; i < array.length; i++) {
+        var object = array[i];
+        object.id = i;
+        object.idString = i.toString(36);
+    }
+}
