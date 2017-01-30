@@ -25,7 +25,7 @@
     "gulp-babel": "^6.1.2",
     "gulp-rollup": "^2.10.0",
     "jquery": "^3.1.1",
-    "pixi": "^0.3.1",
+    "pixi.js": "^4.3.4",
     "rollup-plugin-commonjs": "^7.0.0",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-stream": "^1.19.0",

@@ -1,6 +1,6 @@
 
 var $ = require("jquery")
-var PIXI = require("pixi")
+var PIXI = require("pixi.js")
 
 var fix = require("engine/Core/Fix.js")
 var v2 = require("engine/Core/v2.js")
