@@ -7,6 +7,7 @@ var Config = require("Game/Config.js")
 var Global = require("Game/Global.js")
 var Entity = require("Game/Entity/Entity.js")
 var CommandEntityBeginReloadWeapon = require("Game/Command/CommandEntityBeginReloadWeapon.js")
+var EntityRegister = require("Game/Entity/Register.js")
 
 var Movement = function(speed, toolUseDuration, damageMultiplier, digHardnessMultiplier) {
     this.keyStatuses = {};
@@ -32,6 +33,7 @@ var Movement = function(speed, toolUseDuration, damageMultiplier, digHardnessMul
     this.entityLookTarget = null;
 }
 module.exports = Movement
+EntityRegister.push(module.exports);
 
 Movement.prototype.name = movement.name; function movement() { };
 

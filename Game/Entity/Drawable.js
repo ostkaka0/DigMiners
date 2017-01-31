@@ -4,6 +4,7 @@ var Serialize = require("Engine/Serialization.js").Serialize
 var Deserialize = require("Engine/Serialization.js").Deserialize
 var SpriteContainer = require("Engine/Animation/SpriteContainer.js")
 var Sprite = require("Engine/Animation/Sprite.js")
+var EntityRegister = require("Game/Entity/Register.js")
 
 var Drawable = function(zindex) {
     this.sprites = {};
@@ -15,6 +16,7 @@ var Drawable = function(zindex) {
     zindices[this.zindex].add(this.container);
 }
 module.exports = Drawable
+EntityRegister.push(module.exports);
 
 Drawable.prototype.name = drawable.name; function drawable() { };
 

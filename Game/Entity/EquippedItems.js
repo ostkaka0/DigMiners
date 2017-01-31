@@ -1,11 +1,13 @@
 var Serialize = require("Engine/Serialization.js").Serialize
 var Deserialize = require("Engine/Serialization.js").Deserialize
 var Config = require("Game/Config.js")
+var EntityRegister = require("Game/Entity/Register.js")
 
 var EquippedItems = function(items) {
     this.items = (items ? items : {});
 }
 module.exports = EquippedItems
+EntityRegister.push(module.exports);
 
 EquippedItems.prototype.name = equippedItems.name; function equippedItems() { };
 

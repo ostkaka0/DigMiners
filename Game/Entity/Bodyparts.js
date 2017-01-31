@@ -4,6 +4,7 @@ var Serialize = require("Engine/Serialization.js").Serialize
 var Deserialize = require("Engine/Serialization.js").Deserialize
 var BodyPart = require("Engine/Animation/BodyPart.js")
 var Sprite = require("Engine/Animation/Sprite.js")
+var EntityRegister = require("Game/Entity/Register.js")
 
 var Bodyparts = function(bodyparts) {
     this.bodyparts = bodyparts;
@@ -24,6 +25,7 @@ var Bodyparts = function(bodyparts) {
     }
 }
 module.exports = Bodyparts
+EntityRegister.push(module.exports);
 
 Bodyparts.prototype.name = bodyparts.name; function bodyparts() { };
 

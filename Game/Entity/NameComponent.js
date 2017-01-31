@@ -3,11 +3,13 @@ var v2 = require("Engine/Core/v2.js")
 var Serialize = require("Engine/Serialization.js").Serialize
 var Deserialize = require("Engine/Serialization.js").Deserialize
 var TextSprite = require("Engine/Animation/TextSprite.js")
+var EntityRegister = require("Game/Entity/Register.js")
 
 var NameComponent = function(entityName) {
     this.entityName = entityName + "";
 }
 module.exports = NameComponent
+EntityRegister.push(module.exports);
 
 NameComponent.prototype.name = nameComponent.name; function nameComponent() { };
 

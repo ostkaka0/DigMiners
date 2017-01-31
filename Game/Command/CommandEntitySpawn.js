@@ -4,6 +4,7 @@ var Deserialize = require("Engine/Serialization.js").Deserialize
 var Config = require("Game/Config.js")
 var Global = require("Game/Global.js")
 var Command = require("Game/Command/Command.js")
+var EntityRegister = require("Game/Entity/Register.js")
 
 var CommandEntitySpawn = function(gameData, entity, entityId, teamId) {
     this.entity = entity;
@@ -36,7 +37,7 @@ CommandEntitySpawn.prototype.deserialize = function(byteArray, index) {
     for (var i = 0; i < numComponents; ++i) {
 
         var componentId = Deserialize.int32(byteArray, index);
-        var componentType = Config.componentTypes[componentId];
+        var componentType = EntityRegister[componentId];
         var componentName = componentType.prototype.name;
         entity[componentName] = new componentType();
         entity[componentName].deserialize(byteArray, index, Global.gameData);

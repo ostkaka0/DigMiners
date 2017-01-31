@@ -1,11 +1,13 @@
 var Serialize = require("Engine/Serialization.js").Serialize
 var Deserialize = require("Engine/Serialization.js").Deserialize
 var Config = require("Game/Config.js")
+var EntityRegister = require("Game/Entity/Register.js")
 
 var PotionEffects = function() {
     this.effects = {};
 }
 module.exports = PotionEffects
+EntityRegister.push(module.exports);
 
 PotionEffects.prototype.name = potionEffects.name; function potionEffects() { };
 

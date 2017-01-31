@@ -3,6 +3,7 @@ var v2 = require("Engine/Core/v2.js")
 var Serialize = require("Engine/Serialization.js").Serialize
 var Deserialize = require("Engine/Serialization.js").Deserialize
 var Config = require("Game/Config.js")
+var EntityRegister = require("Game/Entity/Register.js")
 
 var Projectile = function(pos, angle, speed, maxDistance, projectileType, shooterEntityId) {
     this.pos = pos;
@@ -27,6 +28,7 @@ var Projectile = function(pos, angle, speed, maxDistance, projectileType, shoote
     }
 }
 module.exports = Projectile;
+EntityRegister.push(module.exports);
 Projectile.Events = {};
 Projectile.Events.onHit = [];
 Projectile.Events.onHitEntity = [];

@@ -9,6 +9,7 @@ var CommandEntitySpawn = require("Game/Command/CommandEntitySpawn.js")
 var CommandEntityInventory = require("Game/Command/CommandEntityInventory.js")
 var CommandEntityEquipItem = require("Game/Command/CommandEntityEquipItem.js")
 var Items = require("Game/Items.js")
+var EntityRegister = require("Game/Entity/Register.js")
 
 var Spawner = function(entityTemplate, pos, maxEntities, radius, duration, items, equippedItemId, randomDuration, teamId) {
     this.entityTemplate = entityTemplate;
@@ -28,6 +29,7 @@ var Spawner = function(entityTemplate, pos, maxEntities, radius, duration, items
     this.initialized = false;
 }
 module.exports = Spawner
+EntityRegister.push(module.exports);
 
 Spawner.prototype.name = spawner.name; function spawner() { };
 

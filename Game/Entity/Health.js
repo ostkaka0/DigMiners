@@ -1,5 +1,6 @@
 var Serialize = require("Engine/Serialization.js").Serialize
 var Deserialize = require("Engine/Serialization.js").Deserialize
+var EntityRegister = require("Game/Entity/Register.js")
 
 var Health = function(health, maxHealth, armor) {
     this.health = health;
@@ -10,6 +11,7 @@ Health.Events = {};
 Health.Events.onChange = [];
 Health.Events.onDeath = [];
 module.exports = Health;
+EntityRegister.push(module.exports);
 
 Health.prototype.name = health.name; function health() { };
 

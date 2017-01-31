@@ -27,6 +27,7 @@ var MessageRequestRotate = require("Game/Message/ToServer/MessageRequestRotate.j
 var MessageRequestItemPickup = require("Game/Message/ToServer/MessageRequestItemPickup.js")
 var MessageRequestSpawn = require("Game/Message/ToServer/MessageRequestSpawn.js")
 
+var EntityRegister = require("Game/Entity/Register.js")
 var PhysicsBody = require("Game/Entity/PhysicsBody.js")
 var Movement = require("Game/Entity/Movement.js")
 var Drawable = require("Game/Entity/Drawable.js")
@@ -54,6 +55,7 @@ var Config = exports;
 Config.init = function() {
     Command.init();
     Message.init();
+    EntityRegister.init();
     Object.assign(Config, {
         port: 3000,
         itemPickupDistance: 2.0,
@@ -70,8 +72,7 @@ Config.init = function() {
         particleRegister: ObjectRegister.addByObject([], Particles),
         particleFunctionRegister: ObjectRegister.addByObject([], ParticleFunctions),
         potionEffectTypeRegister: ObjectRegister.addByObject([], PotionEffectTypes),
-        componentTypes: TypeRegister.addByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent,
-            EquippedItems, Projectile, BlockPlacer, PotionEffects, Team, Inventory, Ammo, Chest, Interactable, Interacter]),
+        componentTypes: EntityRegister,
         gameModeRegister: TypeRegister.addByArray([], [/*GameModeBaseWar, */GameModeZombieInvasion]),
     });
 }
