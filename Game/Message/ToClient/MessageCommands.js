@@ -5,6 +5,7 @@ var IndexCounter = require("Engine/IndexCounter.js")
 var Config = require("Game/Config.js")
 var Global = require("Game/Global.js")
 var Message = require("game/Message/Message.js");
+var Command = require("game/Command/Command.js");
 
 var MessageCommands = function() {
     this.tickId = (isServer) ? Global.gameData.world.tickId : 0;
@@ -45,7 +46,7 @@ MessageCommands.prototype.receive = function(gameData, byteArray) {
     this.tickId = Deserialize.int32(byteArray, counter);
     while (counter.value < byteArray.byteLength) {
         var commandId = Deserialize.int32(byteArray, counter);
-        var command = new Config.commandTypes[commandId]();
+        var command = new Command.Register[commandId]();
         command.deserialize(byteArray, counter);
         this.commands.push(command);
     }
