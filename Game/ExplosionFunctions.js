@@ -7,6 +7,8 @@ var Config = require("Game/Config.js")
 var Global = require("Game/Global.js")
 var Entity = require("Game/Entity/Entity.js")
 
+var CommandDig = require("Game/Command/CommandDig.js")
+var CommandBlockStrength = require("Game/Command/CommandBlockStrength.js")
 
 module.exports.createExplosion = function(startPos, radius, entityDamage, blockDamage, tileDamage, attacker) {
     if (isServer) {
