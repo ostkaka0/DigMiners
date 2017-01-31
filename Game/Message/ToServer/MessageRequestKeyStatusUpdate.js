@@ -4,6 +4,7 @@ var IndexCounter = require("Engine/IndexCounter.js")
 var Keys = require("Engine/Keys.js")
 
 var Global = require("Game/Global.js")
+var Message = require("game/Message/Message.js");
 var CommandEntityInteractEntity = require("Game/Command/CommandEntityInteractEntity.js")
 var CommandKeyStatusUpdate = require("Game/Command/CommandKeyStatusUpdate.js")
 
@@ -12,6 +13,7 @@ var MessageRequestKeyStatusUpdate = function(key, pressed) {
     this.pressed = pressed;
 }
 module.exports = MessageRequestKeyStatusUpdate
+Message.ToServer.push(module.exports);
 
 MessageRequestKeyStatusUpdate.prototype.execute = function(gameData, player) {
     var entity = Global.gameData.world.entityWorld.objects[player.entityId];

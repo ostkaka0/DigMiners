@@ -3,11 +3,13 @@ var Deserialize = require("Engine/Serialization.js").Deserialize
 var IndexCounter = require("Engine/IndexCounter.js")
 
 var Global = require("Game/Global.js")
+var Message = require("game/Message/Message.js");
 
 var MessageSpectate = function(entityId) {
     this.entityId = entityId;
 }
 module.exports = MessageSpectate
+Message.ToClient.push(module.exports);
 
 MessageSpectate.prototype.execute = function(gameData) {
     global.spectateEntity = Global.gameData.world.entityWorld.objects[this.entityId];

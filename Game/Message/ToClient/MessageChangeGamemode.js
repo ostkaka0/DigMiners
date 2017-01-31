@@ -3,11 +3,13 @@ var Deserialize = require("Engine/Serialization.js").Deserialize
 var IndexCounter = require("Engine/IndexCounter.js")
 
 var Global = require("Game/Global.js")
+var Message = require("game/Message/Message.js");
 
 var MessageChangeGameMode = function() {
     this.gameModeId = Global.gameData.gameMode.id;
 }
 module.exports = MessageChangeGameMode
+Message.ToClient.push(module.exports);
 
 MessageChangeGameMode.prototype.execute = function(gameData) {
     // TODO: Don't reload page

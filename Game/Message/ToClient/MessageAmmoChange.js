@@ -4,6 +4,7 @@ var IndexCounter = require("Engine/IndexCounter.js")
 var Event = require("Engine/Core/Event.js")
 
 var Global = require("Game/Global.js")
+var Message = require("game/Message/Message.js");
 var Ammo = require("Game/Entity/Ammo.js")
 
 var MessageAmmoChange = function(entity, itemIds) {
@@ -15,6 +16,7 @@ var MessageAmmoChange = function(entity, itemIds) {
     }
 }
 module.exports = MessageAmmoChange
+Message.ToClient.push(module.exports);
 
 MessageAmmoChange.prototype.execute = function(gameData) {
 

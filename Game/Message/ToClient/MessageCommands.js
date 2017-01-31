@@ -4,12 +4,14 @@ var IndexCounter = require("Engine/IndexCounter.js")
 
 var Config = require("Game/Config.js")
 var Global = require("Game/Global.js")
+var Message = require("game/Message/Message.js");
 
 var MessageCommands = function() {
     this.tickId = (isServer) ? Global.gameData.world.tickId : 0;
     this.commands = (isServer) ? Global.gameData.world.commands : [];
 }
 module.exports = MessageCommands
+Message.ToClient.push(module.exports);
 
 MessageCommands.prototype.execute = function(gameData) {
     if (Config.fakeLag == 0 && Config.fakeJitter == 0) {

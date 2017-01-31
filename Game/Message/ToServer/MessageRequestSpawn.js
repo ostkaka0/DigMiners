@@ -7,6 +7,7 @@ var IndexCounter = require("Engine/IndexCounter.js")
 var Global = require("Game/Global.js")
 var Config = require("Game/Config.js")
 var PlayerClass = require("Game/PlayerClass.js")
+var Message = require("game/Message/Message.js");
 var CommandEntitySpawn = require("Game/Command/CommandEntitySpawn.js")
 var CommandPlayerSpawn = require("Game/Command/CommandPlayerSpawn.js")
 var MessageSpectate = require("Game/Message/ToClient/MessageSpectate.js")
@@ -17,6 +18,7 @@ var MessageRequestSpawn = function(playerName, classId) {
     this.classId = classId;
 }
 module.exports = MessageRequestSpawn
+Message.ToServer.push(module.exports);
 
 MessageRequestSpawn.prototype.execute = function(gameData, player) {
     if (player.entity != null && player.entityId != null) return;

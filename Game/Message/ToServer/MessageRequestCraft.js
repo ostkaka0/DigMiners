@@ -10,6 +10,7 @@ var MessageRequestCraft = function(recipeId) {
     this.recipeId = recipeId;
 }
 module.exports = MessageRequestCraft
+Message.ToServer.push(module.exports);
 
 MessageRequestCraft.prototype.execute = function(gameData, player) {
     var playerEntity = Global.gameData.entityWorld.objects[player.entityId];

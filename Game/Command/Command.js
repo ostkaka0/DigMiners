@@ -1,6 +1,6 @@
-var TypeRegister = "Engine/TypeRegister.js"
+var TypeRegister = require("Engine/TypeRegister.js")
 
-module.exports.Register = [];
-module.exports.init = function() {
-    TypeRegister.sort(module.exports.Register);
+exports.Register = [];
+exports.init = function() {
+    TypeRegister.sort(exports.Register);
 }

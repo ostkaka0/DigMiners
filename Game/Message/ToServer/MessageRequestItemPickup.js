@@ -6,6 +6,7 @@ var IndexCounter = require("Engine/IndexCounter.js")
 
 var Global = require("Game/Global.js")
 var Config = require("Game/Config.js")
+var Message = require("game/Message/Message.js");
 var CommandEntityInventory = require("Game/Command/CommandEntityInventory.js")
 var CommandPlayerOreInventory= require("Game/Command/CommandPlayerOreInventory.js")
 var CommandEntityDestroy = require("Game/Command/CommandEntityDestroy.js")
@@ -14,6 +15,7 @@ var MessageRequestItemPickup = function(entityId) {
     this.entityId = entityId;
 }
 module.exports = MessageRequestItemPickup
+Message.ToServer.push(module.exports);
 
 MessageRequestItemPickup.prototype.execute = function(gameData, player) {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];
