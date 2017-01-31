@@ -22,14 +22,14 @@ CommandEntityAnimate.prototype.execute = function() {
     }
 }
 
-CommandEntityAnimate.prototype.Serialize = function(byteArray, index) {
+CommandEntityAnimate.prototype.serialize = function(byteArray, index) {
     Serialize.int32(byteArray, index, this.entityId);
     Serialize.utf8(byteArray, index, this.bodypart);
     Serialize.utf8(byteArray, index, this.animation);
     Serialize.fix(byteArray, index, this.speed);
 }
 
-CommandEntityAnimate.prototype.Deserialize = function(byteArray, index) {
+CommandEntityAnimate.prototype.deserialize = function(byteArray, index) {
     this.entityId = Deserialize.int32(byteArray, index);
     this.bodypart = Deserialize.utf8(byteArray, index);
     this.animation = Deserialize.utf8(byteArray, index);
