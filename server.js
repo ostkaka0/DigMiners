@@ -69,7 +69,6 @@ global.clearCommands = function() {
 }
 
 global.connections = new Array(); // key socketId, value player object
-console.log(gameData);
 gameData.init();
 var zindices = {};
 
@@ -77,7 +76,6 @@ var firstTickTime = process.hrtime();
 var tickNum = 0;
 var skippedTicks = 0;
 var messageCallbacks = {};
-
 
 var names = ["Runny", "Buttercup", "Dinky", "Stinky", "Crusty",
     "Greasy", "Gidget", "Cheesypoof", "Lumpy", "Wacky", "Tiny", "Flunky",
@@ -89,9 +87,6 @@ var lastnames = ["face", "dip", "nose", "brain", "head", "breath",
     "honker", "toes", "buns", "mister", "fanny", "squirt", "chunks",
     "brains", "wit", "juice", "shower"];
 
-
-
-console.log(gameData.spawnPoints);
 // Add team monster spawners
 /*Object.keys(gameData.spawnPoints).forEach(function(teamId) {
     console.log("Team: " + teamId);

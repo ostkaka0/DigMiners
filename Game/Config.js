@@ -65,7 +65,6 @@ var Config = exports;
 
 Config.init = function() {
     TypeRegister.sort(Command.Register);
-    console.log(Command.Register);
     Object.assign(Config, {
         port: 3000,
         itemPickupDistance: 2.0,
