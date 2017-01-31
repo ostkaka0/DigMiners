@@ -1,5 +1,8 @@
 
 var $ = require("jquery")
+global.jQuery = $;
+global.Tether = require('tether')
+var bootstrap = require('bootstrap')
 var PIXI = require("pixi.js")
 
 var fix = require("Engine/Core/Fix.js")
