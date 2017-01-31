@@ -22,6 +22,8 @@ var entityFunctionPhysicsBodySimulate = require("game/Entity/Physics.js")
 var entityFunctionProjectileSimulate = require("game/ProjectilePhysics.js").entityFunctionProjectileSimulate
 var CommandParticles = require("game/Command/CommandParticles.js")
 var CommandBlockStrength = require("game/Command/CommandBlockStrength.js")
+var CommandEntityInteractEntity = require("game/Command/CommandEntityInteractEntity.js")
+var CommandCollisions = require("game/Command/CommandCollisions.js")
 var InventoryHUD = require("game/GUI/InventoryHUD.js")
 var ParticleFunctions = require("game/ParticleFunctions.js")
 
@@ -74,6 +76,26 @@ World.prototype.tick = function(dt) {
         });
     });
     this.entityWorld.update();
+
+    if (isServer) {
+        gameData.world.entityWorld.objectArray.forEach(function(entity) {
+            if (entity.behaviourContainer)
+                entity.behaviourContainer.update();
+            //TODO: 20 magic number
+            if (entity.interacter && entity.interacter.interacting && (!entity.interacter.lastCheck || gameData.world.tickId - entity.interacter.lastCheck > 20)) {
+                var interactableEntity = gameData.world.entityWorld.objects[entity.interacter.interacting];
+                if (interactableEntity) {
+                    if (!Interactable.canInteract(interactableEntity, entity)) {
+                        sendCommand(new CommandEntityInteractEntity(entity.id, interactableEntity.id, false));
+                        entity.interacter.interacting = null;
+                        entity.interacter.lastCheck = null;
+                    }
+                }
+                entity.interacter.lastCheck = gameData.world.tickId;
+            }
+        });
+    }
+
     this.tickId++;
 }
 
@@ -92,6 +114,12 @@ World.prototype.initializeEvents = function() {
     if (this.idList) {
         var onObjectRemove = function(object) { this.idList.remove(object.id); }.bind(this);
         Event.subscribe(this.entityWorld.onRemove, this, onObjectRemove);
+    }
+
+    if (isServer) {
+        this.physicsWorld.onCollision.push(function(collisions) {
+            sendCommand(new CommandCollisions(collisions));
+        });
     }
 
     Event.subscribe(Projectile.Events.onHit, this, function(projectileEntity, hitPos) {
