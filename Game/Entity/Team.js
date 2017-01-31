@@ -1,6 +1,8 @@
 var Serialize = require("Engine/Serialization.js").Serialize
 var Deserialize = require("Engine/Serialization.js").Deserialize
 
+var EntityRegister = require("Game/Entity/Register.js")
+
 var Teams = {
     None: 0,
     Human: 1,
@@ -15,6 +17,7 @@ var Team = function(value) {
     this.value = value;
 }
 module.exports = Team
+EntityRegister.push(module.exports);
 Team.Enum = Teams
 
 Team.prototype.name = team.name; function team() { };

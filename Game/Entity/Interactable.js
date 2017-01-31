@@ -2,6 +2,7 @@ var Serialize = require("Engine/Serialization.js").Serialize
 var Deserialize = require("Engine/Serialization.js").Deserialize
 var Global = require("Game/Global.js")
 var Event = require("Engine/Core/Event.js")
+var EntityRegister = require("Game/Entity/Register.js")
 
 var Interactable = function(canInteractFunction) {
     this.interacting = [];
@@ -9,6 +10,7 @@ var Interactable = function(canInteractFunction) {
     this.canInteractFunction.bind(this);
 }
 module.exports = Interactable
+EntityRegister.push(module.exports);
 Interactable.Events = {};
 Interactable.Events.onInteract = [];
 Interactable.Events.onFinishInteract = [];

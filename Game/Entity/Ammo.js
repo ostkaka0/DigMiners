@@ -1,8 +1,11 @@
 var Serialize = require("Engine/Serialization.js").Serialize
 var Deserialize = require("Engine/Serialization.js").Deserialize
 
+var EntityRegister = require("Game/Entity/Register.js")
+
 var Ammo = function() { }
 module.exports = Ammo
+EntityRegister.push(module.exports);
 Ammo.Events = {};
 Ammo.Events.onChange = [];
 

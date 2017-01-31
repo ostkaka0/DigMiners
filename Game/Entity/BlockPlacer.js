@@ -6,6 +6,7 @@ var Config = require("Game/Config.js")
 var CommandEntityInventory = require("Game/Command/CommandEntityInventory.js")
 var CommandPlaceBlock = require("Game/Command/CommandPlaceBlock.js")
 var Global = require("Game/Global.js")
+var EntityRegister = require("Game/Entity/Register.js")
 
 var BlockPlacer = function(blockPos, blockId, duration, entityId) {
     this.blockPos = blockPos;
@@ -14,6 +15,7 @@ var BlockPlacer = function(blockPos, blockId, duration, entityId) {
     this.entityId = entityId;
 }
 module.exports = BlockPlacer
+EntityRegister.push(module.exports);
 
 BlockPlacer.prototype.name = blockPlacer.name; function blockPlacer() { };
 

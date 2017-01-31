@@ -1,5 +1,6 @@
 var Serialize = require("Engine/Serialization.js").Serialize
 var Deserialize = require("Engine/Serialization.js").Deserialize
+var EntityRegister = require("Game/Entity/Register.js")
 
 var ItemComponent = function(itemId, amount) {
     this.itemId = itemId;
@@ -7,6 +8,7 @@ var ItemComponent = function(itemId, amount) {
     this.dropped = new Date();
 }
 module.exports = ItemComponent
+EntityRegister.push(module.exports);
 
 ItemComponent.prototype.name = item.name; function item() { };
 
