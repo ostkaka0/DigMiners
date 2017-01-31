@@ -123,14 +123,12 @@ for (var i = 0; i < 10; i++) {
     carveCircle(gameData, pos[0], pos[1], 6.0, 100.0);
 }*/
 
-gameData.world.physicsWorld.onCollision.push(function(collisions) {
-    sendCommand(new CommandCollisions(collisions));
-});
 
-Event.subscribe(gameData.world.entityWorld.onAdd, global, function(entity) {
+
+/*Event.subscribe(gameData.world.entityWorld.onAdd, global, function(entity) {
     if (entity.controlledByPlayer) {
 
-        /*// give player shovel at join
+        / * // give player shovel at join
         sendCommand(new CommandEntityInventory(entity.id, CommandEntityInventory.Actions.ADD_ITEM, Items.Types.SteelShovel.id, 1));
 
         // give player dynamite at join
@@ -147,7 +145,7 @@ Event.subscribe(gameData.world.entityWorld.onAdd, global, function(entity) {
         sendCommand(new CommandEntityInventory(entity.id, CommandEntityInventory.Actions.ADD_ITEM, Items.Types.WeaponPistol.id, 1));
         sendCommand(new CommandEntityInventory(entity.id, CommandEntityInventory.Actions.ADD_ITEM, Items.Types.WeaponAssaultRifle.id, 1));
         sendCommand(new CommandEntityInventory(entity.id, CommandEntityInventory.Actions.ADD_ITEM, Items.Types.WeaponShotgun.id, 1));
-        sendCommand(new CommandEntityInventory(entity.id, CommandEntityInventory.Actions.ADD_ITEM, Items.Types.WeaponSniperRifle.id, 1));*/
+        sendCommand(new CommandEntityInventory(entity.id, CommandEntityInventory.Actions.ADD_ITEM, Items.Types.WeaponSniperRifle.id, 1)); * /
 
         // (TEMPORARY) spawn monsters on player join
         for (var i = 0; i < 0; ++i) {
@@ -160,7 +158,7 @@ Event.subscribe(gameData.world.entityWorld.onAdd, global, function(entity) {
             sendCommand(new CommandEntityInventory(monsterEntityId, CommandEntityInventory.Actions.ADD_ITEM, Items.Types.Egg.id, 1000));
         }
     }
-});
+});*/
 
 var update = function() {
     var server_has_players = (Object.keys(connections).length > 0);//!gameData.playerWorld || gameData.playerWorld.length > 0);
@@ -192,22 +190,7 @@ var tick = function(dt) {
 
     gameData.tick(dt);
 
-    gameData.world.entityWorld.objectArray.forEach(function(entity) {
-        if (entity.behaviourContainer)
-            entity.behaviourContainer.update();
-        //TODO: 20 magic number
-        if (entity.interacter && entity.interacter.interacting && (!entity.interacter.lastCheck || gameData.world.tickId - entity.interacter.lastCheck > 20)) {
-            var interactableEntity = gameData.world.entityWorld.objects[entity.interacter.interacting];
-            if (interactableEntity) {
-                if (!Interactable.canInteract(interactableEntity, entity)) {
-                    sendCommand(new CommandEntityInteractEntity(entity.id, interactableEntity.id, false));
-                    entity.interacter.interacting = null;
-                    entity.interacter.lastCheck = null;
-                }
-            }
-            entity.interacter.lastCheck = gameData.world.tickId;
-        }
-    });
+
     var tick_end = process.hrtime(tick_begin);
     totalTickTime += (tick_end[0] * 1e3 + tick_end[1] / 1e6);
     ++currentMeasureTicks;
@@ -244,17 +227,6 @@ io.on("connection", function(socket) {
 
     socket.on('message', function(msg) {
         console.log("Message = require(" + socket.id + ": " + msg);
-    });
-
-    socket.on('command', function(data) {
-        //setTimeout(function() {
-        var counter = new IndexCounter();
-        var commandId = deserializeInt32(data, counter);
-        var command = new Config.commandTypes.list[commandId]();
-        command.deserialize(data, counter);
-        sendCommand(command);
-        //}, 300);
-        //console.log("Received " + data[0] + " and " + JSON.stringify(data[1]));
     });
 
     socket.on('ping', function() {
