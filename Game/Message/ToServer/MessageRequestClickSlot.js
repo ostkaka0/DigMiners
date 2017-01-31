@@ -6,6 +6,7 @@ var IndexCounter = require("Engine/IndexCounter.js")
 
 var Global = require("Game/Global.js")
 var Config = require("Game/Config.js")
+var Message = require("game/Message/Message.js");
 var CommandEntityEquipItem = require("Game/Command/CommandEntityEquipItem.js")
 var CommandEntitySpawn = require("Game/Command/CommandEntitySpawn.js")
 var CommandEntityInventory = require("Game/Command/CommandEntityInventory.js")
@@ -16,6 +17,7 @@ var MessageRequestClickSlot = function(inventoryId, slotId, clickType) {
     this.clickType = clickType;
 }
 module.exports = MessageRequestClickSlot
+Message.ToServer.push(module.exports);
 
 MessageRequestClickSlot.prototype.execute = function(gameData, player) {
     var entity = Global.gameData.world.entityWorld.objects[player.entityId];

@@ -5,6 +5,7 @@ var fix = require("Engine/Core/Fix.js")
 var v2 = require("Engine/Core/v2.js")
 
 var Global = require("Game/Global.js")
+var Message = require("game/Message/Message.js");
 var CommandEntityRotate = require("Game/Command/CommandEntityRotate.js")
 
 var MessageRequestRotate = function(deltaWorldCursorPos) {
@@ -12,6 +13,7 @@ var MessageRequestRotate = function(deltaWorldCursorPos) {
     //this.direction = direction;
 }
 module.exports = MessageRequestRotate
+Message.ToServer.push(module.exports);
 
 MessageRequestRotate.prototype.execute = function(gameData, player) {
     if (!this.deltaWorldCursorPos) return;

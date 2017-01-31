@@ -5,12 +5,14 @@ var BlockWorld = require("Engine/BlockWorld.js")
 
 var Global = require("Game/Global.js")
 var Config = require("Game/Config.js")
+var Message = require("game/Message/Message.js");
 
 var MessageRequestClickBlock = function(blockPos, clickType) {
     this.blockPos = blockPos;
     this.clickType = clickType;
 }
 module.exports = MessageRequestClickBlock
+Message.ToServer.push(module.exports);
 
 MessageRequestClickBlock.prototype.execute = function(gameData, player) {
     var entity = Global.gameData.world.entityWorld.objects[player.entityId];

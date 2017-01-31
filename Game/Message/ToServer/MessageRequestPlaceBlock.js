@@ -6,6 +6,7 @@ var BlockChunk = require("Engine/BlockChunk.js")
 
 var Global = require("Game/Global.js")
 var Config = require("Game/Config.js")
+var Message = require("game/Message/Message.js");
 var CommandEntityBuild = require("Game/Command/CommandEntityBuild.js")
 var Blocks = require("Game/Blocks.js")
 
@@ -15,6 +16,7 @@ var MessageRequestPlaceBlock = function(stackId, x, y) {
     this.y = Math.floor(y);
 }
 module.exports = MessageRequestPlaceBlock
+Message.ToServer.push(module.exports);
 
 MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
     var entity = Global.gameData.world.entityWorld.objects[player.entityId];

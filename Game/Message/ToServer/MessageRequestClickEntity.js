@@ -3,12 +3,14 @@ var Deserialize = require("Engine/Serialization.js").Deserialize
 var IndexCounter = require("Engine/IndexCounter.js")
 
 var Global = require("Game/Global.js")
+var Message = require("game/Message/Message.js");
 
 var MessageRequestClickEntity = function(entityId, clickType) {
     this.entityId = entityId;
     this.clickType = clickType;
 }
 module.exports = MessageRequestClickEntity
+Message.ToServer.push(module.exports);
 
 MessageRequestClickEntity.prototype.execute = function(gameData, player) {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

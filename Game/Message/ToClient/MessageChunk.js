@@ -7,6 +7,7 @@ var compressRLE = require("Engine/Compress.js").compressRLE
 var decompressRLE = require("Engine/Compress.js").decompressRLE
 
 var Global = require("Game/Global.js")
+var Message = require("game/Message/Message.js");
 
 var MessageChunk = function(chunk, blockChunk, x, y) {
     this.chunk = chunk || new Chunk();
@@ -16,6 +17,7 @@ var MessageChunk = function(chunk, blockChunk, x, y) {
     this.y = y;
 }
 module.exports = MessageChunk
+Message.ToClient.push(module.exports);
 
 MessageChunk.prototype.execute = function(gameData) {
     if (Global.gameData.world.generator)

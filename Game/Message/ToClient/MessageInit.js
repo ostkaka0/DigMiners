@@ -4,6 +4,7 @@ var IndexCounter = require("Engine/IndexCounter.js")
 
 var Global = require("Game/Global.js")
 var Config = require("Game/Config.js")
+var Message = require("game/Message/Message.js");
 var Generator = require("Game/Generator.js")
 var Player = require("Game/Player.js")
 var HUD = require("Game/GUI/HUD.js")
@@ -20,6 +21,7 @@ var MessageInit = function(gameData, player) {
     Global.gameData.world.entityWorld.update();
 }
 module.exports = MessageInit
+Message.ToClient.push(module.exports);
 
 MessageInit.prototype.execute = function(gameData) {
     Global.gameData.world.tickId = this.tickId;
