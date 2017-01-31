@@ -6,6 +6,8 @@ var Global = require("Game/Global.js")
 var Command = require("Game/Command/Command.js")
 var Entity = require("Game/Entity/Entity.js")
 
+var CommandEntityEquipItem = require("Game/Command/CommandEntityEquipItem.js")
+
 var CommandEntityInventoryActions = {
     ADD_ITEM: 0,
     REMOVE_ITEM: 1,
@@ -29,15 +31,17 @@ CommandEntityInventory.prototype.execute = function() {
         entity.inventory.addItem(Global.gameData, this.itemId, this.amount);
     } else if (this.actionId == CommandEntityInventory.Actions.REMOVE_ITEM) {
         var removed = entity.inventory.removeItem(Global.gameData, this.itemId, this.amount);
-        for (var i = 0; i < removed.length; ++i) {
-            // Dequip item when removed from inventory
-            var entry = removed[i];
-            var stackId = entry[0];
-            var item = entry[1];
-            var itemType = Config.itemRegister[item.id];
-            if (item.equipped)
-                sendCommand(new CommandEntityEquipItem(entity.id, stackId, itemType.id, false));
-        };
+        if (isServer) {
+            for (var i = 0; i < removed.length; ++i) {
+                // Dequip item when removed from inventory
+                var entry = removed[i];
+                var stackId = entry[0];
+                var item = entry[1];
+                var itemType = Config.itemRegister[item.id];
+                if (item.equipped)
+                    sendCommand(new CommandEntityEquipItem(entity.id, stackId, itemType.id, false));
+            };
+        }
     } else if (this.actionId == CommandEntityInventory.Actions.DROP_STACK) {
         var item = entity.inventory.removeStack(this.itemId);
     }
