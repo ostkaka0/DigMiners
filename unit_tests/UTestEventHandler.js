@@ -1,4 +1,4 @@
-var EventHandler = require("../engine/EventHandler.js")
+var EventHandler = require("../Engine/EventHandler.js")
 
 g_unitTests.testEventHandler = function() {
     var eventHandler = new EventHandler("test", "bert", "karl");

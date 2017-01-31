@@ -24,6 +24,6 @@ gulp.task("rollup", function() {
 
 
 gulp.task("watch", function() {
-    gulp.watch(["engine/**/*.js"), "game/**/*.js"), "tests/**/*.js"), "DigMiners.js")], ["rollup"]);
+    gulp.watch(["Engine/**/*.js"), "Game/**/*.js"), "tests/**/*.js"), "DigMiners.js")], ["rollup"]);
 });
 gulp.task("default", [ "rollup", "watch" ]);
