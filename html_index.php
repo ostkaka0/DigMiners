@@ -21,9 +21,9 @@
             var isServer = false;
             window.vars = { 
             <?php
-                $ip = (isset($_GET["ip"]) ? '"' . $_GET["ip"] . '"' : '"digwar.io"');
+                $ip = (isset($_GET["ip"]) ? '"' . $_GET["ip"] . '"' : '"127.0.0.1"');
                 if(empty($ip))
-                    $ip = '"digwar.io"';
+                    $ip = '"127.0.0.1"';
                 echo ("ip: " . $ip);
             ?>
         };
@@ -36,6 +36,6 @@
                 return $fileName . "?" . filemtime($fileName);
             }
         ?>
-        <script type="text/javascript" src="<?php echo scriptVersion("src.js"))?>"></script>
+        <script type="text/javascript" src="<?php echo scriptVersion("src.js")?>"></script>
     </body>
 </html>
