@@ -59,7 +59,7 @@
             addScriptsRecursive("unit_tests");
             echo '<script type="text/javascript"> runUnitTests(); </script>';
 
-            // Run game/test
+            // Run Game/test
             if (isset($_GET["test"]) && preg_match("/^[a-zA-Z0-9_]*$/i", $_GET["test"]))
                 addScript("tests/" . $_GET["test"] . ".js"), "text/javascript");
             else

@@ -1,8 +1,8 @@
-var Canvas = require("../engine/Canvas.js")
-var Map2D = require("../engine/Core/Map2d.js")
-var BlockChunk = require("../engine/BlockChunk.js")
-var BlockChunkRenderer = require("../engine/BlockChunkRenderer.js")
-var gameLoop = require("../engine/GameLoop.js")
+var Canvas = require("../Engine/Canvas.js")
+var Map2D = require("../Engine/Core/Map2d.js")
+var BlockChunk = require("../Engine/BlockChunk.js")
+var BlockChunkRenderer = require("../Engine/BlockChunkRenderer.js")
+var gameLoop = require("../Engine/GameLoop.js")
 
 var "../lib_front_end/apixi.js")
 
