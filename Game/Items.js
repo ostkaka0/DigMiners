@@ -48,6 +48,7 @@ Items.Functions.Shovel = function(entity, item) {
                 strength -= 16 * (Entity.getBlockBreakSpeed(entity) / blockType.hardness);
                 var x = chunkPos[0] * BlockChunk.dim + localPos[0];
                 var y = chunkPos[1] * BlockChunk.dim + localPos[1];
+                console.log("BREAKING BLOCK");
                 sendCommand(new CommandBlockStrength(x, y, Math.max(strength, 0)));
                 return;
             }
