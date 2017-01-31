@@ -3,19 +3,31 @@ var v2 = require("Engine/Core/v2.js")
 var TileWorld = require("Engine/TileWorld.js")
 var BlockWorld = require("Engine/BlockWorld.js")
 var BlockChunk = require("Engine/BlockChunk.js")
+var Sprite = require("Engine/Animation/Sprite.js")
+var BodyPart = require("Engine/Animation/BodyPart.js")
 
 var Blocks = require("Game/Blocks.js")
 var Tiles = require("Game/Tiles.js")
 var Projectiles = require("Game/Projectiles.js")
 var Entity = require("Game/Entity/Entity.js")
+var PhysicsBody = require("Game/Entity/PhysicsBody.js")
+var Bodyparts = require("Game/Entity/Bodyparts.js")
+var Drawable = require("Game/Entity/Drawable.js")
+var ParticleFunctions = require("Game/ParticleFunctions.js")
+var ExplosionFunctions = require("Game/ExplosionFunctions.js")
 
 var Config = require("Game/Config.js")
 var Global = require("Game/Global.js")
 
-var CommandBlockStrength = require("Game/Command/CommandEntityReloadWeapon.js")
+var CommandBlockStrength = require("Game/Command/CommandBlockStrength.js")
 var CommandEntityDig = require("Game/Command/CommandEntityDig.js")
 var CommandProjectileSpawn = require("Game/Command/CommandProjectileSpawn.js")
 var CommandEntityReloadWeapon = require("Game/Command/CommandEntityReloadWeapon.js")
+var CommandEntityInventory = require("Game/Command/CommandEntityInventory.js")
+var CommandEntitySpawn = require("Game/Command/CommandEntitySpawn.js")
+var CommandEntityAnimate = require("Game/Command/CommandEntityAnimate.js")
+var CommandParticles = require("Game/Command/CommandParticles.js")
+var CommandEntityDestroy = require("Game/Command/CommandEntityDestroy.js")
 
 var Items = module.exports;
 Items.Types = {};
@@ -180,7 +192,7 @@ Items.Functions.ThrowableDynamite = function(entity, itemType) {
         if (!itemType || !entity.inventory) return;
         var stackId = entity.inventory.getEquippedStackId("tool");
         if (stackId == null) return;
-        sendCommand(new CommandEntityInventory(entity.id, InventoryActions.REMOVE_ITEM, itemType.id, 1));
+        sendCommand(new CommandEntityInventory(entity.id, CommandEntityInventory.Actions.REMOVE_ITEM, itemType.id, 1));
 
         // Eject entity from playerEntity
         var physicsBody = entity.physicsBody;
@@ -218,7 +230,7 @@ Items.Functions.ThrowableDynamite = function(entity, itemType) {
             if (this.isActive && !this.isDead) {
                 sendCommand(new CommandParticles(ParticleFunctions.ExplosionParticles.id, this.physicsBody.getPos(), 10.0));
                 sendCommand(new CommandEntityDestroy(this.id));
-                createExplosion(this.physicsBody.getPos(), 3.0, 50.0, 250.0, 1.0, attacker);
+                ExplosionFunctions.createExplosion(this.physicsBody.getPos(), 3.0, 50.0, 250.0, 1.0, attacker);
             }
         }.bind(itemEntity, entity), timeout);
     }

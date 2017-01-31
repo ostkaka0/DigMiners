@@ -22,7 +22,6 @@ CommandEntityHealthChange.prototype.execute = function() {
     if (entity.movement)
         entity.movement.disabledCooldown = 40;
     entity.health.health = (entity.health.health + this.healthChange < 0 ? 0 : entity.health.health + this.healthChange);
-    console.log(Health);
     Event.trigger(Health.Events.onChange, entity);
     if (entity.health.health <= 0)
         Event.trigger(Health.Events.onDeath, entity);
