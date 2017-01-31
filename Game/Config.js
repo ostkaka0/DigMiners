@@ -54,7 +54,6 @@ var Config = exports;
 Config.init = function() {
     Command.init();
     Message.init();
-    console.log(Message.Register);
     Object.assign(Config, {
         port: 3000,
         itemPickupDistance: 2.0,
@@ -71,10 +70,6 @@ Config.init = function() {
         particleRegister: ObjectRegister.addByObject([], Particles),
         particleFunctionRegister: ObjectRegister.addByObject([], ParticleFunctions),
         potionEffectTypeRegister: ObjectRegister.addByObject([], PotionEffectTypes),
-        commandTypes: Command.Register,
-        messagesToClient: Message.ToClient,
-        messagesToServer: Message.ToServer,
-        messageTypes: Message.Register,
         componentTypes: TypeRegister.addByArray([], [PhysicsBody, Movement, Drawable, Bodyparts, ItemComponent, Health, ControlledByPlayer, NameComponent,
             EquippedItems, Projectile, BlockPlacer, PotionEffects, Team, Inventory, Ammo, Chest, Interactable, Interacter]),
         gameModeRegister: TypeRegister.addByArray([], [/*GameModeBaseWar, */GameModeZombieInvasion]),

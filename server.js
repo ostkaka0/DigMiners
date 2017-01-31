@@ -11,6 +11,7 @@ var Blocks = require("Game/Blocks.js")
 var Tiles = require("Game/Tiles.js")
 var entityTemplateTurret = require("Game/Entity/EntityTemplates/Turret.js")
 var Team = require("Game/Entity/Team.js")
+var Message = require("Game/Message/Message.js")
 
 var CommandEntitySpawn = require("Game/Command/CommandEntitySpawn.js")
 var CommandEntityInventory = require("Game/Command/CommandEntityInventory.js")
@@ -238,7 +239,7 @@ io.on("connection", function(socket) {
             io.sockets.emit("chat", player.name + ": " + text);
     });
 
-    Config.messagesToServer.forEach(function(messageType) {
+    Message.ToServer.forEach(function(messageType) {
         socket.on(messageType.prototype.idString, function(data) {
             var message = new messageType();
             message.receive(gameData, data);
