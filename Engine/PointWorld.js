@@ -66,8 +66,18 @@ PointWorld.prototype.findInRadius = function(points, pos, radius, node = 0, node
 
     for (var i = 0; i < 4; i++) {
         var child = this.quadtree.array[node | i];
-        if (child)
-            this.findInRadius(points, pos, radius, child, Quadtree.calcChildPos(nodePos, i));
+        if (!child) return;
+
+        var childPos = Quadtree.calcChildPos(nodePos, i);
+        var delta = [this.size * (-1 + 2 * childPos[0] / childPos[2]), this.size * (-1 + 2 * childPos[1] / childPos[2])];
+        v2.sub(delta, pos, delta);
+        delta = [Math.abs(delta[0] + 0.5) - 0.5, Math.abs(delta[1] + 0.5) - 0.5];
+        var disSquared = v2.length(delta);
+        var pointRadius = this.size / Math.pow(2, childPos[2]);
+        if (disSquared >= radius * radius + 2 * radius * pointRadius + pointRadius * pointRadius)
+            return;
+
+        this.findInRadius(points, pos, radius, child, childPos);
     }
 }
 

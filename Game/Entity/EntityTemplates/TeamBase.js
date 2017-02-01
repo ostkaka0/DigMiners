@@ -1,6 +1,27 @@
 var fix = require("Engine/Core/Fix.js")
 var v2 = require("Engine/Core/v2.js")
 var BodyPart = require("Engine/Animation/BodyPart.js")
+var Sprite = require("Engine/Animation/Sprite.js")
+
+
+var Spawner = require("Game/Entity/Spawner.js")
+var entityTemplateMonster = require("Game/Entity/EntityTemplates/Monster.js")
+var PhysicsBody = require("Game/Entity/PhysicsBody.js")
+var Movement = require("Game/Entity/Movement.js")
+var Bodyparts = require("Game/Entity/Bodyparts.js")
+var Drawable = require("Game/Entity/Drawable.js")
+var NameComponent = require("Game/Entity/NameComponent.js")
+var Team = require("Game/Entity/Team.js")
+var Health = require("Game/Entity/Health.js")
+var Ammo = require("Game/Entity/Ammo.js")
+var Inventory = require("Game/Entity/Inventory.js")
+var EquippedItems = require("Game/Entity/EquippedItems.js")
+var PotionEffects = require("Game/Entity/PotionEffects.js")
+var BehaviourContainer = require("Game/Entity/AI/BehaviourContainer.js")
+var DigObstacleBehaviour = require("Game/Entity/AI/DigObstacleBehaviour.js")
+var TargetPlayerBehaviour = require("Game/Entity/AI/TargetPlayerBehaviour.js")
+var WalkToEnemyBehaviour = require("Game/Entity/AI/WalkToEnemyBehaviour.js")
+var RandomWalkBehaviour = require("Game/Entity/AI/RandomWalkBehaviour.js")
 
 var Items = require("Game/Items.js")
 var Team = require("Game/Entity/Team.js")
@@ -11,7 +32,7 @@ module.exports = function(entityId, pos, teamId, maxEntities, radius, duration) 
     duration = duration || 60;
 
     var entity = {};
-    entity.spawner = new Spawner(entityTemplateMonster, pos, maxEntities, radius, duration, [{ id: Items.Types.WeaponPistol.id, quantity: 1 }, { id: Items.Types.RustyShovel.id, quantity: 1 }, { id: Items.Types.Egg.id, quantity: 1000 }], null, null, teamId);
+    entity.spawner = new Spawner(entityTemplateMonster, pos, maxEntities, radius, duration, [{ id: Items.Types.WeaponPistol.id, quantity: 1 }, { id: Items.Types.RustyShovel.id, quantity: 1 }], null, null, teamId);
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, null, 1000.0);
     entity.nameComponent = new NameComponent("Base");
 

@@ -48,6 +48,8 @@ var Interactable = require("Game/Entity/Interactable.js")
 var Interacter = require("Game/Entity/Interacter.js")
 
 var GameModeZombieInvasion = require("Game/GameMode/GameModeZombieInvasion.js")
+var GameModeSurvivalWar = require("Game/GameMode/GameModeSurvivalWar.js")
+var GameModeBaseWar = require("Game/GameMode/GameModeBaseWar.js")
 
 var Config = exports;
 //module.exports = Config
@@ -75,6 +77,6 @@ Config.init = function() {
         particleRegister: ObjectRegister.addByObject([], Particles),
         particleFunctionRegister: ObjectRegister.addByObject([], ParticleFunctions),
         potionEffectTypeRegister: ObjectRegister.addByObject([], PotionEffectTypes),
-        gameModeRegister: TypeRegister.addByArray([], [/*GameModeBaseWar, */GameModeZombieInvasion]),
+        gameModeRegister: TypeRegister.addByArray([], [/*GameModeBaseWar, */GameModeZombieInvasion/*, GameModeSurvivalWar*/]),
     });
 }
