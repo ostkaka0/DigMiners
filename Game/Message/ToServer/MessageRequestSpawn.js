@@ -32,7 +32,7 @@ MessageRequestSpawn.prototype.execute = function(gameData, player) {
     if (Global.gameData.gameMode.createEntity)
         entity = Global.gameData.gameMode.createEntity(player, entityId, this.classId);
     else {
-        var classType = PlayerClassRegister[this.classId];
+        var classType = PlayerClass.Register[this.classId];
         var teamId = Global.gameData.gameMode.teams[Math.random() * Global.gameData.gameMode.teams.length >> 0];
         entity = entityTemplatePlayer(player.id, entityId, player.name, classType, teamId);
 
