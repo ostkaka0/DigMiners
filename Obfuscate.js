@@ -42,27 +42,36 @@ var transform = function(file) {
 }
 
 function run() {
-    var b = browserify();
-    var stream = b
-        .add("./DigMiners.js")
-        //.add("./server.js")
-        //.transform(transform)
-        .bundle();
+    if (!fs.existsSync("html")) fs.mkdirSync("html");
+    if (!fs.existsSync("serverbuild")) fs.mkdirSync("serverbuild");
+
+    var scriptArray = [];
+    loadRecursive("Game", function(file) { scriptArray.push(file) });
+    console.log("Obfuscating client");
+    obfuscate(scriptArray.concat("DigMiners.js"), "html/src.js", function() {
+        console.log("Obfuscating server");
+        obfuscate(scriptArray.concat("server.js"), "serverbuild/server.js", function(){});
+
+        console.log("Copying...");
+        copyFile("html_index.php", outputPath + "index.php");
+        copyFile("style.css", outputPath + "style.css");
+        copyFile("bootstrap.min.css", outputPath + "bootstrap.min.css");
+        copyFile("tether.min.css", outputPath + "tether.min.css");
+        copyRecursive("data/", outputPath + "data");
+        console.log("Done!");
+    })
+}
+
+function obfuscate(scriptArray, output, callback) {
+    var b = browserify(scriptArray);
+    b.add("./DigMiners.js");
+    var stream = b.bundle();
 
     var src = "";
     var reservedKeywords = [];
 
-    console.log("Bundling...")
-    b.on("file", function(file, id, parent) {
-        process.stdout.write(".");
-        //console.log("reading", file);
-        //if (!id.endsWith(".js")) return;
-        //console.log(id);
-        //if (id.startsWith(".Game") || id.startsWith(".Engine"))
-        //    return;
-        //var fileSrc = fs.readFileSync(file, "utf-8");
-        //reservedKeywords = reservedKeywords.concat(NameMangler.reserveWords(fileSrc));
-    })
+    console.log("Bundling...");
+    b.on("file", function(file, id, parent) { process.stdout.write("."); });
     stream.on("data", function(data) { src += data; });
     stream.on("end", function() {
         console.log("\nBundling done!");
@@ -90,21 +99,13 @@ function run() {
             console.log(error);
         }
 
-        console.log("Copying...");
-
-        copyFile("html_index.php", outputPath + "index.php");
-        copyFile("style.css", outputPath + "style.css");
-        copyFile("bootstrap.min.css", outputPath + "bootstrap.min.css");
-        copyFile("tether.min.css", outputPath + "tether.min.css");
-        copyRecursive("data/", outputPath + "data");
-
-        fs.writeFile(outputPath + "src.js", src, function(err) {
+        fs.writeFile(output, src, function(err) {
             if (err)
                 console.log(err);
         });
 
         console.log("done!");
-
+        callback();
     });
 }
 
