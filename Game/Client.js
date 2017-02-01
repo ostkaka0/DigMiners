@@ -22,11 +22,11 @@ var Client = function(gameData, ip) {
 
     var port = Config.port;
     console.log("Connecting to " + ip + ":" + port + "...");
-    socket = io(ip + ":" + port, {
+    global.socket = io(ip + ":" + port, {
         reconnection: false
     });
-    sentInit2 = false;
-    playersReceived = 0;
+    global.sentInit2 = false;
+    global.playersReceived = 0;
 
     socket.on('connect', function() {
 
@@ -52,7 +52,7 @@ var Client = function(gameData, ip) {
     });
 
     socket.on('pong', function(time) {
-        ping = 2 * (Date.now() - time);
+        global.ping = 2 * (Date.now() - time);
     });
 
     Message.ToClient.forEach(function(messageType) {
