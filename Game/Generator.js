@@ -6,7 +6,7 @@ var Global = require("Game/Global.js")
 var Blocks = require("Game/Blocks.js")
 var Tiles = require("Game/Blocks.js")
 
-noise = require("lib/perlin.js").noise;
+var noise = require("lib/perlin.js").noise;
 
 var Generator = function(seed) {
     if (!seed)

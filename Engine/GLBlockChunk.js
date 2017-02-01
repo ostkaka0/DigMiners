@@ -19,7 +19,7 @@ GLBlockChunk.prototype.update = function(gl, gameData, blockChunk, chunkX, chunk
 
     for (var x = 0; x < BlockChunk.dim; x++) {
         for (var y = 0; y < BlockChunk.dim; y++) {
-            blockIds = [blockChunk.getForeground(x - 1, y - 1),
+            var blockIds = [blockChunk.getForeground(x - 1, y - 1),
             blockChunk.getForeground(x, y - 1),
             blockChunk.getForeground(x - 1, y),
             blockChunk.getForeground(x, y)];

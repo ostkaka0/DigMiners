@@ -3,7 +3,7 @@ var Deserialize = require("Engine/Serialization.js").Deserialize
 
 var Command = require("Game/Command/Command.js")
 
-CommandEntityAnimate = function(entityId, bodypart, animation, speed) {
+var CommandEntityAnimate = function(entityId, bodypart, animation, speed) {
     this.entityId = entityId;
     this.bodypart = bodypart;
     this.animation = animation;

@@ -56,6 +56,9 @@ Config.init = function() {
     Command.init();
     Message.init();
     EntityRegister.init();
+    console.log(Command);
+    console.log(Message);
+    console.log(EntityRegister);
     Object.assign(Config, {
         port: 3000,
         itemPickupDistance: 2.0,
@@ -72,7 +75,6 @@ Config.init = function() {
         particleRegister: ObjectRegister.addByObject([], Particles),
         particleFunctionRegister: ObjectRegister.addByObject([], ParticleFunctions),
         potionEffectTypeRegister: ObjectRegister.addByObject([], PotionEffectTypes),
-        componentTypes: EntityRegister,
         gameModeRegister: TypeRegister.addByArray([], [/*GameModeBaseWar, */GameModeZombieInvasion]),
     });
 }

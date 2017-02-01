@@ -26,7 +26,7 @@ Drawable.prototype.serialize = function(byteArray, index) {
     Serialize.int32(byteArray, index, Object.keys(this.sprites).length);
     for (var sprite in this.sprites) {
         Serialize.utf8(byteArray, index, sprite);
-        sprite = this.sprites[sprite];
+        var sprite = this.sprites[sprite];
         Serialize.utf8(byteArray, index, sprite.textureName);
         Serialize.v2(byteArray, index, sprite.offset);
         Serialize.int8(byteArray, index, (sprite.rotateWithBody ? 1 : 0));
@@ -67,7 +67,7 @@ Drawable.prototype.getSerializationSize = function() {
     var size = 8;
     for (var sprite in this.sprites) {
         size += Serialize.utf8Size(sprite);
-        sprite = this.sprites[sprite];
+        var sprite = this.sprites[sprite];
         size += Serialize.utf8Size((!sprite.textureName ? "" : sprite.textureName));
         size += 10;
     }
@@ -103,7 +103,7 @@ Drawable.prototype.positionSprites = function(x, y, angle) {
         return;
 
     for (var key in this.sprites) {
-        sprite = this.sprites[key];
+        var sprite = this.sprites[key];
         sprite.pos[0] = x + (sprite.offset ? sprite.offset[0] : 0);
         sprite.pos[1] = y + (sprite.offset ? sprite.offset[1] : 0);
         if (sprite.rotateWithBody)
@@ -143,7 +143,7 @@ Drawable.prototype.initializeBodyparts = function(bodyparts) {
 
 Drawable.prototype.remove = function(bodyparts) {
     for (var sprite in this.sprites) {
-        sprite = this.sprites[sprite];
+        var sprite = this.sprites[sprite];
         if (!isServer)
             this.container.remove(sprite);
     }

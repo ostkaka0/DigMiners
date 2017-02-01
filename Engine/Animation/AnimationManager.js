@@ -161,7 +161,7 @@ AnimationManager.prototype.update = function() {
 
                             if (bodypart.cycleInstance.runToEnd && bodypart.cycleInstance.currentFrame == 0) {
                                 bodypart.cycleInstance = false;
-                                bodypart.cycleInstance.finishing = false;
+                                //bodypart.cycleInstance.finishing = false;
                             }
                         } else
                             break;
