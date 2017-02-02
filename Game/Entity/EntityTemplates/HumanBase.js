@@ -10,7 +10,7 @@ var Sprite = require("Engine/Animation/Sprite.js")
 var BodyPart = require("Engine/Animation/BodyPart.js")
 var Health = require("Game/Entity/Health.js")
 
-module.exports = HumanBase = function(entityId, pos, teamId) {
+module.exports = function(entityId, pos, teamId) {
     var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, null, 1000.0);
     entity.nameComponent = new NameComponent("Base");
