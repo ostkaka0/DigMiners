@@ -88,7 +88,7 @@ function obfuscate(scriptArray, output, callback) {
         //src = NameMangler.mangle(src, reservedKeywords);
 
         console.log("Minifying...");
-        try {
+        /*try {
             var uglyResult = UglifyJS.minify(src, {
                 fromString: true,
                 mangleProperties: 2,
@@ -97,7 +97,7 @@ function obfuscate(scriptArray, output, callback) {
             src = uglyResult.code;
         } catch (error) {
             console.log(error);
-        }
+        }*/
 
         fs.writeFile(output, src, function(err) {
             if (err)

@@ -126,7 +126,7 @@ scan = function(source) {
         }
         else if(source.substring(i, i+2) == "/*") {
             do i++;
-            while(source.substring(i, i+2) != '*/');
+            while(source.substring(i, i+2) != '*/' && i < source.length);
             i += 2;
         }
 
@@ -152,7 +152,7 @@ scan = function(source) {
                     string += source.charAt(i);
                 }
                 i++;
-            } while(source.charAt(i) != '"' && source.charAt(i) != '\n');
+            } while(source.charAt(i) != '"' && source.charAt(i) != '\n' && i < source.length);
             string += source.charAt(i);
             i++;
             tokens.push(new TokenString(string, numSpacePrevious));
@@ -167,7 +167,7 @@ scan = function(source) {
                     string += source.charAt(i);
                 }
                 i++;
-            } while(source.charAt(i) != '\'' && source.charAt(i) != '\n');
+            } while(source.charAt(i) != '\'' && source.charAt(i) != '\n' && i < source.length);
             string += source.charAt(i);
             i++;
             tokens.push(new TokenString(string, numSpacePrevious));
@@ -231,6 +231,7 @@ scan = function(source) {
                i++;
                tokens.push(new TokenSymbol(char, numSpacePrevious));
             }
+            continue;
         }
         else {
             console.log("Unepxected charater: " + source.charAt(i));

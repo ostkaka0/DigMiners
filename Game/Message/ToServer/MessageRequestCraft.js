@@ -3,13 +3,14 @@ var Deserialize = require("Engine/Serialization.js").Deserialize
 var IndexCounter = require("Engine/IndexCounter.js")
 
 var Global = require("Game/Global.js")
+var Message = require("Game/Message/Message.js")
 var CommandEntityInventory = require("Game/Command/CommandEntityInventory.js")
 var CommandPlayerOreInventory= require("Game/Command/CommandPlayerOreInventory.js")
 
 var MessageRequestCraft = function(recipeId) {
     this.recipeId = recipeId;
 }
-module.exports = MessageRequestCraft
+module.exports = MessageRequestCraft;
 Message.ToServer.push(module.exports);
 
 MessageRequestCraft.prototype.execute = function(gameData, player) {
