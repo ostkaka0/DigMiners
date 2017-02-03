@@ -2,10 +2,10 @@
 import $ from "jquery";
 global.jQuery = $;
 //global.xyz = _xyz_;
-//import * as Tether from "tether"
+//import Tether from "tether"
 //global.Tether = Tether;
 //import bootstrap from "bootstrap";
-import PIXI from "pixi.js";
+import "pixi.js";
 
 import fix from "Engine/Core/Fix.js";
 import v2 from "Engine/Core/v2.js";

@@ -1,5 +1,3 @@
-import PIXI from "pixi.js";
-
 import Map2D from "Engine/Core/Map2D.js";
 import Chunk from "Engine/Chunk.js";
 import GLChunk from "Engine/GLChunk.js";

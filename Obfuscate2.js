@@ -104,23 +104,22 @@ var run2 = function() {
             });
             fs.writeFileSync("build/server.js", result.code);
 
-            /*bundleCode("temp/", gameFiles.concat([strClientFile]), null).then((bundle) => {
+            bundleCode("temp/", gameFiles.concat([strClientFile]), null).then((bundle) => {
                 var result = bundle.generate({
                     // output format - 'amd', 'cjs', 'es', 'iife', 'umd'
                     format: 'iife',
                     moduleName: "notSureWhatThisIsFor",
                 });
                 fs.writeFileSync("build/html/src.js", "var global = window;\n" + result.code)
-*/
+
                 // Remove temporary files:
                 tempFiles.forEach(file => {
-                    return;
                     console.log("removing", file);
                     if (fs.existsSync(file))
                         fs.unlinkSync(file);
                 });
 
-            //}).catch(catchError);
+            }).catch(catchError);
         }).catch(catchError);
 
     }).catch(catchError);
