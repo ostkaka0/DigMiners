@@ -70,6 +70,10 @@ var physicsBodySimulate = function(physicsBody, dt) {
     // Calculate deltaPos and number of steps
     var pos = physicsBody.getPos();
 
+    var touchingBlockType = Config.blockRegister[BlockWorld.getForeground(gameData.world.blockWorld, pos[0], pos[1])];
+    if (touchingBlockType && touchingBlockType.onTouch)
+        touchingBlockType.onTouch(Global.gameData.world.physicsEntities[physicsBody.bodyId]);
+
     var deltaPos = v2.create(0, 0);
     v2.sub(pos, physicsBody.posOld, deltaPos);
     var deltaPosLength = v2.length(deltaPos);
