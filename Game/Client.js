@@ -1,11 +1,11 @@
-var io = require("socket.io-client")
+import io from "socket.io-client";
 
-var Config = require("Game/Config.js")
-var Global = require("Game/Global.js")
-var Message = require("game/Message/Message.js")
+import Config from "Game/Config.js";
+import Global from "Game/Global.js";
+import Message from "Game/Message/Message.js";
 
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
 
 var Client = function(gameData, ip) {
 
@@ -65,7 +65,7 @@ var Client = function(gameData, ip) {
         });
     });
 }
-module.exports = Client
+export default Client
 
 Client.prototype.sendMessage = function(message) {
     var byteArray = new Uint8Array(command.getSerializationSize() + 4);

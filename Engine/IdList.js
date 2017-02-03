@@ -1,6 +1,6 @@
-var binarySearch = require("Engine/Core/BinarySearch.js")
+import binarySearch from "Engine/Core/BinarySearch.js";
 
-module.exports = class {
+export default class {
     constructor(firstId) {
         this.firstId = firstId || 1;
         this.nextId = this.firstId;

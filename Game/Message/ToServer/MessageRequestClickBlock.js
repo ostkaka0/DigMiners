@@ -1,18 +1,18 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var IndexCounter = require("Engine/IndexCounter.js")
-var BlockWorld = require("Engine/BlockWorld.js")
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import IndexCounter from "Engine/IndexCounter.js";
+import BlockWorld from "Engine/BlockWorld.js";
 
-var Global = require("Game/Global.js")
-var Config = require("Game/Config.js")
-var Message = require("game/Message/Message.js");
+import Global from "Game/Global.js";
+import Config from "Game/Config.js";
+import Message from "Game/Message/Message.js";;
 
 var MessageRequestClickBlock = function(blockPos, clickType) {
     this.blockPos = blockPos;
     this.clickType = clickType;
 }
-module.exports = MessageRequestClickBlock
-Message.ToServer.push(module.exports);
+export default MessageRequestClickBlock;
+Message.ToServer.push(MessageRequestClickBlock);
 
 MessageRequestClickBlock.prototype.execute = function(gameData, player) {
     var entity = Global.gameData.world.entityWorld.objects[player.entityId];

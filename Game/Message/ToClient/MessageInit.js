@@ -1,14 +1,14 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var IndexCounter = require("Engine/IndexCounter.js")
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import IndexCounter from "Engine/IndexCounter.js";
 
-var Global = require("Game/Global.js")
-var Config = require("Game/Config.js")
-var Message = require("game/Message/Message.js");
-var EntityRegister = require("Game/Entity/Register.js");
-var Generator = require("Game/Generator.js")
-var Player = require("Game/Player.js")
-var HUD = require("Game/GUI/HUD.js")
+import Global from "Game/Global.js";
+import Config from "Game/Config.js";
+import Message from "Game/Message/Message.js";;
+import EntityRegister from "Game/Entity/Register.js";;
+import Generator from "Game/Generator.js";
+import Player from "Game/Player.js";
+import HUD from "Game/GUI/HUD.js";
 
 var MessageInit = function(gameData, player) {
     this.players = [];
@@ -21,8 +21,8 @@ var MessageInit = function(gameData, player) {
     if (!gameData) return;
     Global.gameData.world.entityWorld.update();
 }
-module.exports = MessageInit
-Message.ToClient.push(module.exports);
+export default MessageInit;
+Message.ToClient.push(MessageInit);
 
 MessageInit.prototype.execute = function(gameData) {
     Global.gameData.world.tickId = this.tickId;

@@ -1,20 +1,20 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
 
-var Config = require("Game/Config.js")
-var Global = require("Game/Global.js")
-var Command = require("Game/Command/Command.js")
-var ParticleFunctions = require("Game/ParticleFunctions.js")
+import Config from "Game/Config.js";
+import Global from "Game/Global.js";
+import Command from "Game/Command/Command.js";
+import ParticleFunctions from "Game/ParticleFunctions.js";
 
 var CommandParticles = function(particleFunctionId, pos, variable) {
     this.particleFunctionId = particleFunctionId;
     this.pos = pos;
     this.variable = variable;
 }
-module.exports = CommandParticles
-Command.Register.push(module.exports)
+export default CommandParticles;
+Command.Register.push(CommandParticles);
 
 CommandParticles.prototype.execute = function() {
     if (!isServer)

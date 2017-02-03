@@ -1,10 +1,10 @@
-var Event = require("Engine/Core/Event.js")
-var Texture = require("Engine/Animation/Texture.js")
-var Global = require("Game/Global.js")
-var Items = require("Game/Items.js")
-var TextureLoader = require("Game/Entity/TextureLoader.js")
+import Event from "Engine/Core/Event.js";
+import Texture from "Engine/Animation/Texture.js";
+import Global from "Game/Global.js";
+import Items from "Game/Items.js";
+import TextureLoader from "Game/Entity/TextureLoader.js";
 
-module.exports = function() {
+export default function() {
     this.loader = new TextureLoader();
     var loader = this.loader;
 

@@ -1,6 +1,8 @@
-var TypeRegister = require("Engine/TypeRegister.js")
+import TypeRegister from "Engine/TypeRegister.js";
 
-exports.Register = [];
-exports.init = function() {
-    TypeRegister.sort(exports.Register);
+var Command = {};
+export default Command;
+Command.Register = [];
+Command.init = function() {
+    TypeRegister.sort(Command.Register);
 }

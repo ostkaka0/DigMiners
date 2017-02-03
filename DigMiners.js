@@ -1,39 +1,41 @@
-
-var $ = require("jquery")
+//import _xyz_ from "./preload.js"
+import $ from "jquery";
 global.jQuery = $;
-global.Tether = require('tether')
-var bootstrap = require('bootstrap')
-var PIXI = require("pixi.js")
+//global.xyz = _xyz_;
+//import * as Tether from "tether"
+//global.Tether = Tether;
+//import bootstrap from "bootstrap";
+import PIXI from "pixi.js";
 
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var Canvas = require("Engine/Canvas.js")
-var Sprite = require("Engine/Animation/Sprite.js")
-var ChunkRenderer = require("Engine/ChunkRenderer.js")
-var BlockChunkRenderer = require("Engine/BlockChunkRenderer.js")
-var SpriteContainer = require("Engine/Animation/SpriteContainer.js")
-var Event = require("Engine/Core/Event.js")
-var Chunk = require("Engine/Chunk.js")
-var loadTextures = require("Engine/Animation/TextureFunctions.js").loadTextures
-var gameLoop = require("Engine/GameLoop.js")
-var Keys = require("Engine/Keys.js")
-var ClickTypes = require("Engine/ClickTypes.js")
-var BlockChunk = require("Engine/BlockChunk.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import Canvas from "Engine/Canvas.js";
+import Sprite from "Engine/Animation/Sprite.js";
+import ChunkRenderer from "Engine/ChunkRenderer.js";
+import BlockChunkRenderer from "Engine/BlockChunkRenderer.js";
+import SpriteContainer from "Engine/Animation/SpriteContainer.js";
+import Event from "Engine/Core/Event.js";
+import Chunk from "Engine/Chunk.js";
+import {loadTextures} from "Engine/Animation/TextureFunctions.js";
+import gameLoop from "Engine/GameLoop.js";
+import Keys from "Engine/Keys.js";
+import ClickTypes from "Engine/ClickTypes.js";
+import BlockChunk from "Engine/BlockChunk.js";
 
-var Config = require("Game/Config.js")
-var gameData = require("Game/GameData.js")
-var Client = require("Game/Client.js")
-var TextureLoader = require("Game/Entity/TextureLoader.js")
-var TextureManager = require("Game/Entity/TextureManager.js")
-var LoadingScreen = require("Game/GUI/LoadingScreen.js")
-var DeathScreen = require("Game/GUI/DeathScreen.js")
-var InventoryHUD = require("Game/GUI/InventoryHUD.js")
-var Health = require("Game/Entity/Health.js")
-var MessageRequestKeyStatusUpdate = require("Game/Message/ToServer/MessageRequestKeyStatusUpdate.js")
-var MessageRequestPlaceBlock = require("Game/Message/ToServer/MessageRequestPlaceBlock.js")
-var MessageRequestClickBlock = require("Game/Message/ToServer/MessageRequestClickBlock.js")
-var MessageRequestRotate = require("Game/Message/ToServer/MessageRequestRotate.js")
-var MessageRequestItemPickup = require("Game/Message/ToServer/MessageRequestItemPickup.js")
+import Config from "Game/Config.js";
+import gameData from "Game/GameData.js";
+import Client from "Game/Client.js";
+import TextureLoader from "Game/Entity/TextureLoader.js";
+import TextureManager from "Game/Entity/TextureManager.js";
+import LoadingScreen from "Game/GUI/LoadingScreen.js";
+import DeathScreen from "Game/GUI/DeathScreen.js";
+import InventoryHUD from "Game/GUI/InventoryHUD.js";
+import Health from "Game/Entity/Health.js";
+import MessageRequestKeyStatusUpdate from "Game/Message/ToServer/MessageRequestKeyStatusUpdate.js";
+import MessageRequestPlaceBlock from "Game/Message/ToServer/MessageRequestPlaceBlock.js";
+import MessageRequestClickBlock from "Game/Message/ToServer/MessageRequestClickBlock.js";
+import MessageRequestRotate from "Game/Message/ToServer/MessageRequestRotate.js";
+import MessageRequestItemPickup from "Game/Message/ToServer/MessageRequestItemPickup.js";
 
 
 var canvas = document.getElementById("canvas");
@@ -93,7 +95,7 @@ var playerEntity = null;
 var keysDown = {};
 var loadingScreen = new LoadingScreen();
 var textureManager = new TextureManager();
-window.global = {};
+//window.global = {};
 
 
 var keyCodeLeft = 37;

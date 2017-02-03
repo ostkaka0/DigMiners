@@ -1,4 +1,4 @@
-var Chunk = require("Engine/Chunk.js")
+import Chunk from "Engine/Chunk.js";
 
 var GLChunk = function(gl, chunk) {
     this.textureTiles = gl.createTexture();
@@ -27,7 +27,7 @@ var GLChunk = function(gl, chunk) {
     chunk.isChanged = false;
 }
 
-module.exports = GLChunk;
+export default GLChunk;
 
 GLChunk.prototype.update = function(gl, chunk) {
     gl.bindTexture(gl.TEXTURE_2D, this.textureDensity);

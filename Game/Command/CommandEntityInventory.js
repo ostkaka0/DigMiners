@@ -1,12 +1,12 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
 
-var Config = require("Game/Config.js")
-var Global = require("Game/Global.js")
-var Command = require("Game/Command/Command.js")
-var Entity = require("Game/Entity/Entity.js")
+import Config from "Game/Config.js";
+import Global from "Game/Global.js";
+import Command from "Game/Command/Command.js";
+import Entity from "Game/Entity/Entity.js";
 
-var CommandEntityEquipItem = require("Game/Command/CommandEntityEquipItem.js")
+import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
 
 var CommandEntityInventoryActions = {
     ADD_ITEM: 0,
@@ -20,8 +20,8 @@ var CommandEntityInventory = function(entityId, actionId, itemId, amount) {
     this.itemId = itemId;
     this.amount = amount;
 }
-module.exports = CommandEntityInventory
-Command.Register.push(module.exports)
+export default CommandEntityInventory;
+Command.Register.push(CommandEntityInventory);
 CommandEntityInventory.Actions = CommandEntityInventoryActions;
 
 CommandEntityInventory.prototype.execute = function() {

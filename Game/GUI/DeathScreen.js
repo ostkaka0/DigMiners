@@ -1,10 +1,10 @@
-var $ = require("jquery")
+import $ from "jquery";
 
-var Global = require("Game/Global.js")
-var Config = require("Game/Config.js")
+import Global from "Game/Global.js";
+import Config from "Game/Config.js";
 
-var PlayerClass = require("Game/PlayerClass.js")
-var MessageRequestSpawn = require("Game/Message/ToServer/MessageRequestSpawn.js")
+import PlayerClass from "Game/PlayerClass.js";
+import MessageRequestSpawn from "Game/Message/ToServer/MessageRequestSpawn.js";
 
 var DeathScreen = function() {
     this.width = 490;
@@ -137,7 +137,7 @@ var DeathScreen = function() {
 
     this.btnSpawn.setDisabledCountdown(Config.respawnTime)
 }
-module.exports = DeathScreen
+export default DeathScreen
 
 DeathScreen.prototype.getClass = function() {
     var pickedClass = 0;

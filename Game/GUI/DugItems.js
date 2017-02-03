@@ -1,7 +1,7 @@
-var $ = require("jquery")
+import $ from "jquery";
 
-var Global = require("Game/Global.js")
-var Config = require("Game/Config.js")
+import Global from "Game/Global.js";
+import Config from "Game/Config.js";
 
 var DugItems = function() {
     this.dugItems = $("<div>");
@@ -82,7 +82,7 @@ var DugItems = function() {
 
     this.dugItems.appendTo("#hud");
 }
-module.exports = DugItems
+export default DugItems
 
 DugItems.prototype.update = function() {
     for (var i = 0; i < Config.tileRegister.length; ++i) {

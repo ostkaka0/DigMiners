@@ -1,9 +1,9 @@
-var PIXI = require("pixi.js")
+import PIXI from "pixi.js";
 
-var Map2D = require("Engine/Core/Map2D.js")
-var BlockChunk = require("Engine/BlockChunk.js")
-var GLBlockChunk = require("Engine/GLBlockChunk.js")
-var Shader = require("Engine/Shader.js")
+import Map2D from "Engine/Core/Map2D.js";
+import BlockChunk from "Engine/BlockChunk.js";
+import GLBlockChunk from "Engine/GLBlockChunk.js";
+import Shader from "Engine/Shader.js";
 var BLOCK_CHUNK_DIM = BlockChunk.dim;
 var BLOCK_CHUNK_DIM_2 = BlockChunk.dim2;
 var BLOCK_CHUNK_SIZE = BlockChunk.size;
@@ -35,7 +35,7 @@ var BlockChunkRenderer = function(gl, world, tileSize) {
 
     this.isReady = false; // False until shaders, buffers, attributes and uniforms are loaded.
 }
-module.exports = BlockChunkRenderer;
+export default BlockChunkRenderer;
 
 BlockChunkRenderer.prototype.lazyInit = function() {
     if (this.isReady)

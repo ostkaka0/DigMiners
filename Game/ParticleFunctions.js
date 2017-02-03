@@ -1,12 +1,12 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var Config = require("Game/Config.js")
-var Global = require("Game/Global.js")
-var Particles = require("Game/Particles.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import Config from "Game/Config.js";
+import Global from "Game/Global.js";
+import Particles from "Game/Particles.js";
 
 
 var ParticleFunctions = {};
-module.exports = ParticleFunctions
+export default ParticleFunctions
 
 ParticleFunctions.create = function(particleFunction, pos, variable) {
     if (!isServer)

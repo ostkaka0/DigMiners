@@ -1,6 +1,7 @@
 var binarySearch = "Engine/Core/BinarySearch.js"
 
-var TypeRegister = module.exports;
+var TypeRegister = {};// = module.exports;
+export default TypeRegister;
 
 TypeRegister.add = function(array, type) {
     if (type.prototype.id != undefined) return;

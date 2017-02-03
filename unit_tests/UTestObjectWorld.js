@@ -1,4 +1,4 @@
-var ObjectWorld = require("../Engine/ObjectWorld.js")
+import ObjectWorld from "../Engine/ObjectWorld.js";
 
 g_unitTests.testobjectWorld = function() {
     var idList = new IdList();

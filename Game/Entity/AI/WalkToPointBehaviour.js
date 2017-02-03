@@ -1,14 +1,14 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var BlockWorld = require("Engine/BlockWorld.js")
-var TileWorld = require("Engine/TileWorld.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import BlockWorld from "Engine/BlockWorld.js";
+import TileWorld from "Engine/TileWorld.js";
 
-var Global = require("Game/Global.js")
-var CommandEntityEquipItem = require("Game/Command/CommandEntityEquipItem.js")
-var CommandKeyStatusUpdate = require("Game/Command/CommandKeyStatusUpdate.js")
-var CommandEntityMove = require("Game/Command/CommandEntityMove.js")
-var CommandEntityRotate = require("Game/Command/CommandEntityRotate.js")
-var CommandEntityLookAtEntity = require("Game/Command/CommandEntityLookAtEntity.js")
+import Global from "Game/Global.js";
+import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
+import CommandKeyStatusUpdate from "Game/Command/CommandKeyStatusUpdate.js";
+import CommandEntityMove from "Game/Command/CommandEntityMove.js";
+import CommandEntityRotate from "Game/Command/CommandEntityRotate.js";
+import CommandEntityLookAtEntity from "Game/Command/CommandEntityLookAtEntity.js";
 
 var WalkToPointBehaviour = function(entity, goalPoint, radius) {
     this.entity = entity;
@@ -17,7 +17,7 @@ var WalkToPointBehaviour = function(entity, goalPoint, radius) {
     this.nextUpdateTickId = Global.gameData.world.tickId;
     this.inverval = 20;
 }
-module.exports = WalkToPointBehaviour;
+export default WalkToPointBehaviour;
 
 WalkToPointBehaviour.prototype.canRun = function() {
     return (v2.distance(this.goalPoint, this.entity.physicsBody.getPos()) > this.radius);

@@ -1,10 +1,10 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var SpriteContainer = require("Engine/Animation/SpriteContainer.js")
-var Sprite = require("Engine/Animation/Sprite.js")
-var EntityRegister = require("Game/Entity/Register.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import SpriteContainer from "Engine/Animation/SpriteContainer.js";
+import Sprite from "Engine/Animation/Sprite.js";
+import EntityRegister from "Game/Entity/Register.js";
 
 var Drawable = function(zindex) {
     this.sprites = {};
@@ -15,8 +15,8 @@ var Drawable = function(zindex) {
     this.container = new SpriteContainer();
     zindices[this.zindex].add(this.container);
 }
-module.exports = Drawable
-EntityRegister.push(module.exports);
+export default Drawable
+EntityRegister.push(Drawable);
 
 Drawable.prototype.name = drawable.name; function drawable() { };
 

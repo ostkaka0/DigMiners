@@ -1,20 +1,20 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
 
-var Config = require("Game/Config.js")
-var Global = require("Game/Global.js")
-var Command = require("Game/Command/Command.js")
-var Player = require("Game/Player.js")
-var MessageInit = require("Game/Message/ToClient/MessageInit.js")
-var MessageChunk = require("Game/Message/ToClient/MessageChunk.js")
+import Config from "Game/Config.js";
+import Global from "Game/Global.js";
+import Command from "Game/Command/Command.js";
+import Player from "Game/Player.js";
+import MessageInit from "Game/Message/ToClient/MessageInit.js";
+import MessageChunk from "Game/Message/ToClient/MessageChunk.js";
 
 var CommandPlayerJoin = function(playerId, entityId, playerName, socketId) {
     this.playerId = playerId;
     this.playerName = playerName;
     this.socketId = socketId;
 }
-module.exports = CommandPlayerJoin
-Command.Register.push(module.exports)
+export default CommandPlayerJoin;
+Command.Register.push(CommandPlayerJoin);
 
 CommandPlayerJoin.prototype.execute = function() {
     var player = new Player(this.playerId);

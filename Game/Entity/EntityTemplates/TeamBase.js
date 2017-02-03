@@ -1,32 +1,31 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var BodyPart = require("Engine/Animation/BodyPart.js")
-var Sprite = require("Engine/Animation/Sprite.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import BodyPart from "Engine/Animation/BodyPart.js";
+import Sprite from "Engine/Animation/Sprite.js";
 
 
-var Spawner = require("Game/Entity/Spawner.js")
-var entityTemplateMonster = require("Game/Entity/EntityTemplates/Monster.js")
-var PhysicsBody = require("Game/Entity/PhysicsBody.js")
-var Movement = require("Game/Entity/Movement.js")
-var Bodyparts = require("Game/Entity/Bodyparts.js")
-var Drawable = require("Game/Entity/Drawable.js")
-var NameComponent = require("Game/Entity/NameComponent.js")
-var Team = require("Game/Entity/Team.js")
-var Health = require("Game/Entity/Health.js")
-var Ammo = require("Game/Entity/Ammo.js")
-var Inventory = require("Game/Entity/Inventory.js")
-var EquippedItems = require("Game/Entity/EquippedItems.js")
-var PotionEffects = require("Game/Entity/PotionEffects.js")
-var BehaviourContainer = require("Game/Entity/AI/BehaviourContainer.js")
-var DigObstacleBehaviour = require("Game/Entity/AI/DigObstacleBehaviour.js")
-var TargetPlayerBehaviour = require("Game/Entity/AI/TargetPlayerBehaviour.js")
-var WalkToEnemyBehaviour = require("Game/Entity/AI/WalkToEnemyBehaviour.js")
-var RandomWalkBehaviour = require("Game/Entity/AI/RandomWalkBehaviour.js")
+import Spawner from "Game/Entity/Spawner.js";
+import entityTemplateMonster from "Game/Entity/EntityTemplates/Monster.js";
+import PhysicsBody from "Game/Entity/PhysicsBody.js";
+import Movement from "Game/Entity/Movement.js";
+import Bodyparts from "Game/Entity/Bodyparts.js";
+import Drawable from "Game/Entity/Drawable.js";
+import NameComponent from "Game/Entity/NameComponent.js";
+import Team from "Game/Entity/Team.js";
+import Health from "Game/Entity/Health.js";
+import Ammo from "Game/Entity/Ammo.js";
+import Inventory from "Game/Entity/Inventory.js";
+import EquippedItems from "Game/Entity/EquippedItems.js";
+import PotionEffects from "Game/Entity/PotionEffects.js";
+import BehaviourContainer from "Game/Entity/AI/BehaviourContainer.js";
+import DigObstacleBehaviour from "Game/Entity/AI/DigObstacleBehaviour.js";
+import TargetPlayerBehaviour from "Game/Entity/AI/TargetPlayerBehaviour.js";
+import WalkToEnemyBehaviour from "Game/Entity/AI/WalkToEnemyBehaviour.js";
+import RandomWalkBehaviour from "Game/Entity/AI/RandomWalkBehaviour.js";
 
-var Items = require("Game/Items.js")
-var Team = require("Game/Entity/Team.js")
+import Items from "Game/Items.js";
 
-module.exports = function(entityId, pos, teamId, maxEntities, radius, duration) {
+export default function(entityId, pos, teamId, maxEntities, radius, duration) {
     maxEntities = maxEntities || 10;
     radius = radius || 4.0;
     duration = duration || 60;

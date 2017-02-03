@@ -1,6 +1,6 @@
 
 var Particles = {};
-module.exports = Particles
+export default Particles
 
 Particles.Bullet = {
     size: 1,

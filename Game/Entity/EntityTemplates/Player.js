@@ -1,24 +1,24 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
 
-var Sprite = require("Engine/Animation/Sprite.js")
-var BodyPart = require("Engine/Animation/BodyPart.js")
-var PhysicsBody = require("Game/Entity/PhysicsBody.js")
-var Movement = require("Game/Entity/Movement.js")
-var Bodyparts = require("Game/Entity/Bodyparts.js")
-var Drawable = require("Game/Entity/Drawable.js")
-var NameComponent = require("Game/Entity/NameComponent.js")
-var Team = require("Game/Entity/Team.js")
-var Health = require("Game/Entity/Health.js")
-var Ammo = require("Game/Entity/Ammo.js")
-var Inventory = require("Game/Entity/Inventory.js")
-var EquippedItems = require("Game/Entity/EquippedItems.js")
-var PotionEffects = require("Game/Entity/PotionEffects.js")
-var ControlledByPlayer = require("Game/Entity/ControlledByPlayer.js")
-var Global = require("Game/Global.js")
-var Interacter = require("Game/Entity/Interacter.js")
+import Sprite from "Engine/Animation/Sprite.js";
+import BodyPart from "Engine/Animation/BodyPart.js";
+import PhysicsBody from "Game/Entity/PhysicsBody.js";
+import Movement from "Game/Entity/Movement.js";
+import Bodyparts from "Game/Entity/Bodyparts.js";
+import Drawable from "Game/Entity/Drawable.js";
+import NameComponent from "Game/Entity/NameComponent.js";
+import Team from "Game/Entity/Team.js";
+import Health from "Game/Entity/Health.js";
+import Ammo from "Game/Entity/Ammo.js";
+import Inventory from "Game/Entity/Inventory.js";
+import EquippedItems from "Game/Entity/EquippedItems.js";
+import PotionEffects from "Game/Entity/PotionEffects.js";
+import ControlledByPlayer from "Game/Entity/ControlledByPlayer.js";
+import Global from "Game/Global.js";
+import Interacter from "Game/Entity/Interacter.js";
 
-/*module.exports.*/var entityTemplatePlayerZombie = function(playerId, entityId, name, pos, playerClass) {
+/*export var */var entityTemplatePlayerZombie = function(playerId, entityId, name, pos, playerClass) {
     var entity = entityTemplateZombie(entityId, pos, Team.Enum.Zombie);
     entity.behaviourContainer = undefined;
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
@@ -26,7 +26,7 @@ var Interacter = require("Game/Entity/Interacter.js")
     return entity;
 }
 
-module.exports = function(playerId, entityId, name, playerClass, teamId) {
+export default function(playerId, entityId, name, playerClass, teamId) {
     var entity = {};
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 20.0, 1.0, 0.45);

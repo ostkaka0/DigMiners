@@ -1,20 +1,20 @@
-var IdList = require("Engine/IdList.js")
-var ObjectWorld = require("Engine/ObjectWorld.js")
-var Event = require("Engine/Core/Event.js")
+import IdList from "Engine/IdList.js";
+import ObjectWorld from "Engine/ObjectWorld.js";
+import Event from "Engine/Core/Event.js";
 
-var Global = require("Game/Global.js")
-var Config = require("Game/Config.js")
-var World = require("Game/World.js")
-var Items = require("Game/Items.js")
-var Blocks = require("Game/Blocks.js")
+import Global from "Game/Global.js";
+import Config from "Game/Config.js";
+import World from "Game/World.js";
+import Items from "Game/Items.js";
+import Blocks from "Game/Blocks.js";
 
-var PlayerClass = require("Game/PlayerClass.js")
-var Tiles = require("Game/Tiles.js")
-var AnimationManager = require("Engine/Animation/AnimationManager.js")
-var MessageChangeGameMode = require("Game/Message/ToClient/MessageChangeGamemode.js")
+import PlayerClass from "Game/PlayerClass.js";
+import Tiles from "Game/Tiles.js";
+import AnimationManager from "Engine/Animation/AnimationManager.js";
+import MessageChangeGameMode from "Game/Message/ToClient/MessageChangeGamemode.js";
 
 Global.gameData = {};
-module.exports = Global.gameData;
+export default Global.gameData;
 
 Global.gameData.destroy = function() {
     Global.gameData = {};

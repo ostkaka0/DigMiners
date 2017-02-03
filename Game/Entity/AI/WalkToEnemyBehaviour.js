@@ -1,15 +1,15 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var BlockWorld = require("Engine/BlockWorld.js")
-var TileWorld = require("Engine/TileWorld.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import BlockWorld from "Engine/BlockWorld.js";
+import TileWorld from "Engine/TileWorld.js";
 
-var Global = require("Game/Global.js")
-var Team = require("Game/Entity/Team.js")
-var CommandEntityEquipItem = require("Game/Command/CommandEntityEquipItem.js")
-var CommandKeyStatusUpdate = require("Game/Command/CommandKeyStatusUpdate.js")
-var CommandEntityMove = require("Game/Command/CommandEntityMove.js")
-var CommandEntityRotate = require("Game/Command/CommandEntityRotate.js")
-var CommandEntityLookAtEntity = require("Game/Command/CommandEntityLookAtEntity.js")
+import Global from "Game/Global.js";
+import Team from "Game/Entity/Team.js";
+import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
+import CommandKeyStatusUpdate from "Game/Command/CommandKeyStatusUpdate.js";
+import CommandEntityMove from "Game/Command/CommandEntityMove.js";
+import CommandEntityRotate from "Game/Command/CommandEntityRotate.js";
+import CommandEntityLookAtEntity from "Game/Command/CommandEntityLookAtEntity.js";
 
 var WalkToEnemyBehaviour = function(entity, maxRadius) {
     this.entity = entity;
@@ -19,7 +19,7 @@ var WalkToEnemyBehaviour = function(entity, maxRadius) {
     this.moving = false;
     this.nextCanRunTickId = Global.gameData.world.tickId;
 }
-module.exports = WalkToEnemyBehaviour;
+export default WalkToEnemyBehaviour;
 
 WalkToEnemyBehaviour.prototype.canRun = function() {
     if (Global.gameData.world.tickId < this.nextCanRunTickId)

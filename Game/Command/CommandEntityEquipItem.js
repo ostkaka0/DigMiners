@@ -1,12 +1,12 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var Sprite = require("Engine/Animation/Sprite.js")
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import Sprite from "Engine/Animation/Sprite.js";
 
-var Config = require("Game/Config.js")
-var Global = require("Game/Global.js")
-var Command = require("Game/Command/Command.js")
-var Items = require("Game/Items.js")
-var Entity = require("Game/Entity/Entity.js")
+import Config from "Game/Config.js";
+import Global from "Game/Global.js";
+import Command from "Game/Command/Command.js";
+import Items from "Game/Items.js";
+import Entity from "Game/Entity/Entity.js";
 
 var CommandEntityEquipItem = function(entityId, stackId, itemId, equipped) {
     this.entityId = entityId;
@@ -14,8 +14,8 @@ var CommandEntityEquipItem = function(entityId, stackId, itemId, equipped) {
     this.itemId = itemId;
     this.equipped = equipped;
 }
-module.exports = CommandEntityEquipItem
-Command.Register.push(module.exports)
+export default CommandEntityEquipItem;
+Command.Register.push(CommandEntityEquipItem);
 
 CommandEntityEquipItem.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

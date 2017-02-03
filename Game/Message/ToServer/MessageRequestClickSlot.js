@@ -1,23 +1,23 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var IndexCounter = require("Engine/IndexCounter.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import IndexCounter from "Engine/IndexCounter.js";
 
-var Global = require("Game/Global.js")
-var Config = require("Game/Config.js")
-var Message = require("game/Message/Message.js");
-var CommandEntityEquipItem = require("Game/Command/CommandEntityEquipItem.js")
-var CommandEntitySpawn = require("Game/Command/CommandEntitySpawn.js")
-var CommandEntityInventory = require("Game/Command/CommandEntityInventory.js")
+import Global from "Game/Global.js";
+import Config from "Game/Config.js";
+import Message from "Game/Message/Message.js";;
+import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
+import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
+import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
 
 var MessageRequestClickSlot = function(inventoryId, slotId, clickType) {
     this.inventoryId = inventoryId;
     this.slotId = slotId;
     this.clickType = clickType;
 }
-module.exports = MessageRequestClickSlot
-Message.ToServer.push(module.exports);
+export default MessageRequestClickSlot;
+Message.ToServer.push(MessageRequestClickSlot);
 
 MessageRequestClickSlot.prototype.execute = function(gameData, player) {
     var entity = Global.gameData.world.entityWorld.objects[player.entityId];

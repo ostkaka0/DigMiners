@@ -1,13 +1,13 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var Keys = require("Engine/Keys.js")
-var Config = require("Game/Config.js")
-var Global = require("Game/Global.js")
-var Entity = require("Game/Entity/Entity.js")
-var CommandEntityBeginReloadWeapon = require("Game/Command/CommandEntityBeginReloadWeapon.js")
-var EntityRegister = require("Game/Entity/Register.js")
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import Keys from "Engine/Keys.js";
+import Config from "Game/Config.js";
+import Global from "Game/Global.js";
+import Entity from "Game/Entity/Entity.js";
+import CommandEntityBeginReloadWeapon from "Game/Command/CommandEntityBeginReloadWeapon.js";
+import EntityRegister from "Game/Entity/Register.js";
 
 var Movement = function(speed, toolUseDuration, damageMultiplier, digHardnessMultiplier) {
     this.keyStatuses = {};
@@ -32,8 +32,8 @@ var Movement = function(speed, toolUseDuration, damageMultiplier, digHardnessMul
     this.digHardnessMultiplier = (digHardnessMultiplier == null) ? 1.0 : digHardnessMultiplier;
     this.entityLookTarget = null;
 }
-module.exports = Movement
-EntityRegister.push(module.exports);
+export default Movement
+EntityRegister.push(Movement);
 
 Movement.prototype.name = movement.name; function movement() { };
 

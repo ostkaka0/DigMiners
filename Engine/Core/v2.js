@@ -1,7 +1,7 @@
-var fix = require("Engine/Core/Fix.js")
+import fix from "Engine/Core/Fix.js";
 
 var v2 = {};
-module.exports = v2;
+export default v2;
 
 v2.create = function(x, y) {
     var v = [fix.toFix(x), fix.toFix(y)];

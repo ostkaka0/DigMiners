@@ -1,17 +1,17 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
 
-var Config = require("Game/Config.js")
-var Global = require("Game/Global.js")
-var Command = require("Game/Command/Command.js")
+import Config from "Game/Config.js";
+import Global from "Game/Global.js";
+import Command from "Game/Command/Command.js";
 
 var CommandPlayerSpawn = function(playerId, entityId, playerName) {
     this.playerId = playerId;
     this.entityId = entityId;
     this.playerName = playerName;
 }
-module.exports = CommandPlayerSpawn
-Command.Register.push(module.exports)
+export default CommandPlayerSpawn;
+Command.Register.push(CommandPlayerSpawn);
 
 CommandPlayerSpawn.prototype.execute = function() {
     // Associate with existing, already spawned entity (from MessageRequestSpawn)

@@ -1,6 +1,6 @@
-var BlockChunk = require("Engine/BlockChunk.js")
-var BlockWorld = require("Engine/BlockWorld.js")
-var Config = require("Game/Config.js")
+import BlockChunk from "Engine/BlockChunk.js";
+import BlockWorld from "Engine/BlockWorld.js";
+import Config from "Game/Config.js";
 
 var GLBlockChunk = function(gl, blockChunk) {
     this.vbo = null;
@@ -8,7 +8,7 @@ var GLBlockChunk = function(gl, blockChunk) {
     //this.textureRendered = gl.createTexture();
 }
 
-module.exports = GLBlockChunk;
+export default GLBlockChunk;
 
 GLBlockChunk.prototype.update = function(gl, gameData, blockChunk, chunkX, chunkY) {
     var tileSize = 32;

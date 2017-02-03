@@ -1,31 +1,31 @@
-var Event = require("Engine/Core/Event.js")
-var Map2D = require("Engine/Core/Map2D.js")
-var IdList = require("Engine/IdList.js")
-var ObjectWorld = require("Engine/ObjectWorld.js")
-var ParticleWorld = require("Engine/ParticleWorld.js")
-var PhysicsWorld = require("Engine/PhysicsWorld.js")
-var Generator = require("Game/Generator.js")
-var EventHandler = require("Engine/EventHandler.js")
-var BodyPart = require("Engine/Animation/BodyPart.js")
-var BlockWorld = require("Engine/BlockWorld.js")
+import Event from "Engine/Core/Event.js";
+import Map2D from "Engine/Core/Map2D.js";
+import IdList from "Engine/IdList.js";
+import ObjectWorld from "Engine/ObjectWorld.js";
+import ParticleWorld from "Engine/ParticleWorld.js";
+import PhysicsWorld from "Engine/PhysicsWorld.js";
+import Generator from "Game/Generator.js";
+import EventHandler from "Engine/EventHandler.js";
+import BodyPart from "Engine/Animation/BodyPart.js";
+import BlockWorld from "Engine/BlockWorld.js";
 
-var Global = require("Game/Global.js")
-var Config = require("Game/Config.js")
-var Entity = require("Game/Entity/Entity.js")
-var Projectile = require("Game/Entity/Projectile.js")
-var Health = require("Game/Entity/Health.js")
-var Interacter = require("Game/Entity/Interacter.js")
-var Interactable = require("Game/Entity/Interactable.js")
-var EntityTemplates = require("Game/Entity/EntityTemplates/EntityTemplates.js")
-var Movement = require("Game/Entity/Movement.js")
-var entityFunctionPhysicsBodySimulate = require("Game/Entity/Physics.js")
-var entityFunctionProjectileSimulate = require("Game/ProjectilePhysics.js").entityFunctionProjectileSimulate
-var CommandParticles = require("Game/Command/CommandParticles.js")
-var CommandBlockStrength = require("Game/Command/CommandBlockStrength.js")
-var CommandEntityInteractEntity = require("Game/Command/CommandEntityInteractEntity.js")
-var CommandCollisions = require("Game/Command/CommandCollisions.js")
-var InventoryHUD = require("Game/GUI/InventoryHUD.js")
-var ParticleFunctions = require("Game/ParticleFunctions.js")
+import Global from "Game/Global.js";
+import Config from "Game/Config.js";
+import Entity from "Game/Entity/Entity.js";
+import Projectile from "Game/Entity/Projectile.js";
+import Health from "Game/Entity/Health.js";
+import Interacter from "Game/Entity/Interacter.js";
+import Interactable from "Game/Entity/Interactable.js";
+import EntityTemplates from "Game/Entity/EntityTemplates/EntityTemplates.js";
+import Movement from "Game/Entity/Movement.js";
+import entityFunctionPhysicsBodySimulate from "Game/Entity/Physics.js";
+import {entityFunctionProjectileSimulate} from "Game/ProjectilePhysics.js";
+import CommandParticles from "Game/Command/CommandParticles.js";
+import CommandBlockStrength from "Game/Command/CommandBlockStrength.js";
+import CommandEntityInteractEntity from "Game/Command/CommandEntityInteractEntity.js";
+import CommandCollisions from "Game/Command/CommandCollisions.js";
+import InventoryHUD from "Game/GUI/InventoryHUD.js";
+import ParticleFunctions from "Game/ParticleFunctions.js";
 
 var World = function() {
     this.tickId = 0;
@@ -49,7 +49,7 @@ var World = function() {
     this.events = new EventHandler();
     this.initializeEvents();
 }
-module.exports = World
+export default World
 
 World.prototype.tick = function(dt) {
     if (this.pendingCommands[this.tickId])

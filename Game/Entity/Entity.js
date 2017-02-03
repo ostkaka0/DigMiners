@@ -1,10 +1,11 @@
-var Global = require("Game/Global.js")
+import Global from "Game/Global.js";
 
-var Items = require("Game/Items.js")
-var Team = require("Game/Entity/Team.js")
-var CommandEntityHealthChange = require("Game/Command/CommandEntityHealthChange.js")
+import Items from "Game/Items.js";
+import Team from "Game/Entity/Team.js";
+import CommandEntityHealthChange from "Game/Command/CommandEntityHealthChange.js";
 
-var Entity = module.exports;
+var Entity = {}; //module.exports;
+export default Entity;
 
 Entity.onEquip = function(entity, stackId, itemType) {
     if (itemType.typeOfType == "block")

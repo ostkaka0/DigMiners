@@ -1,11 +1,11 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
 
-var Command = require("Game/Command/Command.js")
-var Config = require("Game/Config.js")
-var Global = require("Game/Global.js")
+import Command from "Game/Command/Command.js";
+import Config from "Game/Config.js";
+import Global from "Game/Global.js";
 
 var CommandCollisions = function(collisions) {
     var physicsWorld = Global.gameData.world.physicsWorld;
@@ -34,8 +34,8 @@ var CommandCollisions = function(collisions) {
         }.bind(this));
     }
 }
-module.exports = CommandCollisions
-Command.Register.push(module.exports)
+export default CommandCollisions;
+Command.Register.push(CommandCollisions);
 
 CommandCollisions.prototype.execute = function() {
     var physicsWorld = Global.gameData.world.physicsWorld;

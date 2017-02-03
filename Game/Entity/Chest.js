@@ -1,13 +1,13 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
 
-var EntityRegister = require("Game/Entity/Register.js")
+import EntityRegister from "Game/Entity/Register.js";
 
 var Chest = function() {
 
 }
-module.exports = Chest
-EntityRegister.push(module.exports);
+export default Chest;
+EntityRegister.push(Chest);
 
 Chest.prototype.name = chest.name; function chest() { };
 

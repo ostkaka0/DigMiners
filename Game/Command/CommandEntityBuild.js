@@ -1,14 +1,14 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var BlockWorld = require("Engine/BlockWorld.js")
-var TileWorld = require("Engine/TileWorld.js")
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import BlockWorld from "Engine/BlockWorld.js";
+import TileWorld from "Engine/TileWorld.js";
 
-var Config = require("Game/Config.js")
-var Global = require("Game/Global.js")
-var Command = require("Game/Command/Command.js")
-var Blocks = require("Game/Blocks.js")
-var BlockPlacer = require("Game/Entity/BlockPlacer.js")
-var CommandEntitySpawn = require("Game/Command/CommandEntitySpawn.js")
+import Config from "Game/Config.js";
+import Global from "Game/Global.js";
+import Command from "Game/Command/Command.js";
+import Blocks from "Game/Blocks.js";
+import BlockPlacer from "Game/Entity/BlockPlacer.js";
+import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
 
 var CommandEntityBuild = function(entityId, x, y, blockId, type) {
     this.entityId = entityId;
@@ -17,8 +17,8 @@ var CommandEntityBuild = function(entityId, x, y, blockId, type) {
     this.blockId = blockId;
     this.type = type;
 }
-module.exports = CommandEntityBuild
-Command.Register.push(module.exports)
+export default CommandEntityBuild;
+Command.Register.push(CommandEntityBuild);
 
 CommandEntityBuild.prototype.execute = function() {
     /*if (this.type == BlockTypes.FOREGROUND)

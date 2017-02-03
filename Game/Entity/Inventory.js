@@ -1,8 +1,8 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var Config = require("Game/Config.js")
-var Global = require("Game/Global.js")
-var EntityRegister = require("Game/Entity/Register.js")
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import Config from "Game/Config.js";
+import Global from "Game/Global.js";
+import EntityRegister from "Game/Entity/Register.js";
 
 var Inventory = function(inventoryId, entityId, width, height) {
     this.items = [];
@@ -11,8 +11,8 @@ var Inventory = function(inventoryId, entityId, width, height) {
     this.width = width;
     this.height = height;
 }
-module.exports = Inventory
-EntityRegister.push(module.exports);
+export default Inventory
+EntityRegister.push(Inventory);
 
 Inventory.createInventory = function(entityId, width, height) {
     if (!isServer)

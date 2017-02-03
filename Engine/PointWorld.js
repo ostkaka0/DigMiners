@@ -1,6 +1,6 @@
-var Quadtree = require("Engine/Quadtree.js")
-var IdList = require("Engine/IdList.js")
-var v2 = require("Engine/Core/v2.js")
+import Quadtree from "Engine/Quadtree.js";
+import IdList from "Engine/IdList.js";
+import v2 from "Engine/Core/v2.js";
 
 var PointWorld = function(size) {
     this.size = size;
@@ -12,7 +12,7 @@ var PointWorld = function(size) {
     this.posArray = [];
     this.radiusArray = [];
 }
-module.exports = PointWorld;
+export default PointWorld;
 
 PointWorld.maxNodePoints = 4; // Max points per node / page
 

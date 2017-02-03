@@ -1,9 +1,12 @@
 node_modules
 *.geany
 *~
+*.log
 www
 html
 http
 build
 serverbuild
+temp
+TEMP_MAIN.js
 .

@@ -1,6 +1,6 @@
 
-var Quadtree = require("Engine/Quadtree.js");
-var $ = require("jquery")
+import Quadtree from "Engine/Quadtree.js";;
+import $ from "jquery";
 var quadtree = new Quadtree();
 
 var insertedPos = [5, 5, 10];

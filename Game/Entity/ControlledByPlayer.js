@@ -1,13 +1,13 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
 
-var EntityRegister = require("Game/Entity/Register.js")
+import EntityRegister from "Game/Entity/Register.js";
 
 var ControlledByPlayer = function(playerId) {
     this.playerId = playerId;
 }
-module.exports = ControlledByPlayer
-EntityRegister.push(module.exports);
+export default ControlledByPlayer
+EntityRegister.push(ControlledByPlayer);
 
 ControlledByPlayer.prototype.name = controlledByPlayer.name; function controlledByPlayer() { };
 

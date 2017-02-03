@@ -1,14 +1,14 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var Sprite = require("Engine/Animation/Sprite.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import Sprite from "Engine/Animation/Sprite.js";
 
-var Config = require("Game/Config.js")
-var Global = require("Game/Global.js")
-var Command = require("Game/Command/Command.js")
-var Projectile = require("Game/Entity/Projectile.js")
-var projectileEntitySimulate = require("Game/ProjectilePhysics.js").projectileEntitySimulate
+import Config from "Game/Config.js";
+import Global from "Game/Global.js";
+import Command from "Game/Command/Command.js";
+import Projectile from "Game/Entity/Projectile.js";
+import {projectileEntitySimulate} from "Game/ProjectilePhysics.js";
 
 var CommandProjectileSpawn = function(entityId, pos, angle, speed, maxDistance, projectileType, shooterEntityId) {
     this.entityId = entityId;
@@ -20,8 +20,8 @@ var CommandProjectileSpawn = function(entityId, pos, angle, speed, maxDistance, 
     this.projectileType = projectileType;
     this.shooterEntityId = shooterEntityId;
 }
-module.exports = CommandProjectileSpawn
-Command.Register.push(module.exports)
+export default CommandProjectileSpawn;
+Command.Register.push(CommandProjectileSpawn);
 
 CommandProjectileSpawn.prototype.execute = function() {
     if (Global.gameData.world.entityWorld.objects[this.entityId])

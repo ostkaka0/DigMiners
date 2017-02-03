@@ -1,16 +1,16 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var Global = require("Game/Global.js")
-var Event = require("Engine/Core/Event.js")
-var EntityRegister = require("Game/Entity/Register.js")
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import Global from "Game/Global.js";
+import Event from "Engine/Core/Event.js";
+import EntityRegister from "Game/Entity/Register.js";
 
 var Interactable = function(canInteractFunction) {
     this.interacting = [];
     this.canInteractFunction = canInteractFunction || (function(interactableEntity, entity) { return true; });
     this.canInteractFunction.bind(this);
 }
-module.exports = Interactable
-EntityRegister.push(module.exports);
+export default Interactable
+EntityRegister.push(Interactable);
 Interactable.Events = {};
 Interactable.Events.onInteract = [];
 Interactable.Events.onFinishInteract = [];
