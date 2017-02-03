@@ -14,6 +14,7 @@ import AnimationManager from "Engine/Animation/AnimationManager.js";
 import MessageChangeGameMode from "Game/Message/ToClient/MessageChangeGamemode.js";
 
 Global.gameData = {};
+global.gameData = Global.gameData;
 export default Global.gameData;
 
 Global.gameData.destroy = function() {
