@@ -84,6 +84,7 @@ isalpha = function(c) {
 isnum = function(c) {
     return c >= '0' && c <= '9';
 }
+
 ishex = function(c) {
     return isnum(c) || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
 }
@@ -100,7 +101,8 @@ issymbol = function(c) {
            c == '.' || c == "\\";
 }
 
-scan = function(source) {
+exports.scan = function(inputSource) {
+    var source = "\n" + inputSource + "\n";
     var tokens = [];
     var i = 0;
     var lastRegexp = -1;
@@ -243,7 +245,7 @@ scan = function(source) {
     return tokens;
 }
 
-parseExceptions = function(tokens) {
+exports.reserveNames = function(tokens) {
     var exceptions = [];
     var exceptionTable = {};
 
@@ -256,12 +258,10 @@ parseExceptions = function(tokens) {
     return exceptions;
 }
 
-var names = {};
-exports.names = names;
 var nameIndex = 0;
-mangleTokens = function(tokens, except, debug) {
+exports.genNames = function(names, tokens, except, debug) {
     var exceptions = {};
-    except.forEach(function(name) { exceptions[name] = name; });
+    except.concat(allReservedKeywords).forEach(function(name) { exceptions[name] = name; });
 
     lastToken = null;
 
@@ -279,7 +279,7 @@ mangleTokens = function(tokens, except, debug) {
 
             }
         } else if ((token.value == "=" || token.value == ":") && lastToken != null) {
-            var name =  "_$_" + (debug? lastToken.value : nameIndex.toString(36));
+            var name =  "_" + ((debug)? lastToken.value : nameIndex.toString());
             //process.stdout.write(lastToken.value + " -> " + name + "  \t");
             names[lastToken.value] = name;
             nameIndex++;
@@ -288,19 +288,21 @@ mangleTokens = function(tokens, except, debug) {
             lastToken = null;
         }
     }
-    console.log("!!");
-
-    tokens.forEach(function(token) {
-        //if (token.value == "delims") console.log("delims");
-        if (token.constructor != TokenLabel) return;
-        if (exceptions[token.value] != undefined) return;
-        if (names[token.value] != undefined) {
-            token.value = names[token.value];
-        }
-    });
 }
 
-tokensToString = function(tokens) {
+exports.mangle = function(tokens, names) {
+    for (var i = 0; i < tokens.length; i++) {
+        var token = tokens[i];
+        console.log("new name:", token.value, names[token.value]);
+        if (token.constructor != TokenLabel) continue;
+        if (typeof token.value !== "string") continue; // <- Bad defensive code(may hide bugs)
+        if (names[token.value] == undefined) continue;
+        if (typeof names[token.value] !== "string") continue; // <- Bad defensive code(may hide bugs)
+        token.value = names[token.value];
+    }
+}
+
+exports.genJS = function(tokens) {
     if (tokens.length == 0) return "";
     var str = tokens[0].value;
 
@@ -312,18 +314,4 @@ tokensToString = function(tokens) {
     }
 
     return str;
-}
-
-exports.mangle = function(inputSrc, exceptions, debug) {
-    console.log("Mangling names... (1/3) - Scanning");
-    var tokens = scan(inputSrc);
-    console.log("Mangling names... (2/3) - Mangling");
-    var reservedKeywords = exceptions.concat(allReservedKeywords);
-    mangleTokens(tokens, reservedKeywords, debug);
-    console.log("Mangling names... (3/3) ");
-    return tokensToString(tokens);
-}
-
-exports.reserveWords = function(src) {
-    return parseExceptions(scan(src));
 }

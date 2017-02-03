@@ -23,7 +23,7 @@ var createDir = function(dir) {
 }
 
 var run2 = function() {
-    var nameExceptions = ["loadTextures"];
+    var nameExceptions = ["loadTextures", "clearCommands"];
     var catchError = (error) => console.log(error);
     console.log("Prefetching...")
     var strGameFiles = "Game/**/*.js";
@@ -31,6 +31,7 @@ var run2 = function() {
     var strClientFile = "DigMiners.js"
     var tempFiles = [];
     var gameFiles = [];
+    var mangledNames = {};
     loadRecursive("Game", file => gameFiles.push(file));
 
     if (!fs.existsSync("build/")) fs.mkdirSync("build/");
@@ -54,23 +55,37 @@ var run2 = function() {
             var moduleId = cacheModule.id;
             if (isGameFile(moduleId)) continue;
             console.log("reserving", moduleId);
-            nameExceptions = nameExceptions.concat(NameMangler.reserveWords(moduleCode));
+            var tokens = NameMangler.scan(moduleCode);
+            nameExceptions = nameExceptions.concat(NameMangler.reserveNames(tokens));
         }
-        // Mangle source code:
+        // Generate mangled words:
         for (var i = 0; i < cache.modules.length; i++) {
             var cacheModule = cache.modules[i];
             var moduleCode = cacheModule.code;
             var moduleId = cacheModule.id;
             if (!isGameFile(moduleId)) continue;
+            var tokens = NameMangler.scan(moduleCode);
+            NameMangler.genNames(mangledNames, tokens, nameExceptions, false);
+        }
+
+        console.log(mangledNames);
+
+        // Mangle words:
+        for (var i = 0; i < cache.modules.length; i++) {
+            var cacheModule = cache.modules[i];
+            //var moduleCode = "";//cacheModule.originalCode;
+            var moduleId = cacheModule.id;
+            if (!isGameFile(moduleId)) continue;
             console.log("mangling", moduleId);
-            moduleCode = NameMangler.mangle(moduleCode, nameExceptions, true);
-            var relativePath = path.relative(process.cwd(), moduleId)
-                .replace("node_modules/", "")
-                .replace("Game/", "Game/")
-                .replace("engine/", "Engine/");
+            var relativePath = path.relative(process.cwd(), moduleId);
+            var moduleCode = fs.readFileSync(relativePath, "utf8");
+            var tokens = NameMangler.scan(moduleCode);
+            NameMangler.mangle(tokens, mangledNames);
+            tokens.forEach(token=>console.log(token));
+            moduleCode = "\n" + NameMangler.genJS(tokens) + "\n";
+            //console.log(moduleCode);
             var dirPath = "temp/" + path.dirname(relativePath);
-            console.log(relativePath);
-            cacheModule.code = moduleCode;
+            //cacheModule.code = moduleCode;
             createDir(dirPath);
             fs.writeFileSync("temp/" + relativePath, moduleCode);
             tempFiles.push("temp/" + relativePath);
@@ -78,9 +93,10 @@ var run2 = function() {
             //console.log(moduleCode);
             //cacheModule.ast = null;//console.log("ast:", cacheModule.ast);
         }
-        fs.writeFileSync("obfuscate.log", JSON.stringify(NameMangler.names).replace(",", "\n"));
+        fs.writeFileSync("NameMangler.log", JSON.stringify(mangledNames, null, "\t"));
 
         bundleCode("temp/", gameFiles.concat([strServerFile]), null).then((bundle) => {
+            console.log("Bundling done");
             var result = bundle.generate({
                 // output format - 'amd', 'cjs', 'es', 'iife', 'umd'
                 format: 'iife',
@@ -88,22 +104,23 @@ var run2 = function() {
             });
             fs.writeFileSync("build/server.js", result.code);
 
-            bundleCode("temp/", gameFiles.concat([strClientFile]), null).then((bundle) => {
+            /*bundleCode("temp/", gameFiles.concat([strClientFile]), null).then((bundle) => {
                 var result = bundle.generate({
                     // output format - 'amd', 'cjs', 'es', 'iife', 'umd'
                     format: 'iife',
                     moduleName: "notSureWhatThisIsFor",
                 });
                 fs.writeFileSync("build/html/src.js", "var global = window;\n" + result.code)
-
+*/
                 // Remove temporary files:
                 tempFiles.forEach(file => {
+                    return;
                     console.log("removing", file);
                     if (fs.existsSync(file))
                         fs.unlinkSync(file);
                 });
 
-            }).catch(catchError);
+            //}).catch(catchError);
         }).catch(catchError);
 
     }).catch(catchError);
