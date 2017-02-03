@@ -1,14 +1,14 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
 
-var Config = require("Game/Config.js")
-var PhysicsBody = require("Game/Entity/PhysicsBody.js")
-var Bodyparts = require("Game/Entity/Bodyparts.js")
-var Drawable = require("Game/Entity/Drawable.js")
-var Sprite = require("Engine/Animation/Sprite.js")
-var BodyPart = require("Engine/Animation/BodyPart.js")
+import Config from "Game/Config.js";
+import PhysicsBody from "Game/Entity/PhysicsBody.js";
+import Bodyparts from "Game/Entity/Bodyparts.js";
+import Drawable from "Game/Entity/Drawable.js";
+import Sprite from "Engine/Animation/Sprite.js";
+import BodyPart from "Engine/Animation/BodyPart.js";
 
-module.exports = function(itemId, amount) {
+export default function(itemId, amount) {
     var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
 

@@ -1,24 +1,24 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var IndexCounter = require("Engine/IndexCounter.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import IndexCounter from "Engine/IndexCounter.js";
 
-var Global = require("Game/Global.js")
-var Config = require("Game/Config.js")
-var PlayerClass = require("Game/PlayerClass.js")
-var Message = require("game/Message/Message.js");
-var CommandEntitySpawn = require("Game/Command/CommandEntitySpawn.js")
-var CommandPlayerSpawn = require("Game/Command/CommandPlayerSpawn.js")
-var MessageSpectate = require("Game/Message/ToClient/MessageSpectate.js")
-var entityTemplatePlayer = require("Game/Entity/EntityTemplates/Player.js")
+import Global from "Game/Global.js";
+import Config from "Game/Config.js";
+import PlayerClass from "Game/PlayerClass.js";
+import Message from "Game/Message/Message.js";;
+import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
+import CommandPlayerSpawn from "Game/Command/CommandPlayerSpawn.js";
+import MessageSpectate from "Game/Message/ToClient/MessageSpectate.js";
+import entityTemplatePlayer from "Game/Entity/EntityTemplates/Player.js";
 
 var MessageRequestSpawn = function(playerName, classId) {
     this.playerName = playerName;
     this.classId = classId;
 }
-module.exports = MessageRequestSpawn
-Message.ToServer.push(module.exports);
+export default MessageRequestSpawn;
+Message.ToServer.push(MessageRequestSpawn);
 
 MessageRequestSpawn.prototype.execute = function(gameData, player) {
     if (player.entity != null && player.entityId != null) return;

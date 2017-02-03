@@ -1,5 +1,5 @@
 var Event = {};
-module.exports = Event;
+export default Event;
 
 Event.subscribe = function(event, subscriber, callback, first) {
     if (first)

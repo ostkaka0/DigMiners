@@ -1,16 +1,16 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var BlockWorld = require("Engine/BlockWorld.js")
-var TileWorld = require("Engine/TileWorld.js")
-var Keys = require("Engine/Keys.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import BlockWorld from "Engine/BlockWorld.js";
+import TileWorld from "Engine/TileWorld.js";
+import Keys from "Engine/Keys.js";
 
-var Config = require("Game/Config.js")
-var Global = require("Game/Global.js")
-var Items = require("Game/Items.js")
-var CommandEntityEquipItem = require("Game/Command/CommandEntityEquipItem.js")
-var CommandKeyStatusUpdate = require("Game/Command/CommandKeyStatusUpdate.js")
-var CommandEntityMove = require("Game/Command/CommandEntityMove.js")
-var CommandEntityRotate = require("Game/Command/CommandEntityRotate.js")
+import Config from "Game/Config.js";
+import Global from "Game/Global.js";
+import Items from "Game/Items.js";
+import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
+import CommandKeyStatusUpdate from "Game/Command/CommandKeyStatusUpdate.js";
+import CommandEntityMove from "Game/Command/CommandEntityMove.js";
+import CommandEntityRotate from "Game/Command/CommandEntityRotate.js";
 
 
 var DigObstacleBehaviour = function(entity, maxWalkDis) {
@@ -25,7 +25,7 @@ var DigObstacleBehaviour = function(entity, maxWalkDis) {
     this.oldItemId = 0;
     this.digPauseDuration = 10; // Duration between finish digging and start digging again
 }
-module.exports = DigObstacleBehaviour
+export default DigObstacleBehaviour
 
 DigObstacleBehaviour.prototype.canRun = function() {
     if (!this.entity.inventory) return false;

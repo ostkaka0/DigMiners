@@ -1,35 +1,36 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var TileWorld = require("Engine/TileWorld.js")
-var BlockWorld = require("Engine/BlockWorld.js")
-var BlockChunk = require("Engine/BlockChunk.js")
-var Sprite = require("Engine/Animation/Sprite.js")
-var BodyPart = require("Engine/Animation/BodyPart.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import TileWorld from "Engine/TileWorld.js";
+import BlockWorld from "Engine/BlockWorld.js";
+import BlockChunk from "Engine/BlockChunk.js";
+import Sprite from "Engine/Animation/Sprite.js";
+import BodyPart from "Engine/Animation/BodyPart.js";
 
-var Blocks = require("Game/Blocks.js")
-var Tiles = require("Game/Tiles.js")
-var Projectiles = require("Game/Projectiles.js")
-var Entity = require("Game/Entity/Entity.js")
-var PhysicsBody = require("Game/Entity/PhysicsBody.js")
-var Bodyparts = require("Game/Entity/Bodyparts.js")
-var Drawable = require("Game/Entity/Drawable.js")
-var ParticleFunctions = require("Game/ParticleFunctions.js")
-var ExplosionFunctions = require("Game/ExplosionFunctions.js")
+import Blocks from "Game/Blocks.js";
+import Tiles from "Game/Tiles.js";
+import Projectiles from "Game/Projectiles.js";
+import Entity from "Game/Entity/Entity.js";
+import PhysicsBody from "Game/Entity/PhysicsBody.js";
+import Bodyparts from "Game/Entity/Bodyparts.js";
+import Drawable from "Game/Entity/Drawable.js";
+import ParticleFunctions from "Game/ParticleFunctions.js";
+import ExplosionFunctions from "Game/ExplosionFunctions.js";
 
-var Config = require("Game/Config.js")
-var Global = require("Game/Global.js")
+import Config from "Game/Config.js";
+import Global from "Game/Global.js";
 
-var CommandBlockStrength = require("Game/Command/CommandBlockStrength.js")
-var CommandEntityDig = require("Game/Command/CommandEntityDig.js")
-var CommandProjectileSpawn = require("Game/Command/CommandProjectileSpawn.js")
-var CommandEntityReloadWeapon = require("Game/Command/CommandEntityReloadWeapon.js")
-var CommandEntityInventory = require("Game/Command/CommandEntityInventory.js")
-var CommandEntitySpawn = require("Game/Command/CommandEntitySpawn.js")
-var CommandEntityAnimate = require("Game/Command/CommandEntityAnimate.js")
-var CommandParticles = require("Game/Command/CommandParticles.js")
-var CommandEntityDestroy = require("Game/Command/CommandEntityDestroy.js")
+import CommandBlockStrength from "Game/Command/CommandBlockStrength.js";
+import CommandEntityDig from "Game/Command/CommandEntityDig.js";
+import CommandProjectileSpawn from "Game/Command/CommandProjectileSpawn.js";
+import CommandEntityReloadWeapon from "Game/Command/CommandEntityReloadWeapon.js";
+import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
+import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
+import CommandEntityAnimate from "Game/Command/CommandEntityAnimate.js";
+import CommandParticles from "Game/Command/CommandParticles.js";
+import CommandEntityDestroy from "Game/Command/CommandEntityDestroy.js";
 
-var Items = module.exports;
+var Items = {}; //module.exports;
+export default Items;
 Items.Types = {};
 Items.Functions = {};
 var ItemTextures = {};

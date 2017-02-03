@@ -1,16 +1,16 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var PhysicsBody = require("Game/Entity/PhysicsBody.js")
-var Movement = require("Game/Entity/Movement.js")
-var Bodyparts = require("Game/Entity/Bodyparts.js")
-var Drawable = require("Game/Entity/Drawable.js")
-var NameComponent = require("Game/Entity/NameComponent.js")
-var Team = require("Game/Entity/Team.js")
-var Sprite = require("Engine/Animation/Sprite.js")
-var BodyPart = require("Engine/Animation/BodyPart.js")
-var Health = require("Game/Entity/Health.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import PhysicsBody from "Game/Entity/PhysicsBody.js";
+import Movement from "Game/Entity/Movement.js";
+import Bodyparts from "Game/Entity/Bodyparts.js";
+import Drawable from "Game/Entity/Drawable.js";
+import NameComponent from "Game/Entity/NameComponent.js";
+import Team from "Game/Entity/Team.js";
+import Sprite from "Engine/Animation/Sprite.js";
+import BodyPart from "Engine/Animation/BodyPart.js";
+import Health from "Game/Entity/Health.js";
 
-module.exports = function(entityId, pos, teamId) {
+export default function(entityId, pos, teamId) {
     var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, null, 1000.0);
     entity.nameComponent = new NameComponent("Base");

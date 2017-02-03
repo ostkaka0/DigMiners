@@ -1,28 +1,28 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var Event = require("Engine/Core/Event.js")
-var Chunk = require("Engine/Chunk.js")
-var TileWorld = require("Engine/TileWorld.js")
-var BlockWorld = require("Engine/BlockWorld.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import Event from "Engine/Core/Event.js";
+import Chunk from "Engine/Chunk.js";
+import TileWorld from "Engine/TileWorld.js";
+import BlockWorld from "Engine/BlockWorld.js";
 
-var Global = require("Game/Global.js")
-var Config = require("Game/Config.js")
-var Blocks = require("Game/Blocks.js")
-var Items = require("Game/Items.js")
-var Team = require("Game/Entity/Team.js")
-var Ammo = require("Game/Entity/Ammo.js")
-var PlayerClass = require("Game/PlayerClass.js")
-var CommandEntitySpawn = require("Game/Command/CommandEntitySpawn.js")
-var CommandDig = require("Game/Command/CommandDig.js")
-var CommandPopupMessage = require("Game/Command/CommandPopupMessage.js")
-var CommandPlayerJoin = require("Game/Command/CommandPlayerJoin.js")
-var CommandPlayerSpawn = require("Game/Command/CommandPlayerSpawn.js")
-var entityTemplateMonsterSpawner = require("Game/Entity/EntityTemplates/MonsterSpawner.js")
-var entityTemplatePlayer = require("Game/Entity/EntityTemplates/Player.js")
-var entityTemplateZombie = require("Game/Entity/EntityTemplates/Zombie.js")
-var entityTemplateMonster = require("Game/Entity/EntityTemplates/Monster.js")
-var MessageAmmoChange = require("Game/Message/ToClient/MessageAmmoChange.js")
-var CommandEntityHealthChange = require("Game/Command/CommandEntityHealthChange.js")
+import Global from "Game/Global.js";
+import Config from "Game/Config.js";
+import Blocks from "Game/Blocks.js";
+import Items from "Game/Items.js";
+import Team from "Game/Entity/Team.js";
+import Ammo from "Game/Entity/Ammo.js";
+import PlayerClass from "Game/PlayerClass.js";
+import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
+import CommandDig from "Game/Command/CommandDig.js";
+import CommandPopupMessage from "Game/Command/CommandPopupMessage.js";
+import CommandPlayerJoin from "Game/Command/CommandPlayerJoin.js";
+import CommandPlayerSpawn from "Game/Command/CommandPlayerSpawn.js";
+import entityTemplateMonsterSpawner from "Game/Entity/EntityTemplates/MonsterSpawner.js";
+import entityTemplatePlayer from "Game/Entity/EntityTemplates/Player.js";
+import entityTemplateZombie from "Game/Entity/EntityTemplates/Zombie.js";
+import entityTemplateMonster from "Game/Entity/EntityTemplates/Monster.js";
+import MessageAmmoChange from "Game/Message/ToClient/MessageAmmoChange.js";
+import CommandEntityHealthChange from "Game/Command/CommandEntityHealthChange.js";
 
 var GameModeSurvivalWar = function() {
     this.playerSpawns = {};
@@ -31,7 +31,7 @@ var GameModeSurvivalWar = function() {
     this.spawnEntities[Team.Enum.Blue] = [];
     this.spawnEntities[Team.Enum.Red] = [];
 }
-module.exports = GameModeSurvivalWar
+export default GameModeSurvivalWar
 
 GameModeSurvivalWar.prototype.init = function() {
     if (!isServer) return;

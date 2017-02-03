@@ -1,9 +1,9 @@
-var $ = require("jquery")
+import $ from "jquery";
 
-var Global = require("Game/Global.js")
-var AmmoHUD = require("Game/GUI/AmmoHUD.js")
-var DugItems = require("Game/GUI/DugItems.js")
-var Chat = require("Game/GUI/Chat.js")
+import Global from "Game/Global.js";
+import AmmoHUD from "Game/GUI/AmmoHUD.js";
+import DugItems from "Game/GUI/DugItems.js";
+import Chat from "Game/GUI/Chat.js";
 
 var HUD = function(gameData) {
     // Open/close crafting window when "C" is clicked
@@ -39,7 +39,7 @@ var HUD = function(gameData) {
 
     $('.hud').show();
 }
-module.exports = HUD
+export default HUD
 
 HUD.prototype.update = function() {
     // update inventory

@@ -1,16 +1,16 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var IndexCounter = require("Engine/IndexCounter.js")
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import IndexCounter from "Engine/IndexCounter.js";
 
-var Global = require("Game/Global.js")
-var Message = require("game/Message/Message.js");
+import Global from "Game/Global.js";
+import Message from "Game/Message/Message.js";;
 
 var MessageRequestClickEntity = function(entityId, clickType) {
     this.entityId = entityId;
     this.clickType = clickType;
 }
-module.exports = MessageRequestClickEntity
-Message.ToServer.push(module.exports);
+export default MessageRequestClickEntity;
+Message.ToServer.push(MessageRequestClickEntity);
 
 MessageRequestClickEntity.prototype.execute = function(gameData, player) {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

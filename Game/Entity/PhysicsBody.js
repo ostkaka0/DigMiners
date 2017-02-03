@@ -1,9 +1,9 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var Global = require("Game/Global.js")
-var EntityRegister = require("Game/Entity/Register.js")
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import Global from "Game/Global.js";
+import EntityRegister from "Game/Entity/Register.js";
 
 var PhysicsBody = function(pos, damping, rotationSpeed, mass, radius) {
     this.bodyId = Global.gameData.world.physicsWorld.add(pos, [0.0, 0.0], mass, radius);
@@ -27,8 +27,8 @@ var PhysicsBody = function(pos, damping, rotationSpeed, mass, radius) {
     this.angle = 0;
     this.angleOld = 0;
 }
-module.exports = PhysicsBody
-EntityRegister.push(module.exports);
+export default PhysicsBody
+EntityRegister.push(PhysicsBody);
 
 PhysicsBody.prototype.name = physicsBody.name; function physicsBody() { };
 

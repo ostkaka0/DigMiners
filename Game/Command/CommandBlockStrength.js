@@ -1,19 +1,19 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var TileWorld = require("Engine/TileWorld.js")
-var BlockWorld = require("Engine/BlockWorld.js")
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import TileWorld from "Engine/TileWorld.js";
+import BlockWorld from "Engine/BlockWorld.js";
 
-var Command = require("Game/Command/Command.js")
-var Config = require("Game/Config.js")
-var Global = require("Game/Global.js")
+import Command from "Game/Command/Command.js";
+import Config from "Game/Config.js";
+import Global from "Game/Global.js";
 
 var CommandBlockStrength = function(x, y, strength) {
     this.x = x;
     this.y = y;
     this.strength = Math.max(strength, 0);
 }
-module.exports = CommandBlockStrength
-Command.Register.push(module.exports)
+export default CommandBlockStrength;
+Command.Register.push(CommandBlockStrength);
 
 CommandBlockStrength.prototype.execute = function() {
     if (this.strength > 0)

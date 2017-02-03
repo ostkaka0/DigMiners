@@ -1,5 +1,5 @@
 
-module.exports = function(tick, render, tickDuration) {
+export default function(tick, render, tickDuration) {
     var frameTime = 1000 / 60;
     var lastFrameTime = performance.now();
     var startDate = performance.now();

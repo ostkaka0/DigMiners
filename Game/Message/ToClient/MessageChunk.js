@@ -1,13 +1,13 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var IndexCounter = require("Engine/IndexCounter.js")
-var Chunk = require("Engine/Chunk.js")
-var BlockChunk = require("Engine/BlockChunk.js")
-var compressRLE = require("Engine/Compress.js").compressRLE
-var decompressRLE = require("Engine/Compress.js").decompressRLE
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import IndexCounter from "Engine/IndexCounter.js";
+import Chunk from "Engine/Chunk.js";
+import BlockChunk from "Engine/BlockChunk.js";
+import {compressRLE} from "Engine/Compress.js";
+import {decompressRLE} from "Engine/Compress.js";
 
-var Global = require("Game/Global.js")
-var Message = require("game/Message/Message.js");
+import Global from "Game/Global.js";
+import Message from "Game/Message/Message.js";;
 
 var MessageChunk = function(chunk, blockChunk, x, y) {
     this.chunk = chunk || new Chunk();
@@ -16,8 +16,8 @@ var MessageChunk = function(chunk, blockChunk, x, y) {
     this.x = x;
     this.y = y;
 }
-module.exports = MessageChunk
-Message.ToClient.push(module.exports);
+export default MessageChunk;
+Message.ToClient.push(MessageChunk);
 
 MessageChunk.prototype.execute = function(gameData) {
     if (Global.gameData.world.generator)

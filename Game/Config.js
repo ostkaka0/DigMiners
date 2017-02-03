@@ -1,58 +1,58 @@
-var ObjectRegister = require("Engine/ObjectRegister.js")
-var TypeRegister = require("Engine/TypeRegister.js")
+import ObjectRegister from "Engine/ObjectRegister.js";
+import TypeRegister from "Engine/TypeRegister.js";
 
-var Tiles = require("Game/Tiles.js")
-var Blocks = require("Game/Blocks.js")
-var Items = require("Game/Items.js")
-var Projectiles = require("Game/Projectiles.js")
-var Particles = require("Game/Particles.js")
-var ParticleFunctions = require("Game/ParticleFunctions.js")
-var PotionEffectTypes = require("Game/PotionEffectTypes.js")
+import Tiles from "Game/Tiles.js";
+import Blocks from "Game/Blocks.js";
+import Items from "Game/Items.js";
+import Projectiles from "Game/Projectiles.js";
+import Particles from "Game/Particles.js";
+import ParticleFunctions from "Game/ParticleFunctions.js";
+import PotionEffectTypes from "Game/PotionEffectTypes.js";
 
-var Command = require("Game/Command/Command.js")
-var CommandEntitySpawn = require("Game/Command/CommandEntitySpawn.js")
-var CommandEntityInventory = require("Game/Command/CommandEntityInventory.js")
-var CommandEntityEquipItem = require("Game/Command/CommandEntityEquipItem.js")
-var CommandCollisions = require("Game/Command/CommandCollisions.js")
-var CommandEntityInteractEntity = require("Game/Command/CommandEntityInteractEntity.js")
-var CommandPlayerJoin = require("Game/Command/CommandPlayerJoin.js")
-var CommandPlayerLeave = require("Game/Command/CommandPlayerLeave.js")
+import Command from "Game/Command/Command.js";
+import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
+import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
+import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
+import CommandCollisions from "Game/Command/CommandCollisions.js";
+import CommandEntityInteractEntity from "Game/Command/CommandEntityInteractEntity.js";
+import CommandPlayerJoin from "Game/Command/CommandPlayerJoin.js";
+import CommandPlayerLeave from "Game/Command/CommandPlayerLeave.js";
 
-var Message = require("Game/Message/Message.js")
-var MessageCommands = require("Game/Message/ToClient/MessageCommands.js")
-var MessageRequestKeyStatusUpdate = require("Game/Message/ToServer/MessageRequestKeyStatusUpdate.js")
-var MessageRequestPlaceBlock = require("Game/Message/ToServer/MessageRequestPlaceBlock.js")
-var MessageRequestClickBlock = require("Game/Message/ToServer/MessageRequestClickBlock.js")
-var MessageRequestRotate = require("Game/Message/ToServer/MessageRequestRotate.js")
-var MessageRequestItemPickup = require("Game/Message/ToServer/MessageRequestItemPickup.js")
-var MessageRequestSpawn = require("Game/Message/ToServer/MessageRequestSpawn.js")
+import Message from "Game/Message/Message.js";
+import MessageCommands from "Game/Message/ToClient/MessageCommands.js";
+import MessageRequestKeyStatusUpdate from "Game/Message/ToServer/MessageRequestKeyStatusUpdate.js";
+import MessageRequestPlaceBlock from "Game/Message/ToServer/MessageRequestPlaceBlock.js";
+import MessageRequestClickBlock from "Game/Message/ToServer/MessageRequestClickBlock.js";
+import MessageRequestRotate from "Game/Message/ToServer/MessageRequestRotate.js";
+import MessageRequestItemPickup from "Game/Message/ToServer/MessageRequestItemPickup.js";
+import MessageRequestSpawn from "Game/Message/ToServer/MessageRequestSpawn.js";
 
-var EntityRegister = require("Game/Entity/Register.js")
-var PhysicsBody = require("Game/Entity/PhysicsBody.js")
-var Movement = require("Game/Entity/Movement.js")
-var Drawable = require("Game/Entity/Drawable.js")
-var Bodyparts = require("Game/Entity/Bodyparts.js")
-var ItemComponent = require("Game/Entity/ItemComponent.js")
-var Health = require("Game/Entity/Health.js")
-var ControlledByPlayer = require("Game/Entity/ControlledByPlayer.js")
-var NameComponent = require("Game/Entity/NameComponent.js")
-var EquippedItems = require("Game/Entity/EquippedItems.js")
-var Projectile = require("Game/Entity/Projectile.js")
-var BlockPlacer = require("Game/Entity/BlockPlacer.js")
-var PotionEffects = require("Game/Entity/PotionEffects.js")
-var Team = require("Game/Entity/Team.js")
-var Inventory = require("Game/Entity/Inventory.js")
-var Ammo = require("Game/Entity/Ammo.js")
-var Chest = require("Game/Entity/Chest.js")
-var Interactable = require("Game/Entity/Interactable.js")
-var Interacter = require("Game/Entity/Interacter.js")
+import EntityRegister from "Game/Entity/Register.js";
+import PhysicsBody from "Game/Entity/PhysicsBody.js";
+import Movement from "Game/Entity/Movement.js";
+import Drawable from "Game/Entity/Drawable.js";
+import Bodyparts from "Game/Entity/Bodyparts.js";
+import ItemComponent from "Game/Entity/ItemComponent.js";
+import Health from "Game/Entity/Health.js";
+import ControlledByPlayer from "Game/Entity/ControlledByPlayer.js";
+import NameComponent from "Game/Entity/NameComponent.js";
+import EquippedItems from "Game/Entity/EquippedItems.js";
+import Projectile from "Game/Entity/Projectile.js";
+import BlockPlacer from "Game/Entity/BlockPlacer.js";
+import PotionEffects from "Game/Entity/PotionEffects.js";
+import Team from "Game/Entity/Team.js";
+import Inventory from "Game/Entity/Inventory.js";
+import Ammo from "Game/Entity/Ammo.js";
+import Chest from "Game/Entity/Chest.js";
+import Interactable from "Game/Entity/Interactable.js";
+import Interacter from "Game/Entity/Interacter.js";
 
-var GameModeZombieInvasion = require("Game/GameMode/GameModeZombieInvasion.js")
-var GameModeSurvivalWar = require("Game/GameMode/GameModeSurvivalWar.js")
-var GameModeBaseWar = require("Game/GameMode/GameModeBaseWar.js")
+import GameModeZombieInvasion from "Game/GameMode/GameModeZombieInvasion.js";
+import GameModeSurvivalWar from "Game/GameMode/GameModeSurvivalWar.js";
+import GameModeBaseWar from "Game/GameMode/GameModeBaseWar.js";
 
-var Config = exports;
-//module.exports = Config
+var Config = {};//exports;
+export default Config
 
 Config.init = function() {
     Command.init();

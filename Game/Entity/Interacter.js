@@ -1,13 +1,13 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var EntityRegister = require("Game/Entity/Register.js")
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import EntityRegister from "Game/Entity/Register.js";
 
 var Interacter = function() {
     this.lastCheck = null;
     this.interacting = null;
 }
-module.exports = Interacter
-EntityRegister.push(module.exports);
+export default Interacter
+EntityRegister.push(Interacter);
 
 Interacter.prototype.name = interacter.name; function interacter() { };
 

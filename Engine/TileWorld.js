@@ -1,16 +1,16 @@
-var Chunk = require("Engine/Chunk.js")
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
+import Chunk from "Engine/Chunk.js";
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
 
-var Global = require("Game/Global.js")
-var Config = require("Game/Config.js")
+import Global from "Game/Global.js";
+import Config from "Game/Config.js";
 
 var CHUNK_DIM = Chunk.dim;
 var CHUNK_DIM_2 = Chunk.dim2;
 var CHUNK_SIZE = Chunk.size;
 
 var TileWorld = {};
-module.exports = TileWorld;
+export default TileWorld;
 
 TileWorld.getDensity = function(terrainWorld, x, y) {
     var chunkX = Math.floor(x / CHUNK_DIM);

@@ -1,15 +1,15 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var Event = require("Engine/Core/Event.js")
-var Global = require("Game/Global.js")
-var Team = require("Game/Entity/Team.js")
-var CommandEntitySpawn = require("Game/Command/CommandEntitySpawn.js")
-var CommandEntityInventory = require("Game/Command/CommandEntityInventory.js")
-var CommandEntityEquipItem = require("Game/Command/CommandEntityEquipItem.js")
-var Items = require("Game/Items.js")
-var EntityRegister = require("Game/Entity/Register.js")
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import Event from "Engine/Core/Event.js";
+import Global from "Game/Global.js";
+import Team from "Game/Entity/Team.js";
+import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
+import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
+import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
+import Items from "Game/Items.js";
+import EntityRegister from "Game/Entity/Register.js";
 
 var Spawner = function(entityTemplate, pos, maxEntities, radius, duration, items, equippedItemId, randomDuration, teamId) {
     this.entityTemplate = entityTemplate;
@@ -28,8 +28,8 @@ var Spawner = function(entityTemplate, pos, maxEntities, radius, duration, items
 
     this.initialized = false;
 }
-module.exports = Spawner
-EntityRegister.push(module.exports);
+export default Spawner
+EntityRegister.push(Spawner);
 
 Spawner.prototype.name = spawner.name; function spawner() { };
 

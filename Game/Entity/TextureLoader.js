@@ -1,5 +1,5 @@
-var Event = require("Engine/Core/Event.js")
-var loadTextures = require("Engine/Animation/TextureFunctions.js").loadTextures
+import Event from "Engine/Core/Event.js";
+import {loadTextures} from "Engine/Animation/TextureFunctions.js";
 
 
 
@@ -8,7 +8,7 @@ var TextureLoader = function() {
     this.total = 0;
     this.current = 0;
 }
-module.exports = TextureLoader
+export default TextureLoader
 TextureLoader.Events = {};
 TextureLoader.Events.onComplete = [];
 TextureLoader.Events.onProgress = [];

@@ -13,7 +13,7 @@ var babylon = require("babylon")
 var babel = require("babel-core");
 var through = require("through2");
 
-var NameMangler = require("./NameMangler.js");
+import NameMangler from "./NameMangler.js";;
 
 var outputPath = "./html/";
 
@@ -61,6 +61,8 @@ function run() {
         console.log("Done!");
     })
 }
+
+
 
 function obfuscate(scriptArray, output, callback) {
     var b = browserify(scriptArray);

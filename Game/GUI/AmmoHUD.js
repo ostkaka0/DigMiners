@@ -1,11 +1,11 @@
-var $ = require("jquery")
+import $ from "jquery";
 
-var Event = require("Engine/Core/Event.js")
+import Event from "Engine/Core/Event.js";
 
-var Global = require("Game/Global.js")
-var Ammo = require("Game/Entity/Ammo.js")
+import Global from "Game/Global.js";
+import Ammo from "Game/Entity/Ammo.js";
 
-module.exports = function() {
+export default function() {
     this.root = $("<div>", { "text": "No weapon equipped" });
     this.root.css({
         "position": "fixed",

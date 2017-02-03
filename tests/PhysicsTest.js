@@ -1,8 +1,8 @@
 var "../lib_front_end/apixi.js")
 var '../lib_front_end/ajquery-3.1.1.min.js';
-var Canvas = require("../Engine/Canvas.js")
-var PhysicsWorld = require("../Engine/PhysicsWorld.js")
-var gameLoop = require("../Engine/GameLoop.js")
+import Canvas from "../Engine/Canvas.js";
+import PhysicsWorld from "../Engine/PhysicsWorld.js";
+import gameLoop from "../Engine/GameLoop.js";
 
 var canvas = document.getElementById("canvas");
 var gl = Canvas.initGL(canvas);

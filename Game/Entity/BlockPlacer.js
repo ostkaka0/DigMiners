@@ -1,12 +1,12 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var Sprite = require("Engine/Animation/Sprite.js")
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import Sprite from "Engine/Animation/Sprite.js";
 
-var Config = require("Game/Config.js")
-var CommandEntityInventory = require("Game/Command/CommandEntityInventory.js")
-var CommandPlaceBlock = require("Game/Command/CommandPlaceBlock.js")
-var Global = require("Game/Global.js")
-var EntityRegister = require("Game/Entity/Register.js")
+import Config from "Game/Config.js";
+import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
+import CommandPlaceBlock from "Game/Command/CommandPlaceBlock.js";
+import Global from "Game/Global.js";
+import EntityRegister from "Game/Entity/Register.js";
 
 var BlockPlacer = function(blockPos, blockId, duration, entityId) {
     this.blockPos = blockPos;
@@ -14,8 +14,8 @@ var BlockPlacer = function(blockPos, blockId, duration, entityId) {
     this.duration = duration;
     this.entityId = entityId;
 }
-module.exports = BlockPlacer
-EntityRegister.push(module.exports);
+export default BlockPlacer
+EntityRegister.push(BlockPlacer);
 
 BlockPlacer.prototype.name = blockPlacer.name; function blockPlacer() { };
 

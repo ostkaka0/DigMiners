@@ -1,10 +1,10 @@
-var TileWorld = require("Engine/TileWorld.js")
-var BlockWorld = require("Engine/BlockWorld.js")
-var Chunk = require("Engine/Chunk.js")
-var BlockChunk = require("Engine/BlockChunk.js")
+import TileWorld from "Engine/TileWorld.js";
+import BlockWorld from "Engine/BlockWorld.js";
+import Chunk from "Engine/Chunk.js";
+import BlockChunk from "Engine/BlockChunk.js";
 
-var Config = require("Game/Config.js")
-var Global = require("Game/Global.js")
+import Config from "Game/Config.js";
+import Global from "Game/Global.js";
 
 var Player = function(playerId, entityId) {
     this.playerId = playerId;
@@ -13,7 +13,7 @@ var Player = function(playerId, entityId) {
     this.deathTick = Global.gameData.world.tickId;
     this.oreInventory = new Array();
 }
-module.exports = Player
+export default Player
 
 Player.prototype.hasRequiredRecipeResources = function(recipe) {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

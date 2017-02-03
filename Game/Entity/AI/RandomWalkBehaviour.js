@@ -1,8 +1,8 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
 
-var Global = require("Game/Global.js")
-var CommandEntityMove = require("Game/Command/CommandEntityMove.js")
+import Global from "Game/Global.js";
+import CommandEntityMove from "Game/Command/CommandEntityMove.js";
 
 var RandomWalkBehaviour = function(entity) {
     this.entity = entity;
@@ -17,7 +17,7 @@ var RandomWalkBehaviour = function(entity) {
         [0, -1]
     ];
 }
-module.exports = RandomWalkBehaviour
+export default RandomWalkBehaviour
 
 RandomWalkBehaviour.prototype.canRun = function() {
     return true;

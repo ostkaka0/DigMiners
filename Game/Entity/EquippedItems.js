@@ -1,13 +1,13 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var Config = require("Game/Config.js")
-var EntityRegister = require("Game/Entity/Register.js")
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import Config from "Game/Config.js";
+import EntityRegister from "Game/Entity/Register.js";
 
 var EquippedItems = function(items) {
     this.items = (items ? items : {});
 }
-module.exports = EquippedItems
-EntityRegister.push(module.exports);
+export default EquippedItems
+EntityRegister.push(EquippedItems);
 
 EquippedItems.prototype.name = equippedItems.name; function equippedItems() { };
 

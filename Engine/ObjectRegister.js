@@ -1,5 +1,5 @@
 var ObjectRegister = {};
-module.exports = ObjectRegister;
+export default ObjectRegister;
 
 ObjectRegister.add = function(array, object) {
     object.id = array.length;

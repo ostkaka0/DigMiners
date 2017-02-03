@@ -1,4 +1,4 @@
-var Event = require("Engine/Core/Event.js")
+import Event from "Engine/Core/Event.js";
 
 var ObjectWorld = function(useDestroyFunc) {
     this.useDestroyFunc = useDestroyFunc;
@@ -7,7 +7,7 @@ var ObjectWorld = function(useDestroyFunc) {
     this.onAdd = [];
     this.onRemove = [];
 }
-module.exports = ObjectWorld;
+export default ObjectWorld;
 
 ObjectWorld.prototype.add = function(object, id) {
     object.isActive = false;

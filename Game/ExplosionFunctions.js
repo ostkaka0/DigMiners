@@ -1,16 +1,19 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var TileWorld = require("Engine/TileWorld.js")
-var BlockWorld = require("Engine/BlockWorld.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import TileWorld from "Engine/TileWorld.js";
+import BlockWorld from "Engine/BlockWorld.js";
 
-var Config = require("Game/Config.js")
-var Global = require("Game/Global.js")
-var Entity = require("Game/Entity/Entity.js")
+import Config from "Game/Config.js";
+import Global from "Game/Global.js";
+import Entity from "Game/Entity/Entity.js";
 
-var CommandDig = require("Game/Command/CommandDig.js")
-var CommandBlockStrength = require("Game/Command/CommandBlockStrength.js")
+import CommandDig from "Game/Command/CommandDig.js";
+import CommandBlockStrength from "Game/Command/CommandBlockStrength.js";
 
-module.exports.createExplosion = function(startPos, radius, entityDamage, blockDamage, tileDamage, attacker) {
+var ExplosionFunctions = {};
+export default ExplosionFunctions;
+
+ExplosionFunctions.createExplosion = function(startPos, radius, entityDamage, blockDamage, tileDamage, attacker) {
     if (isServer) {
         // Damage terrain
         for (var i = 0; i < tileDamage; ++i)

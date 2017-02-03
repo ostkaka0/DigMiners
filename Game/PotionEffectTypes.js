@@ -1,14 +1,14 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var Event = require("Engine/Core/Event.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import Event from "Engine/Core/Event.js";
 
-var Config = require("Game/Config.js")
-var Global = require("Game/Global.js")
-var Ammo = require("Game/Entity/Ammo.js")
-var Health = require("Game/Entity/Health.js")
+import Config from "Game/Config.js";
+import Global from "Game/Global.js";
+import Ammo from "Game/Entity/Ammo.js";
+import Health from "Game/Entity/Health.js";
 
 var PotionEffectTypes = {};
-module.exports = PotionEffectTypes
+export default PotionEffectTypes
 
 PotionEffectTypes.Healing = {
     interval: 5,

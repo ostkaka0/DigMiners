@@ -1,12 +1,12 @@
-var Chunk = require("Engine/Chunk.js")
-var BlockChunk = require("Engine/BlockChunk.js")
+import Chunk from "Engine/Chunk.js";
+import BlockChunk from "Engine/BlockChunk.js";
 
-var Config = require("Game/Config.js")
-var Global = require("Game/Global.js")
-var Blocks = require("Game/Blocks.js")
-var Tiles = require("Game/Blocks.js")
+import Config from "Game/Config.js";
+import Global from "Game/Global.js";
+import Blocks from "Game/Blocks.js";
+import Tiles from "Game/Blocks.js";
 
-var noise = require("lib/perlin.js").noise;
+import "lib/perlin.js";
 
 var Generator = function(seed) {
     if (!seed)
@@ -17,7 +17,7 @@ var Generator = function(seed) {
     this.oreNoise2 = this.seed + 331;
     this.oreNoise3 = this.seed + 71117;
 }
-module.exports = Generator
+export default Generator
 
 Generator.prototype.generate = function(chunk, chunkX, chunkY) {
     for (var yy = 0; yy < Chunk.dim; ++yy) {

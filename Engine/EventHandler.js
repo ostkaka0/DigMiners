@@ -4,7 +4,7 @@ var EventHandler = function() {
         this[arguments[i]] = [];
 }
 
-module.exports = EventHandler;
+export default EventHandler;
 
 EventHandler.prototype.trigger = function() {
     var eventName = arguments[0];

@@ -1,15 +1,15 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var IndexCounter = require("Engine/IndexCounter.js")
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import IndexCounter from "Engine/IndexCounter.js";
 
-var Global = require("Game/Global.js")
-var Message = require("game/Message/Message.js");
+import Global from "Game/Global.js";
+import Message from "Game/Message/Message.js";;
 
 var MessageChangeGameMode = function() {
     this.gameModeId = Global.gameData.gameMode.id;
 }
-module.exports = MessageChangeGameMode
-Message.ToClient.push(module.exports);
+export default MessageChangeGameMode;
+Message.ToClient.push(MessageChangeGameMode);
 
 MessageChangeGameMode.prototype.execute = function(gameData) {
     // TODO: Don't reload page

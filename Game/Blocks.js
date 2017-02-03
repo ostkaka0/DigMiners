@@ -1,32 +1,32 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var TileWorld = require("Engine/TileWorld.js")
-var BlockWorld = require("Engine/BlockWorld.js")
-var Sprite = require("Engine/Animation/Sprite.js")
-var Event = require("Engine/Core/Event.js")
-var BodyPart = require("Engine/Animation/BodyPart.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import TileWorld from "Engine/TileWorld.js";
+import BlockWorld from "Engine/BlockWorld.js";
+import Sprite from "Engine/Animation/Sprite.js";
+import Event from "Engine/Core/Event.js";
+import BodyPart from "Engine/Animation/BodyPart.js";
 
-var Config = require("Game/Config.js")
-var Global = require("Game/Global.js")
-var Items = require("Game/Items.js")
-var Team = require("Game/Entity/Team.js")
-var Chest = require("Game/Entity/Chest.js")
-var PhysicsBody = require("Game/Entity/PhysicsBody.js")
-var Health = require("Game/Entity/Health.js")
-var Bodyparts = require("Game/Entity/Bodyparts.js")
-var PotionEffects = require("Game/Entity/PotionEffects.js")
-var PotionEffectTypes = require("Game/PotionEffectTypes.js")
-var Interactable = require("Game/Entity/Interactable.js")
-var CommandPlaceBlock = require("Game/Command/CommandPlaceBlock.js")
-var CommandEntitySpawn = require("Game/Command/CommandEntitySpawn.js")
-var CommandBuild = require("Game/Command/CommandBuild.js")
-var CommandBlockStrength = require("Game/Command/CommandBlockStrength.js")
-var CommandEntityInventory = require("Game/Command/CommandEntityInventory.js")
-var CommandEntityEquipItem = require("Game/Command/CommandEntityEquipItem.js")
-var entityTemplatesTurret = require("Game/Entity/EntityTemplates/Turret.js")
+import Config from "Game/Config.js";
+import Global from "Game/Global.js";
+import Items from "Game/Items.js";
+import Team from "Game/Entity/Team.js";
+import Chest from "Game/Entity/Chest.js";
+import PhysicsBody from "Game/Entity/PhysicsBody.js";
+import Health from "Game/Entity/Health.js";
+import Bodyparts from "Game/Entity/Bodyparts.js";
+import PotionEffects from "Game/Entity/PotionEffects.js";
+import PotionEffectTypes from "Game/PotionEffectTypes.js";
+import Interactable from "Game/Entity/Interactable.js";
+import CommandPlaceBlock from "Game/Command/CommandPlaceBlock.js";
+import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
+import CommandBuild from "Game/Command/CommandBuild.js";
+import CommandBlockStrength from "Game/Command/CommandBlockStrength.js";
+import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
+import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
+import entityTemplatesTurret from "Game/Entity/EntityTemplates/Turret.js";
 
-var Blocks = exports;
-//module.exports = Blocks;
+var Blocks = {}; //exports;
+export default Blocks;
 
 var BlockTypes = {
     FOREGROUND: 0,

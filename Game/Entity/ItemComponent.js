@@ -1,14 +1,14 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var EntityRegister = require("Game/Entity/Register.js")
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import EntityRegister from "Game/Entity/Register.js";
 
 var ItemComponent = function(itemId, amount) {
     this.itemId = itemId;
     this.amount = amount;
     this.dropped = new Date();
 }
-module.exports = ItemComponent
-EntityRegister.push(module.exports);
+export default ItemComponent
+EntityRegister.push(ItemComponent);
 
 ItemComponent.prototype.name = item.name; function item() { };
 

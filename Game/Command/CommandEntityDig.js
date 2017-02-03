@@ -1,17 +1,17 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var TileWorld = require("Engine/TileWorld.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import TileWorld from "Engine/TileWorld.js";
 
-var Config = require("Game/Config.js")
-var Global = require("Game/Global.js")
-var Command = require("Game/Command/Command.js")
-var Tiles = require("Game/Blocks.js")
-var Items = require("Game/Items.js")
+import Config from "Game/Config.js";
+import Global from "Game/Global.js";
+import Command from "Game/Command/Command.js";
+import Tiles from "Game/Blocks.js";
+import Items from "Game/Items.js";
 
-var CommandPlayerOreInventory= require("Game/Command/CommandPlayerOreInventory.js")
-var CommandEntitySpawn = require("Game/Command/CommandEntitySpawn.js")
+import CommandPlayerOreInventory from "Game/Command/CommandPlayerOreInventory.js";
+import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
 
 var CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHardness) {
     this.entityId = entityId;
@@ -22,8 +22,8 @@ var CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHard
     this.digSpeed = digSpeed;
     this.maxDigHardness = maxDigHardness;
 }
-module.exports = CommandEntityDig
-Command.Register.push(module.exports)
+export default CommandEntityDig;
+Command.Register.push(CommandEntityDig);
 
 CommandEntityDig.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

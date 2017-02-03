@@ -1,22 +1,22 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var IndexCounter = require("Engine/IndexCounter.js")
-var Chunk = require("Engine/Chunk.js")
-var BlockChunk = require("Engine/BlockChunk.js")
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import IndexCounter from "Engine/IndexCounter.js";
+import Chunk from "Engine/Chunk.js";
+import BlockChunk from "Engine/BlockChunk.js";
 
-var Global = require("Game/Global.js")
-var Config = require("Game/Config.js")
-var Message = require("game/Message/Message.js");
-var CommandEntityBuild = require("Game/Command/CommandEntityBuild.js")
-var Blocks = require("Game/Blocks.js")
+import Global from "Game/Global.js";
+import Config from "Game/Config.js";
+import Message from "Game/Message/Message.js";;
+import CommandEntityBuild from "Game/Command/CommandEntityBuild.js";
+import Blocks from "Game/Blocks.js";
 
 var MessageRequestPlaceBlock = function(stackId, x, y) {
     this.stackId = stackId;
     this.x = Math.floor(x);
     this.y = Math.floor(y);
 }
-module.exports = MessageRequestPlaceBlock
-Message.ToServer.push(module.exports);
+export default MessageRequestPlaceBlock;
+Message.ToServer.push(MessageRequestPlaceBlock);
 
 MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
     var entity = Global.gameData.world.entityWorld.objects[player.entityId];

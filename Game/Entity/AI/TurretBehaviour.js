@@ -1,17 +1,17 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var BlockWorld = require("Engine/BlockWorld.js")
-var TileWorld = require("Engine/TileWorld.js")
-var Keys = require("Engine/Keys.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import BlockWorld from "Engine/BlockWorld.js";
+import TileWorld from "Engine/TileWorld.js";
+import Keys from "Engine/Keys.js";
 
-var Global = require("Game/Global.js")
-var Items = require("Game/Items.js")
-var Team = require("Game/Entity/Team.js")
-var CommandEntityEquipItem = require("Game/Command/CommandEntityEquipItem.js")
-var CommandKeyStatusUpdate = require("Game/Command/CommandKeyStatusUpdate.js")
-var CommandEntityMove = require("Game/Command/CommandEntityMove.js")
-var CommandEntityRotate = require("Game/Command/CommandEntityRotate.js")
-var CommandEntityLookAtEntity = require("Game/Command/CommandEntityLookAtEntity.js")
+import Global from "Game/Global.js";
+import Items from "Game/Items.js";
+import Team from "Game/Entity/Team.js";
+import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
+import CommandKeyStatusUpdate from "Game/Command/CommandKeyStatusUpdate.js";
+import CommandEntityMove from "Game/Command/CommandEntityMove.js";
+import CommandEntityRotate from "Game/Command/CommandEntityRotate.js";
+import CommandEntityLookAtEntity from "Game/Command/CommandEntityLookAtEntity.js";
 
 var TurretBehaviour = function(entity, maxRadius) {
     this.entity = entity;
@@ -25,7 +25,7 @@ var TurretBehaviour = function(entity, maxRadius) {
     this.isAiming = false;
     this.nextCanRunTickId = Global.gameData.world.tickId;
 }
-module.exports = TurretBehaviour
+export default TurretBehaviour
 
 TurretBehaviour.prototype.canRun = function() {
     if (Global.gameData.world.tickId < this.nextCanRunTickId)

@@ -1,10 +1,10 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var BodyPart = require("Engine/Animation/BodyPart.js")
-var Sprite = require("Engine/Animation/Sprite.js")
-var EntityRegister = require("Game/Entity/Register.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import BodyPart from "Engine/Animation/BodyPart.js";
+import Sprite from "Engine/Animation/Sprite.js";
+import EntityRegister from "Game/Entity/Register.js";
 
 var Bodyparts = function(bodyparts) {
     this.bodyparts = bodyparts;
@@ -24,8 +24,8 @@ var Bodyparts = function(bodyparts) {
         bodypart.children = this.getChildren(bodypart.name);
     }
 }
-module.exports = Bodyparts
-EntityRegister.push(module.exports);
+export default Bodyparts;
+EntityRegister.push(Bodyparts);
 
 Bodyparts.prototype.name = bodyparts.name; function bodyparts() { };
 

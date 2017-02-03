@@ -1,4 +1,4 @@
-var Global = require("Game/Global.js")
+import Global from "Game/Global.js";
 
 var Sprite = function(textureName) {
     if (textureName) {
@@ -19,7 +19,7 @@ var Sprite = function(textureName) {
     this.anchor = [0.5, 0.5];
     this.alpha = 1.0;
 }
-module.exports = Sprite;
+export default Sprite;
 
 Sprite.prototype.getSize = function() {
     if (this.frame)

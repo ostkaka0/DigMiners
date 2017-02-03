@@ -1,9 +1,9 @@
-var $ = require("jquery")
+import $ from "jquery";
 
-var Event = require("Engine/Core/Event.js")
+import Event from "Engine/Core/Event.js";
 
-var Global = require("Game/Global.js")
-var TextureLoader = require("Game/Entity/TextureLoader.js")
+import Global from "Game/Global.js";
+import TextureLoader from "Game/Entity/TextureLoader.js";
 
 var LoadingScreen = function() {
 
@@ -75,4 +75,4 @@ var LoadingScreen = function() {
         this.root.hide();
     }.bind(this));
 }
-module.exports = LoadingScreen
+export default LoadingScreen

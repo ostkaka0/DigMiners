@@ -1,10 +1,10 @@
-var ObjectRegister = require("Engine/ObjectRegister.js")
+import ObjectRegister from "Engine/ObjectRegister.js";
 
-var Items = require("Game/Items.js")
-var Blocks = require("Game/Blocks.js")
+import Items from "Game/Items.js";
+import Blocks from "Game/Blocks.js";
 
 var PlayerClass = {};
-module.exports = PlayerClass;
+export default PlayerClass;
 
 PlayerClass.init = function() {
     delete PlayerClass.init;
@@ -60,7 +60,7 @@ PlayerClass.init = function() {
         }
     });
 
-    //module.exports = PlayerClass
+    //export default PlayerClass
 
     PlayerClass.Register = ObjectRegister.addByObject([], PlayerClass);
 }

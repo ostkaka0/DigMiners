@@ -1,11 +1,14 @@
-var TypeRegister = require("Engine/TypeRegister.js");
+import TypeRegister from "Engine/TypeRegister.js";;
 
-exports.Register = [];
-exports.ToClient = [];
-exports.ToServer = [];
+var Message = {};
+export default Message;
 
-exports.init = function() {
-    TypeRegister.addByArray(exports.Register, exports.ToClient);
-    TypeRegister.addByArray(exports.Register, exports.ToServer);
-    TypeRegister.sort(exports.Register);
+Message.Register = [];
+Message.ToClient = [];
+Message.ToServer = [];
+
+Message.init = function() {
+    TypeRegister.addByArray(Message.Register, Message.ToClient);
+    TypeRegister.addByArray(Message.Register, Message.ToServer);
+    TypeRegister.sort(Message.Register);
 }

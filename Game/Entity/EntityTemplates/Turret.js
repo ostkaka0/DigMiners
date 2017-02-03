@@ -1,22 +1,22 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var Sprite = require("Engine/Animation/Sprite.js")
-var BodyPart = require("Engine/Animation/BodyPart.js")
-var PhysicsBody = require("Game/Entity/PhysicsBody.js")
-var Bodyparts = require("Game/Entity/Bodyparts.js")
-var Drawable = require("Game/Entity/Drawable.js")
-var Team = require("Game/Entity/Team.js")
-var Health = require("Game/Entity/Health.js")
-var Ammo = require("Game/Entity/Ammo.js")
-var Movement = require("Game/Entity/Movement.js")
-var Inventory = require("Game/Entity/Inventory.js")
-var EquippedItems = require("Game/Entity/EquippedItems.js")
-var PotionEffects = require("Game/Entity/PotionEffects.js")
-var BehaviourContainer = require("Game/Entity/AI/BehaviourContainer.js")
-var TurretBehaviour = require("Game/Entity/AI/TurretBehaviour.js")
-var TurretIdleBehaviour = require("Game/Entity/AI/TurretIdleBehaviour.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import Sprite from "Engine/Animation/Sprite.js";
+import BodyPart from "Engine/Animation/BodyPart.js";
+import PhysicsBody from "Game/Entity/PhysicsBody.js";
+import Bodyparts from "Game/Entity/Bodyparts.js";
+import Drawable from "Game/Entity/Drawable.js";
+import Team from "Game/Entity/Team.js";
+import Health from "Game/Entity/Health.js";
+import Ammo from "Game/Entity/Ammo.js";
+import Movement from "Game/Entity/Movement.js";
+import Inventory from "Game/Entity/Inventory.js";
+import EquippedItems from "Game/Entity/EquippedItems.js";
+import PotionEffects from "Game/Entity/PotionEffects.js";
+import BehaviourContainer from "Game/Entity/AI/BehaviourContainer.js";
+import TurretBehaviour from "Game/Entity/AI/TurretBehaviour.js";
+import TurretIdleBehaviour from "Game/Entity/AI/TurretIdleBehaviour.js";
 
-module.exports = function(entityId, pos, teamId) {
+export default function(entityId, pos, teamId) {
     var entity = {};
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0, 1000, 0.5);
     entity.movement = new Movement(0);

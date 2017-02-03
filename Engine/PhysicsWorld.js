@@ -1,6 +1,6 @@
-var PointWorld = require("Engine/PointWorld.js")
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
+import PointWorld from "Engine/PointWorld.js";
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
 
 var PhysicsWorld = function(size) {
     this.pointWorld = new PointWorld(size || 1024);
@@ -9,7 +9,7 @@ var PhysicsWorld = function(size) {
     this.mass = [];
     this.onCollision = [];
 }
-module.exports = PhysicsWorld;
+export default PhysicsWorld;
 
 PhysicsWorld.prototype.update = function(dt) {
     // Update pos, velocity, posOld and pages

@@ -256,10 +256,11 @@ parseExceptions = function(tokens) {
     return exceptions;
 }
 
+var names = {};
+exports.names = names;
+var nameIndex = 0;
 mangleTokens = function(tokens, except, debug) {
-    var names = {};
     var exceptions = {};
-    var nameIndex = 0;
     except.forEach(function(name) { exceptions[name] = name; });
 
     lastToken = null;
@@ -278,7 +279,7 @@ mangleTokens = function(tokens, except, debug) {
 
             }
         } else if ((token.value == "=" || token.value == ":") && lastToken != null) {
-            var name =  "_" + (debug? lastToken.value : nameIndex.toString(36));
+            var name =  "_$_" + (debug? lastToken.value : nameIndex.toString(36));
             //process.stdout.write(lastToken.value + " -> " + name + "  \t");
             names[lastToken.value] = name;
             nameIndex++;

@@ -1,11 +1,11 @@
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var IndexCounter = require("Engine/IndexCounter.js")
-var Event = require("Engine/Core/Event.js")
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import IndexCounter from "Engine/IndexCounter.js";
+import Event from "Engine/Core/Event.js";
 
-var Global = require("Game/Global.js")
-var Message = require("game/Message/Message.js");
-var Ammo = require("Game/Entity/Ammo.js")
+import Global from "Game/Global.js";
+import Message from "Game/Message/Message.js";;
+import Ammo from "Game/Entity/Ammo.js";
 
 var MessageAmmoChange = function(entity, itemIds) {
     this.ammo = {};
@@ -15,8 +15,8 @@ var MessageAmmoChange = function(entity, itemIds) {
         }.bind(this));
     }
 }
-module.exports = MessageAmmoChange
-Message.ToClient.push(module.exports);
+export default MessageAmmoChange;
+Message.ToClient.push(MessageAmmoChange);
 
 MessageAmmoChange.prototype.execute = function(gameData) {
 

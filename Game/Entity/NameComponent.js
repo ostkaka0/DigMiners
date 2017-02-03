@@ -1,15 +1,15 @@
-var fix = require("Engine/Core/Fix.js")
-var v2 = require("Engine/Core/v2.js")
-var Serialize = require("Engine/Serialization.js").Serialize
-var Deserialize = require("Engine/Serialization.js").Deserialize
-var TextSprite = require("Engine/Animation/TextSprite.js")
-var EntityRegister = require("Game/Entity/Register.js")
+import fix from "Engine/Core/Fix.js";
+import v2 from "Engine/Core/v2.js";
+import {Serialize} from "Engine/Serialization.js";
+import {Deserialize} from "Engine/Serialization.js";
+import TextSprite from "Engine/Animation/TextSprite.js";
+import EntityRegister from "Game/Entity/Register.js";
 
 var NameComponent = function(entityName) {
     this.entityName = entityName + "";
 }
-module.exports = NameComponent
-EntityRegister.push(module.exports);
+export default NameComponent;
+EntityRegister.push(NameComponent);
 
 NameComponent.prototype.name = nameComponent.name; function nameComponent() { };
 

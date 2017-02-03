@@ -1,9 +1,9 @@
-var PIXI = require("pixi.js")
+import PIXI from "pixi.js";
 
-var Map2D = require("Engine/Core/Map2D.js")
-var Chunk = require("Engine/Chunk.js")
-var GLChunk = require("Engine/GLChunk.js")
-var Shader = require("Engine/Shader.js")
+import Map2D from "Engine/Core/Map2D.js";
+import Chunk from "Engine/Chunk.js";
+import GLChunk from "Engine/GLChunk.js";
+import Shader from "Engine/Shader.js";
 var CHUNK_DIM = Chunk.dim;
 var CHUNK_DIM_2 = Chunk.dim2;
 var CHUNK_SIZE = Chunk.size;
@@ -39,7 +39,7 @@ var ChunkRenderer = function(gl, world, tileSize) {
     this.isReady = false; // False until shaders, buffers, attributes and uniforms are loaded.
 }
 
-module.exports = ChunkRenderer;
+export default ChunkRenderer;
 
 ChunkRenderer.prototype.lazyInit = function() {
     if (this.isReady)
