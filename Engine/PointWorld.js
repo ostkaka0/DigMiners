@@ -69,12 +69,13 @@ PointWorld.prototype.findInRadius = function(points, pos, radius, node = 0, node
         if (!child) return;
 
         var childPos = Quadtree.calcChildPos(nodePos, i);
-        var delta = [this.size * (-1 + 2 * childPos[0] / childPos[2]), this.size * (-1 + 2 * childPos[1] / childPos[2])];
+        var scale = Math.pow(2, -childPos[2]);
+        var delta = [this.size * (-1 + 2 * childPos[0] * scale), this.size * (-1 + 2 * childPos[1] * scale)];
         v2.sub(delta, pos, delta);
-        delta = [Math.abs(delta[0] + 0.5) - 0.5, Math.abs(delta[1] + 0.5) - 0.5];
-        var disSquared = v2.length(delta);
-        var pointRadius = this.size / Math.pow(2, childPos[2]);
-        if (disSquared >= radius * radius + 2 * radius * pointRadius + pointRadius * pointRadius)
+        delta = [Math.abs(delta[0] - 0.5) + 0.5, Math.abs(delta[1] - 0.5) + 0.5];
+        var disSquared = v2.sqrLength(delta);
+        var pointRadius = 2.0 * this.size  * scale;
+        if (0.5*Math.sqrt(disSquared) > radius + pointRadius)//if (disSquared >= radius * radius + 2 * radius * pointRadius + pointRadius * pointRadius)
             return;
 
         this.findInRadius(points, pos, radius, child, childPos);
