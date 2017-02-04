@@ -5,14 +5,14 @@ import BlockWorld from "Engine/BlockWorld.js";
 
 import Global from "Game/Global.js";
 import Config from "Game/Config.js";
-import Message from "Game/Message/Message.js";;
+import MessageRegister from "Game/Register/Message.js";;
 
 var MessageRequestClickBlock = function(blockPos, clickType) {
     this.blockPos = blockPos;
     this.clickType = clickType;
 }
 export default MessageRequestClickBlock;
-Message.ToServer.push(MessageRequestClickBlock);
+MessageRegister.ToServer.push(MessageRequestClickBlock);
 
 MessageRequestClickBlock.prototype.execute = function(gameData, player) {
     var entity = Global.gameData.world.entityWorld.objects[player.entityId];

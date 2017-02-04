@@ -3,7 +3,7 @@ import {Deserialize} from "Engine/Serialization.js";
 import IndexCounter from "Engine/IndexCounter.js";
 
 import Global from "Game/Global.js";
-import Message from "Game/Message/Message.js";
+import MessageRegister from "Game/Register/Message.js";
 import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
 import CommandPlayerOreInventory from "Game/Command/CommandPlayerOreInventory.js";
 
@@ -11,7 +11,7 @@ var MessageRequestCraft = function(recipeId) {
     this.recipeId = recipeId;
 }
 export default MessageRequestCraft;
-Message.ToServer.push(MessageRequestCraft);
+MessageRegister.ToServer.push(MessageRequestCraft);
 
 MessageRequestCraft.prototype.execute = function(gameData, player) {
     var playerEntity = Global.gameData.entityWorld.objects[player.entityId];

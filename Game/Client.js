@@ -2,7 +2,7 @@ import io from "socket.io-client";
 
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
-import Message from "Game/Message/Message.js";
+import MessageRegister from "Game/Register/Message.js";
 
 import {Serialize} from "Engine/Serialization.js";
 import {Deserialize} from "Engine/Serialization.js";
@@ -55,7 +55,7 @@ var Client = function(gameData, ip) {
         global.ping = 2 * (Date.now() - time);
     });
 
-    Message.ToClient.forEach(function(messageType) {
+    MessageRegister.ToClient.forEach(function(messageType) {
         socket.on(messageType.prototype.idString, function(data) {
             var message = new messageType();
             message.receive(Global.gameData, data);

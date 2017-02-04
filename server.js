@@ -9,7 +9,7 @@ import gameData from "Game/GameData.js";
 import Items from "Game/Items.js";
 import Blocks from "Game/Blocks.js";
 import Tiles from "Game/Tiles.js";
-import Message from "Game/Message/Message.js";
+import MessageRegister from "Game/Register/Message.js";
 
 import MessageCommands from "Game/Message/ToClient/MessageCommands.js";
 import CommandPlayerJoin from "Game/Command/CommandPlayerJoin.js";
@@ -143,7 +143,7 @@ io.on("connection", function(socket) {
     socket.on("disconnect", function() {
         clearInterval(connections[socket.id].pingIntervalId);
         var player = connections[socket.id].player;
-        if (player);
+        if (player)
             sendCommand(new CommandPlayerLeave(player.playerId, player.entityId));
         delete connections[socket.id];
     });
@@ -166,7 +166,7 @@ io.on("connection", function(socket) {
             io.sockets.emit("chat", player.name + ": " + text);
     });
 
-    Message.ToServer.forEach(function(messageType) {
+    MessageRegister.ToServer.forEach(function(messageType) {
         socket.on(messageType.prototype.idString, function(data) {
             var message = new messageType();
             message.receive(gameData, data);

@@ -2,7 +2,7 @@ import fix from "Engine/Core/Fix.js";
 import v2 from "Engine/Core/v2.js";
 
 import Config from "Game/Config.js";
-import ItemRegister from "Game/ItemRegister.js"
+import ItemRegister from "Game/Register/Item.js"
 import PhysicsBody from "Game/Entity/PhysicsBody.js";
 import Bodyparts from "Game/Entity/Bodyparts.js";
 import Drawable from "Game/Entity/Drawable.js";

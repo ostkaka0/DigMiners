@@ -5,7 +5,7 @@ import TileWorld from "Engine/TileWorld.js";
 
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
-import Command from "Game/Command/Command.js";
+import CommandRegister from "Game/Register/Command.js";
 import Blocks from "Game/Blocks.js";
 import BlockPlacer from "Game/Entity/BlockPlacer.js";
 import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
@@ -18,7 +18,7 @@ var CommandEntityBuild = function(entityId, x, y, blockId, type) {
     this.type = type;
 }
 export default CommandEntityBuild;
-Command.Register.push(CommandEntityBuild);
+CommandRegister.push(CommandEntityBuild);
 
 CommandEntityBuild.prototype.execute = function() {
     /*if (this.type == BlockTypes.FOREGROUND)

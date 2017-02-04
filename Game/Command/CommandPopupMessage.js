@@ -3,7 +3,7 @@ import {Deserialize} from "Engine/Serialization.js";
 
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
-import Command from "Game/Command/Command.js";
+import CommandRegister from "Game/Register/Command.js";
 import PopupMessage from "Game/GUI/PopupMessage.js";
 
 var CommandPopupMessage = function(text, timeout) {
@@ -13,7 +13,7 @@ var CommandPopupMessage = function(text, timeout) {
         this.timeout = 3000;
 }
 export default CommandPopupMessage;
-Command.Register.push(CommandPopupMessage);
+CommandRegister.push(CommandPopupMessage);
 
 CommandPopupMessage.prototype.execute = function() {
     if (!isServer)

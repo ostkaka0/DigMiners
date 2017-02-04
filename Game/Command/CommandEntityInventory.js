@@ -3,9 +3,9 @@ import {Deserialize} from "Engine/Serialization.js";
 
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
-import Command from "Game/Command/Command.js";
+import CommandRegister from "Game/Register/Command.js";
 import Entity from "Game/Entity/Entity.js";
-import ItemRegister from "Game/ItemRegister.js"
+import ItemRegister from "Game/Register/Item.js"
 
 import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
 
@@ -22,7 +22,7 @@ var CommandEntityInventory = function(entityId, actionId, itemId, amount) {
     this.amount = amount;
 }
 export default CommandEntityInventory;
-Command.Register.push(CommandEntityInventory);
+CommandRegister.push(CommandEntityInventory);
 CommandEntityInventory.Actions = CommandEntityInventoryActions;
 
 CommandEntityInventory.prototype.execute = function() {

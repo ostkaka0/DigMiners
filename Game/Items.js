@@ -19,7 +19,7 @@ import ExplosionFunctions from "Game/ExplosionFunctions.js";
 
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
-import ItemRegister from "Game/ItemRegister.js";
+import ItemRegister from "Game/Register/Item.js";
 
 import CommandBlockStrength from "Game/Command/CommandBlockStrength.js";
 import CommandEntityDig from "Game/Command/CommandEntityDig.js";

@@ -6,7 +6,7 @@ import Event from "Engine/Core/Event.js";
 
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
-import Command from "Game/Command/Command.js";
+import CommandRegister from "Game/Register/Command.js";
 import Health from "Game/Entity/Health.js";
 
 var CommandEntityHealthChange = function(entityId, healthChange) {
@@ -14,7 +14,7 @@ var CommandEntityHealthChange = function(entityId, healthChange) {
     this.healthChange = fix.toFix(healthChange);
 }
 export default CommandEntityHealthChange;
-Command.Register.push(CommandEntityHealthChange);
+CommandRegister.push(CommandEntityHealthChange);
 
 CommandEntityHealthChange.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

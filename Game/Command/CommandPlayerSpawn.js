@@ -3,7 +3,7 @@ import {Deserialize} from "Engine/Serialization.js";
 
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
-import Command from "Game/Command/Command.js";
+import CommandRegister from "Game/Register/Command.js";
 
 var CommandPlayerSpawn = function(playerId, entityId, playerName) {
     this.playerId = playerId;
@@ -11,7 +11,7 @@ var CommandPlayerSpawn = function(playerId, entityId, playerName) {
     this.playerName = playerName;
 }
 export default CommandPlayerSpawn;
-Command.Register.push(CommandPlayerSpawn);
+CommandRegister.push(CommandPlayerSpawn);
 
 CommandPlayerSpawn.prototype.execute = function() {
     // Associate with existing, already spawned entity (from MessageRequestSpawn)

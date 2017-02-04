@@ -3,7 +3,7 @@ import {Deserialize} from "Engine/Serialization.js";
 
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
-import Command from "Game/Command/Command.js";
+import CommandRegister from "Game/Register/Command.js";
 import Player from "Game/Player.js";
 import MessageInit from "Game/Message/ToClient/MessageInit.js";
 import MessageChunk from "Game/Message/ToClient/MessageChunk.js";
@@ -14,7 +14,7 @@ var CommandPlayerJoin = function(playerId, entityId, playerName, socketId) {
     this.socketId = socketId;
 }
 export default CommandPlayerJoin;
-Command.Register.push(CommandPlayerJoin);
+CommandRegister.push(CommandPlayerJoin);
 
 CommandPlayerJoin.prototype.execute = function() {
     var player = new Player(this.playerId);

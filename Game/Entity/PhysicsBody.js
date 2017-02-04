@@ -3,7 +3,7 @@ import {Deserialize} from "Engine/Serialization.js";
 import fix from "Engine/Core/Fix.js";
 import v2 from "Engine/Core/v2.js";
 import Global from "Game/Global.js";
-import EntityRegister from "Game/Entity/Register.js";
+import EntityRegister from "Game/Register/Entity.js";
 
 var PhysicsBody = function(pos, damping, rotationSpeed, mass, radius) {
     this.bodyId = Global.gameData.world.physicsWorld.add(pos, [0.0, 0.0], mass, radius);

@@ -3,7 +3,7 @@ import {Deserialize} from "Engine/Serialization.js";
 import TileWorld from "Engine/TileWorld.js";
 import BlockWorld from "Engine/BlockWorld.js";
 
-import Command from "Game/Command/Command.js";
+import CommandRegister from "Game/Register/Command.js";
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
 
@@ -13,7 +13,7 @@ var CommandBlockStrength = function(x, y, strength) {
     this.strength = Math.max(strength, 0);
 }
 export default CommandBlockStrength;
-Command.Register.push(CommandBlockStrength);
+CommandRegister.push(CommandBlockStrength);
 
 CommandBlockStrength.prototype.execute = function() {
     if (this.strength > 0)

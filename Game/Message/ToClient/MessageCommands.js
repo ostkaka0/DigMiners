@@ -4,15 +4,15 @@ import IndexCounter from "Engine/IndexCounter.js";
 
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
-import Message from "Game/Message/Message.js";;
-import Command from "Game/Command/Command.js";;
+import MessageRegister from "Game/Register/Message.js";;
+import CommandRegister from "Game/Register/Command.js";;
 
 var MessageCommands = function() {
     this.tickId = (isServer) ? Global.gameData.world.tickId : 0;
     this.commands = (isServer) ? Global.gameData.world.commands : [];
 }
 export default MessageCommands;
-Message.ToClient.push(MessageCommands);
+MessageRegister.ToClient.push(MessageCommands);
 
 MessageCommands.prototype.execute = function(gameData) {
     if (Config.fakeLag == 0 && Config.fakeJitter == 0) {
@@ -46,7 +46,7 @@ MessageCommands.prototype.receive = function(gameData, byteArray) {
     this.tickId = Deserialize.int32(byteArray, counter);
     while (counter.value < byteArray.byteLength) {
         var commandId = Deserialize.int32(byteArray, counter);
-        var command = new Command.Register[commandId]();
+        var command = new CommandRegister[commandId]();
         command.deserialize(byteArray, counter);
         this.commands.push(command);
     }

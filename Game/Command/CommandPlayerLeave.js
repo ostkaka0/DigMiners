@@ -3,14 +3,14 @@ import {Deserialize} from "Engine/Serialization.js";
 
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
-import Command from "Game/Command/Command.js";
+import CommandRegister from "Game/Register/Command.js";
 
 var CommandPlayerLeave = function(playerId, entityId) {
     this.playerId = playerId;
     this.entityId = entityId;
 }
 export default CommandPlayerLeave;
-Command.Register.push(CommandPlayerLeave);
+CommandRegister.push(CommandPlayerLeave);
 
 CommandPlayerLeave.prototype.execute = function() {
     var player = Global.gameData.playerWorld.objects[this.playerId];

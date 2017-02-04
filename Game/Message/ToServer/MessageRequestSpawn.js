@@ -7,7 +7,7 @@ import IndexCounter from "Engine/IndexCounter.js";
 import Global from "Game/Global.js";
 import Config from "Game/Config.js";
 import PlayerClass from "Game/PlayerClass.js";
-import Message from "Game/Message/Message.js";;
+import MessageRegister from "Game/Register/Message.js";;
 import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
 import CommandPlayerSpawn from "Game/Command/CommandPlayerSpawn.js";
 import MessageSpectate from "Game/Message/ToClient/MessageSpectate.js";
@@ -18,7 +18,7 @@ var MessageRequestSpawn = function(playerName, classId) {
     this.classId = classId;
 }
 export default MessageRequestSpawn;
-Message.ToServer.push(MessageRequestSpawn);
+MessageRegister.ToServer.push(MessageRequestSpawn);
 
 MessageRequestSpawn.prototype.execute = function(gameData, player) {
     if (player.entity != null && player.entityId != null) return;

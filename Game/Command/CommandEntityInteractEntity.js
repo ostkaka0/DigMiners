@@ -3,7 +3,7 @@ import {Deserialize} from "Engine/Serialization.js";
 
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
-import Command from "Game/Command/Command.js";
+import CommandRegister from "Game/Register/Command.js";
 
 var CommandEntityInteractEntity = function(entityId, interactableEntityId, interacting) {
     this.entityId = entityId;
@@ -11,7 +11,7 @@ var CommandEntityInteractEntity = function(entityId, interactableEntityId, inter
     this.interacting = interacting;
 }
 export default CommandEntityInteractEntity;
-Command.Register.push(CommandEntityInteractEntity);
+CommandRegister.push(CommandEntityInteractEntity);
 
 CommandEntityInteractEntity.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

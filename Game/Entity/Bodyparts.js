@@ -4,7 +4,7 @@ import {Serialize} from "Engine/Serialization.js";
 import {Deserialize} from "Engine/Serialization.js";
 import BodyPart from "Engine/Animation/BodyPart.js";
 import Sprite from "Engine/Animation/Sprite.js";
-import EntityRegister from "Game/Entity/Register.js";
+import EntityRegister from "Game/Register/Entity.js";
 
 var Bodyparts = function(bodyparts) {
     this.bodyparts = bodyparts;

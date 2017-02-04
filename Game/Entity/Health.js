@@ -1,6 +1,6 @@
 import {Serialize} from "Engine/Serialization.js";
 import {Deserialize} from "Engine/Serialization.js";
-import EntityRegister from "Game/Entity/Register.js";
+import EntityRegister from "Game/Register/Entity.js";
 
 var Health = function(health, maxHealth, armor) {
     this.health = health;

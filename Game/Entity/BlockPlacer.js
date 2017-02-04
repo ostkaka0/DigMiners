@@ -6,7 +6,7 @@ import Config from "Game/Config.js";
 import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
 import CommandPlaceBlock from "Game/Command/CommandPlaceBlock.js";
 import Global from "Game/Global.js";
-import EntityRegister from "Game/Entity/Register.js";
+import EntityRegister from "Game/Register/Entity.js";
 
 var BlockPlacer = function(blockPos, blockId, duration, entityId) {
     this.blockPos = blockPos;

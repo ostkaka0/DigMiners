@@ -5,9 +5,13 @@ import Event from "Engine/Core/Event.js";
 import Global from "Game/Global.js";
 import Config from "Game/Config.js";
 import World from "Game/World.js";
-import ItemRegister from "Game/ItemRegister.js"
 import Items from "Game/Items.js";
 import Blocks from "Game/Blocks.js";
+
+import ItemRegister from "Game/Register/Item.js";
+import CommandRegister from "Game/Register/Command.js";
+import MessageRegister from "Game/Register/Message.js";
+import EntityRegister from "Game/Register/Entity.js";
 
 import PlayerClass from "Game/PlayerClass.js";
 import Tiles from "Game/Tiles.js";
@@ -26,6 +30,9 @@ Global.gameData.init = function(idList) {
     Blocks.initBlocks();
     Items.initItems(this);
     ItemRegister.init();
+    CommandRegister.init();
+    MessageRegister.init();
+    EntityRegister.init();
     Config.init();
 
     // Global.gameData.textures is set in TextureManager.js when textures are loaded

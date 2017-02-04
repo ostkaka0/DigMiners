@@ -1,7 +1,7 @@
 import {Serialize} from "Engine/Serialization.js";
 import {Deserialize} from "Engine/Serialization.js";
 
-import Command from "Game/Command/Command.js";
+import CommandRegister from "Game/Register/Command.js";
 
 var CommandEntityAnimate = function(entityId, bodypart, animation, speed) {
     this.entityId = entityId;
@@ -10,7 +10,7 @@ var CommandEntityAnimate = function(entityId, bodypart, animation, speed) {
     this.speed = speed;
 }
 export default CommandEntityAnimate;
-Command.Register.push(CommandEntityAnimate);
+CommandRegister.push(CommandEntityAnimate);
 
 CommandEntityAnimate.prototype.execute = function() {
     if (!isServer) {

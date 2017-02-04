@@ -1,8 +1,8 @@
 import ObjectRegister from "Engine/ObjectRegister.js"
 
-var ItemRegister = [];
-export default ItemRegister;
+var Register = [];
+export default Register;
 
-ItemRegister.init = () => {
+Register.init = () => {
     //ObjectRegister.sort(ItemRegister);
 }

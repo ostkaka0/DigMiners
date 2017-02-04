@@ -2,8 +2,8 @@ import {Serialize} from "Engine/Serialization.js";
 import {Deserialize} from "Engine/Serialization.js";
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
-import ItemRegister from "Game/ItemRegister.js"
-import EntityRegister from "Game/Entity/Register.js";
+import ItemRegister from "Game/Register/Item.js"
+import EntityRegister from "Game/Register/Entity.js";
 
 var Inventory = function(inventoryId, entityId, width, height) {
     this.items = [];

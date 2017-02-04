@@ -9,7 +9,7 @@ import Particles from "Game/Particles.js";
 import ParticleFunctions from "Game/ParticleFunctions.js";
 import PotionEffectTypes from "Game/PotionEffectTypes.js";
 
-import Command from "Game/Command/Command.js";
+import CommandRegister from "Game/Register/Command.js";
 import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
 import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
 import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
@@ -18,7 +18,7 @@ import CommandEntityInteractEntity from "Game/Command/CommandEntityInteractEntit
 import CommandPlayerJoin from "Game/Command/CommandPlayerJoin.js";
 import CommandPlayerLeave from "Game/Command/CommandPlayerLeave.js";
 
-import Message from "Game/Message/Message.js";
+import MessageRegister from "Game/Register/Message.js";
 import MessageCommands from "Game/Message/ToClient/MessageCommands.js";
 import MessageRequestKeyStatusUpdate from "Game/Message/ToServer/MessageRequestKeyStatusUpdate.js";
 import MessageRequestPlaceBlock from "Game/Message/ToServer/MessageRequestPlaceBlock.js";
@@ -27,7 +27,7 @@ import MessageRequestRotate from "Game/Message/ToServer/MessageRequestRotate.js"
 import MessageRequestItemPickup from "Game/Message/ToServer/MessageRequestItemPickup.js";
 import MessageRequestSpawn from "Game/Message/ToServer/MessageRequestSpawn.js";
 
-import EntityRegister from "Game/Entity/Register.js";
+import EntityRegister from "Game/Register/Entity.js";
 import PhysicsBody from "Game/Entity/PhysicsBody.js";
 import Movement from "Game/Entity/Movement.js";
 import Drawable from "Game/Entity/Drawable.js";
@@ -55,12 +55,6 @@ var Config = {};//exports;
 export default Config
 
 Config.init = function() {
-    Command.init();
-    Message.init();
-    EntityRegister.init();
-    console.log(Command);
-    console.log(Message);
-    console.log(EntityRegister);
     Object.assign(Config, {
         port: 3000,
         itemPickupDistance: 2.0,

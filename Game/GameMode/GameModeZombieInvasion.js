@@ -7,7 +7,7 @@ import BlockWorld from "Engine/BlockWorld.js";
 
 import Global from "Game/Global.js";
 import Config from "Game/Config.js";
-import ItemRegister from "Game/ItemRegister.js"
+import ItemRegister from "Game/Register/Item.js"
 import Blocks from "Game/Blocks.js";
 import Items from "Game/Items.js";
 import Team from "Game/Entity/Team.js";
