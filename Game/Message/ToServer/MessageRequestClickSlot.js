@@ -6,6 +6,7 @@ import IndexCounter from "Engine/IndexCounter.js";
 
 import Global from "Game/Global.js";
 import Config from "Game/Config.js";
+import ItemRegister from "Game/ItemRegister.js"
 import Message from "Game/Message/Message.js";;
 import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
 import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
@@ -72,7 +73,7 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
         // Only equip items in own inventory
         if (entity.inventory && entity.inventory.inventoryId == this.inventoryId) {
             // Equip stack
-            var itemType = Config.itemRegister[item.id];
+            var itemType = ItemRegister[item.id];
             if (itemType && itemType.isEquipable) {
                 if (item.equipped == null || item.equipped == undefined)
                     item.equipped = false;

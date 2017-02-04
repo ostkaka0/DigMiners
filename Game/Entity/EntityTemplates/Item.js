@@ -2,6 +2,7 @@ import fix from "Engine/Core/Fix.js";
 import v2 from "Engine/Core/v2.js";
 
 import Config from "Game/Config.js";
+import ItemRegister from "Game/ItemRegister.js"
 import PhysicsBody from "Game/Entity/PhysicsBody.js";
 import Bodyparts from "Game/Entity/Bodyparts.js";
 import Drawable from "Game/Entity/Drawable.js";
@@ -14,7 +15,7 @@ export default function(itemId, amount) {
 
     entity.item = new ItemComponent(itemId, amount);
 
-    var itemType = Config.itemRegister[itemId];
+    var itemType = ItemRegister[itemId];
     var bodySprite = new Sprite(itemType.name);
     var bodyparts = {
         "body": new BodyPart(bodySprite, 0, 0, 0),

@@ -5,6 +5,7 @@ import Event from "Engine/Core/Event.js";
 import Global from "Game/Global.js";
 import Config from "Game/Config.js";
 import World from "Game/World.js";
+import ItemRegister from "Game/ItemRegister.js"
 import Items from "Game/Items.js";
 import Blocks from "Game/Blocks.js";
 
@@ -24,6 +25,7 @@ Global.gameData.destroy = function() {
 Global.gameData.init = function(idList) {
     Blocks.initBlocks();
     Items.initItems(this);
+    ItemRegister.init();
     Config.init();
 
     // Global.gameData.textures is set in TextureManager.js when textures are loaded

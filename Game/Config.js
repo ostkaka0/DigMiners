@@ -71,7 +71,6 @@ Config.init = function() {
         respawnTime: 1,
 
         tileRegister: ObjectRegister.addByObject([], Tiles),
-        itemRegister: ObjectRegister.addByObject([], Items.Types),
         blockRegister: ObjectRegister.addByObject([], Blocks),
         projectileRegister: ObjectRegister.addByObject([], Projectiles),
         particleRegister: ObjectRegister.addByObject([], Particles),

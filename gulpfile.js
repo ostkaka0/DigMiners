@@ -46,7 +46,7 @@ gulp.task("rollup", function() {
         console.error(e);
     }).on('bundle', bundle => {
         console.log("Bundling done!");
-        rollupCache = bundle;
+        //rollupCache = bundle;
     }).pipe(source("src.js")).pipe(gulp.dest("./html"));
 });
 
