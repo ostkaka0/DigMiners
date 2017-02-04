@@ -76,7 +76,7 @@ PointWorld.prototype.findInRadius = function(points, pos, radius, node = 0, node
         var disSquared = v2.sqrLength(delta);
         var pointRadius = 2.0 * this.size  * scale;
         if (0.5*Math.sqrt(disSquared) > radius + pointRadius)//if (disSquared >= radius * radius + 2 * radius * pointRadius + pointRadius * pointRadius)
-            return;
+            continue;
 
         this.findInRadius(points, pos, radius, child, childPos);
     }
