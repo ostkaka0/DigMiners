@@ -1,6 +1,7 @@
 import {Serialize} from "Engine/Serialization.js";
 import {Deserialize} from "Engine/Serialization.js";
 import Config from "Game/Config.js";
+import ItemRegister from "Game/ItemRegister.js"
 import EntityRegister from "Game/Entity/Register.js";
 
 var EquippedItems = function(items) {
@@ -28,7 +29,7 @@ EquippedItems.prototype.deserialize = function(byteArray, index) {
     for (var i = 0; i < itemsLength; ++i) {
         var key = Deserialize.utf8(byteArray, index);
         var id = Deserialize.int32(byteArray, index);
-        this.items[key] = Config.itemRegister[id];
+        this.items[key] = ItemRegister[id];
     }
 }
 

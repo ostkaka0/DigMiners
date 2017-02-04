@@ -5,6 +5,7 @@ import BlockWorld from "Engine/BlockWorld.js";
 import BlockChunk from "Engine/BlockChunk.js";
 import Sprite from "Engine/Animation/Sprite.js";
 import BodyPart from "Engine/Animation/BodyPart.js";
+import ObjectRegister from "Engine/ObjectRegister.js";
 
 import Blocks from "Game/Blocks.js";
 import Tiles from "Game/Tiles.js";
@@ -18,6 +19,7 @@ import ExplosionFunctions from "Game/ExplosionFunctions.js";
 
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
+import ItemRegister from "Game/ItemRegister.js";
 
 import CommandBlockStrength from "Game/Command/CommandBlockStrength.js";
 import CommandEntityDig from "Game/Command/CommandEntityDig.js";
@@ -118,7 +120,7 @@ Items.Functions.Potion = function(entity, item) {
             var entry = removed[i];
             var stackId = entry[0];
             var item = entry[1];
-            var itemType = Config.itemRegister[item.id];
+            var itemType = ItemRegister[item.id];
             if (item.equipped)
                 Entity.onDequip(entity, stackId, itemType);
         };
@@ -778,4 +780,6 @@ Items.initItems = function() {
         throwEntityTexture: "dynamite.png",
 
     }
+
+    ObjectRegister.addByObject(ItemRegister, Items.Types);
 }

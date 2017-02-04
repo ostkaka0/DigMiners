@@ -5,6 +5,7 @@ import Config from "Game/Config.js";
 import Global from "Game/Global.js";
 import Command from "Game/Command/Command.js";
 import Entity from "Game/Entity/Entity.js";
+import ItemRegister from "Game/ItemRegister.js"
 
 import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
 
@@ -37,7 +38,7 @@ CommandEntityInventory.prototype.execute = function() {
                 var entry = removed[i];
                 var stackId = entry[0];
                 var item = entry[1];
-                var itemType = Config.itemRegister[item.id];
+                var itemType = ItemRegister[item.id];
                 if (item.equipped)
                     sendCommand(new CommandEntityEquipItem(entity.id, stackId, itemType.id, false));
             };

@@ -4,6 +4,7 @@ import Sprite from "Engine/Animation/Sprite.js";
 
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
+import ItemRegister from "Game/ItemRegister.js"
 import Command from "Game/Command/Command.js";
 import Items from "Game/Items.js";
 import Entity from "Game/Entity/Entity.js";
@@ -21,7 +22,7 @@ CommandEntityEquipItem.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity) return;
 
-    var itemType = Config.itemRegister[this.itemId];
+    var itemType = ItemRegister[this.itemId];
     if (!itemType.isEquipable) return;
 
     if (!entity.equippedItems) return;

@@ -7,6 +7,7 @@ import BlockWorld from "Engine/BlockWorld.js";
 
 import Global from "Game/Global.js";
 import Config from "Game/Config.js";
+import ItemRegister from "Game/ItemRegister.js"
 import Blocks from "Game/Blocks.js";
 import Items from "Game/Items.js";
 import Team from "Game/Entity/Team.js";
@@ -186,7 +187,7 @@ GameModeZombieInvasion.prototype.forceRespawnPlayers = function() {
             if (!entity || !entity.inventory || !entity.ammo || !entity.health)
                 return;
             entity.inventory.items.forEach(function(item) {
-                var itemType = Config.itemRegister[item.id];
+                var itemType = ItemRegister[item.id];
                 if (entity.ammo[item.id] != undefined)
                     entity.ammo[item.id] = itemType.ammoMax;
             });

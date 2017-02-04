@@ -3,7 +3,7 @@ import fix from "Engine/Core/Fix.js";
 import v2 from "Engine/Core/v2.js";
 
 var PhysicsWorld = function(size) {
-    this.pointWorld = new PointWorld(size || 1024);
+    this.pointWorld = new PointWorld(size || 1000);
     this.posOld = [];
     this.velocity = [];
     this.mass = [];

@@ -6,6 +6,7 @@ import BlockChunk from "Engine/BlockChunk.js";
 
 import Global from "Game/Global.js";
 import Config from "Game/Config.js";
+import ItemRegister from "Game/ItemRegister.js"
 import Message from "Game/Message/Message.js";;
 import CommandEntityBuild from "Game/Command/CommandEntityBuild.js";
 import Blocks from "Game/Blocks.js";
@@ -23,7 +24,7 @@ MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
     if (!entity) return;
     var item = entity.inventory.items[this.stackId];
     if (!item) return;
-    var itemType = Config.itemRegister[item.id];
+    var itemType = ItemRegister[item.id];
     if (itemType && itemType.typeOfType == "block") {
 
         if (!entity.inventory.hasItem(item.id, 1))
