@@ -75,3 +75,13 @@ PotionEffectTypes.SupplyAmmoNearEntities = {
         }.bind(this));
     }
 }
+
+PotionEffectTypes.Toxin = {
+    interval: 10,
+    potionFunction: function(entity) {
+        var health = entity.health;
+        if (!health || health.health <= 5) return;
+        health.health = Math.max(5, health.health - 10);
+        Event.trigger(Health.Events.onChange, entity);
+    }
+}

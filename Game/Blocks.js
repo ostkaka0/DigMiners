@@ -389,4 +389,16 @@ Blocks.initBlocks = function() {
             sendCommand(new CommandEntityEquipItem(entityId, 0, weaponId, true));
         }
     }
+
+    Blocks.Toxin = {
+        name: "Mustard Gas",
+        isSolid: false,
+        hardness: 1.0,
+        type: BlockTypes.BACKGROUND,
+        buildDuration: 1,
+        onTouch: function(entity) {
+            if (!entity.potionEffects || !entity.health) return;
+            entity.potionEffects.add(PotionEffectTypes.Toxin, 3 * 20);
+        }
+    }
 }
