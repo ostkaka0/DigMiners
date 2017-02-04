@@ -7,7 +7,7 @@ import Config from "Game/Config.js";
 import Global from "Game/Global.js";
 import Entity from "Game/Entity/Entity.js";
 import CommandEntityBeginReloadWeapon from "Game/Command/CommandEntityBeginReloadWeapon.js";
-import EntityRegister from "Game/Entity/Register.js";
+import EntityRegister from "Game/Register/Entity.js";
 
 var Movement = function(speed, toolUseDuration, damageMultiplier, digHardnessMultiplier) {
     this.keyStatuses = {};

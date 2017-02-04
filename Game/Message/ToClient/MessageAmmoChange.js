@@ -4,7 +4,7 @@ import IndexCounter from "Engine/IndexCounter.js";
 import Event from "Engine/Core/Event.js";
 
 import Global from "Game/Global.js";
-import Message from "Game/Message/Message.js";;
+import MessageRegister from "Game/Register/Message.js";;
 import Ammo from "Game/Entity/Ammo.js";
 
 var MessageAmmoChange = function(entity, itemIds) {
@@ -16,7 +16,7 @@ var MessageAmmoChange = function(entity, itemIds) {
     }
 }
 export default MessageAmmoChange;
-Message.ToClient.push(MessageAmmoChange);
+MessageRegister.ToClient.push(MessageAmmoChange);
 
 MessageAmmoChange.prototype.execute = function(gameData) {
 

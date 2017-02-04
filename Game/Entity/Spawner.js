@@ -9,7 +9,7 @@ import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
 import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
 import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
 import Items from "Game/Items.js";
-import EntityRegister from "Game/Entity/Register.js";
+import EntityRegister from "Game/Register/Entity.js";
 
 var Spawner = function(entityTemplate, pos, maxEntities, radius, duration, items, equippedItemId, randomDuration, teamId) {
     this.entityTemplate = entityTemplate;

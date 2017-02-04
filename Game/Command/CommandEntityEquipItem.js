@@ -4,8 +4,8 @@ import Sprite from "Engine/Animation/Sprite.js";
 
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
-import ItemRegister from "Game/ItemRegister.js"
-import Command from "Game/Command/Command.js";
+import ItemRegister from "Game/Register/Item.js"
+import CommandRegister from "Game/Register/Command.js";
 import Items from "Game/Items.js";
 import Entity from "Game/Entity/Entity.js";
 
@@ -16,7 +16,7 @@ var CommandEntityEquipItem = function(entityId, stackId, itemId, equipped) {
     this.equipped = equipped;
 }
 export default CommandEntityEquipItem;
-Command.Register.push(CommandEntityEquipItem);
+CommandRegister.push(CommandEntityEquipItem);
 
 CommandEntityEquipItem.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

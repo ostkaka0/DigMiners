@@ -3,14 +3,14 @@ import {Deserialize} from "Engine/Serialization.js";
 
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
-import Command from "Game/Command/Command.js";
+import CommandRegister from "Game/Register/Command.js";
 
 var CommandEntityLookAtEntity = function(entityId, targetEntityId) {
     this.entityId = entityId;
     this.targetEntityId = targetEntityId;
 }
 export default CommandEntityLookAtEntity;
-Command.Register.push(CommandEntityLookAtEntity);
+CommandRegister.push(CommandEntityLookAtEntity);
 
 CommandEntityLookAtEntity.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

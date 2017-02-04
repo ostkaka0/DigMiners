@@ -4,7 +4,7 @@ import {Serialize} from "Engine/Serialization.js";
 import {Deserialize} from "Engine/Serialization.js";
 import SpriteContainer from "Engine/Animation/SpriteContainer.js";
 import Sprite from "Engine/Animation/Sprite.js";
-import EntityRegister from "Game/Entity/Register.js";
+import EntityRegister from "Game/Register/Entity.js";
 
 var Drawable = function(zindex) {
     this.sprites = {};

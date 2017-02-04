@@ -6,8 +6,8 @@ import BlockChunk from "Engine/BlockChunk.js";
 
 import Global from "Game/Global.js";
 import Config from "Game/Config.js";
-import ItemRegister from "Game/ItemRegister.js"
-import Message from "Game/Message/Message.js";;
+import ItemRegister from "Game/Register/Item.js"
+import MessageRegister from "Game/Register/Message.js";;
 import CommandEntityBuild from "Game/Command/CommandEntityBuild.js";
 import Blocks from "Game/Blocks.js";
 
@@ -17,7 +17,7 @@ var MessageRequestPlaceBlock = function(stackId, x, y) {
     this.y = Math.floor(y);
 }
 export default MessageRequestPlaceBlock;
-Message.ToServer.push(MessageRequestPlaceBlock);
+MessageRegister.ToServer.push(MessageRequestPlaceBlock);
 
 MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
     var entity = Global.gameData.world.entityWorld.objects[player.entityId];

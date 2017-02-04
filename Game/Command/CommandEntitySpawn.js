@@ -3,15 +3,15 @@ import {Deserialize} from "Engine/Serialization.js";
 
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
-import Command from "Game/Command/Command.js";
-import EntityRegister from "Game/Entity/Register.js";
+import CommandRegister from "Game/Register/Command.js";
+import EntityRegister from "Game/Register/Entity.js";
 
 var CommandEntitySpawn = function(gameData, entity, entityId, teamId) {
     this.entity = entity;
     this.entityId = entityId;
 }
 export default CommandEntitySpawn;
-Command.Register.push(CommandEntitySpawn);
+CommandRegister.push(CommandEntitySpawn);
 
 CommandEntitySpawn.prototype.execute = function() {
     if (Global.gameData.world.entityWorld.objects[this.entityId])

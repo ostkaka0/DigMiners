@@ -5,7 +5,7 @@ import {Deserialize} from "Engine/Serialization.js";
 
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
-import Command from "Game/Command/Command.js";
+import CommandRegister from "Game/Register/Command.js";
 
 var CommandEntityMove = function(entityId, direction, pos) {
     this.entityId = entityId;
@@ -14,7 +14,7 @@ var CommandEntityMove = function(entityId, direction, pos) {
         this.pos = v2.cloneFix(pos);
 }
 export default CommandEntityMove;
-Command.Register.push(CommandEntityMove);
+CommandRegister.push(CommandEntityMove);
 
 CommandEntityMove.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

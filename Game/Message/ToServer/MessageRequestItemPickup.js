@@ -6,7 +6,7 @@ import IndexCounter from "Engine/IndexCounter.js";
 
 import Global from "Game/Global.js";
 import Config from "Game/Config.js";
-import Message from "Game/Message/Message.js";;
+import MessageRegister from "Game/Register/Message.js";;
 import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
 import CommandPlayerOreInventory from "Game/Command/CommandPlayerOreInventory.js";
 import CommandEntityDestroy from "Game/Command/CommandEntityDestroy.js";
@@ -15,7 +15,7 @@ var MessageRequestItemPickup = function(entityId) {
     this.entityId = entityId;
 }
 export default MessageRequestItemPickup;
-Message.ToServer.push(MessageRequestItemPickup);
+MessageRegister.ToServer.push(MessageRequestItemPickup);
 
 MessageRequestItemPickup.prototype.execute = function(gameData, player) {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

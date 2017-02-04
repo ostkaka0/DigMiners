@@ -6,8 +6,8 @@ import IndexCounter from "Engine/IndexCounter.js";
 
 import Global from "Game/Global.js";
 import Config from "Game/Config.js";
-import ItemRegister from "Game/ItemRegister.js"
-import Message from "Game/Message/Message.js";;
+import ItemRegister from "Game/Register/Item.js"
+import MessageRegister from "Game/Register/Message.js";;
 import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
 import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
 import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
@@ -18,7 +18,7 @@ var MessageRequestClickSlot = function(inventoryId, slotId, clickType) {
     this.clickType = clickType;
 }
 export default MessageRequestClickSlot;
-Message.ToServer.push(MessageRequestClickSlot);
+MessageRegister.ToServer.push(MessageRequestClickSlot);
 
 MessageRequestClickSlot.prototype.execute = function(gameData, player) {
     var entity = Global.gameData.world.entityWorld.objects[player.entityId];

@@ -4,8 +4,8 @@ import Event from "Engine/Core/Event.js";
 
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
-import ItemRegister from "Game/ItemRegister.js"
-import Command from "Game/Command/Command.js";
+import ItemRegister from "Game/Register/Item.js"
+import CommandRegister from "Game/Register/Command.js";
 import Items from "Game/Items.js";
 import Ammo from "Game/Entity/Ammo.js";
 
@@ -14,7 +14,7 @@ var CommandEntityReloadWeapon = function(entityId, stackId) {
     this.stackId = stackId;
 }
 export default CommandEntityReloadWeapon;
-Command.Register.push(CommandEntityReloadWeapon);
+CommandRegister.push(CommandEntityReloadWeapon);
 
 CommandEntityReloadWeapon.prototype.execute = function() {
     var entity = Global.gameData.world.entityWorld.objects[this.entityId];

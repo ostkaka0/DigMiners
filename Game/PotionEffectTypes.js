@@ -4,7 +4,7 @@ import Event from "Engine/Core/Event.js";
 
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
-import ItemRegister from "Game/ItemRegister.js"
+import ItemRegister from "Game/Register/Item.js"
 import Ammo from "Game/Entity/Ammo.js";
 import Health from "Game/Entity/Health.js";
 

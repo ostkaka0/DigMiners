@@ -4,8 +4,8 @@ import IndexCounter from "Engine/IndexCounter.js";
 
 import Global from "Game/Global.js";
 import Config from "Game/Config.js";
-import Message from "Game/Message/Message.js";;
-import EntityRegister from "Game/Entity/Register.js";;
+import MessageRegister from "Game/Register/Message.js";;
+import EntityRegister from "Game/Register/Entity.js";;
 import Generator from "Game/Generator.js";
 import Player from "Game/Player.js";
 import HUD from "Game/GUI/HUD.js";
@@ -22,7 +22,7 @@ var MessageInit = function(gameData, player) {
     Global.gameData.world.entityWorld.update();
 }
 export default MessageInit;
-Message.ToClient.push(MessageInit);
+MessageRegister.ToClient.push(MessageInit);
 
 MessageInit.prototype.execute = function(gameData) {
     Global.gameData.world.tickId = this.tickId;
