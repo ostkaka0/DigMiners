@@ -236,7 +236,7 @@ exports.scan = function(inputSource) {
             continue;
         }
         else {
-            console.log("Unepxected charater: " + source.charAt(i));
+            console.error("Unepxected charater: " + source.charAt(i));
             i++;
         }
 
@@ -274,7 +274,6 @@ exports.genNames = function(names, tokens, except, debug) {
             if (exceptions[token.value] != undefined) continue;
             if (names[lastToken] != undefined) continue;
             lastToken = token;
-            //console.log(tokens[i]);
             if (!failure && tokens[i].value == "=" && exceptions[lastToken] == undefined && names[lastToken] == undefined) {
 
             }
@@ -293,7 +292,6 @@ exports.genNames = function(names, tokens, except, debug) {
 exports.mangle = function(tokens, names) {
     for (var i = 0; i < tokens.length; i++) {
         var token = tokens[i];
-        console.log("new name:", token.value, names[token.value]);
         if (token.constructor != TokenLabel) continue;
         if (typeof token.value !== "string") continue; // <- Bad defensive code(may hide bugs)
         if (names[token.value] == undefined) continue;

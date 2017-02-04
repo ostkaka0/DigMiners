@@ -1,30 +1,18 @@
 var gulp = require("gulp");
-var rollup = require("rollup-stream");
 var source = require("vinyl-source-stream");
-var nodeResolve = require("rollup-plugin-node-resolve");
 var browserify = require("browserify");
 var fs = require("fs");
 var path = require("path");
 var copydir = require('copy-dir');
 
-gulp.task("rollup", function() {
-  return rollup({
-      entry: "DigMiners.js",//"./tests/TestPointWorld.js"),
-      plugins: [
-        nodeResolve({
-          /*module: true,
-          jsnext: false,
-          main: true,
-          skip: [],
-          browser: true,  // Default: false
-          extensions: [ ".js")],
-          preferBuiltins: false  // Default: true*/
-      })
-      ]
-    })
-    .pipe(source("src.js"))
-    .pipe(gulp.dest("./html"));
-});
+var rollup = require("rollup-stream");
+var nodeResolve = require('rollup-plugin-node-resolve');
+var nodeGlobals = require("rollup-plugin-node-globals");
+var nodeBuiltins = require("rollup-plugin-node-builtins");
+var commonjs = require('rollup-plugin-commonjs');
+var amd = require("rollup-plugin-amd");
+var multiEntry = require('rollup-plugin-multi-entry');
+var pluginRootImport = require("./rollup-plugin-root.js");
 
 gulp.task("browserify", function() {
     var b = browserify();
@@ -32,6 +20,34 @@ gulp.task("browserify", function() {
     b.bundle()
         .pipe(source("src.js"))
         .pipe(gulp.dest("./html"));
+});
+
+var rollupCache;
+gulp.task("rollup", function() {
+    rollup({
+        entry:  [/* "Game/** /*.js", */"DigMiners.js"], //"tests/TestPointWorld.js",//
+        format: 'iife',
+        moduleName: 'Game',
+        cache: rollupCache,
+        plugins: [
+            multiEntry(),
+            commonjs({
+              include: 'node_modules/**',
+              extensions: [".js"],
+              sourceMap: false,
+            }),
+            nodeResolve({
+                browser: true,  // Default: false
+            }),
+            nodeBuiltins(),
+            //nodeGlobals(),
+      ]
+    }).on('error', e => {
+        console.error(e);
+    }).on('bundle', bundle => {
+        console.log("Bundling done!");
+        rollupCache = bundle;
+    }).pipe(source("src.js")).pipe(gulp.dest("./html"));
 });
 
 gulp.task("copy", function() {
@@ -57,6 +73,6 @@ gulp.task("copy", function() {
 
 
 gulp.task("watch", function() {
-    gulp.watch(["Engine/**/*.js", "Game/**/*.js", "tests/**/*.js", "DigMiners.js"], ["browserify"]);
+    gulp.watch(["Engine/**/*.js", "Game/**/*.js", "tests/**/*.js", "DigMiners.js"], ["rollup"]);
 });
-gulp.task("default", [ "browserify", "watch", "copy" ]);
+gulp.task("default", [ "rollup", "watch", "copy" ]);
