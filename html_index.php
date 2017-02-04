@@ -19,7 +19,8 @@
         <div id ="eventdiv" style = "position: absolute; width: 100%; height: 100%; background-color: transparent;"></div>
         <script type = "text/javascript">
             var isServer = false;
-            window.vars = { 
+            var global = window;
+            window.vars = {
             <?php
                 $ip = (isset($_GET["ip"]) ? '"' . $_GET["ip"] . '"' : '"127.0.0.1"');
                 if(empty($ip))
@@ -27,6 +28,8 @@
                 echo ("ip: " . $ip);
             ?>
         };
+        // jQuery-getter used by bootstrap
+        //window.jQuery = { get: function() { return window.$; } };//Object.defineProperty(window, "jQuery", { get: function() { return window.$; } });
         </script>
         <div class="hud" id="hud">
             <div class="crafting" id="crafting"></div>

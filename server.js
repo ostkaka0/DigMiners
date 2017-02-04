@@ -80,7 +80,7 @@ var lastnames = ["face", "dip", "nose", "brain", "head", "breath",
     "pants", "shorts", "ears", "mouth", "muffin", "butter", "bottom", "elbow",
     "honker", "toes", "buns", "mister", "fanny", "squirt", "chunks",
     "brains", "wit", "juice", "shower"];
-    
+
 
 var update = function() {
     var server_has_players = (Object.keys(connections).length > 0);//!gameData.playerWorld || gameData.playerWorld.length > 0);
@@ -143,7 +143,8 @@ io.on("connection", function(socket) {
     socket.on("disconnect", function() {
         clearInterval(connections[socket.id].pingIntervalId);
         var player = connections[socket.id].player;
-        sendCommand(new CommandPlayerLeave(player.playerId, player.entityId));
+        if (player);
+            sendCommand(new CommandPlayerLeave(player.playerId, player.entityId));
         delete connections[socket.id];
     });
 

@@ -1,10 +1,10 @@
-//import _xyz_ from "./preload.js"
 import $ from "jquery";
+//import Tether from "Lib/tether.js"
+//import "./preload.js"
 global.jQuery = $;
 //global.xyz = _xyz_;
-//import Tether from "tether"
 //global.Tether = Tether;
-//import bootstrap from "bootstrap";
+//import "bootstrap";
 import "pixi.js";
 
 import fix from "Engine/Core/Fix.js";

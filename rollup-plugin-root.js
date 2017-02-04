@@ -141,7 +141,6 @@ module.exports = function rootImport(options) {
         return resolve(importee, imports).then((resolved) => {
           // Save this in the cache in case we see it again.
           cache[importee] = resolved;
-          console.log("resolved", resolved);
           return resolved;
         });
       }
