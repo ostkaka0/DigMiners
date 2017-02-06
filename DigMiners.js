@@ -1,4 +1,4 @@
-import $ from "jquery";
+//import $ from "jquery";
 //import Tether from "Lib/tether.js"
 //import "./preload.js"
 global.jQuery = $;

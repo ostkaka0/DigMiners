@@ -22,14 +22,12 @@
             var global = window;
             window.vars = {
             <?php
-                $ip = (isset($_GET["ip"]) ? '"' . $_GET["ip"] . '"' : '"127.0.0.1"');
+                $ip = (isset($_GET["ip"]) ? '"' . $_GET["ip"] . '"' : '"digwar.io"');
                 if(empty($ip))
-                    $ip = '"127.0.0.1"';
+                    $ip = '"digwar.io"';
                 echo ("ip: " . $ip);
             ?>
         };
-        // jQuery-getter used by bootstrap
-        //window.jQuery = { get: function() { return window.$; } };//Object.defineProperty(window, "jQuery", { get: function() { return window.$; } });
         </script>
         <div class="hud" id="hud">
             <div class="crafting" id="crafting"></div>
@@ -39,6 +37,8 @@
                 return $fileName . "?" . filemtime($fileName);
             }
         ?>
+        <script type="text/javascript" src="lib/jquery-3.1.1.min.js"></script>
+        <script type="text/javascript" src="lib/bootstrap.min.js"></script>
         <script type="text/javascript" src="<?php echo scriptVersion("src.js")?>"></script>
     </body>
 </html>
