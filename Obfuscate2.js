@@ -109,6 +109,26 @@ var run2 = function() {
                 });
                 fs.writeFileSync("build/html/src.js", "var global = window;\n" + result.code)
 
+                console.log("Copying files...");
+                var outputPath = "build/html/"
+                var copyFile = function (src, dest) {
+                    dir = path.dirname(dest);
+                    if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+                    fs.createReadStream(src).pipe(fs.createWriteStream(dest));
+                }
+                var copyRecursive = function(dir, dest) {
+                    console.log(dir, "copying to", dest);
+                    copydir(dir, dest, function(error) {
+                        if (error) console.log("Copy error: " + error);
+                    });
+                }
+                copyFile("html_index.php", outputPath + "index.php");
+                copyFile("style.css", outputPath + "style.css");
+                copyFile("bootstrap.min.css", outputPath + "bootstrap.min.css");
+                copyFile("tether.min.css", outputPath + "tether.min.css");
+                copyRecursive("data/", outputPath + "data");
+                copyRecursive("lib/", outputPath + "lib");
+
                 console.log("Done!");
 
                 // Remove temporary files:

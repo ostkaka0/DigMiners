@@ -69,6 +69,7 @@ gulp.task("copy", function() {
     copyFile("bootstrap.min.css", outputPath + "bootstrap.min.css");
     copyFile("tether.min.css", outputPath + "tether.min.css");
     copyRecursive("data/", outputPath + "data");
+    copyRecursive("lib/", outputPath + "lib");
 });
 
 
