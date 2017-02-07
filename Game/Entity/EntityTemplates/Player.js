@@ -42,7 +42,10 @@ export default function(playerId, entityId, name, playerClass, teamId) {
     var rightArmSprite = new Sprite("rightArm.png");
     var leftArmSprite = new Sprite("leftArm.png");
     var headSprite = new Sprite("head.png");
-    var hatSprite = new Sprite();//((teamEnum == Team.Enum.Blue) ? "egg" : "bigEgg");
+    var strHatSprite = "";
+    if (teamEnum == Team.Enum.Blue) strHatSprite = "egg.png";
+    if (teamEnum == Team.Enum.Red) strHatSprite = "bigEgg.png";
+    var hatSprite = new Sprite(strHatSprite);
 
     // Order of bodyparts is draw order
     // Parameters: sprite, offsetX, offsetY, offsetAngle, pivot(v2), parent name

@@ -26,6 +26,7 @@ import CommandEntityInteractEntity from "Game/Command/CommandEntityInteractEntit
 import CommandCollisions from "Game/Command/CommandCollisions.js";
 import InventoryHUD from "Game/GUI/InventoryHUD.js";
 import ParticleFunctions from "Game/ParticleFunctions.js";
+import ExplosionFunctions from "Game/ExplosionFunctions.js";
 
 var World = function() {
     this.tickId = 0;
@@ -125,8 +126,10 @@ World.prototype.initializeEvents = function() {
     Event.subscribe(Projectile.Events.onHit, this, function(projectileEntity, hitPos) {
         Global.gameData.setTimeout(function(projectileEntity) {
             var type = projectileEntity.projectile.projectileType;
-            if (type.isExplosive)
-                createExplosion(hitPos, type.explosiveRadius, type.explosiveEntityDamage, type.explosionBlockDamage, type.explosionTileDamage);
+            if (type.isExplosive) {
+                ExplosionFunctions.createExplosion(hitPos, type.explosiveRadius, type.explosiveEntityDamage, type.explosionBlockDamage, type.explosionTileDamage);
+                if (isServer) sendCommand(new CommandParticles(ParticleFunctions.ExplosionParticles.id, hitPos, 10.0));
+            }
             this.entityWorld.remove(projectileEntity);
         }.bind(this, projectileEntity), projectileEntity.projectile.projectileType.stayTime);
         if (!isServer)

@@ -126,7 +126,10 @@ Global.gameData.tick = function(dt) {
 }
 
 Global.gameData.changeGameMode = function() {
-    this.nextGameMode = new Config.gameModeRegister[Config.gameModeRegister.length * Math.random() >> 0]();
+    if (this.playerWorld.objectArray.length < 4)
+        this.nextGameMode =  new Config.defaultGameMode();
+    else
+        this.nextGameMode = new Config.gameModeRegister[Config.gameModeRegister.length * Math.random() >> 0]();
     console.log("Changing game mode to: " + this.nextGameMode.name);
 }
 

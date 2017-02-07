@@ -11,7 +11,7 @@ PlayerClass.init = function() {
     Object.assign(PlayerClass, {
         Assault: {
             name: "Assault",
-            blocks: [Items.Types.StoneWall, Items.Types.WoodCrate, Items.Types.BlueForcefield, Items.Types.Toxin],
+            blocks: [Items.Types.StoneWall, Items.Types.WoodCrate, Items.Types.BunkerWindow],
             weapons: [Items.Types.WeaponAssaultRifle, Items.Types.WeaponPistol, Items.Types.Knife, Items.Types.CopperShovel],
             speed: 1.0,
             health: 120.0,
@@ -41,19 +41,27 @@ PlayerClass.init = function() {
             health: 100.0,
             armor: 0.2,
         },
-        Assassin: {
+        /*Assassin: {
             name: "Assassin",
             blocks: [Items.Types.StoneWall, Items.Types.WoodCrate, Items.Types.BlueForcefield],
             weapons: [Items.Types.WeaponSmg, Items.Types.AssasinKnife, Items.Types.RustyShovel],
             speed: 1.5,
             health: 80.0,
             armor: 0.0,
-        },
+        },*/
         Miner: {
             name: "Miner",
             blocks: [Items.Types.StoneWall, Items.Types.WoodCrate, Items.Types.BlueForcefield, Items.Types.PistolTurret, Items.Types.MachineGunTurret],
             weapons: [Items.Types.WeaponShotgun, Items.Types.WeaponSmg, Items.Types.SteelShovel],
             items: [[Items.Types.Dynamite, 8]],
+            speed: 1.0,
+            health: 120.0,
+            armor: 0.2,
+        },
+        Destroyer: {
+            name: "Destroyer",
+            blocks: [Items.Types.StoneWall, Items.Types.WoodCrate, Items.Types.BunkerWindow],
+            weapons: [Items.Types.WeaponSmg, Items.Types.WeaponGrenadeLauncher, Items.Types.IronShovel],
             speed: 1.0,
             health: 120.0,
             armor: 0.2,

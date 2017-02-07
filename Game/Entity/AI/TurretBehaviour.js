@@ -30,7 +30,7 @@ export default TurretBehaviour
 TurretBehaviour.prototype.canRun = function() {
     if (Global.gameData.world.tickId < this.nextCanRunTickId)
         return false;
-    this.nextCanRunTickId = Global.gameData.world.tickId + 40 + 40 * Math.random() >> 0;
+    this.nextCanRunTickId = Global.gameData.world.tickId + 20 + 5 * Math.random() >> 0;
     this.target = this.getTarget();
     if (this.target == null)
         return false;

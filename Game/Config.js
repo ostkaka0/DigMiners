@@ -70,6 +70,7 @@ Config.init = function() {
         particleRegister: ObjectRegister.addByObject([], Particles),
         particleFunctionRegister: ObjectRegister.addByObject([], ParticleFunctions),
         potionEffectTypeRegister: ObjectRegister.addByObject([], PotionEffectTypes),
-        gameModeRegister: TypeRegister.addByArray([], [/*GameModeBaseWar, */GameModeZombieInvasion/*, GameModeSurvivalWar*/]),
+        gameModeRegister: TypeRegister.addByArray([], [/*GameModeBaseWar,*/ GameModeZombieInvasion, GameModeSurvivalWar]),
+        defaultGameMode: GameModeZombieInvasion
     });
 }

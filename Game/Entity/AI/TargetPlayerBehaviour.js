@@ -102,7 +102,7 @@ TargetPlayerBehaviour.prototype.run = function() {
     //var dir = v2.create(diffX, diffY);
     //var normalized = v2.create(0, 0);
     //v2.normalize(dir, normalized);
-    var tickInterval = Math.floor(20 * Math.min(1.0, dis / 40.0));
+    var tickInterval = Math.floor(20 * Math.min(1.0, dis / 80.0));
     tickInterval = Math.max(5, tickInterval);
 
     if (Global.gameData.world.tickId < this.lastUpdateTickId + tickInterval)
