@@ -74,7 +74,7 @@ var run2 = function() {
             var moduleId = cacheModule.id;
             if (!isGameFile(moduleId)) continue;
             var tokens = NameMangler.scan(moduleCode);
-            NameMangler.genNames(mangledNames, tokens, nameExceptions, true);
+            NameMangler.genNames(mangledNames, tokens, nameExceptions, false);
         }
         console.log("Mangling names...")
         // Mangle words:
