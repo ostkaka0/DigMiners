@@ -1,5 +1,3 @@
-import $ from "jquery";
-
 import Global from "Game/Global.js";
 import Config from "Game/Config.js";
 

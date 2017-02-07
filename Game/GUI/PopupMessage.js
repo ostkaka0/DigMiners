@@ -1,5 +1,3 @@
-import $ from "jquery";
-
 var PopupMessage = function(text, timeout) {
     this.timeout = timeout;
     this.outer = $("<div>", {

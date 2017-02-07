@@ -39,6 +39,9 @@
         ?>
         <script type="text/javascript" src="lib/jquery-3.1.1.min.js"></script>
         <script type="text/javascript" src="lib/bootstrap.min.js"></script>
+        <script type="text/javascript" src="lib/pixi.min.js"></script>
+        <script type="text/javascript" src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+        <script> window.socket = io(); </script>
         <script type="text/javascript" src="<?php echo scriptVersion("src.js")?>"></script>
     </body>
 </html>

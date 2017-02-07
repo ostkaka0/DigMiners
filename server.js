@@ -125,7 +125,7 @@ var tick = function(dt) {
 }
 
 io.on("connection", function(socket) {
-    connections[socket.id] = { 'socket': socket };
+    connections[socket.id] = { socket: socket };
 
     connections[socket.id].pingIntervalId = setInterval(function() {
         //startTime = Date.now();

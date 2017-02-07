@@ -113,7 +113,7 @@ Inventory.prototype.addItem = function(gameData, id, amount) {
         }
         if (i >= this.items.length || !this.items[i]) {
             var added = (amount <= maxStack ? amount : maxStack);
-            this.items.push({ 'id': id, 'name': ItemRegister[id].name, 'amount': added });
+            this.items.push({ id: id, name: ItemRegister[id].name, amount: added });
             amount -= added;
             continue;
         }
@@ -129,7 +129,7 @@ Inventory.prototype.addItem = function(gameData, id, amount) {
 
 Inventory.prototype.addStaticItem = function(gameData, id) {
     //console.log("adding " + amount + " " + id);
-    this.items.push({ 'id': id, 'name': ItemRegister[id].name, 'amount': 1, 'static': true });
+    this.items.push({ id: id, name: ItemRegister[id].name, amount: 1, static: true });
     this.sortItems();
 }
 

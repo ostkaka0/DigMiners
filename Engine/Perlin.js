@@ -13,11 +13,11 @@ perlin.prototype.initPage = function(pageX, pageY) {
     var page = new Uint8Array(PERLIN_PAGE_SIZE);
     this.grid.set(pageX, pageY, page);
 		
-    var seed = noiseRand(this.seed[0] ^ noiseRand(pageX) ^ noiseRand(pageY));
+    var seed = Noise.rand(this.seed[0] ^ Noise.rand(pageX) ^ Noise.rand(pageY));
 		// Generate random vectors:
 		for (var x = 0; x < PERLIN_PAGE_DIM_2; ++x) {
 			for (var y = 0; y < PERLIN_PAGE_DIM_2; ++y) {
-                var seed = noiseRand(this.seed[0] ^ noiseRand(pageX) ^ noiseRand(pageY));
+                var seed = Noise.rand(this.seed[0] ^ Noise.rand(pageX) ^ Noise.rand(pageY));
 				this.vecData[x + PERLIN_PAGE_DIM_2 * y] = noiseNextV2(seed);
 			}
 		}

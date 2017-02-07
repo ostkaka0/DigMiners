@@ -1,5 +1,3 @@
-import $ from "jquery";
-
 import Global from "Game/Global.js";
 
 var Chat = function() {
