@@ -121,30 +121,35 @@ TurretBehaviour.prototype.getTarget = function() {
     var hasMovement = false;
     var shortestDistance = Number.MAX_VALUE;
     var shortestDistanceEntity = null;
-    Global.gameData.world.entityWorld.objectArray.forEach(function(otherEntity) {
-        if (!otherEntity.health || !otherEntity.physicsBody) return;
-        if (!otherEntity.team && !otherEntity.movement) return;
-        if (this.entity.team && this.entity.team.value != Team.Enum.None && (!otherEntity.team || otherEntity.team.value == this.entity.team.value)) return;
-        if (otherEntity.id == this.entity.id) return;
-        if (hasMovement && !otherEntity.movement) return;
+    var bodies = [];
+    var pos = this.entity.physicsBody.getPos();
+    global.gameData.world.physicsWorld.getBodiesInRadius(bodies, pos, this.maxRadius);
+    for (var i = 0; i < bodies.length; i++) {
+        var bodyId = bodies[i];
+        var otherEntity = Global.gameData.world.physicsEntities[bodyId];
+        if (!otherEntity) continue;
+        if (!otherEntity.health || !otherEntity.physicsBody) continue;
+        if (!otherEntity.team && !otherEntity.movement) continue;
+        if (this.entity.team && this.entity.team.value != Team.Enum.None && (!otherEntity.team || otherEntity.team.value == this.entity.team.value)) continue;
+        if (otherEntity.id == this.entity.id) continue;
+        if (hasMovement && !otherEntity.movement) continue;
 
         var dis = v2.distance(this.entity.physicsBody.getPos(), otherEntity.physicsBody.getPos());
 
-        if (dis > this.maxRadius) return;
+        if (dis > this.maxRadius) continue;
 
         if (otherEntity.controlledByPlayer)
             dis /= 4;
 
         if (dis >= shortestDistance) {
             if (hasMovement || !otherEntity.movement)
-                return;
+                continue;
         }
 
         shortestDistance = dis;
         shortestDistanceEntity = otherEntity;
         hasMovement = (otherEntity.movement) ? true : false;
-    }.bind(this));
-
+    }
     return shortestDistanceEntity;
 }
 
