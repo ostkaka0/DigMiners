@@ -31,7 +31,7 @@ export default function(entityId, pos, teamId, maxEntities, radius, duration) {
     duration = duration || 60;
 
     var entity = {};
-    entity.spawner = new Spawner(entityTemplateMonster, pos, maxEntities, radius, duration, [{ id: Items.Types.WeaponPistol.id, quantity: 1 }, { id: Items.Types.RustyShovel.id, quantity: 1 }], null, null, teamId);
+    entity.spawner = new Spawner(entityTemplateMonster, pos, maxEntities, radius, duration, null/*[{ id: Items.Types.WeaponPistol.id, quantity: 1 }, { id: Items.Types.RustyShovel.id, quantity: 1 }]*/, null, null, teamId);
     entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, null, 1000.0);
     entity.nameComponent = new NameComponent("Base");
 

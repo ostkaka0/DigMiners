@@ -30,10 +30,10 @@ export default function(entityId, pos, teamId) {
     entity.potionEffects = new PotionEffects();
 
     var teamEnum = teamId || Team.Enum.None;
-    var feetSprite = new Sprite("monster/feet.png");
-    var rightArmSprite = new Sprite("monster/rightArm.png");
-    var leftArmSprite = new Sprite("monster/leftArm.png");
-    var headSprite = new Sprite("monster/head.png");
+    var feetSprite = new Sprite("feet.png");
+    var rightArmSprite = new Sprite("rightArm.png");
+    var leftArmSprite = new Sprite("leftArm.png");
+    var headSprite = new Sprite("head.png");
     var hatSprite = new Sprite((teamEnum == Team.Enum.Blue) ? "egg.png" : "bigEgg.png");
 
     var bodyparts = {

@@ -1,5 +1,7 @@
 <html>
     <head>
+    <meta name="description" content="This .io-game is a combination of action and creativity. Dig tunnels, build bunkers, place turrets, heal friends, kill zombies and shoot enemies.">
+    <meta name="keywords" content="digwar, io, digwario, dig, build, defend, zombie, html5, iogame, iogames, game, games">
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

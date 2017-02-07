@@ -32,6 +32,7 @@ var GameModeBaseWar = function() {
     this.teams = [Team.Enum.Blue, Team.Enum.Red];
     this.spawnEntities[Team.Enum.Blue] = [];
     this.spawnEntities[Team.Enum.Red] = [];
+    this.playerSpawning = true;
 }
 export default GameModeBaseWar
 
@@ -52,8 +53,8 @@ GameModeBaseWar.prototype.init = function() {
         }
     }
 
-    this.playerSpawns[Team.Enum.Blue] = [[-60, -40], [-60, 0], [-60, 40]];
-    this.playerSpawns[Team.Enum.Red] = [[60, -40],[60, 0],[60, 40]];
+    this.playerSpawns[Team.Enum.Blue] = [[-40, -40], [-40, 0], [-40, 10]];
+    this.playerSpawns[Team.Enum.Red] = [[40, -40],[40, 0],[40, 10]];
 
     Object.keys(this.playerSpawns).forEach(function(teamId) {
         this.playerSpawns[teamId].forEach(function(pos) {
