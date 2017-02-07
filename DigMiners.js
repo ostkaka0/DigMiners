@@ -1,12 +1,3 @@
-//import $ from "jquery";
-//import Tether from "Lib/tether.js"
-//import "./preload.js"
-global.jQuery = $;
-//global.xyz = _xyz_;
-//global.Tether = Tether;
-//import "bootstrap";
-import "pixi.js";
-
 import fix from "Engine/Core/Fix.js";
 import v2 from "Engine/Core/v2.js";
 import Canvas from "Engine/Canvas.js";
@@ -37,6 +28,23 @@ import MessageRequestClickBlock from "Game/Message/ToServer/MessageRequestClickB
 import MessageRequestRotate from "Game/Message/ToServer/MessageRequestRotate.js";
 import MessageRequestItemPickup from "Game/Message/ToServer/MessageRequestItemPickup.js";
 
+var keyMap = {};
+var iterateObject = function(o, depth) {
+    if (!o) return;
+    if (typeof o != "object") return;
+    Object.keys(o).forEach(function(key) {
+        var childDepth = depth - 1;
+        if (!keyMap[key]) {
+            keyMap[key] = true;
+            console.log(key);
+        } else {
+            childDepth -= 5;
+        }
+        if (childDepth > 0)
+            iterateObject(o[key], childDepth);
+    });
+}
+iterateObject(window, 20);
 
 var canvas = document.getElementById("canvas");
 var spriteCanvas = document.getElementById("spriteCanvas");

@@ -1,5 +1,3 @@
-import io from "socket.io-client";
-
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
 import MessageRegister from "Game/Register/Message.js";

@@ -23,16 +23,17 @@ var createDir = function(dir) {
 }
 
 var run2 = function() {
-    var nameExceptions = ["loadTextures", "clearCommands"];
+    var nameExceptions = ["loadTextures", "clearCommands", "socket", "io", "onreadystatechange"];
     var catchError = (error) => console.log(error);
-    console.log("Prefetching...")
     var strGameFiles = "Game/**/*.js";
     var strServerFile = "server.js";
     var strClientFile = "DigMiners.js"
     var tempFiles = [];
     var gameFiles = [];
+    var externalFiles = [];
     var mangledNames = {};
     loadRecursive("Game", file => gameFiles.push(file));
+    loadRecursive("lib", file => externalFiles.push(file));
 
     if (!fs.existsSync("build/")) fs.mkdirSync("build/");
     if (!fs.existsSync("build/html/")) fs.mkdirSync("build/html/");
@@ -42,6 +43,14 @@ var run2 = function() {
         return (file.includes("Engine/") || file.includes("Game/") || file.includes("engine/") || file.includes("game/") || file.includes(strServerFile) || file.includes(strClientFile));
     }
 
+    console.log("Parsing reserved names...");
+    externalFiles.forEach(file => {
+        var code = fs.readFileSync(file, "utf8");
+        var tokens = NameMangler.scan(code);
+        nameExceptions = nameExceptions.concat(NameMangler.reserveNames(tokens));
+    });
+
+    console.log("Prefetching...")
     bundleCode("./", gameFiles.concat([strServerFile, strClientFile])).then((cache) => {
         console.log("Mangling...");
 
@@ -65,7 +74,7 @@ var run2 = function() {
             var moduleId = cacheModule.id;
             if (!isGameFile(moduleId)) continue;
             var tokens = NameMangler.scan(moduleCode);
-            NameMangler.genNames(mangledNames, tokens, nameExceptions, false);
+            NameMangler.genNames(mangledNames, tokens, nameExceptions, true);
         }
         console.log("Mangling names...")
         // Mangle words:
@@ -91,6 +100,7 @@ var run2 = function() {
         }
         fs.writeFileSync("NameMangler.log", JSON.stringify(mangledNames, null, "\t"));
 
+        copyRecursive("lib/", "temp/lib");
         console.log("Boundling server...");
         bundleCode("temp/", gameFiles.concat([strServerFile]), null).then((bundle) => {
             var result = bundle.generate({
@@ -111,17 +121,6 @@ var run2 = function() {
 
                 console.log("Copying files...");
                 var outputPath = "build/html/"
-                var copyFile = function (src, dest) {
-                    dir = path.dirname(dest);
-                    if (!fs.existsSync(dir)) fs.mkdirSync(dir);
-                    fs.createReadStream(src).pipe(fs.createWriteStream(dest));
-                }
-                var copyRecursive = function(dir, dest) {
-                    console.log(dir, "copying to", dest);
-                    copydir(dir, dest, function(error) {
-                        if (error) console.log("Copy error: " + error);
-                    });
-                }
                 copyFile("html_index.php", outputPath + "index.php");
                 copyFile("style.css", outputPath + "style.css");
                 copyFile("bootstrap.min.css", outputPath + "bootstrap.min.css");
@@ -164,7 +163,7 @@ var bundleCode = function(rootDir, srcFiles, cache, inPlugins) {
                 extensions: '.js'
             }),
             //amd(),
-            commonjs({
+            /*commonjs({
               // non-CommonJS modules will be ignored, but you can also
               // specifically include/exclude files
               include: 'node_modules/**',  // Default: undefined
@@ -202,7 +201,7 @@ var bundleCode = function(rootDir, srcFiles, cache, inPlugins) {
                 // whether to prefer built-in modules (e.g. `fs`, `path`) or
                 // local ones with the same names
                 preferBuiltins: true  // Default: true
-            }),
+            }),*/
             nodeBuiltins(),
             //nodeGlobals(),
             //amd(),
@@ -220,7 +219,7 @@ function run() {
         plugins: [
             multiEntry(),
             //amd(),
-            commonjs({
+            /*commonjs({
               // non-CommonJS modules will be ignored, but you can also
               // specifically include/exclude files
               include: 'node_modules/**',  // Default: undefined
@@ -258,7 +257,7 @@ function run() {
                 // whether to prefer built-in modules (e.g. `fs`, `path`) or
                 // local ones with the same names
                 preferBuiltins: true  // Default: true
-            }),
+            }),*/
             nodeBuiltins(),
             //nodeGlobals(),
             //amd(),
@@ -300,6 +299,18 @@ var loadRecursive = function(dir, load, except) {
         else if(stat.isFile() && path.extname(filePath) == ".js")
             load(filePath)
     }
+}
+
+var copyFile = function (src, dest) {
+    dir = path.dirname(dest);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+    fs.createReadStream(src).pipe(fs.createWriteStream(dest));
+}
+var copyRecursive = function(dir, dest) {
+    console.log(dir, "copying to", dest);
+    copydir(dir, dest, function(error) {
+        if (error) console.log("Copy error: " + error);
+    });
 }
 
 

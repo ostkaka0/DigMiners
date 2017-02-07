@@ -31,11 +31,6 @@ gulp.task("rollup", function() {
         cache: rollupCache,
         plugins: [
             multiEntry(),
-            commonjs({
-              include: 'node_modules/**',
-              extensions: [".js"],
-              sourceMap: false,
-            }),
             nodeResolve({
                 browser: true,  // Default: false
             }),

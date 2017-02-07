@@ -5,6 +5,7 @@ import BlockWorld from "Engine/BlockWorld.js";
 import Sprite from "Engine/Animation/Sprite.js";
 import Event from "Engine/Core/Event.js";
 import BodyPart from "Engine/Animation/BodyPart.js";
+import Noise from "Engine/Core/Noise.js"
 
 import Config from "Game/Config.js";
 import Global from "Game/Global.js";
@@ -17,6 +18,8 @@ import Bodyparts from "Game/Entity/Bodyparts.js";
 import PotionEffects from "Game/Entity/PotionEffects.js";
 import PotionEffectTypes from "Game/PotionEffectTypes.js";
 import Interactable from "Game/Entity/Interactable.js";
+import Drawable from "Game/Entity/Drawable.js";
+import Projectile from "Game/Entity/Projectile.js"
 import CommandPlaceBlock from "Game/Command/CommandPlaceBlock.js";
 import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
 import CommandBuild from "Game/Command/CommandBuild.js";
@@ -102,7 +105,7 @@ BlockBulletFunctions.bunker = function(blockPos, blockType, entity) {
     var deltaPos = [blockPos[0] + 0.5 - entityPos[0], blockPos[1] + 0.5 - entityPos[1]];
     deltaPos = [Math.max(0, Math.abs(deltaPos[0]) - 0.5), Math.max(0, Math.abs(deltaPos[1]) - 0.5)];
     var dis = v2.length(deltaPos);
-    var rand = noiseRand(noiseRand(noiseRand(noiseRand(blockPos[0]) ^ blockPos[1]) ^ Global.gameData.world.tickId) ^ entity.id) % 100;
+    var rand = Noise.rand(Noise.rand(Noise.rand(Noise.rand(blockPos[0]) ^ blockPos[1]) ^ Global.gameData.world.tickId) ^ entity.id) % 100;
     var damageFactor;
     if (dis > blockType.bulletBunkerDistance)
         damageFactor = blockType.bulletBunkerFarFactor;
@@ -345,7 +348,7 @@ Blocks.initBlocks = function() {
         isSolid: true,
         hardness: 1.0,
         type: BlockTypes.FOREGROUND,
-        buildDuration: 5,
+        buildDuration: 40,
         onPlace: BlockFunctions.createEntityBox,
         onCreateEntity: function(entity, entityId) {
             entity.interactable = new Interactable(function(interactableEntity, entity) {
@@ -365,7 +368,7 @@ Blocks.initBlocks = function() {
         isSolid: true,
         hardness: 1.0,
         type: BlockTypes.FOREGROUND,
-        buildDuration: 5,
+        buildDuration: 80,
         onPlace: BlockFunctions.createEntityTurret,
         onCreateEntity: null,
         onEntityCreated: function(entity, entityId) {
@@ -380,7 +383,7 @@ Blocks.initBlocks = function() {
         isSolid: true,
         hardness: 1.0,
         type: BlockTypes.FOREGROUND,
-        buildDuration: 5,
+        buildDuration: 60,
         onPlace: BlockFunctions.createEntityTurret,
         onCreateEntity: null,
         onEntityCreated: function(entity, entityId) {
@@ -395,7 +398,7 @@ Blocks.initBlocks = function() {
         isSolid: false,
         hardness: 1.0,
         type: BlockTypes.BACKGROUND,
-        buildDuration: 1,
+        buildDuration: 40,
         onTouch: function(entity) {
             if (!entity.potionEffects || !entity.health) return;
             entity.potionEffects.add(PotionEffectTypes.Toxin, 3 * 20);

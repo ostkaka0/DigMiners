@@ -1,5 +1,3 @@
-import $ from "jquery";
-
 import Global from "Game/Global.js";
 import AmmoHUD from "Game/GUI/AmmoHUD.js";
 import DugItems from "Game/GUI/DugItems.js";

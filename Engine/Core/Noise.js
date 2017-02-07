@@ -1,7 +1,9 @@
 
 
+var Noise = {};
+export default Noise;
 
-noiseRand = function(value) {
+Noise.rand = function(value) {
     value ^= 0xE773;
     value += (value << 5);
     value ^= (value >> 3);
@@ -12,8 +14,8 @@ noiseRand = function(value) {
     return value;
 }
 
-noiseNextInt = function(seed) {
-    return noiseRand(seed[0]++);
+Noise.nextInt = function(seed) {
+    return Noise.rand(seed[0]++);
 }
 
 /*noiseNextFix = function(seed) {
