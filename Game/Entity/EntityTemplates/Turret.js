@@ -18,7 +18,7 @@ import TurretIdleBehaviour from "Game/Entity/AI/TurretIdleBehaviour.js";
 
 export default function(entityId, pos, teamId) {
     var entity = {};
-    entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0, 1000, 0.5);
+    entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0, 10, 0.5);
     entity.movement = new Movement(0);
     entity.inventory = Inventory.createInventory(entityId, 10, 1);
     entity.equippedItems = new EquippedItems();
@@ -38,7 +38,7 @@ export default function(entityId, pos, teamId) {
 
     entity.health = new Health(50, 50, 0.0);
     entity.team = new Team(teamId);
-    entity.ammo = new Ammo();
+    //entity.ammo = new Ammo();
 
     entity.behaviourContainer = new BehaviourContainer();
     entity.behaviourContainer.behaviours.push(new TurretBehaviour(entity, 10.0));
