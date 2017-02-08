@@ -44,7 +44,7 @@ var World = function() {
     this.entityInventories = {};
 
     this.playerSpawns = {};
-    this.spawnAllowed = true;
+    this.playerSpawnAllowed = true;
 
     this.commands = [];
     this.pendingCommands = {};
@@ -131,7 +131,8 @@ World.prototype.initializeEvents = function() {
         Global.gameData.setTimeout(function(projectileEntity) {
             var type = projectileEntity.projectile.projectileType;
             if (type.isExplosive) {
-                ExplosionFunctions.createExplosion(hitPos, type.explosiveRadius, type.explosiveEntityDamage, type.explosionBlockDamage, type.explosionTileDamage);
+                var shooter = this.entityWorld.objects[projectileEntity.projectile.shooterEntityId];
+                ExplosionFunctions.createExplosion(hitPos, type.explosiveRadius, type.explosiveEntityDamage, type.explosionBlockDamage, type.explosionTileDamage, shooter);
                 if (isServer) sendCommand(new CommandParticles(ParticleFunctions.ExplosionParticles.id, hitPos, 10.0));
             }
             this.entityWorld.remove(projectileEntity);
