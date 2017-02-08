@@ -43,12 +43,16 @@ var World = function() {
     this.inventories = {};
     this.entityInventories = {};
 
+    this.playerSpawns = {};
+    this.spawnAllowed = true;
+
     this.commands = [];
     this.pendingCommands = {};
     this.commandCallbacks = [];
 
     this.events = new EventHandler();
     this.initializeEvents();
+    this.events2 = { onPlayerSpawn: [] };
 }
 export default World
 
