@@ -144,11 +144,11 @@ Movement.entityFunction = function(dt) {
                     var reloadCycleRightArm = Global.gameData.animationManager.cycles[reloadCycleRightArmName];
                     var reloadCycleLeftArm = Global.gameData.animationManager.cycles[reloadCycleLeftArmName];
                     var reloadCycleGun = Global.gameData.animationManager.cycles[reloadCycleGunName];
-                    if (reloadCycleRightArm)
+                    if (reloadCycleRightArm && entity.bodyparts.bodyparts["rightArm"])
                         entity.bodyparts.bodyparts["rightArm"].cycle(reloadCycleRightArmName, reloadCycleRightArm.numFrames / reloadCooldown * 20, true);
-                    if (reloadCycleLeftArm)
+                    if (reloadCycleLeftArm && entity.bodyparts.bodyparts["leftArm"])
                         entity.bodyparts.bodyparts["leftArm"].cycle(reloadCycleLeftArmName, reloadCycleLeftArm.numFrames / reloadCooldown * 20, true);
-                    if (reloadCycleGun)
+                    if (reloadCycleGun && entity.bodyparts.bodyparts["tool"])
                         entity.bodyparts.bodyparts["tool"].cycle(reloadCycleGunName, reloadCycleGun.numFrames / reloadCooldown * 20, true);
                 }
             }

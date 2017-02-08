@@ -51,7 +51,7 @@ PlayerClass.init = function() {
         },*/
         Miner: {
             name: "Miner",
-            blocks: [Items.Types.StoneWall, Items.Types.WoodCrate, Items.Types.BlueForcefield, Items.Types.PistolTurret, Items.Types.MachineGunTurret],
+            blocks: [Items.Types.StoneWall, Items.Types.WoodCrate, Items.Types.BlueForcefield, Items.Types.MachineGunTurret],
             weapons: [Items.Types.WeaponShotgun, Items.Types.WeaponSmg, Items.Types.SteelShovel],
             items: [[Items.Types.Dynamite, 8]],
             speed: 1.0,
@@ -60,7 +60,7 @@ PlayerClass.init = function() {
         },
         Destroyer: {
             name: "Destroyer",
-            blocks: [Items.Types.StoneWall, Items.Types.WoodCrate, Items.Types.BunkerWindow],
+            blocks: [Items.Types.StoneWall, Items.Types.WoodCrate, Items.Types.BunkerWindow, Items.Types.SmgTurret],
             weapons: [Items.Types.WeaponSmg, Items.Types.WeaponGrenadeLauncher, Items.Types.IronShovel],
             speed: 1.0,
             health: 120.0,

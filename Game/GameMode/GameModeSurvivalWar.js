@@ -23,6 +23,7 @@ import entityTemplateZombie from "Game/Entity/EntityTemplates/Zombie.js";
 import entityTemplateMonster from "Game/Entity/EntityTemplates/Monster.js";
 import MessageAmmoChange from "Game/Message/ToClient/MessageAmmoChange.js";
 import CommandEntityHealthChange from "Game/Command/CommandEntityHealthChange.js";
+import CommandWorldSpawnStatus from "Game/Command/CommandWorldSpawnStatus.js"
 
 var GameModeSurvivalWar = function() {
     this.playerSpawns = {};
@@ -52,6 +53,8 @@ GameModeSurvivalWar.prototype.init = function() {
 
     this.playerSpawns[Team.Enum.Blue] = [[-20, -20], [-20, 0], [-20, 20]];
     this.playerSpawns[Team.Enum.Red] = [[20, -20],[20, 0],[20, 20]];
+    sendCommand(new CommandWorldSpawnStatus(this.playerSpawns, true));
+
 
     Object.keys(this.playerSpawns).forEach(function(team) {
         var array = this.playerSpawns[team];
@@ -70,10 +73,10 @@ GameModeSurvivalWar.prototype.init = function() {
         sendCommand(new CommandDig(pos, 5.0));
     }
 
-    // End gamemode after 5 minutes
-    Global.gameData.setTimeout(Global.gameData.changeGameMode.bind(Global.gameData), 5 * 60 * 1000);
+    // End gamemode after 15 minutes
+    Global.gameData.setTimeout(Global.gameData.changeGameMode.bind(Global.gameData), 15 * 60 * 1000);
 
-    // End game when less than 2 playerSpawning, Activate after 60 seconds
+    // End game when less than 2 players, activate after 60 seconds
     Global.gameData.setTimeout(() => {
         Event.subscribe(Global.gameData.playerWorld.onRemove, this, (player) => {
             if (Global.gameData.playerWorld.objectArray.length < 2)

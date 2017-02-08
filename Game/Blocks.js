@@ -378,8 +378,8 @@ Blocks.initBlocks = function() {
         }
     }
 
-    Blocks.PistolTurret = {
-        name: "Turret(Pistol)",
+    Blocks.SmgTurret = {
+        name: "Turret(Smg)",
         isSolid: true,
         hardness: 1.0,
         type: BlockTypes.FOREGROUND,
@@ -387,7 +387,7 @@ Blocks.initBlocks = function() {
         onPlace: BlockFunctions.createEntityTurret,
         onCreateEntity: null,
         onEntityCreated: function(entity, entityId) {
-            var weaponId = Items.Types.WeaponPistol.id;
+            var weaponId = Items.Types.WeaponSmg.id;
             sendCommand(new CommandEntityInventory(entityId, CommandEntityInventory.Actions.ADD_ITEM, weaponId, 1));
             sendCommand(new CommandEntityEquipItem(entityId, 0, weaponId, true));
         }
