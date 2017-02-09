@@ -53,6 +53,9 @@ var World = function() {
     this.events = new EventHandler();
     this.initializeEvents();
     this.events2 = { onPlayerSpawn: [] };
+
+    //Temp variables:
+    this.collisionList = []; // Updated, then sent before tick ends
 }
 export default World
 
@@ -99,6 +102,10 @@ World.prototype.tick = function(dt) {
                 entity.interacter.lastCheck = gameData.world.tickId;
             }
         });
+
+        // Synchronize collisions:
+        sendCommand(new CommandCollisions(this.collisionList));
+        this.collisionList = [];
     }
 
     this.tickId++;
@@ -122,8 +129,8 @@ World.prototype.initializeEvents = function() {
     }
 
     if (isServer) {
-        this.physicsWorld.onCollision.push(function(collisions) {
-            sendCommand(new CommandCollisions(collisions));
+        this.physicsWorld.onCollision.push((collisions) => {
+            this.collisionList = collisions;
         });
     }
 

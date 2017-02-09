@@ -33,7 +33,7 @@ PhysicsWorld.prototype.update = function(dt) {
 
     var collisions = [];
 
-    var velocityEpsilon = fix.toFix(0.01);
+    var velocityEpsilon = -1;//fix.toFix(0.01);
     // Collision:
     this.forEach(this, function(id) {
         var radius = this.getRadius(id);
@@ -62,6 +62,10 @@ PhysicsWorld.prototype.update = function(dt) {
             // Calc position
             var dir = [0, 0];
             v2.sub(otherPosOld, posOld, dir);
+            if (Math.abs(dir[0]) > Math.abs(dir[1]))
+                dir[1] /= 10.0;
+            else
+                dir[0] /= 10.0;
             var dis = v2.length(dir);
             v2.normalize(dir, dir);
             if (dis == 0)
