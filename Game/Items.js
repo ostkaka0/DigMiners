@@ -363,7 +363,7 @@ Items.initItems = function() {
         useDuration: 2,
         type: "tool",
         typeOfType: "shovel",
-        digSpeed: 0.5,
+        digSpeed: 0.25,
         maxDigHardness: Tiles.Copper.hardness,
     }
     Items.Types.CopperShovel = {
@@ -378,7 +378,7 @@ Items.initItems = function() {
         useDuration: 2,
         type: "tool",
         typeOfType: "shovel",
-        digSpeed: 0.75,
+        digSpeed: 0.375,
         maxDigHardness: Tiles.Iron.hardness,
     }
     Items.Types.IronShovel = {
@@ -393,7 +393,7 @@ Items.initItems = function() {
         useDuration: 2,
         type: "tool",
         typeOfType: "shovel",
-        digSpeed: 1.0,
+        digSpeed: 0.5,
         maxDigHardness: Tiles.Iron.hardness,
     }
     Items.Types.SteelShovel = {
@@ -408,7 +408,7 @@ Items.initItems = function() {
         useDuration: 2,
         type: "tool",
         typeOfType: "shovel",
-        digSpeed: 2.0,
+        digSpeed: 1.0,
         maxDigHardness: Tiles.Apatite.hardness,
     }
 

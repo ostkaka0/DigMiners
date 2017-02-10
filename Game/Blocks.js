@@ -400,8 +400,31 @@ Blocks.initBlocks = function() {
         type: BlockTypes.BACKGROUND,
         buildDuration: 40,
         onTouch: function(entity) {
+            if (!entity.team || entity.team.value == Team.Enum.Human) return;
             if (!entity.potionEffects || !entity.health) return;
-            entity.potionEffects.add(PotionEffectTypes.Toxin, 3 * 20);
+            entity.potionEffects.add(PotionEffectTypes.Toxin, 5 * 20);
+        },
+        updateCells: function(blockWorld, blockList) {
+            var dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+            var strengthDecrease = 10;
+            for (var i = 0; i < blockList.length; i++) {
+                let blockPos = blockList[i];
+                var blockStrength = blockWorld.getStrength(blockPos);
+                gameData.setTimeout(function() { blockWorld.setForeground(blockPos, 0); }, 500 + blockStrength * 15);
+                var childStrength = blockStrength - strengthDecrease;
+                if (childStrength <= 0) continue;
+                console.log(blockStrength, childStrength);
+
+                for (var j = 0; j < dirs.length; j++) {
+                    var otherPos = v2.clone(blockPos);
+                    v2.add(dirs[j], otherPos, otherPos);
+                    var otherId = blockWorld.getForeground(otherPos);
+                    var otherDensity = gameData.world.tileWorld.getDensity(otherPos);
+                    if (otherId != 0 || otherDensity > 127) continue;
+                    blockWorld.setForeground(otherPos, Blocks.Toxin.id, childStrength);
+                }
+            }
         }
     }
+
 }

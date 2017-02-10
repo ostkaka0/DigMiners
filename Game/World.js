@@ -9,6 +9,7 @@ import EventHandler from "Engine/EventHandler.js";
 import BodyPart from "Engine/Animation/BodyPart.js";
 import BlockWorld from "Engine/BlockWorld.js";
 import TileWorld from "Engine/TileWorld.js";
+import CelluralAutomata from "Engine/CelluralAutomata.js"
 
 import Global from "Game/Global.js";
 import Config from "Game/Config.js";
@@ -36,6 +37,7 @@ var World = function() {
     this.particleWorld = new ParticleWorld();
     this.tileWorld = new TileWorld();
     this.blockWorld = new BlockWorld();
+    this.celluralAutomata = new CelluralAutomata(this.blockWorld, Config.blockRegister);
     this.physicsWorld = new PhysicsWorld();
     this.physicsEntities = {};
     this.generator = new Generator(Math.random() * 1000000 >> 0);
@@ -73,6 +75,7 @@ World.prototype.tick = function(dt) {
         command.execute(this);
     }.bind(this));
     this.commands.length = 0;
+    this.celluralAutomata.tick();
     this.physicsWorld.update(dt);
     Movement.entityFunction(dt);
     entityFunctionPhysicsBodySimulate(dt);
