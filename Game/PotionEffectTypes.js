@@ -82,7 +82,7 @@ PotionEffectTypes.Toxin = {
     potionFunction: function(entity) {
         var health = entity.health;
         if (!health || health.health <= 5) return;
-        health.health = Math.max(5, health.health - 2);
+        health.health = Math.max(5, health.health - 5);
         Event.trigger(Health.Events.onChange, entity);
     }
 }

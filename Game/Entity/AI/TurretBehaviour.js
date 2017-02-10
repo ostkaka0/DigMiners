@@ -5,6 +5,7 @@ import TileWorld from "Engine/TileWorld.js";
 import Keys from "Engine/Keys.js";
 
 import Global from "Game/Global.js";
+import Config from "Game/Config.js"
 import Items from "Game/Items.js";
 import Team from "Game/Entity/Team.js";
 import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
@@ -162,7 +163,9 @@ TurretBehaviour.prototype.getAttackDistance = function(pos, dir) {
     v2.add(step, rayPos, rayPos);
     for (var i = 0; i < 40; i++) {
         if (Global.gameData.world.tileWorld.getDensity(rayPos) > 127) break;
-        if (global.gameData.world.blockWorld.getForeground(rayPos) != 0) break;
+        var blockId = global.gameData.world.blockWorld.getForeground(rayPos);
+        var block = Config.blockRegister[blockId];
+        if (!block || !block.isSolid) break;
 
         v2.add(step, rayPos, rayPos);
         dis += stepLength;
