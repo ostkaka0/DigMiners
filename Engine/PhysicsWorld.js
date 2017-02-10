@@ -83,8 +83,8 @@ PhysicsWorld.prototype.update = function(dt) {
             var otherVelocityX = fix.mul(otherVelocity[0], Math.min(1.0, Math.max(-1.0, fix.sub(otherMass, mass)))) + fix.div(fix.mul(2, fix.mul(mass, velocity[0])), fix.add(mass, otherMass));
             var otherVelocityY = fix.mul(otherVelocity[1], Math.min(1.0, Math.max(-1.0, fix.sub(otherMass, mass)))) + fix.div(fix.mul(2, fix.mul(mass, velocity[1])), fix.add(mass, otherMass));
             var collisionVelocityFactor = 0.0; //Math.min(8, 80 * (1.0 - dis));
-            velocity = [velocityX - collisionVelocityFactor * Math.min(2.0, otherMass / mass) * deltaPos[0], velocityY - collisionVelocityFactor * Math.min(2.0, otherMass / mass) * deltaPos[1]];
-            otherVelocity = [otherVelocityX + collisionVelocityFactor * Math.min(2.0, mass / otherMass) * deltaPos[0], otherVelocityY + collisionVelocityFactor * Math.min(2.0, mass / otherMass) * deltaPos[1]];
+            //velocity = [velocityX - collisionVelocityFactor * Math.min(2.0, otherMass / mass) * deltaPos[0], velocityY - collisionVelocityFactor * Math.min(2.0, otherMass / mass) * deltaPos[1]];
+            //otherVelocity = [otherVelocityX + collisionVelocityFactor * Math.min(2.0, mass / otherMass) * deltaPos[0], otherVelocityY + collisionVelocityFactor * Math.min(2.0, mass / otherMass) * deltaPos[1]];
 
             this.setPos(otherId, otherPos);
             this.setVelocity(otherId, otherVelocity);
