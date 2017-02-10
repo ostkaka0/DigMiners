@@ -123,17 +123,14 @@ var DeathScreen = function() {
     }.bind(this));
 
     Global.gameData.world.events.on("spectate", function(entity) {
-        console.log("SPECTATE");
         this.root.hide();
     }.bind(this));
 
     //events.on("entityDeath", function(entity) {
     Event.subscribe(Global.gameData.world.entityWorld.onRemove, this, (entity) => {
-        console.log("PRE DEATH");
         if (!entity.controlledByPlayer) return;
         if (entity.controlledByPlayer.playerId != global.player.id) return;
 
-        console.log("ENTITYDEATH");
         this.root.show();
         this.btnSpawn.setDisabledCountdown(Config.respawnTime);
     });

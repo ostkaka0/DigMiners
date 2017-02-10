@@ -78,7 +78,7 @@ export var aStarFlowField = function(disField, expandList, tileWorld, blockWorld
             var pageAndIndex = getPageAndIndex(pos);
             var page = pageAndIndex[0];
             var index = pageAndIndex[1];
-            var density = TileWorld.getDensity(tileWorld, pos[0], pos[1]);
+            var density = tileWorld.getDensity(pos);
             var dis = baseDis + childDirWeights[i] + 20 * density / 255;
             if (dis > maxDistance)
                 continue;
@@ -119,7 +119,7 @@ export var genFlowField = function(flowField, worldRect, tileWorld, blockWorld, 
                 continue;
             var index = pos[0] - worldRect[0] + (pos[1] - worldRect[1]) * worldRect[2];
             var dis = baseDis + 1;
-            if (TileWorld.getDensity(tileWorld, pos[0], pos[1]) > 127)
+            if (tileWorld.getDensity(pos) > 127)
                 continue;
             if (blockWorld.getForeground(pos) != 0)
                 continue;

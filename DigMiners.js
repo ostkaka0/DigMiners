@@ -77,7 +77,6 @@ var camera = {
     pos: v2.create(0, 0)
 };
 var chunkRenderer = new ChunkRenderer(gl, gameData.world.tileWorld, 32.0);
-console.log(chunkRenderer);
 var blockChunkRenderer = new BlockChunkRenderer(gl, gameData.world.blockWorld, 32.0);
 var commands = [];
 var player = null;

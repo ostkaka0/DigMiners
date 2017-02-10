@@ -280,7 +280,7 @@ GameModeZombieInvasion.prototype.generateDungeon = function(tileX, tileY) {
             else if (xx <= 0 || xx >= width - 1)
                 tileId = 1;
 
-            TileWorld.setDensity(Global.gameData.world.tileWorld, x, y, 0);
+            Global.gameData.world.tileWorld.setDensity([x, y], 0);
             Global.gameData.world.blockWorld.setForeground([x, y], tileId);
         }
     }

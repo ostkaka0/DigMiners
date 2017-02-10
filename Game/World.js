@@ -8,6 +8,7 @@ import Generator from "Game/Generator.js";
 import EventHandler from "Engine/EventHandler.js";
 import BodyPart from "Engine/Animation/BodyPart.js";
 import BlockWorld from "Engine/BlockWorld.js";
+import TileWorld from "Engine/TileWorld.js";
 
 import Global from "Game/Global.js";
 import Config from "Game/Config.js";
@@ -33,7 +34,7 @@ var World = function() {
     this.idList = (isServer) ? new IdList() : null;
     this.entityWorld = new ObjectWorld(true);
     this.particleWorld = new ParticleWorld();
-    this.tileWorld = new Map2D();
+    this.tileWorld = new TileWorld();
     this.blockWorld = new BlockWorld();
     this.physicsWorld = new PhysicsWorld();
     this.physicsEntities = {};

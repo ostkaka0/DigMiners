@@ -59,7 +59,7 @@ DigObstacleBehaviour.prototype.canRun = function() {
     for (var i = 0; i < 4; i++) {
         var itPos = [tilePos[0] + (i & 1), tilePos[1] + (i >> 1)];
         var blockId = Global.gameData.world.blockWorld.getForeground(itPos);
-        var density = TileWorld.getDensity(Global.gameData.world.tileWorld, itPos[0], itPos[1]);
+        var density = Global.gameData.world.tileWorld.getDensity(itPos);
         if (blockId != 0 || density > 127) {
             this.targetTilePos = itPos;
             if (shovelSlotId != -1) {
@@ -88,7 +88,7 @@ DigObstacleBehaviour.prototype.initialize = function() {
 
 DigObstacleBehaviour.prototype.run = function() {
     var blockId = Global.gameData.world.blockWorld.getForeground(this.targetTilePos);
-    var density = TileWorld.getDensity(Global.gameData.world.tileWorld, this.targetTilePos[0], this.targetTilePos[1]);
+    var density = Global.gameData.world.tileWorld.getDensity(this.targetTilePos);
     if (Global.gameData.world.tickId >= this.stopTick) {
         // No digging for 2 seconds
         this.nextRunTick = Global.gameData.world.tickId + (2000 / Config.tickDuration >> 0);

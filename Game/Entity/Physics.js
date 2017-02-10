@@ -155,9 +155,9 @@ var physicsBodySimulate = function(physicsBody, dt) {
         }
 
         // Terrain collision
-        var density = TileWorld.calcDensity(Global.gameData.world.tileWorld, pos[0], pos[1]);
+        var density = Global.gameData.world.tileWorld.calcDensity(pos);
         if (density > 1) {
-            var dir = TileWorld.calcDir(Global.gameData.world.tileWorld, pos[0], pos[1]);
+            var dir = Global.gameData.world.tileWorld.calcDir(pos);
             //v2.mul(2.0, dir, dir);
             var tempDir = v2.clone(dir);
             v2.mul(0.5 + density / 255, tempDir, tempDir);
