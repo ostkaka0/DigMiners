@@ -57,7 +57,7 @@ TargetPlayerBehaviour.prototype.initialize = function() {
 }
 
 TargetPlayerBehaviour.prototype.run = function() {
-    if (Global.gameData.world.tickId % 5 != this.nextCanRunTickId % 5) return true;
+    if (Global.gameData.world.tickId % 2 != this.nextCanRunTickId % 2) return true;
 
     if (!this.target || this.target.isDead || !this.target.isActive) {
         this.target = this.getTarget();
@@ -102,8 +102,8 @@ TargetPlayerBehaviour.prototype.run = function() {
     //var dir = v2.create(diffX, diffY);
     //var normalized = v2.create(0, 0);
     //v2.normalize(dir, normalized);
-    var tickInterval = Math.floor(20 * Math.min(1.0, dis / 80.0));
-    tickInterval = Math.max(5, tickInterval);
+    var tickInterval = Math.floor(20 * Math.min(1.0, dis / 100.0));
+    //tickInterval = Math.max(5, tickInterval);
 
     if (Global.gameData.world.tickId < this.lastUpdateTickId + tickInterval)
         return true;
