@@ -11,7 +11,7 @@ Perlin = function(seed) {
 
 perlin.prototype.initPage = function(pageX, pageY) {
     var page = new Uint8Array(PERLIN_PAGE_SIZE);
-    this.grid.set(pageX, pageY, page);
+    this.grid.set([pageX, pageY], page);
 		
     var seed = Noise.rand(this.seed[0] ^ Noise.rand(pageX) ^ Noise.rand(pageY));
 		// Generate random vectors:

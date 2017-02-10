@@ -22,10 +22,10 @@ export default class {
     }
 
     updateBlock(blockPos, blockId) {
-        if (this.blocks.get(blockPos.x, blockPos.y)) return;
+        if (this.blocks.get([blockPos.x, blockPos.y)]) return;
         var blockType = this.blockRegister[blockId];
         if (!blockType || !blockType.updateCells) return;
-        this.blocks.set(blockPos[0], blockPos[1], blockId);
+        this.blocks.set(blockPos, blockId);
         if (!this.updatingBlocks[blockId])
             this.updatingBlocks[blockId] = [blockPos];
         else

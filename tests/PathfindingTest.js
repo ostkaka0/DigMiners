@@ -26,7 +26,7 @@ init = function() {
         for(var y = -2; y < 2; ++y) {
             var chunk = new Chunk();
             generator.generate(chunk, x, y);
-            world.set(x, y, chunk);
+            world.set([x, y], chunk);
         }
     }
     console.log(chunk.getTileId(4, 4));

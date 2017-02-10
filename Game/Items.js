@@ -53,7 +53,7 @@ Items.Functions.Shovel = function(entity, item) {
         var chunkPos = [];
         var localPos = [];
         BlockChunk.fromV2World(toolUsePos, chunkPos, localPos);
-        var blockChunk = Global.gameData.world.blockWorld.get(chunkPos[0], chunkPos[1]);
+        var blockChunk = Global.gameData.world.blockWorld.get(chunkPos);
         if (blockChunk) {
             var blockId = blockChunk.getForeground(localPos[0], localPos[1]);
             if (blockId) {

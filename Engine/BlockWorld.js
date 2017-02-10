@@ -1,130 +1,132 @@
+import Map2D from "Engine/Core/Map2D.js"
 import BlockChunk from "Engine/BlockChunk.js";
-var BLOCK_CHUNK_DIM = BlockChunk.dim;
-var BLOCK_CHUNK_DIM_2 = BlockChunk.dim2;
-var BLOCK_CHUNK_SIZE = BlockChunk.size;
 
-var BlockWorld = {};
-export default BlockWorld;
-
-BlockWorld.getForeground = function(blockWorld, x, y) {
-    var blockChunkX = Math.floor(x / BLOCK_CHUNK_DIM);
-    var blockChunkY = Math.floor(y / BLOCK_CHUNK_DIM);
-    var localX = Math.floor(x) - blockChunkX * BLOCK_CHUNK_DIM;
-    var localY = Math.floor(y) - blockChunkY * BLOCK_CHUNK_DIM;
-
-    var blockChunk = blockWorld.get(blockChunkX, blockChunkY);
-    if (!blockChunk)
-        return 0;
-
-    return blockChunk.getForeground(localX, localY);
-}
-
-BlockWorld.setForeground = function(blockWorld, x, y, value) {
-    var blockChunkX = Math.floor(x / BLOCK_CHUNK_DIM);
-    var blockChunkY = Math.floor(y / BLOCK_CHUNK_DIM);
-    var localX = Math.floor(x) - blockChunkX * BLOCK_CHUNK_DIM;
-    var localY = Math.floor(y) - blockChunkY * BLOCK_CHUNK_DIM;
-
-    var blockChunk = blockWorld.get(blockChunkX, blockChunkY);
-    if (!blockChunk) {
-        blockChunk = new BlockChunk();
-        blockWorld.set(blockChunkX, blockChunkY, blockChunk);
+export default class extends Map2D {
+    constructor() {
+        super();
+        this.events = { onPlace: [], onStrengthChange: [] };
     }
-    blockChunk.setForeground(localX, localY, value);
 
-    if (!value) {
-        for (var x = 0; x < BLOCK_CHUNK_DIM; ++x) {
-            for (var y = 0; y < BLOCK_CHUNK_DIM; ++y) {
-                if (blockChunk.getForeground(x, y) || blockChunk.getBackground(x, y))
-                    return;
+    getForeground([x, y]) {
+        var blockChunkX = Math.floor(x / BlockChunk.dim);
+        var blockChunkY = Math.floor(y / BlockChunk.dim);
+        var localX = Math.floor(x) - blockChunkX * BlockChunk.dim;
+        var localY = Math.floor(y) - blockChunkY * BlockChunk.dim;
+
+        var blockChunk = this.get([blockChunkX, blockChunkY]);
+        if (!blockChunk)
+            return 0;
+
+        return blockChunk.getForeground(localX, localY);
+    }
+
+    setForeground([x, y], value) {
+        var blockChunkX = Math.floor(x / BlockChunk.dim);
+        var blockChunkY = Math.floor(y / BlockChunk.dim);
+        var localX = Math.floor(x) - blockChunkX * BlockChunk.dim;
+        var localY = Math.floor(y) - blockChunkY * BlockChunk.dim;
+
+        var blockChunk = this.get([blockChunkX, blockChunkY]);
+        if (!blockChunk) {
+            blockChunk = new BlockChunk();
+            this.set([blockChunkX, blockChunkY], blockChunk);
+        }
+        blockChunk.setForeground(localX, localY, value);
+
+        if (!value) {
+            for (var x = 0; x < BlockChunk.dim; ++x) {
+                for (var y = 0; y < BlockChunk.dim; ++y) {
+                    if (blockChunk.getForeground(x, y) || blockChunk.getBackground(x, y))
+                        return;
+                }
+            }
+            this.set([blockChunkX, blockChunkY], null);
+        }
+
+        if (!isServer) {
+            if (localX == 0) {
+                var otherChunk = this.get([blockChunkX - 1, blockChunkY]);
+                if (otherChunk)
+                    otherChunk.isChanged = true;
+            } else if (localX == BlockChunk.dim - 1) {
+                var otherChunk = this.get([blockChunkX + 1, blockChunkY]);
+                if (otherChunk)
+                    otherChunk.isChanged = true;
+            }
+            if (localY == 0) {
+                var otherChunk = this.get([blockChunkX, blockChunkY - 1]);
+                if (otherChunk)
+                    otherChunk.isChanged = true;
+            } else if (localY == BlockChunk.dim - 1) {
+                var otherChunk = this.get([blockChunkX, blockChunkY + 1]);
+                if (otherChunk)
+                    otherChunk.isChanged = true;
             }
         }
-        blockWorld.set(blockChunkX, blockChunkY, null);
+
     }
 
-    if (!isServer) {
-        if (localX == 0) {
-            var otherChunk = blockWorld.get(blockChunkX - 1, blockChunkY);
-            if (otherChunk)
-                otherChunk.isChanged = true;
-        } else if (localX == BLOCK_CHUNK_DIM - 1) {
-            var otherChunk = blockWorld.get(blockChunkX + 1, blockChunkY);
-            if (otherChunk)
-                otherChunk.isChanged = true;
+    getBackground([x, y]) {
+        var blockChunkX = Math.floor(x / BlockChunk.dim);
+        var blockChunkY = Math.floor(y / BlockChunk.dim);
+        var localX = Math.floor(x) - blockChunkX * BlockChunk.dim;
+        var localY = Math.floor(y) - blockChunkY * BlockChunk.dim;
+
+        var blockChunk = this.get([blockChunkX, blockChunkY]);
+        if (!blockChunk)
+            return 0;
+
+        return blockChunk.getBackground(localX, localY);
+    }
+
+    setBackground([x, y], value) {
+        var blockChunkX = Math.floor(x / BlockChunk.dim);
+        var blockChunkY = Math.floor(y / BlockChunk.dim);
+        var localX = Math.floor(x) - blockChunkX * BlockChunk.dim;
+        var localY = Math.floor(y) - blockChunkY * BlockChunk.dim;
+
+        var blockChunk = this.get([blockChunkX, blockChunkY]);
+        if (!blockChunk) {
+            blockChunk = new BlockChunk();
+            this.set([blockChunkX, blockChunkY], blockChunk);
         }
-        if (localY == 0) {
-            var otherChunk = blockWorld.get(blockChunkX, blockChunkY - 1);
-            if (otherChunk)
-                otherChunk.isChanged = true;
-        } else if (localY == BLOCK_CHUNK_DIM - 1) {
-            var otherChunk = blockWorld.get(blockChunkX, blockChunkY + 1);
-            if (otherChunk)
-                otherChunk.isChanged = true;
-        }
-    }
+        blockChunk.setBackground(localX, localY, value);
 
-}
-
-BlockWorld.getBackground = function(blockWorld, x, y) {
-    var blockChunkX = Math.floor(x / BLOCK_CHUNK_DIM);
-    var blockChunkY = Math.floor(y / BLOCK_CHUNK_DIM);
-    var localX = Math.floor(x) - blockChunkX * BLOCK_CHUNK_DIM;
-    var localY = Math.floor(y) - blockChunkY * BLOCK_CHUNK_DIM;
-
-    var blockChunk = blockWorld.get(blockChunkX, blockChunkY);
-    if (!blockChunk)
-        return 0;
-
-    return blockChunk.getBackground(localX, localY);
-}
-
-BlockWorld.setBackground = function(blockWorld, x, y, value) {
-    var blockChunkX = Math.floor(x / BLOCK_CHUNK_DIM);
-    var blockChunkY = Math.floor(y / BLOCK_CHUNK_DIM);
-    var localX = Math.floor(x) - blockChunkX * BLOCK_CHUNK_DIM;
-    var localY = Math.floor(y) - blockChunkY * BLOCK_CHUNK_DIM;
-
-    var blockChunk = blockWorld.get(blockChunkX, blockChunkY);
-    if (!blockChunk) {
-        blockChunk = new BlockChunk();
-        blockWorld.set(blockChunkX, blockChunkY, blockChunk);
-    }
-    blockChunk.setBackground(localX, localY, value);
-
-    if (!value) {
-        for (var x = 0; x < BLOCK_CHUNK_DIM; ++x) {
-            for (var y = 0; y < BLOCK_CHUNK_DIM; ++y) {
-                if (blockChunk.getForeground(x, y) || blockChunk.getBackground(x, y))
-                    return;
+        if (!value) {
+            for (var x = 0; x < BlockChunk.dim; ++x) {
+                for (var y = 0; y < BlockChunk.dim; ++y) {
+                    if (blockChunk.getForeground(x, y) || blockChunk.getBackground(x, y))
+                        return;
+                }
             }
+            this.set([blockChunkX, blockChunkY], null);
         }
-        blockWorld.set(blockChunkX, blockChunkY, null);
     }
-}
 
-BlockWorld.getStrength = function(blockWorld, x, y) {
-    var blockChunkX = Math.floor(x / BLOCK_CHUNK_DIM);
-    var blockChunkY = Math.floor(y / BLOCK_CHUNK_DIM);
-    var localX = Math.floor(x) - blockChunkX * BLOCK_CHUNK_DIM;
-    var localY = Math.floor(y) - blockChunkY * BLOCK_CHUNK_DIM;
+    getStrength([x, y]) {
+        var blockChunkX = Math.floor(x / BlockChunk.dim);
+        var blockChunkY = Math.floor(y / BlockChunk.dim);
+        var localX = Math.floor(x) - blockChunkX * BlockChunk.dim;
+        var localY = Math.floor(y) - blockChunkY * BlockChunk.dim;
 
-    var blockChunk = blockWorld.get(blockChunkX, blockChunkY);
-    if (!blockChunk)
-        return 0;
+        var blockChunk = this.get([blockChunkX, blockChunkY]);
+        if (!blockChunk)
+            return 0;
 
-    return blockChunk.getStrength(localX, localY);
-}
-
-BlockWorld.setStrength = function(blockWorld, x, y, value) {
-    var blockChunkX = Math.floor(x / BLOCK_CHUNK_DIM);
-    var blockChunkY = Math.floor(y / BLOCK_CHUNK_DIM);
-    var localX = Math.floor(x) - blockChunkX * BLOCK_CHUNK_DIM;
-    var localY = Math.floor(y) - blockChunkY * BLOCK_CHUNK_DIM;
-
-    var blockChunk = blockWorld.get(blockChunkX, blockChunkY);
-    if (!blockChunk) {
-        blockChunk = new BlockChunk();
-        blockWorld.set(blockChunkX, blockChunkY, blockChunk);
+        return blockChunk.getStrength(localX, localY);
     }
-    blockChunk.setStrength(localX, localY, value);
+
+    setStrength([x, y], value) {
+        var blockChunkX = Math.floor(x / BlockChunk.dim);
+        var blockChunkY = Math.floor(y / BlockChunk.dim);
+        var localX = Math.floor(x) - blockChunkX * BlockChunk.dim;
+        var localY = Math.floor(y) - blockChunkY * BlockChunk.dim;
+
+        var blockChunk = this.get([blockChunkX, blockChunkY]);
+        if (!blockChunk) {
+            blockChunk = new BlockChunk();
+            this.set([blockChunkX, blockChunkY], blockChunk);
+        }
+        blockChunk.setStrength(localX, localY, value);
+    }
 }

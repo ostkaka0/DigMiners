@@ -162,7 +162,7 @@ TurretBehaviour.prototype.getAttackDistance = function(pos, dir) {
     v2.add(step, rayPos, rayPos);
     for (var i = 0; i < 40; i++) {
         if (TileWorld.getDensity(Global.gameData.world.tileWorld, rayPos[0], rayPos[1]) > 127) break;
-        if (BlockWorld.getForeground(Global.gameData.world.blockWorld, rayPos[0], rayPos[1]) != 0) break;
+        if (global.gameData.world.blockWorld.getForeground(rayPos[0]) != 0) break;
 
         v2.add(step, rayPos, rayPos);
         dis += stepLength;

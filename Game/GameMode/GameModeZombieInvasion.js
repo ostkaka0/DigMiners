@@ -53,7 +53,7 @@ GameModeZombieInvasion.prototype.init = function() {
     var loadChunk = function(world, x, y) {
         var chunk = new Chunk();
         Global.gameData.world.generator.generate(chunk, x, y);
-        world.set(x, y, chunk);
+        world.set([x, y], chunk);
     }
 
     for (var x = -2; x < 2; ++x) {
@@ -281,12 +281,12 @@ GameModeZombieInvasion.prototype.generateDungeon = function(tileX, tileY) {
                 tileId = 1;
 
             TileWorld.setDensity(Global.gameData.world.tileWorld, x, y, 0);
-            BlockWorld.setForeground(Global.gameData.world.blockWorld, x, y, tileId);
+            Global.gameData.world.blockWorld.setForeground([x, y], tileId);
         }
     }
 
 
-    //BlockWorld.setForeground(Global.gameData.world.blockWorld, tileX - width / 2 + Math.random() * width / 2 >> 0, tileY + ((Math.random() > 0.5)? -1: 1) * Math.height / 2 >> 0, Blocks.BlueForcefield.id);
-    //BlockWorld.setForeground(Global.gameData.world.blockWorld, tileX + ((Math.random() > 0.5)? -1: 1) * Math.width / 2 >> 0, tileY - height / 2 + Math.random() * height / 2 >> 0, Blocks.BlueForcefield.id);
-    //BlockWorld.setForeground(Global.gameData.world.blockWorld, tileX - width / 2 + Math.random() * width / 2 >> 0 >> 0, tileY - height / 2 + Math.random() * height / 2 >> 0, Blocks.WoodCrate.id);
+    //Global.gameData.world.blockWorld.setForeground([tileX - width / 2 + Math.random() * width / 2 >> 0, tileY + ((Math.random() > 0.5)? -1: 1) * Math.height / 2 >> 0], Blocks.BlueForcefield.id);
+    //Global.gameData.world.blockWorld.setForeground([tileX + ((Math.random() > 0.5)? -1: 1) * Math.width / 2 >> 0, tileY - height / 2 + Math.random() * height / 2 >> 0], Blocks.BlueForcefield.id);
+    //Global.gameData.world.blockWorld.setForeground([tileX - width / 2 + Math.random() * width / 2 >> 0 >> 0, tileY - height / 2 + Math.random() * height / 2 >> 0], Blocks.WoodCrate.id);
 }

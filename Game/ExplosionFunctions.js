@@ -29,7 +29,7 @@ ExplosionFunctions.createExplosion = function(startPos, radius, entityDamage, bl
                     if (dis <= radius) {
                         v2.floor(pos, pos);
                         var damage = Math.floor((1 - dis / radius) * blockDamage);
-                        var strength = BlockWorld.getStrength(Global.gameData.world.blockWorld, pos[0], pos[1]);
+                        var strength = Global.gameData.world.blockWorld.getStrength(pos);
                         sendCommand(new CommandBlockStrength(pos[0], pos[1], strength - damage));
                     }
                 }

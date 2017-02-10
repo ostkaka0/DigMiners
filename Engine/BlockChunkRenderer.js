@@ -2,9 +2,6 @@ import Map2D from "Engine/Core/Map2D.js";
 import BlockChunk from "Engine/BlockChunk.js";
 import GLBlockChunk from "Engine/GLBlockChunk.js";
 import Shader from "Engine/Shader.js";
-var BLOCK_CHUNK_DIM = BlockChunk.dim;
-var BLOCK_CHUNK_DIM_2 = BlockChunk.dim2;
-var BLOCK_CHUNK_SIZE = BlockChunk.size;
 
 var BlockChunkRenderer = function(gl, world, tileSize) {
     this.gl = gl;
@@ -63,14 +60,14 @@ BlockChunkRenderer.prototype.lazyInit = function() {
 BlockChunkRenderer.prototype.render = function(gameData, world, matVP, camera) {
     var blockChunksToRender = [];
 
-    var x1 = Math.floor((camera.pos[0] - camera.width / 2) / this.tileSize / BLOCK_CHUNK_DIM);
-    var y1 = Math.floor((camera.pos[1] - camera.height / 2) / this.tileSize / BLOCK_CHUNK_DIM);
-    var x2 = Math.floor((camera.pos[0] + camera.width / 2) / this.tileSize / BLOCK_CHUNK_DIM);
-    var y2 = Math.floor((camera.pos[1] + camera.height / 2) / this.tileSize / BLOCK_CHUNK_DIM);
+    var x1 = Math.floor((camera.pos[0] - camera.width / 2) / this.tileSize / BlockChunk.dim);
+    var y1 = Math.floor((camera.pos[1] - camera.height / 2) / this.tileSize / BlockChunk.dim);
+    var x2 = Math.floor((camera.pos[0] + camera.width / 2) / this.tileSize / BlockChunk.dim);
+    var y2 = Math.floor((camera.pos[1] + camera.height / 2) / this.tileSize / BlockChunk.dim);
 
     for (var y = y1; y <= y2; ++y) {
         for (var x = x1; x <= x2; ++x) {
-            var blockChunk = world.get(x, y);
+            var blockChunk = world.get([x, y]);
             if (!blockChunk)
                 continue;
             blockChunksToRender.push({ x: x, y: y, blockChunk: blockChunk });
@@ -102,11 +99,11 @@ BlockChunkRenderer.prototype.renderBlockChunks = function(gameData, matVP, block
         if (!blockChunk)
             continue;
 
-        var glBlockChunk = this.glBlockChunkWorld.get(x, y);
+        var glBlockChunk = this.glBlockChunkWorld.get([x, y]);
         // Load glBlockChunk
         if (!glBlockChunk) {
             glBlockChunk = new GLBlockChunk(this.gl, blockChunk);
-            this.glBlockChunkWorld.set(x, y, glBlockChunk);
+            this.glBlockChunkWorld.set([x, y], glBlockChunk);
             blockChunk.isChanged = true;
         }
         // Update glBlockChunk
@@ -118,7 +115,7 @@ BlockChunkRenderer.prototype.renderBlockChunks = function(gameData, matVP, block
 
         // * Render the blockChunk
         // Uniforms
-        var matM = PIXI.Matrix.IDENTITY.clone().translate(x * BLOCK_CHUNK_DIM * this.tileSize, y * BLOCK_CHUNK_DIM * this.tileSize);
+        var matM = PIXI.Matrix.IDENTITY.clone().translate(x * BlockChunk.dim * this.tileSize, y * BlockChunk.dim * this.tileSize);
         this.gl.uniformMatrix3fv(this.uniformMatM, false, matM.toArray());
 
         // Texture

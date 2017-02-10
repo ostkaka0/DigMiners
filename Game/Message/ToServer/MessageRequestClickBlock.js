@@ -18,7 +18,7 @@ MessageRequestClickBlock.prototype.execute = function(gameData, player) {
     var entity = Global.gameData.world.entityWorld.objects[player.entityId];
     if (!entity || !this.blockPos) return;
     //console.log("player " + player.playerId + " clicked block " + this.blockPos + ", clicktype: " + this.clickType);
-    var blockId = BlockWorld.getForeground(Global.gameData.world.blockWorld, this.blockPos[0], this.blockPos[1]);
+    var blockId = Global.gameData.world.blockWorld.getForeground(this.blockPos);
     var blockType = Config.blockRegister[blockId];
     if (blockType && blockType.isDoor)
         blockType.clickFunction(this.blockPos, blockType, entity, this.clickType);

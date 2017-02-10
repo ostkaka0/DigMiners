@@ -71,10 +71,10 @@ Generator.prototype.generate = function(chunk, chunkX, chunkY) {
 }
 
 Generator.prototype.generateDungeons = function(blockWorld, chunk, chunkX, chunkY) {
-    var blockChunk = blockWorld.get(chunkX, chunkY);
+    var blockChunk = blockWorld.get([chunkX, chunkY]);
     if (!blockChunk) {
         blockChunk = new BlockChunk();
-        blockWorld.set(chunkX, chunkY, blockChunk);
+        blockWorld.set([chunkX, chunkY], blockChunk);
     }
 
     var width = Math.floor(Math.random() * 15 + 5);

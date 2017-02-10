@@ -310,7 +310,7 @@ var loadChunk = function(world, x, y) {
     if (gameData.world.generator) {
         var chunk = new Chunk();
         gameData.world.generator.generate(chunk, x, y);
-        world.set(x, y, chunk);
+        world.set([x, y], chunk);
     }
 }
 

@@ -15,7 +15,7 @@ export default CommandPlaceBlock;
 CommandRegister.push(CommandPlaceBlock);
 
 CommandPlaceBlock.prototype.execute = function() {
-    BlockWorld.setForeground(Global.gameData.world.blockWorld, this.blockPos[0], this.blockPos[1], this.blockId);
+    Global.gameData.world.blockWorld.setForeground(this.blockPos, this.blockId);
     var block = Config.blockRegister[this.blockId];
     if (block.onPlace)
         block.onPlace(this.blockPos, block);

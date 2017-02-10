@@ -30,7 +30,7 @@ PagedArray2D.prototype.get = function(x, y, value) {
         return this.defaultValue;
     }
 
-    return this.pages[pagePosString].get(localX, localY);
+    return this.pages[pagePosString].get([localX, localY]);
 }
 
 PagedArray2D.prototype.set = function(x, y, value) {
@@ -53,12 +53,12 @@ PagedArray2D.prototype.set = function(x, y, value) {
 
     if (this.pages[pagePosString] == undefined) {
         var page = new Page2D(pageX, pageY, this.sizeX, this.sizeY, this.defaultValue);
-        page.set(localX, localY, value);
+        page.set([localX, localY], value);
         this.pages[pagePosString] = page;
         this.onPageCreate(pageX, pageY, page);
     }
     else {
-        this.pages[pagePosString].set(localX, localY, value);
+        this.pages[pagePosString].set([localX, localY], value);
     }
 }
 
