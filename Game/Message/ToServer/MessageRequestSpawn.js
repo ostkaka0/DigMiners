@@ -13,6 +13,7 @@ import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
 import CommandPlayerSpawn from "Game/Command/CommandPlayerSpawn.js";
 import MessageSpectate from "Game/Message/ToClient/MessageSpectate.js";
 import entityTemplatePlayer from "Game/Entity/EntityTemplates/Player.js";
+import entityTemplateGhost from "Game/Entity/EntityTemplates/Ghost.js";
 
 var MessageRequestSpawn = function(playerName, classId) {
     this.playerName = playerName;
@@ -25,7 +26,7 @@ MessageRequestSpawn.prototype.execute = function(gameData, player) {
     if (player.entity != null && player.entityId != null) return;
     if (Global.gameData.world.tickId - player.deathTick < 20 * Config.respawnTime) return;
     if (Object.keys(global.gameData.world.playerSpawns).length == 0) return;
-    if (!global.gameData.world.playerSpawnAllowed) return;
+
 
     if (this.playerName && this.playerName.length > 0)
         player.name = this.playerName;
@@ -34,11 +35,16 @@ MessageRequestSpawn.prototype.execute = function(gameData, player) {
     //if (Global.gameData.gameMode.createEntity)
     //    entity = Global.gameData.gameMode.createEntity(player, entityId, this.classId);
     //else {
-    var classType = PlayerClass.Register[this.classId];
-    if (classType == undefined) return;
+    var entity;
     var playerSpawns = Global.gameData.world.playerSpawns;
     var teamId = Object.keys(playerSpawns)[Math.random() * Object.keys(playerSpawns).length >> 0];
-    var entity = entityTemplatePlayer(player.id, entityId, player.name, classType, teamId);
+    var classType = PlayerClass.Register[this.classId];
+    if (classType == undefined) return;
+    if (global.gameData.world.playerSpawnAllowed) {
+        entity = entityTemplatePlayer(player.id, entityId, player.name, classType, teamId);
+    } else {
+        entity = entityTemplateGhost(player.id, entityId, player.name)
+    }
 
     // Set spawn position
     var pos = playerSpawns[teamId][Math.random() * playerSpawns[teamId].length >> 0];

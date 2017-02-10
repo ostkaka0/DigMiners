@@ -5,13 +5,16 @@ import PhysicsBody from "Game/Entity/PhysicsBody.js";
 import Movement from "Game/Entity/Movement.js";
 import Bodyparts from "Game/Entity/Bodyparts.js";
 import Drawable from "Game/Entity/Drawable.js";
+import Sprite from "Engine/Animation/Sprite.js";
 import BodyPart from "Engine/Animation/BodyPart.js";
+import NameComponent from "Game/Entity/NameComponent.js";
 
-export default function (playerId, entityId) {
+export default function (playerId, entityId, name) {
     var entity = {};
     entity.controlledByPlayer = new ControlledByPlayer(playerId);
     entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 10.0, 1.0, 0);
     entity.movement = new Movement(40.0);
+    entity.nameComponent = new NameComponent(name);
 
     var bodyparts = {
         "player": new BodyPart(new Sprite("ghost.png"), 0, 0, 0, null, null),
