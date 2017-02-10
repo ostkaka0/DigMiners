@@ -40,7 +40,7 @@ GameModeSurvivalWar.prototype.init = function() {
     var loadChunk = function(world, x, y) {
         var chunk = new Chunk();
         Global.gameData.world.generator.generate(chunk, x, y);
-        world.set(x, y, chunk);
+        world.set([x, y], chunk);
 
         Global.gameData.world.generator.generateDungeons(Global.gameData.world.blockWorld, chunk, x, y);
     }

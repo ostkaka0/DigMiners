@@ -12,7 +12,7 @@ init = function() {
         for(var y = -2; y < 2; ++y) {
             var chunk = new Chunk();
             generator.generate(chunk, x, y);
-            world.set(x, y, chunk);
+            world.set([x, y], chunk);
         }
     }
     console.log(chunk.getTileId(4, 4));
@@ -47,7 +47,7 @@ $(canvas).click(function(event) {
     var chunkY = Math.floor(tileY / CHUNK_DIM);
     var localX = tileX % CHUNK_DIM;
     var localY = tileY % CHUNK_DIM;
-    var chunk = world.get(chunkX, chunkY);
+    var chunk = world.get([chunkX, chunkY]);
     if(chunk)
         chunk.setDensity(localX, localY, 0);
 

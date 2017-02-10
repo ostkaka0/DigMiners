@@ -17,11 +17,11 @@ export var aStarFlowField = function(disField, expandList, tileWorld, blockWorld
         var pageY = Math.floor(pos[1] / DisField.pageDim);
         var localX = Math.floor(pos[0]) - pageX * DisField.pageDim;
         var localY = Math.floor(pos[1]) - pageY * DisField.pageDim;
-        var page = disField.get(pageX, pageY);
+        var page = disField.get([pageX, pageY]);
         if (!page) {
             page = new Uint16Array(DisField.pageDim * DisField.pageDim);
             page.fill(65535);
-            disField.set(pageX, pageY, page);
+            disField.set([pageX, pageY], page);
         }
         return [page, localX + localY * DisField.pageDim];
     }
@@ -84,7 +84,7 @@ export var aStarFlowField = function(disField, expandList, tileWorld, blockWorld
                 continue;
             if (density > 127)
                 continue;
-            if (BlockWorld.getForeground(blockWorld, pos[0], pos[1]) != 0)
+            if (blockWorld.getForeground(pos) != 0)
                 continue;
             if (page[index] > dis) {
                 page[index] = dis;
@@ -121,7 +121,7 @@ export var genFlowField = function(flowField, worldRect, tileWorld, blockWorld, 
             var dis = baseDis + 1;
             if (TileWorld.getDensity(tileWorld, pos[0], pos[1]) > 127)
                 continue;
-            if (BlockWorld.getForeground(blockWorld, pos[0], pos[1]) != 0)
+            if (blockWorld.getForeground(pos) != 0)
                 continue;
             if (flowField[index] > dis && dis < maxDistance) {
                 flowField[index] = dis;

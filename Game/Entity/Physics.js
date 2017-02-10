@@ -70,7 +70,7 @@ var physicsBodySimulate = function(physicsBody, dt) {
     // Calculate deltaPos and number of steps
     var pos = physicsBody.getPos();
 
-    var touchingBlockType = Config.blockRegister[BlockWorld.getForeground(gameData.world.blockWorld, pos[0], pos[1])];
+    var touchingBlockType = Config.blockRegister[gameData.world.blockWorld.getForeground(pos)];
     if (touchingBlockType && touchingBlockType.onTouch)
         touchingBlockType.onTouch(Global.gameData.world.physicsEntities[physicsBody.bodyId]);
 
@@ -91,7 +91,7 @@ var physicsBodySimulate = function(physicsBody, dt) {
             var worldPos = v2.clone(pos);
             worldPos[0] += COLLISION_BLOCKS[j][0];
             worldPos[1] += COLLISION_BLOCKS[j][1];
-            var blockId = BlockWorld.getForeground(Global.gameData.world.blockWorld, worldPos[0], worldPos[1]);
+            var blockId = Global.gameData.world.blockWorld.getForeground(worldPos);
             if (!blockId) continue; // Air
             var block = Config.blockRegister[blockId];
             if (!block || !block.isSolid) continue;
@@ -119,7 +119,7 @@ var physicsBodySimulate = function(physicsBody, dt) {
             var worldPos = v2.clone(pos);
             worldPos[0] += COLLISION_BLOCKS[j][0];
             worldPos[1] += COLLISION_BLOCKS[j][1];
-            var blockId = BlockWorld.getForeground(Global.gameData.world.blockWorld, worldPos[0], worldPos[1]);
+            var blockId = Global.gameData.world.blockWorld.getForeground(worldPos);
             if (!blockId) continue; // Air
             var block = Config.blockRegister[blockId];
             if (!block || !block.isSolid) continue;

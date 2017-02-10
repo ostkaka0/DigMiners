@@ -47,7 +47,7 @@ MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
         var blockType = Config.blockRegister[itemType.blockId];
         var type = blockType.type;
 
-        var blockChunk = Global.gameData.world.blockWorld.get(blockChunkX, blockChunkY);
+        var blockChunk = Global.gameData.world.blockWorld.get([blockChunkX, blockChunkY]);
         //if (type == BlockTypes.FOREGROUND) {
             if (blockChunk && blockChunk.getForeground(localX, localY) > 0)
                 return;

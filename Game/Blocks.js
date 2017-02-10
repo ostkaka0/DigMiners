@@ -138,8 +138,8 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
             if (checked[pos[0]] == null || checked[pos[0]][pos[1]] == null) {
                 if (checked[pos[0]] == null)
                     checked[pos[0]] = [];
-                checked[pos[0]][pos[1]] = BlockWorld.getStrength(Global.gameData.world.blockWorld, pos[0], pos[1]);
-                var blockId = BlockWorld.getForeground(Global.gameData.world.blockWorld, pos[0], pos[1]);
+                checked[pos[0]][pos[1]] = Global.gameData.world.blockWorld.getStrength(pos);
+                var blockId = Global.gameData.world.blockWorld.getForeground(pos);
                 if (blockType.id == blockId)
                     runRecursively(pos, blockType);
             }
@@ -147,7 +147,7 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
         }
     }
     checked[startBlockPos[0]] = [];
-    checked[startBlockPos[0]][startBlockPos[1]] = BlockWorld.getStrength(Global.gameData.world.blockWorld, startBlockPos[0], startBlockPos[1]);
+    checked[startBlockPos[0]][startBlockPos[1]] = Global.gameData.world.blockWorld.getStrength(startBlockPos);
     runRecursively(startBlockPos, blockType);
 
     // Too big doors should not work.
@@ -192,7 +192,7 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
 }
 
 BlockDoorFunctions.blueForcefield = function(blockPos, blockType, entity, clickType) {
-    var startStrength = BlockWorld.getStrength(Global.gameData.world.blockWorld, blockPos[0], blockPos[1]);
+    var startStrength = Global.gameData.world.blockWorld.getStrength(blockPos);
     Global.gameData.setTimeout(function() {
         sendCommand(new CommandBuild(blockPos[0], blockPos[1], Blocks.BlueForcefieldOpen.id, BlockTypes.FOREGROUND));
         sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], startStrength));

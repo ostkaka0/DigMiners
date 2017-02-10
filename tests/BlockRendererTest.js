@@ -19,7 +19,7 @@ init = function() {
         for(var y = -4; y < 4; ++y) {
             var chunk = new BlockChunk();
             chunk.setForeground(0, 0, 1);
-            blockWorld.set(x, y, chunk);
+            blockWorld.set([x, y], chunk);
         }
     }
     console.log(chunk.getForeground(4, 4));
@@ -47,7 +47,7 @@ $("#hud").click(function(event) {
     var chunkPos = [0, 0];
     var localPos = [0, 0];
     BlockChunk.fromV2World(worldPos, chunkPos, localPos);
-    var blockChunk = blockWorld.get(chunkPos[0], chunkPos[1]);
+    var blockChunk = blockWorld.get(chunkPos);
     if(blockChunk)
         blockChunk.setForeground(localPos[0], localPos[1], 1);
     console.log("worldPos " + worldPos);

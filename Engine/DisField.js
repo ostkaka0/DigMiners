@@ -11,11 +11,11 @@ DisField.getPageAndIndex = function(disField, pos) {
 	var pageY = Math.floor(pos[1] / DisField.pageDim);
 	var localX = Math.floor(pos[0]) - pageX * DisField.pageDim;
 	var localY = Math.floor(pos[1]) - pageY * DisField.pageDim;
-	var page = disField.get(pageX, pageY);
+	var page = disField.get([pageX, pageY]);
 	if (!page) {
 		page = new Uint16Array(DisField.pageDim * DisField.pageDim);
 		page.fill(65535);
-		disField.set(pageX, pageY, page);
+		disField.set([pageX, pageY], page);
 	}
 	return [page, localX + localY * DisField.pageDim];
 }

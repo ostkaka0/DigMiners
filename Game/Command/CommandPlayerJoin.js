@@ -36,8 +36,8 @@ CommandPlayerJoin.prototype.execute = function() {
         // TODO: client requests chunks instead
         for (var x = -3; x < 3; ++x) {
             for (var y = -3; y < 3; ++y) {
-                var chunk = Global.gameData.world.tileWorld.get(x, y);
-                var blockChunk = Global.gameData.world.blockWorld.get(x, y);
+                var chunk = Global.gameData.world.tileWorld.get([x, y]);
+                var blockChunk = Global.gameData.world.blockWorld.get([x, y]);
                 var message = new MessageChunk(chunk, blockChunk, x, y);
                 message.send(socket);
             }

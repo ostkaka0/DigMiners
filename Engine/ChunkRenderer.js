@@ -100,7 +100,7 @@ ChunkRenderer.prototype.render = function(world, matVP, camera) {
 
     for (var y = y1; y <= y2; ++y) {
         for (var x = x1; x <= x2; ++x) {
-            var chunk = world.get(x, y);
+            var chunk = world.get([x, y]);
             if (!chunk)
                 continue;
             chunksToRender.push({ x: x, y: y, chunk: chunk });
@@ -133,11 +133,11 @@ ChunkRenderer.prototype.renderChunks = function(matVP, chunksToRender) {
         if (!chunk)
             continue;
 
-        var glChunk = this.chunkGLWorld.get(x, y);
+        var glChunk = this.chunkGLWorld.get([x, y]);
         // Load glChunk
         if (!glChunk) {
             glChunk = new GLChunk(this.gl, chunk);
-            this.chunkGLWorld.set(x, y, glChunk);
+            this.chunkGLWorld.set([x, y], glChunk);
             chunk.isChanged = false;
             this.handleChunkChange(chunk, x, y);
         }
@@ -203,14 +203,14 @@ ChunkRenderer.prototype.loadTexture = function(gl) {
 ChunkRenderer.prototype.handleChunkChange = function(chunk, x, y) {
     //console.log("onChunkChange event! x:" + x + " y:" + y);
     var that = this;
-    var glChunk = that.chunkGLWorld.get(x, y);
+    var glChunk = that.chunkGLWorld.get([x, y]);
 
     if (!chunk || !glChunk)
         return;
 
     var notifyNeighbor = function(x2, y2) {
-        var glChunk2 = that.chunkGLWorld.get(x2, y2);
-        var chunk2 = that.world.get(x2, y2);
+        var glChunk2 = that.chunkGLWorld.get([x2, y2]);
+        var chunk2 = that.world.get([x2, y2]);
         if (chunk2 && glChunk2) {
             glChunk.updateBorder(this.gl, chunk2, x, y, x2, y2);
             glChunk2.updateBorder(this.gl, chunk, x2, y2, x, y);

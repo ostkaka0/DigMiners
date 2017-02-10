@@ -19,7 +19,7 @@ CommandRegister.push(CommandBuild);
 
 CommandBuild.prototype.execute = function() {
     //if (this.type == BlockTypes.FOREGROUND)
-        BlockWorld.setForeground(Global.gameData.world.blockWorld, this.x, this.y, this.blockId);
+        Global.gameData.world.blockWorld.setForeground([this.x, this.y], this.blockId);
     //else if (this.type == BlockTypes.BACKGROUND)
     //    setBackground(Global.gameData.world.blockWorld, this.x, this.y, this.blockId);
 }

@@ -1,12 +1,13 @@
-var Map2D = function() {
-    this.map = {};
-}
-export default Map2D;
+export default class {
+    constructor() {
+        this.map = new Map();
+    }
 
-Map2D.prototype.get = function(x, y) {
-    return this.map[x + "|" + y];
-}
+    get(pos) {
+        return this.map.get(pos[0] + "|" + pos[1]);
+    }
 
-Map2D.prototype.set = function(x, y, value) {
-    this.map[x + "|" + y] = value;
+    set(pos, value) {
+        this.map.set(pos[0] + "|" + pos[1], value);
+    }
 }

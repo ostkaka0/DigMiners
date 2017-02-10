@@ -137,7 +137,7 @@ PhysicsWorld.prototype.getBodiesInRadius = function(bodies, point, radius) {
     /*if (radius == undefined) radius = 0.0;
     var pagePos = [Math.floor(point[0] / pageDim - 0.5), Math.floor(point[1] / pageDim - 0.5)];
     for (var i = 0; i < 4; i++) {
-        var page = this.pages.get(pagePos[0] + i % 2, pagePos[1] + (i / 2 >> 0));
+        var page = this.pages.get([pagePos[0] + i % 2, pagePos[1] + (i / 2 >> 0)]);
         if (!page) continue;
         for (var j = 0; j < page.length; j++) {
             var id = page[j];
@@ -157,7 +157,7 @@ PhysicsWorld.prototype.getBodiesInRadiusSorted = function(bodies, bodyDistances,
     /*if (radius == undefined) radius = 0.0;
     var pagePos = [Math.floor(point[0] / pageDim - 0.5), Math.floor(point[1] / pageDim - 0.5)];
     for (var i = 0; i < 4; i++) {
-        var page = this.pages.get(pagePos[0] + i % 2, pagePos[1] + (i / 2 >> 0));
+        var page = this.pages.get([pagePos[0] + i % 2, pagePos[1] + (i / 2 >> 0)]);
         if (!page) continue;
         for (var j = 0; j < page.length; j++) {
             var id = page[j];

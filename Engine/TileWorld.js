@@ -18,7 +18,7 @@ TileWorld.getDensity = function(terrainWorld, x, y) {
     var localX = Math.floor(x) - chunkX * CHUNK_DIM;
     var localY = Math.floor(y) - chunkY * CHUNK_DIM;
 
-    var chunk = terrainWorld.get(chunkX, chunkY);
+    var chunk = terrainWorld.get([chunkX, chunkY]);
     if (!chunk) {
         return 255;
     }
@@ -32,7 +32,7 @@ TileWorld.setDensity = function(tileWorld, x, y, density) {
     var localX = Math.floor(x) - chunkX * CHUNK_DIM;
     var localY = Math.floor(y) - chunkY * CHUNK_DIM;
 
-    var chunk = tileWorld.get(chunkX, chunkY);
+    var chunk = tileWorld.get([chunkX, chunkY]);
     if (!chunk)
         return;
     chunk.setDensity(localX, localY, density);
@@ -44,7 +44,7 @@ TileWorld.getTileId = function(tileWorld, x, y) {
     var localX = Math.floor(x) - chunkX * CHUNK_DIM;
     var localY = Math.floor(y) - chunkY * CHUNK_DIM;
 
-    var chunk = tileWorld.get(chunkX, chunkY);
+    var chunk = tileWorld.get([chunkX, chunkY]);
     if (!chunk)
         return 0;
 
@@ -57,7 +57,7 @@ TileWorld.setTileId = function(tileWorld, x, y, value) {
     var localX = Math.floor(x) - chunkX * CHUNK_DIM;
     var localY = Math.floor(y) - chunkY * CHUNK_DIM;
 
-    var chunk = tileWorld.get(chunkX, chunkY);
+    var chunk = tileWorld.get([chunkX, chunkY]);
     if (!chunk) {
         console.log("Cannot set tile on missing chunk!");
         return;
