@@ -1,10 +1,11 @@
 import Map2D from "Engine/Core/Map2D.js"
+import Event from "Engine/Core/Event.js"
 import BlockChunk from "Engine/BlockChunk.js";
 
 export default class extends Map2D {
     constructor() {
         super();
-        this.events = "TODO: EVENTS!"; //{ onPlace: [], onStrengthChange: [] };
+        this.events = { onPlace: [], onStrengthChange: [] };
     }
 
     getForeground([x, y]) {
@@ -20,7 +21,7 @@ export default class extends Map2D {
         return blockChunk.getForeground(localX, localY);
     }
 
-    setForeground([x, y], value) {
+    setForeground([x, y], value, strength = 255) {
         var blockChunkX = Math.floor(x / BlockChunk.dim);
         var blockChunkY = Math.floor(y / BlockChunk.dim);
         var localX = Math.floor(x) - blockChunkX * BlockChunk.dim;
@@ -31,7 +32,8 @@ export default class extends Map2D {
             blockChunk = new BlockChunk();
             this.set([blockChunkX, blockChunkY], blockChunk);
         }
-        blockChunk.setForeground(localX, localY, value);
+        blockChunk.setForeground(localX, localY, value, strength);
+        Event.trigger(this.events.onPlace, [x, y], value, strength);
 
         if (!value) {
             for (var x = 0; x < BlockChunk.dim; ++x) {
@@ -128,5 +130,6 @@ export default class extends Map2D {
             this.set([blockChunkX, blockChunkY], blockChunk);
         }
         blockChunk.setStrength(localX, localY, value);
+        Event.trigger(this.events.onStrengthChange, [x, y], value);
     }
 }

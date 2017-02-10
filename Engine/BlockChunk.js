@@ -16,9 +16,9 @@ BlockChunk.prototype.getForeground = function(x, y) {
     return this.foreground[x + y * BlockChunk.dim];
 }
 
-BlockChunk.prototype.setForeground = function(x, y, value) {
+BlockChunk.prototype.setForeground = function(x, y, value, strength = 255) {
     this.foreground[x + y * BlockChunk.dim] = value;
-    this.setStrength(x, y, 255.0);
+    this.setStrength(x, y, strength);
     this.isChanged = true;
 }
 

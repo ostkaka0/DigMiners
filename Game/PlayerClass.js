@@ -11,7 +11,7 @@ PlayerClass.init = function() {
     Object.assign(PlayerClass, {
         Assault: {
             name: "Assault",
-            blocks: [Items.Types.StoneWall, Items.Types.WoodCrate, Items.Types.BunkerWindow],
+            blocks: [Items.Types.StoneWall, Items.Types.WoodCrate, Items.Types.BunkerWindow, Items.Types.Toxin],
             weapons: [Items.Types.WeaponAssaultRifle, Items.Types.WeaponPistol, Items.Types.Knife, Items.Types.CopperShovel],
             speed: 1.0,
             health: 120.0,
