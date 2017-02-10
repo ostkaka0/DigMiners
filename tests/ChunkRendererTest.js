@@ -43,10 +43,10 @@ $(canvas).click(function(event) {
     var worldY = canvas.height - event.clientY + camera.pos[1] - camera.height / 2;
     var tileX = Math.floor(worldX / 32);
     var tileY = Math.floor(worldY / 32);
-    var chunkX = Math.floor(tileX / CHUNK_DIM);
-    var chunkY = Math.floor(tileY / CHUNK_DIM);
-    var localX = tileX % CHUNK_DIM;
-    var localY = tileY % CHUNK_DIM;
+    var chunkX = Math.floor(tileX / Chunk.dim);
+    var chunkY = Math.floor(tileY / Chunk.dim);
+    var localX = tileX % Chunk.dim;
+    var localY = tileY % Chunk.dim;
     var chunk = world.get([chunkX, chunkY]);
     if(chunk)
         chunk.setDensity(localX, localY, 0);

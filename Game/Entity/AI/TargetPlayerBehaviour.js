@@ -208,7 +208,7 @@ TargetPlayerBehaviour.prototype.getAttackDistance = function(pos, dir) {
         var step = [stepLength * dir[0], stepLength * dir[1]];
         v2.add(step, rayPos, rayPos);
         for (var i = 0; i < 40; i++) {
-            if (TileWorld.getDensity(Global.gameData.world.tileWorld, rayPos[0], rayPos[1]) > 127) break;
+            if (Global.gameData.world.tileWorld.getDensity(rayPos) > 127) break;
             if (blockWorld.getForeground(rayPos) != 0) break;
 
             v2.add(step, rayPos, rayPos);

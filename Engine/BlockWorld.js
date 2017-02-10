@@ -4,7 +4,7 @@ import BlockChunk from "Engine/BlockChunk.js";
 export default class extends Map2D {
     constructor() {
         super();
-        this.events = { onPlace: [], onStrengthChange: [] };
+        this.events = "TODO: EVENTS!"; //{ onPlace: [], onStrengthChange: [] };
     }
 
     getForeground([x, y]) {

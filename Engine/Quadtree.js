@@ -136,7 +136,7 @@ export default class {
         if (node >= this.array.length || node < 0 || node % 4 != 0)
             console.error("Invalid node");
         if (pos[2] > 32 || pos[2] < 0)
-            console.log("Invalid lod");
+            console.error("Invalid lod");
 
         if (pos[2] == 0) {
             this.eraseChildren(node, erasedNodes);

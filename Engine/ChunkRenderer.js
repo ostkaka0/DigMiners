@@ -2,9 +2,9 @@ import Map2D from "Engine/Core/Map2D.js";
 import Chunk from "Engine/Chunk.js";
 import GLChunk from "Engine/GLChunk.js";
 import Shader from "Engine/Shader.js";
-var CHUNK_DIM = Chunk.dim;
-var CHUNK_DIM_2 = Chunk.dim2;
-var CHUNK_SIZE = Chunk.size;
+
+
+
 
 var ChunkRenderer = function(gl, world, tileSize) {
     this.gl = gl;
@@ -47,7 +47,7 @@ ChunkRenderer.prototype.lazyInit = function() {
         this.shaderProgram = Shader.tryLinkShaderProgram(this.gl, this.shaderRequests);
 
     if (this.shaderProgram && !this.buffer) {
-        var size = this.tileSize * CHUNK_DIM;
+        var size = this.tileSize * Chunk.dim;
         var vertices = [
             0, 0,
             0, 0,
@@ -93,10 +93,10 @@ ChunkRenderer.prototype.lazyInit = function() {
 ChunkRenderer.prototype.render = function(world, matVP, camera) {
     var chunksToRender = [];
 
-    var x1 = Math.floor((camera.pos[0] - camera.width / 2) / this.tileSize / CHUNK_DIM);
-    var y1 = Math.floor((camera.pos[1] - camera.height / 2) / this.tileSize / CHUNK_DIM);
-    var x2 = Math.floor((camera.pos[0] + camera.width / 2) / this.tileSize / CHUNK_DIM);
-    var y2 = Math.floor((camera.pos[1] + camera.height / 2) / this.tileSize / CHUNK_DIM);
+    var x1 = Math.floor((camera.pos[0] - camera.width / 2) / this.tileSize / Chunk.dim);
+    var y1 = Math.floor((camera.pos[1] - camera.height / 2) / this.tileSize / Chunk.dim);
+    var x2 = Math.floor((camera.pos[0] + camera.width / 2) / this.tileSize / Chunk.dim);
+    var y2 = Math.floor((camera.pos[1] + camera.height / 2) / this.tileSize / Chunk.dim);
 
     for (var y = y1; y <= y2; ++y) {
         for (var x = x1; x <= x2; ++x) {
@@ -151,7 +151,7 @@ ChunkRenderer.prototype.renderChunks = function(matVP, chunksToRender) {
             continue;
 
         // Render the chunk
-        var matM = PIXI.Matrix.IDENTITY.clone().translate(x * CHUNK_DIM * this.tileSize, y * CHUNK_DIM * this.tileSize);
+        var matM = PIXI.Matrix.IDENTITY.clone().translate(x * Chunk.dim * this.tileSize, y * Chunk.dim * this.tileSize);
         this.gl.uniformMatrix3fv(this.uniformMatM, false, matM.toArray());
 
         // Terrain texture:

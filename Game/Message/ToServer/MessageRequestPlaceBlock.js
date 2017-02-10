@@ -20,25 +20,18 @@ export default MessageRequestPlaceBlock;
 MessageRegister.ToServer.push(MessageRequestPlaceBlock);
 
 MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
-    console.log("Block?");
     var entity = Global.gameData.world.entityWorld.objects[player.entityId];
     if (!entity) return;
     var item = entity.inventory.items[this.stackId];
     if (!item) return;
     var itemType = ItemRegister[item.id];
     if (itemType && itemType.typeOfType == "block") {
-
-        console.log(item.id);
-        console.log(entity.inventory.items);
-                    console.log("Block2?");
         if (!entity.inventory.hasItem(item.id, 1))
             return;
 
-                        console.log("Block3?");
         if (!player.canPlaceBlock(Global.gameData, this.x, this.y))
             return;
 
-                        console.log("Block4?");
         var blockChunkX = Math.floor(this.x / BlockChunk.dim);
         var blockChunkY = Math.floor(this.y / BlockChunk.dim);
         var localX = Math.floor(this.x) - blockChunkX * BlockChunk.dim;
@@ -58,7 +51,6 @@ MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
 
         // Send block change
 
-            console.log("Block...?");
         var command = new CommandEntityBuild(player.entityId, this.x, this.y, itemType.blockId, type);
         sendCommand(command);
     }

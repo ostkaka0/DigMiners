@@ -30,8 +30,8 @@ CommandEntityDig.prototype.execute = function() {
     if (!entity || !entity.movement) return;
 
     var tileWorld = Global.gameData.world.tileWorld;
-    var targetTile = Config.tileRegister[TileWorld.getTileId(Global.gameData.world.tileWorld, this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1])];
-    var targetDensity = TileWorld.getDensity(Global.gameData.world.tileWorld, this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1]);
+    var targetTile = Config.tileRegister[Global.gameData.world.tileWorld.getTileId([this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1]])];
+    var targetDensity = Global.gameData.world.tileWorld.getDensity([this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1]]);
     var onDensityChange = null;
     var digDis = 1.5;
 
@@ -56,10 +56,10 @@ CommandEntityDig.prototype.execute = function() {
     } else {
 
         entity.movement.isDigging = true;
-        onDensityChange = function(tileX, tileY, tile, oldDensity, newDensity) { return (tile.isOre) ? oldDensity : newDensity; };
+        onDensityChange = function([tileX, tileY], tile, oldDensity, newDensity) { return (tile.isOre) ? oldDensity : newDensity; };
     }
 
-    var dug = TileWorld.carveCircle(Global.gameData, this.pos[0] + digDis * this.dir[0], this.pos[1] + digDis * this.dir[1], this.radius, this.digSpeed, this.maxDigHardness, onDensityChange);
+    var dug = Global.gameData.world.tileWorld.carveCircle(Config.tileRegister, [this.pos[0] + digDis * this.dir[0], this.pos[1] + digDis * this.dir[1]], this.radius, this.digSpeed, this.maxDigHardness, onDensityChange);
     if (isServer) {
         // Only process dug ores on server
         for (var i = 0; i < dug.length; ++i) {

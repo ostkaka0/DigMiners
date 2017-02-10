@@ -18,7 +18,7 @@ CommandRegister.push(CommandDig);
 
 CommandDig.prototype.execute = function() {
     var tileWorld = Global.gameData.world.tileWorld;
-    TileWorld.carveCircle(Global.gameData, this.pos[0], this.pos[1], this.radius, 5000.0, 5000.0);
+    Global.gameData.world.tileWorld.carveCircle(Config.tileRegister, this.pos, this.radius, 5000.0, 5000.0);
 }
 
 CommandDig.prototype.serialize = function(byteArray, index) {
