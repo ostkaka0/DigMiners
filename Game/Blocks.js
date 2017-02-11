@@ -405,24 +405,50 @@ Blocks.initBlocks = function() {
             entity.potionEffects.add(PotionEffectTypes.Toxin, 5 * 20);
         },
         updateCells: function(blockWorld, blockList) {
+            return;
             var dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
             var strengthDecrease = 10;
-            for (var i = 0; i < blockList.length; i++) {
+            var strengthTimeDecrease = 5;
+            for (var i = blockList.length-1; i >= 0; i--) {
                 let blockPos = blockList[i];
-                var blockStrength = blockWorld.getStrength(blockPos);
-                gameData.setTimeout(function() { blockWorld.setForeground(blockPos, 0); }, 500 + blockStrength * 15);
-                var childStrength = blockStrength - strengthDecrease;
-                if (childStrength <= 0) continue;
-                console.log(blockStrength, childStrength);
-
-                for (var j = 0; j < dirs.length; j++) {
-                    var otherPos = v2.clone(blockPos);
-                    v2.add(dirs[j], otherPos, otherPos);
-                    var otherId = blockWorld.getForeground(otherPos);
-                    var otherDensity = gameData.world.tileWorld.getDensity(otherPos);
-                    if (otherId != 0 || otherDensity > 127) continue;
-                    blockWorld.setForeground(otherPos, Blocks.Toxin.id, childStrength);
+                var blockId = blockWorld.getForeground(blockPos);
+                if (blockId != Blocks.Toxin.id) continue;
+                var blockStrength = blockWorld.getStrength(blockPos) - 10;
+                //blockStrength -= strengthTimeDecrease;
+                /*if (blockStrength <= 0) {
+                    blockWorld.setForeground(blockPos, 0);
+                    continue;
                 }
+                blockWorld.setStrength(blockPos, blockStrength);*/
+                //gameData.setTimeout(function() { blockWorld.setForeground(blockPos, 0); }, 500 + blockStrength * 15);
+                var childStrength = blockStrength - strengthDecrease;
+                if (childStrength > 0) {
+                console.log("childStrength", childStrength);
+
+                    for (var j = 0; j < dirs.length; j++) {
+                        var otherPos = v2.clone(blockPos);
+                        v2.add(dirs[j], otherPos, otherPos);
+                        var otherId = blockWorld.getForeground(otherPos);
+                        var otherDensity = gameData.world.tileWorld.getDensity(otherPos);
+                        if ((otherId != 0 && otherId != Blocks.Toxin.id) || otherDensity > 127) continue;
+                        var oldStrength = (otherId == Blocks.Toxin.id)? blockWorld.getStrength(otherPos) : 0;
+                        if (oldStrength >= childStrength) continue;
+                        if (otherId == Blocks.Toxin.id)
+                            blockWorld.setStrength(otherPos, childStrength);
+                        else
+                            blockWorld.setForeground(otherPos, Blocks.Toxin.id, childStrength);
+                        //blockStrength -= 1;
+                    }
+                }
+                blockStrength--;
+
+                if (blockStrength <= 0) {
+                    blockWorld.setForeground(blockPos, 0);
+                    continue;
+                }
+
+                console.log("blockStrength", blockStrength);
+                blockWorld.setStrength(blockPos, blockStrength);
             }
         }
     }

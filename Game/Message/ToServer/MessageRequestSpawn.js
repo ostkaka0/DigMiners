@@ -32,18 +32,15 @@ MessageRequestSpawn.prototype.execute = function(gameData, player) {
         player.name = this.playerName;
 
     var entityId = Global.gameData.world.idList.next();
-    //if (Global.gameData.gameMode.createEntity)
-    //    entity = Global.gameData.gameMode.createEntity(player, entityId, this.classId);
-    //else {
     var entity;
     var playerSpawns = Global.gameData.world.playerSpawns;
     var teamId = Object.keys(playerSpawns)[Math.random() * Object.keys(playerSpawns).length >> 0];
     var classType = PlayerClass.Register[this.classId];
     if (classType == undefined) return;
-    if (global.gameData.world.playerSpawnAllowed) {
-        entity = entityTemplatePlayer(player.id, entityId, player.name, classType, teamId);
+    if (Global.gameData.gameMode.createEntity) {
+        entity = Global.gameData.gameMode.createEntity(player, entityId, this.classId);
     } else {
-        entity = entityTemplateGhost(player.id, entityId, player.name)
+        entity = entityTemplatePlayer(player.id, entityId, player.name, classType, teamId);
     }
 
     // Set spawn position
