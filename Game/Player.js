@@ -9,6 +9,7 @@ import Global from "Game/Global.js";
 var Player = function(playerId, entityId) {
     this.playerId = playerId;
     this.entityId = entityId;
+    this.classId = 0;
     this.text = null;
     this.deathTick = Global.gameData.world.tickId;
     this.oreInventory = new Array();

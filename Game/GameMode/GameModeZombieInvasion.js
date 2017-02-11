@@ -133,9 +133,9 @@ GameModeZombieInvasion.prototype.init = function() {
     this.lastStartMessage = new Date();
 }
 
-GameModeZombieInvasion.prototype.createEntity = function(player, entityId, classId) {
+GameModeZombieInvasion.prototype.createEntity = function(player, entityId) {
     if (this.playerSpawning) {
-        var classType = PlayerClass.Register[classId];
+        var classType = PlayerClass.Register[player.classId];
         var entity = entityTemplatePlayer(player.id, entityId, player.name, classType, Team.Enum.Human);
 
         // Set spawn position
@@ -147,7 +147,7 @@ GameModeZombieInvasion.prototype.createEntity = function(player, entityId, class
         return entity;
     } else {
         var pos = this.zombieSpawns[Math.random() * this.zombieSpawns.length >> 0];
-        var entity = entityTemplateGhost(player.id, entityId, player.name, pos, classId);
+        var entity = entityTemplateGhost(player.id, entityId, player.name, pos);
         //entity.inventory.addItem(Global.gameData, Items.Types.RustyShovel.id, 1);
         return entity;
     }
