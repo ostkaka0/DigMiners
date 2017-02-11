@@ -123,6 +123,19 @@ World.prototype.initializeEvents = function() {
     Event.subscribe(this.entityWorld.onRemove, this, function(entity) {
         if (entity.physicsBody)
             this.physicsEntities[entity.physicsBody.bodyId] = undefined;
+
+        if (entity.controlledByPlayer) {
+            var playerId = entity.controlledByPlayer.playerId;
+            var player = Global.gameData.playerWorld.objects[playerId];
+            if (player) {
+                player.deathTick = this.tickId;
+                player.entityId = null;
+                if (!isServer && player.id == global.player.id) {
+                    global.playerEntity = null;
+                    global.playerEntityId = null;
+                }
+            }
+        }
     }.bind(this));
 
     if (this.idList) {
@@ -193,18 +206,6 @@ World.prototype.initializeEvents = function() {
         if (!entity.isDead) {
             entity.isDead = true;
             this.entityWorld.remove(entity);
-            if (entity.controlledByPlayer) {
-                var playerId = entity.controlledByPlayer.playerId;
-                var player = Global.gameData.playerWorld.objects[playerId];
-                if (player) {
-                    player.deathTick = this.tickId;
-                    player.entityId = null;
-                    if (!isServer && player.id == global.player.id) {
-                        global.playerEntity = null;
-                        global.playerEntityId = null;
-                    }
-                }
-            }
         }
 
         Object.keys(entity).forEach(function(key) {

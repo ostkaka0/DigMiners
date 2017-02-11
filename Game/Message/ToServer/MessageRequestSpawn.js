@@ -25,16 +25,20 @@ MessageRegister.ToServer.push(MessageRequestSpawn);
 MessageRequestSpawn.prototype.execute = function(gameData, player) {
     if (player.entity != null && player.entityId != null) return;
     if (Global.gameData.world.tickId - player.deathTick < 20 * Config.respawnTime) return;
-
-    if (this.playerName && this.playerName.length > 0)
-        player.name = this.playerName;
+    if (!PlayerClass.Register[this.classId]) return;
+    if (!this.playerName || this.playerName.length <= 0) {
+        this.playerName = "Guest - " + player.id;
+    }
+    this.playerName = this.playerName.substring(0, 20);
+    player.name = this.playerName;
+    player.classId = this.classId;
 
     var entityId = Global.gameData.world.idList.next();
     var entity;
     if (Global.gameData.gameMode.createEntity) {
-        entity = Global.gameData.gameMode.createEntity(player, entityId, this.classId);
+        entity = Global.gameData.gameMode.createEntity(player, entityId);
     } else {
-        entity = entityTemplatePlayer(player.id, entityId, player.name, classType, Team.Enum.None);
+        entity = entityTemplatePlayer(player.id, entityId, player.name, PlayerClass.Register[this.classId], Team.Enum.None);
     }
 
     // Set spawn position
