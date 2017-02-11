@@ -46,8 +46,6 @@ var World = function() {
     this.inventories = {};
     this.entityInventories = {};
 
-    this.playerSpawns = {};
-    this.playerSpawnAllowed = true;
 
     this.commands = [];
     this.pendingCommands = {};

@@ -25,28 +25,22 @@ MessageRegister.ToServer.push(MessageRequestSpawn);
 MessageRequestSpawn.prototype.execute = function(gameData, player) {
     if (player.entity != null && player.entityId != null) return;
     if (Global.gameData.world.tickId - player.deathTick < 20 * Config.respawnTime) return;
-    if (Object.keys(global.gameData.world.playerSpawns).length == 0) return;
-
 
     if (this.playerName && this.playerName.length > 0)
         player.name = this.playerName;
 
     var entityId = Global.gameData.world.idList.next();
     var entity;
-    var playerSpawns = Global.gameData.world.playerSpawns;
-    var teamId = Object.keys(playerSpawns)[Math.random() * Object.keys(playerSpawns).length >> 0];
-    var classType = PlayerClass.Register[this.classId];
-    if (classType == undefined) return;
     if (Global.gameData.gameMode.createEntity) {
         entity = Global.gameData.gameMode.createEntity(player, entityId, this.classId);
     } else {
-        entity = entityTemplatePlayer(player.id, entityId, player.name, classType, teamId);
+        entity = entityTemplatePlayer(player.id, entityId, player.name, classType, Team.Enum.None);
     }
 
     // Set spawn position
-    var pos = playerSpawns[teamId][Math.random() * playerSpawns[teamId].length >> 0];
+    /*var pos = playerSpawns[teamId][Math.random() * playerSpawns[teamId].length >> 0];
     entity.physicsBody.setPos(pos);
-    entity.physicsBody.posOld = v2.clone(pos);
+    entity.physicsBody.posOld = v2.clone(pos);*/
     Event.trigger(global.gameData.world.events2.onPlayerSpawn, player, entity);
     //}
 

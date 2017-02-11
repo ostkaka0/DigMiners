@@ -22,9 +22,11 @@ import CommandPlayerSpawn from "Game/Command/CommandPlayerSpawn.js";
 import entityTemplateMonsterSpawner from "Game/Entity/EntityTemplates/MonsterSpawner.js";
 import entityTemplatePlayer from "Game/Entity/EntityTemplates/Player.js";
 import entityTemplateZombie from "Game/Entity/EntityTemplates/Zombie.js";
+import entityTemplateGhost from "Game/Entity/EntityTemplates/Ghost.js";
 import MessageAmmoChange from "Game/Message/ToClient/MessageAmmoChange.js";
 import CommandEntityHealthChange from "Game/Command/CommandEntityHealthChange.js";
 import CommandWorldSpawnStatus from "Game/Command/CommandWorldSpawnStatus.js"
+import CommandEntityDestroy from "Game/Command/CommandEntityDestroy.js"
 
 var GameModeZombieInvasion = function() {
     this.wavePauseDuration = 30000;
@@ -35,15 +37,15 @@ var GameModeZombieInvasion = function() {
     this.endingWave = false;
     this.endingWaveTimer = null;
 
-    //this.playerSpawns = {};
+    this.playerSpawns = {};
+    this.playerSpawning = true;
     this.zombieSpawns = [];
-    //this.teams = [Team.Enum.Human];
     this.zombieSpawners = [];
     this.survivors = {};
-    //this.spawnAllowed = false;
+    this.ghosts = {};
 
     this.lastStartMessage = null;
-    this.startSecondsDuration = 15;
+    this.startSecondsDuration = 2;//15;
     this.startSeconds = this.startSecondsDuration;
 }
 export default GameModeZombieInvasion
@@ -63,10 +65,9 @@ GameModeZombieInvasion.prototype.init = function() {
         }
     }
 
-    var spawns = {};
-    spawns[Team.Enum.Human] = [[0, 0]];
+    this.playerSpawns[Team.Enum.Human] = [[0, 0]];
 
-    sendCommand(new CommandWorldSpawnStatus(spawns, true));
+    //sendCommand(new CommandWorldSpawnStatus(spawns, true));
     sendCommand(new CommandDig([0, 0], 5.0));
     this.generateDungeon(0, 0);
 
@@ -107,7 +108,8 @@ GameModeZombieInvasion.prototype.init = function() {
         } else if (entity.controlledByPlayer && this.survivors[entity.controlledByPlayer.playerId]) {
             delete this.survivors[entity.controlledByPlayer.playerId];
             if (Object.keys(this.survivors).length == 0 && !this.playerSpawning) {
-                sendCommand(new CommandWorldSpawnStatus(null, false));
+                this.playerSpawning = false;//sendCommand(new CommandWorldSpawnStatus(null, false));
+                sendCommand(new CommandPopupMessage("All survivors died"));
                 Global.gameData.setTimeout(Global.gameData.changeGameMode.bind(Global.gameData), 5000);
             }
         }
@@ -117,20 +119,21 @@ GameModeZombieInvasion.prototype.init = function() {
         if (this.survivors[player.id]) {
             delete this.survivors[player.id];
             if (Object.keys(this.survivors).length == 0 && !this.playerSpawning) {
-                sendCommand(new CommandWorldSpawnStatus(null, false));
+                this.playerSpawning = false;//sendCommand(new CommandWorldSpawnStatus(null, false));
+                sendCommand(new CommandPopupMessage("All survivors died"));
                 Global.gameData.setTimeout(Global.gameData.changeGameMode.bind(Global.gameData), 5000);
             }
         }
     }.bind(this));
 
-    Event.subscribe(Global.gameData.world.events2.onPlayerSpawn, this, (player, entity) => {
-        this.survivors[player.id] = player;
-    });
+    //Event.subscribe(Global.gameData.world.events2.onPlayerSpawn, this, (player, entity) => {
+    //    this.survivors[player.id] = player;
+    //});
 
     this.lastStartMessage = new Date();
 }
 
-/*GameModeZombieInvasion.prototype.createEntity = function(player, entityId, classId) {
+GameModeZombieInvasion.prototype.createEntity = function(player, entityId, classId) {
     if (this.playerSpawning) {
         var classType = PlayerClass.Register[classId];
         var entity = entityTemplatePlayer(player.id, entityId, player.name, classType, Team.Enum.Human);
@@ -143,13 +146,12 @@ GameModeZombieInvasion.prototype.init = function() {
         this.survivors[player.id] = player;
         return entity;
     } else {
-        /*var pos = this.zombieSpawns[Math.random() * this.zombieSpawns.length >> 0];
-        var entity = entityTemplatePlayerZombie(player.id, entityId, player.name, pos, classId);
-        entity.inventory.addItem(Global.gameData, Items.Types.RustyShovel.id, 1);
-        return entity;* /
-        return null;
+        var pos = this.zombieSpawns[Math.random() * this.zombieSpawns.length >> 0];
+        var entity = entityTemplateGhost(player.id, entityId, player.name, pos, classId);
+        //entity.inventory.addItem(Global.gameData, Items.Types.RustyShovel.id, 1);
+        return entity;
     }
-}*/
+}
 
 GameModeZombieInvasion.prototype.tick = function(dt) {
     if (Object.keys(this.survivors).length == 0) {
@@ -169,7 +171,7 @@ GameModeZombieInvasion.prototype.name = "Zombie Invasion";
 
 GameModeZombieInvasion.prototype.endWave = function() {
     this.killGhosts();
-    sendCommand(new CommandWorldSpawnStatus(null, true));
+    this.playerSpawning = true;//sendCommand(new CommandWorldSpawnStatus(null, true));
     Global.gameData.setTimeout(this.startWave.bind(this), this.wavePauseDuration);
     sendCommand(new CommandPopupMessage("Zombies are mutating"));
 
@@ -178,7 +180,7 @@ GameModeZombieInvasion.prototype.endWave = function() {
 
 GameModeZombieInvasion.prototype.startWave = function() {
     this.forceRespawnPlayers();
-    sendCommand(new CommandWorldSpawnStatus(null, false));
+    this.playerSpawning = false;//sendCommand(new CommandWorldSpawnStatus(null, false));
 
     this.waveNum++;
 
@@ -194,7 +196,7 @@ GameModeZombieInvasion.prototype.startWave = function() {
 }
 
 GameModeZombieInvasion.prototype.forceRespawnPlayers = function() {
-    /*Global.gameData.playerWorld.objectArray.forEach(function(player) {
+    Global.gameData.playerWorld.objectArray.forEach(function(player) {
         if (player.entityId) {
             // Heal and supply ammo
             var entity = Global.gameData.world.entityWorld.objects[player.entityId];
@@ -207,7 +209,7 @@ GameModeZombieInvasion.prototype.forceRespawnPlayers = function() {
             });
             Event.trigger(Ammo.Events.onChange, entity);
             new MessageAmmoChange(entity, Object.keys(entity.ammo)).send(player.socket);
-            var healthChange = entity.health.maxHealth - entity.health.health;
+            var healthChange = Math.min(entity.health.maxHealth/2, entity.health.maxHealth - entity.health.health);
             sendCommand(new CommandEntityHealthChange(entity.id, healthChange));
             return;
         }
@@ -222,7 +224,7 @@ GameModeZombieInvasion.prototype.forceRespawnPlayers = function() {
 
         sendCommand(new CommandEntitySpawn(Global.gameData, entity, entityId));
         sendCommand(new CommandPlayerSpawn(player.id, entityId, player.name));
-    }.bind(this));*/
+    }.bind(this));
 }
 
 GameModeZombieInvasion.prototype.killGhosts = function() {
