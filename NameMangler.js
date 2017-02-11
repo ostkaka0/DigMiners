@@ -277,7 +277,8 @@ exports.genNames = function(names, tokens, except, debug) {
             if (!failure && tokens[i].value == "=" && exceptions[lastToken] == undefined && names[lastToken] == undefined) {
 
             }
-        } else if ((token.value == "=" || token.value == ":") && lastToken != null) {
+        } else if ((token.value == "=" || token.value == ":" || token.value == "(") && lastToken != null) {
+            if (token.value == "(" && i >= 2 && tokens[i-2].value != "\n") continue;
             var name =  "_" + ((debug)? lastToken.value : nameIndex.toString());
             //process.stdout.write(lastToken.value + " -> " + name + "  \t");
             names[lastToken.value] = name;
