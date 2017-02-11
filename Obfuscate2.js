@@ -13,6 +13,8 @@ var commonjs = require('rollup-plugin-commonjs');
 var amd = require("rollup-plugin-amd");
 var multiEntry = require('rollup-plugin-multi-entry');
 var pluginRootImport = require("./rollup-plugin-root.js");
+var UglifyJS = require("uglify-js");
+var babel = require("babel-core");
 
 var NameMangler = require("./NameMangler.js");
 
@@ -108,7 +110,24 @@ var run2 = function() {
                 format: 'iife',
                 moduleName: "notSureWhatThisIsFor",
             });
-            fs.writeFileSync("build/server.js", result.code);
+            var src = result.code;
+            /*var lines = src.split("\n");
+            lines.splice(0, 2);
+            lines.pop();
+            lines.pop();
+            src = lines.join("\n");*/
+            var babelOptions = {
+                "presets": ["es2015"],
+                "plugins": [/*"remove-comments"*/]
+            };
+            var babelResult = babel.transform(src, babelOptions); // => { code, map, ast }
+            src = babelResult.code;
+            /*var uglyResult = UglifyJS.minify(src, {
+                fromString: true,
+                mangle: true
+            });
+            src = uglyResult.code;*/
+            fs.writeFileSync("build/server.js", src);
 
             console.log("Boundling client...");
             bundleCode("temp/", gameFiles.concat([strClientFile]), null).then((bundle) => {
@@ -117,7 +136,24 @@ var run2 = function() {
                     format: 'iife',
                     moduleName: "notSureWhatThisIsFor",
                 });
-                fs.writeFileSync("build/html/src.js", "var global = window;\n" + result.code)
+                var src = result.code;
+                /*var lines = src.split("\n");
+                lines.splice(0, 2);
+                lines.pop();
+                lines.pop();
+                src = lines.join("\n");*/
+                var babelOptions = {
+                    "presets": ["es2015"],
+                    "plugins": [/*"remove-comments"*/]
+                };
+                var babelResult = babel.transform(src, babelOptions); // => { code, map, ast }
+                src = babelResult.code;
+                /*var uglyResult = UglifyJS.minify(src, {
+                    fromString: true,
+                    mangle: true
+                });
+                src = uglyResult.code;*/
+                fs.writeFileSync("build/html/src.js", "var global = window;\n" + src)
 
                 console.log("Copying files...");
                 var outputPath = "build/html/"
