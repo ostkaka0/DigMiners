@@ -38,12 +38,15 @@ PhysicsWorld.prototype.update = function(dt) {
     this.forEach(this, function(id) {
         var radius = this.getRadius(id);
         var mass = this.getMass(id);
+        if (radius <= 0 || mass <= 0) return;
         var velocity = this.getVelocity(id);
         if (v2.length(velocity) < velocityEpsilon || mass == 0)
             return;
         var pos = this.getPos(id);
         var posOld = this.getPosOld(id);
         var bodies = [];
+
+
         this.getBodiesInRadius(bodies, posOld, radius);
         bodies.forEach(function(otherId) {
             // No self collision
@@ -51,6 +54,7 @@ PhysicsWorld.prototype.update = function(dt) {
 
             var otherRadius = this.getRadius(otherId);
             var otherMass = this.getMass(otherId);
+            if (otherRadius <= 0 || otherMass <= 0) return;
             var otherVelocity = this.getVelocity(otherId);
 
             // Only do collision once

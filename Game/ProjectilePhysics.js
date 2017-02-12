@@ -41,6 +41,7 @@ export var projectileEntitySimulate = function(entity, dt) {
         v2.add(deltaPos, pos, pos);
 
         var distance = v2.distance(projectile.startPos, projectile.pos);
+        if (distance < 0.25) continue;
 
         if (distance > projectile.maxDistance) {
             projectile.hit = true;
@@ -49,14 +50,16 @@ export var projectileEntitySimulate = function(entity, dt) {
 
         var bodies = [];
         var bodyDistances = [];
-        Global.gameData.world.physicsWorld.getBodiesInRadiusSorted(bodies, bodyDistances, pos, projectile.projectileType.radius);
+        Global.gameData.world.physicsWorld.getBodiesInRadiusSorted(bodies, bodyDistances, pos, 0.0);//projectile.projectileType.radius);
         for (var j = 0; j < bodies.length; ++j) {
             var hitEntity = Global.gameData.world.physicsEntities[bodies[j]];
-            if (hitEntity && (!projectile.shooterEntityId || hitEntity.id != projectile.shooterEntityId)) {
-                Event.trigger(Projectile.Events.onHitEntity, entity, hitEntity, pos);
-                projectile.hit = true;
-                break;
-            }
+            var radius = global.gameData.world.physicsWorld.getRadius(bodies[j]);
+            var mass = global.gameData.world.physicsWorld.getMass(bodies[j]);
+            if (!hitEntity || (projectile.shooterEntityId && hitEntity.id == projectile.shooterEntityId)) continue;
+            if (radius <= 0 || mass <= 0) continue;
+            Event.trigger(Projectile.Events.onHitEntity, entity, hitEntity, pos);
+            projectile.hit = true;
+            break;
         }
 
         var blockTilePos = [Math.floor(pos[0]), Math.floor(pos[1])];
