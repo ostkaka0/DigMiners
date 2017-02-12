@@ -75,7 +75,7 @@ export var projectileEntitySimulate = function(entity, dt) {
             blockType.bulletFunction(blockTilePos, blockType, entity);
 
         var density = Global.gameData.world.tileWorld.getDensity(blockTilePos);
-        if (density > 127) {
+        if (density >= 160) {
             Event.trigger(Projectile.Events.onHitTile, entity, blockTilePos);
             projectile.hit = true;
             break;
