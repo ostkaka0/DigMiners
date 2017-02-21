@@ -1,7 +1,7 @@
 import Event from "Engine/Core/Event.js";
 
 
-import Ammo from "Game/Entity/Ammo.js";
+import EntityAmmo from "Game/Entity/Ammo.js";
 
 export default function() {
     this.root = $("<div>", { "text": "No weapon equipped" });
@@ -26,7 +26,7 @@ export default function() {
         }
     }
 
-    Event.subscribe(Ammo.Events.onChange, this, function(entity) {
+    Event.subscribe(EntityAmmo.Events.onChange, this, function(entity) {
         if (entity && entity.id == global.playerEntityId)
             this.updateFunction(entity, null)
     }.bind(this));

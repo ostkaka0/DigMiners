@@ -7,7 +7,7 @@ import Config from "Game/Config.js";
 
 import CommandRegister from "Engine/Register/Command.js";
 import Blocks from "Game/Blocks.js";
-import BlockPlacer from "Game/Entity/BlockPlacer.js";
+import EntityBlockPlacer from "Game/Entity/BlockPlacer.js";
 import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
 
 var CommandEntityBuild = function(entityId, x, y, blockId, type) {
@@ -32,7 +32,7 @@ CommandEntityBuild.prototype.execute = function() {
         entity.bodyparts.bodyparts["rightArm"].cycle("rightArm", 256, true);
     if (isServer) {
         var block = Config.blockRegister[this.blockId];
-        var entityBlockPlacer = { blockPlacer: new BlockPlacer([this.x, this.y], this.blockId, block.buildDuration, entity.id) };
+        var entityBlockPlacer = { blockPlacer: new EntityBlockPlacer([this.x, this.y], this.blockId, block.buildDuration, entity.id) };
         var entityBlockPlacerId = global.gameData.world.idList.next();
         sendCommand(new CommandEntitySpawn(global.gameData, entityBlockPlacer, entityBlockPlacerId));
         entity.blockPlacerId = entityBlockPlacerId;

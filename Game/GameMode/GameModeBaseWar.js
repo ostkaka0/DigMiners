@@ -10,7 +10,7 @@ import Config from "Game/Config.js";
 import Blocks from "Game/Blocks.js";
 import Items from "Game/Items.js";
 import Team from "Game/Entity/Team.js";
-import Ammo from "Game/Entity/Ammo.js";
+import EntityAmmo from "Game/Entity/Ammo.js";
 import Spawner from "Game/Entity/Spawner.js";
 import PlayerClass from "Game/PlayerClass.js";
 import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";

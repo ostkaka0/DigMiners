@@ -11,7 +11,7 @@ import ItemRegister from "Engine/Register/Item.js"
 import Blocks from "Game/Blocks.js";
 import Items from "Game/Items.js";
 import Team from "Game/Entity/Team.js";
-import Ammo from "Game/Entity/Ammo.js";
+import EntityAmmo from "Game/Entity/Ammo.js";
 import Health from "Game/Entity/Health.js";
 import PlayerClass from "Game/PlayerClass.js";
 import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
@@ -209,7 +209,7 @@ GameModeZombieInvasion.prototype.forceRespawnPlayers = function() {
                 if (entity.ammo[item.id] != undefined)
                     entity.ammo[item.id] = itemType.ammoMax;
             });
-            Event.trigger(Ammo.Events.onChange, entity);
+            Event.trigger(EntityAmmo.Events.onChange, entity);
             new MessageAmmoChange(entity, Object.keys(entity.ammo)).send(player.socket);
             var healthChange = Math.min(entity.health.maxHealth/2, entity.health.maxHealth - entity.health.health);
             sendCommand(new CommandEntityHealthChange(entity.id, healthChange));

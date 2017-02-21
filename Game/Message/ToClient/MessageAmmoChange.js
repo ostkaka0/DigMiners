@@ -5,7 +5,7 @@ import Event from "Engine/Core/Event.js";
 
 
 import MessageRegister from "Engine/Register/Message.js";;
-import Ammo from "Game/Entity/Ammo.js";
+import EntityAmmo from "Game/Entity/Ammo.js";
 
 var MessageAmmoChange = function(entity, itemIds) {
     this.ammo = {};
@@ -46,5 +46,5 @@ MessageAmmoChange.prototype.receive = function(gameData, byteArray) {
         var amount = Deserialize.int32(byteArray, counter);
         entity.ammo[itemId] = amount;
     }
-    Event.trigger(Ammo.Events.onChange, entity);
+    Event.trigger(EntityAmmo.Events.onChange, entity);
 }

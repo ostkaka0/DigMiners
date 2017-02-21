@@ -7,7 +7,7 @@ import Bodyparts from "Game/Entity/Bodyparts.js";
 import Drawable from "Game/Entity/Drawable.js";
 import Team from "Game/Entity/Team.js";
 import Health from "Game/Entity/Health.js";
-import Ammo from "Game/Entity/Ammo.js";
+import EntityAmmo from "Game/Entity/Ammo.js";
 import Movement from "Game/Entity/Movement.js";
 import Inventory from "Game/Entity/Inventory.js";
 import EquippedItems from "Game/Entity/EquippedItems.js";
@@ -38,7 +38,7 @@ export default function(entityId, pos, teamId) {
 
     entity.health = new Health(50, 50, 0.0);
     entity.team = new Team(teamId);
-    //entity.ammo = new Ammo();
+    //entity.ammo = new EntityAmmo();
 
     entity.behaviourContainer = new BehaviourContainer();
     entity.behaviourContainer.behaviours.push(new TurretBehaviour(entity, 10.0));

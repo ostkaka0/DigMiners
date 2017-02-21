@@ -5,7 +5,7 @@ import Event from "Engine/Core/Event.js";
 import Config from "Game/Config.js";
 
 import ItemRegister from "Engine/Register/Item.js"
-import Ammo from "Game/Entity/Ammo.js";
+import EntityAmmo from "Game/Entity/Ammo.js";
 import Health from "Game/Entity/Health.js";
 
 var PotionEffectTypes = {};
@@ -33,7 +33,7 @@ PotionEffectTypes.SupplyAmmo = {
             var ammoToAdd = Math.min(itemType.ammoMax - amount, Math.max(1, itemType.ammoMax * 0.05 >> 0));
             if (ammoToAdd == 0) return;
             entity.ammo[itemId] += ammoToAdd;
-            Event.trigger(Ammo.Events.onChange, entity);
+            Event.trigger(EntityAmmo.Events.onChange, entity);
             // TODO: Trigger event?
         });
     }

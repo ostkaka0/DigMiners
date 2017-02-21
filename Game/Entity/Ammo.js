@@ -3,15 +3,14 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 
 import EntityRegister from "Engine/Register/Entity.js";
 
-var Ammo = function() { }
-export default Ammo
-EntityRegister.push(Ammo);
-Ammo.Events = {};
-Ammo.Events.onChange = [];
+var EntityAmmo = function() { }
+export default EntityAmmo;
+EntityRegister.push(EntityAmmo);
+EntityAmmo.Events = { onChange: [] };
 
-Ammo.prototype.name = ammo.name; function ammo() { };
+EntityAmmo.prototype.name = ammo.name; function ammo() { };
 
-Ammo.prototype.serialize = function(byteArray, index) {
+EntityAmmo.prototype.serialize = function(byteArray, index) {
     var keys = Object.keys(this);
     Serialize.int32(byteArray, index, keys.length);
     keys.forEach(function(key) {
@@ -20,7 +19,7 @@ Ammo.prototype.serialize = function(byteArray, index) {
     }.bind(this));
 }
 
-Ammo.prototype.deserialize = function(byteArray, index) {
+EntityAmmo.prototype.deserialize = function(byteArray, index) {
     var length = Deserialize.int32(byteArray, index);
     for (var i = 0; i < length; i++) {
         var key = Deserialize.int32(byteArray, index);
@@ -29,6 +28,6 @@ Ammo.prototype.deserialize = function(byteArray, index) {
     }
 }
 
-Ammo.prototype.getSerializationSize = function() {
+EntityAmmo.prototype.getSerializationSize = function() {
     return 4 + 8 * Object.keys(this).length;
 }
