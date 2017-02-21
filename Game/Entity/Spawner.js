@@ -4,14 +4,14 @@ import fix from "Engine/Core/Fix.js";
 import v2 from "Engine/Core/v2.js";
 import Event from "Engine/Core/Event.js";
 
-import Team from "Game/Entity/Team.js";
+import EntityTeam from "Game/Entity/Team.js";
 import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
 import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
 import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
 import Items from "Game/Items.js";
 import EntityRegister from "Engine/Register/Entity.js";
 
-var Spawner = function(entityTemplate, pos, maxEntities, radius, duration, items, equippedItemId, randomDuration, teamId) {
+var EntitySpawner = function(entityTemplate, pos, maxEntities, radius, duration, items, equippedItemId, randomDuration, teamId) {
     this.entityTemplate = entityTemplate;
     this.pos = v2.clone(pos);
     this.maxEntities = maxEntities;
@@ -20,7 +20,7 @@ var Spawner = function(entityTemplate, pos, maxEntities, radius, duration, items
     this.items = items || [{id: Items.Types.RustyShovel.id, quantity: 1}];
     this.equippedItemId = (equippedItemId != undefined)? equippedItemId : null;
     this.randomDuration = (randomDuration != undefined)? randomDuration : 0.5;
-    this.teamId = teamId || Team.Enum.None;
+    this.teamId = teamId || EntityTeam.Enum.None;
 
     this.numEntities = 0;
     this.entityTable = {};
@@ -28,12 +28,12 @@ var Spawner = function(entityTemplate, pos, maxEntities, radius, duration, items
 
     this.initialized = false;
 }
-export default Spawner
-EntityRegister.push(Spawner);
+export default EntitySpawner
+EntityRegister.push(EntitySpawner);
 
-Spawner.prototype.name = spawner.name; function spawner() { };
+EntitySpawner.prototype.name = spawner.name; function spawner() { };
 
-Spawner.prototype.update = function(entity) {
+EntitySpawner.prototype.update = function(entity) {
     if (this.numEntities >= this.maxEntities) return;
     if (global.gameData.world.tickId - this.nextSpawnTickId <= 0) return;
     if (!isServer) return;
@@ -75,10 +75,10 @@ Spawner.prototype.update = function(entity) {
     this.numEntities++;
 }
 
-Spawner.prototype.onDestroy = function(entity) {
+EntitySpawner.prototype.onDestroy = function(entity) {
     Event.unsubscribe(global.gameData.world.entityWorld.onRemove, this);
 }
 
-Spawner.prototype.updateDuration = function() {
+EntitySpawner.prototype.updateDuration = function() {
     this.nextSpawnTickId = global.gameData.world.tickId + this.duration + Math.floor(this.randomDuration * this.duration * (-0.5 + Math.random()));
 }

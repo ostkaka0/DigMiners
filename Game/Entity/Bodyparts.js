@@ -6,7 +6,7 @@ import BodyPart from "Engine/Animation/BodyPart.js";
 import Sprite from "Engine/Animation/Sprite.js";
 import EntityRegister from "Engine/Register/Entity.js";
 
-var Bodyparts = function(bodyparts) {
+var EntityBodyparts = function(bodyparts) {
     this.bodyparts = bodyparts;
 
     // Set parents
@@ -24,12 +24,12 @@ var Bodyparts = function(bodyparts) {
         bodypart.children = this.getChildren(bodypart.name);
     }
 }
-export default Bodyparts;
-EntityRegister.push(Bodyparts);
+export default EntityBodyparts;
+EntityRegister.push(EntityBodyparts);
 
-Bodyparts.prototype.name = bodyparts.name; function bodyparts() { };
+EntityBodyparts.prototype.name = bodyparts.name; function bodyparts() { };
 
-Bodyparts.prototype.serialize = function(byteArray, index) {
+EntityBodyparts.prototype.serialize = function(byteArray, index) {
     Serialize.int32(byteArray, index, Object.keys(this.bodyparts).length);
     for (var key in this.bodyparts) {
         var bodypart = this.bodyparts[key];
@@ -56,7 +56,7 @@ Bodyparts.prototype.serialize = function(byteArray, index) {
     }
 }
 
-Bodyparts.prototype.deserialize = function(byteArray, index, gameData) {
+EntityBodyparts.prototype.deserialize = function(byteArray, index, gameData) {
     this.bodyparts = {};
     var bodypartsLength = Deserialize.int32(byteArray, index);
     for (var i = 0; i < bodypartsLength; ++i) {
@@ -96,7 +96,7 @@ Bodyparts.prototype.deserialize = function(byteArray, index, gameData) {
     }
 }
 
-Bodyparts.prototype.getSerializationSize = function() {
+EntityBodyparts.prototype.getSerializationSize = function() {
     var size = 4;
 
     for (var key in this.bodyparts) {
@@ -113,11 +113,11 @@ Bodyparts.prototype.getSerializationSize = function() {
     return size;
 }
 
-Bodyparts.prototype.destroy = function(entity) {
+EntityBodyparts.prototype.destroy = function(entity) {
 
 }
 
-Bodyparts.prototype.getChildren = function(parentName) {
+EntityBodyparts.prototype.getChildren = function(parentName) {
     var output = [];
     for (var key in this.bodyparts) {
         var bodypart = this.bodyparts[key];
@@ -127,7 +127,7 @@ Bodyparts.prototype.getChildren = function(parentName) {
     return output;
 }
 
-Bodyparts.prototype.positionBodyparts = function(x, y, rotation) {
+EntityBodyparts.prototype.positionBodyparts = function(x, y, rotation) {
     for (var bodypart in this.bodyparts) {
         bodypart = this.bodyparts[bodypart];
         if (!bodypart.parent)

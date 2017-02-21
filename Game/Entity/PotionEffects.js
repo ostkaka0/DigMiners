@@ -3,15 +3,15 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 import Config from "Game/Config.js";
 import EntityRegister from "Engine/Register/Entity.js";
 
-var PotionEffects = function() {
+var EntityPotionEffects = function() {
     this.effects = {};
 }
-export default PotionEffects
-EntityRegister.push(PotionEffects);
+export default EntityPotionEffects
+EntityRegister.push(EntityPotionEffects);
 
-PotionEffects.prototype.name = potionEffects.name; function potionEffects() { };
+EntityPotionEffects.prototype.name = potionEffects.name; function potionEffects() { };
 
-PotionEffects.prototype.serialize = function(byteArray, index) {
+EntityPotionEffects.prototype.serialize = function(byteArray, index) {
     Serialize.int32(byteArray, index, Object.keys(this.effects).length);
     Object.keys(this.effects).forEach(function(potionEffectTypeId) {
         var effect = this.effects[potionEffectTypeId];
@@ -27,7 +27,7 @@ PotionEffects.prototype.serialize = function(byteArray, index) {
     }.bind(this));
 }
 
-PotionEffects.prototype.deserialize = function(byteArray, index) {
+EntityPotionEffects.prototype.deserialize = function(byteArray, index) {
     var length = Deserialize.int32(byteArray, index);
     for (var i = 0; i < length; i++) {
         var potionEffectTypeId = Deserialize.int32(byteArray, index);
@@ -37,11 +37,11 @@ PotionEffects.prototype.deserialize = function(byteArray, index) {
     }
 }
 
-PotionEffects.prototype.getSerializationSize = function() {
+EntityPotionEffects.prototype.getSerializationSize = function() {
     return 4 + 12 * Object.keys(this.effects).length;
 }
 
-PotionEffects.prototype.update = function(entity) {
+EntityPotionEffects.prototype.update = function(entity) {
     Object.keys(this.effects).forEach(function(potionEffectTypeId) {
         var effect = this.effects[potionEffectTypeId];
         var potionEffectType = Config.potionEffectTypeRegister[potionEffectTypeId];
@@ -60,7 +60,7 @@ PotionEffects.prototype.update = function(entity) {
     }.bind(this));
 }
 
-PotionEffects.prototype.destroy = function(entity) {
+EntityPotionEffects.prototype.destroy = function(entity) {
     Object.keys(this.effects).forEach(function(potionEffectTypeId) {
         var effect = this.effects[potionEffectTypeId];
         var potionEffectType = Config.potionEffectTypeRegister[potionEffectTypeId];
@@ -70,7 +70,7 @@ PotionEffects.prototype.destroy = function(entity) {
     }.bind(this));
 }
 
-PotionEffects.prototype.add = function(potionEffectType, duration) {
+EntityPotionEffects.prototype.add = function(potionEffectType, duration) {
     var effect = this.effects[potionEffectType.id];
     if (duration == -1) {
         this.effects[potionEffectType.id] = { startDuration: -1, duration: -1 };

@@ -6,7 +6,7 @@ import Config from "Game/Config.js";
 
 import ItemRegister from "Engine/Register/Item.js"
 import EntityAmmo from "Game/Entity/Ammo.js";
-import Health from "Game/Entity/Health.js";
+import EntityHealth from "Game/Entity/Health.js";
 
 var PotionEffectTypes = {};
 export default PotionEffectTypes
@@ -17,7 +17,7 @@ PotionEffectTypes.Healing = {
         var health = entity.health;
         if (health) {
             health.health = Math.min(health.maxHealth, health.health + 2);
-            Event.trigger(Health.Events.onChange, entity);
+            Event.trigger(EntityHealth.Events.onChange, entity);
         }
     }
 }
@@ -83,6 +83,6 @@ PotionEffectTypes.Toxin = {
         var health = entity.health;
         if (!health || health.health <= 5) return;
         health.health = Math.max(5, health.health - 5);
-        Event.trigger(Health.Events.onChange, entity);
+        Event.trigger(EntityHealth.Events.onChange, entity);
     }
 }

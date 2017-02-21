@@ -5,7 +5,7 @@ import v2 from "Engine/Core/v2.js";
 
 import EntityRegister from "Engine/Register/Entity.js";
 
-var PhysicsBody = function(pos, damping, rotationSpeed, mass, radius) {
+var EntityPhysicsBody = function(pos, damping, rotationSpeed, mass, radius) {
     this.bodyId = global.gameData.world.physicsWorld.add(pos, [0.0, 0.0], mass, radius);
     if (pos) {
         this.posOld = v2.clone(pos);
@@ -27,12 +27,12 @@ var PhysicsBody = function(pos, damping, rotationSpeed, mass, radius) {
     this.angle = 0;
     this.angleOld = 0;
 }
-export default PhysicsBody
-EntityRegister.push(PhysicsBody);
+export default EntityPhysicsBody
+EntityRegister.push(EntityPhysicsBody);
 
-PhysicsBody.prototype.name = physicsBody.name; function physicsBody() { };
+EntityPhysicsBody.prototype.name = physicsBody.name; function physicsBody() { };
 
-PhysicsBody.prototype.serialize = function(byteArray, index) {
+EntityPhysicsBody.prototype.serialize = function(byteArray, index) {
     Serialize.v2(byteArray, index, this.getPos());
     Serialize.v2(byteArray, index, this.getVelocity());
     Serialize.fix(byteArray, index, this.getMass());
@@ -42,7 +42,7 @@ PhysicsBody.prototype.serialize = function(byteArray, index) {
     Serialize.fix(byteArray, index, this.damping);
 }
 
-PhysicsBody.prototype.deserialize = function(byteArray, index) {
+EntityPhysicsBody.prototype.deserialize = function(byteArray, index) {
     this.setPos(Deserialize.v2(byteArray, index));
     this.posOld = v2.clone(this.getPos());
     this.setVelocity(Deserialize.v2(byteArray, index));
@@ -58,24 +58,24 @@ PhysicsBody.prototype.deserialize = function(byteArray, index) {
     this.posClientOld = v2.clone(this.getPos());
 }
 
-PhysicsBody.prototype.getSerializationSize = function() {
+EntityPhysicsBody.prototype.getSerializationSize = function() {
     return 36;
 }
 
-PhysicsBody.prototype.destroy = function(entity) {
+EntityPhysicsBody.prototype.destroy = function(entity) {
     global.gameData.world.physicsWorld.remove(this.bodyId);
 }
 
-PhysicsBody.prototype.getPos = function() { return global.gameData.world.physicsWorld.getPos(this.bodyId); }
-PhysicsBody.prototype.setPos = function(pos) { global.gameData.world.physicsWorld.setPos(this.bodyId, pos); }
-PhysicsBody.prototype.getVelocity = function() { return global.gameData.world.physicsWorld.getVelocity(this.bodyId); }
-PhysicsBody.prototype.setVelocity = function(velocity) { global.gameData.world.physicsWorld.setVelocity(this.bodyId, velocity); }
-PhysicsBody.prototype.getMass = function() { return global.gameData.world.physicsWorld.getMass(this.bodyId); }
-PhysicsBody.prototype.setMass = function(mass) { global.gameData.world.physicsWorld.setMass(this.bodyId, mass); }
-PhysicsBody.prototype.getRadius = function() { return global.gameData.world.physicsWorld.getRadius(this.bodyId); }
-PhysicsBody.prototype.setRadius = function(radius) { global.gameData.world.physicsWorld.setRadius(this.bodyId, radius); }
+EntityPhysicsBody.prototype.getPos = function() { return global.gameData.world.physicsWorld.getPos(this.bodyId); }
+EntityPhysicsBody.prototype.setPos = function(pos) { global.gameData.world.physicsWorld.setPos(this.bodyId, pos); }
+EntityPhysicsBody.prototype.getVelocity = function() { return global.gameData.world.physicsWorld.getVelocity(this.bodyId); }
+EntityPhysicsBody.prototype.setVelocity = function(velocity) { global.gameData.world.physicsWorld.setVelocity(this.bodyId, velocity); }
+EntityPhysicsBody.prototype.getMass = function() { return global.gameData.world.physicsWorld.getMass(this.bodyId); }
+EntityPhysicsBody.prototype.setMass = function(mass) { global.gameData.world.physicsWorld.setMass(this.bodyId, mass); }
+EntityPhysicsBody.prototype.getRadius = function() { return global.gameData.world.physicsWorld.getRadius(this.bodyId); }
+EntityPhysicsBody.prototype.setRadius = function(radius) { global.gameData.world.physicsWorld.setRadius(this.bodyId, radius); }
 
-PhysicsBody.prototype.rotateTo = function(angle, speed, dt) {
+EntityPhysicsBody.prototype.rotateTo = function(angle, speed, dt) {
     if (this.angle == angle)
         return;
 

@@ -14,12 +14,12 @@ import CelluralAutomata from "Engine/CelluralAutomata.js"
 
 import Config from "Game/Config.js";
 import Entity from "Game/Entity/Entity.js";
-import Projectile from "Game/Entity/Projectile.js";
-import Health from "Game/Entity/Health.js";
-import Interacter from "Game/Entity/Interacter.js";
-import Interactable from "Game/Entity/Interactable.js";
+import EntityProjectile from "Game/Entity/Projectile.js";
+import EntityHealth from "Game/Entity/Health.js";
+import EntityInteracter from "Game/Entity/Interacter.js";
+import EntityInteractable from "Game/Entity/Interactable.js";
 import EntityTemplates from "Game/Entity/EntityTemplates/EntityTemplates.js";
-import Movement from "Game/Entity/Movement.js";
+import EntityMovement from "Game/Entity/Movement.js";
 import entityFunctionPhysicsBodySimulate from "Game/Entity/Physics.js";
 import {entityFunctionProjectileSimulate} from "Game/ProjectilePhysics.js";
 import CommandParticles from "Game/Command/CommandParticles.js";
@@ -75,7 +75,7 @@ World.prototype.tick = function(dt) {
     this.commands.length = 0;
     this.celluralAutomata.tick();
     this.physicsWorld.update(dt);
-    Movement.entityFunction(dt);
+    EntityMovement.entityFunction(dt);
     entityFunctionPhysicsBodySimulate(dt);
     entityFunctionProjectileSimulate(dt);
     this.entityWorld.objectArray.forEach(function(entity) {
@@ -149,7 +149,7 @@ World.prototype.initializeEvents = function() {
         });
     }
 
-    Event.subscribe(Projectile.Events.onHit, this, function(projectileEntity, hitPos) {
+    Event.subscribe(EntityProjectile.Events.onHit, this, function(projectileEntity, hitPos) {
         global.gameData.setTimeout(function(projectileEntity) {
             var type = projectileEntity.projectile.projectileType;
             if (type.isExplosive) {
@@ -163,7 +163,7 @@ World.prototype.initializeEvents = function() {
             ParticleFunctions.create(ParticleFunctions.BulletHitParticles, hitPos, projectileEntity.projectile.angle);
     }.bind(this));
 
-    Event.subscribe(Projectile.Events.onHitEntity, this, function(projectileEntity, hitEntity, hitPos) {
+    Event.subscribe(EntityProjectile.Events.onHitEntity, this, function(projectileEntity, hitEntity, hitPos) {
         if (isServer) {
             if (hitEntity && hitEntity.health && projectileEntity.projectile.projectileType.damage > 0) {
                 var damage = projectileEntity.projectile.projectileType.damage * projectileEntity.projectile.damageFactor;
@@ -176,7 +176,7 @@ World.prototype.initializeEvents = function() {
         }
     }.bind(this));
 
-    Event.subscribe(Projectile.Events.onHitBlock, this, function(projectileEntity, blockPos) {
+    Event.subscribe(EntityProjectile.Events.onHitBlock, this, function(projectileEntity, blockPos) {
         if (isServer) {
             if (projectileEntity.projectile.projectileType.blockDamage > 0) {
                 var strength = this.blockWorld.getStrength(blockPos);
@@ -189,11 +189,11 @@ World.prototype.initializeEvents = function() {
         }
     }.bind(this));
 
-    Event.subscribe(Projectile.Events.onHitTile, this, function(projectileEntity, tilePos) {
+    Event.subscribe(EntityProjectile.Events.onHitTile, this, function(projectileEntity, tilePos) {
 
     }.bind(this));
 
-    Event.subscribe(Health.Events.onChange, this, function(entity) {
+    Event.subscribe(EntityHealth.Events.onChange, this, function(entity) {
         if (!isServer) {
             var sprite = entity.drawable.sprites["healthbar"];
             if (!sprite) return;
@@ -202,7 +202,7 @@ World.prototype.initializeEvents = function() {
         }
     }.bind(this));
 
-    Event.subscribe(Health.Events.onDeath, this, function(entity) {
+    Event.subscribe(EntityHealth.Events.onDeath, this, function(entity) {
         if (!entity.isDead) {
             entity.isDead = true;
             this.entityWorld.remove(entity);
@@ -215,7 +215,7 @@ World.prototype.initializeEvents = function() {
         });
     }.bind(this));
 
-    Event.subscribe(Interactable.Events.onInteract, this, function(interactableEntity, interactingEntity) {
+    Event.subscribe(EntityInteractable.Events.onInteract, this, function(interactableEntity, interactingEntity) {
         //console.log(interactingEntity.id + " is now interacting with " + interactableEntity.id);
         if (!isServer) {
             if (global.playerEntity && global.playerEntity.id == interactingEntity.id) {
@@ -231,7 +231,7 @@ World.prototype.initializeEvents = function() {
         }
     });
 
-    Event.subscribe(Interactable.Events.onFinishInteract, this, function(interactableEntity, interactingEntity) {
+    Event.subscribe(EntityInteractable.Events.onFinishInteract, this, function(interactableEntity, interactingEntity) {
         //console.log(interactingEntity.id + " is no longer interacting with " + interactableEntity.id);
         if (!isServer) {
             if (global.playerEntity && global.playerEntity.id == interactingEntity.id) {
@@ -280,6 +280,6 @@ World.prototype.initializeEvents = function() {
 }
 
 World.prototype.destroy = function() {
-    Event.unsubscribeAll(Health.Events, this);
-    Event.unsubscribeAll(Projectile.Events, this);
+    Event.unsubscribeAll(EntityHealth.Events, this);
+    Event.unsubscribeAll(EntityProjectile.Events, this);
 }

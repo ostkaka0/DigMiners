@@ -3,39 +3,39 @@ import v2 from "Engine/Core/v2.js";
 
 import Sprite from "Engine/Animation/Sprite.js";
 import BodyPart from "Engine/Animation/BodyPart.js";
-import PhysicsBody from "Game/Entity/PhysicsBody.js";
-import Movement from "Game/Entity/Movement.js";
-import Bodyparts from "Game/Entity/Bodyparts.js";
-import Drawable from "Game/Entity/Drawable.js";
-import NameComponent from "Game/Entity/NameComponent.js";
-import Team from "Game/Entity/Team.js";
-import Health from "Game/Entity/Health.js";
+import EntityPhysicsBody from "Game/Entity/PhysicsBody.js";
+import EntityMovement from "Game/Entity/Movement.js";
+import EntityBodyparts from "Game/Entity/Bodyparts.js";
+import EntityDrawable from "Game/Entity/Drawable.js";
+import EntityName from "Game/Entity/Name.js";
+import EntityTeam from "Game/Entity/Team.js";
+import EntityHealth from "Game/Entity/Health.js";
 import EntityAmmo from "Game/Entity/Ammo.js";
-import Inventory from "Game/Entity/Inventory.js";
-import EquippedItems from "Game/Entity/EquippedItems.js";
-import PotionEffects from "Game/Entity/PotionEffects.js";
-import ControlledByPlayer from "Game/Entity/ControlledByPlayer.js";
+import EntityInventory from "Game/Entity/Inventory.js";
+import EntityEquippedItems from "Game/Entity/EquippedItems.js";
+import EntityPotionEffects from "Game/Entity/PotionEffects.js";
+import EntityControlledByPlayer from "Game/Entity/ControlledByPlayer.js";
 
-import Interacter from "Game/Entity/Interacter.js";
+import EntityInteracter from "Game/Entity/Interacter.js";
 
 /*export var */var entityTemplatePlayerZombie = function(playerId, entityId, name, pos, playerClass) {
-    var entity = entityTemplateZombie(entityId, pos, Team.Enum.Zombie);
+    var entity = entityTemplateZombie(entityId, pos, EntityTeam.Enum.Zombie);
     entity.behaviourContainer = undefined;
-    entity.controlledByPlayer = new ControlledByPlayer(playerId);
-    entity.nameComponent = new NameComponent(name);
+    entity.controlledByPlayer = new EntityControlledByPlayer(playerId);
+    entity.name = new EntityName(name);
     return entity;
 }
 
 export default function(playerId, entityId, name, playerClass, teamId) {
     var entity = {};
-    entity.controlledByPlayer = new ControlledByPlayer(playerId);
-    entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.001, 20.0, 1.0, 0.45);
-    entity.movement = new Movement(playerClass.speed * 30.0);
-    entity.nameComponent = new NameComponent(name);
-    entity.inventory = Inventory.createInventory(entityId, 10, 1);
-    entity.equippedItems = new EquippedItems();
-    entity.potionEffects = new PotionEffects();
-    entity.interacter = new Interacter(); // Server only used component
+    entity.controlledByPlayer = new EntityControlledByPlayer(playerId);
+    entity.physicsBody = new EntityPhysicsBody(v2.create(0, 0), 0.001, 20.0, 1.0, 0.45);
+    entity.movement = new EntityMovement(playerClass.speed * 30.0);
+    entity.name = new EntityName(name);
+    entity.inventory = EntityInventory.createInventory(entityId, 10, 1);
+    entity.equippedItems = new EntityEquippedItems();
+    entity.potionEffects = new EntityPotionEffects();
+    entity.interacter = new EntityInteracter(); // Server only used component
 
     var teamEnum = teamId;
     var feetSprite = new Sprite("feet.png");
@@ -43,8 +43,8 @@ export default function(playerId, entityId, name, playerClass, teamId) {
     var leftArmSprite = new Sprite("leftArm.png");
     var headSprite = new Sprite("head.png");
     var strHatSprite = "";
-    if (teamEnum == Team.Enum.Blue) strHatSprite = "egg.png";
-    if (teamEnum == Team.Enum.Red) strHatSprite = "bigEgg.png";
+    if (teamEnum == EntityTeam.Enum.Blue) strHatSprite = "egg.png";
+    if (teamEnum == EntityTeam.Enum.Red) strHatSprite = "bigEgg.png";
     var hatSprite = new Sprite(strHatSprite);
 
     // Order of bodyparts is draw order
@@ -60,12 +60,12 @@ export default function(playerId, entityId, name, playerClass, teamId) {
         "hat": new BodyPart(hatSprite, 1, 0, 0, null, "player")
     };
 
-    entity.bodyparts = new Bodyparts(bodyparts);
-    entity.drawable = new Drawable(1);
+    entity.bodyparts = new EntityBodyparts(bodyparts);
+    entity.drawable = new EntityDrawable(1);
     var healthbarSprite = new Sprite("healthbar.png", null, false);
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
-    entity.health = new Health(playerClass.health, playerClass.health, playerClass.armor);
-    entity.team = new Team(teamEnum);
+    entity.health = new EntityHealth(playerClass.health, playerClass.health, playerClass.armor);
+    entity.team = new EntityTeam(teamEnum);
     entity.ammo = new EntityAmmo();
 
     playerClass.weapons.forEach(function(weapon) {

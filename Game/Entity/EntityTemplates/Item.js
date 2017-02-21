@@ -3,17 +3,17 @@ import v2 from "Engine/Core/v2.js";
 
 import Config from "Game/Config.js";
 import ItemRegister from "Engine/Register/Item.js"
-import PhysicsBody from "Game/Entity/PhysicsBody.js";
-import Bodyparts from "Game/Entity/Bodyparts.js";
-import Drawable from "Game/Entity/Drawable.js";
+import EntityPhysicsBody from "Game/Entity/PhysicsBody.js";
+import EntityBodyparts from "Game/Entity/Bodyparts.js";
+import EntityDrawable from "Game/Entity/Drawable.js";
 import Sprite from "Engine/Animation/Sprite.js";
 import BodyPart from "Engine/Animation/BodyPart.js";
 
 export default function(itemId, amount) {
     var entity = {};
-    entity.physicsBody = new PhysicsBody(v2.create(0, 0), 0.01);
+    entity.physicsBody = new EntityPhysicsBody(v2.create(0, 0), 0.01);
 
-    entity.item = new ItemComponent(itemId, amount);
+    entity.item = new EntityItem(itemId, amount);
 
     var itemType = ItemRegister[itemId];
     var bodySprite = new Sprite(itemType.name);
@@ -21,8 +21,8 @@ export default function(itemId, amount) {
         "body": new BodyPart(bodySprite, 0, 0, 0),
         "text": new BodyPart(bodySprite, 0, 0, 0)
     };
-    entity.bodyparts = new Bodyparts(bodyparts);
-    entity.drawable = new Drawable(0);
+    entity.bodyparts = new EntityBodyparts(bodyparts);
+    entity.drawable = new EntityDrawable(0);
 
     return entity;
 }

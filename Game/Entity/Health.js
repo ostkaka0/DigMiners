@@ -2,33 +2,33 @@ import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 import EntityRegister from "Engine/Register/Entity.js";
 
-var Health = function(health, maxHealth, armor) {
+var EntityHealth = function(health, maxHealth, armor) {
     this.health = health;
     this.maxHealth = maxHealth;
     this.armor = armor;
 }
-Health.Events = {};
-Health.Events.onChange = [];
-Health.Events.onDeath = [];
-export default Health;
-EntityRegister.push(Health);
+EntityHealth.Events = {};
+EntityHealth.Events.onChange = [];
+EntityHealth.Events.onDeath = [];
+export default EntityHealth;
+EntityRegister.push(EntityHealth);
 
-Health.prototype.name = health.name; function health() { };
+EntityHealth.prototype.name = health.name; function health() { };
 
-Health.prototype.serialize = function(byteArray, index) {
+EntityHealth.prototype.serialize = function(byteArray, index) {
     Serialize.int32(byteArray, index, this.health);
     Serialize.int32(byteArray, index, this.maxHealth);
 }
 
-Health.prototype.deserialize = function(byteArray, index) {
+EntityHealth.prototype.deserialize = function(byteArray, index) {
     this.health = Deserialize.int32(byteArray, index);
     this.maxHealth = Deserialize.int32(byteArray, index);
 }
 
-Health.prototype.getSerializationSize = function() {
+EntityHealth.prototype.getSerializationSize = function() {
     return 8;
 }
 
-Health.prototype.destroy = function(entity) {
+EntityHealth.prototype.destroy = function(entity) {
 
 }

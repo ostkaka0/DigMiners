@@ -6,7 +6,7 @@ import SpriteContainer from "Engine/Animation/SpriteContainer.js";
 import Sprite from "Engine/Animation/Sprite.js";
 import EntityRegister from "Engine/Register/Entity.js";
 
-var Drawable = function(zindex) {
+var EntityDrawable = function(zindex) {
     this.sprites = {};
     this.zindex = (!zindex ? 0 : zindex);
     if (isServer)
@@ -15,12 +15,12 @@ var Drawable = function(zindex) {
     this.container = new SpriteContainer();
     zindices[this.zindex].add(this.container);
 }
-export default Drawable
-EntityRegister.push(Drawable);
+export default EntityDrawable
+EntityRegister.push(EntityDrawable);
 
-Drawable.prototype.name = drawable.name; function drawable() { };
+EntityDrawable.prototype.name = drawable.name; function drawable() { };
 
-Drawable.prototype.serialize = function(byteArray, index) {
+EntityDrawable.prototype.serialize = function(byteArray, index) {
     Serialize.int32(byteArray, index, this.zindex);
 
     Serialize.int32(byteArray, index, Object.keys(this.sprites).length);
@@ -34,7 +34,7 @@ Drawable.prototype.serialize = function(byteArray, index) {
     }
 }
 
-Drawable.prototype.deserialize = function(byteArray, index, gameData) {
+EntityDrawable.prototype.deserialize = function(byteArray, index, gameData) {
     this.zindex = Deserialize.int32(byteArray, index);
     this.zindex = (!this.zindex ? 0 : this.zindex);
     if (!isServer) {
@@ -63,7 +63,7 @@ Drawable.prototype.deserialize = function(byteArray, index, gameData) {
     }
 }
 
-Drawable.prototype.getSerializationSize = function() {
+EntityDrawable.prototype.getSerializationSize = function() {
     var size = 8;
     for (var sprite in this.sprites) {
         size += Serialize.utf8Size(sprite);
@@ -74,12 +74,12 @@ Drawable.prototype.getSerializationSize = function() {
     return size;
 }
 
-Drawable.prototype.destroy = function(entity) {
+EntityDrawable.prototype.destroy = function(entity) {
     this.remove(entity.bodyparts.bodyparts);
 }
 
 // Add a sprite that follows this drawable. For example, a healthbar.
-Drawable.prototype.addSprite = function(name, sprite, offset, rotateWithBody) {
+EntityDrawable.prototype.addSprite = function(name, sprite, offset, rotateWithBody) {
     if (this.sprites[name])
         this.removeSprite(name);
     this.sprites[name] = sprite;
@@ -89,7 +89,7 @@ Drawable.prototype.addSprite = function(name, sprite, offset, rotateWithBody) {
         this.container.add(this.sprites[name]);
 }
 
-Drawable.prototype.removeSprite = function(name) {
+EntityDrawable.prototype.removeSprite = function(name) {
     var sprite = this.sprites[name];
     if (sprite) {
         if (!isServer)
@@ -98,7 +98,7 @@ Drawable.prototype.removeSprite = function(name) {
     }
 }
 
-Drawable.prototype.positionSprites = function(x, y, angle) {
+EntityDrawable.prototype.positionSprites = function(x, y, angle) {
     if (isServer)
         return;
 
@@ -111,13 +111,13 @@ Drawable.prototype.positionSprites = function(x, y, angle) {
     }
 }
 
-Drawable.prototype.positionAll = function(x, y, rotation, bodyparts) {
+EntityDrawable.prototype.positionAll = function(x, y, rotation, bodyparts) {
     this.positionSprites(x, y, rotation);
     if (bodyparts)
         bodyparts.positionBodyparts(x, y, rotation);
 }
 
-Drawable.prototype.setBodypartSprite = function(bodypart, sprite) {
+EntityDrawable.prototype.setBodypartSprite = function(bodypart, sprite) {
     var index = -1;
     if (!isServer && !bodypart.sprite.fake)
         index = this.container.remove(bodypart.sprite);
@@ -133,7 +133,7 @@ Drawable.prototype.setBodypartSprite = function(bodypart, sprite) {
     }
 }
 
-Drawable.prototype.initializeBodyparts = function(bodyparts) {
+EntityDrawable.prototype.initializeBodyparts = function(bodyparts) {
     // Add bodypart sprite to world
     for (var key in bodyparts) {
         var bodypart = bodyparts[key];
@@ -141,7 +141,7 @@ Drawable.prototype.initializeBodyparts = function(bodyparts) {
     }
 }
 
-Drawable.prototype.remove = function(bodyparts) {
+EntityDrawable.prototype.remove = function(bodyparts) {
     for (var sprite in this.sprites) {
         var sprite = this.sprites[sprite];
         if (!isServer)

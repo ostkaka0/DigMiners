@@ -3,26 +3,26 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 
 import EntityRegister from "Engine/Register/Entity.js";
 
-var ControlledByPlayer = function(playerId) {
+var EntityControlledByPlayer = function(playerId) {
     this.playerId = playerId;
 }
-export default ControlledByPlayer
-EntityRegister.push(ControlledByPlayer);
+export default EntityControlledByPlayer
+EntityRegister.push(EntityControlledByPlayer);
 
-ControlledByPlayer.prototype.name = controlledByPlayer.name; function controlledByPlayer() { };
+EntityControlledByPlayer.prototype.name = controlledByPlayer.name; function controlledByPlayer() { };
 
-ControlledByPlayer.prototype.serialize = function(byteArray, index) {
+EntityControlledByPlayer.prototype.serialize = function(byteArray, index) {
     Serialize.int32(byteArray, index, this.playerId);
 }
 
-ControlledByPlayer.prototype.deserialize = function(byteArray, index) {
+EntityControlledByPlayer.prototype.deserialize = function(byteArray, index) {
     this.playerId = Deserialize.int32(byteArray, index);
 }
 
-ControlledByPlayer.prototype.getSerializationSize = function() {
+EntityControlledByPlayer.prototype.getSerializationSize = function() {
     return 4;
 }
 
-ControlledByPlayer.prototype.destroy = function(entity) {
+EntityControlledByPlayer.prototype.destroy = function(entity) {
 
 }

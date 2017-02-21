@@ -3,7 +3,7 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 
 import EntityRegister from "Engine/Register/Entity.js";
 
-var Teams = {
+var EntityTeams = {
     None: 0,
     Human: 1,
     Zombie: 2,
@@ -13,23 +13,23 @@ var Teams = {
     Brown: 6,
 }
 
-var Team = function(value) {
+var EntityTeam = function(value) {
     this.value = value;
 }
-export default Team
-EntityRegister.push(Team);
-Team.Enum = Teams
+export default EntityTeam
+EntityRegister.push(EntityTeam);
+EntityTeam.Enum = EntityTeams;
 
-Team.prototype.name = team.name; function team() { };
+EntityTeam.prototype.name = team.name; function team() { };
 
-Team.prototype.serialize = function(byteArray, index) {
+EntityTeam.prototype.serialize = function(byteArray, index) {
     Serialize.int32(byteArray, index, this.value);
 }
 
-Team.prototype.deserialize = function(byteArray, index) {
+EntityTeam.prototype.deserialize = function(byteArray, index) {
     this.value = Deserialize.int32(byteArray, index);
 }
 
-Team.prototype.getSerializationSize = function() {
+EntityTeam.prototype.getSerializationSize = function() {
     return 4;
 }

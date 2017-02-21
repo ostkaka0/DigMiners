@@ -5,7 +5,7 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 import Config from "Game/Config.js";
 import EntityRegister from "Engine/Register/Entity.js";
 
-var Projectile = function(pos, angle, speed, maxDistance, projectileType, shooterEntityId) {
+var EntityProjectile = function(pos, angle, speed, maxDistance, projectileType, shooterEntityId) {
     this.pos = pos;
     this.angle = angle;
     this.speed = speed;
@@ -27,17 +27,17 @@ var Projectile = function(pos, angle, speed, maxDistance, projectileType, shoote
         this.posClientOld = [0, 0];
     }
 }
-export default Projectile;
-EntityRegister.push(Projectile);
-Projectile.Events = {};
-Projectile.Events.onHit = [];
-Projectile.Events.onHitEntity = [];
-Projectile.Events.onHitBlock = [];
-Projectile.Events.onHitTile = [];
+export default EntityProjectile;
+EntityRegister.push(EntityProjectile);
+EntityProjectile.Events = {};
+EntityProjectile.Events.onHit = [];
+EntityProjectile.Events.onHitEntity = [];
+EntityProjectile.Events.onHitBlock = [];
+EntityProjectile.Events.onHitTile = [];
 
-Projectile.prototype.name = projectile.name; function projectile() { };
+EntityProjectile.prototype.name = projectile.name; function projectile() { };
 
-Projectile.prototype.serialize = function(byteArray, index) {
+EntityProjectile.prototype.serialize = function(byteArray, index) {
     Serialize.v2(byteArray, index, this.pos);
     Serialize.fix(byteArray, index, this.angle);
     Serialize.fix(byteArray, index, this.speed);
@@ -45,7 +45,7 @@ Projectile.prototype.serialize = function(byteArray, index) {
     Serialize.int8(byteArray, index, this.projectileType.id);
 }
 
-Projectile.prototype.deserialize = function(byteArray, index) {
+EntityProjectile.prototype.deserialize = function(byteArray, index) {
     this.pos = Deserialize.v2(byteArray, index);
     this.startPos = v2.clone(this.pos);
     this.posOld = v2.clone(this.pos);
@@ -57,11 +57,11 @@ Projectile.prototype.deserialize = function(byteArray, index) {
     this.posClientOld = v2.create(0, 0);
 }
 
-Projectile.prototype.getSerializationSize = function() {
+EntityProjectile.prototype.getSerializationSize = function() {
     return 21;
 }
 
-Projectile.prototype.destroy = function(entity) {
+EntityProjectile.prototype.destroy = function(entity) {
     if (!isServer)
         zindices[2].remove(entity.projectile.sprite);
 }

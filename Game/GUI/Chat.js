@@ -105,7 +105,7 @@ var Chat = function() {
     }.bind(this));
 
     global.gameData.world.events.on("playerSpawned", function(entity, player) {
-        this.write(entity.nameComponent.entityName + " spawned.");
+        this.write(entity.name.entityName + " spawned.");
     }.bind(this));
 
     this.blurAll = function() {

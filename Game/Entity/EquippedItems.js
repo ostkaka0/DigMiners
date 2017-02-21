@@ -4,15 +4,15 @@ import Config from "Game/Config.js";
 import ItemRegister from "Engine/Register/Item.js"
 import EntityRegister from "Engine/Register/Entity.js";
 
-var EquippedItems = function(items) {
+var EntityEquippedItems = function(items) {
     this.items = (items ? items : {});
 }
-export default EquippedItems
-EntityRegister.push(EquippedItems);
+export default EntityEquippedItems
+EntityRegister.push(EntityEquippedItems);
 
-EquippedItems.prototype.name = equippedItems.name; function equippedItems() { };
+EntityEquippedItems.prototype.name = equippedItems.name; function equippedItems() { };
 
-EquippedItems.prototype.serialize = function(byteArray, index) {
+EntityEquippedItems.prototype.serialize = function(byteArray, index) {
     //todo: make sure all equipped items are not undefined
     var keys = Object.keys(this.items);
     Serialize.int32(byteArray, index, keys.length);
@@ -23,7 +23,7 @@ EquippedItems.prototype.serialize = function(byteArray, index) {
     }.bind(this));
 }
 
-EquippedItems.prototype.deserialize = function(byteArray, index) {
+EntityEquippedItems.prototype.deserialize = function(byteArray, index) {
     var itemsLength = Deserialize.int32(byteArray, index);
     this.items = {};
     for (var i = 0; i < itemsLength; ++i) {
@@ -33,7 +33,7 @@ EquippedItems.prototype.deserialize = function(byteArray, index) {
     }
 }
 
-EquippedItems.prototype.getSerializationSize = function() {
+EntityEquippedItems.prototype.getSerializationSize = function() {
     var size = 4;
     var keys = Object.keys(this.items);
     keys.forEach(function(key) {
@@ -43,6 +43,6 @@ EquippedItems.prototype.getSerializationSize = function() {
     return size;
 }
 
-EquippedItems.prototype.destroy = function(entity) {
+EntityEquippedItems.prototype.destroy = function(entity) {
 
 }

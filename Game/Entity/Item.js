@@ -2,31 +2,31 @@ import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 import EntityRegister from "Engine/Register/Entity.js";
 
-var ItemComponent = function(itemId, amount) {
+var EntityItem = function(itemId, amount) {
     this.itemId = itemId;
     this.amount = amount;
     this.dropped = new Date();
 }
-export default ItemComponent
-EntityRegister.push(ItemComponent);
+export default EntityItem
+EntityRegister.push(EntityItem);
 
-ItemComponent.prototype.name = item.name; function item() { };
+EntityItem.prototype.name = item.name; function item() { };
 
-ItemComponent.prototype.serialize = function(byteArray, index) {
+EntityItem.prototype.serialize = function(byteArray, index) {
     Serialize.int32(byteArray, index, this.itemId);
     Serialize.int32(byteArray, index, this.amount);
 }
 
-ItemComponent.prototype.deserialize = function(byteArray, index) {
+EntityItem.prototype.deserialize = function(byteArray, index) {
     this.itemId = Deserialize.int32(byteArray, index);
     this.amount = Deserialize.int32(byteArray, index);
     this.dropped = new Date();
 }
 
-ItemComponent.prototype.getSerializationSize = function() {
+EntityItem.prototype.getSerializationSize = function() {
     return 8;
 }
 
-ItemComponent.prototype.destroy = function(entity) {
+EntityItem.prototype.destroy = function(entity) {
 
 }

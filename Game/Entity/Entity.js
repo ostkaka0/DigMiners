@@ -1,7 +1,7 @@
 
 
 import Items from "Game/Items.js";
-import Team from "Game/Entity/Team.js";
+import EntityTeam from "Game/Entity/Team.js";
 import CommandEntityHealthChange from "Game/Command/CommandEntityHealthChange.js";
 
 var Entity = {}; //module.exports;
@@ -72,7 +72,7 @@ Entity.canUseTool = function(entity, itemType) {
 Entity.hurt = function(entity, attacker, damage, armorPenentration) {
     if (!isServer)
         return false;
-    if (attacker && entity.id != attacker.id && entity.team && attacker.team && entity.team.value != Team.Enum.None && entity.team.value == attacker.team.value)
+    if (attacker && entity.id != attacker.id && entity.team && attacker.team && entity.team.value != EntityTeam.Enum.None && entity.team.value == attacker.team.value)
         return false;
     if (attacker && attacker.movement)
         damage *= attacker.movement.damageMultiplier;
