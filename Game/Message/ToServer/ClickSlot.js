@@ -8,9 +8,9 @@ import IndexCounter from "Engine/Core/IndexCounter.js";
 import Config from "Game/Config.js";
 import ItemRegister from "Engine/Register/Item.js"
 import MessageRegister from "Engine/Register/Message.js";;
-import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
-import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
-import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
+import CommandEntityEquipItem from "Game/Command/EntityEquipItem.js";
+import CommandEntitySpawn from "Game/Command/EntitySpawn.js";
+import CommandEntityInventory from "Game/Command/EntityInventory.js";
 
 var MessageRequestClickSlot = function(inventoryId, slotId, clickType) {
     this.inventoryId = inventoryId;

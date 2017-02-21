@@ -7,8 +7,8 @@ import Config from "Game/Config.js";
 
 import Entity from "Game/Entity/Entity.js";
 
-import CommandDig from "Game/Command/CommandDig.js";
-import CommandBlockStrength from "Game/Command/CommandBlockStrength.js";
+import CommandDig from "Game/Command/Dig.js";
+import CommandBlockStrength from "Game/Command/BlockStrength.js";
 
 var ExplosionFunctions = {};
 export default ExplosionFunctions;

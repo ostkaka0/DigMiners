@@ -10,22 +10,22 @@ import ParticleFunctions from "Game/ParticleFunctions.js";
 import PotionEffectTypes from "Game/PotionEffectTypes.js";
 
 import CommandRegister from "Engine/Register/Command.js";
-import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
-import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
-import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
-import CommandCollisions from "Game/Command/CommandCollisions.js";
-import CommandEntityInteractEntity from "Game/Command/CommandEntityInteractEntity.js";
-import CommandPlayerJoin from "Game/Command/CommandPlayerJoin.js";
-import CommandPlayerLeave from "Game/Command/CommandPlayerLeave.js";
+import CommandEntitySpawn from "Game/Command/EntitySpawn.js";
+import CommandEntityInventory from "Game/Command/EntityInventory.js";
+import CommandEntityEquipItem from "Game/Command/EntityEquipItem.js";
+import CommandCollisions from "Game/Command/Collisions.js";
+import CommandEntityInteractEntity from "Game/Command/EntityInteractEntity.js";
+import CommandPlayerJoin from "Game/Command/PlayerJoin.js";
+import CommandPlayerLeave from "Game/Command/PlayerLeave.js";
 
 import MessageRegister from "Engine/Register/Message.js";
-import MessageCommands from "Game/Message/ToClient/MessageCommands.js";
-import MessageRequestKeyStatusUpdate from "Game/Message/ToServer/MessageRequestKeyStatusUpdate.js";
-import MessageRequestPlaceBlock from "Game/Message/ToServer/MessageRequestPlaceBlock.js";
-import MessageRequestClickBlock from "Game/Message/ToServer/MessageRequestClickBlock.js";
-import MessageRequestRotate from "Game/Message/ToServer/MessageRequestRotate.js";
-import MessageRequestItemPickup from "Game/Message/ToServer/MessageRequestItemPickup.js";
-import MessageRequestSpawn from "Game/Message/ToServer/MessageRequestSpawn.js";
+import MessageCommands from "Game/Message/ToClient/Commands.js";
+import MessageRequestKeyStatusUpdate from "Game/Message/ToServer/KeyStatusUpdate.js";
+import MessageRequestPlaceBlock from "Game/Message/ToServer/PlaceBlock.js";
+import MessageRequestClickBlock from "Game/Message/ToServer/ClickBlock.js";
+import MessageRequestRotate from "Game/Message/ToServer/Rotate.js";
+import MessageRequestItemPickup from "Game/Message/ToServer/ItemPickup.js";
+import MessageRequestSpawn from "Game/Message/ToServer/Spawn.js";
 
 import EntityRegister from "Engine/Register/Entity.js";
 import EntityPhysicsBody from "Game/Entity/PhysicsBody.js";
@@ -47,9 +47,9 @@ import EntityChest from "Game/Entity/Chest.js";
 import EntityInteractable from "Game/Entity/Interactable.js";
 import EntityInteracter from "Game/Entity/Interacter.js";
 
-import GameModeZombieInvasion from "Game/GameMode/GameModeZombieInvasion.js";
-import GameModeSurvivalWar from "Game/GameMode/GameModeSurvivalWar.js";
-import GameModeBaseWar from "Game/GameMode/GameModeBaseWar.js";
+import GameModeZombieInvasion from "Game/GameMode/ZombieInvasion.js";
+import GameModeSurvivalWar from "Game/GameMode/SurvivalWar.js";
+import GameModeBaseWar from "Game/GameMode/BaseWar.js";
 
 var Config = {};//exports;
 export default Config

@@ -2,9 +2,9 @@ import fix from "Engine/Core/Fix.js";
 import v2 from "Engine/Core/v2.js";
 
 
-import CommandEntityMove from "Game/Command/CommandEntityMove.js";
+import CommandEntityMove from "Game/Command/EntityMove.js";
 
-var RandomWalkBehaviour = function(entity) {
+var BehaviourRandomWalk = function(entity) {
     this.entity = entity;
     this.isWalking = false;
 
@@ -17,17 +17,17 @@ var RandomWalkBehaviour = function(entity) {
         [0, -1]
     ];
 }
-export default RandomWalkBehaviour
+export default BehaviourRandomWalk
 
-RandomWalkBehaviour.prototype.canRun = function() {
+BehaviourRandomWalk.prototype.canRun = function() {
     return true;
 }
 
-RandomWalkBehaviour.prototype.initialize = function() {
+BehaviourRandomWalk.prototype.initialize = function() {
 
 }
 
-RandomWalkBehaviour.prototype.run = function() {
+BehaviourRandomWalk.prototype.run = function() {
     var physicsBody = this.entity.physicsBody;
     if (!this.isWalking) {
         // Decide a direction to walk
@@ -47,10 +47,10 @@ RandomWalkBehaviour.prototype.run = function() {
     return true;
 }
 
-RandomWalkBehaviour.prototype.finish = function() {
+BehaviourRandomWalk.prototype.finish = function() {
 
 }
 
-RandomWalkBehaviour.prototype.destroy = function(entity) {
+BehaviourRandomWalk.prototype.destroy = function(entity) {
 
 }

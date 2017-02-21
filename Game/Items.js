@@ -21,15 +21,15 @@ import Config from "Game/Config.js";
 
 import ItemRegister from "Engine/Register/Item.js";
 
-import CommandBlockStrength from "Game/Command/CommandBlockStrength.js";
-import CommandEntityDig from "Game/Command/CommandEntityDig.js";
-import CommandProjectileSpawn from "Game/Command/CommandProjectileSpawn.js";
-import CommandEntityReloadWeapon from "Game/Command/CommandEntityReloadWeapon.js";
-import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
-import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
-import CommandEntityAnimate from "Game/Command/CommandEntityAnimate.js";
-import CommandParticles from "Game/Command/CommandParticles.js";
-import CommandEntityDestroy from "Game/Command/CommandEntityDestroy.js";
+import CommandBlockStrength from "Game/Command/BlockStrength.js";
+import CommandEntityDig from "Game/Command/EntityDig.js";
+import CommandProjectileSpawn from "Game/Command/ProjectileSpawn.js";
+import CommandEntityReloadWeapon from "Game/Command/EntityReloadWeapon.js";
+import CommandEntityInventory from "Game/Command/EntityInventory.js";
+import CommandEntitySpawn from "Game/Command/EntitySpawn.js";
+import CommandEntityAnimate from "Game/Command/EntityAnimate.js";
+import CommandParticles from "Game/Command/Particles.js";
+import CommandEntityDestroy from "Game/Command/EntityDestroy.js";
 
 var Items = {}; //module.exports;
 export default Items;

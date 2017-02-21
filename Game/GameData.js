@@ -16,7 +16,7 @@ import EntityRegister from "Engine/Register/Entity.js";
 import PlayerClass from "Game/PlayerClass.js";
 import Tiles from "Game/Tiles.js";
 import AnimationManager from "Engine/Animation/AnimationManager.js";
-import MessageChangeGameMode from "Game/Message/ToClient/MessageChangeGamemode.js";
+import MessageChangeGameMode from "Game/Message/ToClient/ChangeGamemode.js";
 
 global.gameData = {};
 global.gameData = global.gameData;

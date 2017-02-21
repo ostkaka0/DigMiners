@@ -4,8 +4,8 @@ import IndexCounter from "Engine/Core/IndexCounter.js";
 
 
 import MessageRegister from "Engine/Register/Message.js";
-import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
-import CommandPlayerOreInventory from "Game/Command/CommandPlayerOreInventory.js";
+import CommandEntityInventory from "Game/Command/EntityInventory.js";
+import CommandPlayerOreInventory from "Game/Command/PlayerOreInventory.js";
 
 var MessageRequestCraft = function(recipeId) {
     this.recipeId = recipeId;

@@ -7,9 +7,9 @@ import IndexCounter from "Engine/Core/IndexCounter.js";
 
 import Config from "Game/Config.js";
 import MessageRegister from "Engine/Register/Message.js";;
-import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
-import CommandPlayerOreInventory from "Game/Command/CommandPlayerOreInventory.js";
-import CommandEntityDestroy from "Game/Command/CommandEntityDestroy.js";
+import CommandEntityInventory from "Game/Command/EntityInventory.js";
+import CommandPlayerOreInventory from "Game/Command/PlayerOreInventory.js";
+import CommandEntityDestroy from "Game/Command/EntityDestroy.js";
 
 var MessageRequestItemPickup = function(entityId) {
     this.entityId = entityId;

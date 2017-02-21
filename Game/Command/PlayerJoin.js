@@ -5,8 +5,8 @@ import Config from "Game/Config.js";
 
 import CommandRegister from "Engine/Register/Command.js";
 import Player from "Game/Player.js";
-import MessageInit from "Game/Message/ToClient/MessageInit.js";
-import MessageChunk from "Game/Message/ToClient/MessageChunk.js";
+import MessageInit from "Game/Message/ToClient/Init.js";
+import MessageChunk from "Game/Message/ToClient/Chunk.js";
 
 var CommandPlayerJoin = function(playerId, entityId, playerName, socketId) {
     this.playerId = playerId;

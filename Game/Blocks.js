@@ -20,12 +20,12 @@ import PotionEffectTypes from "Game/PotionEffectTypes.js";
 import EntityInteractable from "Game/Entity/Interactable.js";
 import EntityDrawable from "Game/Entity/Drawable.js";
 import EntityProjectile from "Game/Entity/Projectile.js"
-import CommandPlaceBlock from "Game/Command/CommandPlaceBlock.js";
-import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
-import CommandBuild from "Game/Command/CommandBuild.js";
-import CommandBlockStrength from "Game/Command/CommandBlockStrength.js";
-import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
-import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
+import CommandPlaceBlock from "Game/Command/PlaceBlock.js";
+import CommandEntitySpawn from "Game/Command/EntitySpawn.js";
+import CommandBuild from "Game/Command/Build.js";
+import CommandBlockStrength from "Game/Command/BlockStrength.js";
+import CommandEntityInventory from "Game/Command/EntityInventory.js";
+import CommandEntityEquipItem from "Game/Command/EntityEquipItem.js";
 import entityTemplatesTurret from "Game/Entity/EntityTemplates/Turret.js";
 
 var Blocks = {}; //exports;

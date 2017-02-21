@@ -1,25 +1,25 @@
 
-var TurretIdleBehaviour = function(entity) {
+var BehaviourTurretIdle = function(entity) {
     this.entity = entity;
 }
-export default TurretIdleBehaviour
+export default BehaviourTurretIdle
 
-TurretIdleBehaviour.prototype.canRun = function() {
+BehaviourTurretIdle.prototype.canRun = function() {
     return true;
 }
 
-TurretIdleBehaviour.prototype.initialize = function() {
+BehaviourTurretIdle.prototype.initialize = function() {
 
 }
 
-TurretIdleBehaviour.prototype.run = function() {
+BehaviourTurretIdle.prototype.run = function() {
     return true;
 }
 
-TurretIdleBehaviour.prototype.finish = function() {
+BehaviourTurretIdle.prototype.finish = function() {
 
 }
 
-TurretIdleBehaviour.prototype.destroy = function(entity) {
+BehaviourTurretIdle.prototype.destroy = function(entity) {
 
 }

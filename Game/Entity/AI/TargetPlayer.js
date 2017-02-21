@@ -11,13 +11,13 @@ import Config from "Game/Config.js";
 
 import Items from "Game/Items.js";
 import EntityTeam from "Game/Entity/Team.js";
-import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
-import CommandKeyStatusUpdate from "Game/Command/CommandKeyStatusUpdate.js";
-import CommandEntityMove from "Game/Command/CommandEntityMove.js";
-import CommandEntityRotate from "Game/Command/CommandEntityRotate.js";
-import CommandEntityLookAtEntity from "Game/Command/CommandEntityLookAtEntity.js";
+import CommandEntityEquipItem from "Game/Command/EntityEquipItem.js";
+import CommandKeyStatusUpdate from "Game/Command/KeyStatusUpdate.js";
+import CommandEntityMove from "Game/Command/EntityMove.js";
+import CommandEntityRotate from "Game/Command/EntityRotate.js";
+import CommandEntityLookAtEntity from "Game/Command/EntityLookAtEntity.js";
 
-var TargetPlayerBehaviour = function(entity, maxRadius) {
+var BehaviourTargetPlayer = function(entity, maxRadius) {
     this.entity = entity;
     this.maxRadius = maxRadius;
     this.target = null;
@@ -31,9 +31,9 @@ var TargetPlayerBehaviour = function(entity, maxRadius) {
     this.isAiming = false;
     this.nextCanRunTickId = global.gameData.world.tickId;
 }
-export default TargetPlayerBehaviour
+export default BehaviourTargetPlayer
 
-TargetPlayerBehaviour.prototype.canRun = function() {
+BehaviourTargetPlayer.prototype.canRun = function() {
     if (global.gameData.world.tickId < this.nextCanRunTickId)
         return false;
     this.nextCanRunTickId = global.gameData.world.tickId + 40 + 40 * Math.random() >> 0;
@@ -46,7 +46,7 @@ TargetPlayerBehaviour.prototype.canRun = function() {
     return true;
 }
 
-TargetPlayerBehaviour.prototype.initialize = function() {
+BehaviourTargetPlayer.prototype.initialize = function() {
     this.isGunner = (this.entity.equippedItems.items["tool"] && this.entity.equippedItems.items["tool"].itemFunction == Items.Functions.RangedWeapon);
     if (!this.isGunner) {
         var slotId = this.entity.inventory.findTool(Items.Functions.RangedWeapon);
@@ -56,7 +56,7 @@ TargetPlayerBehaviour.prototype.initialize = function() {
     }
 }
 
-TargetPlayerBehaviour.prototype.run = function() {
+BehaviourTargetPlayer.prototype.run = function() {
     if (global.gameData.world.tickId % 2 != this.nextCanRunTickId % 2) return true;
 
     if (!this.target || this.target.isDead || !this.target.isActive) {
@@ -144,7 +144,7 @@ TargetPlayerBehaviour.prototype.run = function() {
     return true;
 }
 
-TargetPlayerBehaviour.prototype.finish = function() {
+BehaviourTargetPlayer.prototype.finish = function() {
     if (this.moving)
         sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.getPos()));
     if (this.spacebar)
@@ -158,11 +158,11 @@ TargetPlayerBehaviour.prototype.finish = function() {
     this.isAiming = false;
 }
 
-TargetPlayerBehaviour.prototype.destroy = function(entity) {
+BehaviourTargetPlayer.prototype.destroy = function(entity) {
 
 }
 
-TargetPlayerBehaviour.prototype.getTarget = function() {
+BehaviourTargetPlayer.prototype.getTarget = function() {
     var hasMovement = false;
     var shortestDistance = Number.MAX_VALUE;
     var shortestDistanceEntity = null;
@@ -199,7 +199,7 @@ TargetPlayerBehaviour.prototype.getTarget = function() {
     return shortestDistanceEntity;
 }
 
-TargetPlayerBehaviour.prototype.getAttackDistance = function(pos, dir) {
+BehaviourTargetPlayer.prototype.getAttackDistance = function(pos, dir) {
     if (this.isGunner) {
         // TODO: Raycast
         var stepLength = 0.5;
@@ -220,7 +220,7 @@ TargetPlayerBehaviour.prototype.getAttackDistance = function(pos, dir) {
 }
 
 
-TargetPlayerBehaviour.prototype.getAttackDotAngle = function() {
+BehaviourTargetPlayer.prototype.getAttackDotAngle = function() {
     if (this.entity.equippedItems.items["tool"] && this.entity.equippedItems.items["tool"].itemFunction == Items.Functions.RangedWeapon) {
         return 0.05;
     }

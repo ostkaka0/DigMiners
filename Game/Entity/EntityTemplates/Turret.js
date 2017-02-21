@@ -12,9 +12,9 @@ import EntityMovement from "Game/Entity/Movement.js";
 import EntityInventory from "Game/Entity/Inventory.js";
 import EntityEquippedItems from "Game/Entity/EquippedItems.js";
 import EntityPotionEffects from "Game/Entity/PotionEffects.js";
-import BehaviourContainer from "Game/Entity/AI/BehaviourContainer.js";
-import TurretBehaviour from "Game/Entity/AI/TurretBehaviour.js";
-import TurretIdleBehaviour from "Game/Entity/AI/TurretIdleBehaviour.js";
+import BehaviourContainer from "Game/Entity/AI/Container.js";
+import BehaviourTurret from "Game/Entity/AI/Turret.js";
+import BehaviourTurretIdle from "Game/Entity/AI/TurretIdle.js";
 
 export default function(entityId, pos, teamId) {
     var entity = {};
@@ -41,8 +41,8 @@ export default function(entityId, pos, teamId) {
     //entity.ammo = new EntityAmmo();
 
     entity.behaviourContainer = new BehaviourContainer();
-    entity.behaviourContainer.behaviours.push(new TurretBehaviour(entity, 10.0));
-    entity.behaviourContainer.behaviours.push(new TurretIdleBehaviour(entity));
+    entity.behaviourContainer.behaviours.push(new BehaviourTurret(entity, 10.0));
+    entity.behaviourContainer.behaviours.push(new BehaviourTurretIdle(entity));
 
     return entity;
 }

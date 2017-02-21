@@ -8,7 +8,7 @@ import Config from "Game/Config.js";
 import CommandRegister from "Engine/Register/Command.js";
 import Blocks from "Game/Blocks.js";
 import EntityBlockPlacer from "Game/Entity/BlockPlacer.js";
-import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
+import CommandEntitySpawn from "Game/Command/EntitySpawn.js";
 
 var CommandEntityBuild = function(entityId, x, y, blockId, type) {
     this.entityId = entityId;

@@ -2,7 +2,7 @@
 
 import Items from "Game/Items.js";
 import EntityTeam from "Game/Entity/Team.js";
-import CommandEntityHealthChange from "Game/Command/CommandEntityHealthChange.js";
+import CommandEntityHealthChange from "Game/Command/EntityHealthChange.js";
 
 var Entity = {}; //module.exports;
 export default Entity;

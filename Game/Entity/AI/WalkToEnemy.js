@@ -5,13 +5,13 @@ import TileWorld from "Engine/TileWorld.js";
 
 
 import EntityTeam from "Game/Entity/Team.js";
-import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
-import CommandKeyStatusUpdate from "Game/Command/CommandKeyStatusUpdate.js";
-import CommandEntityMove from "Game/Command/CommandEntityMove.js";
-import CommandEntityRotate from "Game/Command/CommandEntityRotate.js";
-import CommandEntityLookAtEntity from "Game/Command/CommandEntityLookAtEntity.js";
+import CommandEntityEquipItem from "Game/Command/EntityEquipItem.js";
+import CommandKeyStatusUpdate from "Game/Command/KeyStatusUpdate.js";
+import CommandEntityMove from "Game/Command/EntityMove.js";
+import CommandEntityRotate from "Game/Command/EntityRotate.js";
+import CommandEntityLookAtEntity from "Game/Command/EntityLookAtEntity.js";
 
-var WalkToEnemyBehaviour = function(entity, maxRadius) {
+var BehaviourWalkToEnemy = function(entity, maxRadius) {
     this.entity = entity;
     this.maxRadius = maxRadius;
     this.target = null;
@@ -19,9 +19,9 @@ var WalkToEnemyBehaviour = function(entity, maxRadius) {
     this.moving = false;
     this.nextCanRunTickId = global.gameData.world.tickId;
 }
-export default WalkToEnemyBehaviour;
+export default BehaviourWalkToEnemy;
 
-WalkToEnemyBehaviour.prototype.canRun = function() {
+BehaviourWalkToEnemy.prototype.canRun = function() {
     if (global.gameData.world.tickId < this.nextCanRunTickId)
         return false;
     this.nextCanRunTickId = global.gameData.world.tickId + 40 + 40 * Math.random() >> 0;
@@ -34,10 +34,10 @@ WalkToEnemyBehaviour.prototype.canRun = function() {
     return true;
 }
 
-WalkToEnemyBehaviour.prototype.initialize = function() {
+BehaviourWalkToEnemy.prototype.initialize = function() {
 }
 
-WalkToEnemyBehaviour.prototype.run = function() {
+BehaviourWalkToEnemy.prototype.run = function() {
     if (global.gameData.world.tickId < this.nextUpdateTickId) return true;
     this.nextUpdateTickId = global.gameData.world.tickId + 20;
 
@@ -67,18 +67,18 @@ WalkToEnemyBehaviour.prototype.run = function() {
     return true;
 }
 
-WalkToEnemyBehaviour.prototype.finish = function() {
+BehaviourWalkToEnemy.prototype.finish = function() {
     if (this.moving)
         sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.getPos()));
     this.target = null;
     this.moving = false;
 }
 
-WalkToEnemyBehaviour.prototype.destroy = function(entity) {
+BehaviourWalkToEnemy.prototype.destroy = function(entity) {
 
 }
 
-WalkToEnemyBehaviour.prototype.getTarget = function() {
+BehaviourWalkToEnemy.prototype.getTarget = function() {
     var shortestDistance = Number.MAX_VALUE;
     var shortestDistanceEntity = null;
     var bodies = [];

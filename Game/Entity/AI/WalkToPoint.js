@@ -4,26 +4,26 @@ import BlockWorld from "Engine/BlockWorld.js";
 import TileWorld from "Engine/TileWorld.js";
 
 
-import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
-import CommandKeyStatusUpdate from "Game/Command/CommandKeyStatusUpdate.js";
-import CommandEntityMove from "Game/Command/CommandEntityMove.js";
-import CommandEntityRotate from "Game/Command/CommandEntityRotate.js";
-import CommandEntityLookAtEntity from "Game/Command/CommandEntityLookAtEntity.js";
+import CommandEntityEquipItem from "Game/Command/EntityEquipItem.js";
+import CommandKeyStatusUpdate from "Game/Command/KeyStatusUpdate.js";
+import CommandEntityMove from "Game/Command/EntityMove.js";
+import CommandEntityRotate from "Game/Command/EntityRotate.js";
+import CommandEntityLookAtEntity from "Game/Command/EntityLookAtEntity.js";
 
-var WalkToPointBehaviour = function(entity, goalPoint, radius) {
+var BehaviourWalkToPoint = function(entity, goalPoint, radius) {
     this.entity = entity;
     this.goalPoint = goalPoint;
     this.radius = radius || 5.0;
     this.nextUpdateTickId = global.gameData.world.tickId;
     this.inverval = 20;
 }
-export default WalkToPointBehaviour;
+export default BehaviourWalkToPoint;
 
-WalkToPointBehaviour.prototype.canRun = function() {
+BehaviourWalkToPoint.prototype.canRun = function() {
     return (v2.distance(this.goalPoint, this.entity.physicsBody.getPos()) > this.radius);
 }
 
-WalkToPointBehaviour.prototype.initialize = function() {
+BehaviourWalkToPoint.prototype.initialize = function() {
     var physicsBody = this.entity.physicsBody;
     var dir = [0, 0];
     v2.sub(this.goalPoint, physicsBody.getPos(), dir);
@@ -32,7 +32,7 @@ WalkToPointBehaviour.prototype.initialize = function() {
     this.nextUpdateTickId = global.gameData.world.tickId + this.inverval;
 }
 
-WalkToPointBehaviour.prototype.run = function() {
+BehaviourWalkToPoint.prototype.run = function() {
     if (global.gameData.world.tickId < this.nextUpdateTickId)
         return true;
     this.nextUpdateTickId = global.gameData.world.tickId + this.inverval;
@@ -51,10 +51,10 @@ WalkToPointBehaviour.prototype.run = function() {
     return this.canRun();
 }
 
-WalkToPointBehaviour.prototype.finish = function() {
+BehaviourWalkToPoint.prototype.finish = function() {
     sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.getPos()));
 }
 
-WalkToPointBehaviour.prototype.destroy = function(entity) {
+BehaviourWalkToPoint.prototype.destroy = function(entity) {
 
 }

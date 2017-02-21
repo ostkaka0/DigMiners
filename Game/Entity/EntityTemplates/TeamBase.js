@@ -17,11 +17,11 @@ import EntityAmmo from "Game/Entity/Ammo.js";
 import EntityInventory from "Game/Entity/Inventory.js";
 import EntityEquippedItems from "Game/Entity/EquippedItems.js";
 import EntityPotionEffects from "Game/Entity/PotionEffects.js";
-import BehaviourContainer from "Game/Entity/AI/BehaviourContainer.js";
-import DigObstacleBehaviour from "Game/Entity/AI/DigObstacleBehaviour.js";
-import TargetPlayerBehaviour from "Game/Entity/AI/TargetPlayerBehaviour.js";
-import WalkToEnemyBehaviour from "Game/Entity/AI/WalkToEnemyBehaviour.js";
-import RandomWalkBehaviour from "Game/Entity/AI/RandomWalkBehaviour.js";
+import BehaviourContainer from "Game/Entity/AI/Container.js";
+import BehaviourDigObstacle from "Game/Entity/AI/DigObstacle.js";
+import BehaviourTargetPlayer from "Game/Entity/AI/TargetPlayer.js";
+import BehaviourWalkToEnemy from "Game/Entity/AI/WalkToEnemy.js";
+import BehaviourRandomWalk from "Game/Entity/AI/RandomWalk.js";
 
 import Items from "Game/Items.js";
 

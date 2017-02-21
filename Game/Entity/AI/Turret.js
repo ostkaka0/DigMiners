@@ -8,13 +8,13 @@ import Keys from "Engine/Keys.js";
 import Config from "Game/Config.js"
 import Items from "Game/Items.js";
 import EntityTeam from "Game/Entity/Team.js";
-import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
-import CommandKeyStatusUpdate from "Game/Command/CommandKeyStatusUpdate.js";
-import CommandEntityMove from "Game/Command/CommandEntityMove.js";
-import CommandEntityRotate from "Game/Command/CommandEntityRotate.js";
-import CommandEntityLookAtEntity from "Game/Command/CommandEntityLookAtEntity.js";
+import CommandEntityEquipItem from "Game/Command/EntityEquipItem.js";
+import CommandKeyStatusUpdate from "Game/Command/KeyStatusUpdate.js";
+import CommandEntityMove from "Game/Command/EntityMove.js";
+import CommandEntityRotate from "Game/Command/EntityRotate.js";
+import CommandEntityLookAtEntity from "Game/Command/EntityLookAtEntity.js";
 
-var TurretBehaviour = function(entity, maxRadius) {
+var BehaviourTurret = function(entity, maxRadius) {
     this.entity = entity;
     this.maxRadius = maxRadius;
     this.target = null;
@@ -26,9 +26,9 @@ var TurretBehaviour = function(entity, maxRadius) {
     this.isAiming = false;
     this.nextCanRunTickId = global.gameData.world.tickId;
 }
-export default TurretBehaviour
+export default BehaviourTurret
 
-TurretBehaviour.prototype.canRun = function() {
+BehaviourTurret.prototype.canRun = function() {
     if (global.gameData.world.tickId < this.nextCanRunTickId)
         return false;
     this.nextCanRunTickId = global.gameData.world.tickId + 20 + 5 * Math.random() >> 0;
@@ -41,7 +41,7 @@ TurretBehaviour.prototype.canRun = function() {
     return true;
 }
 
-TurretBehaviour.prototype.initialize = function() {
+BehaviourTurret.prototype.initialize = function() {
     if (!this.foundGun) {
         var slotId = this.entity.inventory.findTool(Items.Functions.RangedWeapon);
         this.foundGun = (slotId != -1);
@@ -50,7 +50,7 @@ TurretBehaviour.prototype.initialize = function() {
     }
 }
 
-TurretBehaviour.prototype.run = function() {
+BehaviourTurret.prototype.run = function() {
     if (global.gameData.world.tickId % 5 != this.nextCanRunTickId % 5) return true;
 
     if (!this.target || this.target.isDead || !this.target.isActive) {
@@ -103,7 +103,7 @@ TurretBehaviour.prototype.run = function() {
     return true;
 }
 
-TurretBehaviour.prototype.finish = function() {
+BehaviourTurret.prototype.finish = function() {
     if (this.spacebar)
         sendCommand(new CommandKeyStatusUpdate(this.entity.id, Keys.SPACEBAR, false, this.entity.physicsBody.getPos()));
     if (this.isAiming)
@@ -114,11 +114,11 @@ TurretBehaviour.prototype.finish = function() {
     this.isAiming = false;
 }
 
-TurretBehaviour.prototype.destroy = function(entity) {
+BehaviourTurret.prototype.destroy = function(entity) {
 
 }
 
-TurretBehaviour.prototype.getTarget = function() {
+BehaviourTurret.prototype.getTarget = function() {
     var hasMovement = false;
     var shortestDistance = Number.MAX_VALUE;
     var shortestDistanceEntity = null;
@@ -154,7 +154,7 @@ TurretBehaviour.prototype.getTarget = function() {
     return shortestDistanceEntity;
 }
 
-TurretBehaviour.prototype.getAttackDistance = function(pos, dir) {
+BehaviourTurret.prototype.getAttackDistance = function(pos, dir) {
     // TODO: Raycast
     var stepLength = 0.5;
     var dis = stepLength;
@@ -174,6 +174,6 @@ TurretBehaviour.prototype.getAttackDistance = function(pos, dir) {
 }
 
 
-TurretBehaviour.prototype.getAttackDotAngle = function() {
+BehaviourTurret.prototype.getAttackDotAngle = function() {
     return 0.05;
 }

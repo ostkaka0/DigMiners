@@ -22,11 +22,11 @@ import LoadingScreen from "Game/GUI/LoadingScreen.js";
 import DeathScreen from "Game/GUI/DeathScreen.js";
 import InventoryHUD from "Game/GUI/InventoryHUD.js";
 import EntityHealth from "Game/Entity/Health.js";
-import MessageRequestKeyStatusUpdate from "Game/Message/ToServer/MessageRequestKeyStatusUpdate.js";
-import MessageRequestPlaceBlock from "Game/Message/ToServer/MessageRequestPlaceBlock.js";
-import MessageRequestClickBlock from "Game/Message/ToServer/MessageRequestClickBlock.js";
-import MessageRequestRotate from "Game/Message/ToServer/MessageRequestRotate.js";
-import MessageRequestItemPickup from "Game/Message/ToServer/MessageRequestItemPickup.js";
+import MessageRequestKeyStatusUpdate from "Game/Message/ToServer/KeyStatusUpdate.js";
+import MessageRequestPlaceBlock from "Game/Message/ToServer/PlaceBlock.js";
+import MessageRequestClickBlock from "Game/Message/ToServer/ClickBlock.js";
+import MessageRequestRotate from "Game/Message/ToServer/Rotate.js";
+import MessageRequestItemPickup from "Game/Message/ToServer/ItemPickup.js";
 
 var canvas = document.getElementById("canvas");
 var spriteCanvas = document.getElementById("spriteCanvas");

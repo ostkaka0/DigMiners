@@ -3,8 +3,8 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 import Sprite from "Engine/Animation/Sprite.js";
 
 import Config from "Game/Config.js";
-import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
-import CommandPlaceBlock from "Game/Command/CommandPlaceBlock.js";
+import CommandEntityInventory from "Game/Command/EntityInventory.js";
+import CommandPlaceBlock from "Game/Command/PlaceBlock.js";
 
 import EntityRegister from "Engine/Register/Entity.js";
 

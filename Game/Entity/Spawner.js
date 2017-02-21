@@ -5,9 +5,9 @@ import v2 from "Engine/Core/v2.js";
 import Event from "Engine/Core/Event.js";
 
 import EntityTeam from "Game/Entity/Team.js";
-import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
-import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
-import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
+import CommandEntitySpawn from "Game/Command/EntitySpawn.js";
+import CommandEntityInventory from "Game/Command/EntityInventory.js";
+import CommandEntityEquipItem from "Game/Command/EntityEquipItem.js";
 import Items from "Game/Items.js";
 import EntityRegister from "Engine/Register/Entity.js";
 

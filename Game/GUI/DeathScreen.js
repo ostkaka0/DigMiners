@@ -3,7 +3,7 @@ import Config from "Game/Config.js";
 import Event from "Engine/Core/Event.js"
 
 import PlayerClass from "Game/PlayerClass.js";
-import MessageRequestSpawn from "Game/Message/ToServer/MessageRequestSpawn.js";
+import MessageRequestSpawn from "Game/Message/ToServer/Spawn.js";
 
 var DeathScreen = function() {
     this.width = 490;
