@@ -13,7 +13,7 @@ import Drawable from "Game/Entity/Drawable.js";
 import NameComponent from "Game/Entity/NameComponent.js";
 import Team from "Game/Entity/Team.js";
 import Health from "Game/Entity/Health.js";
-import Ammo from "Game/Entity/Ammo.js";
+import EntityAmmo from "Game/Entity/Ammo.js";
 import Inventory from "Game/Entity/Inventory.js";
 import EquippedItems from "Game/Entity/EquippedItems.js";
 import PotionEffects from "Game/Entity/PotionEffects.js";

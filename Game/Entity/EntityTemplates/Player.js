@@ -10,7 +10,7 @@ import Drawable from "Game/Entity/Drawable.js";
 import NameComponent from "Game/Entity/NameComponent.js";
 import Team from "Game/Entity/Team.js";
 import Health from "Game/Entity/Health.js";
-import Ammo from "Game/Entity/Ammo.js";
+import EntityAmmo from "Game/Entity/Ammo.js";
 import Inventory from "Game/Entity/Inventory.js";
 import EquippedItems from "Game/Entity/EquippedItems.js";
 import PotionEffects from "Game/Entity/PotionEffects.js";
@@ -66,7 +66,7 @@ export default function(playerId, entityId, name, playerClass, teamId) {
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
     entity.health = new Health(playerClass.health, playerClass.health, playerClass.armor);
     entity.team = new Team(teamEnum);
-    entity.ammo = new Ammo();
+    entity.ammo = new EntityAmmo();
 
     playerClass.weapons.forEach(function(weapon) {
         entity.inventory.addStaticItem(global.gameData, weapon.id);

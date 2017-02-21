@@ -8,18 +8,18 @@ import CommandPlaceBlock from "Game/Command/CommandPlaceBlock.js";
 
 import EntityRegister from "Engine/Register/Entity.js";
 
-var BlockPlacer = function(blockPos, blockId, duration, entityId) {
+var EntityBlockPlacer = function(blockPos, blockId, duration, entityId) {
     this.blockPos = blockPos;
     this.blockId = blockId;
     this.duration = duration;
     this.entityId = entityId;
 }
-export default BlockPlacer
-EntityRegister.push(BlockPlacer);
+export default EntityBlockPlacer
+EntityRegister.push(EntityBlockPlacer);
 
-BlockPlacer.prototype.name = blockPlacer.name; function blockPlacer() { };
+EntityBlockPlacer.prototype.name = blockPlacer.name; function blockPlacer() { };
 
-BlockPlacer.prototype.update = function(entity) {
+EntityBlockPlacer.prototype.update = function(entity) {
     this.duration--;
 
     if (!this.isInitialized) {
@@ -73,7 +73,7 @@ BlockPlacer.prototype.update = function(entity) {
     }
 }
 
-BlockPlacer.prototype.serialize = function(byteArray, index) {
+EntityBlockPlacer.prototype.serialize = function(byteArray, index) {
     Serialize.int32(byteArray, index, this.blockPos[0]);
     Serialize.int32(byteArray, index, this.blockPos[1]);
     Serialize.int32(byteArray, index, this.blockId);
@@ -81,13 +81,13 @@ BlockPlacer.prototype.serialize = function(byteArray, index) {
     Serialize.int32(byteArray, index, this.entityId);
 }
 
-BlockPlacer.prototype.deserialize = function(byteArray, index) {
+EntityBlockPlacer.prototype.deserialize = function(byteArray, index) {
     this.blockPos = [Deserialize.int32(byteArray, index), Deserialize.int32(byteArray, index)]
     this.blockId = Deserialize.int32(byteArray, index);
     this.duration = Deserialize.int32(byteArray, index);
     this.entityId = Deserialize.int32(byteArray, index);
 }
 
-BlockPlacer.prototype.getSerializationSize = function() {
+EntityBlockPlacer.prototype.getSerializationSize = function() {
     return 20;
 }
