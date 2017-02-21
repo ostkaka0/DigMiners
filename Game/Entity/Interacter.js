@@ -2,23 +2,23 @@ import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 import EntityRegister from "Engine/Register/Entity.js";
 
-var Interacter = function() {
+var EntityInteracter = function() {
     this.lastCheck = null;
     this.interacting = null;
 }
-export default Interacter
-EntityRegister.push(Interacter);
+export default EntityInteracter
+EntityRegister.push(EntityInteracter);
 
-Interacter.prototype.name = interacter.name; function interacter() { };
+EntityInteracter.prototype.name = interacter.name; function interacter() { };
 
-Interacter.prototype.serialize = function(byteArray, index) {
-
-}
-
-Interacter.prototype.deserialize = function(byteArray, index) {
+EntityInteracter.prototype.serialize = function(byteArray, index) {
 
 }
 
-Interacter.prototype.getSerializationSize = function() {
+EntityInteracter.prototype.deserialize = function(byteArray, index) {
+
+}
+
+EntityInteracter.prototype.getSerializationSize = function() {
     return 0;
 }

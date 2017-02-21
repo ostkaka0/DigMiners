@@ -6,7 +6,7 @@ import TileWorld from "Engine/TileWorld.js";
 
 import Config from "Game/Config.js";
 
-import Projectile  from "Game/Entity/Projectile.js";
+import EntityProjectile  from "Game/Entity/Projectile.js";
 
 var PROJECTILE_MAX_STEP_LENGTH = 0.125;
 
@@ -57,7 +57,7 @@ export var projectileEntitySimulate = function(entity, dt) {
             var mass = global.gameData.world.physicsWorld.getMass(bodies[j]);
             if (!hitEntity || (projectile.shooterEntityId && hitEntity.id == projectile.shooterEntityId)) continue;
             if (radius <= 0 || mass <= 0) continue;
-            Event.trigger(Projectile.Events.onHitEntity, entity, hitEntity, pos);
+            Event.trigger(EntityProjectile.Events.onHitEntity, entity, hitEntity, pos);
             projectile.hit = true;
             break;
         }
@@ -67,7 +67,7 @@ export var projectileEntitySimulate = function(entity, dt) {
         var blockType = Config.blockRegister[blockId];
         var isBulletSolid = (blockType.isBulletSolid == undefined || entity.projectile.projectileType.isExplosive) ? blockType.isSolid : blockType.isBulletSolid;
         if (blockId != 0 && isBulletSolid && v2.dot([Math.cos(projectile.angle), -Math.sin(projectile.angle)], [blockTilePos[0] + 0.5 - pos[0], blockTilePos[1] + 0.5 - pos[1]]) > 0.0) {
-            Event.trigger(Projectile.Events.onHitBlock, entity, blockTilePos);
+            Event.trigger(EntityProjectile.Events.onHitBlock, entity, blockTilePos);
             projectile.hit = true;
             break;
         }
@@ -76,7 +76,7 @@ export var projectileEntitySimulate = function(entity, dt) {
 
         var density = global.gameData.world.tileWorld.getDensity(blockTilePos);
         if (density >= 160) {
-            Event.trigger(Projectile.Events.onHitTile, entity, blockTilePos);
+            Event.trigger(EntityProjectile.Events.onHitTile, entity, blockTilePos);
             projectile.hit = true;
             break;
         }
@@ -86,7 +86,7 @@ export var projectileEntitySimulate = function(entity, dt) {
     }
 
     if (projectile.hit) {
-        Event.trigger(Projectile.Events.onHit, entity, v2.clone(pos));
+        Event.trigger(EntityProjectile.Events.onHit, entity, v2.clone(pos));
         if (!isServer && projectile.sprite) {
             projectile.sprite.anchor[0] = 1.0;
             if (!projectile.sprite.visible) {

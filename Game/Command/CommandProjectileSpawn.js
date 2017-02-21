@@ -7,7 +7,7 @@ import Sprite from "Engine/Animation/Sprite.js";
 import Config from "Game/Config.js";
 
 import CommandRegister from "Engine/Register/Command.js";
-import Projectile from "Game/Entity/Projectile.js";
+import EntityProjectile from "Game/Entity/Projectile.js";
 import {projectileEntitySimulate} from "Game/ProjectilePhysics.js";
 
 var CommandProjectileSpawn = function(entityId, pos, angle, speed, maxDistance, projectileType, shooterEntityId) {
@@ -27,7 +27,7 @@ CommandProjectileSpawn.prototype.execute = function() {
     if (global.gameData.world.entityWorld.objects[this.entityId])
         global.gameData.world.entityWorld.remove(global.gameData.world.entityWorld.objects[this.entityId]);
     var entity = {};
-    entity.projectile = new Projectile(this.pos, this.angle, this.speed, this.maxDistance, this.projectileType, this.shooterEntityId);
+    entity.projectile = new EntityProjectile(this.pos, this.angle, this.speed, this.maxDistance, this.projectileType, this.shooterEntityId);
     if (!isServer) {
         entity.projectile.sprite = new Sprite(entity.projectile.projectileType.textureName);
         entity.projectile.sprite.anchor[0] = 1.0;

@@ -37,7 +37,7 @@ MessageRequestKeyStatusUpdate.prototype.execute = function(gameData, player) {
                         sendCommand(new CommandEntityInteractEntity(entity.id, entity.interacter.interacting, false));
                         entity.interacter.interacting = null;
                     }
-                    if (Interactable.canInteract(targetEntity, entity)) {
+                    if (EntityInteractable.canInteract(targetEntity, entity)) {
                         sendCommand(new CommandEntityInteractEntity(entity.id, targetEntity.id, true));
                         entity.interacter.interacting = targetEntity.id;
                         entity.interacter.lastCheck = global.gameData.world.tickId;

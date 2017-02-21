@@ -9,7 +9,7 @@ import Entity from "Game/Entity/Entity.js";
 import CommandEntityBeginReloadWeapon from "Game/Command/CommandEntityBeginReloadWeapon.js";
 import EntityRegister from "Engine/Register/Entity.js";
 
-var Movement = function(speed, toolUseDuration, damageMultiplier, digHardnessMultiplier) {
+var EntityMovement = function(speed, toolUseDuration, damageMultiplier, digHardnessMultiplier) {
     this.keyStatuses = {};
     this.direction = v2.create(0, 0);
     this.rotationDirection = v2.create(0, 0);
@@ -32,16 +32,16 @@ var Movement = function(speed, toolUseDuration, damageMultiplier, digHardnessMul
     this.digHardnessMultiplier = (digHardnessMultiplier == null) ? 1.0 : digHardnessMultiplier;
     this.entityLookTarget = null;
 }
-export default Movement
-EntityRegister.push(Movement);
+export default EntityMovement
+EntityRegister.push(EntityMovement);
 
-Movement.prototype.name = movement.name; function movement() { };
+EntityMovement.prototype.name = movement.name; function movement() { };
 
-Movement.prototype.calcDigTickDuration = function(dt) {
+EntityMovement.prototype.calcDigTickDuration = function(dt) {
     return Math.round(1000.0 * this.toolUseDuration / dt);
 }
 
-Movement.prototype.serialize = function(byteArray, index) {
+EntityMovement.prototype.serialize = function(byteArray, index) {
     Serialize.v2(byteArray, index, this.direction);
     var keys = Object.keys(this.keyStatuses);
     Serialize.int32(byteArray, index, keys.length);
@@ -53,7 +53,7 @@ Movement.prototype.serialize = function(byteArray, index) {
     Serialize.fix(byteArray, index, this.speed);
 }
 
-Movement.prototype.deserialize = function(byteArray, index, gameData) {
+EntityMovement.prototype.deserialize = function(byteArray, index, gameData) {
     this.direction = Deserialize.v2(byteArray, index);
     var keyStatusesLength = Deserialize.int32(byteArray, index);
     this.keyStatuses = {};
@@ -66,21 +66,21 @@ Movement.prototype.deserialize = function(byteArray, index, gameData) {
     this.speed = Deserialize.fix(byteArray, index);
 }
 
-Movement.prototype.getSerializationSize = function() {
+EntityMovement.prototype.getSerializationSize = function() {
     return 16 + 2 * Object.keys(this.keyStatuses).length;
 }
 
-Movement.prototype.destroy = function(entity) {
+EntityMovement.prototype.destroy = function(entity) {
 
 }
 
-Movement.entityFunction = function(dt) {
+EntityMovement.entityFunction = function(dt) {
     global.gameData.world.entityWorld.objectArray.forEach(function(entity) {
         if (!entity || !entity.movement || !entity.physicsBody)
             return;
         var movement = entity.movement;
 
-        // Movement:
+        // EntityMovement:
         var normalized = v2.create(0, 0);
         v2.normalize(entity.movement.direction, normalized);
         v2.mul(entity.movement.speed, normalized, normalized);

@@ -38,7 +38,7 @@ MessageRequestSpawn.prototype.execute = function(gameData, player) {
     if (global.gameData.gameMode.createEntity) {
         entity = global.gameData.gameMode.createEntity(player, entityId);
     } else {
-        entity = entityTemplatePlayer(player.id, entityId, player.name, PlayerClass.Register[this.classId], Team.Enum.None);
+        entity = entityTemplatePlayer(player.id, entityId, player.name, PlayerClass.Register[this.classId], EntityTeam.Enum.None);
     }
 
     // Set spawn position

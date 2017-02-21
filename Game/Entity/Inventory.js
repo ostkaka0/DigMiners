@@ -5,21 +5,21 @@ import Config from "Game/Config.js";
 import ItemRegister from "Engine/Register/Item.js"
 import EntityRegister from "Engine/Register/Entity.js";
 
-var Inventory = function(inventoryId, entityId, width, height) {
+var EntityInventory = function(inventoryId, entityId, width, height) {
     this.items = [];
     this.inventoryId = inventoryId;
     this.entityId = entityId;
     this.width = width;
     this.height = height;
 }
-export default Inventory
-EntityRegister.push(Inventory);
+export default EntityInventory
+EntityRegister.push(EntityInventory);
 
-Inventory.createInventory = function(entityId, width, height) {
+EntityInventory.createInventory = function(entityId, width, height) {
     if (!isServer)
         throw ("Tried to create inventory on client.")
     var inventoryId = global.gameData.world.inventoryIdList.next();
-    var inventory = new Inventory(inventoryId, entityId, width, height);
+    var inventory = new EntityInventory(inventoryId, entityId, width, height);
     global.gameData.world.inventories[inventoryId] = inventory;
     if (!global.gameData.world.entityInventories[entityId])
         global.gameData.world.entityInventories[entityId] = [];
@@ -27,7 +27,7 @@ Inventory.createInventory = function(entityId, width, height) {
     return inventory;
 }
 
-Inventory.prototype.destroy = function(entity) {
+EntityInventory.prototype.destroy = function(entity) {
     if (isServer) {
         delete global.gameData.world.inventories[this.inventoryId];
         var entityInventories = global.gameData.world.entityInventories[entity.id];
@@ -39,9 +39,9 @@ Inventory.prototype.destroy = function(entity) {
     }
 }
 
-Inventory.prototype.name = inventory.name; function inventory() { };
+EntityInventory.prototype.name = inventory.name; function inventory() { };
 
-Inventory.prototype.serialize = function(byteArray, index) {
+EntityInventory.prototype.serialize = function(byteArray, index) {
     Serialize.int32(byteArray, index, this.inventoryId);
     Serialize.int32(byteArray, index, this.width);
     Serialize.int32(byteArray, index, this.height);
@@ -54,7 +54,7 @@ Inventory.prototype.serialize = function(byteArray, index) {
     }
 }
 
-Inventory.prototype.deserialize = function(byteArray, index) {
+EntityInventory.prototype.deserialize = function(byteArray, index) {
     this.inventoryId = Deserialize.int32(byteArray, index);
     this.width = Deserialize.int32(byteArray, index);
     this.height = Deserialize.int32(byteArray, index);
@@ -74,11 +74,11 @@ Inventory.prototype.deserialize = function(byteArray, index) {
     }
 }
 
-Inventory.prototype.getSerializationSize = function() {
+EntityInventory.prototype.getSerializationSize = function() {
     return 16 + this.items.length * 9;
 }
 
-Inventory.prototype.sortItems = function() {
+EntityInventory.prototype.sortItems = function() {
     this.items.sort(function(a, b) {
         var aType = ItemRegister[a.id];
         var bType = ItemRegister[b.id];
@@ -98,7 +98,7 @@ Inventory.prototype.sortItems = function() {
     });
 }
 
-Inventory.prototype.addItem = function(gameData, id, amount) {
+EntityInventory.prototype.addItem = function(gameData, id, amount) {
     //console.log("adding " + amount + " " + id);
     var maxStack = ItemRegister[id].maxStackSize;
     for (var i = 0; i < this.width * this.height; ++i) {
@@ -127,13 +127,13 @@ Inventory.prototype.addItem = function(gameData, id, amount) {
     this.sortItems();
 }
 
-Inventory.prototype.addStaticItem = function(gameData, id) {
+EntityInventory.prototype.addStaticItem = function(gameData, id) {
     //console.log("adding " + amount + " " + id);
     this.items.push({ id: id, name: ItemRegister[id].name, amount: 1, static: true });
     this.sortItems();
 }
 
-Inventory.prototype.removeItem = function(gameData, id, amount) {
+EntityInventory.prototype.removeItem = function(gameData, id, amount) {
     var removedItems = [];
     for (var i = this.items.length - 1; i >= 0; --i) {
         var currentAmount = this.items[i].amount;
@@ -157,7 +157,7 @@ Inventory.prototype.removeItem = function(gameData, id, amount) {
     return removedItems;
 }
 
-Inventory.prototype.hasItem = function(id, amount) {
+EntityInventory.prototype.hasItem = function(id, amount) {
     var count = 0;
     for (var i = 0; i < this.items.length; ++i) {
         if (this.items[i].id === id) {
@@ -169,7 +169,7 @@ Inventory.prototype.hasItem = function(id, amount) {
     return false;
 }
 
-Inventory.prototype.getAmountById = function(id) {
+EntityInventory.prototype.getAmountById = function(id) {
     var amount = 0;
     for (var i = 0; i < this.items.length; ++i) {
         if (this.items[i].id === id)
@@ -178,7 +178,7 @@ Inventory.prototype.getAmountById = function(id) {
     return amount;
 }
 
-Inventory.prototype.removeStack = function(id) {
+EntityInventory.prototype.removeStack = function(id) {
     var item = this.items[id];
     delete this.items[id];
     this.items.splice(id, 1);
@@ -186,7 +186,7 @@ Inventory.prototype.removeStack = function(id) {
     return item;
 }
 
-Inventory.prototype.dequipAll = function(gameData, type, arg) {
+EntityInventory.prototype.dequipAll = function(gameData, type, arg) {
     var dequippedItems = [];
     for (var i = 0; i < this.items.length; ++i) {
         var itemType = ItemRegister[this.items[i].id];
@@ -199,7 +199,7 @@ Inventory.prototype.dequipAll = function(gameData, type, arg) {
     return dequippedItems;
 }
 
-Inventory.prototype.getEquippedItemType = function(type) {
+EntityInventory.prototype.getEquippedItemType = function(type) {
     for (var i = 0; i < this.items.length; ++i) {
         var item = this.items[i];
         if (item.equipped) {
@@ -210,7 +210,7 @@ Inventory.prototype.getEquippedItemType = function(type) {
     }
 }
 
-Inventory.prototype.getEquippedStackId = function(type) {
+EntityInventory.prototype.getEquippedStackId = function(type) {
     for (var i = 0; i < this.items.length; ++i) {
         var item = this.items[i];
         if (item.equipped) {
@@ -221,7 +221,7 @@ Inventory.prototype.getEquippedStackId = function(type) {
     }
 }
 
-Inventory.prototype.getEquippedItem = function(type) {
+EntityInventory.prototype.getEquippedItem = function(type) {
     for (var i = 0; i < this.items.length; ++i) {
         var item = this.items[i];
         if (item.equipped) {
@@ -232,7 +232,7 @@ Inventory.prototype.getEquippedItem = function(type) {
     }
 }
 
-Inventory.prototype.findTool = function(itemFunction) {
+EntityInventory.prototype.findTool = function(itemFunction) {
     for (var i = 0; i < this.items.length; i++) {
         var itemType = ItemRegister[this.items[i].id];
         if (itemType.itemFunction == itemFunction)

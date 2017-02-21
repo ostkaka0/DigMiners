@@ -21,7 +21,7 @@ import TextureManager from "Game/Entity/TextureManager.js";
 import LoadingScreen from "Game/GUI/LoadingScreen.js";
 import DeathScreen from "Game/GUI/DeathScreen.js";
 import InventoryHUD from "Game/GUI/InventoryHUD.js";
-import Health from "Game/Entity/Health.js";
+import EntityHealth from "Game/Entity/Health.js";
 import MessageRequestKeyStatusUpdate from "Game/Message/ToServer/MessageRequestKeyStatusUpdate.js";
 import MessageRequestPlaceBlock from "Game/Message/ToServer/MessageRequestPlaceBlock.js";
 import MessageRequestClickBlock from "Game/Message/ToServer/MessageRequestClickBlock.js";
@@ -358,7 +358,7 @@ gameData.world.events.on("ownPlayerSpawned", function(entity, player) {
 
 Event.subscribe(gameData.world.entityWorld.onAdd, window, function(entity) {
     if (!isServer && entity.health && entity.drawable)
-        Event.trigger(Health.Events.onChange, entity);
+        Event.trigger(EntityHealth.Events.onChange, entity);
 
     if (entity.drawable && entity.bodyparts) {
         entity.drawable.initializeBodyparts(entity.bodyparts.bodyparts);
@@ -375,8 +375,8 @@ Event.subscribe(gameData.world.entityWorld.onAdd, window, function(entity) {
         }*/
     }
 
-    if (entity.nameComponent && entity.drawable)
-        entity.nameComponent.applyName(entity);
+    if (entity.name && entity.drawable)
+        entity.name.applyName(entity);
 
     // Text on items on ground
     if (entity.item && entity.item.amount > 1) {

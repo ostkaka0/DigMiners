@@ -3,26 +3,26 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 
 import EntityRegister from "Engine/Register/Entity.js";
 
-var Chest = function() {
+var EntityChest = function() {
 
 }
-export default Chest;
-EntityRegister.push(Chest);
+export default EntityChest;
+EntityRegister.push(EntityChest);
 
-Chest.prototype.name = chest.name; function chest() { };
+EntityChest.prototype.name = chest.name; function chest() { };
 
-Chest.prototype.serialize = function(byteArray, index) {
-
-}
-
-Chest.prototype.deserialize = function(byteArray, index) {
+EntityChest.prototype.serialize = function(byteArray, index) {
 
 }
 
-Chest.prototype.getSerializationSize = function() {
+EntityChest.prototype.deserialize = function(byteArray, index) {
+
+}
+
+EntityChest.prototype.getSerializationSize = function() {
     return 0;
 }
 
-Chest.prototype.destroy = function(entity) {
+EntityChest.prototype.destroy = function(entity) {
 
 }

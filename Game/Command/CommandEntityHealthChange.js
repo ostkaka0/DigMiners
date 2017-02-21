@@ -7,7 +7,7 @@ import Event from "Engine/Core/Event.js";
 import Config from "Game/Config.js";
 
 import CommandRegister from "Engine/Register/Command.js";
-import Health from "Game/Entity/Health.js";
+import EntityHealth from "Game/Entity/Health.js";
 
 var CommandEntityHealthChange = function(entityId, healthChange) {
     this.entityId = entityId;
@@ -22,9 +22,9 @@ CommandEntityHealthChange.prototype.execute = function() {
     if (entity.movement)
         entity.movement.disabledCooldown = 40;
     entity.health.health = (entity.health.health + this.healthChange < 0 ? 0 : entity.health.health + this.healthChange);
-    Event.trigger(Health.Events.onChange, entity);
+    Event.trigger(EntityHealth.Events.onChange, entity);
     if (entity.health.health <= 0)
-        Event.trigger(Health.Events.onDeath, entity);
+        Event.trigger(EntityHealth.Events.onDeath, entity);
 }
 
 CommandEntityHealthChange.prototype.serialize = function(byteArray, index) {

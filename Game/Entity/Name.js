@@ -5,31 +5,31 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 import TextSprite from "Engine/Animation/TextSprite.js";
 import EntityRegister from "Engine/Register/Entity.js";
 
-var NameComponent = function(entityName) {
+var EntityName = function(entityName) {
     this.entityName = entityName + "";
 }
-export default NameComponent;
-EntityRegister.push(NameComponent);
+export default EntityName;
+EntityRegister.push(EntityName);
 
-NameComponent.prototype.name = nameComponent.name; function nameComponent() { };
+EntityName.prototype.name = name.name; function name() { };
 
-NameComponent.prototype.serialize = function(byteArray, index) {
+EntityName.prototype.serialize = function(byteArray, index) {
     Serialize.utf8(byteArray, index, this.entityName);
 }
 
-NameComponent.prototype.deserialize = function(byteArray, index) {
+EntityName.prototype.deserialize = function(byteArray, index) {
     this.entityName = Deserialize.utf8(byteArray, index);
 }
 
-NameComponent.prototype.getSerializationSize = function() {
+EntityName.prototype.getSerializationSize = function() {
     return Serialize.utf8Size(this.entityName);
 }
 
-NameComponent.prototype.destroy = function(entity) {
+EntityName.prototype.destroy = function(entity) {
 
 }
 
-NameComponent.prototype.applyName = function(entity) {
+EntityName.prototype.applyName = function(entity) {
     if (!entity.drawable) return;
     if (entity.textSprite)
         entity.drawable.removeSprite("name");

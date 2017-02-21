@@ -38,7 +38,7 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
     var item = inventory.items[this.slotId];
     if (!item) return;
     // Uncomment to enable throwing items on the ground
-    /*if (this.clickType == InventoryClickTypes.RIGHT_CLICK) {
+    /*if (this.clickType == EntityInventoryClickTypes.RIGHT_CLICK) {
         // Drop stack
         var physicsBody = entity.physicsBody;
         if (!physicsBody) return;
@@ -69,7 +69,7 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
 
         if (item.equipped)
             sendCommand(new CommandEntityEquipItem(player.entityId, this.slotId, item.id, false));
-    } else if (this.clickType == InventoryClickTypes.LEFT_CLICK)*/ {
+    } else if (this.clickType == EntityInventoryClickTypes.LEFT_CLICK)*/ {
         // Only equip items in own inventory
         if (entity.inventory && entity.inventory.inventoryId == this.inventoryId) {
             // Equip stack

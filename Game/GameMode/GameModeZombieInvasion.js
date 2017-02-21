@@ -10,9 +10,9 @@ import Config from "Game/Config.js";
 import ItemRegister from "Engine/Register/Item.js"
 import Blocks from "Game/Blocks.js";
 import Items from "Game/Items.js";
-import Team from "Game/Entity/Team.js";
+import EntityTeam from "Game/Entity/Team.js";
 import EntityAmmo from "Game/Entity/Ammo.js";
-import Health from "Game/Entity/Health.js";
+import EntityHealth from "Game/Entity/Health.js";
 import PlayerClass from "Game/PlayerClass.js";
 import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
 import CommandDig from "Game/Command/CommandDig.js";
@@ -67,7 +67,7 @@ GameModeZombieInvasion.prototype.init = function() {
         }
     }
 
-    this.playerSpawns[Team.Enum.Human] = [[0, 0]];
+    this.playerSpawns[EntityTeam.Enum.Human] = [[0, 0]];
 
     //sendCommand(new CommandWorldSpawnStatus(spawns, true));
     sendCommand(new CommandDig([0, 0], 5.0));
@@ -80,8 +80,8 @@ GameModeZombieInvasion.prototype.init = function() {
         for (var j = 0; j < 10 && v2.length(pos) < 20.0; j++)
             pos = [60.0 * (-1 + 2 * Math.random()), 60.0 * (-1 + 2 * Math.random())];
         var entityId = global.gameData.world.idList.next();
-        var entity = entityTemplateMonsterSpawner(entityId, pos, this.spawnZombie.bind(this), 0, 2.0, 40, null, null, Team.Enum.Zombie);
-        sendCommand(new CommandEntitySpawn(global.gameData, entity, entityId, Team.Enum.Zombie));
+        var entity = entityTemplateMonsterSpawner(entityId, pos, this.spawnZombie.bind(this), 0, 2.0, 40, null, null, EntityTeam.Enum.Zombie);
+        sendCommand(new CommandEntitySpawn(global.gameData, entity, entityId, EntityTeam.Enum.Zombie));
         sendCommand(new CommandDig(pos, 5.0));
         this.zombieSpawners.push(entity);
         this.zombieSpawns.push(pos);
@@ -138,10 +138,10 @@ GameModeZombieInvasion.prototype.init = function() {
 GameModeZombieInvasion.prototype.createEntity = function(player, entityId) {
     if (this.playerSpawning) {
         var classType = PlayerClass.Register[player.classId];
-        var entity = entityTemplatePlayer(player.id, entityId, player.name, classType, Team.Enum.Human);
+        var entity = entityTemplatePlayer(player.id, entityId, player.name, classType, EntityTeam.Enum.Human);
 
         // Set spawn position
-        var pos = this.playerSpawns[Team.Enum.Human][Math.random() * this.playerSpawns[Team.Enum.Human].length >> 0];
+        var pos = this.playerSpawns[EntityTeam.Enum.Human][Math.random() * this.playerSpawns[EntityTeam.Enum.Human].length >> 0];
         entity.physicsBody.setPos(pos);
         entity.physicsBody.posOld = v2.clone(pos);
 

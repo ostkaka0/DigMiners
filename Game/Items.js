@@ -11,9 +11,9 @@ import Blocks from "Game/Blocks.js";
 import Tiles from "Game/Tiles.js";
 import Projectiles from "Game/Projectiles.js";
 import Entity from "Game/Entity/Entity.js";
-import PhysicsBody from "Game/Entity/PhysicsBody.js";
-import Bodyparts from "Game/Entity/Bodyparts.js";
-import Drawable from "Game/Entity/Drawable.js";
+import EntityPhysicsBody from "Game/Entity/PhysicsBody.js";
+import EntityBodyparts from "Game/Entity/Bodyparts.js";
+import EntityDrawable from "Game/Entity/Drawable.js";
 import ParticleFunctions from "Game/ParticleFunctions.js";
 import ExplosionFunctions from "Game/ExplosionFunctions.js";
 
@@ -210,7 +210,7 @@ Items.Functions.ThrowableDynamite = function(entity, itemType) {
 
         var itemEntityId = gameData.world.idList.next();
         var itemEntity = {};
-        itemEntity.physicsBody = new PhysicsBody(physicsBody.getPos(), 0.01, 0, 1, 0.3);
+        itemEntity.physicsBody = new EntityPhysicsBody(physicsBody.getPos(), 0.01, 0, 1, 0.3);
         itemEntity.physicsBody.setVelocity([speed2[0], speed2[1]]);
         itemEntity.physicsBody.speedOld = v2.create(speed2[0], speed2[1]);
         itemEntity.physicsBody.angle = physicsBody.angle;
@@ -221,8 +221,8 @@ Items.Functions.ThrowableDynamite = function(entity, itemType) {
         var bodyparts = {
             "body": new BodyPart(bodySprite, 0, 0, 0),
         };
-        itemEntity.bodyparts = new Bodyparts(bodyparts);
-        itemEntity.drawable = new Drawable(0);
+        itemEntity.bodyparts = new EntityBodyparts(bodyparts);
+        itemEntity.drawable = new EntityDrawable(0);
 
         var timeout = 2000;
 

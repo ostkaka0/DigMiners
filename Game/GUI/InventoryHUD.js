@@ -1,7 +1,7 @@
 import Event from "Engine/Core/Event.js";
 import fix from "Engine/Core/Fix.js";
 import v2 from "Engine/Core/v2.js";
-import InventoryClickTypes from "Engine/InventoryClickTypes.js";
+import EntityInventoryClickTypes from "Engine/InventoryClickTypes.js";
 import Config from "Game/Config.js";
 import ItemRegister from "Engine/Register/Item.js"
 import MessageRequestClickSlot from "Game/Message/ToServer/MessageRequestClickSlot.js";
@@ -173,12 +173,12 @@ InventoryHUD.prototype.update = function() {
             $(slot).off();
             $(slot).click(function() {
                 var slotId = $(this).attr("slotId");
-                var message = new MessageRequestClickSlot(context.inventory.inventoryId, slotId, InventoryClickTypes.LEFT_CLICK);
+                var message = new MessageRequestClickSlot(context.inventory.inventoryId, slotId, EntityInventoryClickTypes.LEFT_CLICK);
                 message.send(socket);
             });
             $(slot).contextmenu(function() {
                 var slotId = $(this).attr("slotId");
-                var message = new MessageRequestClickSlot(context.inventory.inventoryId, slotId, InventoryClickTypes.RIGHT_CLICK);
+                var message = new MessageRequestClickSlot(context.inventory.inventoryId, slotId, EntityInventoryClickTypes.RIGHT_CLICK);
                 message.send(socket);
             });
             $(slot).mouseenter(function() {

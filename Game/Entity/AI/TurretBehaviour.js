@@ -7,7 +7,7 @@ import Keys from "Engine/Keys.js";
 
 import Config from "Game/Config.js"
 import Items from "Game/Items.js";
-import Team from "Game/Entity/Team.js";
+import EntityTeam from "Game/Entity/Team.js";
 import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
 import CommandKeyStatusUpdate from "Game/Command/CommandKeyStatusUpdate.js";
 import CommandEntityMove from "Game/Command/CommandEntityMove.js";
@@ -131,7 +131,7 @@ TurretBehaviour.prototype.getTarget = function() {
         if (!otherEntity) continue;
         if (!otherEntity.health || !otherEntity.physicsBody) continue;
         if (!otherEntity.team && !otherEntity.movement) continue;
-        if (this.entity.team && this.entity.team.value != Team.Enum.None && (!otherEntity.team || otherEntity.team.value == this.entity.team.value)) continue;
+        if (this.entity.team && this.entity.team.value != EntityTeam.Enum.None && (!otherEntity.team || otherEntity.team.value == this.entity.team.value)) continue;
         if (otherEntity.id == this.entity.id) continue;
         if (hasMovement && !otherEntity.movement) continue;
 

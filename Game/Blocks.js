@@ -10,16 +10,16 @@ import Noise from "Engine/Core/Noise.js"
 import Config from "Game/Config.js";
 
 import Items from "Game/Items.js";
-import Team from "Game/Entity/Team.js";
-import Chest from "Game/Entity/Chest.js";
-import PhysicsBody from "Game/Entity/PhysicsBody.js";
-import Health from "Game/Entity/Health.js";
-import Bodyparts from "Game/Entity/Bodyparts.js";
-import PotionEffects from "Game/Entity/PotionEffects.js";
+import EntityTeam from "Game/Entity/Team.js";
+import EntityChest from "Game/Entity/Chest.js";
+import EntityPhysicsBody from "Game/Entity/PhysicsBody.js";
+import EntityHealth from "Game/Entity/Health.js";
+import EntityBodyparts from "Game/Entity/Bodyparts.js";
+import EntityPotionEffects from "Game/Entity/PotionEffects.js";
 import PotionEffectTypes from "Game/PotionEffectTypes.js";
-import Interactable from "Game/Entity/Interactable.js";
-import Drawable from "Game/Entity/Drawable.js";
-import Projectile from "Game/Entity/Projectile.js"
+import EntityInteractable from "Game/Entity/Interactable.js";
+import EntityDrawable from "Game/Entity/Drawable.js";
+import EntityProjectile from "Game/Entity/Projectile.js"
 import CommandPlaceBlock from "Game/Command/CommandPlaceBlock.js";
 import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
 import CommandBuild from "Game/Command/CommandBuild.js";
@@ -52,15 +52,15 @@ BlockFunctions.createEntityBox = function(blockPos, block) {
     if (isServer) {
         var entity = {};
         var entityId = global.gameData.world.idList.next();
-        entity.physicsBody = new PhysicsBody(v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), 0.01);
-        entity.health = new Health(100, 100);
+        entity.physicsBody = new EntityPhysicsBody(v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), 0.01);
+        entity.health = new EntityHealth(100, 100);
         var bodySprite = new Sprite(block.name);
         var bodyparts = {
             "body": new BodyPart(bodySprite, 0, 0, 0),
             "text": new BodyPart(bodySprite, 0, 0, 0)
         };
-        entity.bodyparts = new Bodyparts(bodyparts);
-        entity.drawable = new Drawable(1);
+        entity.bodyparts = new EntityBodyparts(bodyparts);
+        entity.drawable = new EntityDrawable(1);
         var healthbarSprite = new Sprite("healthbar.png");
         entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
 
@@ -76,7 +76,7 @@ var BlockBulletFunctions = {};
 BlockFunctions.createEntityTurret = function(blockPos, block) {
     if (isServer) {
         var turretEntityId = global.gameData.world.idList.next();
-        var turret = entityTemplatesTurret(turretEntityId, v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), Team.Enum.Human);
+        var turret = entityTemplatesTurret(turretEntityId, v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), EntityTeam.Enum.Human);
 
         if (block.onCreateEntity)
             entity = block.onCreateEntity(turret, turretEntityId);
@@ -113,7 +113,7 @@ BlockBulletFunctions.bunker = function(blockPos, blockType, entity) {
         damageFactor = blockType.bulletBunkerNearFactor;
 
     if (rand > damageFactor * 100) {
-        Event.trigger(Projectile.Events.onHitBlock, entity, blockPos);
+        Event.trigger(EntityProjectile.Events.onHitBlock, entity, blockPos);
         entity.projectile.hit = true;
         return;
     }
@@ -239,16 +239,16 @@ Blocks.initBlocks = function() {
         /*onPlace: BlockFunctions.createEntity,
         createEntity: function(blockPos, block) {
             var entity = {};
-            entity.physicsBody = new PhysicsBody(v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), 0.01, 4.0);
-            entity.health = new Health(50, 50);
+            entity.physicsBody = new EntityPhysicsBody(v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), 0.01, 4.0);
+            entity.health = new EntityHealth(50, 50);
 
             var bodySprite = new Sprite(block.name);
             var bodyparts = {
                 "body": new BodyPart(bodySprite, 0, 0, 0),
                 "text": new BodyPart(bodySprite, 0, 0, 0)
             };
-            entity.bodyparts = new Bodyparts(bodyparts);
-            entity.drawable = new Drawable(0);
+            entity.bodyparts = new EntityBodyparts(bodyparts);
+            entity.drawable = new EntityDrawable(0);
 
             return entity;
         }*/
@@ -323,7 +323,7 @@ Blocks.initBlocks = function() {
         buildDuration: 40,
         onPlace: BlockFunctions.createEntityBox,
         onCreateEntity: function(entity) {
-            entity.potionEffects = new PotionEffects();
+            entity.potionEffects = new EntityPotionEffects();
             entity.potionEffects.add(PotionEffectTypes.HealNearEntities, -1);
             return entity;
         }
@@ -337,7 +337,7 @@ Blocks.initBlocks = function() {
         buildDuration: 40,
         onPlace: BlockFunctions.createEntityBox,
         onCreateEntity: function(entity) {
-            entity.potionEffects = new PotionEffects();
+            entity.potionEffects = new EntityPotionEffects();
             entity.potionEffects.add(PotionEffectTypes.SupplyAmmoNearEntities, -1);
             return entity;
         }
@@ -351,13 +351,13 @@ Blocks.initBlocks = function() {
         buildDuration: 40,
         onPlace: BlockFunctions.createEntityBox,
         onCreateEntity: function(entity, entityId) {
-            entity.interactable = new Interactable(function(interactableEntity, entity) {
+            entity.interactable = new EntityInteractable(function(interactableEntity, entity) {
                 if (v2.distance(interactableEntity.physicsBody.getPos(), entity.physicsBody.getPos()) > 1.5)
                     return false;
                 return true;
             });
-            entity.chest = new Chest();
-            entity.inventory = Inventory.createInventory(entityId, 4, 4);
+            entity.chest = new EntityChest();
+            entity.inventory = EntityInventory.createInventory(entityId, 4, 4);
             entity.inventory.addItem(global.gameData, Items.Types.RustyShovel.id, Math.floor(Math.random() * 8));
             return entity;
         }
@@ -400,7 +400,7 @@ Blocks.initBlocks = function() {
         type: BlockTypes.BACKGROUND,
         buildDuration: 40,
         onTouch: function(entity) {
-            if (!entity.team || entity.team.value == Team.Enum.Human) return;
+            if (!entity.team || entity.team.value == EntityTeam.Enum.Human) return;
             if (!entity.potionEffects || !entity.health) return;
             entity.potionEffects.add(PotionEffectTypes.Toxin, 5 * 20);
         },

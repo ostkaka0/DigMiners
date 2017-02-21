@@ -18,7 +18,7 @@ CommandEntityInteractEntity.prototype.execute = function() {
     if (!entity || !entity.movement) return;
     var interactableEntity = global.gameData.world.entityWorld.objects[this.interactableEntityId];
     if (!interactableEntity || !interactableEntity.interactable) return;
-    Interactable.setInteracting(interactableEntity, entity, this.interacting);
+    EntityInteractable.setInteracting(interactableEntity, entity, this.interacting);
 }
 
 CommandEntityInteractEntity.prototype.serialize = function(byteArray, index) {

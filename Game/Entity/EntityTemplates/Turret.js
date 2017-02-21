@@ -2,26 +2,26 @@ import fix from "Engine/Core/Fix.js";
 import v2 from "Engine/Core/v2.js";
 import Sprite from "Engine/Animation/Sprite.js";
 import BodyPart from "Engine/Animation/BodyPart.js";
-import PhysicsBody from "Game/Entity/PhysicsBody.js";
-import Bodyparts from "Game/Entity/Bodyparts.js";
-import Drawable from "Game/Entity/Drawable.js";
-import Team from "Game/Entity/Team.js";
-import Health from "Game/Entity/Health.js";
+import EntityPhysicsBody from "Game/Entity/PhysicsBody.js";
+import EntityBodyparts from "Game/Entity/Bodyparts.js";
+import EntityDrawable from "Game/Entity/Drawable.js";
+import EntityTeam from "Game/Entity/Team.js";
+import EntityHealth from "Game/Entity/Health.js";
 import EntityAmmo from "Game/Entity/Ammo.js";
-import Movement from "Game/Entity/Movement.js";
-import Inventory from "Game/Entity/Inventory.js";
-import EquippedItems from "Game/Entity/EquippedItems.js";
-import PotionEffects from "Game/Entity/PotionEffects.js";
+import EntityMovement from "Game/Entity/Movement.js";
+import EntityInventory from "Game/Entity/Inventory.js";
+import EntityEquippedItems from "Game/Entity/EquippedItems.js";
+import EntityPotionEffects from "Game/Entity/PotionEffects.js";
 import BehaviourContainer from "Game/Entity/AI/BehaviourContainer.js";
 import TurretBehaviour from "Game/Entity/AI/TurretBehaviour.js";
 import TurretIdleBehaviour from "Game/Entity/AI/TurretIdleBehaviour.js";
 
 export default function(entityId, pos, teamId) {
     var entity = {};
-    entity.physicsBody = new PhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0, 10, 0.5);
-    entity.movement = new Movement(0);
-    entity.inventory = Inventory.createInventory(entityId, 10, 1);
-    entity.equippedItems = new EquippedItems();
+    entity.physicsBody = new EntityPhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0, 10, 0.5);
+    entity.movement = new EntityMovement(0);
+    entity.inventory = EntityInventory.createInventory(entityId, 10, 1);
+    entity.equippedItems = new EntityEquippedItems();
 
     var bottomSprite = new Sprite("turret/bottom.png");
 
@@ -31,13 +31,13 @@ export default function(entityId, pos, teamId) {
         "tool": new BodyPart(new Sprite(), 0, 0, 0, null, "top"),
     };
 
-    entity.bodyparts = new Bodyparts(bodyparts);
-    entity.drawable = new Drawable(1);
+    entity.bodyparts = new EntityBodyparts(bodyparts);
+    entity.drawable = new EntityDrawable(1);
     var healthbarSprite = new Sprite("healthbar.png", null, false);
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
 
-    entity.health = new Health(50, 50, 0.0);
-    entity.team = new Team(teamId);
+    entity.health = new EntityHealth(50, 50, 0.0);
+    entity.team = new EntityTeam(teamId);
     //entity.ammo = new EntityAmmo();
 
     entity.behaviourContainer = new BehaviourContainer();
