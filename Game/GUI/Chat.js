@@ -1,4 +1,4 @@
-import Global from "Game/Global.js";
+
 
 var Chat = function() {
     this.root = $("<div>", {
@@ -104,7 +104,7 @@ var Chat = function() {
         this.write(text);
     }.bind(this));
 
-    Global.gameData.world.events.on("playerSpawned", function(entity, player) {
+    global.gameData.world.events.on("playerSpawned", function(entity, player) {
         this.write(entity.nameComponent.entityName + " spawned.");
     }.bind(this));
 

@@ -2,11 +2,11 @@ import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 import IndexCounter from "Engine/Core/IndexCounter.js";
 
-import Global from "Game/Global.js";
-import MessageRegister from "Game/Register/Message.js";;
+
+import MessageRegister from "Engine/Register/Message.js";;
 
 var MessageChangeGameMode = function() {
-    this.gameModeId = Global.gameData.gameMode.id;
+    this.gameModeId = global.gameData.gameMode.id;
 }
 export default MessageChangeGameMode;
 MessageRegister.ToClient.push(MessageChangeGameMode);
@@ -14,8 +14,8 @@ MessageRegister.ToClient.push(MessageChangeGameMode);
 MessageChangeGameMode.prototype.execute = function(gameData) {
     // TODO: Don't reload page
     location.reload(); // Reload page
-    Global.gameData.changeGameMode(this.gameModeId);
-    Global.gameData.tick(); // Change gameMode instantly
+    global.gameData.changeGameMode(this.gameModeId);
+    global.gameData.tick(); // Change gameMode instantly
 }
 
 MessageChangeGameMode.prototype.send = function(socket) {

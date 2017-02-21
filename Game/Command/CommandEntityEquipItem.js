@@ -3,9 +3,9 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 import Sprite from "Engine/Animation/Sprite.js";
 
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
-import ItemRegister from "Game/Register/Item.js"
-import CommandRegister from "Game/Register/Command.js";
+
+import ItemRegister from "Engine/Register/Item.js"
+import CommandRegister from "Engine/Register/Command.js";
 import Items from "Game/Items.js";
 import Entity from "Game/Entity/Entity.js";
 
@@ -19,7 +19,7 @@ export default CommandEntityEquipItem;
 CommandRegister.push(CommandEntityEquipItem);
 
 CommandEntityEquipItem.prototype.execute = function() {
-    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity) return;
 
     var itemType = ItemRegister[this.itemId];
@@ -52,7 +52,7 @@ CommandEntityEquipItem.prototype.execute = function() {
             if (item && item.id == this.itemId) {
                 item.equipped = this.equipped;
                 if (!isServer)
-                    Global.gameData.HUD.update();
+                    global.gameData.HUD.update();
             }
         }
     }

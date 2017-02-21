@@ -9,7 +9,7 @@ import gameData from "Game/GameData.js";
 import Items from "Game/Items.js";
 import Blocks from "Game/Blocks.js";
 import Tiles from "Game/Tiles.js";
-import MessageRegister from "Game/Register/Message.js";
+import MessageRegister from "Engine/Register/Message.js";
 
 import MessageCommands from "Game/Message/ToClient/MessageCommands.js";
 import CommandPlayerJoin from "Game/Command/CommandPlayerJoin.js";

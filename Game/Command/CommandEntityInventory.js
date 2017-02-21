@@ -2,10 +2,10 @@ import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
-import CommandRegister from "Game/Register/Command.js";
+
+import CommandRegister from "Engine/Register/Command.js";
 import Entity from "Game/Entity/Entity.js";
-import ItemRegister from "Game/Register/Item.js"
+import ItemRegister from "Engine/Register/Item.js"
 
 import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
 
@@ -26,12 +26,12 @@ CommandRegister.push(CommandEntityInventory);
 CommandEntityInventory.Actions = CommandEntityInventoryActions;
 
 CommandEntityInventory.prototype.execute = function() {
-    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity || !entity.inventory) return;
     if (this.actionId == CommandEntityInventory.Actions.ADD_ITEM) {
-        entity.inventory.addItem(Global.gameData, this.itemId, this.amount);
+        entity.inventory.addItem(global.gameData, this.itemId, this.amount);
     } else if (this.actionId == CommandEntityInventory.Actions.REMOVE_ITEM) {
-        var removed = entity.inventory.removeItem(Global.gameData, this.itemId, this.amount);
+        var removed = entity.inventory.removeItem(global.gameData, this.itemId, this.amount);
         if (isServer) {
             for (var i = 0; i < removed.length; ++i) {
                 // Dequip item when removed from inventory
@@ -47,8 +47,8 @@ CommandEntityInventory.prototype.execute = function() {
         var item = entity.inventory.removeStack(this.itemId);
     }
     if (!isServer && global.playerEntity && this.entityId == global.playerEntity.id) {
-        Global.gameData.HUD.update();
-        Global.gameData.HUD.checkCanAffordRecipe();
+        global.gameData.HUD.update();
+        global.gameData.HUD.checkCanAffordRecipe();
     }
 }
 

@@ -2,8 +2,8 @@ import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
-import CommandRegister from "Game/Register/Command.js";
+
+import CommandRegister from "Engine/Register/Command.js";
 
 var CommandEntityDestroy = function(entityId) {
     this.entityId = entityId;
@@ -12,9 +12,9 @@ export default CommandEntityDestroy;
 CommandRegister.push(CommandEntityDestroy);
 
 CommandEntityDestroy.prototype.execute = function() {
-    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity) return;
-    Global.gameData.world.entityWorld.remove(entity);
+    global.gameData.world.entityWorld.remove(entity);
 }
 
 CommandEntityDestroy.prototype.serialize = function(byteArray, index) {

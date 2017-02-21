@@ -8,7 +8,7 @@ import {aStarFlowField} from "Engine/Pathfinding.js";
 import DisField from "Engine/DisField.js";
 
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
+
 import Items from "Game/Items.js";
 import Team from "Game/Entity/Team.js";
 import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
@@ -22,21 +22,21 @@ var TargetPlayerBehaviour = function(entity, maxRadius) {
     this.maxRadius = maxRadius;
     this.target = null;
     this.flowField = null;
-    this.lastUpdateTickId = Global.gameData.world.tickId;
-    this.nextPathUpdateTick = Global.gameData.world.tickId;
+    this.lastUpdateTickId = global.gameData.world.tickId;
+    this.nextPathUpdateTick = global.gameData.world.tickId;
     this.lastTargetPos = null;
     this.spacebar = false;
     this.moving = false;
     this.isGunner = false;
     this.isAiming = false;
-    this.nextCanRunTickId = Global.gameData.world.tickId;
+    this.nextCanRunTickId = global.gameData.world.tickId;
 }
 export default TargetPlayerBehaviour
 
 TargetPlayerBehaviour.prototype.canRun = function() {
-    if (Global.gameData.world.tickId < this.nextCanRunTickId)
+    if (global.gameData.world.tickId < this.nextCanRunTickId)
         return false;
-    this.nextCanRunTickId = Global.gameData.world.tickId + 40 + 40 * Math.random() >> 0;
+    this.nextCanRunTickId = global.gameData.world.tickId + 40 + 40 * Math.random() >> 0;
     this.target = this.getTarget();
     if (this.target == null)
         return false;
@@ -57,7 +57,7 @@ TargetPlayerBehaviour.prototype.initialize = function() {
 }
 
 TargetPlayerBehaviour.prototype.run = function() {
-    if (Global.gameData.world.tickId % 2 != this.nextCanRunTickId % 2) return true;
+    if (global.gameData.world.tickId % 2 != this.nextCanRunTickId % 2) return true;
 
     if (!this.target || this.target.isDead || !this.target.isActive) {
         this.target = this.getTarget();
@@ -73,13 +73,13 @@ TargetPlayerBehaviour.prototype.run = function() {
 
     if (dis > this.maxRadius)
         return false;
-    if (Global.gameData.world.tickId >= this.nextPathUpdateTick) {
+    if (global.gameData.world.tickId >= this.nextPathUpdateTick) {
         if (!this.lastTargetPos || !this.flowField || v2.sqrDistance(this.lastTargetPos, this.target.physicsBody.getPos()) > v2.sqrDistance(this.entity.physicsBody.getPos(), this.target.physicsBody.getPos())) {
             this.flowField = new Map2D();
             var expandList = [];
-            aStarFlowField(this.flowField, expandList, Global.gameData.world.tileWorld, Global.gameData.world.blockWorld, tilePos, tilePosTarget, 25600);
+            aStarFlowField(this.flowField, expandList, global.gameData.world.tileWorld, global.gameData.world.blockWorld, tilePos, tilePosTarget, 25600);
             var delay = Math.min(2000, expandList.length * 10 + Math.floor(dis * 10));
-            this.nextPathUpdateTick = Global.gameData.world.tickId + (delay / Config.tickDuration >> 0);
+            this.nextPathUpdateTick = global.gameData.world.tickId + (delay / Config.tickDuration >> 0);
             this.lastTargetPos = v2.clone(this.target.physicsBody.getPos());
         }
     }
@@ -105,9 +105,9 @@ TargetPlayerBehaviour.prototype.run = function() {
     var tickInterval = Math.floor(20 * Math.min(1.0, dis / 100.0));
     //tickInterval = Math.max(5, tickInterval);
 
-    if (Global.gameData.world.tickId < this.lastUpdateTickId + tickInterval)
+    if (global.gameData.world.tickId < this.lastUpdateTickId + tickInterval)
         return true;
-    this.lastUpdateTickId = Global.gameData.world.tickId;
+    this.lastUpdateTickId = global.gameData.world.tickId;
 
     var currentDir = this.entity.movement.direction;
     var angle = this.entity.physicsBody.angle;
@@ -171,7 +171,7 @@ TargetPlayerBehaviour.prototype.getTarget = function() {
     global.gameData.world.physicsWorld.getBodiesInRadius(bodies, pos, this.maxRadius);
     for (var i = 0; i < bodies.length; i++) {
         var bodyId = bodies[i];
-        var otherEntity = Global.gameData.world.physicsEntities[bodyId];
+        var otherEntity = global.gameData.world.physicsEntities[bodyId];
         if (!otherEntity) continue;
         if (!otherEntity.health || !otherEntity.physicsBody) continue;
         if (!otherEntity.team && !otherEntity.movement) continue;
@@ -208,7 +208,7 @@ TargetPlayerBehaviour.prototype.getAttackDistance = function(pos, dir) {
         var step = [stepLength * dir[0], stepLength * dir[1]];
         v2.add(step, rayPos, rayPos);
         for (var i = 0; i < 40; i++) {
-            if (Global.gameData.world.tileWorld.getDensity(rayPos) > 127) break;
+            if (global.gameData.world.tileWorld.getDensity(rayPos) > 127) break;
             if (blockWorld.getForeground(rayPos) != 0) break;
 
             v2.add(step, rayPos, rayPos);

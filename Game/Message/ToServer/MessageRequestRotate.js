@@ -4,8 +4,8 @@ import IndexCounter from "Engine/Core/IndexCounter.js";
 import fix from "Engine/Core/Fix.js";
 import v2 from "Engine/Core/v2.js";
 
-import Global from "Game/Global.js";
-import MessageRegister from "Game/Register/Message.js";;
+
+import MessageRegister from "Engine/Register/Message.js";;
 import CommandEntityRotate from "Game/Command/CommandEntityRotate.js";
 
 var MessageRequestRotate = function(deltaWorldCursorPos) {
@@ -18,7 +18,7 @@ MessageRegister.ToServer.push(MessageRequestRotate);
 MessageRequestRotate.prototype.execute = function(gameData, player) {
     if (!this.deltaWorldCursorPos) return;
     if (player.entityId == null) return;
-    var entity = Global.gameData.world.entityWorld.objects[player.entityId];
+    var entity = global.gameData.world.entityWorld.objects[player.entityId];
     if (!entity) return;
     var movement = entity.movement;
     if (!movement) return;

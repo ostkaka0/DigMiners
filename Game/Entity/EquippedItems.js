@@ -1,8 +1,8 @@
 import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 import Config from "Game/Config.js";
-import ItemRegister from "Game/Register/Item.js"
-import EntityRegister from "Game/Register/Entity.js";
+import ItemRegister from "Engine/Register/Item.js"
+import EntityRegister from "Engine/Register/Entity.js";
 
 var EquippedItems = function(items) {
     this.items = (items ? items : {});

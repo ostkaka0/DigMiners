@@ -4,7 +4,7 @@ import TileWorld from "Engine/TileWorld.js";
 import BlockWorld from "Engine/BlockWorld.js";
 
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
+
 import Entity from "Game/Entity/Entity.js";
 
 import CommandDig from "Game/Command/CommandDig.js";
@@ -29,7 +29,7 @@ ExplosionFunctions.createExplosion = function(startPos, radius, entityDamage, bl
                     if (dis <= radius) {
                         v2.floor(pos, pos);
                         var damage = Math.floor((1 - dis / radius) * blockDamage);
-                        var strength = Global.gameData.world.blockWorld.getStrength(pos);
+                        var strength = global.gameData.world.blockWorld.getStrength(pos);
                         sendCommand(new CommandBlockStrength(pos[0], pos[1], strength - damage));
                     }
                 }
@@ -38,7 +38,7 @@ ExplosionFunctions.createExplosion = function(startPos, radius, entityDamage, bl
 
         // Hurt entities
         if (entityDamage > 0) {
-            Global.gameData.world.entityWorld.objectArray.forEach(function(entity) {
+            global.gameData.world.entityWorld.objectArray.forEach(function(entity) {
                 if (entity.physicsBody && entity.health) {
                     var dis = v2.distance(startPos, entity.physicsBody.getPos());
                     if (dis <= radius) {

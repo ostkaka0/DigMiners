@@ -4,7 +4,7 @@ import TileWorld from "Engine/TileWorld.js";
 import BlockWorld from "Engine/BlockWorld.js";
 
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
+
 
 var PHYSICS_MAX_STEP_LENGTH = 0.25;
 
@@ -56,7 +56,7 @@ var BlockCollisionSide = {
 }
 
 var entityFunctionPhysicsBodySimulate = function(dt) {
-    Global.gameData.world.entityWorld.objectArray.forEach(function(entity) {
+    global.gameData.world.entityWorld.objectArray.forEach(function(entity) {
         if (entity.isDead || !entity.isActive) return;
         if (entity.physicsBody)
             physicsBodySimulate(entity.physicsBody, dt);
@@ -72,7 +72,7 @@ var physicsBodySimulate = function(physicsBody, dt) {
 
     var touchingBlockType = Config.blockRegister[gameData.world.blockWorld.getForeground(pos)];
     if (touchingBlockType && touchingBlockType.onTouch)
-        touchingBlockType.onTouch(Global.gameData.world.physicsEntities[physicsBody.bodyId]);
+        touchingBlockType.onTouch(global.gameData.world.physicsEntities[physicsBody.bodyId]);
 
     var deltaPos = v2.create(0, 0);
     v2.sub(pos, physicsBody.posOld, deltaPos);
@@ -91,7 +91,7 @@ var physicsBodySimulate = function(physicsBody, dt) {
             var worldPos = v2.clone(pos);
             worldPos[0] += COLLISION_BLOCKS[j][0];
             worldPos[1] += COLLISION_BLOCKS[j][1];
-            var blockId = Global.gameData.world.blockWorld.getForeground(worldPos);
+            var blockId = global.gameData.world.blockWorld.getForeground(worldPos);
             if (!blockId) continue; // Air
             var block = Config.blockRegister[blockId];
             if (!block || !block.isSolid) continue;
@@ -104,13 +104,13 @@ var physicsBodySimulate = function(physicsBody, dt) {
             if (radius > 0 && Math.abs(dx) < radius + 0.5 && Math.abs(dy) < radius + 0.5) {
                 if (dy > dx) {
                     if (dy > -dx)
-                        Global.gameData.world.events.trigger("entityHitBlockSide", Global.gameData.world.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.TOP);
+                        global.gameData.world.events.trigger("entityHitBlockSide", global.gameData.world.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.TOP);
                     else
-                        Global.gameData.world.events.trigger("entityHitBlockSide", Global.gameData.world.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.LEFT);
+                        global.gameData.world.events.trigger("entityHitBlockSide", global.gameData.world.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.LEFT);
                 } else if (dy > -dx)
-                    Global.gameData.world.events.trigger("entityHitBlockSide", Global.gameData.world.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.RIGHT);
+                    global.gameData.world.events.trigger("entityHitBlockSide", global.gameData.world.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.RIGHT);
                 else
-                    Global.gameData.world.events.trigger("entityHitBlockSide", Global.gameData.world.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.BOTTOM);
+                    global.gameData.world.events.trigger("entityHitBlockSide", global.gameData.world.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.BOTTOM);
             }
         }
 
@@ -119,7 +119,7 @@ var physicsBodySimulate = function(physicsBody, dt) {
             var worldPos = v2.clone(pos);
             worldPos[0] += COLLISION_BLOCKS[j][0];
             worldPos[1] += COLLISION_BLOCKS[j][1];
-            var blockId = Global.gameData.world.blockWorld.getForeground(worldPos);
+            var blockId = global.gameData.world.blockWorld.getForeground(worldPos);
             if (!blockId) continue; // Air
             var block = Config.blockRegister[blockId];
             if (!block || !block.isSolid) continue;
@@ -155,9 +155,9 @@ var physicsBodySimulate = function(physicsBody, dt) {
         }
 
         // Terrain collision
-        var density = Global.gameData.world.tileWorld.calcDensity(pos);
+        var density = global.gameData.world.tileWorld.calcDensity(pos);
         if (density > 1) {
-            var dir = Global.gameData.world.tileWorld.calcDir(pos);
+            var dir = global.gameData.world.tileWorld.calcDir(pos);
             //v2.mul(2.0, dir, dir);
             var tempDir = v2.clone(dir);
             v2.mul(0.5 + density / 255, tempDir, tempDir);

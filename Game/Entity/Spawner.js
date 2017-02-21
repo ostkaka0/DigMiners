@@ -3,13 +3,13 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 import fix from "Engine/Core/Fix.js";
 import v2 from "Engine/Core/v2.js";
 import Event from "Engine/Core/Event.js";
-import Global from "Game/Global.js";
+
 import Team from "Game/Entity/Team.js";
 import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
 import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
 import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
 import Items from "Game/Items.js";
-import EntityRegister from "Game/Register/Entity.js";
+import EntityRegister from "Engine/Register/Entity.js";
 
 var Spawner = function(entityTemplate, pos, maxEntities, radius, duration, items, equippedItemId, randomDuration, teamId) {
     this.entityTemplate = entityTemplate;
@@ -24,7 +24,7 @@ var Spawner = function(entityTemplate, pos, maxEntities, radius, duration, items
 
     this.numEntities = 0;
     this.entityTable = {};
-    this.nextSpawnTickId = Global.gameData.world.tickId;
+    this.nextSpawnTickId = global.gameData.world.tickId;
 
     this.initialized = false;
 }
@@ -35,13 +35,13 @@ Spawner.prototype.name = spawner.name; function spawner() { };
 
 Spawner.prototype.update = function(entity) {
     if (this.numEntities >= this.maxEntities) return;
-    if (Global.gameData.world.tickId - this.nextSpawnTickId <= 0) return;
+    if (global.gameData.world.tickId - this.nextSpawnTickId <= 0) return;
     if (!isServer) return;
 
     // Lazy init
     if (!this.initialized) {
         this.initialized = true;
-        Event.subscribe(Global.gameData.world.entityWorld.onRemove, this, function(entity) {
+        Event.subscribe(global.gameData.world.entityWorld.onRemove, this, function(entity) {
             if (this.entityTable[entity.id] == undefined) return;
 
             if (this.numEntities == this.maxEntities)
@@ -53,9 +53,9 @@ Spawner.prototype.update = function(entity) {
     };
 
     // Spawn entity
-    var monsterEntityId = Global.gameData.world.idList.next();
+    var monsterEntityId = global.gameData.world.idList.next();
     var monster = this.entityTemplate(monsterEntityId, [this.pos[0] + this.radius * (-1 + 2 *Math.random()), this.pos[1] + this.radius * (-1 + 2 *Math.random())], this.teamId);
-    sendCommand(new CommandEntitySpawn(Global.gameData, monster, monsterEntityId));
+    sendCommand(new CommandEntitySpawn(global.gameData, monster, monsterEntityId));
 
     // Add items
     if (this.items) {
@@ -76,9 +76,9 @@ Spawner.prototype.update = function(entity) {
 }
 
 Spawner.prototype.onDestroy = function(entity) {
-    Event.unsubscribe(Global.gameData.world.entityWorld.onRemove, this);
+    Event.unsubscribe(global.gameData.world.entityWorld.onRemove, this);
 }
 
 Spawner.prototype.updateDuration = function() {
-    this.nextSpawnTickId = Global.gameData.world.tickId + this.duration + Math.floor(this.randomDuration * this.duration * (-0.5 + Math.random()));
+    this.nextSpawnTickId = global.gameData.world.tickId + this.duration + Math.floor(this.randomDuration * this.duration * (-0.5 + Math.random()));
 }

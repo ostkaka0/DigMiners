@@ -4,9 +4,9 @@ import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 import IndexCounter from "Engine/Core/IndexCounter.js";
 
-import Global from "Game/Global.js";
+
 import Config from "Game/Config.js";
-import MessageRegister from "Game/Register/Message.js";;
+import MessageRegister from "Engine/Register/Message.js";;
 import CommandEntityInventory from "Game/Command/CommandEntityInventory.js";
 import CommandPlayerOreInventory from "Game/Command/CommandPlayerOreInventory.js";
 import CommandEntityDestroy from "Game/Command/CommandEntityDestroy.js";
@@ -18,10 +18,10 @@ export default MessageRequestItemPickup;
 MessageRegister.ToServer.push(MessageRequestItemPickup);
 
 MessageRequestItemPickup.prototype.execute = function(gameData, player) {
-    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity) return;
     if (entity.item && !entity.pickedUp) {
-        var playerEntity = Global.gameData.world.entityWorld.objects[player.entityId];
+        var playerEntity = global.gameData.world.entityWorld.objects[player.entityId];
         if (!playerEntity) return;
         var physicsBody = entity.physicsBody;
         var playerPhysicsBody = playerEntity.physicsBody;

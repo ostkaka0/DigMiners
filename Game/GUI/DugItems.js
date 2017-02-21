@@ -1,4 +1,4 @@
-import Global from "Game/Global.js";
+
 import Config from "Game/Config.js";
 
 var DugItems = function() {
@@ -48,7 +48,7 @@ var DugItems = function() {
                 var tileType = Config.tileRegister[id];
                 text.text(tileType.name);
             }).mouseleave(function() {
-                Global.gameData.HUD.update();
+                global.gameData.HUD.update();
             });
 
             var dugItemsEntryText = $("<div>", {

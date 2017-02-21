@@ -1,6 +1,6 @@
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
-import MessageRegister from "Game/Register/Message.js";
+
+import MessageRegister from "Engine/Register/Message.js";
 
 import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
@@ -34,7 +34,7 @@ var Client = function(gameData, ip) {
         }, 2000);
 
         console.log("Connected.");
-        Global.gameData.world.events.trigger("connected");
+        global.gameData.world.events.trigger("connected");
     });
 
     socket.on('message', function(msg) {
@@ -56,10 +56,10 @@ var Client = function(gameData, ip) {
     MessageRegister.ToClient.forEach(function(messageType) {
         socket.on(messageType.prototype.idString, function(data) {
             var message = new messageType();
-            message.receive(Global.gameData, data);
-            message.execute(Global.gameData);
-            if (Global.gameData.messageCallbacks[messageType.prototype.id])
-                Global.gameData.messageCallbacks[messageType.prototype.id](message);
+            message.receive(global.gameData, data);
+            message.execute(global.gameData);
+            if (global.gameData.messageCallbacks[messageType.prototype.id])
+                global.gameData.messageCallbacks[messageType.prototype.id](message);
         });
     });
 }

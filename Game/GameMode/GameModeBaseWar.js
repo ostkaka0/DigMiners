@@ -5,7 +5,7 @@ import Chunk from "Engine/Chunk.js";
 import TileWorld from "Engine/TileWorld.js";
 import BlockWorld from "Engine/BlockWorld.js";
 
-import Global from "Game/Global.js";
+
 import Config from "Game/Config.js";
 import Blocks from "Game/Blocks.js";
 import Items from "Game/Items.js";
@@ -41,15 +41,15 @@ GameModeBaseWar.prototype.init = function() {
 
     var loadChunk = function(world, x, y) {
         var chunk = new Chunk();
-        Global.gameData.world.generator.generate(chunk, x, y);
+        global.gameData.world.generator.generate(chunk, x, y);
         world.set([x, y], chunk);
 
-        Global.gameData.world.generator.generateDungeons(Global.gameData.world.blockWorld, chunk, x, y);
+        global.gameData.world.generator.generateDungeons(global.gameData.world.blockWorld, chunk, x, y);
     }
 
     for (var x = -3; x < 3; ++x) {
         for (var y = -3; y < 3; ++y) {
-            loadChunk(Global.gameData.world.tileWorld, x, y);
+            loadChunk(global.gameData.world.tileWorld, x, y);
         }
     }
 
@@ -58,15 +58,15 @@ GameModeBaseWar.prototype.init = function() {
 
     Object.keys(this.playerSpawns).forEach(function(teamId) {
         this.playerSpawns[teamId].forEach(function(pos) {
-            var entityId = Global.gameData.world.idList.next();
+            var entityId = global.gameData.world.idList.next();
             var entity = entityTemplateTeamBase(entityId, pos, teamId, 5, 2.0, 40);
             this.spawnEntities[teamId][entityId] = entity;
-            sendCommand(new CommandEntitySpawn(Global.gameData, entity, entityId, teamId));
+            sendCommand(new CommandEntitySpawn(global.gameData, entity, entityId, teamId));
             sendCommand(new CommandDig(pos, 5.0));
         }.bind(this));
     }.bind(this));
 
-    Event.subscribe(Global.gameData.world.entityWorld.onRemove, this, function(entity) {
+    Event.subscribe(global.gameData.world.entityWorld.onRemove, this, function(entity) {
         var team = Team.Enum.none;
 
         this.teams.forEach(function(currentTeam) {
@@ -86,7 +86,7 @@ GameModeBaseWar.prototype.init = function() {
 
        // End gamemode
         if (Object.keys(this.spawnEntities).length <= 1)
-            Global.gameData.changeGameMode();
+            global.gameData.changeGameMode();
     }.bind(this));
 }
 

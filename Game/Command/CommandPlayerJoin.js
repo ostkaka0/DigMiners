@@ -2,8 +2,8 @@ import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
-import CommandRegister from "Game/Register/Command.js";
+
+import CommandRegister from "Engine/Register/Command.js";
 import Player from "Game/Player.js";
 import MessageInit from "Game/Message/ToClient/MessageInit.js";
 import MessageChunk from "Game/Message/ToClient/MessageChunk.js";
@@ -21,7 +21,7 @@ CommandPlayerJoin.prototype.execute = function() {
     if (isServer)
         player.name = this.playerName;
     if (isServer || this.playerId != global.player.id)
-        Global.gameData.playerWorld.add(player, this.playerId);
+        global.gameData.playerWorld.add(player, this.playerId);
 
     if (isServer) {
         var socket = connections[this.socketId].socket;
@@ -30,14 +30,14 @@ CommandPlayerJoin.prototype.execute = function() {
 
         // Send init message
         // Sends generator seed, chunks must be sent AFTERWARDS
-        new MessageInit(Global.gameData, player).send(Global.gameData, socket);
+        new MessageInit(global.gameData, player).send(global.gameData, socket);
 
         // Send chunks
         // TODO: client requests chunks instead
         for (var x = -3; x < 3; ++x) {
             for (var y = -3; y < 3; ++y) {
-                var chunk = Global.gameData.world.tileWorld.get([x, y]);
-                var blockChunk = Global.gameData.world.blockWorld.get([x, y]);
+                var chunk = global.gameData.world.tileWorld.get([x, y]);
+                var blockChunk = global.gameData.world.blockWorld.get([x, y]);
                 var message = new MessageChunk(chunk, blockChunk, x, y);
                 message.send(socket);
             }

@@ -1,4 +1,4 @@
-import Global from "Game/Global.js";
+
 import Config from "Game/Config.js";
 import Event from "Engine/Core/Event.js"
 
@@ -110,7 +110,7 @@ var DeathScreen = function() {
         } else {
             this.btnSpawn.prop("disabled", true);
             this.btnSpawn.text("Wait - " + duration);
-            Global.gameData.setTimeout(this.btnSpawn.setDisabledCountdown.bind(this, duration - 1), 1000);
+            global.gameData.setTimeout(this.btnSpawn.setDisabledCountdown.bind(this, duration - 1), 1000);
         }
     }.bind(this);
 
@@ -118,16 +118,16 @@ var DeathScreen = function() {
         new MessageRequestSpawn(this.inputUsername.val(), this.getClass()).send(socket);
     }.bind(this));
 
-    Global.gameData.world.events.on("ownPlayerSpawned", function(entity) {
+    global.gameData.world.events.on("ownPlayerSpawned", function(entity) {
         this.root.hide();
     }.bind(this));
 
-    Global.gameData.world.events.on("spectate", function(entity) {
+    global.gameData.world.events.on("spectate", function(entity) {
         this.root.hide();
     }.bind(this));
 
     //events.on("entityDeath", function(entity) {
-    Event.subscribe(Global.gameData.world.entityWorld.onRemove, this, (entity) => {
+    Event.subscribe(global.gameData.world.entityWorld.onRemove, this, (entity) => {
         if (!entity.controlledByPlayer) return;
         if (entity.controlledByPlayer.playerId != global.player.id) return;
 

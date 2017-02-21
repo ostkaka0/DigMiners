@@ -4,10 +4,10 @@ import fix from "Engine/Core/Fix.js";
 import v2 from "Engine/Core/v2.js";
 import Keys from "Engine/Keys.js";
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
+
 import Entity from "Game/Entity/Entity.js";
 import CommandEntityBeginReloadWeapon from "Game/Command/CommandEntityBeginReloadWeapon.js";
-import EntityRegister from "Game/Register/Entity.js";
+import EntityRegister from "Engine/Register/Entity.js";
 
 var Movement = function(speed, toolUseDuration, damageMultiplier, digHardnessMultiplier) {
     this.keyStatuses = {};
@@ -75,7 +75,7 @@ Movement.prototype.destroy = function(entity) {
 }
 
 Movement.entityFunction = function(dt) {
-    Global.gameData.world.entityWorld.objectArray.forEach(function(entity) {
+    global.gameData.world.entityWorld.objectArray.forEach(function(entity) {
         if (!entity || !entity.movement || !entity.physicsBody)
             return;
         var movement = entity.movement;
@@ -129,7 +129,7 @@ Movement.entityFunction = function(dt) {
                 entity.movement.toolUseTickTimeout = useCooldown;
                 if (!isServer) {
                     var useCycleName = (tool.useCycle ? tool.useCycle : "rightArm");
-                    var useCycle = Global.gameData.animationManager.cycles[useCycleName];
+                    var useCycle = global.gameData.animationManager.cycles[useCycleName];
                     if (useCycle)
                         entity.bodyparts.bodyparts["rightArm"].cycle(useCycleName, useCycle.numFrames / useCooldown * 20, true);
                 }
@@ -141,9 +141,9 @@ Movement.entityFunction = function(dt) {
                     var reloadCycleRightArmName = (tool.reloadCycleRightArm ? tool.reloadCycleRightArm : "rightArm");
                     var reloadCycleLeftArmName = (tool.reloadCycleLeftArm ? tool.reloadCycleLeftArm : "leftArm");
                     var reloadCycleGunName = (tool.reloadCycleGun ? tool.reloadCycleGun : "");
-                    var reloadCycleRightArm = Global.gameData.animationManager.cycles[reloadCycleRightArmName];
-                    var reloadCycleLeftArm = Global.gameData.animationManager.cycles[reloadCycleLeftArmName];
-                    var reloadCycleGun = Global.gameData.animationManager.cycles[reloadCycleGunName];
+                    var reloadCycleRightArm = global.gameData.animationManager.cycles[reloadCycleRightArmName];
+                    var reloadCycleLeftArm = global.gameData.animationManager.cycles[reloadCycleLeftArmName];
+                    var reloadCycleGun = global.gameData.animationManager.cycles[reloadCycleGunName];
                     if (reloadCycleRightArm && entity.bodyparts.bodyparts["rightArm"])
                         entity.bodyparts.bodyparts["rightArm"].cycle(reloadCycleRightArmName, reloadCycleRightArm.numFrames / reloadCooldown * 20, true);
                     if (reloadCycleLeftArm && entity.bodyparts.bodyparts["leftArm"])
@@ -178,7 +178,7 @@ Movement.entityFunction = function(dt) {
 
         if (entity.movement.toolReloadTickTimeout == 0 && entity.movement.isReloading) {// || (!entity.movement.keyStatuses[Keys.R] && entity.movement.isReloading)) {
             entity.movement.isReloading = false;
-            Global.gameData.world.events.trigger("finishReload", entity, tool);
+            global.gameData.world.events.trigger("finishReload", entity, tool);
         }
         //}
     });

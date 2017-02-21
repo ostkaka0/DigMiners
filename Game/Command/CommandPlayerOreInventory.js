@@ -2,8 +2,8 @@ import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
-import CommandRegister from "Game/Register/Command.js";
+
+import CommandRegister from "Engine/Register/Command.js";
 
 var CommandPlayerOreInventoryActions = {
     ADD_ORE: 0,
@@ -21,7 +21,7 @@ export default CommandPlayerOreInventory;
 CommandRegister.push(CommandPlayerOreInventory);
 
 CommandPlayerOreInventory.prototype.execute = function() {
-    var player = Global.gameData.playerWorld.objects[this.playerId];
+    var player = global.gameData.playerWorld.objects[this.playerId];
     if (!player) return;
     if (this.actionId == CommandPlayerOreInventory.Actions.ADD_ORE) {
         if (!player.oreInventory[this.itemId])
@@ -33,8 +33,8 @@ CommandPlayerOreInventory.prototype.execute = function() {
         player.oreInventory[this.itemId] -= this.amount;
     }
     if (!isServer && global.player && this.playerId == global.player.playerId) {
-        Global.gameData.HUD.update();
-        Global.gameData.HUD.checkCanAffordRecipe();
+        global.gameData.HUD.update();
+        global.gameData.HUD.checkCanAffordRecipe();
     }
 }
 

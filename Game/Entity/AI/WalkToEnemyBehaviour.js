@@ -3,7 +3,7 @@ import v2 from "Engine/Core/v2.js";
 import BlockWorld from "Engine/BlockWorld.js";
 import TileWorld from "Engine/TileWorld.js";
 
-import Global from "Game/Global.js";
+
 import Team from "Game/Entity/Team.js";
 import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
 import CommandKeyStatusUpdate from "Game/Command/CommandKeyStatusUpdate.js";
@@ -15,16 +15,16 @@ var WalkToEnemyBehaviour = function(entity, maxRadius) {
     this.entity = entity;
     this.maxRadius = maxRadius;
     this.target = null;
-    this.nextUpdateTickId = Global.gameData.world.tickId;
+    this.nextUpdateTickId = global.gameData.world.tickId;
     this.moving = false;
-    this.nextCanRunTickId = Global.gameData.world.tickId;
+    this.nextCanRunTickId = global.gameData.world.tickId;
 }
 export default WalkToEnemyBehaviour;
 
 WalkToEnemyBehaviour.prototype.canRun = function() {
-    if (Global.gameData.world.tickId < this.nextCanRunTickId)
+    if (global.gameData.world.tickId < this.nextCanRunTickId)
         return false;
-    this.nextCanRunTickId = Global.gameData.world.tickId + 40 + 40 * Math.random() >> 0;
+    this.nextCanRunTickId = global.gameData.world.tickId + 40 + 40 * Math.random() >> 0;
     this.target = this.getTarget();
     if (this.target == null)
         return false;
@@ -38,8 +38,8 @@ WalkToEnemyBehaviour.prototype.initialize = function() {
 }
 
 WalkToEnemyBehaviour.prototype.run = function() {
-    if (Global.gameData.world.tickId < this.nextUpdateTickId) return true;
-    this.nextUpdateTickId = Global.gameData.world.tickId + 20;
+    if (global.gameData.world.tickId < this.nextUpdateTickId) return true;
+    this.nextUpdateTickId = global.gameData.world.tickId + 20;
 
     if (!this.target || this.target.isDead || !this.target.isActive) {
         this.target = this.getTarget();
@@ -86,7 +86,7 @@ WalkToEnemyBehaviour.prototype.getTarget = function() {
     global.gameData.world.physicsWorld.getBodiesInRadius(bodies, pos, this.maxRadius);
     for (var i = 0; i < bodies.length; i++) {
         var bodyId = bodies[i];
-        var otherEntity = Global.gameData.world.physicsEntities[bodyId];
+        var otherEntity = global.gameData.world.physicsEntities[bodyId];
         if (!otherEntity) continue;
         if (!otherEntity.health || !otherEntity.physicsBody) continue;
         if (!otherEntity.team && !otherEntity.movement) continue;

@@ -15,7 +15,7 @@ import Inventory from "Game/Entity/Inventory.js";
 import EquippedItems from "Game/Entity/EquippedItems.js";
 import PotionEffects from "Game/Entity/PotionEffects.js";
 import ControlledByPlayer from "Game/Entity/ControlledByPlayer.js";
-import Global from "Game/Global.js";
+
 import Interacter from "Game/Entity/Interacter.js";
 
 /*export var */var entityTemplatePlayerZombie = function(playerId, entityId, name, pos, playerClass) {
@@ -69,12 +69,12 @@ export default function(playerId, entityId, name, playerClass, teamId) {
     entity.ammo = new Ammo();
 
     playerClass.weapons.forEach(function(weapon) {
-        entity.inventory.addStaticItem(Global.gameData, weapon.id);
+        entity.inventory.addStaticItem(global.gameData, weapon.id);
         entity.ammo[weapon.id] = weapon.ammoMax || 0;
     });
 
     playerClass.blocks.forEach(function(blockItem) {
-        entity.inventory.addStaticItem(Global.gameData, blockItem.id);
+        entity.inventory.addStaticItem(global.gameData, blockItem.id);
     });
     if (playerClass.items) {
         playerClass.items.forEach(function(item) {

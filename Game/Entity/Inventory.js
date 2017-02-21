@@ -1,9 +1,9 @@
 import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
-import ItemRegister from "Game/Register/Item.js"
-import EntityRegister from "Game/Register/Entity.js";
+
+import ItemRegister from "Engine/Register/Item.js"
+import EntityRegister from "Engine/Register/Entity.js";
 
 var Inventory = function(inventoryId, entityId, width, height) {
     this.items = [];
@@ -18,19 +18,19 @@ EntityRegister.push(Inventory);
 Inventory.createInventory = function(entityId, width, height) {
     if (!isServer)
         throw ("Tried to create inventory on client.")
-    var inventoryId = Global.gameData.world.inventoryIdList.next();
+    var inventoryId = global.gameData.world.inventoryIdList.next();
     var inventory = new Inventory(inventoryId, entityId, width, height);
-    Global.gameData.world.inventories[inventoryId] = inventory;
-    if (!Global.gameData.world.entityInventories[entityId])
-        Global.gameData.world.entityInventories[entityId] = [];
-    Global.gameData.world.entityInventories[entityId].push(inventory);
+    global.gameData.world.inventories[inventoryId] = inventory;
+    if (!global.gameData.world.entityInventories[entityId])
+        global.gameData.world.entityInventories[entityId] = [];
+    global.gameData.world.entityInventories[entityId].push(inventory);
     return inventory;
 }
 
 Inventory.prototype.destroy = function(entity) {
     if (isServer) {
-        delete Global.gameData.world.inventories[this.inventoryId];
-        var entityInventories = Global.gameData.world.entityInventories[entity.id];
+        delete global.gameData.world.inventories[this.inventoryId];
+        var entityInventories = global.gameData.world.entityInventories[entity.id];
         if (entityInventories) {
             var index = entityInventories.indexOf(this.inventoryId);
             if (index != -1)
@@ -182,7 +182,7 @@ Inventory.prototype.removeStack = function(id) {
     var item = this.items[id];
     delete this.items[id];
     this.items.splice(id, 1);
-    this.sortItems(Global.gameData);
+    this.sortItems(global.gameData);
     return item;
 }
 
@@ -195,7 +195,7 @@ Inventory.prototype.dequipAll = function(gameData, type, arg) {
             dequippedItems.push([i, this.items[i].id]);
         }
     }
-    this.sortItems(Global.gameData);
+    this.sortItems(global.gameData);
     return dequippedItems;
 }
 

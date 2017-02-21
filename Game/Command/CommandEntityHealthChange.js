@@ -5,8 +5,8 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 import Event from "Engine/Core/Event.js";
 
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
-import CommandRegister from "Game/Register/Command.js";
+
+import CommandRegister from "Engine/Register/Command.js";
 import Health from "Game/Entity/Health.js";
 
 var CommandEntityHealthChange = function(entityId, healthChange) {
@@ -17,7 +17,7 @@ export default CommandEntityHealthChange;
 CommandRegister.push(CommandEntityHealthChange);
 
 CommandEntityHealthChange.prototype.execute = function() {
-    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity || !entity.health) return;
     if (entity.movement)
         entity.movement.disabledCooldown = 40;

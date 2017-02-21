@@ -5,7 +5,7 @@ import TileWorld from "Engine/TileWorld.js";
 import Keys from "Engine/Keys.js";
 
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
+
 import Items from "Game/Items.js";
 import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
 import CommandKeyStatusUpdate from "Game/Command/CommandKeyStatusUpdate.js";
@@ -20,7 +20,7 @@ var DigObstacleBehaviour = function(entity, maxWalkDis) {
     this.oldMoveDir = null;
     this.stopTick = null;
     this.nextRunTick = null;
-    this.nextCanRunTickId = Global.gameData.world.tickId;
+    this.nextCanRunTickId = global.gameData.world.tickId;
     this.canRunOldPos = null;
     this.oldItemId = 0;
     this.digPauseDuration = 10; // Duration between finish digging and start digging again
@@ -29,11 +29,11 @@ export default DigObstacleBehaviour
 
 DigObstacleBehaviour.prototype.canRun = function() {
     if (!this.entity.inventory) return false;
-    if (this.nextRunTick && Global.gameData.world.tickId < this.nextRunTick)
+    if (this.nextRunTick && global.gameData.world.tickId < this.nextRunTick)
         return false;
-    if (Global.gameData.world.tickId < this.nextCanRunTickId)
+    if (global.gameData.world.tickId < this.nextCanRunTickId)
         return false;
-    this.nextCanRunTickId = Global.gameData.world.tickId + 5;
+    this.nextCanRunTickId = global.gameData.world.tickId + 5;
 
     // Change equipped item to shovel
     var shovelSlotId = -1;
@@ -58,8 +58,8 @@ DigObstacleBehaviour.prototype.canRun = function() {
     var tilePos = [Math.floor(digPos[0] - 0.5), Math.floor(digPos[1] - 0.5)];
     for (var i = 0; i < 4; i++) {
         var itPos = [tilePos[0] + (i & 1), tilePos[1] + (i >> 1)];
-        var blockId = Global.gameData.world.blockWorld.getForeground(itPos);
-        var density = Global.gameData.world.tileWorld.getDensity(itPos);
+        var blockId = global.gameData.world.blockWorld.getForeground(itPos);
+        var density = global.gameData.world.tileWorld.getDensity(itPos);
         if (blockId != 0 || density > 127) {
             this.targetTilePos = itPos;
             if (shovelSlotId != -1) {
@@ -82,16 +82,16 @@ DigObstacleBehaviour.prototype.initialize = function() {
     var normalized = v2.create(0, 0);
     v2.normalize(diff, normalized);
     sendCommand(new CommandEntityRotate(this.entity.id, normalized));
-    this.stopTick = Global.gameData.world.tickId + (4000 / Config.tickDuration >> 0);
+    this.stopTick = global.gameData.world.tickId + (4000 / Config.tickDuration >> 0);
     this.nextRunTick = null;
 }
 
 DigObstacleBehaviour.prototype.run = function() {
-    var blockId = Global.gameData.world.blockWorld.getForeground(this.targetTilePos);
-    var density = Global.gameData.world.tileWorld.getDensity(this.targetTilePos);
-    if (Global.gameData.world.tickId >= this.stopTick) {
+    var blockId = global.gameData.world.blockWorld.getForeground(this.targetTilePos);
+    var density = global.gameData.world.tileWorld.getDensity(this.targetTilePos);
+    if (global.gameData.world.tickId >= this.stopTick) {
         // No digging for 2 seconds
-        this.nextRunTick = Global.gameData.world.tickId + (2000 / Config.tickDuration >> 0);
+        this.nextRunTick = global.gameData.world.tickId + (2000 / Config.tickDuration >> 0);
         return false;
     }
 
@@ -115,7 +115,7 @@ DigObstacleBehaviour.prototype.finish = function() {
     sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.getPos()));
     sendCommand(new CommandEntityRotate(this.entity.id, this.oldMoveDir));
 
-    this.nextCanRunTickId = Global.gameData.world.tickId + this.digPauseDuration;
+    this.nextCanRunTickId = global.gameData.world.tickId + this.digPauseDuration;
     //if (this.oldItemId)
     //    sendCommand(new CommandEntityEquipItem(this.entity.id, 0, this.oldItemId, true));
 }
