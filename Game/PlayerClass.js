@@ -1,4 +1,4 @@
-import ObjectRegister from "Engine/ObjectRegister.js";
+import ObjectRegister from "Engine/Core/ObjectRegister.js";
 
 import Items from "Game/Items.js";
 import Blocks from "Game/Blocks.js";

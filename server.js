@@ -14,7 +14,7 @@ import MessageRegister from "Game/Register/Message.js";
 import MessageCommands from "Game/Message/ToClient/MessageCommands.js";
 import CommandPlayerJoin from "Game/Command/CommandPlayerJoin.js";
 import CommandPlayerLeave from "Game/Command/CommandPlayerLeave.js";
-import IndexCounter from "Engine/IndexCounter.js";
+import IndexCounter from "Engine/Core/IndexCounter.js";
 
 var console = require("console");
 var fs = require("fs");

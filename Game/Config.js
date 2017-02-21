@@ -1,5 +1,5 @@
-import ObjectRegister from "Engine/ObjectRegister.js";
-import TypeRegister from "Engine/TypeRegister.js";
+import ObjectRegister from "Engine/Core/ObjectRegister.js";
+import TypeRegister from "Engine/Core/TypeRegister.js";
 
 import Tiles from "Game/Tiles.js";
 import Blocks from "Game/Blocks.js";

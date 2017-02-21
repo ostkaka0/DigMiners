@@ -1,4 +1,4 @@
-import Quadtree from "Engine/Quadtree.js";
+import Quadtree from "Engine/Core/Quadtree.js";
 import PointWorld from "Engine/PointWorld.js";
 import DrawTransform from "Engine/Animation/DrawTransform.js";
 import {loadTextures} from "Engine/Animation/TextureFunctions.js";

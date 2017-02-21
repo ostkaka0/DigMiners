@@ -1,5 +1,5 @@
-import {Serialize} from "Engine/Serialization.js";
-import {Deserialize} from "Engine/Serialization.js";
+import {Serialize} from "Engine/Core/Serialization.js";
+import {Deserialize} from "Engine/Core/Serialization.js";
 import Event from "Engine/Core/Event.js";
 
 import Config from "Game/Config.js";

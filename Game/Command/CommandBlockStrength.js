@@ -1,5 +1,5 @@
-import {Serialize} from "Engine/Serialization.js";
-import {Deserialize} from "Engine/Serialization.js";
+import {Serialize} from "Engine/Core/Serialization.js";
+import {Deserialize} from "Engine/Core/Serialization.js";
 import TileWorld from "Engine/TileWorld.js";
 import BlockWorld from "Engine/BlockWorld.js";
 

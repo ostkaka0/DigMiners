@@ -1,5 +1,5 @@
-import IdList from "Engine/IdList.js";
-import ObjectWorld from "Engine/ObjectWorld.js";
+import IdList from "Engine/Core/IdList.js";
+import ObjectWorld from "Engine/Core/ObjectWorld.js";
 import Event from "Engine/Core/Event.js";
 
 import Global from "Game/Global.js";

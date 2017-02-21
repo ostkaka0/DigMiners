@@ -1,4 +1,4 @@
-import TypeRegister from "Engine/TypeRegister.js";;
+import TypeRegister from "Engine/Core/TypeRegister.js";;
 
 var Register = [];
 export default Register;
