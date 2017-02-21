@@ -22,6 +22,8 @@ Global.gameData = {};
 global.gameData = Global.gameData;
 export default Global.gameData;
 
+global.gameData.events = { onChangeGamemode: [] };
+
 Global.gameData.destroy = function() {
     Global.gameData = {};
 }
@@ -112,6 +114,7 @@ Global.gameData.tick = function(dt) {
         this.world = new World();
         this.gameMode = this.nextGameMode;
         this.gameMode.init();
+        Event.trigger(this.events.onChangeGamemode);
         this.nextGameMode = null;
         if (isServer)
             new MessageChangeGameMode().send(io.sockets);

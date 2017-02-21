@@ -24,6 +24,7 @@ import entityTemplatePlayer from "Game/Entity/EntityTemplates/Player.js";
 import entityTemplateZombie from "Game/Entity/EntityTemplates/Zombie.js";
 import entityTemplateGhost from "Game/Entity/EntityTemplates/Ghost.js";
 import MessageAmmoChange from "Game/Message/ToClient/MessageAmmoChange.js";
+import MessageChunk from "Game/Message/ToClient/MessageChunk.js"
 import CommandEntityHealthChange from "Game/Command/CommandEntityHealthChange.js";
 import CommandWorldSpawnStatus from "Game/Command/CommandWorldSpawnStatus.js"
 import CommandEntityDestroy from "Game/Command/CommandEntityDestroy.js"
@@ -57,6 +58,7 @@ GameModeZombieInvasion.prototype.init = function() {
         var chunk = new Chunk();
         Global.gameData.world.generator.generate(chunk, x, y);
         world.set([x, y], chunk);
+        new MessageChunk(chunk, global.gameData.world.blockWorld.get([x, y]), x, y).send(io.sockets);
     }
 
     for (var x = -2; x < 2; ++x) {

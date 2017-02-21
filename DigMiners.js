@@ -12,6 +12,7 @@ import gameLoop from "Engine/GameLoop.js";
 import Keys from "Engine/Keys.js";
 import ClickTypes from "Engine/ClickTypes.js";
 import BlockChunk from "Engine/BlockChunk.js";
+import Event from "Engine/Core/Event.js"
 
 import Config from "Game/Config.js";
 import gameData from "Game/GameData.js";
@@ -76,8 +77,8 @@ var camera = {
     height: window.innerHeight,
     pos: v2.create(0, 0)
 };
-var chunkRenderer = new ChunkRenderer(gl, gameData.world.tileWorld, 32.0);
-var blockChunkRenderer = new BlockChunkRenderer(gl, gameData.world.blockWorld, 32.0);
+var chunkRenderer = null;//new ChunkRenderer(gl, gameData.world.tileWorld, 32.0);
+var blockChunkRenderer = null;//new BlockChunkRenderer(gl, gameData.world.blockWorld, 32.0);
 var commands = [];
 var player = null;
 var playerEntity = null;
@@ -91,6 +92,11 @@ var keyCodeLeft = 37;
 var keyCodeLeft = 38;
 var keyCodeLeft = 39;
 var keyCodeLeft = 37;
+
+Event.subscribe(gameData, window, function() {
+    var chunkRenderer = new ChunkRenderer(gl, gameData.world.tileWorld, 32.0);
+    var blockChunkRenderer = new BlockChunkRenderer(gl, gameData.world.blockWorld, 32.0);
+})
 
 window.loadGame = function() {
     gameData.animationManager.load();
