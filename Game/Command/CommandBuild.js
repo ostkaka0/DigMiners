@@ -3,9 +3,9 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 import BlockWorld from "Engine/BlockWorld.js";
 import TileWorld from "Engine/TileWorld.js";
 
-import CommandRegister from "Game/Register/Command.js";
+import CommandRegister from "Engine/Register/Command.js";
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
+
 import Blocks from "Game/Blocks.js";
 
 var CommandBuild = function(x, y, blockId, type) {
@@ -19,9 +19,9 @@ CommandRegister.push(CommandBuild);
 
 CommandBuild.prototype.execute = function() {
     //if (this.type == BlockTypes.FOREGROUND)
-        Global.gameData.world.blockWorld.setForeground([this.x, this.y], this.blockId);
+        global.gameData.world.blockWorld.setForeground([this.x, this.y], this.blockId);
     //else if (this.type == BlockTypes.BACKGROUND)
-    //    setBackground(Global.gameData.world.blockWorld, this.x, this.y, this.blockId);
+    //    setBackground(global.gameData.world.blockWorld, this.x, this.y, this.blockId);
 }
 
 CommandBuild.prototype.serialize = function(byteArray, index) {

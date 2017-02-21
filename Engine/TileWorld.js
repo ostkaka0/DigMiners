@@ -3,7 +3,7 @@ import v2 from "Engine/Core/v2.js";
 import Map2D from "Engine/Core/Map2D.js"
 import Chunk from "Engine/Chunk.js";
 
-import Global from "Game/Global.js";
+
 import Config from "Game/Config.js";
 
 export default class extends Map2D {

@@ -5,8 +5,8 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 import TileWorld from "Engine/TileWorld.js";
 
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
-import CommandRegister from "Game/Register/Command.js";
+
+import CommandRegister from "Engine/Register/Command.js";
 import Tiles from "Game/Blocks.js";
 import Items from "Game/Items.js";
 
@@ -26,12 +26,12 @@ export default CommandEntityDig;
 CommandRegister.push(CommandEntityDig);
 
 CommandEntityDig.prototype.execute = function() {
-    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity || !entity.movement) return;
 
-    var tileWorld = Global.gameData.world.tileWorld;
-    var targetTile = Config.tileRegister[Global.gameData.world.tileWorld.getTileId([this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1]])];
-    var targetDensity = Global.gameData.world.tileWorld.getDensity([this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1]]);
+    var tileWorld = global.gameData.world.tileWorld;
+    var targetTile = Config.tileRegister[global.gameData.world.tileWorld.getTileId([this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1]])];
+    var targetDensity = global.gameData.world.tileWorld.getDensity([this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1]]);
     var onDensityChange = null;
     var digDis = 1.5;
 
@@ -59,7 +59,7 @@ CommandEntityDig.prototype.execute = function() {
         onDensityChange = function([tileX, tileY], tile, oldDensity, newDensity) { return (tile.isOre) ? oldDensity : newDensity; };
     }
 
-    var dug = Global.gameData.world.tileWorld.carveCircle(Config.tileRegister, [this.pos[0] + digDis * this.dir[0], this.pos[1] + digDis * this.dir[1]], this.radius, this.digSpeed, this.maxDigHardness, onDensityChange);
+    var dug = global.gameData.world.tileWorld.carveCircle(Config.tileRegister, [this.pos[0] + digDis * this.dir[0], this.pos[1] + digDis * this.dir[1]], this.radius, this.digSpeed, this.maxDigHardness, onDensityChange);
     if (isServer) {
         // Only process dug ores on server
         for (var i = 0; i < dug.length; ++i) {
@@ -76,12 +76,12 @@ CommandEntityDig.prototype.execute = function() {
                 if (itemId != null) {
                     var physicsBody = entity.physicsBody;
 
-                    var itemEntityId = Global.gameData.world.idList.next();
-                    var itemEntity = entityTemplateItem(itemId, 1, Global.gameData);
+                    var itemEntityId = global.gameData.world.idList.next();
+                    var itemEntity = entityTemplateItem(itemId, 1, global.gameData);
                     itemEntity.physicsBody.setPos(v2.clone(physicsBody.getPos()));
                     itemEntity.physicsBody.angle = physicsBody.angle;
                     itemEntity.physicsBody.angleOld = physicsBody.angle;
-                    sendCommand(new CommandEntitySpawn(Global.gameData, itemEntity, itemEntityId));
+                    sendCommand(new CommandEntitySpawn(global.gameData, itemEntity, itemEntityId));
                 }
             }*/
         }

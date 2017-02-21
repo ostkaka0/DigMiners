@@ -3,9 +3,9 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 import IndexCounter from "Engine/Core/IndexCounter.js";
 import BlockWorld from "Engine/BlockWorld.js";
 
-import Global from "Game/Global.js";
+
 import Config from "Game/Config.js";
-import MessageRegister from "Game/Register/Message.js";;
+import MessageRegister from "Engine/Register/Message.js";;
 
 var MessageRequestClickBlock = function(blockPos, clickType) {
     this.blockPos = blockPos;
@@ -15,10 +15,10 @@ export default MessageRequestClickBlock;
 MessageRegister.ToServer.push(MessageRequestClickBlock);
 
 MessageRequestClickBlock.prototype.execute = function(gameData, player) {
-    var entity = Global.gameData.world.entityWorld.objects[player.entityId];
+    var entity = global.gameData.world.entityWorld.objects[player.entityId];
     if (!entity || !this.blockPos) return;
     //console.log("player " + player.playerId + " clicked block " + this.blockPos + ", clicktype: " + this.clickType);
-    var blockId = Global.gameData.world.blockWorld.getForeground(this.blockPos);
+    var blockId = global.gameData.world.blockWorld.getForeground(this.blockPos);
     var blockType = Config.blockRegister[blockId];
     if (blockType && blockType.isDoor)
         blockType.clickFunction(this.blockPos, blockType, entity, this.clickType);

@@ -3,8 +3,8 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 import IndexCounter from "Engine/Core/IndexCounter.js";
 import Event from "Engine/Core/Event.js";
 
-import Global from "Game/Global.js";
-import MessageRegister from "Game/Register/Message.js";;
+
+import MessageRegister from "Engine/Register/Message.js";;
 import Ammo from "Game/Entity/Ammo.js";
 
 var MessageAmmoChange = function(entity, itemIds) {

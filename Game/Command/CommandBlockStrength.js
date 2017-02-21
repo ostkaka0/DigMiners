@@ -3,9 +3,9 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 import TileWorld from "Engine/TileWorld.js";
 import BlockWorld from "Engine/BlockWorld.js";
 
-import CommandRegister from "Game/Register/Command.js";
+import CommandRegister from "Engine/Register/Command.js";
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
+
 
 var CommandBlockStrength = function(x, y, strength) {
     this.x = x;
@@ -17,9 +17,9 @@ CommandRegister.push(CommandBlockStrength);
 
 CommandBlockStrength.prototype.execute = function() {
     if (this.strength > 0)
-        Global.gameData.world.blockWorld.setStrength([this.x, this.y], this.strength);
+        global.gameData.world.blockWorld.setStrength([this.x, this.y], this.strength);
     else
-        Global.gameData.world.blockWorld.setForeground([this.x, this.y], 0);
+        global.gameData.world.blockWorld.setForeground([this.x, this.y], 0);
 }
 
 CommandBlockStrength.prototype.serialize = function(byteArray, index) {

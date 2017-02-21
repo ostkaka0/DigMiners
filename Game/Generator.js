@@ -2,7 +2,7 @@ import Chunk from "Engine/Chunk.js";
 import BlockChunk from "Engine/BlockChunk.js";
 
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
+
 import Blocks from "Game/Blocks.js";
 import Tiles from "Game/Blocks.js";
 

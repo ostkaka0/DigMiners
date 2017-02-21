@@ -18,8 +18,8 @@ import ParticleFunctions from "Game/ParticleFunctions.js";
 import ExplosionFunctions from "Game/ExplosionFunctions.js";
 
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
-import ItemRegister from "Game/Register/Item.js";
+
+import ItemRegister from "Engine/Register/Item.js";
 
 import CommandBlockStrength from "Game/Command/CommandBlockStrength.js";
 import CommandEntityDig from "Game/Command/CommandEntityDig.js";
@@ -53,7 +53,7 @@ Items.Functions.Shovel = function(entity, item) {
         var chunkPos = [];
         var localPos = [];
         BlockChunk.fromV2World(toolUsePos, chunkPos, localPos);
-        var blockChunk = Global.gameData.world.blockWorld.get(chunkPos);
+        var blockChunk = global.gameData.world.blockWorld.get(chunkPos);
         if (blockChunk) {
             var blockId = blockChunk.getForeground(localPos[0], localPos[1]);
             if (blockId) {
@@ -69,13 +69,13 @@ Items.Functions.Shovel = function(entity, item) {
         }
 
         // Dig terrain
-        Global.gameData.world.commands.push(new CommandEntityDig(entity.id, entity.physicsBody.getPos(), dir, 1.5, Entity.getDigSpeed(entity), Entity.getMaxDigHardness(entity)));
+        global.gameData.world.commands.push(new CommandEntityDig(entity.id, entity.physicsBody.getPos(), dir, 1.5, Entity.getDigSpeed(entity), Entity.getMaxDigHardness(entity)));
     }
 }
 
 Items.Functions.Sword = function(entity, item) {
     if (isServer) {
-        var physicsWorld = Global.gameData.world.physicsWorld;
+        var physicsWorld = global.gameData.world.physicsWorld;
         var hitRange = item.hitRange || 1.0;
         var hitRadius = item.hitRadius || 0.5;
         var damage = item.damage || 10.0;
@@ -93,7 +93,7 @@ Items.Functions.Sword = function(entity, item) {
 
         bodies.forEach(function(bodyId) {
             if (bodyId == entityBodyId) return;
-            var targetEntity = Global.gameData.world.physicsEntities[bodyId];
+            var targetEntity = global.gameData.world.physicsEntities[bodyId];
             if (!targetEntity) return;
 
             hitEntities.push(targetEntity.id);
@@ -103,7 +103,7 @@ Items.Functions.Sword = function(entity, item) {
 
         // TODO: CommandEntityHit
         //if (isServer) {
-        //    Global.gameData.world.commands.push(new CommandEntityHit(entity, hitEntities));
+        //    global.gameData.world.commands.push(new CommandEntityHit(entity, hitEntities));
         //}
     }
 }
@@ -114,7 +114,7 @@ Items.Functions.Potion = function(entity, item) {
         entity.potionEffects.add(potionEffectType, item.potionDuration);
     }
     if (entity.inventory) {
-        var removed = entity.inventory.removeItem(Global.gameData, item.id, 1);
+        var removed = entity.inventory.removeItem(global.gameData, item.id, 1);
         for (var i = 0; i < removed.length; ++i) {
             // Dequip item when removed from inventory
             var entry = removed[i];
@@ -125,8 +125,8 @@ Items.Functions.Potion = function(entity, item) {
                 Entity.onDequip(entity, stackId, itemType);
         };
         if (!isServer && global.playerEntity && entity.id == global.playerEntity.id) {
-            Global.gameData.HUD.update();
-            Global.gameData.HUD.checkCanAffordRecipe();
+            global.gameData.HUD.update();
+            global.gameData.HUD.checkCanAffordRecipe();
         }
     }
 }
@@ -141,7 +141,7 @@ Items.Functions.RangedWeapon = function(entity, itemType) {
     var numProjectiles = itemType.numProjectiles ? itemType.numProjectiles : 1;
     item.magazine -= 1;
 
-    Global.gameData.world.events.trigger("bulletFired", entity, itemType);
+    global.gameData.world.events.trigger("bulletFired", entity, itemType);
 
     if (isServer) {
         var maxDistance = (itemType.projectileType.hitAtCursor && entity.movement.deltaWorldCursorPos) ?
@@ -168,7 +168,7 @@ Items.Functions.RangedWeapon = function(entity, itemType) {
                 projectileMaxDistance *= 1.0 - 0.5 * scatter + scatter * Math.random();
             }
 
-            Global.gameData.world.commands.push(new CommandProjectileSpawn(Global.gameData.world.idList.next(), toolUsePos, projectileAngle, projectileSpeed, projectileMaxDistance, itemType.projectileType, entity.id));
+            global.gameData.world.commands.push(new CommandProjectileSpawn(global.gameData.world.idList.next(), toolUsePos, projectileAngle, projectileSpeed, projectileMaxDistance, itemType.projectileType, entity.id));
         }
     }
 }

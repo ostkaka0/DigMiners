@@ -1,7 +1,7 @@
 import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 
-import CommandRegister from "Game/Register/Command.js";
+import CommandRegister from "Engine/Register/Command.js";
 
 var CommandEntityAnimate = function(entityId, bodypart, animation, speed) {
     this.entityId = entityId;

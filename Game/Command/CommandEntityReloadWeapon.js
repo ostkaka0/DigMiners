@@ -3,9 +3,9 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 import Event from "Engine/Core/Event.js";
 
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
-import ItemRegister from "Game/Register/Item.js"
-import CommandRegister from "Game/Register/Command.js";
+
+import ItemRegister from "Engine/Register/Item.js"
+import CommandRegister from "Engine/Register/Command.js";
 import Items from "Game/Items.js";
 import Ammo from "Game/Entity/Ammo.js";
 
@@ -17,7 +17,7 @@ export default CommandEntityReloadWeapon;
 CommandRegister.push(CommandEntityReloadWeapon);
 
 CommandEntityReloadWeapon.prototype.execute = function() {
-    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity || !entity.inventory) return;
     var item = entity.inventory.items[this.stackId];
     var itemType = ItemRegister[item.id];

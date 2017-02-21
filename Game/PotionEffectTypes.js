@@ -3,8 +3,8 @@ import v2 from "Engine/Core/v2.js";
 import Event from "Engine/Core/Event.js";
 
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
-import ItemRegister from "Game/Register/Item.js"
+
+import ItemRegister from "Engine/Register/Item.js"
 import Ammo from "Game/Entity/Ammo.js";
 import Health from "Game/Entity/Health.js";
 
@@ -45,13 +45,13 @@ PotionEffectTypes.HealNearEntities = {
         var pos = entity.physicsBody.getPos();
         /*var pos = entity.physicsBody.getPos();
         var nearBodies = [];
-        Global.gameData.world.physicsWorld.getBodiesInRadius(nearBodies, pos, 2.0);
+        global.gameData.world.physicsWorld.getBodiesInRadius(nearBodies, pos, 2.0);
         nearBodies.forEach(function(bodyId) {
-            var entity = Global.gameData.world.physicsEntities[bodyId];
+            var entity = global.gameData.world.physicsEntities[bodyId];
             if (!entity || !entity.potionEffects) return;
             entity.potionEffects.add(PotionEffectTypes.Healing.id, 6);
         }.bind(this));*/
-        Global.gameData.world.entityWorld.objectArray.forEach(function(otherEntity) {
+        global.gameData.world.entityWorld.objectArray.forEach(function(otherEntity) {
             if (!otherEntity.physicsBody || !otherEntity.potionEffects)
                 return;
             var posOther = otherEntity.physicsBody.getPos();
@@ -66,7 +66,7 @@ PotionEffectTypes.SupplyAmmoNearEntities = {
     interval: 5,
     potionFunction: function(entity) {
         var pos = entity.physicsBody.getPos();
-        Global.gameData.world.entityWorld.objectArray.forEach(function(otherEntity) {
+        global.gameData.world.entityWorld.objectArray.forEach(function(otherEntity) {
             if (!otherEntity.physicsBody || !otherEntity.potionEffects)
                 return;
             var posOther = otherEntity.physicsBody.getPos();

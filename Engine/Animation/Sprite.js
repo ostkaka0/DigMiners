@@ -1,4 +1,4 @@
-import Global from "Game/Global.js";
+
 
 var Sprite = function(textureName) {
     if (textureName) {

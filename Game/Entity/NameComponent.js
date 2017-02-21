@@ -3,7 +3,7 @@ import v2 from "Engine/Core/v2.js";
 import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 import TextSprite from "Engine/Animation/TextSprite.js";
-import EntityRegister from "Game/Register/Entity.js";
+import EntityRegister from "Engine/Register/Entity.js";
 
 var NameComponent = function(entityName) {
     this.entityName = entityName + "";

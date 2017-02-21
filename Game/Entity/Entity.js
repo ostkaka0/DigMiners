@@ -1,4 +1,4 @@
-import Global from "Game/Global.js";
+
 
 import Items from "Game/Items.js";
 import Team from "Game/Entity/Team.js";
@@ -10,13 +10,13 @@ export default Entity;
 Entity.onEquip = function(entity, stackId, itemType) {
     if (itemType.typeOfType == "block")
         entity.isBuilding = true;
-    Global.gameData.world.events.trigger("equip", entity, stackId, itemType);
+    global.gameData.world.events.trigger("equip", entity, stackId, itemType);
 }
 
 Entity.onDequip = function(entity, stackId, itemType) {
     if (itemType.typeOfType == "block")
         entity.isBuilding = false;
-    Global.gameData.world.events.trigger("dequip", entity, stackId, itemType);
+    global.gameData.world.events.trigger("dequip", entity, stackId, itemType);
 }
 
 Entity.getDigSpeed = function(entity) {

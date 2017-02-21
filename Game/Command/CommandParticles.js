@@ -4,8 +4,8 @@ import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
-import CommandRegister from "Game/Register/Command.js";
+
+import CommandRegister from "Engine/Register/Command.js";
 import ParticleFunctions from "Game/ParticleFunctions.js";
 
 var CommandParticles = function(particleFunctionId, pos, variable) {

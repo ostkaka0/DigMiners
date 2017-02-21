@@ -4,20 +4,20 @@ import Chunk from "Engine/Chunk.js";
 import BlockChunk from "Engine/BlockChunk.js";
 
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
+
 
 var Player = function(playerId, entityId) {
     this.playerId = playerId;
     this.entityId = entityId;
     this.classId = 0;
     this.text = null;
-    this.deathTick = Global.gameData.world.tickId;
+    this.deathTick = global.gameData.world.tickId;
     this.oreInventory = new Array();
 }
 export default Player
 
 Player.prototype.hasRequiredRecipeResources = function(recipe) {
-    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity) return false;
     for (var j = 0; j < recipe.requiredItems.length; ++j) {
         var itemType = recipe.requiredItems[j][0];
@@ -36,10 +36,10 @@ Player.prototype.hasRequiredRecipeResources = function(recipe) {
 
 Player.prototype.canPlaceBlock = function(gameData, x, y) {
     var distBlockPos = [x * 32 + 16, y * 32 + 16];
-    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity) return false;
     var bodies = [];
-    Global.gameData.world.physicsWorld.getBodiesInRadius(bodies, [x + 0.5, y + 0.5], 0.0);
+    global.gameData.world.physicsWorld.getBodiesInRadius(bodies, [x + 0.5, y + 0.5], 0.0);
     if (bodies.length != 0) return false;
     var physicsBody = entity.physicsBody;
     if (!physicsBody) return false;
@@ -47,10 +47,10 @@ Player.prototype.canPlaceBlock = function(gameData, x, y) {
     var dist = Math.sqrt((distPlayerPos[0] - distBlockPos[0]) * (distPlayerPos[0] - distBlockPos[0]) + (distPlayerPos[1] - distBlockPos[1]) * (distPlayerPos[1] - distBlockPos[1]));
     var blockChunkX = Math.floor(x / BlockChunk.dim);
     var blockChunkY = Math.floor(y / BlockChunk.dim);
-    var blockChunk = Global.gameData.world.blockWorld.get([blockChunkX, blockChunkY]);
+    var blockChunk = global.gameData.world.blockWorld.get([blockChunkX, blockChunkY]);
     var localX = Math.floor(x) - blockChunkX * BlockChunk.dim;
     var localY = Math.floor(y) - blockChunkY * BlockChunk.dim;
-    if (Global.gameData.world.tileWorld.getDensity([x, y]) > 127) return false;
+    if (global.gameData.world.tileWorld.getDensity([x, y]) > 127) return false;
     if (dist < Config.blockPlaceDistance && (!blockChunk || !blockChunk.getForeground(localX, localY)))
         return true;
     return false;

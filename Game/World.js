@@ -11,7 +11,7 @@ import BlockWorld from "Engine/BlockWorld.js";
 import TileWorld from "Engine/TileWorld.js";
 import CelluralAutomata from "Engine/CelluralAutomata.js"
 
-import Global from "Game/Global.js";
+
 import Config from "Game/Config.js";
 import Entity from "Game/Entity/Entity.js";
 import Projectile from "Game/Entity/Projectile.js";
@@ -126,7 +126,7 @@ World.prototype.initializeEvents = function() {
 
         if (entity.controlledByPlayer) {
             var playerId = entity.controlledByPlayer.playerId;
-            var player = Global.gameData.playerWorld.objects[playerId];
+            var player = global.gameData.playerWorld.objects[playerId];
             if (player) {
                 player.deathTick = this.tickId;
                 player.entityId = null;
@@ -150,7 +150,7 @@ World.prototype.initializeEvents = function() {
     }
 
     Event.subscribe(Projectile.Events.onHit, this, function(projectileEntity, hitPos) {
-        Global.gameData.setTimeout(function(projectileEntity) {
+        global.gameData.setTimeout(function(projectileEntity) {
             var type = projectileEntity.projectile.projectileType;
             if (type.isExplosive) {
                 var shooter = this.entityWorld.objects[projectileEntity.projectile.shooterEntityId];
@@ -221,8 +221,8 @@ World.prototype.initializeEvents = function() {
             if (global.playerEntity && global.playerEntity.id == interactingEntity.id) {
                 if (interactableEntity.chest && interactableEntity.inventory) {
                     //TODO: inventory size
-                    Global.gameData.HUD.inventory2 = new InventoryHUD(interactableEntity.inventory, "Chest", 80);
-                    Global.gameData.HUD.inventory2.update();
+                    global.gameData.HUD.inventory2 = new InventoryHUD(interactableEntity.inventory, "Chest", 80);
+                    global.gameData.HUD.inventory2.update();
                 }
             }
 
@@ -236,8 +236,8 @@ World.prototype.initializeEvents = function() {
         if (!isServer) {
             if (global.playerEntity && global.playerEntity.id == interactingEntity.id) {
                 if (interactableEntity.chest && interactableEntity.inventory) {
-                    Global.gameData.HUD.inventory2.remove();
-                    Global.gameData.HUD.inventory2 = null;
+                    global.gameData.HUD.inventory2.remove();
+                    global.gameData.HUD.inventory2 = null;
                 }
             }
         }

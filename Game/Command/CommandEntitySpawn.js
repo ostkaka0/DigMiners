@@ -2,9 +2,9 @@ import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
-import CommandRegister from "Game/Register/Command.js";
-import EntityRegister from "Game/Register/Entity.js";
+
+import CommandRegister from "Engine/Register/Command.js";
+import EntityRegister from "Engine/Register/Entity.js";
 
 var CommandEntitySpawn = function(gameData, entity, entityId, teamId) {
     this.entity = entity;
@@ -14,9 +14,9 @@ export default CommandEntitySpawn;
 CommandRegister.push(CommandEntitySpawn);
 
 CommandEntitySpawn.prototype.execute = function() {
-    if (Global.gameData.world.entityWorld.objects[this.entityId])
-        Global.gameData.world.entityWorld.remove(Global.gameData.world.entityWorld.objects[this.entityId]);
-    Global.gameData.world.entityWorld.add(this.entity, this.entityId);
+    if (global.gameData.world.entityWorld.objects[this.entityId])
+        global.gameData.world.entityWorld.remove(global.gameData.world.entityWorld.objects[this.entityId]);
+    global.gameData.world.entityWorld.add(this.entity, this.entityId);
 }
 
 CommandEntitySpawn.prototype.serialize = function(byteArray, index) {
@@ -40,7 +40,7 @@ CommandEntitySpawn.prototype.deserialize = function(byteArray, index) {
         var componentType = EntityRegister[componentId];
         var componentName = componentType.prototype.name;
         entity[componentName] = new componentType();
-        entity[componentName].deserialize(byteArray, index, Global.gameData);
+        entity[componentName].deserialize(byteArray, index, global.gameData);
     }
     this.entityId = entityId;
     this.entity = entity;

@@ -3,13 +3,13 @@ import v2 from "Engine/Core/v2.js";
 import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 
-import CommandRegister from "Game/Register/Command.js";
+import CommandRegister from "Engine/Register/Command.js";
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
+
 
 var CommandCollisions = function(collisions) {
-    var physicsWorld = Global.gameData.world.physicsWorld;
-    var physicsEntities = Global.gameData.world.physicsEntities;
+    var physicsWorld = global.gameData.world.physicsWorld;
+    var physicsEntities = global.gameData.world.physicsEntities;
 
     var bodies = {};
     this.collisions = [];
@@ -38,8 +38,8 @@ export default CommandCollisions;
 CommandRegister.push(CommandCollisions);
 
 CommandCollisions.prototype.execute = function() {
-    var physicsWorld = Global.gameData.world.physicsWorld;
-    var entities = Global.gameData.world.entityWorld.objects;
+    var physicsWorld = global.gameData.world.physicsWorld;
+    var entities = global.gameData.world.entityWorld.objects;
 
     this.collisions.forEach(function(collisionData) {
         var entity = entities[collisionData[0]];

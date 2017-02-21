@@ -4,8 +4,8 @@ import BlockWorld from "Engine/BlockWorld.js";
 import TileWorld from "Engine/TileWorld.js";
 
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
-import CommandRegister from "Game/Register/Command.js";
+
+import CommandRegister from "Engine/Register/Command.js";
 import Blocks from "Game/Blocks.js";
 import BlockPlacer from "Game/Entity/BlockPlacer.js";
 import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
@@ -22,19 +22,19 @@ CommandRegister.push(CommandEntityBuild);
 
 CommandEntityBuild.prototype.execute = function() {
     /*if (this.type == BlockTypes.FOREGROUND)
-        Global.gameData.world.blockWorld.setForeground([this.x, this.y], this.blockId);
+        global.gameData.world.blockWorld.setForeground([this.x, this.y], this.blockId);
     else if (this.type == BlockTypes.BACKGROUND)
-        setBackground(Global.gameData.world.blockWorld, this.x, this.y, this.blockId);*/
+        setBackground(global.gameData.world.blockWorld, this.x, this.y, this.blockId);*/
 
-    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity) return;
     if (!isServer && this.blockId)
         entity.bodyparts.bodyparts["rightArm"].cycle("rightArm", 256, true);
     if (isServer) {
         var block = Config.blockRegister[this.blockId];
         var entityBlockPlacer = { blockPlacer: new BlockPlacer([this.x, this.y], this.blockId, block.buildDuration, entity.id) };
-        var entityBlockPlacerId = Global.gameData.world.idList.next();
-        sendCommand(new CommandEntitySpawn(Global.gameData, entityBlockPlacer, entityBlockPlacerId));
+        var entityBlockPlacerId = global.gameData.world.idList.next();
+        sendCommand(new CommandEntitySpawn(global.gameData, entityBlockPlacer, entityBlockPlacerId));
         entity.blockPlacerId = entityBlockPlacerId;
     }
 }

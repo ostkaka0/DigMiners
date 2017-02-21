@@ -5,10 +5,10 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 import IndexCounter from "Engine/Core/IndexCounter.js";
 import Event from "Engine/Core/Event.js"
 
-import Global from "Game/Global.js";
+
 import Config from "Game/Config.js";
 import PlayerClass from "Game/PlayerClass.js";
-import MessageRegister from "Game/Register/Message.js";;
+import MessageRegister from "Engine/Register/Message.js";;
 import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
 import CommandPlayerSpawn from "Game/Command/CommandPlayerSpawn.js";
 import MessageSpectate from "Game/Message/ToClient/MessageSpectate.js";
@@ -24,7 +24,7 @@ MessageRegister.ToServer.push(MessageRequestSpawn);
 
 MessageRequestSpawn.prototype.execute = function(gameData, player) {
     if (player.entity != null && player.entityId != null) return;
-    if (Global.gameData.world.tickId - player.deathTick < 20 * Config.respawnTime) return;
+    if (global.gameData.world.tickId - player.deathTick < 20 * Config.respawnTime) return;
     if (!PlayerClass.Register[this.classId]) return;
     if (!this.playerName || this.playerName.length <= 0) {
         this.playerName = "Guest - " + player.id;
@@ -33,10 +33,10 @@ MessageRequestSpawn.prototype.execute = function(gameData, player) {
     player.name = this.playerName;
     player.classId = this.classId;
 
-    var entityId = Global.gameData.world.idList.next();
+    var entityId = global.gameData.world.idList.next();
     var entity;
-    if (Global.gameData.gameMode.createEntity) {
-        entity = Global.gameData.gameMode.createEntity(player, entityId);
+    if (global.gameData.gameMode.createEntity) {
+        entity = global.gameData.gameMode.createEntity(player, entityId);
     } else {
         entity = entityTemplatePlayer(player.id, entityId, player.name, PlayerClass.Register[this.classId], Team.Enum.None);
     }
@@ -49,12 +49,12 @@ MessageRequestSpawn.prototype.execute = function(gameData, player) {
     //}
 
     //if (entity) {
-        sendCommand(new CommandEntitySpawn(Global.gameData, entity, entityId));
+        sendCommand(new CommandEntitySpawn(global.gameData, entity, entityId));
         sendCommand(new CommandPlayerSpawn(player.id, entityId, player.name));
     /*} else {
 
         var entities = [];
-        Global.gameData.world.entityWorld.objectArray.forEach(function(entity) {
+        global.gameData.world.entityWorld.objectArray.forEach(function(entity) {
             if (entity.physicsBody)
                 entities.push(entity);
         });

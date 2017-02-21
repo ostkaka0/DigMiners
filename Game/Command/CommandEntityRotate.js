@@ -4,8 +4,8 @@ import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
-import CommandRegister from "Game/Register/Command.js";
+
+import CommandRegister from "Engine/Register/Command.js";
 
 var CommandEntityRotate = function(entityId, direction) {
     this.entityId = entityId;
@@ -15,7 +15,7 @@ export default CommandEntityRotate;
 CommandRegister.push(CommandEntityRotate);
 
 CommandEntityRotate.prototype.execute = function() {
-    var entity = Global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity) return;
     var movement = entity.movement;
     if (!movement) return;

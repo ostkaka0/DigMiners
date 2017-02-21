@@ -4,10 +4,10 @@ import IndexCounter from "Engine/Core/IndexCounter.js";
 import Chunk from "Engine/Chunk.js";
 import BlockChunk from "Engine/BlockChunk.js";
 
-import Global from "Game/Global.js";
+
 import Config from "Game/Config.js";
-import ItemRegister from "Game/Register/Item.js"
-import MessageRegister from "Game/Register/Message.js";;
+import ItemRegister from "Engine/Register/Item.js"
+import MessageRegister from "Engine/Register/Message.js";;
 import CommandEntityBuild from "Game/Command/CommandEntityBuild.js";
 import Blocks from "Game/Blocks.js";
 
@@ -20,7 +20,7 @@ export default MessageRequestPlaceBlock;
 MessageRegister.ToServer.push(MessageRequestPlaceBlock);
 
 MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
-    var entity = Global.gameData.world.entityWorld.objects[player.entityId];
+    var entity = global.gameData.world.entityWorld.objects[player.entityId];
     if (!entity) return;
     var item = entity.inventory.items[this.stackId];
     if (!item) return;
@@ -29,7 +29,7 @@ MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
         if (!entity.inventory.hasItem(item.id, 1))
             return;
 
-        if (!player.canPlaceBlock(Global.gameData, this.x, this.y))
+        if (!player.canPlaceBlock(global.gameData, this.x, this.y))
             return;
 
         var blockChunkX = Math.floor(this.x / BlockChunk.dim);
@@ -40,7 +40,7 @@ MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
         var blockType = Config.blockRegister[itemType.blockId];
         var type = blockType.type;
 
-        var blockChunk = Global.gameData.world.blockWorld.get([blockChunkX, blockChunkY]);
+        var blockChunk = global.gameData.world.blockWorld.get([blockChunkX, blockChunkY]);
         //if (type == BlockTypes.FOREGROUND) {
             if (blockChunk && blockChunk.getForeground(localX, localY) > 0)
                 return;

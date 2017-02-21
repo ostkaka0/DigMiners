@@ -1,6 +1,6 @@
 import Event from "Engine/Core/Event.js";
 
-import Global from "Game/Global.js";
+
 import TextureLoader from "Game/Entity/TextureLoader.js";
 
 var LoadingScreen = function() {
@@ -61,7 +61,7 @@ var LoadingScreen = function() {
 
     this.root.hide();
 
-    Global.gameData.world.events.on("texturesBeginLoading", function() {
+    global.gameData.world.events.on("texturesBeginLoading", function() {
         this.root.show();
     }.bind(this));
 

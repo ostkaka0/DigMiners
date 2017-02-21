@@ -3,23 +3,23 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 import IndexCounter from "Engine/Core/IndexCounter.js";
 
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
-import MessageRegister from "Game/Register/Message.js";;
-import CommandRegister from "Game/Register/Command.js";;
+
+import MessageRegister from "Engine/Register/Message.js";;
+import CommandRegister from "Engine/Register/Command.js";;
 
 var MessageCommands = function() {
-    this.tickId = (isServer) ? Global.gameData.world.tickId : 0;
-    this.commands = (isServer) ? Global.gameData.world.commands : [];
+    this.tickId = (isServer) ? global.gameData.world.tickId : 0;
+    this.commands = (isServer) ? global.gameData.world.commands : [];
 }
 export default MessageCommands;
 MessageRegister.ToClient.push(MessageCommands);
 
 MessageCommands.prototype.execute = function(gameData) {
     if (Config.fakeLag == 0 && Config.fakeJitter == 0) {
-        Global.gameData.world.pendingCommands[this.tickId] = this.commands;
+        global.gameData.world.pendingCommands[this.tickId] = this.commands;
     } else {
-        Global.gameData.setTimeout(function() {
-            Global.gameData.world.pendingCommands[this.tickId] = this.commands;
+        global.gameData.setTimeout(function() {
+            global.gameData.world.pendingCommands[this.tickId] = this.commands;
         }.bind(this), Config.fakeLag + Config.fakeJitter * Math.random());
     }
 }

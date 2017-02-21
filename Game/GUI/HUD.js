@@ -1,4 +1,4 @@
-import Global from "Game/Global.js";
+
 import AmmoHUD from "Game/GUI/AmmoHUD.js";
 import DugItems from "Game/GUI/DugItems.js";
 import Chat from "Game/GUI/Chat.js";
@@ -11,9 +11,9 @@ var HUD = function(gameData) {
         if (key == 67) { // c
             var crafting = document.getElementById("crafting");
             if (!crafting.style.display || crafting.style.display == "none")
-                Global.gameData.HUD.openCraftingWindow();
+                global.gameData.HUD.openCraftingWindow();
             else
-                Global.gameData.HUD.closeCraftingWindow();
+                global.gameData.HUD.closeCraftingWindow();
             return true;
         }
         return true;
@@ -124,15 +124,15 @@ HUD.prototype.update = function() {
             for (var j = 0; j < recipe.item.length; ++j) {
                 var resultItemType = recipe.item[j][0];
                 var resultAmount = recipe.item[j][1];
-                var imageWidth = Global.gameData.textures[resultItemType.name].width;
-                var imageHeight = Global.gameData.textures[resultItemType.name].height;
+                var imageWidth = global.gameData.textures[resultItemType.name].width;
+                var imageHeight = global.gameData.textures[resultItemType.name].height;
                 craftingRightPreviewImageHolder.style.width = imageWidth;
                 craftingRightPreviewImageHolder.style.height = imageHeight;
                 this.putItemImage(craftingRightPreviewImageHolder, resultItemType, 80, 80);
                 craftingRightPreviewTextContainer.innerText = resultItemType.name;
             }
 
-            Global.gameData.HUD.checkCanAffordRecipe();
+            global.gameData.HUD.checkCanAffordRecipe();
         }.bind(this));
 
         var craftingEntryContent = document.createElement("div");
@@ -173,8 +173,8 @@ HUD.prototype.update = function() {
             var itemType = recipe.requiredItems[j][0];
             var amount = recipe.requiredItems[j][1];
 
-            var imageWidth = Global.gameData.textures[itemType.name].width;
-            var imageHeight = Global.gameData.textures[itemType.name].height;
+            var imageWidth = global.gameData.textures[itemType.name].width;
+            var imageHeight = global.gameData.textures[itemType.name].height;
 
             var imageHolder = document.createElement("div");
             imageHolder.setAttribute("class", "craftingImageHolder");
@@ -205,8 +205,8 @@ HUD.prototype.update = function() {
             var resultItemType = recipe.item[j][0];
             var resultAmount = recipe.item[j][1];
 
-            var imageWidth = Global.gameData.textures[resultItemType.name].width;
-            var imageHeight = Global.gameData.textures[resultItemType.name].height;
+            var imageWidth = global.gameData.textures[resultItemType.name].width;
+            var imageHeight = global.gameData.textures[resultItemType.name].height;
 
             var imageHolder = document.createElement("div");
             imageHolder.setAttribute("class", "craftingImageHolder");

@@ -5,8 +5,8 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 import Sprite from "Engine/Animation/Sprite.js";
 
 import Config from "Game/Config.js";
-import Global from "Game/Global.js";
-import CommandRegister from "Game/Register/Command.js";
+
+import CommandRegister from "Engine/Register/Command.js";
 import Projectile from "Game/Entity/Projectile.js";
 import {projectileEntitySimulate} from "Game/ProjectilePhysics.js";
 
@@ -24,8 +24,8 @@ export default CommandProjectileSpawn;
 CommandRegister.push(CommandProjectileSpawn);
 
 CommandProjectileSpawn.prototype.execute = function() {
-    if (Global.gameData.world.entityWorld.objects[this.entityId])
-        Global.gameData.world.entityWorld.remove(Global.gameData.world.entityWorld.objects[this.entityId]);
+    if (global.gameData.world.entityWorld.objects[this.entityId])
+        global.gameData.world.entityWorld.remove(global.gameData.world.entityWorld.objects[this.entityId]);
     var entity = {};
     entity.projectile = new Projectile(this.pos, this.angle, this.speed, this.maxDistance, this.projectileType, this.shooterEntityId);
     if (!isServer) {
@@ -38,7 +38,7 @@ CommandProjectileSpawn.prototype.execute = function() {
         zindices[2].add(entity.projectile.sprite);
     }
     projectileEntitySimulate(entity, Config.tickDuration / 1000.0);
-    Global.gameData.world.entityWorld.add(entity, this.entityId);
+    global.gameData.world.entityWorld.add(entity, this.entityId);
 }
 
 CommandProjectileSpawn.prototype.serialize = function(byteArray, index) {
