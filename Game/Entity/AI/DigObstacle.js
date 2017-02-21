@@ -7,13 +7,13 @@ import Keys from "Engine/Keys.js";
 import Config from "Game/Config.js";
 
 import Items from "Game/Items.js";
-import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
-import CommandKeyStatusUpdate from "Game/Command/CommandKeyStatusUpdate.js";
-import CommandEntityMove from "Game/Command/CommandEntityMove.js";
-import CommandEntityRotate from "Game/Command/CommandEntityRotate.js";
+import CommandEntityEquipItem from "Game/Command/EntityEquipItem.js";
+import CommandKeyStatusUpdate from "Game/Command/KeyStatusUpdate.js";
+import CommandEntityMove from "Game/Command/EntityMove.js";
+import CommandEntityRotate from "Game/Command/EntityRotate.js";
 
 
-var DigObstacleBehaviour = function(entity, maxWalkDis) {
+var BehaviourDigObstacle = function(entity, maxWalkDis) {
     this.entity = entity;
     this.maxWalkDis = maxWalkDis;
     this.targetTilePos = null;
@@ -25,9 +25,9 @@ var DigObstacleBehaviour = function(entity, maxWalkDis) {
     this.oldItemId = 0;
     this.digPauseDuration = 10; // Duration between finish digging and start digging again
 }
-export default DigObstacleBehaviour
+export default BehaviourDigObstacle
 
-DigObstacleBehaviour.prototype.canRun = function() {
+BehaviourDigObstacle.prototype.canRun = function() {
     if (!this.entity.inventory) return false;
     if (this.nextRunTick && global.gameData.world.tickId < this.nextRunTick)
         return false;
@@ -72,7 +72,7 @@ DigObstacleBehaviour.prototype.canRun = function() {
     return false;
 }
 
-DigObstacleBehaviour.prototype.initialize = function() {
+BehaviourDigObstacle.prototype.initialize = function() {
     this.oldMoveDir = this.entity.movement.direction;
     sendCommand(new CommandKeyStatusUpdate(this.entity.id, Keys.SPACEBAR, true, this.entity.physicsBody.getPos()));
     sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.getPos()));
@@ -86,7 +86,7 @@ DigObstacleBehaviour.prototype.initialize = function() {
     this.nextRunTick = null;
 }
 
-DigObstacleBehaviour.prototype.run = function() {
+BehaviourDigObstacle.prototype.run = function() {
     var blockId = global.gameData.world.blockWorld.getForeground(this.targetTilePos);
     var density = global.gameData.world.tileWorld.getDensity(this.targetTilePos);
     if (global.gameData.world.tickId >= this.stopTick) {
@@ -110,7 +110,7 @@ DigObstacleBehaviour.prototype.run = function() {
     return (blockId != 0 || density != 0);
 }
 
-DigObstacleBehaviour.prototype.finish = function() {
+BehaviourDigObstacle.prototype.finish = function() {
     sendCommand(new CommandKeyStatusUpdate(this.entity.id, Keys.SPACEBAR, false, this.entity.physicsBody.getPos()));
     sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.getPos()));
     sendCommand(new CommandEntityRotate(this.entity.id, this.oldMoveDir));
@@ -120,6 +120,6 @@ DigObstacleBehaviour.prototype.finish = function() {
     //    sendCommand(new CommandEntityEquipItem(this.entity.id, 0, this.oldItemId, true));
 }
 
-DigObstacleBehaviour.prototype.destroy = function(entity) {
+BehaviourDigObstacle.prototype.destroy = function(entity) {
 
 }

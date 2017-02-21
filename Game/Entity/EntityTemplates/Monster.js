@@ -13,12 +13,12 @@ import EntityAmmo from "Game/Entity/Ammo.js";
 import EntityInventory from "Game/Entity/Inventory.js";
 import EntityEquippedItems from "Game/Entity/EquippedItems.js";
 import EntityPotionEffects from "Game/Entity/PotionEffects.js";
-import BehaviourContainer from "Game/Entity/AI/BehaviourContainer.js";
-import DigObstacleBehaviour from "Game/Entity/AI/DigObstacleBehaviour.js";
-import TargetPlayerBehaviour from "Game/Entity/AI/TargetPlayerBehaviour.js";
-import WalkToEnemyBehaviour from "Game/Entity/AI/WalkToEnemyBehaviour.js";
-import WalkToPointBehaviour from "Game/Entity/AI/WalkToPointBehaviour.js";
-import RandomWalkBehaviour from "Game/Entity/AI/RandomWalkBehaviour.js";
+import BehaviourContainer from "Game/Entity/AI/Container.js";
+import BehaviourDigObstacle from "Game/Entity/AI/DigObstacle.js";
+import BehaviourTargetPlayer from "Game/Entity/AI/TargetPlayer.js";
+import BehaviourWalkToEnemy from "Game/Entity/AI/WalkToEnemy.js";
+import BehaviourWalkToPoint from "Game/Entity/AI/WalkToPoint.js";
+import BehaviourRandomWalk from "Game/Entity/AI/RandomWalk.js";
 
 export default function(entityId, pos, teamId) {
     var entity = {};
@@ -55,12 +55,12 @@ export default function(entityId, pos, teamId) {
     entity.team = new EntityTeam(teamEnum);
 
     entity.behaviourContainer = new BehaviourContainer();
-    entity.behaviourContainer.behaviours.push(new DigObstacleBehaviour(entity, 0.5));
-    entity.behaviourContainer.behaviours.push(new TargetPlayerBehaviour(entity, 10.0));
-    entity.behaviourContainer.behaviours.push(new DigObstacleBehaviour(entity, 1.0));
-    entity.behaviourContainer.behaviours.push(new WalkToEnemyBehaviour(entity, 60.0));
-    entity.behaviourContainer.behaviours.push(new WalkToPointBehaviour(entity, [-pos[0], -pos[1]]));
-    entity.behaviourContainer.behaviours.push(new RandomWalkBehaviour(entity));
+    entity.behaviourContainer.behaviours.push(new BehaviourDigObstacle(entity, 0.5));
+    entity.behaviourContainer.behaviours.push(new BehaviourTargetPlayer(entity, 10.0));
+    entity.behaviourContainer.behaviours.push(new BehaviourDigObstacle(entity, 1.0));
+    entity.behaviourContainer.behaviours.push(new BehaviourWalkToEnemy(entity, 60.0));
+    entity.behaviourContainer.behaviours.push(new BehaviourWalkToPoint(entity, [-pos[0], -pos[1]]));
+    entity.behaviourContainer.behaviours.push(new BehaviourRandomWalk(entity));
 
     return entity;
 }

@@ -12,18 +12,18 @@ import Items from "Game/Items.js";
 import EntityTeam from "Game/Entity/Team.js";
 import EntityAmmo from "Game/Entity/Ammo.js";
 import PlayerClass from "Game/PlayerClass.js";
-import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
-import CommandDig from "Game/Command/CommandDig.js";
-import CommandPopupMessage from "Game/Command/CommandPopupMessage.js";
-import CommandPlayerJoin from "Game/Command/CommandPlayerJoin.js";
-import CommandPlayerSpawn from "Game/Command/CommandPlayerSpawn.js";
+import CommandEntitySpawn from "Game/Command/EntitySpawn.js";
+import CommandDig from "Game/Command/Dig.js";
+import CommandPopupMessage from "Game/Command/PopupMessage.js";
+import CommandPlayerJoin from "Game/Command/PlayerJoin.js";
+import CommandPlayerSpawn from "Game/Command/PlayerSpawn.js";
 import entityTemplateMonsterSpawner from "Game/Entity/EntityTemplates/MonsterSpawner.js";
 import entityTemplatePlayer from "Game/Entity/EntityTemplates/Player.js";
 import entityTemplateZombie from "Game/Entity/EntityTemplates/Zombie.js";
 import entityTemplateMonster from "Game/Entity/EntityTemplates/Monster.js";
-import MessageAmmoChange from "Game/Message/ToClient/MessageAmmoChange.js";
-import CommandEntityHealthChange from "Game/Command/CommandEntityHealthChange.js";
-import CommandWorldSpawnStatus from "Game/Command/CommandWorldSpawnStatus.js"
+import MessageAmmoChange from "Game/Message/ToClient/AmmoChange.js";
+import CommandEntityHealthChange from "Game/Command/EntityHealthChange.js";
+import CommandWorldSpawnStatus from "Game/Command/WorldSpawnStatus.js"
 
 var GameModeSurvivalWar = function() {
     this.playerSpawns = {};

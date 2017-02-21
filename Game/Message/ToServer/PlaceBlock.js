@@ -8,7 +8,7 @@ import BlockChunk from "Engine/BlockChunk.js";
 import Config from "Game/Config.js";
 import ItemRegister from "Engine/Register/Item.js"
 import MessageRegister from "Engine/Register/Message.js";;
-import CommandEntityBuild from "Game/Command/CommandEntityBuild.js";
+import CommandEntityBuild from "Game/Command/EntityBuild.js";
 import Blocks from "Game/Blocks.js";
 
 var MessageRequestPlaceBlock = function(stackId, x, y) {

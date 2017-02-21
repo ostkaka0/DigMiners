@@ -6,7 +6,7 @@ import Keys from "Engine/Keys.js";
 import Config from "Game/Config.js";
 
 import Entity from "Game/Entity/Entity.js";
-import CommandEntityBeginReloadWeapon from "Game/Command/CommandEntityBeginReloadWeapon.js";
+import CommandEntityBeginReloadWeapon from "Game/Command/EntityBeginReloadWeapon.js";
 import EntityRegister from "Engine/Register/Entity.js";
 
 var EntityMovement = function(speed, toolUseDuration, damageMultiplier, digHardnessMultiplier) {

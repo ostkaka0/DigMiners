@@ -4,7 +4,7 @@ import v2 from "Engine/Core/v2.js";
 import EntityInventoryClickTypes from "Engine/InventoryClickTypes.js";
 import Config from "Game/Config.js";
 import ItemRegister from "Engine/Register/Item.js"
-import MessageRequestClickSlot from "Game/Message/ToServer/MessageRequestClickSlot.js";
+import MessageRequestClickSlot from "Game/Message/ToServer/ClickSlot.js";
 
 export var InventoryHUDEvents = {};
 InventoryHUDEvents.click = [];

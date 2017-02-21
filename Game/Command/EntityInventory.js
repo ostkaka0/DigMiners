@@ -7,7 +7,7 @@ import CommandRegister from "Engine/Register/Command.js";
 import Entity from "Game/Entity/Entity.js";
 import ItemRegister from "Engine/Register/Item.js"
 
-import CommandEntityEquipItem from "Game/Command/CommandEntityEquipItem.js";
+import CommandEntityEquipItem from "Game/Command/EntityEquipItem.js";
 
 var CommandEntityInventoryActions = {
     ADD_ITEM: 0,

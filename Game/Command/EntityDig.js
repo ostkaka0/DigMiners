@@ -10,8 +10,8 @@ import CommandRegister from "Engine/Register/Command.js";
 import Tiles from "Game/Blocks.js";
 import Items from "Game/Items.js";
 
-import CommandPlayerOreInventory from "Game/Command/CommandPlayerOreInventory.js";
-import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
+import CommandPlayerOreInventory from "Game/Command/PlayerOreInventory.js";
+import CommandEntitySpawn from "Game/Command/EntitySpawn.js";
 
 var CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHardness) {
     this.entityId = entityId;

@@ -6,7 +6,7 @@ import v2 from "Engine/Core/v2.js";
 
 
 import MessageRegister from "Engine/Register/Message.js";;
-import CommandEntityRotate from "Game/Command/CommandEntityRotate.js";
+import CommandEntityRotate from "Game/Command/EntityRotate.js";
 
 var MessageRequestRotate = function(deltaWorldCursorPos) {
     this.deltaWorldCursorPos = deltaWorldCursorPos;

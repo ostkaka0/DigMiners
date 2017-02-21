@@ -9,9 +9,9 @@ import Event from "Engine/Core/Event.js"
 import Config from "Game/Config.js";
 import PlayerClass from "Game/PlayerClass.js";
 import MessageRegister from "Engine/Register/Message.js";;
-import CommandEntitySpawn from "Game/Command/CommandEntitySpawn.js";
-import CommandPlayerSpawn from "Game/Command/CommandPlayerSpawn.js";
-import MessageSpectate from "Game/Message/ToClient/MessageSpectate.js";
+import CommandEntitySpawn from "Game/Command/EntitySpawn.js";
+import CommandPlayerSpawn from "Game/Command/PlayerSpawn.js";
+import MessageSpectate from "Game/Message/ToClient/Spectate.js";
 import entityTemplatePlayer from "Game/Entity/EntityTemplates/Player.js";
 import entityTemplateGhost from "Game/Entity/EntityTemplates/Ghost.js";
 

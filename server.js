@@ -11,9 +11,9 @@ import Blocks from "Game/Blocks.js";
 import Tiles from "Game/Tiles.js";
 import MessageRegister from "Engine/Register/Message.js";
 
-import MessageCommands from "Game/Message/ToClient/MessageCommands.js";
-import CommandPlayerJoin from "Game/Command/CommandPlayerJoin.js";
-import CommandPlayerLeave from "Game/Command/CommandPlayerLeave.js";
+import MessageCommands from "Game/Message/ToClient/Commands.js";
+import CommandPlayerJoin from "Game/Command/PlayerJoin.js";
+import CommandPlayerLeave from "Game/Command/PlayerLeave.js";
 import IndexCounter from "Engine/Core/IndexCounter.js";
 
 var console = require("console");

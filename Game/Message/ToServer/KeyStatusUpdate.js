@@ -5,8 +5,8 @@ import Keys from "Engine/Keys.js";
 
 
 import MessageRegister from "Engine/Register/Message.js";;
-import CommandEntityInteractEntity from "Game/Command/CommandEntityInteractEntity.js";
-import CommandKeyStatusUpdate from "Game/Command/CommandKeyStatusUpdate.js";
+import CommandEntityInteractEntity from "Game/Command/EntityInteractEntity.js";
+import CommandKeyStatusUpdate from "Game/Command/KeyStatusUpdate.js";
 
 var MessageRequestKeyStatusUpdate = function(key, pressed) {
     this.key = key;
