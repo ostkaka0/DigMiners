@@ -250,7 +250,7 @@ function run() {
     var cache;
     console.log("rollup:", rollup);
     rollup.rollup({
-        entry: ["Engine/Quadtree.js"],//["Game/**/*.js", "DigMiners.js"], //"tests/TestPointWorld.js",//
+        entry: ["Engine/Core/Quadtree.js"],//["Game/**/*.js", "DigMiners.js"], //"tests/TestPointWorld.js",//
         cache: cache,
         plugins: [
             multiEntry(),

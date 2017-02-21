@@ -5,7 +5,7 @@ import BlockWorld from "Engine/BlockWorld.js";
 import BlockChunk from "Engine/BlockChunk.js";
 import Sprite from "Engine/Animation/Sprite.js";
 import BodyPart from "Engine/Animation/BodyPart.js";
-import ObjectRegister from "Engine/ObjectRegister.js";
+import ObjectRegister from "Engine/Core/ObjectRegister.js";
 
 import Blocks from "Game/Blocks.js";
 import Tiles from "Game/Tiles.js";

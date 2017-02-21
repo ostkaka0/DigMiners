@@ -1,6 +1,6 @@
-import {Serialize} from "Engine/Serialization.js";
-import {Deserialize} from "Engine/Serialization.js";
-import IndexCounter from "Engine/IndexCounter.js";
+import {Serialize} from "Engine/Core/Serialization.js";
+import {Deserialize} from "Engine/Core/Serialization.js";
+import IndexCounter from "Engine/Core/IndexCounter.js";
 import Chunk from "Engine/Chunk.js";
 import BlockChunk from "Engine/BlockChunk.js";
 

@@ -1,4 +1,4 @@
-import ObjectRegister from "Engine/ObjectRegister.js"
+import ObjectRegister from "Engine/Core/ObjectRegister.js"
 
 var Register = [];
 export default Register;

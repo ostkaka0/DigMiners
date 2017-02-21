@@ -1,6 +1,6 @@
-import {Serialize} from "Engine/Serialization.js";
-import {Deserialize} from "Engine/Serialization.js";
-import IndexCounter from "Engine/IndexCounter.js";
+import {Serialize} from "Engine/Core/Serialization.js";
+import {Deserialize} from "Engine/Core/Serialization.js";
+import IndexCounter from "Engine/Core/IndexCounter.js";
 import fix from "Engine/Core/Fix.js";
 import v2 from "Engine/Core/v2.js";
 

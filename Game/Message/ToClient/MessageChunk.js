@@ -1,10 +1,10 @@
-import {Serialize} from "Engine/Serialization.js";
-import {Deserialize} from "Engine/Serialization.js";
-import IndexCounter from "Engine/IndexCounter.js";
+import {Serialize} from "Engine/Core/Serialization.js";
+import {Deserialize} from "Engine/Core/Serialization.js";
+import IndexCounter from "Engine/Core/IndexCounter.js";
 import Chunk from "Engine/Chunk.js";
 import BlockChunk from "Engine/BlockChunk.js";
-import {compressRLE} from "Engine/Compress.js";
-import {decompressRLE} from "Engine/Compress.js";
+import {compressRLE} from "Engine/Core/Compress.js";
+import {decompressRLE} from "Engine/Core/Compress.js";
 
 import Global from "Game/Global.js";
 import MessageRegister from "Game/Register/Message.js";;

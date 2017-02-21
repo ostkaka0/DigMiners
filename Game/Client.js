@@ -2,8 +2,8 @@ import Config from "Game/Config.js";
 import Global from "Game/Global.js";
 import MessageRegister from "Game/Register/Message.js";
 
-import {Serialize} from "Engine/Serialization.js";
-import {Deserialize} from "Engine/Serialization.js";
+import {Serialize} from "Engine/Core/Serialization.js";
+import {Deserialize} from "Engine/Core/Serialization.js";
 
 var Client = function(gameData, ip) {
 

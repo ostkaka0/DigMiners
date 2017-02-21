@@ -1,5 +1,5 @@
-import Quadtree from "Engine/Quadtree.js";
-import IdList from "Engine/IdList.js";
+import Quadtree from "Engine/Core/Quadtree.js";
+import IdList from "Engine/Core/IdList.js";
 import v2 from "Engine/Core/v2.js";
 
 var PointWorld = function(size) {
