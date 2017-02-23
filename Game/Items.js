@@ -36,9 +36,8 @@ export default Items;
 Items.Types = {};
 Items.Functions = {};
 var ItemTextures = {};
-var ItemEvents = {};
+var ItemEvents = { onShoot: new Map() };
 Items.Events = ItemEvents;
-Items.Events.onShoot = [];
 
 Items.Functions.Shovel = function(entity, item) {
     // Shovels might be meele weapons

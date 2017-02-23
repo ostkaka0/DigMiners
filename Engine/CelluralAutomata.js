@@ -36,8 +36,8 @@ export default class {
     }
 
     initEvents() {
-        Event.subscribe(this.blockWorld.events.onPlace, this, (blockPos, blockId) => this.updateBlock(blockPos, blockId));
-        Event.subscribe(this.blockWorld.events.onStrengthChange, this, (blockPos, strength) => this.updateBlock(blockPos, this.blockWorld.getForeground(blockPos)));
+        this.blockWorld.events.onPlace.set(this, (blockPos, blockId) => this.updateBlock(blockPos, blockId));
+        this.blockWorld.events.onStrengthChange.set(this, (blockPos, strength) => this.updateBlock(blockPos, this.blockWorld.getForeground(blockPos)));
     }
 
 }

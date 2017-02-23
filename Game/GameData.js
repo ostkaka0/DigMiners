@@ -22,7 +22,7 @@ global.gameData = {};
 global.gameData = global.gameData;
 export default global.gameData;
 
-global.gameData.events = { onChangeGamemode: [] };
+global.gameData.events = { onChangeGamemode: new Map() };
 
 global.gameData.destroy = function() {
     global.gameData = {};
@@ -99,7 +99,7 @@ global.gameData.init = function(idList) {
 
     if (this.playerIdList) {
         var onObjectRemove = function(object) { this.playerIdList.remove(object.id); }.bind(this);
-        Event.subscribe(this.playerWorld.onRemove, this, onObjectRemove);
+        this.playerWorld.onRemove.set(this, onObjectRemove);
     }
 }
 

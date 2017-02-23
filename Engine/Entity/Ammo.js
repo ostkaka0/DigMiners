@@ -5,7 +5,7 @@ import RegisterEntity from "Engine/Register/Entity.js";
 var EntityAmmo = function() { }
 export default EntityAmmo;
 RegisterEntity.push(EntityAmmo);
-EntityAmmo.Events = { onChange: [] };
+EntityAmmo.Events = { onChange: new Map() };
 
 EntityAmmo.prototype.name = ammo.name; function ammo() { };
 

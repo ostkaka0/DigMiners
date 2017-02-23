@@ -65,11 +65,11 @@ var LoadingScreen = function() {
         this.root.show();
     }.bind(this));
 
-    Event.subscribe(TextureLoader.Events.onProgress, this, function(file, progress) {
+    TextureLoader.Events.onProgress.set(this, function(file, progress) {
         this.resize(progress);
     }.bind(this));
 
-    Event.subscribe(TextureLoader.Events.onComplete, this, function(textures) {
+    TextureLoader.Events.onComplete.set(this, function(textures) {
         this.root.hide();
     }.bind(this));
 }

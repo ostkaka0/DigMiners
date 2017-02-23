@@ -25,7 +25,7 @@ export default function() {
         }
     }
 
-    Event.subscribe(EntityAmmo.Events.onChange, this, function(entity) {
+    EntityAmmo.Events.onChange.set(this, function(entity) {
         if (entity && entity.id == global.playerEntityId)
             this.updateFunction(entity, null)
     }.bind(this));
@@ -39,11 +39,11 @@ export default function() {
         this.updateFunction(entity, itemType);
     }.bind(this));
 
-    Event.subscribe(EntityEquippedItems.Events.onEquip, this, function(entity, stackId, itemType) {
+    EntityEquippedItems.Events.onEquip.set(this, function(entity, stackId, itemType) {
         this.updateFunction(entity, itemType);
     }.bind(this));
 
-    Event.subscribe(EntityEquippedItems.Events.onDequip, this, function(entity, stackId, itemType) {
+    EntityEquippedItems.Events.onDequip.set(this, function(entity, stackId, itemType) {
         this.updateFunction(entity, itemType);
     }.bind(this));
 

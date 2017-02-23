@@ -9,9 +9,7 @@ var TextureLoader = function() {
     this.current = 0;
 }
 export default TextureLoader
-TextureLoader.Events = {};
-TextureLoader.Events.onComplete = [];
-TextureLoader.Events.onProgress = [];
+TextureLoader.Events = { onComplete: new Map(), onProgress: new Map() };
 
 TextureLoader.prototype.queue = function(texture) {
     this.texturesToLoad[this.total] = texture;

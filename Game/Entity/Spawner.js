@@ -41,7 +41,7 @@ EntitySpawner.prototype.update = function(entity) {
     // Lazy init
     if (!this.initialized) {
         this.initialized = true;
-        Event.subscribe(global.gameData.world.entityWorld.onRemove, this, function(entity) {
+        global.gameData.world.entityWorld.onRemove.set(this, function(entity) {
             if (this.entityTable[entity.id] == undefined) return;
 
             if (this.numEntities == this.maxEntities)

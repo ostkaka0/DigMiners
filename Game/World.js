@@ -117,11 +117,11 @@ World.prototype.tick = function(dt) {
 World.prototype.initializeEvents = function() {
     // Update physicsEntities
     // No unsubscribing is required, becuase world is owner of entityWorld
-    Event.subscribe(this.entityWorld.onAdd, this, function(entity) {
+    this.entityWorld.onAdd.set(this, function(entity) {
         if (entity.physicsBody)
             this.physicsEntities[entity.physicsBody.bodyId] = entity;
     }.bind(this));
-    Event.subscribe(this.entityWorld.onRemove, this, function(entity) {
+    this.entityWorld.onRemove.set(this, function(entity) {
         if (entity.physicsBody)
             this.physicsEntities[entity.physicsBody.bodyId] = undefined;
 
@@ -141,7 +141,7 @@ World.prototype.initializeEvents = function() {
 
     if (this.idList) {
         var onObjectRemove = function(object) { this.idList.remove(object.id); }.bind(this);
-        Event.subscribe(this.entityWorld.onRemove, this, onObjectRemove);
+        this.entityWorld.onRemove.set(this, onObjectRemove);
     }
 
     if (isServer) {
@@ -150,7 +150,7 @@ World.prototype.initializeEvents = function() {
         });
     }
 
-    Event.subscribe(EntityProjectile.Events.onHit, this, function(projectileEntity, hitPos) {
+    EntityProjectile.Events.onHit.set(this, function(projectileEntity, hitPos) {
         global.gameData.setTimeout(function(projectileEntity) {
             var type = projectileEntity.projectile.projectileType;
             if (type.isExplosive) {
@@ -164,7 +164,7 @@ World.prototype.initializeEvents = function() {
             ParticleFunctions.create(ParticleFunctions.BulletHitParticles, hitPos, projectileEntity.projectile.angle);
     }.bind(this));
 
-    Event.subscribe(EntityProjectile.Events.onHitEntity, this, function(projectileEntity, hitEntity, hitPos) {
+    EntityProjectile.Events.onHitEntity.set(this, function(projectileEntity, hitEntity, hitPos) {
         if (isServer) {
             if (hitEntity && hitEntity.health && projectileEntity.projectile.projectileType.damage > 0) {
                 var damage = projectileEntity.projectile.projectileType.damage * projectileEntity.projectile.damageFactor;
@@ -177,7 +177,7 @@ World.prototype.initializeEvents = function() {
         }
     }.bind(this));
 
-    Event.subscribe(EntityProjectile.Events.onHitBlock, this, function(projectileEntity, blockPos) {
+    EntityProjectile.Events.onHitBlock.set(this, function(projectileEntity, blockPos) {
         if (isServer) {
             if (projectileEntity.projectile.projectileType.blockDamage > 0) {
                 var strength = this.blockWorld.getStrength(blockPos);
@@ -190,11 +190,11 @@ World.prototype.initializeEvents = function() {
         }
     }.bind(this));
 
-    Event.subscribe(EntityProjectile.Events.onHitTile, this, function(projectileEntity, tilePos) {
+    EntityProjectile.Events.onHitTile.set(this, function(projectileEntity, tilePos) {
 
     }.bind(this));
 
-    Event.subscribe(EntityHealth.Events.onChange, this, function(entity) {
+    EntityHealth.Events.onChange.set(this, function(entity) {
         if (!isServer) {
             var sprite = entity.drawable.sprites["healthbar"];
             if (!sprite) return;
@@ -203,7 +203,7 @@ World.prototype.initializeEvents = function() {
         }
     }.bind(this));
 
-    Event.subscribe(EntityHealth.Events.onDeath, this, function(entity) {
+    EntityHealth.Events.onDeath.set(this, function(entity) {
         if (!entity.isDead) {
             entity.isDead = true;
             this.entityWorld.remove(entity);
@@ -216,7 +216,7 @@ World.prototype.initializeEvents = function() {
         });
     }.bind(this));
 
-    Event.subscribe(EntityInteractable.Events.onInteract, this, function(interactableEntity, interactingEntity) {
+    EntityInteractable.Events.onInteract.set(this, function(interactableEntity, interactingEntity) {
         //console.log(interactingEntity.id + " is now interacting with " + interactableEntity.id);
         if (!isServer) {
             if (global.playerEntity && global.playerEntity.id == interactingEntity.id) {
@@ -232,7 +232,7 @@ World.prototype.initializeEvents = function() {
         }
     });
 
-    Event.subscribe(EntityInteractable.Events.onFinishInteract, this, function(interactableEntity, interactingEntity) {
+    EntityInteractable.Events.onFinishInteract.set(this, function(interactableEntity, interactingEntity) {
         //console.log(interactingEntity.id + " is no longer interacting with " + interactableEntity.id);
         if (!isServer) {
             if (global.playerEntity && global.playerEntity.id == interactingEntity.id) {
@@ -266,7 +266,7 @@ World.prototype.initializeEvents = function() {
         }
     }.bind(this));
 
-    Event.subscribe(EntityEquippedItems.Events.onDequip, this, (entity, stackId, itemType) => {
+    EntityEquippedItems.Events.onDequip.set(this, (entity, stackId, itemType) => {
         if (itemType.type == "tool" && itemType.typeOfType == "rangedWeapon") {
             entity.bodyparts.bodyparts["tool"].offset[2] = entity.bodyparts.bodyparts["tool"].defaultOffset[2];
             entity.bodyparts.bodyparts["leftArm"].offset[2] = entity.bodyparts.bodyparts["leftArm"].defaultOffset[2];

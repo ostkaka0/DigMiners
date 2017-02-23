@@ -77,7 +77,7 @@ var keyCodeLeft = 38;
 var keyCodeLeft = 39;
 var keyCodeLeft = 37;
 
-//Event.subscribe(gameData.events.onChangeGamemode, window, function() {
+//gameData.events.onChangeGamemode.set(window, function() {
 //    var chunkRenderer = new ChunkRenderer(gl, gameData.world.tileWorld, 32.0);
 //    var blockChunkRenderer = new BlockChunkRenderer(gl, gameData.world.blockWorld, 32.0);
 //})
@@ -356,7 +356,7 @@ gameData.world.events.on("ownPlayerSpawned", function(entity, player) {
     }
 });
 
-Event.subscribe(gameData.world.entityWorld.onAdd, window, function(entity) {
+gameData.world.entityWorld.onAdd.set(window, function(entity) {
     if (!isServer && entity.health && entity.drawable)
         Event.trigger(EntityHealth.Events.onChange, entity);
 
@@ -409,7 +409,7 @@ gameData.world.physicsWorld.onCollision.push(function(collisions) {
     }
 });
 
-Event.subscribe(TextureLoader.Events.onComplete, window, function(textures) {
+TextureLoader.Events.onComplete.set(window, function(textures) {
     // Must wait until all textures have loaded to continue! important
     window.blockPosGood = new Sprite("blockPosGood.png");
     window.blockPosGood.anchor = [0, 0];

@@ -43,11 +43,11 @@ export default function() {
     
     loader.queue("dynamite.png");
 
-    Event.subscribe(TextureLoader.Events.onProgress, this, function(file, progress) {
+    TextureLoader.Events.onProgress.set(this, function(file, progress) {
         console.log(Math.round(progress) + "% complete");
     }.bind(this));
 
-    Event.subscribe(TextureLoader.Events.onComplete, this, function(textures) {
+    TextureLoader.Events.onComplete.set(this, function(textures) {
         console.log("Textures loaded.");
 
         var texturesOutput = {};
