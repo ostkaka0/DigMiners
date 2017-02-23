@@ -127,7 +127,7 @@ var DeathScreen = function() {
     }.bind(this));
 
     //events.on("entityDeath", function(entity) {
-    Event.subscribe(global.gameData.world.entityWorld.onRemove, this, (entity) => {
+    global.gameData.world.entityWorld.onRemove.set(this, (entity) => {
         if (!entity.controlledByPlayer) return;
         if (entity.controlledByPlayer.playerId != global.player.id) return;
 

@@ -29,11 +29,7 @@ var EntityProjectile = function(pos, angle, speed, maxDistance, projectileType, 
 }
 export default EntityProjectile;
 RegisterEntity.push(EntityProjectile);
-EntityProjectile.Events = {};
-EntityProjectile.Events.onHit = [];
-EntityProjectile.Events.onHitEntity = [];
-EntityProjectile.Events.onHitBlock = [];
-EntityProjectile.Events.onHitTile = [];
+EntityProjectile.Events = { onHit: new Map(), onHitEntity: new Map(), onHitBlock: new Map(), onHitTile: new Map() };
 
 EntityProjectile.prototype.name = projectile.name; function projectile() { };
 

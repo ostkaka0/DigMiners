@@ -87,7 +87,7 @@ GameModeZombieInvasion.prototype.init = function() {
         this.zombieSpawns.push(pos);
     }
 
-    Event.subscribe(global.gameData.world.entityWorld.onRemove, this, function(entity) {
+    global.gameData.world.entityWorld.onRemove.set(this, function(entity) {
         if (this.zombies[entity.id]) {
             delete this.zombies[entity.id];
             if (Object.keys(this.zombies).length <= this.numEndWaveZombies && this.numZombiesToSpawn <= 0 && !this.endingWave) {
@@ -117,7 +117,7 @@ GameModeZombieInvasion.prototype.init = function() {
         }
     }.bind(this));
 
-    Event.subscribe(global.gameData.playerWorld.onRemove, this, function(player) {
+    global.gameData.playerWorld.onRemove.set(this, function(player) {
         if (this.survivors[player.id]) {
             delete this.survivors[player.id];
             if (Object.keys(this.survivors).length == 0 && !this.playerSpawning) {
@@ -128,7 +128,7 @@ GameModeZombieInvasion.prototype.init = function() {
         }
     }.bind(this));
 
-    //Event.subscribe(global.gameData.world.events2.onPlayerSpawn, this, (player, entity) => {
+    //global.gameData.world.events2.onPlayerSpawn.set(this, (player, entity) => {
     //    this.survivors[player.id] = player;
     //});
 

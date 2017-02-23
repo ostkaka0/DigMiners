@@ -78,7 +78,7 @@ GameModeSurvivalWar.prototype.init = function() {
 
     // End game when less than 2 players, activate after 60 seconds
     global.gameData.setTimeout(() => {
-        Event.subscribe(global.gameData.playerWorld.onRemove, this, (player) => {
+        global.gameData.playerWorld.onRemove.set(this, (player) => {
             if (global.gameData.playerWorld.objectArray.length < 2)
                 global.gameData.changeGameMode();
         });

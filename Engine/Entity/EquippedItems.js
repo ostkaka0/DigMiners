@@ -6,7 +6,7 @@ import RegisterEntity from "Engine/Register/Entity.js";
 var EntityEquippedItems = function(items) {
     this.items = (items ? items : {});
 }
-EntityEquippedItems.Events = { onEquip: [], onDequip: [] };
+EntityEquippedItems.Events = { onEquip: new Map(), onDequip: new Map() };
 export default EntityEquippedItems
 RegisterEntity.push(EntityEquippedItems);
 

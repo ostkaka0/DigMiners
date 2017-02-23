@@ -4,8 +4,8 @@ var ObjectWorld = function(useDestroyFunc) {
     this.useDestroyFunc = useDestroyFunc;
     this.objectArray = [];
     this.objects = {};
-    this.onAdd = [];
-    this.onRemove = [];
+    this.onAdd = new Map();
+    this.onRemove = new Map();
 }
 export default ObjectWorld;
 

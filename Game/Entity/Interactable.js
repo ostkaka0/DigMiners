@@ -11,9 +11,7 @@ var EntityInteractable = function(canInteractFunction) {
 }
 export default EntityInteractable
 RegisterEntity.push(EntityInteractable);
-EntityInteractable.Events = {};
-EntityInteractable.Events.onInteract = [];
-EntityInteractable.Events.onFinishInteract = [];
+EntityInteractable.Events = { onInteract: new Map(), onFinishInteract: new Map() };
 
 EntityInteractable.prototype.name = interactable.name; function interactable() { };
 
