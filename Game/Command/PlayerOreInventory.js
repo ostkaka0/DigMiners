@@ -3,7 +3,7 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 
 import Config from "Game/Config.js";
 
-import CommandRegister from "Engine/Register/Command.js";
+import RegisterCommand from "Engine/Register/Command.js";
 
 var CommandPlayerOreInventoryActions = {
     ADD_ORE: 0,
@@ -18,7 +18,7 @@ var CommandPlayerOreInventory = function(playerId, actionId, itemId, amount) {
 }
 CommandPlayerOreInventory.Actions = CommandPlayerOreInventoryActions
 export default CommandPlayerOreInventory;
-CommandRegister.push(CommandPlayerOreInventory);
+RegisterCommand.push(CommandPlayerOreInventory);
 
 CommandPlayerOreInventory.prototype.execute = function() {
     var player = global.gameData.playerWorld.objects[this.playerId];

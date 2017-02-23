@@ -3,7 +3,7 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 import BlockWorld from "Engine/BlockWorld.js";
 import TileWorld from "Engine/TileWorld.js";
 
-import CommandRegister from "Engine/Register/Command.js";
+import RegisterCommand from "Engine/Register/Command.js";
 import Config from "Game/Config.js";
 
 import Blocks from "Game/Blocks.js";
@@ -15,7 +15,7 @@ var CommandBuild = function(x, y, blockId, type) {
     this.type = type;
 }
 export default CommandBuild;
-CommandRegister.push(CommandBuild);
+RegisterCommand.push(CommandBuild);
 
 CommandBuild.prototype.execute = function() {
     //if (this.type == BlockTypes.FOREGROUND)

@@ -5,7 +5,7 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 
 import Config from "Game/Config.js";
 
-import CommandRegister from "Engine/Register/Command.js";
+import RegisterCommand from "Engine/Register/Command.js";
 import ParticleFunctions from "Game/ParticleFunctions.js";
 
 var CommandParticles = function(particleFunctionId, pos, variable) {
@@ -14,7 +14,7 @@ var CommandParticles = function(particleFunctionId, pos, variable) {
     this.variable = variable;
 }
 export default CommandParticles;
-CommandRegister.push(CommandParticles);
+RegisterCommand.push(CommandParticles);
 
 CommandParticles.prototype.execute = function() {
     if (!isServer)

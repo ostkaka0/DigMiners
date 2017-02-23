@@ -2,7 +2,7 @@ import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 
 import Event from "Engine/Core/Event.js";
-import EntityRegister from "Engine/Register/Entity.js";
+import RegisterEntity from "Engine/Register/Entity.js";
 
 var EntityInteractable = function(canInteractFunction) {
     this.interacting = [];
@@ -10,7 +10,7 @@ var EntityInteractable = function(canInteractFunction) {
     this.canInteractFunction.bind(this);
 }
 export default EntityInteractable
-EntityRegister.push(EntityInteractable);
+RegisterEntity.push(EntityInteractable);
 EntityInteractable.Events = {};
 EntityInteractable.Events.onInteract = [];
 EntityInteractable.Events.onFinishInteract = [];

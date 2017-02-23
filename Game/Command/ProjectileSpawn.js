@@ -6,7 +6,7 @@ import Sprite from "Engine/Animation/Sprite.js";
 
 import Config from "Game/Config.js";
 
-import CommandRegister from "Engine/Register/Command.js";
+import RegisterCommand from "Engine/Register/Command.js";
 import EntityProjectile from "Game/Entity/Projectile.js";
 import {projectileEntitySimulate} from "Game/ProjectilePhysics.js";
 
@@ -21,7 +21,7 @@ var CommandProjectileSpawn = function(entityId, pos, angle, speed, maxDistance, 
     this.shooterEntityId = shooterEntityId;
 }
 export default CommandProjectileSpawn;
-CommandRegister.push(CommandProjectileSpawn);
+RegisterCommand.push(CommandProjectileSpawn);
 
 CommandProjectileSpawn.prototype.execute = function() {
     if (global.gameData.world.entityWorld.objects[this.entityId])

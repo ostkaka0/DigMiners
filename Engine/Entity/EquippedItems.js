@@ -1,14 +1,13 @@
 import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
-import Config from "Game/Config.js";
-import ItemRegister from "Engine/Register/Item.js"
-import EntityRegister from "Engine/Register/Entity.js";
+import RegisterItem from "Engine/Register/Item.js"
+import RegisterEntity from "Engine/Register/Entity.js";
 
 var EntityEquippedItems = function(items) {
     this.items = (items ? items : {});
 }
 export default EntityEquippedItems
-EntityRegister.push(EntityEquippedItems);
+RegisterEntity.push(EntityEquippedItems);
 
 EntityEquippedItems.prototype.name = equippedItems.name; function equippedItems() { };
 
@@ -29,7 +28,7 @@ EntityEquippedItems.prototype.deserialize = function(byteArray, index) {
     for (var i = 0; i < itemsLength; ++i) {
         var key = Deserialize.utf8(byteArray, index);
         var id = Deserialize.int32(byteArray, index);
-        this.items[key] = ItemRegister[id];
+        this.items[key] = RegisterItem[id];
     }
 }
 

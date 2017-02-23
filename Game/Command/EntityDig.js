@@ -6,12 +6,12 @@ import TileWorld from "Engine/TileWorld.js";
 
 import Config from "Game/Config.js";
 
-import CommandRegister from "Engine/Register/Command.js";
+import RegisterCommand from "Engine/Register/Command.js";
 import Tiles from "Game/Blocks.js";
 import Items from "Game/Items.js";
 
 import CommandPlayerOreInventory from "Game/Command/PlayerOreInventory.js";
-import CommandEntitySpawn from "Game/Command/EntitySpawn.js";
+import CommandEntitySpawn from "Engine/Command/EntitySpawn.js";
 
 var CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHardness) {
     this.entityId = entityId;
@@ -23,7 +23,7 @@ var CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHard
     this.maxDigHardness = maxDigHardness;
 }
 export default CommandEntityDig;
-CommandRegister.push(CommandEntityDig);
+RegisterCommand.push(CommandEntityDig);
 
 CommandEntityDig.prototype.execute = function() {
     var entity = global.gameData.world.entityWorld.objects[this.entityId];

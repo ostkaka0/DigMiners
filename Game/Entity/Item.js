@@ -1,6 +1,6 @@
 import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
-import EntityRegister from "Engine/Register/Entity.js";
+import RegisterEntity from "Engine/Register/Entity.js";
 
 var EntityItem = function(itemId, amount) {
     this.itemId = itemId;
@@ -8,7 +8,7 @@ var EntityItem = function(itemId, amount) {
     this.dropped = new Date();
 }
 export default EntityItem
-EntityRegister.push(EntityItem);
+RegisterEntity.push(EntityItem);
 
 EntityItem.prototype.name = item.name; function item() { };
 

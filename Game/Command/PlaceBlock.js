@@ -5,14 +5,14 @@ import TileWorld from "Engine/TileWorld.js";
 
 import Config from "Game/Config.js";
 
-import CommandRegister from "Engine/Register/Command.js";
+import RegisterCommand from "Engine/Register/Command.js";
 
 var CommandPlaceBlock = function(blockPos, blockId) {
     this.blockPos = blockPos;
     this.blockId = blockId;
 }
 export default CommandPlaceBlock;
-CommandRegister.push(CommandPlaceBlock);
+RegisterCommand.push(CommandPlaceBlock);
 
 CommandPlaceBlock.prototype.execute = function() {
     global.gameData.world.blockWorld.setForeground(this.blockPos, this.blockId);

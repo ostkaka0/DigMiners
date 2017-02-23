@@ -4,7 +4,7 @@ import IndexCounter from "Engine/Core/IndexCounter.js";
 import Keys from "Engine/Keys.js";
 
 
-import MessageRegister from "Engine/Register/Message.js";;
+import RegisterMessage from "Engine/Register/Message.js";;
 import CommandEntityInteractEntity from "Game/Command/EntityInteractEntity.js";
 import CommandKeyStatusUpdate from "Game/Command/KeyStatusUpdate.js";
 
@@ -13,7 +13,7 @@ var MessageRequestKeyStatusUpdate = function(key, pressed) {
     this.pressed = pressed;
 }
 export default MessageRequestKeyStatusUpdate;
-MessageRegister.ToServer.push(MessageRequestKeyStatusUpdate);
+RegisterMessage.ToServer.push(MessageRequestKeyStatusUpdate);
 
 MessageRequestKeyStatusUpdate.prototype.execute = function(gameData, player) {
     var entity = global.gameData.world.entityWorld.objects[player.entityId];

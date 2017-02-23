@@ -3,7 +3,7 @@ import fix from "Engine/Core/Fix.js";
 import v2 from "Engine/Core/v2.js";
 import EntityInventoryClickTypes from "Engine/InventoryClickTypes.js";
 import Config from "Game/Config.js";
-import ItemRegister from "Engine/Register/Item.js"
+import RegisterItem from "Engine/Register/Item.js"
 import MessageRequestClickSlot from "Game/Message/ToServer/ClickSlot.js";
 
 export var InventoryHUDEvents = {};
@@ -157,7 +157,7 @@ InventoryHUD.prototype.update = function() {
             slotImageContainer.style.width = 32;
             slotImageContainer.style.height = 32;
 
-            var itemType = ItemRegister[item.id];
+            var itemType = RegisterItem[item.id];
             InventoryHUD.putItemImage(slotImageContainer, itemType, 32, 32, itemType.texture.inventoryAngle, itemType.texture.inventoryOffset, itemType.texture.inventorySize);
 
             slotTextContainer.innerText = "";

@@ -21,7 +21,7 @@ import TextureManager from "Game/Entity/TextureManager.js";
 import LoadingScreen from "Game/GUI/LoadingScreen.js";
 import DeathScreen from "Game/GUI/DeathScreen.js";
 import InventoryHUD from "Game/GUI/InventoryHUD.js";
-import EntityHealth from "Game/Entity/Health.js";
+import EntityHealth from "Engine/Entity/Health.js";
 import MessageRequestKeyStatusUpdate from "Game/Message/ToServer/KeyStatusUpdate.js";
 import MessageRequestPlaceBlock from "Game/Message/ToServer/PlaceBlock.js";
 import MessageRequestClickBlock from "Game/Message/ToServer/ClickBlock.js";

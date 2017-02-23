@@ -1,13 +1,13 @@
 import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 
-import EntityRegister from "Engine/Register/Entity.js";
+import RegisterEntity from "Engine/Register/Entity.js";
 
 var EntityControlledByPlayer = function(playerId) {
     this.playerId = playerId;
 }
 export default EntityControlledByPlayer
-EntityRegister.push(EntityControlledByPlayer);
+RegisterEntity.push(EntityControlledByPlayer);
 
 EntityControlledByPlayer.prototype.name = controlledByPlayer.name; function controlledByPlayer() { };
 

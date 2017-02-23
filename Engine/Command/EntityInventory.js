@@ -1,13 +1,9 @@
 import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
+import RegisterCommand from "Engine/Register/Command.js";
+import RegisterItem from "Engine/Register/Item.js"
 
-import Config from "Game/Config.js";
-
-import CommandRegister from "Engine/Register/Command.js";
-import Entity from "Game/Entity/Entity.js";
-import ItemRegister from "Engine/Register/Item.js"
-
-import CommandEntityEquipItem from "Game/Command/EntityEquipItem.js";
+import CommandEntityEquipItem from "Engine/Command/EntityEquipItem.js";
 
 var CommandEntityInventoryActions = {
     ADD_ITEM: 0,
@@ -22,7 +18,7 @@ var CommandEntityInventory = function(entityId, actionId, itemId, amount) {
     this.amount = amount;
 }
 export default CommandEntityInventory;
-CommandRegister.push(CommandEntityInventory);
+RegisterCommand.push(CommandEntityInventory);
 CommandEntityInventory.Actions = CommandEntityInventoryActions;
 
 CommandEntityInventory.prototype.execute = function() {
@@ -38,7 +34,7 @@ CommandEntityInventory.prototype.execute = function() {
                 var entry = removed[i];
                 var stackId = entry[0];
                 var item = entry[1];
-                var itemType = ItemRegister[item.id];
+                var itemType = RegisterItem[item.id];
                 if (item.equipped)
                     sendCommand(new CommandEntityEquipItem(entity.id, stackId, itemType.id, false));
             };

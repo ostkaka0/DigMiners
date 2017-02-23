@@ -1,14 +1,14 @@
 import fix from "Engine/Core/Fix.js";
 import v2 from "Engine/Core/v2.js";
-import EntityPhysicsBody from "Game/Entity/PhysicsBody.js";
-import EntityMovement from "Game/Entity/Movement.js";
+import EntityPhysicsBody from "Engine/Entity/PhysicsBody.js";
+import EntityMovement from "Engine/Entity/Movement.js";
 import EntityBodyparts from "Game/Entity/Bodyparts.js";
-import EntityDrawable from "Game/Entity/Drawable.js";
-import EntityName from "Game/Entity/Name.js";
-import EntityTeam from "Game/Entity/Team.js";
+import EntityDrawable from "Engine/Entity/Drawable.js";
+import EntityName from "Engine/Entity/Name.js";
+import EntityTeam from "Engine/Entity/Team.js";
 import Sprite from "Engine/Animation/Sprite.js";
 import BodyPart from "Engine/Animation/BodyPart.js";
-import EntityHealth from "Game/Entity/Health.js";
+import EntityHealth from "Engine/Entity/Health.js";
 
 export default function(entityId, pos, teamId) {
     var entity = {};

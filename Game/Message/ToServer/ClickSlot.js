@@ -6,11 +6,11 @@ import IndexCounter from "Engine/Core/IndexCounter.js";
 
 
 import Config from "Game/Config.js";
-import ItemRegister from "Engine/Register/Item.js"
-import MessageRegister from "Engine/Register/Message.js";;
-import CommandEntityEquipItem from "Game/Command/EntityEquipItem.js";
-import CommandEntitySpawn from "Game/Command/EntitySpawn.js";
-import CommandEntityInventory from "Game/Command/EntityInventory.js";
+import RegisterItem from "Engine/Register/Item.js"
+import RegisterMessage from "Engine/Register/Message.js";;
+import CommandEntityEquipItem from "Engine/Command/EntityEquipItem.js";
+import CommandEntitySpawn from "Engine/Command/EntitySpawn.js";
+import CommandEntityInventory from "Engine/Command/EntityInventory.js";
 
 var MessageRequestClickSlot = function(inventoryId, slotId, clickType) {
     this.inventoryId = inventoryId;
@@ -18,7 +18,7 @@ var MessageRequestClickSlot = function(inventoryId, slotId, clickType) {
     this.clickType = clickType;
 }
 export default MessageRequestClickSlot;
-MessageRegister.ToServer.push(MessageRequestClickSlot);
+RegisterMessage.ToServer.push(MessageRequestClickSlot);
 
 MessageRequestClickSlot.prototype.execute = function(gameData, player) {
     var entity = global.gameData.world.entityWorld.objects[player.entityId];
@@ -73,7 +73,7 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
         // Only equip items in own inventory
         if (entity.inventory && entity.inventory.inventoryId == this.inventoryId) {
             // Equip stack
-            var itemType = ItemRegister[item.id];
+            var itemType = RegisterItem[item.id];
             if (itemType && itemType.isEquipable) {
                 if (item.equipped == null || item.equipped == undefined)
                     item.equipped = false;

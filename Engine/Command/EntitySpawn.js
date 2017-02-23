@@ -1,17 +1,14 @@
 import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
-
-import Config from "Game/Config.js";
-
-import CommandRegister from "Engine/Register/Command.js";
-import EntityRegister from "Engine/Register/Entity.js";
+import RegisterCommand from "Engine/Register/Command.js";
+import RegisterEntity from "Engine/Register/Entity.js";
 
 var CommandEntitySpawn = function(gameData, entity, entityId, teamId) {
     this.entity = entity;
     this.entityId = entityId;
 }
 export default CommandEntitySpawn;
-CommandRegister.push(CommandEntitySpawn);
+RegisterCommand.push(CommandEntitySpawn);
 
 CommandEntitySpawn.prototype.execute = function() {
     if (global.gameData.world.entityWorld.objects[this.entityId])
@@ -37,7 +34,7 @@ CommandEntitySpawn.prototype.deserialize = function(byteArray, index) {
     for (var i = 0; i < numComponents; ++i) {
 
         var componentId = Deserialize.int32(byteArray, index);
-        var componentType = EntityRegister[componentId];
+        var componentType = RegisterEntity[componentId];
         var componentName = componentType.prototype.name;
         entity[componentName] = new componentType();
         entity[componentName].deserialize(byteArray, index, global.gameData);

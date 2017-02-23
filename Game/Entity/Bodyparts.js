@@ -4,7 +4,7 @@ import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 import BodyPart from "Engine/Animation/BodyPart.js";
 import Sprite from "Engine/Animation/Sprite.js";
-import EntityRegister from "Engine/Register/Entity.js";
+import RegisterEntity from "Engine/Register/Entity.js";
 
 var EntityBodyparts = function(bodyparts) {
     this.bodyparts = bodyparts;
@@ -25,7 +25,7 @@ var EntityBodyparts = function(bodyparts) {
     }
 }
 export default EntityBodyparts;
-EntityRegister.push(EntityBodyparts);
+RegisterEntity.push(EntityBodyparts);
 
 EntityBodyparts.prototype.name = bodyparts.name; function bodyparts() { };
 

@@ -3,18 +3,15 @@ import v2 from "Engine/Core/v2.js";
 import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 import Event from "Engine/Core/Event.js";
-
-import Config from "Game/Config.js";
-
-import CommandRegister from "Engine/Register/Command.js";
-import EntityHealth from "Game/Entity/Health.js";
+import RegisterCommand from "Engine/Register/Command.js";
+import EntityHealth from "Engine/Entity/Health.js";
 
 var CommandEntityHealthChange = function(entityId, healthChange) {
     this.entityId = entityId;
     this.healthChange = fix.toFix(healthChange);
 }
 export default CommandEntityHealthChange;
-CommandRegister.push(CommandEntityHealthChange);
+RegisterCommand.push(CommandEntityHealthChange);
 
 CommandEntityHealthChange.prototype.execute = function() {
     var entity = global.gameData.world.entityWorld.objects[this.entityId];

@@ -3,13 +3,13 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 import IndexCounter from "Engine/Core/IndexCounter.js";
 
 
-import MessageRegister from "Engine/Register/Message.js";;
+import RegisterMessage from "Engine/Register/Message.js";;
 
 var MessageChangeGameMode = function() {
     this.gameModeId = global.gameData.gameMode.id;
 }
 export default MessageChangeGameMode;
-MessageRegister.ToClient.push(MessageChangeGameMode);
+RegisterMessage.ToClient.push(MessageChangeGameMode);
 
 MessageChangeGameMode.prototype.execute = function(gameData) {
     // TODO: Don't reload page

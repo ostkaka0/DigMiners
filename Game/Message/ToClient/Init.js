@@ -4,8 +4,8 @@ import IndexCounter from "Engine/Core/IndexCounter.js";
 
 
 import Config from "Game/Config.js";
-import MessageRegister from "Engine/Register/Message.js";;
-import EntityRegister from "Engine/Register/Entity.js";;
+import RegisterMessage from "Engine/Register/Message.js";;
+import RegisterEntity from "Engine/Register/Entity.js";;
 import Generator from "Game/Generator.js";
 import Player from "Game/Player.js";
 import HUD from "Game/GUI/HUD.js";
@@ -22,7 +22,7 @@ var MessageInit = function(gameData, player) {
     global.gameData.world.entityWorld.update();
 }
 export default MessageInit;
-MessageRegister.ToClient.push(MessageInit);
+RegisterMessage.ToClient.push(MessageInit);
 
 MessageInit.prototype.execute = function(gameData) {
     global.gameData.world.tickId = this.tickId;
@@ -117,7 +117,7 @@ MessageInit.prototype.receive = function(gameData, byteArray) {
         var entity = {};
         while (index.value < entityEnd) {
             var componentId = Deserialize.int32(byteArray, index);
-            var componentType = EntityRegister[componentId];
+            var componentType = RegisterEntity[componentId];
             var componentName = componentType.prototype.name;
             entity[componentName] = new componentType();
             entity[componentName].deserialize(byteArray, index, global.gameData);

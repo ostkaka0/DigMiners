@@ -8,10 +8,10 @@ import World from "Game/World.js";
 import Items from "Game/Items.js";
 import Blocks from "Game/Blocks.js";
 
-import ItemRegister from "Engine/Register/Item.js";
-import CommandRegister from "Engine/Register/Command.js";
-import MessageRegister from "Engine/Register/Message.js";
-import EntityRegister from "Engine/Register/Entity.js";
+import RegisterItem from "Engine/Register/Item.js";
+import RegisterCommand from "Engine/Register/Command.js";
+import RegisterMessage from "Engine/Register/Message.js";
+import RegisterEntity from "Engine/Register/Entity.js";
 
 import PlayerClass from "Game/PlayerClass.js";
 import Tiles from "Game/Tiles.js";
@@ -31,10 +31,10 @@ global.gameData.destroy = function() {
 global.gameData.init = function(idList) {
     Blocks.initBlocks();
     Items.initItems(this);
-    ItemRegister.init();
-    CommandRegister.init();
-    MessageRegister.init();
-    EntityRegister.init();
+    RegisterItem.init();
+    RegisterCommand.init();
+    RegisterMessage.init();
+    RegisterEntity.init();
     Config.init();
 
     // global.gameData.textures is set in TextureManager.js when textures are loaded

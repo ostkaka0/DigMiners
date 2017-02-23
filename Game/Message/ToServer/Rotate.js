@@ -5,15 +5,15 @@ import fix from "Engine/Core/Fix.js";
 import v2 from "Engine/Core/v2.js";
 
 
-import MessageRegister from "Engine/Register/Message.js";;
-import CommandEntityRotate from "Game/Command/EntityRotate.js";
+import RegisterMessage from "Engine/Register/Message.js";;
+import CommandEntityRotate from "Engine/Command/EntityRotate.js";
 
 var MessageRequestRotate = function(deltaWorldCursorPos) {
     this.deltaWorldCursorPos = deltaWorldCursorPos;
     //this.direction = direction;
 }
 export default MessageRequestRotate;
-MessageRegister.ToServer.push(MessageRequestRotate);
+RegisterMessage.ToServer.push(MessageRequestRotate);
 
 MessageRequestRotate.prototype.execute = function(gameData, player) {
     if (!this.deltaWorldCursorPos) return;

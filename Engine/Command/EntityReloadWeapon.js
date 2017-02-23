@@ -1,26 +1,22 @@
 import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 import Event from "Engine/Core/Event.js";
-
-import Config from "Game/Config.js";
-
-import ItemRegister from "Engine/Register/Item.js"
-import CommandRegister from "Engine/Register/Command.js";
-import Items from "Game/Items.js";
-import EntityAmmo from "Game/Entity/Ammo.js";
+import RegisterItem from "Engine/Register/Item.js"
+import RegisterCommand from "Engine/Register/Command.js";
+import EntityAmmo from "Engine/Entity/Ammo.js";
 
 var CommandEntityReloadWeapon = function(entityId, stackId) {
     this.entityId = entityId;
     this.stackId = stackId;
 }
 export default CommandEntityReloadWeapon;
-CommandRegister.push(CommandEntityReloadWeapon);
+RegisterCommand.push(CommandEntityReloadWeapon);
 
 CommandEntityReloadWeapon.prototype.execute = function() {
     var entity = global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity || !entity.inventory) return;
     var item = entity.inventory.items[this.stackId];
-    var itemType = ItemRegister[item.id];
+    var itemType = RegisterItem[item.id];
     if (!item) return;
     var ammoAmount = (entity.ammo) ? entity.ammo[item.id] || 0 : itemType.ammoCapacity;
     var ammoToReload = Math.min(ammoAmount, itemType.ammoCapacity - item.magazine);
