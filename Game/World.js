@@ -9,7 +9,7 @@ import EventHandler from "Engine/EventHandler.js";
 import BodyPart from "Engine/Animation/BodyPart.js";
 import BlockWorld from "Engine/BlockWorld.js";
 import TileWorld from "Engine/TileWorld.js";
-import CelluralAutomata from "Engine/CelluralAutomata.js"
+import CelluralAutomata from "Engine/CelluralAutomata.js";
 
 
 import Config from "Game/Config.js";
@@ -20,6 +20,7 @@ import EntityInteracter from "Game/Entity/Interacter.js";
 import EntityInteractable from "Game/Entity/Interactable.js";
 import EntityTemplates from "Game/Entity/EntityTemplates/EntityTemplates.js";
 import EntityMovement from "Engine/Entity/Movement.js";
+import EntityEquippedItems from "Engine/Entity/EquippedItems.js";
 import entityFunctionPhysicsBodySimulate from "Engine/Entity/Physics.js";
 import {entityFunctionProjectileSimulate} from "Game/ProjectilePhysics.js";
 import CommandParticles from "Game/Command/Particles.js";
@@ -265,7 +266,7 @@ World.prototype.initializeEvents = function() {
         }
     }.bind(this));
 
-    this.events.on("dequip", function(entity, stackId, itemType) {
+    Event.subscribe(EntityEquippedItems.Events.onDequip, this, (entity, stackId, itemType) => {
         if (itemType.type == "tool" && itemType.typeOfType == "rangedWeapon") {
             entity.bodyparts.bodyparts["tool"].offset[2] = entity.bodyparts.bodyparts["tool"].defaultOffset[2];
             entity.bodyparts.bodyparts["leftArm"].offset[2] = entity.bodyparts.bodyparts["leftArm"].defaultOffset[2];
@@ -276,10 +277,11 @@ World.prototype.initializeEvents = function() {
             entity.bodyparts.bodyparts["rightArm"].offset[0] = entity.bodyparts.bodyparts["rightArm"].defaultOffset[0];
             entity.bodyparts.bodyparts["rightArm"].offset[1] = entity.bodyparts.bodyparts["rightArm"].defaultOffset[1];
         }
-    }.bind(this));
+    });
 }
 
 World.prototype.destroy = function() {
     Event.unsubscribeAll(EntityHealth.Events, this);
     Event.unsubscribeAll(EntityProjectile.Events, this);
+    Event.unsubscribeAll(EntityEquippedItems.Events, this);
 }

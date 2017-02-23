@@ -1,12 +1,13 @@
 import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
+import Event from "Engine/Core/Event.js"
 import Sprite from "Engine/Animation/Sprite.js";
 import RegisterItem from "Engine/Register/Item.js"
 import RegisterCommand from "Engine/Register/Command.js";
+import EntityEquippedItems from "Engine/Entity/EquippedItems.js";
 
 // TODO: Fix engine dependency to game
 import Items from "Game/Items.js";
-import Entity from "Game/Entity/Entity.js";
 
 var CommandEntityEquipItem = function(entityId, stackId, itemId, equipped) {
     this.entityId = entityId;
@@ -56,10 +57,15 @@ CommandEntityEquipItem.prototype.execute = function() {
         }
     }
 
-    if (this.equipped)
-        Entity.onEquip(entity, this.stackId, itemType);
-    else
-        Entity.onDequip(entity, this.stackId, itemType);
+    if (this.equipped) {
+        if (itemType.typeOfType == "block")
+            entity.isBuilding = true;
+        Event.trigger(EntityEquippedItems.Events.onEquip, entity, this.stackId, itemType);
+    } else {
+        if (itemType.typeOfType == "block")
+            entity.isBuilding = false;
+        Event.trigger(EntityEquippedItems.Events.onDequip, entity, this.stackId, itemType);
+    }
 }
 
 CommandEntityEquipItem.prototype.serialize = function(byteArray, index) {

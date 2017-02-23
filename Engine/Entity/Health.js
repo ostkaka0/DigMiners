@@ -7,9 +7,7 @@ var EntityHealth = function(health, maxHealth, armor) {
     this.maxHealth = maxHealth;
     this.armor = armor;
 }
-EntityHealth.Events = {};
-EntityHealth.Events.onChange = [];
-EntityHealth.Events.onDeath = [];
+EntityHealth.Events = { onChange: [], onDeath: [] };
 export default EntityHealth;
 RegisterEntity.push(EntityHealth);
 

@@ -7,18 +7,6 @@ import CommandEntityHealthChange from "Engine/Command/EntityHealthChange.js";
 var Entity = {}; //module.exports;
 export default Entity;
 
-Entity.onEquip = function(entity, stackId, itemType) {
-    if (itemType.typeOfType == "block")
-        entity.isBuilding = true;
-    global.gameData.world.events.trigger("equip", entity, stackId, itemType);
-}
-
-Entity.onDequip = function(entity, stackId, itemType) {
-    if (itemType.typeOfType == "block")
-        entity.isBuilding = false;
-    global.gameData.world.events.trigger("dequip", entity, stackId, itemType);
-}
-
 Entity.getDigSpeed = function(entity) {
     var defaultDigSpeed = 0.0;
     var itemType = entity.equippedItems.items["tool"];
