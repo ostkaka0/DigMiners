@@ -1,11 +1,10 @@
 import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
-
-import EntityRegister from "Engine/Register/Entity.js";
+import RegisterEntity from "Engine/Register/Entity.js";
 
 var EntityAmmo = function() { }
 export default EntityAmmo;
-EntityRegister.push(EntityAmmo);
+RegisterEntity.push(EntityAmmo);
 EntityAmmo.Events = { onChange: [] };
 
 EntityAmmo.prototype.name = ammo.name; function ammo() { };

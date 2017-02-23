@@ -1,16 +1,13 @@
 import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
-
-import Config from "Game/Config.js";
-
-import CommandRegister from "Engine/Register/Command.js";
+import RegisterCommand from "Engine/Register/Command.js";
 
 var CommandEntityLookAtEntity = function(entityId, targetEntityId) {
     this.entityId = entityId;
     this.targetEntityId = targetEntityId;
 }
 export default CommandEntityLookAtEntity;
-CommandRegister.push(CommandEntityLookAtEntity);
+RegisterCommand.push(CommandEntityLookAtEntity);
 
 CommandEntityLookAtEntity.prototype.execute = function() {
     var entity = global.gameData.world.entityWorld.objects[this.entityId];

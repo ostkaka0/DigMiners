@@ -6,8 +6,8 @@ import BlockChunk from "Engine/BlockChunk.js";
 
 
 import Config from "Game/Config.js";
-import ItemRegister from "Engine/Register/Item.js"
-import MessageRegister from "Engine/Register/Message.js";;
+import RegisterItem from "Engine/Register/Item.js"
+import RegisterMessage from "Engine/Register/Message.js";;
 import CommandEntityBuild from "Game/Command/EntityBuild.js";
 import Blocks from "Game/Blocks.js";
 
@@ -17,14 +17,14 @@ var MessageRequestPlaceBlock = function(stackId, x, y) {
     this.y = Math.floor(y);
 }
 export default MessageRequestPlaceBlock;
-MessageRegister.ToServer.push(MessageRequestPlaceBlock);
+RegisterMessage.ToServer.push(MessageRequestPlaceBlock);
 
 MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
     var entity = global.gameData.world.entityWorld.objects[player.entityId];
     if (!entity) return;
     var item = entity.inventory.items[this.stackId];
     if (!item) return;
-    var itemType = ItemRegister[item.id];
+    var itemType = RegisterItem[item.id];
     if (itemType && itemType.typeOfType == "block") {
         if (!entity.inventory.hasItem(item.id, 1))
             return;

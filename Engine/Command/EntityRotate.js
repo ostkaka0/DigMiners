@@ -2,17 +2,14 @@ import fix from "Engine/Core/Fix.js";
 import v2 from "Engine/Core/v2.js";
 import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
-
-import Config from "Game/Config.js";
-
-import CommandRegister from "Engine/Register/Command.js";
+import RegisterCommand from "Engine/Register/Command.js";
 
 var CommandEntityRotate = function(entityId, direction) {
     this.entityId = entityId;
     this.direction = direction;
 }
 export default CommandEntityRotate;
-CommandRegister.push(CommandEntityRotate);
+RegisterCommand.push(CommandEntityRotate);
 
 CommandEntityRotate.prototype.execute = function() {
     var entity = global.gameData.world.entityWorld.objects[this.entityId];

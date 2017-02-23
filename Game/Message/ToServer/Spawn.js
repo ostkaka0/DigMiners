@@ -8,9 +8,9 @@ import Event from "Engine/Core/Event.js"
 
 import Config from "Game/Config.js";
 import PlayerClass from "Game/PlayerClass.js";
-import MessageRegister from "Engine/Register/Message.js";;
-import CommandEntitySpawn from "Game/Command/EntitySpawn.js";
-import CommandPlayerSpawn from "Game/Command/PlayerSpawn.js";
+import RegisterMessage from "Engine/Register/Message.js";;
+import CommandEntitySpawn from "Engine/Command/EntitySpawn.js";
+import CommandPlayerSpawn from "Engine/Command/PlayerSpawn.js";
 import MessageSpectate from "Game/Message/ToClient/Spectate.js";
 import entityTemplatePlayer from "Game/Entity/EntityTemplates/Player.js";
 import entityTemplateGhost from "Game/Entity/EntityTemplates/Ghost.js";
@@ -20,7 +20,7 @@ var MessageRequestSpawn = function(playerName, classId) {
     this.classId = classId;
 }
 export default MessageRequestSpawn;
-MessageRegister.ToServer.push(MessageRequestSpawn);
+RegisterMessage.ToServer.push(MessageRequestSpawn);
 
 MessageRequestSpawn.prototype.execute = function(gameData, player) {
     if (player.entity != null && player.entityId != null) return;

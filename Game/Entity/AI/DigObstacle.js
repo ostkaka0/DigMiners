@@ -7,10 +7,10 @@ import Keys from "Engine/Keys.js";
 import Config from "Game/Config.js";
 
 import Items from "Game/Items.js";
-import CommandEntityEquipItem from "Game/Command/EntityEquipItem.js";
+import CommandEntityEquipItem from "Engine/Command/EntityEquipItem.js";
 import CommandKeyStatusUpdate from "Game/Command/KeyStatusUpdate.js";
-import CommandEntityMove from "Game/Command/EntityMove.js";
-import CommandEntityRotate from "Game/Command/EntityRotate.js";
+import CommandEntityMove from "Engine/Command/EntityMove.js";
+import CommandEntityRotate from "Engine/Command/EntityRotate.js";
 
 
 var BehaviourDigObstacle = function(entity, maxWalkDis) {

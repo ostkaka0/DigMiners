@@ -1,7 +1,7 @@
 import Event from "Engine/Core/Event.js";
 
 
-import EntityAmmo from "Game/Entity/Ammo.js";
+import EntityAmmo from "Engine/Entity/Ammo.js";
 
 export default function() {
     this.root = $("<div>", { "text": "No weapon equipped" });

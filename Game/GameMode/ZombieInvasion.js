@@ -7,27 +7,27 @@ import BlockWorld from "Engine/BlockWorld.js";
 
 
 import Config from "Game/Config.js";
-import ItemRegister from "Engine/Register/Item.js"
+import RegisterItem from "Engine/Register/Item.js"
 import Blocks from "Game/Blocks.js";
 import Items from "Game/Items.js";
-import EntityTeam from "Game/Entity/Team.js";
-import EntityAmmo from "Game/Entity/Ammo.js";
-import EntityHealth from "Game/Entity/Health.js";
+import EntityTeam from "Engine/Entity/Team.js";
+import EntityAmmo from "Engine/Entity/Ammo.js";
+import EntityHealth from "Engine/Entity/Health.js";
 import PlayerClass from "Game/PlayerClass.js";
-import CommandEntitySpawn from "Game/Command/EntitySpawn.js";
+import CommandEntitySpawn from "Engine/Command/EntitySpawn.js";
 import CommandDig from "Game/Command/Dig.js";
 import CommandPopupMessage from "Game/Command/PopupMessage.js";
-import CommandPlayerJoin from "Game/Command/PlayerJoin.js";
-import CommandPlayerSpawn from "Game/Command/PlayerSpawn.js";
+import CommandPlayerJoin from "Engine/Command/PlayerJoin.js";
+import CommandPlayerSpawn from "Engine/Command/PlayerSpawn.js";
 import entityTemplateMonsterSpawner from "Game/Entity/EntityTemplates/MonsterSpawner.js";
 import entityTemplatePlayer from "Game/Entity/EntityTemplates/Player.js";
 import entityTemplateZombie from "Game/Entity/EntityTemplates/Zombie.js";
 import entityTemplateGhost from "Game/Entity/EntityTemplates/Ghost.js";
 import MessageAmmoChange from "Game/Message/ToClient/AmmoChange.js";
 import MessageChunk from "Game/Message/ToClient/Chunk.js"
-import CommandEntityHealthChange from "Game/Command/EntityHealthChange.js";
+import CommandEntityHealthChange from "Engine/Command/EntityHealthChange.js";
 import CommandWorldSpawnStatus from "Game/Command/WorldSpawnStatus.js"
-import CommandEntityDestroy from "Game/Command/EntityDestroy.js"
+import CommandEntityDestroy from "Engine/Command/EntityDestroy.js"
 
 var GameModeZombieInvasion = function() {
     this.wavePauseDuration = 30000;
@@ -205,7 +205,7 @@ GameModeZombieInvasion.prototype.forceRespawnPlayers = function() {
             if (!entity || !entity.inventory || !entity.ammo || !entity.health)
                 return;
             entity.inventory.items.forEach(function(item) {
-                var itemType = ItemRegister[item.id];
+                var itemType = RegisterItem[item.id];
                 if (entity.ammo[item.id] != undefined)
                     entity.ammo[item.id] = itemType.ammoMax;
             });

@@ -10,22 +10,22 @@ import Noise from "Engine/Core/Noise.js"
 import Config from "Game/Config.js";
 
 import Items from "Game/Items.js";
-import EntityTeam from "Game/Entity/Team.js";
+import EntityTeam from "Engine/Entity/Team.js";
 import EntityChest from "Game/Entity/Chest.js";
-import EntityPhysicsBody from "Game/Entity/PhysicsBody.js";
-import EntityHealth from "Game/Entity/Health.js";
+import EntityPhysicsBody from "Engine/Entity/PhysicsBody.js";
+import EntityHealth from "Engine/Entity/Health.js";
 import EntityBodyparts from "Game/Entity/Bodyparts.js";
 import EntityPotionEffects from "Game/Entity/PotionEffects.js";
 import PotionEffectTypes from "Game/PotionEffectTypes.js";
 import EntityInteractable from "Game/Entity/Interactable.js";
-import EntityDrawable from "Game/Entity/Drawable.js";
+import EntityDrawable from "Engine/Entity/Drawable.js";
 import EntityProjectile from "Game/Entity/Projectile.js"
 import CommandPlaceBlock from "Game/Command/PlaceBlock.js";
-import CommandEntitySpawn from "Game/Command/EntitySpawn.js";
+import CommandEntitySpawn from "Engine/Command/EntitySpawn.js";
 import CommandBuild from "Game/Command/Build.js";
 import CommandBlockStrength from "Game/Command/BlockStrength.js";
-import CommandEntityInventory from "Game/Command/EntityInventory.js";
-import CommandEntityEquipItem from "Game/Command/EntityEquipItem.js";
+import CommandEntityInventory from "Engine/Command/EntityInventory.js";
+import CommandEntityEquipItem from "Engine/Command/EntityEquipItem.js";
 import entityTemplatesTurret from "Game/Entity/EntityTemplates/Turret.js";
 
 var Blocks = {}; //exports;

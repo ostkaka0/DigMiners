@@ -4,5 +4,5 @@ var Register = [];
 export default Register;
 
 Register.init = () => {
-    //ObjectRegister.sort(ItemRegister);
+    //ObjectRegister.sort(RegisterItem);
 }

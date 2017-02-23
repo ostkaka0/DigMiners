@@ -4,8 +4,8 @@ import IndexCounter from "Engine/Core/IndexCounter.js";
 import Event from "Engine/Core/Event.js";
 
 
-import MessageRegister from "Engine/Register/Message.js";;
-import EntityAmmo from "Game/Entity/Ammo.js";
+import RegisterMessage from "Engine/Register/Message.js";;
+import EntityAmmo from "Engine/Entity/Ammo.js";
 
 var MessageAmmoChange = function(entity, itemIds) {
     this.ammo = {};
@@ -16,7 +16,7 @@ var MessageAmmoChange = function(entity, itemIds) {
     }
 }
 export default MessageAmmoChange;
-MessageRegister.ToClient.push(MessageAmmoChange);
+RegisterMessage.ToClient.push(MessageAmmoChange);
 
 MessageAmmoChange.prototype.execute = function(gameData) {
 

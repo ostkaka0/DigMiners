@@ -9,22 +9,22 @@ import BlockWorld from "Engine/BlockWorld.js";
 import Config from "Game/Config.js";
 import Blocks from "Game/Blocks.js";
 import Items from "Game/Items.js";
-import EntityTeam from "Game/Entity/Team.js";
-import EntityAmmo from "Game/Entity/Ammo.js";
+import EntityTeam from "Engine/Entity/Team.js";
+import EntityAmmo from "Engine/Entity/Ammo.js";
 import EntitySpawner from "Game/Entity/Spawner.js";
 import PlayerClass from "Game/PlayerClass.js";
-import CommandEntitySpawn from "Game/Command/EntitySpawn.js";
+import CommandEntitySpawn from "Engine/Command/EntitySpawn.js";
 import CommandDig from "Game/Command/Dig.js";
 import CommandPopupMessage from "Game/Command/PopupMessage.js";
-import CommandPlayerJoin from "Game/Command/PlayerJoin.js";
-import CommandPlayerSpawn from "Game/Command/PlayerSpawn.js";
+import CommandPlayerJoin from "Engine/Command/PlayerJoin.js";
+import CommandPlayerSpawn from "Engine/Command/PlayerSpawn.js";
 import entityTemplateMonsterSpawner from "Game/Entity/EntityTemplates/MonsterSpawner.js";
 import entityTemplatePlayer from "Game/Entity/EntityTemplates/Player.js";
 import entityTemplateZombie from "Game/Entity/EntityTemplates/Zombie.js";
 import entityTemplateMonster from "Game/Entity/EntityTemplates/Monster.js";
 import entityTemplateTeamBase from "Game/Entity/EntityTemplates/TeamBase.js";
 import MessageAmmoChange from "Game/Message/ToClient/AmmoChange.js";
-import CommandEntityHealthChange from "Game/Command/EntityHealthChange.js";
+import CommandEntityHealthChange from "Engine/Command/EntityHealthChange.js";
 
 var GameModeBaseWar = function() {
     this.playerSpawns = {};

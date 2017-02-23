@@ -4,7 +4,7 @@ import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 import SpriteContainer from "Engine/Animation/SpriteContainer.js";
 import Sprite from "Engine/Animation/Sprite.js";
-import EntityRegister from "Engine/Register/Entity.js";
+import RegisterEntity from "Engine/Register/Entity.js";
 
 var EntityDrawable = function(zindex) {
     this.sprites = {};
@@ -16,7 +16,7 @@ var EntityDrawable = function(zindex) {
     zindices[this.zindex].add(this.container);
 }
 export default EntityDrawable
-EntityRegister.push(EntityDrawable);
+RegisterEntity.push(EntityDrawable);
 
 EntityDrawable.prototype.name = drawable.name; function drawable() { };
 

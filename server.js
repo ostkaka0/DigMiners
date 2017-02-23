@@ -9,11 +9,11 @@ import gameData from "Game/GameData.js";
 import Items from "Game/Items.js";
 import Blocks from "Game/Blocks.js";
 import Tiles from "Game/Tiles.js";
-import MessageRegister from "Engine/Register/Message.js";
+import RegisterMessage from "Engine/Register/Message.js";
 
 import MessageCommands from "Game/Message/ToClient/Commands.js";
-import CommandPlayerJoin from "Game/Command/PlayerJoin.js";
-import CommandPlayerLeave from "Game/Command/PlayerLeave.js";
+import CommandPlayerJoin from "Engine/Command/PlayerJoin.js";
+import CommandPlayerLeave from "Engine/Command/PlayerLeave.js";
 import IndexCounter from "Engine/Core/IndexCounter.js";
 
 var console = require("console");
@@ -166,7 +166,7 @@ io.on("connection", function(socket) {
             io.sockets.emit("chat", player.name + ": " + text);
     });
 
-    MessageRegister.ToServer.forEach(function(messageType) {
+    RegisterMessage.ToServer.forEach(function(messageType) {
         socket.on(messageType.prototype.idString, function(data) {
             var message = new messageType();
             message.receive(gameData, data);

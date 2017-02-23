@@ -2,8 +2,7 @@ import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 import fix from "Engine/Core/Fix.js";
 import v2 from "Engine/Core/v2.js";
-
-import EntityRegister from "Engine/Register/Entity.js";
+import RegisterEntity from "Engine/Register/Entity.js";
 
 var EntityPhysicsBody = function(pos, damping, rotationSpeed, mass, radius) {
     this.bodyId = global.gameData.world.physicsWorld.add(pos, [0.0, 0.0], mass, radius);
@@ -28,7 +27,7 @@ var EntityPhysicsBody = function(pos, damping, rotationSpeed, mass, radius) {
     this.angleOld = 0;
 }
 export default EntityPhysicsBody
-EntityRegister.push(EntityPhysicsBody);
+RegisterEntity.push(EntityPhysicsBody);
 
 EntityPhysicsBody.prototype.name = physicsBody.name; function physicsBody() { };
 

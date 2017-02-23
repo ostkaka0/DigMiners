@@ -3,14 +3,14 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 import IndexCounter from "Engine/Core/IndexCounter.js";
 
 
-import MessageRegister from "Engine/Register/Message.js";;
+import RegisterMessage from "Engine/Register/Message.js";;
 
 var MessageRequestClickEntity = function(entityId, clickType) {
     this.entityId = entityId;
     this.clickType = clickType;
 }
 export default MessageRequestClickEntity;
-MessageRegister.ToServer.push(MessageRequestClickEntity);
+RegisterMessage.ToServer.push(MessageRequestClickEntity);
 
 MessageRequestClickEntity.prototype.execute = function(gameData, player) {
     var entity = global.gameData.world.entityWorld.objects[this.entityId];

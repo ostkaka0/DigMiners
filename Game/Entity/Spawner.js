@@ -4,12 +4,12 @@ import fix from "Engine/Core/Fix.js";
 import v2 from "Engine/Core/v2.js";
 import Event from "Engine/Core/Event.js";
 
-import EntityTeam from "Game/Entity/Team.js";
-import CommandEntitySpawn from "Game/Command/EntitySpawn.js";
-import CommandEntityInventory from "Game/Command/EntityInventory.js";
-import CommandEntityEquipItem from "Game/Command/EntityEquipItem.js";
+import EntityTeam from "Engine/Entity/Team.js";
+import CommandEntitySpawn from "Engine/Command/EntitySpawn.js";
+import CommandEntityInventory from "Engine/Command/EntityInventory.js";
+import CommandEntityEquipItem from "Engine/Command/EntityEquipItem.js";
 import Items from "Game/Items.js";
-import EntityRegister from "Engine/Register/Entity.js";
+import RegisterEntity from "Engine/Register/Entity.js";
 
 var EntitySpawner = function(entityTemplate, pos, maxEntities, radius, duration, items, equippedItemId, randomDuration, teamId) {
     this.entityTemplate = entityTemplate;
@@ -29,7 +29,7 @@ var EntitySpawner = function(entityTemplate, pos, maxEntities, radius, duration,
     this.initialized = false;
 }
 export default EntitySpawner
-EntityRegister.push(EntitySpawner);
+RegisterEntity.push(EntitySpawner);
 
 EntitySpawner.prototype.name = spawner.name; function spawner() { };
 

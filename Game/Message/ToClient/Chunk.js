@@ -7,7 +7,7 @@ import {compressRLE} from "Engine/Core/Compress.js";
 import {decompressRLE} from "Engine/Core/Compress.js";
 
 
-import MessageRegister from "Engine/Register/Message.js";;
+import RegisterMessage from "Engine/Register/Message.js";;
 
 var MessageChunk = function(chunk, blockChunk, x, y) {
     this.chunk = chunk || new Chunk();
@@ -17,7 +17,7 @@ var MessageChunk = function(chunk, blockChunk, x, y) {
     this.y = y;
 }
 export default MessageChunk;
-MessageRegister.ToClient.push(MessageChunk);
+RegisterMessage.ToClient.push(MessageChunk);
 
 MessageChunk.prototype.execute = function(gameData) {
     if (global.gameData.world.generator)

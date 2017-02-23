@@ -1,9 +1,7 @@
 import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
-import Config from "Game/Config.js";
-
-import ItemRegister from "Engine/Register/Item.js"
-import EntityRegister from "Engine/Register/Entity.js";
+import RegisterItem from "Engine/Register/Item.js"
+import RegisterEntity from "Engine/Register/Entity.js";
 
 var EntityInventory = function(inventoryId, entityId, width, height) {
     this.items = [];
@@ -13,7 +11,7 @@ var EntityInventory = function(inventoryId, entityId, width, height) {
     this.height = height;
 }
 export default EntityInventory
-EntityRegister.push(EntityInventory);
+RegisterEntity.push(EntityInventory);
 
 EntityInventory.createInventory = function(entityId, width, height) {
     if (!isServer)
@@ -66,7 +64,7 @@ EntityInventory.prototype.deserialize = function(byteArray, index) {
         var booleans = Deserialize.booleans(byteArray, index);
         this.items[i] = {
             "id": id,
-            "name": ItemRegister[id].name,
+            "name": RegisterItem[id].name,
             "amount": amount,
             "equipped": booleans[0],
             "static": booleans[1]
@@ -80,8 +78,8 @@ EntityInventory.prototype.getSerializationSize = function() {
 
 EntityInventory.prototype.sortItems = function() {
     this.items.sort(function(a, b) {
-        var aType = ItemRegister[a.id];
-        var bType = ItemRegister[b.id];
+        var aType = RegisterItem[a.id];
+        var bType = RegisterItem[b.id];
 
         if (aType.type == "tool" && bType.type != "tool")
             return -1;
@@ -100,7 +98,7 @@ EntityInventory.prototype.sortItems = function() {
 
 EntityInventory.prototype.addItem = function(gameData, id, amount) {
     //console.log("adding " + amount + " " + id);
-    var maxStack = ItemRegister[id].maxStackSize;
+    var maxStack = RegisterItem[id].maxStackSize;
     for (var i = 0; i < this.width * this.height; ++i) {
         if (amount < 0) {
             console.log("inventory bad thing happens!");
@@ -113,7 +111,7 @@ EntityInventory.prototype.addItem = function(gameData, id, amount) {
         }
         if (i >= this.items.length || !this.items[i]) {
             var added = (amount <= maxStack ? amount : maxStack);
-            this.items.push({ id: id, name: ItemRegister[id].name, amount: added });
+            this.items.push({ id: id, name: RegisterItem[id].name, amount: added });
             amount -= added;
             continue;
         }
@@ -129,7 +127,7 @@ EntityInventory.prototype.addItem = function(gameData, id, amount) {
 
 EntityInventory.prototype.addStaticItem = function(gameData, id) {
     //console.log("adding " + amount + " " + id);
-    this.items.push({ id: id, name: ItemRegister[id].name, amount: 1, static: true });
+    this.items.push({ id: id, name: RegisterItem[id].name, amount: 1, static: true });
     this.sortItems();
 }
 
@@ -189,7 +187,7 @@ EntityInventory.prototype.removeStack = function(id) {
 EntityInventory.prototype.dequipAll = function(gameData, type, arg) {
     var dequippedItems = [];
     for (var i = 0; i < this.items.length; ++i) {
-        var itemType = ItemRegister[this.items[i].id];
+        var itemType = RegisterItem[this.items[i].id];
         if (itemType.type == type && this.items[i].equipped) {
             this.items[i].equipped = false;
             dequippedItems.push([i, this.items[i].id]);
@@ -203,7 +201,7 @@ EntityInventory.prototype.getEquippedItemType = function(type) {
     for (var i = 0; i < this.items.length; ++i) {
         var item = this.items[i];
         if (item.equipped) {
-            var itemType = ItemRegister[item.id];
+            var itemType = RegisterItem[item.id];
             if (itemType.type == type)
                 return itemType;
         }
@@ -214,7 +212,7 @@ EntityInventory.prototype.getEquippedStackId = function(type) {
     for (var i = 0; i < this.items.length; ++i) {
         var item = this.items[i];
         if (item.equipped) {
-            var itemType = ItemRegister[item.id];
+            var itemType = RegisterItem[item.id];
             if (itemType.type == type)
                 return i;
         }
@@ -225,7 +223,7 @@ EntityInventory.prototype.getEquippedItem = function(type) {
     for (var i = 0; i < this.items.length; ++i) {
         var item = this.items[i];
         if (item.equipped) {
-            var itemType = ItemRegister[item.id];
+            var itemType = RegisterItem[item.id];
             if (itemType.type == type)
                 return item;
         }
@@ -234,7 +232,7 @@ EntityInventory.prototype.getEquippedItem = function(type) {
 
 EntityInventory.prototype.findTool = function(itemFunction) {
     for (var i = 0; i < this.items.length; i++) {
-        var itemType = ItemRegister[this.items[i].id];
+        var itemType = RegisterItem[this.items[i].id];
         if (itemType.itemFunction == itemFunction)
             return i;
     }

@@ -3,6 +3,7 @@ import v2 from "Engine/Core/v2.js";
 import TileWorld from "Engine/TileWorld.js";
 import BlockWorld from "Engine/BlockWorld.js";
 
+// TODO: Fix dependency
 import Config from "Game/Config.js";
 
 

@@ -11,25 +11,25 @@ import Blocks from "Game/Blocks.js";
 import Tiles from "Game/Tiles.js";
 import Projectiles from "Game/Projectiles.js";
 import Entity from "Game/Entity/Entity.js";
-import EntityPhysicsBody from "Game/Entity/PhysicsBody.js";
+import EntityPhysicsBody from "Engine/Entity/PhysicsBody.js";
 import EntityBodyparts from "Game/Entity/Bodyparts.js";
-import EntityDrawable from "Game/Entity/Drawable.js";
+import EntityDrawable from "Engine/Entity/Drawable.js";
 import ParticleFunctions from "Game/ParticleFunctions.js";
 import ExplosionFunctions from "Game/ExplosionFunctions.js";
 
 import Config from "Game/Config.js";
 
-import ItemRegister from "Engine/Register/Item.js";
+import RegisterItem from "Engine/Register/Item.js";
 
 import CommandBlockStrength from "Game/Command/BlockStrength.js";
 import CommandEntityDig from "Game/Command/EntityDig.js";
 import CommandProjectileSpawn from "Game/Command/ProjectileSpawn.js";
-import CommandEntityReloadWeapon from "Game/Command/EntityReloadWeapon.js";
-import CommandEntityInventory from "Game/Command/EntityInventory.js";
-import CommandEntitySpawn from "Game/Command/EntitySpawn.js";
+import CommandEntityReloadWeapon from "Engine/Command/EntityReloadWeapon.js";
+import CommandEntityInventory from "Engine/Command/EntityInventory.js";
+import CommandEntitySpawn from "Engine/Command/EntitySpawn.js";
 import CommandEntityAnimate from "Game/Command/EntityAnimate.js";
 import CommandParticles from "Game/Command/Particles.js";
-import CommandEntityDestroy from "Game/Command/EntityDestroy.js";
+import CommandEntityDestroy from "Engine/Command/EntityDestroy.js";
 
 var Items = {}; //module.exports;
 export default Items;
@@ -120,7 +120,7 @@ Items.Functions.Potion = function(entity, item) {
             var entry = removed[i];
             var stackId = entry[0];
             var item = entry[1];
-            var itemType = ItemRegister[item.id];
+            var itemType = RegisterItem[item.id];
             if (item.equipped)
                 Entity.onDequip(entity, stackId, itemType);
         };
@@ -781,5 +781,5 @@ Items.initItems = function() {
 
     }
 
-    ObjectRegister.addByObject(ItemRegister, Items.Types);
+    ObjectRegister.addByObject(RegisterItem, Items.Types);
 }

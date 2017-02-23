@@ -6,7 +6,7 @@ import TileWorld from "Engine/TileWorld.js";
 
 import Config from "Game/Config.js";
 
-import CommandRegister from "Engine/Register/Command.js";
+import RegisterCommand from "Engine/Register/Command.js";
 
 var CommandDig = function(pos, radius) {
     if (pos)
@@ -14,7 +14,7 @@ var CommandDig = function(pos, radius) {
     this.radius = fix.toFix(radius);
 }
 export default CommandDig;
-CommandRegister.push(CommandDig);
+RegisterCommand.push(CommandDig);
 
 CommandDig.prototype.execute = function() {
     var tileWorld = global.gameData.world.tileWorld;

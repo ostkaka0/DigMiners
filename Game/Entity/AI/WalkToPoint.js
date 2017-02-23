@@ -4,11 +4,11 @@ import BlockWorld from "Engine/BlockWorld.js";
 import TileWorld from "Engine/TileWorld.js";
 
 
-import CommandEntityEquipItem from "Game/Command/EntityEquipItem.js";
+import CommandEntityEquipItem from "Engine/Command/EntityEquipItem.js";
 import CommandKeyStatusUpdate from "Game/Command/KeyStatusUpdate.js";
-import CommandEntityMove from "Game/Command/EntityMove.js";
-import CommandEntityRotate from "Game/Command/EntityRotate.js";
-import CommandEntityLookAtEntity from "Game/Command/EntityLookAtEntity.js";
+import CommandEntityMove from "Engine/Command/EntityMove.js";
+import CommandEntityRotate from "Engine/Command/EntityRotate.js";
+import CommandEntityLookAtEntity from "Engine/Command/EntityLookAtEntity.js";
 
 var BehaviourWalkToPoint = function(entity, goalPoint, radius) {
     this.entity = entity;

@@ -4,9 +4,9 @@ import Event from "Engine/Core/Event.js";
 
 import Config from "Game/Config.js";
 
-import ItemRegister from "Engine/Register/Item.js"
-import EntityAmmo from "Game/Entity/Ammo.js";
-import EntityHealth from "Game/Entity/Health.js";
+import RegisterItem from "Engine/Register/Item.js"
+import EntityAmmo from "Engine/Entity/Ammo.js";
+import EntityHealth from "Engine/Entity/Health.js";
 
 var PotionEffectTypes = {};
 export default PotionEffectTypes
@@ -27,7 +27,7 @@ PotionEffectTypes.SupplyAmmo = {
     potionFunction: function(entity) {
         if (!entity.ammo) return;
         Object.keys(entity.ammo).forEach(function(itemId) {
-            var itemType = ItemRegister[itemId];
+            var itemType = RegisterItem[itemId];
             var amount = entity.ammo[itemId];
             // Add 1% of ammoMax
             var ammoToAdd = Math.min(itemType.ammoMax - amount, Math.max(1, itemType.ammoMax * 0.05 >> 0));

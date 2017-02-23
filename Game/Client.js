@@ -1,6 +1,6 @@
 import Config from "Game/Config.js";
 
-import MessageRegister from "Engine/Register/Message.js";
+import RegisterMessage from "Engine/Register/Message.js";
 
 import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
@@ -53,7 +53,7 @@ var Client = function(gameData, ip) {
         global.ping = 2 * (Date.now() - time);
     });
 
-    MessageRegister.ToClient.forEach(function(messageType) {
+    RegisterMessage.ToClient.forEach(function(messageType) {
         socket.on(messageType.prototype.idString, function(data) {
             var message = new messageType();
             message.receive(global.gameData, data);

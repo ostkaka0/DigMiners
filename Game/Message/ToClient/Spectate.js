@@ -3,13 +3,13 @@ import {Deserialize} from "Engine/Core/Serialization.js";
 import IndexCounter from "Engine/Core/IndexCounter.js";
 
 
-import MessageRegister from "Engine/Register/Message.js";;
+import RegisterMessage from "Engine/Register/Message.js";;
 
 var MessageSpectate = function(entityId) {
     this.entityId = entityId;
 }
 export default MessageSpectate;
-MessageRegister.ToClient.push(MessageSpectate);
+RegisterMessage.ToClient.push(MessageSpectate);
 
 MessageSpectate.prototype.execute = function(gameData) {
     global.spectateEntity = global.gameData.world.entityWorld.objects[this.entityId];

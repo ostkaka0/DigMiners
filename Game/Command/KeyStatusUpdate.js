@@ -6,7 +6,7 @@ import Keys from "Engine/Keys.js";
 
 import Config from "Game/Config.js";
 
-import CommandRegister from "Engine/Register/Command.js";
+import RegisterCommand from "Engine/Register/Command.js";
 
 var CommandKeyStatusUpdate = function(entityId, key, pressed, pos) {
     this.entityId = entityId;
@@ -15,7 +15,7 @@ var CommandKeyStatusUpdate = function(entityId, key, pressed, pos) {
     this.pos = pos;
 }
 export default CommandKeyStatusUpdate;
-CommandRegister.push(CommandKeyStatusUpdate);
+RegisterCommand.push(CommandKeyStatusUpdate);
 
 CommandKeyStatusUpdate.prototype.execute = function() {
     var entity = global.gameData.world.entityWorld.objects[this.entityId];
