@@ -1,7 +1,6 @@
 import Event from "Engine/Core/Event.js";
-
-
 import EntityAmmo from "Engine/Entity/Ammo.js";
+import EntityEquippedItems from "Engine/Entity/EquippedItems.js";
 
 export default function() {
     this.root = $("<div>", { "text": "No weapon equipped" });
@@ -40,11 +39,11 @@ export default function() {
         this.updateFunction(entity, itemType);
     }.bind(this));
 
-    global.gameData.world.events.on("equip", function(entity, stackId, itemType) {
+    Event.subscribe(EntityEquippedItems.Events.onEquip, this, function(entity, stackId, itemType) {
         this.updateFunction(entity, itemType);
     }.bind(this));
 
-    global.gameData.world.events.on("dequip", function(entity, stackId, itemType) {
+    Event.subscribe(EntityEquippedItems.Events.onDequip, this, function(entity, stackId, itemType) {
         this.updateFunction(entity, itemType);
     }.bind(this));
 
