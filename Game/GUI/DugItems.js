@@ -15,8 +15,8 @@ var DugItems = function() {
         "user-select": "none",
     });
 
-    for (var i = 0; i < Config.tileRegister.length; ++i) {
-        var tileType = Config.tileRegister[i];
+    for (var i = 0; i < global.gameData.tileRegister.length; ++i) {
+        var tileType = global.gameData.tileRegister[i];
         if (tileType.isOre) {
             var dugItemsEntry = $("<div>", {
                 "class": "dugItemsEntry",
@@ -45,7 +45,7 @@ var DugItems = function() {
             dugItemsEntryImage.mouseenter(function() {
                 var text = $(this).parent().find('.dugItemsEntryText');
                 var id = $(this).parent().attr("id").substr($(this).parent().attr("id").length - 1);
-                var tileType = Config.tileRegister[id];
+                var tileType = global.gameData.tileRegister[id];
                 text.text(tileType.name);
             }).mouseleave(function() {
                 global.gameData.HUD.update();
@@ -83,8 +83,8 @@ var DugItems = function() {
 export default DugItems
 
 DugItems.prototype.update = function() {
-    for (var i = 0; i < Config.tileRegister.length; ++i) {
-        var tileType = Config.tileRegister[i];
+    for (var i = 0; i < global.gameData.tileRegister.length; ++i) {
+        var tileType = global.gameData.tileRegister[i];
         if (!tileType.isOre) continue;
         var amount = 0;
         if (global.player.oreInventory[i])

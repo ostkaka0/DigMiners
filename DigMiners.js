@@ -240,7 +240,7 @@ var render = function(tickFracTime) {
         } else if (entity.blockPlacer && entity.blockPlacer.sprite) {
             entity.blockPlacer.sprite.pos[0] = -camera.pos[0] + canvas.width / 2 + 32 * (entity.blockPlacer.blockPos[0] + 0.5);
             entity.blockPlacer.sprite.pos[1] = camera.pos[1] + canvas.height / 2 - 32 * (entity.blockPlacer.blockPos[1] + 0.5);
-            var factor = 1.0 - entity.blockPlacer.duration / Config.blockRegister[entity.blockPlacer.blockId].buildDuration;
+            var factor = 1.0 - entity.blockPlacer.duration / global.gameData.blockRegister[entity.blockPlacer.blockId].buildDuration;
             entity.blockPlacer.sprite.scale[0] = factor;
             entity.blockPlacer.sprite.scale[1] = factor;
         }

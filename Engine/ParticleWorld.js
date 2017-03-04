@@ -11,7 +11,7 @@ export default ParticleWorld;
 ParticleWorld.prototype.update = function(dt) {
     var time = new Date().getTime();
     this.particles.forEach(function(particle) {
-        var particleType = Config.particleRegister[particle[4]];
+        var particleType = global.gameData.particleRegister[particle[4]];
         var fracTime = (time - particle[3]) / particleType.lifeTime;
         var acceleration = fracTime * particleType.accelerationEnd + (1 - fracTime) * particleType.accelerationStart;
         var newVelocity = [0, 0];
@@ -29,7 +29,7 @@ ParticleWorld.prototype.update = function(dt) {
 ParticleWorld.prototype.render = function(camera, context, tickFracTime) {
     var time = new Date().getTime();
     this.particles.forEach(function(particle) {
-        var particleType = Config.particleRegister[particle[4]];
+        var particleType = global.gameData.particleRegister[particle[4]];
         var fracTime = (time - particle[3]) / particleType.lifeTime;
         if (fracTime >= 1.0)
             this.remove(particle);

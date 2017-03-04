@@ -38,7 +38,7 @@ var World = function() {
     this.particleWorld = new ParticleWorld();
     this.tileWorld = new TileWorld();
     this.blockWorld = new BlockWorld();
-    this.celluralAutomata = new CelluralAutomata(this.blockWorld, Config.blockRegister);
+    this.celluralAutomata = new CelluralAutomata(this.blockWorld, global.gameData.blockRegister);
     this.physicsWorld = new PhysicsWorld();
     this.physicsEntities = {};
     this.generator = new Generator(Math.random() * 1000000 >> 0);
@@ -182,7 +182,7 @@ World.prototype.initializeEvents = function() {
             if (projectileEntity.projectile.projectileType.blockDamage > 0) {
                 var strength = this.blockWorld.getStrength(blockPos);
                 var blockId = this.blockWorld.getForeground(blockPos);
-                var block = Config.blockRegister[blockId];
+                var block = global.gameData.blockRegister[blockId];
                 var projectileArmor = (block.projectileArmor) ? block.projectileArmor : 0;
                 strength -= (1 / block.hardness) * Math.round((1.0 - projectileArmor) * projectileEntity.projectile.projectileType.blockDamage);
                 sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], Math.max(strength, 0)));

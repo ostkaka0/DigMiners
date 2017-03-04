@@ -30,7 +30,7 @@ CommandEntityDig.prototype.execute = function() {
     if (!entity || !entity.movement) return;
 
     var tileWorld = global.gameData.world.tileWorld;
-    var targetTile = Config.tileRegister[global.gameData.world.tileWorld.getTileId([this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1]])];
+    var targetTile = global.gameData.tileRegister[global.gameData.world.tileWorld.getTileId([this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1]])];
     var targetDensity = global.gameData.world.tileWorld.getDensity([this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1]]);
     var onDensityChange = null;
     var digDis = 1.5;
@@ -59,12 +59,12 @@ CommandEntityDig.prototype.execute = function() {
         onDensityChange = function([tileX, tileY], tile, oldDensity, newDensity) { return (tile.isOre) ? oldDensity : newDensity; };
     }
 
-    var dug = global.gameData.world.tileWorld.carveCircle(Config.tileRegister, [this.pos[0] + digDis * this.dir[0], this.pos[1] + digDis * this.dir[1]], this.radius, this.digSpeed, this.maxDigHardness, onDensityChange);
+    var dug = global.gameData.world.tileWorld.carveCircle(global.gameData.tileRegister, [this.pos[0] + digDis * this.dir[0], this.pos[1] + digDis * this.dir[1]], this.radius, this.digSpeed, this.maxDigHardness, onDensityChange);
     if (isServer) {
         // Only process dug ores on server
         for (var i = 0; i < dug.length; ++i) {
             if (!dug[i] || dug[i] <= 0) continue;
-            var tileName = Config.tileRegister[i].name;
+            var tileName = global.gameData.tileRegister[i].name;
             var itemId = i;
             if (entity.inventory && entity.controlledByPlayer)
                 sendCommand(new CommandPlayerOreInventory(entity.controlledByPlayer.playerId, CommandPlayerOreInventory.Actions.ADD_ORE, itemId, dug[i]));

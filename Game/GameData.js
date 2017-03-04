@@ -1,22 +1,31 @@
 import IdList from "Engine/Core/IdList.js";
 import ObjectWorld from "Engine/Core/ObjectWorld.js";
 import Event from "Engine/Core/Event.js";
-
-
-import Config from "Game/Config.js";
-import World from "Game/World.js";
-import Items from "Game/Items.js";
-import Blocks from "Game/Blocks.js";
+import ObjectRegister from "Engine/Core/ObjectRegister.js";
+import TypeRegister from "Engine/Core/TypeRegister.js";
 
 import RegisterItem from "Engine/Register/Item.js";
 import RegisterCommand from "Engine/Register/Command.js";
 import RegisterMessage from "Engine/Register/Message.js";
 import RegisterEntity from "Engine/Register/Entity.js";
 
+import Config from "Game/Config.js";
+import World from "Game/World.js";
+import Items from "Game/Items.js";
+import Blocks from "Game/Blocks.js";
+import Projectiles from "Game/Projectiles.js"
+import Particles from "Game/Particles.js"
+import ParticleFunctions from "Game/ParticleFunctions.js"
+import PotionEffectTypes from "Game/PotionEffectTypes.js"
+
 import PlayerClass from "Game/PlayerClass.js";
 import Tiles from "Game/Tiles.js";
 import AnimationManager from "Engine/Animation/AnimationManager.js";
 import MessageChangeGameMode from "Game/Message/ToClient/ChangeGamemode.js";
+
+import GameModeZombieInvasion from "Game/GameMode/ZombieInvasion.js";
+import GameModeSurvivalWar from "Game/GameMode/SurvivalWar.js";
+import GameModeBaseWar from "Game/GameMode/BaseWar.js";
 
 global.gameData = {};
 global.gameData = global.gameData;
@@ -35,7 +44,14 @@ global.gameData.init = function(idList) {
     RegisterCommand.init();
     RegisterMessage.init();
     RegisterEntity.init();
-    Config.init();
+    this.tileRegister = ObjectRegister.addByObject([], Tiles);
+    this.blockRegister = ObjectRegister.addByObject([], Blocks);
+    this.projectileRegister = ObjectRegister.addByObject([], Projectiles);
+    this.particleRegister = ObjectRegister.addByObject([], Particles);
+    this.particleFunctionRegister = ObjectRegister.addByObject([], ParticleFunctions);
+    this.potionEffectTypeRegister = ObjectRegister.addByObject([], PotionEffectTypes);
+    this.gameModeRegister = TypeRegister.addByArray([], [/*GameModeBaseWar,*/ GameModeZombieInvasion/*, GameModeSurvivalWar*/]);
+    this.defaultGameMode = GameModeZombieInvasion;
 
     // global.gameData.textures is set in TextureManager.js when textures are loaded
     this.textures = {};
@@ -130,9 +146,9 @@ global.gameData.tick = function(dt) {
 
 global.gameData.changeGameMode = function() {
     if (this.playerWorld.objectArray.length < 4)
-        this.nextGameMode =  new Config.defaultGameMode();
+        this.nextGameMode =  new global.gameData.defaultGameMode();
     else
-        this.nextGameMode = new Config.gameModeRegister[Config.gameModeRegister.length * Math.random() >> 0]();
+        this.nextGameMode = new global.gameData.gameModeRegister[global.gameData.gameModeRegister.length * Math.random() >> 0]();
     console.log("Changing game mode to: " + this.nextGameMode.name);
 }
 
