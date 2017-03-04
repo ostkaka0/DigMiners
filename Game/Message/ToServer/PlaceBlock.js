@@ -37,7 +37,7 @@ MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
         var localX = Math.floor(this.x) - blockChunkX * BlockChunk.dim;
         var localY = Math.floor(this.y) - blockChunkY * BlockChunk.dim;
 
-        var blockType = Config.blockRegister[itemType.blockId];
+        var blockType = global.gameData.blockRegister[itemType.blockId];
         var type = blockType.type;
 
         var blockChunk = global.gameData.world.blockWorld.get([blockChunkX, blockChunkY]);

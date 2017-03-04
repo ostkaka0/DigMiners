@@ -28,7 +28,7 @@ EntityBlockPlacer.prototype.update = function(entity) {
         if (placerEntity)
             placerEntity.blockPlacerId = entity.id;
         if (!isServer) {
-            var block = Config.blockRegister[this.blockId];
+            var block = global.gameData.blockRegister[this.blockId];
             this.sprite = new Sprite(block.name);
             this.sprite.anchor[0] = 0.5;
             this.sprite.anchor[1] = 0.5;

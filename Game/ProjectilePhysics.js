@@ -64,7 +64,7 @@ export var projectileEntitySimulate = function(entity, dt) {
 
         var blockTilePos = [Math.floor(pos[0]), Math.floor(pos[1])];
         var blockId = global.gameData.world.blockWorld.getForeground(blockTilePos);
-        var blockType = Config.blockRegister[blockId];
+        var blockType = global.gameData.blockRegister[blockId];
         var isBulletSolid = (blockType.isBulletSolid == undefined || entity.projectile.projectileType.isExplosive) ? blockType.isSolid : blockType.isBulletSolid;
         if (blockId != 0 && isBulletSolid && v2.dot([Math.cos(projectile.angle), -Math.sin(projectile.angle)], [blockTilePos[0] + 0.5 - pos[0], blockTilePos[1] + 0.5 - pos[1]]) > 0.0) {
             Event.trigger(EntityProjectile.Events.onHitBlock, entity, blockTilePos);

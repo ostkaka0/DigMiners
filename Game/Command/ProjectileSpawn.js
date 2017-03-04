@@ -57,7 +57,7 @@ CommandProjectileSpawn.prototype.deserialize = function(byteArray, index) {
     this.angle = Deserialize.fix(byteArray, index);
     this.speed = Deserialize.fix(byteArray, index);
     this.maxDistance = Deserialize.fix(byteArray, index);
-    this.projectileType = Config.projectileRegister[Deserialize.int8(byteArray, index)];
+    this.projectileType = global.gameData.projectileRegister[Deserialize.int8(byteArray, index)];
     this.shooterEntityId = Deserialize.int32(byteArray, index);
 }
 

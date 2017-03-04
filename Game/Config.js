@@ -51,26 +51,12 @@ import GameModeZombieInvasion from "Game/GameMode/ZombieInvasion.js";
 import GameModeSurvivalWar from "Game/GameMode/SurvivalWar.js";
 import GameModeBaseWar from "Game/GameMode/BaseWar.js";
 
-var Config = {};//exports;
-export default Config
-
-Config.init = function() {
-    Object.assign(Config, {
-        port: 3000,
-        itemPickupDistance: 2.0,
-        blockPlaceDistance: 96, //Pixels
-        tickDuration: 1000 / 20,
-        fakeLag: 0,
-        fakeJitter: 0,
-        respawnTime: 1,
-
-        tileRegister: ObjectRegister.addByObject([], Tiles),
-        blockRegister: ObjectRegister.addByObject([], Blocks),
-        projectileRegister: ObjectRegister.addByObject([], Projectiles),
-        particleRegister: ObjectRegister.addByObject([], Particles),
-        particleFunctionRegister: ObjectRegister.addByObject([], ParticleFunctions),
-        potionEffectTypeRegister: ObjectRegister.addByObject([], PotionEffectTypes),
-        gameModeRegister: TypeRegister.addByArray([], [/*GameModeBaseWar,*/ GameModeZombieInvasion/*, GameModeSurvivalWar*/]),
-        defaultGameMode: GameModeZombieInvasion
-    });
+export default {
+    port: 3000,
+    itemPickupDistance: 2.0,
+    blockPlaceDistance: 96, //Pixels
+    tickDuration: 1000 / 20,
+    fakeLag: 0,
+    fakeJitter: 0,
+    respawnTime: 1,
 }

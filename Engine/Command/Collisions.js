@@ -4,7 +4,6 @@ import {Serialize} from "Engine/Core/Serialization.js";
 import {Deserialize} from "Engine/Core/Serialization.js";
 import RegisterCommand from "Engine/Register/Command.js";
 
-
 var CommandCollisions = function(collisions) {
     var physicsWorld = global.gameData.world.physicsWorld;
     var physicsEntities = global.gameData.world.physicsEntities;
