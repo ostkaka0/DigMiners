@@ -12,6 +12,7 @@ import Items from "Game/Items.js";
 
 import CommandPlayerOreInventory from "Game/Command/PlayerOreInventory.js";
 import CommandEntitySpawn from "Engine/Command/EntitySpawn.js";
+import CommandPlayerXP from "Game/Command/PlayerXP.js";
 
 var CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHardness) {
     this.entityId = entityId;
@@ -34,6 +35,12 @@ CommandEntityDig.prototype.execute = function() {
     var targetDensity = global.gameData.world.tileWorld.getDensity([this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1]]);
     var onDensityChange = null;
     var digDis = 1.5;
+    var xp = 0;
+
+    var addXP = function(tile, oldDensity, newDensity) {
+        if (newDensity < 128 && oldDensity >= 128)
+            xp += tile.xp || 1;
+    }
 
     if (targetTile.isOre && targetDensity > 0) {
         entity.movement.isMining = true;
@@ -44,8 +51,9 @@ CommandEntityDig.prototype.execute = function() {
                 var densityChange = (oldDensity - newDensity) / 2 >> 0;
                 var newDensity2 = oldDensity - densityChange;
                 if (newDensity2 < 128)
-                    return 0;
-                else return newDensity2;
+                    newDensity2 = 0;
+                addXP(tile, oldDensity, newDensity2)
+                return newDensity2;
             }
             else return oldDensity;
 
@@ -56,7 +64,11 @@ CommandEntityDig.prototype.execute = function() {
     } else {
 
         entity.movement.isDigging = true;
-        onDensityChange = function([tileX, tileY], tile, oldDensity, newDensity) { return (tile.isOre) ? oldDensity : newDensity; };
+        onDensityChange = function([tileX, tileY], tile, oldDensity, newDensity) {
+            if (tile.isOre) return oldDensity;
+            addXP(tile, oldDensity, newDensity);
+            return newDensity;
+        };
     }
 
     var dug = global.gameData.world.tileWorld.carveCircle(global.gameData.tileRegister, [this.pos[0] + digDis * this.dir[0], this.pos[1] + digDis * this.dir[1]], this.radius, this.digSpeed, this.maxDigHardness, onDensityChange);
@@ -85,6 +97,8 @@ CommandEntityDig.prototype.execute = function() {
                 }
             }*/
         }
+        if (entity.controlledByPlayer && xp > 0)
+            sendCommand(new CommandPlayerXP(entity.controlledByPlayer.playerId, xp));
     }
 }
 

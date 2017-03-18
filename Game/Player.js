@@ -13,6 +13,8 @@ var Player = function(playerId, entityId) {
     this.text = null;
     this.deathTick = global.gameData.world.tickId;
     this.oreInventory = new Array();
+    this.xp = 0;
+    this.level = 0;
 }
 export default Player
 
