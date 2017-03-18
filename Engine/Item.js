@@ -10,7 +10,6 @@ import Tiles from "Game/Tiles.js";
 import Entity from "Game/Entity/Entity.js";
 import ExplosionFunctions from "Game/ExplosionFunctions.js";
 
-import Config from "Game/Config.js";
 import RegisterItem from "Engine/Register/Item.js";
 
 import CommandBlockStrength from "Game/Command/BlockStrength.js";
@@ -77,7 +76,7 @@ Item.interact = function(itemType, entity) {
         if (blockChunk) {
             var blockId = blockChunk.getForeground(localPos[0], localPos[1]);
             if (blockId) {
-                var blockType = Config.blockRegister[blockId];
+                var blockType = global.gameData.blockRegister[blockId];
                 var strength = blockChunk.getStrength(localPos[0], localPos[1]);
                 // TODO: 16 magic value
                 strength -= 16 * (Entity.getBlockBreakSpeed(entity) / blockType.hardness);
