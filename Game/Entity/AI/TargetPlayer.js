@@ -9,7 +9,7 @@ import DisField from "Engine/DisField.js";
 
 import Config from "Game/Config.js";
 
-import Items from "Game/Items.js";
+import ItemFunctions from "Engine/ItemFunctions.js";
 import EntityTeam from "Engine/Entity/Team.js";
 import CommandEntityEquipItem from "Engine/Command/EntityEquipItem.js";
 import CommandKeyStatusUpdate from "Game/Command/KeyStatusUpdate.js";
@@ -47,9 +47,9 @@ BehaviourTargetPlayer.prototype.canRun = function() {
 }
 
 BehaviourTargetPlayer.prototype.initialize = function() {
-    this.isGunner = (this.entity.equippedItems.items["tool"] && this.entity.equippedItems.items["tool"].itemFunction == Items.Functions.RangedWeapon);
+    this.isGunner = (this.entity.equippedItems.items["tool"] && this.entity.equippedItems.items["tool"].itemFunction == ItemFunctions.projectile);
     if (!this.isGunner) {
-        var slotId = this.entity.inventory.findTool(Items.Functions.RangedWeapon);
+        var slotId = this.entity.inventory.findTool(ItemFunctions.projectile);
         this.isGunner = (slotId != -1)
         if (this.isGunner)
             sendCommand(new CommandEntityEquipItem(this.entity.id, slotId, this.entity.inventory.items[slotId].id, true));
@@ -221,7 +221,7 @@ BehaviourTargetPlayer.prototype.getAttackDistance = function(pos, dir) {
 
 
 BehaviourTargetPlayer.prototype.getAttackDotAngle = function() {
-    if (this.entity.equippedItems.items["tool"] && this.entity.equippedItems.items["tool"].itemFunction == Items.Functions.RangedWeapon) {
+    if (this.entity.equippedItems.items["tool"] && this.entity.equippedItems.items["tool"].itemFunction == ItemFunctions.projectile) {
         return 0.05;
     }
     return 0.5;

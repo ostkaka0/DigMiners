@@ -154,12 +154,12 @@ EntityMovement.entityFunction = function(dt) {
 
             if (useCooldown - entity.movement.toolUseTickTimeout == useDuration) {
                 if (tool && tool.itemFunction)
-                    tool.itemFunction(entity, tool);
+                    tool.itemFunction(tool, entity);
             }
 
             if (reloadCooldown - entity.movement.toolReloadTickTimeout == 0) {
                 if (tool && tool.reloadFunction)
-                    tool.reloadFunction(entity, tool);
+                    tool.reloadFunction(tool, entity);
             }
 
             // Dig update:

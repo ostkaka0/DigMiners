@@ -6,7 +6,7 @@ import Keys from "Engine/Keys.js";
 
 import Config from "Game/Config.js";
 
-import Items from "Game/Items.js";
+import ItemFunctions from "Engine/ItemFunctions.js";
 import CommandEntityEquipItem from "Engine/Command/EntityEquipItem.js";
 import CommandKeyStatusUpdate from "Game/Command/KeyStatusUpdate.js";
 import CommandEntityMove from "Engine/Command/EntityMove.js";
@@ -37,8 +37,8 @@ BehaviourDigObstacle.prototype.canRun = function() {
 
     // Change equipped item to shovel
     var shovelSlotId = -1;
-    if (!this.entity.equippedItems.items["tool"] || this.entity.equippedItems.items["tool"].itemFunction != Items.Functions.Shovel) {
-        shovelSlotId = this.entity.inventory.findTool(Items.Functions.Shovel);
+    if (!this.entity.equippedItems.items["tool"] || this.entity.equippedItems.items["tool"].itemFunction != ItemFunctions.melee) {
+        shovelSlotId = this.entity.inventory.findTool(ItemFunctions.melee);
         if (shovelSlotId == -1) return false;
     }
 
