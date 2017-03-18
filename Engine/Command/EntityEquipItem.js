@@ -7,7 +7,7 @@ import RegisterCommand from "Engine/Register/Command.js";
 import EntityEquippedItems from "Engine/Entity/EquippedItems.js";
 
 // TODO: Fix engine dependency to game
-import Items from "Game/Items.js";
+import ItemFunctions from "Engine/ItemFunctions.js";
 
 var CommandEntityEquipItem = function(entityId, stackId, itemId, equipped) {
     this.entityId = entityId;
@@ -43,7 +43,7 @@ CommandEntityEquipItem.prototype.execute = function() {
 
     if (entity.inventory) {
         var item = entity.inventory.items[this.stackId];
-        if (item && itemType.itemFunction == Items.Functions.RangedWeapon && (item.magazine == undefined || item.magazine == null)) {
+        if (item && itemType.itemFunction == ItemFunctions.projectile && (item.magazine == undefined || item.magazine == null)) {
             item.magazine = itemType.ammoCapacity;
         }
 

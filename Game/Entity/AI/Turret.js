@@ -43,7 +43,7 @@ BehaviourTurret.prototype.canRun = function() {
 
 BehaviourTurret.prototype.initialize = function() {
     if (!this.foundGun) {
-        var slotId = this.entity.inventory.findTool(Items.Functions.RangedWeapon);
+        var slotId = this.entity.inventory.findTool(ItemFunctions.projectile);
         this.foundGun = (slotId != -1);
         if (this.foundGun)
             sendCommand(new CommandEntityEquipItem(this.entity.id, slotId, this.entity.inventory.items[slotId].id, true));

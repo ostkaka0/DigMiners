@@ -6,8 +6,8 @@ import BlockChunk from "Engine/BlockChunk.js";
 import Sprite from "Engine/Animation/Sprite.js";
 import BodyPart from "Engine/Animation/BodyPart.js";
 import ObjectRegister from "Engine/Core/ObjectRegister.js";
-import ItemFlags from "Engine/ItemFlags.js"
-import ToolTypes from "Engine/ToolTypes.js"
+import Item from "Engine/Item.js";
+import ItemFunctions from "Engine/ItemFunctions.js";
 
 import Blocks from "Game/Blocks.js";
 import Tiles from "Game/Tiles.js";
@@ -174,7 +174,7 @@ Items.Functions.RangedWeapon = function(entity, itemType) {
     }
 }
 
-Items.Functions.Reload = function(entity, itemType) {
+Items.Functions.Reload = function(itemType, entity) {
     if (isServer) {
         if (!itemType || !entity.inventory) return;
         var stackId = entity.inventory.getEquippedStackId("tool");
@@ -319,7 +319,7 @@ Items.initItems = function() {
         var block = Blocks[name];
         Items.Types[name] = {
             name: block.name,
-            flags: ItemFlags.Constructive,
+            flags: Item.Flags.Constructive,
             texture: ItemTextures.BlockAtlas,
             spriteId: num,
             isEquipable: true,
@@ -355,8 +355,7 @@ Items.initItems = function() {
     // Shovels
     Items.Types.RustyShovel = {
         name: "Rusty Shovel",
-        toolType: ToolTypes.Melee,
-        flags: ItemFlags.Destructive,
+        flags: Item.Flags.Destructive,
         useCooldown: 5,
         useDuration: 2,
         maxStackSize: 1,
@@ -364,7 +363,7 @@ Items.initItems = function() {
         spriteId: 0,
         isEquipable: true,
         isDropable: true,
-        //itemFunction: Items.Functions.Shovel,
+        itemFunction: ItemFunctions.melee,
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 0.25,
@@ -372,14 +371,13 @@ Items.initItems = function() {
     }
     Items.Types.CopperShovel = {
         name: "Copper Shovel",
-        toolType: ToolTypes.Melee,
-        flags: ItemFlags.Destructive | ItemFlags.TargetEnemies,
+        flags: Item.Flags.Destructive | Item.Flags.TargetEnemies,
         texture: ItemTextures.ShovelAtlas,
         spriteId: 1,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        //itemFunction: Items.Functions.Shovel,
+        itemFunction: ItemFunctions.melee,
         useCooldown: 5,
         useDuration: 2,
         type: "tool",
@@ -389,14 +387,13 @@ Items.initItems = function() {
     }
     Items.Types.IronShovel = {
         name: "Iron Shovel",
-        toolType: ToolTypes.Melee,
-        flags: ItemFlags.Destructive | ItemFlags.TargetEnemies,
+        flags: Item.Flags.Destructive | Item.Flags.TargetEnemies,
         texture: ItemTextures.ShovelAtlas,
         spriteId: 2,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        //itemFunction: Items.Functions.Shovel,
+        itemFunction: ItemFunctions.melee,
         useCooldown: 5,
         useDuration: 2,
         type: "tool",
@@ -406,14 +403,13 @@ Items.initItems = function() {
     }
     Items.Types.SteelShovel = {
         name: "Steel Shovel",
-        toolType: ToolTypes.Melee,
-        flags: ItemFlags.Destructive | ItemFlags.TargetEnemies,
+        flags: Item.Flags.Destructive | Item.Flags.TargetEnemies,
         texture: ItemTextures.ShovelAtlas,
         spriteId: 3,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        //itemFunction: Items.Functions.Shovel,
+        itemFunction: ItemFunctions.melee,
         useCooldown: 5,
         useDuration: 2,
         type: "tool",
@@ -425,14 +421,13 @@ Items.initItems = function() {
     // Melee
     Items.Types.Knife = {
         name: "Knife",
-        toolType: ToolTypes.Melee,
-        flags: ItemFlags.Destructive | ItemFlags.TargetEnemies,
+        flags: Item.Flags.Destructive | Item.Flags.TargetEnemies,
         texture: ItemTextures.SwordAtlas,
         spriteId: 0,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        //itemFunction: Items.Functions.Sword,
+        itemFunction: ItemFunctions.melee,
         useCooldown: 10,
         useDuration: 0,
         type: "tool",
@@ -443,14 +438,13 @@ Items.initItems = function() {
     }
     Items.Types.AssasinKnife = {
         name: "Assassin Knife",
-        toolType: ToolTypes.Melee,
-        flags: ItemFlags.Destructive | ItemFlags.TargetEnemies,
+        flags: Item.Flags.Destructive | Item.Flags.TargetEnemies,
         texture: ItemTextures.SwordAtlas,
         spriteId: 1,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        //itemFunction: Items.Functions.Sword,
+        itemFunction: ItemFunctions.melee,
         useCooldown: 10,
         useDuration: 0,
         type: "tool",
@@ -463,14 +457,13 @@ Items.initItems = function() {
     // Swords
     Items.Types.RustySword = {
         name: "Rusty Sword",
-        toolType: ToolTypes.Melee,
-        flags: ItemFlags.Destructive | ItemFlags.TargetEnemies,
+        flags: Item.Flags.Destructive | Item.Flags.TargetEnemies,
         texture: ItemTextures.SwordAtlas,
         spriteId: 0,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        //itemFunction: Items.Functions.Sword,
+        itemFunction: ItemFunctions.melee,
         useCooldown: 20,
         useDuration: 4,
         type: "tool",
@@ -481,14 +474,13 @@ Items.initItems = function() {
     }
     Items.Types.CopperSword = {
         name: "Copper Sword",
-        toolType: ToolTypes.Melee,
-        flags: ItemFlags.Destructive | ItemFlags.TargetEnemies,
+        flags: Item.Flags.Destructive | Item.Flags.TargetEnemies,
         texture: ItemTextures.SwordAtlas,
         spriteId: 1,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        //itemFunction: Items.Functions.Sword,
+        itemFunction: ItemFunctions.melee,
         useCooldown: 20,
         useDuration: 4,
         type: "tool",
@@ -499,14 +491,13 @@ Items.initItems = function() {
     }
     Items.Types.IronSword = {
         name: "Iron Sword",
-        toolType: ToolTypes.Melee,
-        flags: ItemFlags.Destructive | ItemFlags.TargetEnemies,
+        flags: Item.Flags.Destructive | Item.Flags.TargetEnemies,
         texture: ItemTextures.SwordAtlas,
         spriteId: 2,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        //itemFunction: Items.Functions.Sword,
+        itemFunction: ItemFunctions.melee,
         useCooldown: 20,
         useDuration: 4,
         type: "tool",
@@ -517,14 +508,13 @@ Items.initItems = function() {
     }
     Items.Types.SteelSword = {
         name: "Steel Sword",
-        toolType: ToolTypes.Melee,
-        flags: ItemFlags.Destructive | ItemFlags.TargetEnemies,
+        flags: Item.Flags.Destructive | Item.Flags.TargetEnemies,
         texture: ItemTextures.SwordAtlas,
         spriteId: 3,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        //itemFunction: Items.Functions.Sword,
+        itemFunction: ItemFunctions.melee,
         useCooldown: 20,
         useDuration: 4,
         type: "tool",
@@ -573,8 +563,7 @@ Items.initItems = function() {
     }
     Items.Types.PotionHealth = {
         name: "Health Potion",
-        toolType: ToolTypes.Consumable,
-        flags: ItemFlags.Positive | ItemFlags.TargetSelf,
+        flags: Item.Flags.Positive | Item.Flags.TargetSelf,
         texture: ItemTextures.ItemAtlas,
         spriteId: 3,
         isEquipable: true,
@@ -590,8 +579,7 @@ Items.initItems = function() {
     }
     Items.Types.HealFriend = {
         name: "Heal Friend",
-        toolType: ToolTypes.Melee,
-        flags: ItemFlags.Positive | ItemFlags.TargetFriends,
+        flags: Item.Flags.Positive | Item.Flags.TargetFriends,
         texture: ItemTextures.ItemAtlas,
         spriteId: 3,
         isEquipable: true,
@@ -609,19 +597,18 @@ Items.initItems = function() {
     // Ranged weapons
     Items.Types.WeaponPistol = {
         name: "Pistol",
-        toolType: ToolTypes.Projectile,
-        flags: ItemFlags.TargetEnemies | ItemFlags.Projectile,
+        flags: Item.Flags.TargetEnemies | Item.Flags.Projectile,
         texture: ItemTextures.GunAtlas,
         spriteId: 0,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        //itemFunction: Items.Functions.RangedWeapon,
+        itemFunction: ItemFunctions.projectile,
         useCooldown: 10,
         useDuration: 0,
         useCycle: "rightArmGun",
         canReload: true,
-        //reloadFunction: Items.Functions.Reload,
+        reloadFunction: Items.Functions.Reload,
         reloadCycleRightArm: "rightArmGunReload",
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
@@ -637,19 +624,18 @@ Items.initItems = function() {
 
     Items.Types.WeaponSmg = {
         name: "Smg",
-        toolType: ToolTypes.Projectile,
-        flags: ItemFlags.TargetEnemies | ItemFlags.Projectile,
+        flags: Item.Flags.TargetEnemies | Item.Flags.Projectile,
         texture: ItemTextures.GunAtlas,
         spriteId: 1,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        //itemFunction: Items.Functions.RangedWeapon,
+        itemFunction: ItemFunctions.projectile,
         useCooldown: 3,
         useDuration: 0,
         useCycle: "rightArmGun",
         canReload: true,
-        //reloadFunction: Items.Functions.Reload,
+        reloadFunction: Items.Functions.Reload,
         reloadCycleRightArm: "rightArmGunReload",
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
@@ -665,19 +651,18 @@ Items.initItems = function() {
 
     Items.Types.WeaponAssaultRifle = {
         name: "Assault Rifle",
-        toolType: ToolTypes.Projectile,
-        flags: ItemFlags.TargetEnemies | ItemFlags.Projectile,
+        flags: Item.Flags.TargetEnemies | Item.Flags.Projectile,
         texture: ItemTextures.GunAtlas,
         spriteId: 2,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        //itemFunction: Items.Functions.RangedWeapon,
+        itemFunction: ItemFunctions.projectile,
         useCooldown: 3,
         useDuration: 0,
         useCycle: "rightArmGun",
         canReload: true,
-        //reloadFunction: Items.Functions.Reload,
+        reloadFunction: Items.Functions.Reload,
         reloadCycleRightArm: "rightArmGunReload",
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
@@ -693,19 +678,18 @@ Items.initItems = function() {
 
     Items.Types.WeaponMachineGun = {
         name: "Machine Gun",
-        toolType: ToolTypes.Projectile,
-        flags: ItemFlags.TargetEnemies | ItemFlags.Projectile,
+        flags: Item.Flags.TargetEnemies | Item.Flags.Projectile,
         texture: ItemTextures.GunAtlas,
         spriteId: 3,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        //itemFunction: Items.Functions.RangedWeapon,
+        itemFunction: ItemFunctions.projectile,
         useCooldown: 2,
         useDuration: 0,
         useCycle: "rightArmGun",
         canReload: true,
-        //reloadFunction: Items.Functions.Reload,
+        reloadFunction: Items.Functions.Reload,
         reloadCycleRightArm: "rightArmGunReload",
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
@@ -721,19 +705,18 @@ Items.initItems = function() {
     }
     Items.Types.WeaponShotgun = {
         name: "Shotgun",
-        toolType: ToolTypes.Projectile,
-        flags: ItemFlags.TargetEnemies | ItemFlags.Projectile,
+        flags: Item.Flags.TargetEnemies | Item.Flags.Projectile,
         texture: ItemTextures.GunAtlas,
         spriteId: 4,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        //itemFunction: Items.Functions.RangedWeapon,
+        itemFunction: ItemFunctions.projectile,
         useCooldown: 12,
         useDuration: 0,
         useCycle: "rightArmGun",
         canReload: true,
-        //reloadFunction: Items.Functions.Reload,
+        reloadFunction: Items.Functions.Reload,
         reloadCycleRightArm: "rightArmGunReload",
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
@@ -749,19 +732,18 @@ Items.initItems = function() {
     }
     Items.Types.WeaponSniperRifle = {
         name: "Sniper Rifle",
-        toolType: ToolTypes.Projectile,
-        flags: ItemFlags.TargetEnemies | ItemFlags.Projectile,
+        flags: Item.Flags.TargetEnemies | Item.Flags.Projectile,
         texture: ItemTextures.GunAtlas,
         spriteId: 5,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        //itemFunction: Items.Functions.RangedWeapon,
+        itemFunction: ItemFunctions.projectile,
         useCooldown: 2,
         useDuration: 0,
         useCycle: "rightArmGun",
         canReload: true,
-        //reloadFunction: Items.Functions.Reload,
+        reloadFunction: Items.Functions.Reload,
         reloadCycleRightArm: "rightArmGunReload",
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
@@ -776,19 +758,18 @@ Items.initItems = function() {
     }
     Items.Types.WeaponGrenadeLauncher = {
         name: "Grenade Launcher",
-        toolType: ToolTypes.Projectile,
-        flags: ItemFlags.TargetSelf | ItemFlags.TargetEnemies | ItemFlags.Destructive | ItemFlags.Projectile,
+        flags: Item.Flags.TargetSelf | Item.Flags.TargetEnemies | Item.Flags.Destructive | Item.Flags.Projectile,
         texture: ItemTextures.GunAtlas,
         spriteId: 6,
         isEquipable: true,
         isDropable: true,
         maxStackSize: 1,
-        //itemFunction: Items.Functions.RangedWeapon,
+        itemFunction: ItemFunctions.projectile,
         useCooldown: 20,
         useDuration: 0,
         useCycle: "rightArmGun",
         canReload: true,
-        //reloadFunction: Items.Functions.Reload,
+        reloadFunction: Items.Functions.Reload,
         reloadCycleRightArm: "rightArmGunReload",
         reloadCycleLeftArm: "leftArmGunReload",
         reloadCycleGun: "gunReload",
@@ -805,8 +786,7 @@ Items.initItems = function() {
     // Throwable items
     Items.Types.Dynamite = {
         name: "Dynamite",
-        toolType: ToolTypes.Throwable,
-        flags: ItemFlags.TargetSelf | ItemFlags.TargetEnemies | ItemFlags.Destructive,
+        flags: Item.Flags.TargetSelf | Item.Flags.TargetEnemies | Item.Flags.Destructive,
         texture: ItemTextures.ItemAtlas,
         spriteId: 2,
         isEquipable: true,
@@ -817,7 +797,7 @@ Items.initItems = function() {
         //tool
         useCooldown: 4,
         useDuration: 3,
-        //itemFunction: Items.Functions.ThrowableDynamite,
+        itemFunction: ItemFunctions.throwable,
         //throwable
         throwEntityTexture: "dynamite.png",
 

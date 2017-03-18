@@ -18,6 +18,7 @@ CommandEntityReloadWeapon.prototype.execute = function() {
     var item = entity.inventory.items[this.stackId];
     var itemType = RegisterItem[item.id];
     if (!item) return;
+    if (!item.magazine) item.magazine = 0;
     var ammoAmount = (entity.ammo) ? entity.ammo[item.id] || 0 : itemType.ammoCapacity;
     var ammoToReload = Math.min(ammoAmount, itemType.ammoCapacity - item.magazine);
     item.magazine += ammoToReload;
