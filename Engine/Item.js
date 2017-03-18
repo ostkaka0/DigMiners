@@ -25,7 +25,7 @@ Item.Flags = {
     TargetEnemies: 4,
     TargetFriends: 8,
     Destructive: 16,
-    Constructive: 32,
+    //Constructive: 32,
 };
 
 Item.interact = function(itemType, entity) {
