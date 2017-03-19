@@ -5,7 +5,7 @@ var IndexCounter = function(initial) {
     else
         this.value = 0;
 }
-export default IndexCounter;
+global.IndexCounter = IndexCounter;
 
 IndexCounter.prototype.add = function(amount) {
     this.value += amount;

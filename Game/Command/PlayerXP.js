@@ -1,18 +1,18 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import TileWorld from "Engine/TileWorld.js";
 
-import Config from "Game/Config.js";
 
-import RegisterCommand from "Engine/Register/Command.js";
+
+
+
+
+
+
+
 
 var CommandPlayerXP = function(playerId, xp) {
     this.playerId = playerId;
     this.xp = xp;
 }
-export default CommandPlayerXP;
+global.CommandPlayerXP = CommandPlayerXP;
 RegisterCommand.push(CommandPlayerXP);
 
 CommandPlayerXP.prototype.execute = function() {

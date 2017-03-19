@@ -1,32 +1,32 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import Event from "Engine/Core/Event.js";
-import Chunk from "Engine/Chunk.js";
-import TileWorld from "Engine/TileWorld.js";
-import BlockWorld from "Engine/BlockWorld.js";
 
 
-import Config from "Game/Config.js";
-import Blocks from "Game/Blocks.js";
-import Items from "Game/Items.js";
-import EntityTeam from "Engine/Entity/Team.js";
-import EntityAmmo from "Engine/Entity/Ammo.js";
-import EntitySpawner from "Game/Entity/Spawner.js";
-import PlayerClass from "Game/PlayerClass.js";
-import CommandEntitySpawn from "Engine/Command/EntitySpawn.js";
-import CommandDig from "Game/Command/Dig.js";
-import CommandPopupMessage from "Game/Command/PopupMessage.js";
-import CommandPlayerJoin from "Engine/Command/PlayerJoin.js";
-import CommandPlayerSpawn from "Engine/Command/PlayerSpawn.js";
-import entityTemplateMonsterSpawner from "Game/Entity/EntityTemplates/MonsterSpawner.js";
-import entityTemplatePlayer from "Game/Entity/EntityTemplates/Player.js";
-import entityTemplateZombie from "Game/Entity/EntityTemplates/Zombie.js";
-import entityTemplateMonster from "Game/Entity/EntityTemplates/Monster.js";
-import entityTemplateTeamBase from "Game/Entity/EntityTemplates/TeamBase.js";
-import MessageAmmoChange from "Game/Message/ToClient/AmmoChange.js";
-import CommandEntityHealthChange from "Engine/Command/EntityHealthChange.js";
 
-var GameModeBaseWar = function() {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+global.GameModeBaseWar = function() {
     this.playerSpawns = {};
     this.spawnEntities = {};
     this.teams = [EntityTeam.Enum.Blue, EntityTeam.Enum.Red];
@@ -34,7 +34,7 @@ var GameModeBaseWar = function() {
     this.spawnEntities[EntityTeam.Enum.Red] = [];
     this.playerSpawning = true;
 }
-export default GameModeBaseWar
+global.GameModeBaseWar = GameModeBaseWar;
 
 GameModeBaseWar.prototype.init = function() {
     if (!isServer) return;

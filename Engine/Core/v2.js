@@ -1,7 +1,7 @@
-import fix from "Engine/Core/Fix.js";
+
 
 var v2 = {};
-export default v2;
+global.v2 = v2;
 
 v2.create = function(x, y) {
     var v = [fix.toFix(x), fix.toFix(y)];

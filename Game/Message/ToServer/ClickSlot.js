@@ -1,23 +1,23 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import IndexCounter from "Engine/Core/IndexCounter.js";
 
 
-import Config from "Game/Config.js";
-import RegisterItem from "Engine/Register/Item.js"
-import RegisterMessage from "Engine/Register/Message.js";;
-import CommandEntityEquipItem from "Engine/Command/EntityEquipItem.js";
-import CommandEntitySpawn from "Engine/Command/EntitySpawn.js";
-import CommandEntityInventory from "Engine/Command/EntityInventory.js";
+
+
+
+
+
+
+
+;
+
+
+
 
 var MessageRequestClickSlot = function(inventoryId, slotId, clickType) {
     this.inventoryId = inventoryId;
     this.slotId = slotId;
     this.clickType = clickType;
 }
-export default MessageRequestClickSlot;
+global.MessageRequestClickSlot = MessageRequestClickSlot;
 RegisterMessage.ToServer.push(MessageRequestClickSlot);
 
 MessageRequestClickSlot.prototype.execute = function(gameData, player) {

@@ -1,43 +1,41 @@
-import IdList from "Engine/Core/IdList.js";
-import ObjectWorld from "Engine/Core/ObjectWorld.js";
-import Event from "Engine/Core/Event.js";
-import ObjectRegister from "Engine/Core/ObjectRegister.js";
-import TypeRegister from "Engine/Core/TypeRegister.js";
 
-import RegisterItem from "Engine/Register/Item.js";
-import RegisterCommand from "Engine/Register/Command.js";
-import RegisterMessage from "Engine/Register/Message.js";
-import RegisterEntity from "Engine/Register/Entity.js";
 
-import Config from "Game/Config.js";
-import World from "Game/World.js";
-import Items from "Game/Items.js";
-import Blocks from "Game/Blocks.js";
-import Projectiles from "Game/Projectiles.js"
-import Particles from "Game/Particles.js"
-import ParticleFunctions from "Game/ParticleFunctions.js"
-import PotionEffectTypes from "Game/PotionEffectTypes.js"
 
-import PlayerClass from "Game/PlayerClass.js";
-import Tiles from "Game/Tiles.js";
-import AnimationManager from "Engine/Animation/AnimationManager.js";
-import MessageChangeGameMode from "Game/Message/ToClient/ChangeGamemode.js";
 
-import GameModeZombieInvasion from "Game/GameMode/ZombieInvasion.js";
-import GameModeSurvivalWar from "Game/GameMode/SurvivalWar.js";
-import GameModeBaseWar from "Game/GameMode/BaseWar.js";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 global.gameData = {};
-global.gameData = global.gameData;
-export default global.gameData;
-
-global.gameData.events = { onChangeGamemode: new Map() };
 
 global.gameData.destroy = function() {
     global.gameData = {};
 }
 
 global.gameData.init = function(idList) {
+    this.events3 = { onChangeGamemode: new Map() };
+
     Blocks.initBlocks();
     Items.initItems(this);
     RegisterItem.init();
@@ -128,9 +126,10 @@ global.gameData.tick = function(dt) {
             this.gameMode.onDestroy();
         if (this.world) this.world.destroy();
         this.world = new World();
+        Object.assign(this, this.world);
         this.gameMode = this.nextGameMode;
         this.gameMode.init();
-        Event.trigger(this.events.onChangeGamemode);
+        Event.trigger(this.events3.onChangeGamemode);
         this.nextGameMode = null;
         if (isServer)
             new MessageChangeGameMode().send(io.sockets);

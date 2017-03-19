@@ -1,9 +1,9 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import RegisterCommand from "Engine/Register/Command.js";
-import RegisterItem from "Engine/Register/Item.js"
 
-import CommandEntityEquipItem from "Engine/Command/EntityEquipItem.js";
+
+
+
+
+
 
 var CommandEntityInventoryActions = {
     ADD_ITEM: 0,
@@ -17,7 +17,7 @@ var CommandEntityInventory = function(entityId, actionId, itemId, amount) {
     this.itemId = itemId;
     this.amount = amount;
 }
-export default CommandEntityInventory;
+global.CommandEntityInventory = CommandEntityInventory;
 RegisterCommand.push(CommandEntityInventory);
 CommandEntityInventory.Actions = CommandEntityInventoryActions;
 

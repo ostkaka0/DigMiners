@@ -1,12 +1,12 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
 
-import Config from "Game/Config.js";
+
+
+
 
 var ParticleWorld = function() {
     this.particles = [];
 }
-export default ParticleWorld;
+global.ParticleWorld = ParticleWorld;
 
 ParticleWorld.prototype.update = function(dt) {
     var time = new Date().getTime();

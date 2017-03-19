@@ -1,20 +1,20 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import IndexCounter from "Engine/Core/IndexCounter.js";
 
 
-import Config from "Game/Config.js";
-import RegisterMessage from "Engine/Register/Message.js";;
-import CommandEntityInventory from "Engine/Command/EntityInventory.js";
-import CommandPlayerOreInventory from "Game/Command/PlayerOreInventory.js";
-import CommandEntityDestroy from "Engine/Command/EntityDestroy.js";
+
+
+
+
+
+
+;
+
+
+
 
 var MessageRequestItemPickup = function(entityId) {
     this.entityId = entityId;
 }
-export default MessageRequestItemPickup;
+global.MessageRequestItemPickup = MessageRequestItemPickup;
 RegisterMessage.ToServer.push(MessageRequestItemPickup);
 
 MessageRequestItemPickup.prototype.execute = function(gameData, player) {

@@ -1,15 +1,15 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import Event from "Engine/Core/Event.js";
 
-import EntityTeam from "Engine/Entity/Team.js";
-import CommandEntitySpawn from "Engine/Command/EntitySpawn.js";
-import CommandEntityInventory from "Engine/Command/EntityInventory.js";
-import CommandEntityEquipItem from "Engine/Command/EntityEquipItem.js";
-import Items from "Game/Items.js";
-import RegisterEntity from "Engine/Register/Entity.js";
+
+
+
+
+
+
+
+
+
+
+
 
 var EntitySpawner = function(entityTemplate, pos, maxEntities, radius, duration, items, equippedItemId, randomDuration, teamId) {
     this.entityTemplate = entityTemplate;
@@ -28,7 +28,7 @@ var EntitySpawner = function(entityTemplate, pos, maxEntities, radius, duration,
 
     this.initialized = false;
 }
-export default EntitySpawner
+global.EntitySpawner = EntitySpawner;
 RegisterEntity.push(EntitySpawner);
 
 EntitySpawner.prototype.name = spawner.name; function spawner() { };

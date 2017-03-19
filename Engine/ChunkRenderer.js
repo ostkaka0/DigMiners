@@ -1,7 +1,7 @@
-import Map2D from "Engine/Core/Map2D.js";
-import Chunk from "Engine/Chunk.js";
-import GLChunk from "Engine/GLChunk.js";
-import Shader from "Engine/Shader.js";
+
+
+
+
 
 
 
@@ -37,7 +37,7 @@ var ChunkRenderer = function(gl, world, tileSize) {
     this.isReady = false; // False until shaders, buffers, attributes and uniforms are loaded.
 }
 
-export default ChunkRenderer;
+global.ChunkRenderer = ChunkRenderer;
 
 ChunkRenderer.prototype.lazyInit = function() {
     if (this.isReady)

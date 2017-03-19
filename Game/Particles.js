@@ -1,6 +1,6 @@
 
 var Particles = {};
-export default Particles
+global.Particles = Particles;
 
 Particles.Bullet = {
     size: 1,

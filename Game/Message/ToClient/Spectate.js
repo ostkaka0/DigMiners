@@ -1,14 +1,14 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import IndexCounter from "Engine/Core/IndexCounter.js";
 
 
-import RegisterMessage from "Engine/Register/Message.js";;
+
+
+
+;
 
 var MessageSpectate = function(entityId) {
     this.entityId = entityId;
 }
-export default MessageSpectate;
+global.MessageSpectate = MessageSpectate;
 RegisterMessage.ToClient.push(MessageSpectate);
 
 MessageSpectate.prototype.execute = function(gameData) {

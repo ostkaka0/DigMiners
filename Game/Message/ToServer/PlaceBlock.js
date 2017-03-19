@@ -1,22 +1,22 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import IndexCounter from "Engine/Core/IndexCounter.js";
-import Chunk from "Engine/Chunk.js";
-import BlockChunk from "Engine/BlockChunk.js";
 
 
-import Config from "Game/Config.js";
-import RegisterItem from "Engine/Register/Item.js"
-import RegisterMessage from "Engine/Register/Message.js";;
-import CommandEntityBuild from "Game/Command/EntityBuild.js";
-import Blocks from "Game/Blocks.js";
+
+
+
+
+
+
+
+;
+
+
 
 var MessageRequestPlaceBlock = function(stackId, x, y) {
     this.stackId = stackId;
     this.x = Math.floor(x);
     this.y = Math.floor(y);
 }
-export default MessageRequestPlaceBlock;
+global.MessageRequestPlaceBlock = MessageRequestPlaceBlock;
 RegisterMessage.ToServer.push(MessageRequestPlaceBlock);
 
 MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {

@@ -1,12 +1,12 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import RegisterEntity from "Engine/Register/Entity.js";
+
+
+
 
 var EntityInteracter = function() {
     this.lastCheck = null;
     this.interacting = null;
 }
-export default EntityInteracter
+global.EntityInteracter = EntityInteracter;
 RegisterEntity.push(EntityInteracter);
 
 EntityInteracter.prototype.name = interacter.name; function interacter() { };

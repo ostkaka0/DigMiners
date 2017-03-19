@@ -1,12 +1,12 @@
-import Event from "Engine/Core/Event.js";
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import EntityInventoryClickTypes from "Engine/InventoryClickTypes.js";
-import Config from "Game/Config.js";
-import RegisterItem from "Engine/Register/Item.js"
-import MessageRequestClickSlot from "Game/Message/ToServer/ClickSlot.js";
 
-export var InventoryHUDEvents = {};
+
+
+
+
+
+
+
+global.InventoryHUDEvents = {};
 InventoryHUDEvents.click = [];
 
 var InventoryHUD = function(inventory, text, bottom) {
@@ -141,7 +141,7 @@ var InventoryHUD = function(inventory, text, bottom) {
     this.inventoryContent.appendTo(this.inventoryHUD);
     this.inventoryHUD.appendTo("#hud");
 }
-export default InventoryHUD
+global.InventoryHUD = InventoryHUD;
 
 InventoryHUD.prototype.update = function() {
     for (var i = 0; i < this.inventoryWidth * this.inventoryHeight; ++i) {

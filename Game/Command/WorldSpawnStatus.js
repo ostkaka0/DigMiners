@@ -1,13 +1,13 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
 
-import RegisterCommand from "Engine/Register/Command.js";
+
+
+
 
 var CommandWorldSpawnStatus = function(spawns = null, spawnAllowed = true) {
     this.spawns = spawns;
     this.spawnAllowed = spawnAllowed;
 }
-export default CommandWorldSpawnStatus;
+global.CommandWorldSpawnStatus = CommandWorldSpawnStatus;
 RegisterCommand.push(CommandWorldSpawnStatus);
 
 CommandWorldSpawnStatus.prototype.execute = function() {

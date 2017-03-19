@@ -1,6 +1,6 @@
 
 var Projectiles = {};
-export default Projectiles
+global.Projectiles = Projectiles;
 
 Projectiles.Pistol = {
     radius: 0.2,

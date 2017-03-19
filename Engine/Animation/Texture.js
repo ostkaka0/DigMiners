@@ -8,7 +8,7 @@ var Texture = function(baseImage, x, y, width, height) {
     this.width = (width != null ? width : baseImage.width);
     this.height = (height != null ? height : baseImage.height);
 }
-export default Texture;
+global.Texture = Texture;
 
 Object.defineProperties(Texture.prototype, {
     name: {

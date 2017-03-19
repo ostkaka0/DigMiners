@@ -126,7 +126,7 @@ var Chat = function() {
 
     this.root.appendTo("#hud");
 }
-export default Chat
+global.Chat = Chat;
 
 Chat.prototype.write = function(text) {
     var p = $("<p>", {

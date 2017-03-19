@@ -1,12 +1,12 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import Keys from "Engine/Keys.js";
 
-import Config from "Game/Config.js";
 
-import RegisterCommand from "Engine/Register/Command.js";
+
+
+
+
+
+
+
 
 var CommandKeyStatusUpdate = function(entityId, key, pressed, pos) {
     this.entityId = entityId;
@@ -14,7 +14,7 @@ var CommandKeyStatusUpdate = function(entityId, key, pressed, pos) {
     this.pressed = pressed;
     this.pos = pos;
 }
-export default CommandKeyStatusUpdate;
+global.CommandKeyStatusUpdate = CommandKeyStatusUpdate;
 RegisterCommand.push(CommandKeyStatusUpdate);
 
 CommandKeyStatusUpdate.prototype.execute = function() {

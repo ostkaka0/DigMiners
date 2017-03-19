@@ -1,15 +1,15 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import IndexCounter from "Engine/Core/IndexCounter.js";
 
 
-import RegisterMessage from "Engine/Register/Message.js";;
+
+
+
+;
 
 var MessageRequestClickEntity = function(entityId, clickType) {
     this.entityId = entityId;
     this.clickType = clickType;
 }
-export default MessageRequestClickEntity;
+global.MessageRequestClickEntity = MessageRequestClickEntity;
 RegisterMessage.ToServer.push(MessageRequestClickEntity);
 
 MessageRequestClickEntity.prototype.execute = function(gameData, player) {

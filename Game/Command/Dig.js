@@ -1,19 +1,19 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import TileWorld from "Engine/TileWorld.js";
 
-import Config from "Game/Config.js";
 
-import RegisterCommand from "Engine/Register/Command.js";
+
+
+
+
+
+
+
 
 var CommandDig = function(pos, radius) {
     if (pos)
         this.pos = v2.cloneFix(pos);
     this.radius = fix.toFix(radius);
 }
-export default CommandDig;
+global.CommandDig = CommandDig;
 RegisterCommand.push(CommandDig);
 
 CommandDig.prototype.execute = function() {

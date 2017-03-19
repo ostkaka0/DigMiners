@@ -1,8 +1,8 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import RegisterCommand from "Engine/Register/Command.js";
+
+
+
+
+
 
 var CommandCollisions = function(collisions) {
     var physicsWorld = global.gameData.world.physicsWorld;
@@ -31,7 +31,7 @@ var CommandCollisions = function(collisions) {
         }.bind(this));
     }
 }
-export default CommandCollisions;
+global.CommandCollisions = CommandCollisions;
 RegisterCommand.push(CommandCollisions);
 
 CommandCollisions.prototype.execute = function() {

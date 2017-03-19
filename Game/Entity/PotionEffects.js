@@ -1,12 +1,12 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import Config from "Game/Config.js";
-import RegisterEntity from "Engine/Register/Entity.js";
+
+
+
+
 
 var EntityPotionEffects = function() {
     this.effects = {};
 }
-export default EntityPotionEffects
+global.EntityPotionEffects = EntityPotionEffects;
 RegisterEntity.push(EntityPotionEffects);
 
 EntityPotionEffects.prototype.name = potionEffects.name; function potionEffects() { };

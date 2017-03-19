@@ -1,17 +1,17 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import TileWorld from "Engine/TileWorld.js";
-import BlockWorld from "Engine/BlockWorld.js";
 
-import Config from "Game/Config.js";
 
-import Entity from "Game/Entity/Entity.js";
 
-import CommandDig from "Game/Command/Dig.js";
-import CommandBlockStrength from "Game/Command/BlockStrength.js";
+
+
+
+
+
+
+
+
 
 var ExplosionFunctions = {};
-export default ExplosionFunctions;
+global.ExplosionFunctions = ExplosionFunctions;
 
 ExplosionFunctions.createExplosion = function(startPos, radius, entityDamage, blockDamage, tileDamage, attacker) {
     if (isServer) {

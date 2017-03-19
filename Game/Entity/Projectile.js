@@ -1,9 +1,9 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import Config from "Game/Config.js";
-import RegisterEntity from "Engine/Register/Entity.js";
+
+
+
+
+
+
 
 var EntityProjectile = function(pos, angle, speed, maxDistance, projectileType, shooterEntityId) {
     this.pos = pos;
@@ -27,7 +27,7 @@ var EntityProjectile = function(pos, angle, speed, maxDistance, projectileType, 
         this.posClientOld = [0, 0];
     }
 }
-export default EntityProjectile;
+global.EntityProjectile = EntityProjectile;
 RegisterEntity.push(EntityProjectile);
 EntityProjectile.Events = { onHit: new Map(), onHitEntity: new Map(), onHitBlock: new Map(), onHitTile: new Map() };
 

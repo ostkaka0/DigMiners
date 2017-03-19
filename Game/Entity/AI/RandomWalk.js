@@ -1,8 +1,8 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
 
 
-import CommandEntityMove from "Engine/Command/EntityMove.js";
+
+
+
 
 var BehaviourRandomWalk = function(entity) {
     this.entity = entity;
@@ -17,7 +17,7 @@ var BehaviourRandomWalk = function(entity) {
         [0, -1]
     ];
 }
-export default BehaviourRandomWalk
+global.BehaviourRandomWalk = BehaviourRandomWalk;
 
 BehaviourRandomWalk.prototype.canRun = function() {
     return true;

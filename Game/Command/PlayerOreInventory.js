@@ -1,9 +1,9 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
 
-import Config from "Game/Config.js";
 
-import RegisterCommand from "Engine/Register/Command.js";
+
+
+
+
 
 var CommandPlayerOreInventoryActions = {
     ADD_ORE: 0,
@@ -17,7 +17,7 @@ var CommandPlayerOreInventory = function(playerId, actionId, itemId, amount) {
     this.amount = amount;
 }
 CommandPlayerOreInventory.Actions = CommandPlayerOreInventoryActions
-export default CommandPlayerOreInventory;
+global.CommandPlayerOreInventory = CommandPlayerOreInventory;
 RegisterCommand.push(CommandPlayerOreInventory);
 
 CommandPlayerOreInventory.prototype.execute = function() {

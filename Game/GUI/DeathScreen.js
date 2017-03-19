@@ -1,9 +1,9 @@
 
-import Config from "Game/Config.js";
-import Event from "Engine/Core/Event.js"
 
-import PlayerClass from "Game/PlayerClass.js";
-import MessageRequestSpawn from "Game/Message/ToServer/Spawn.js";
+
+
+
+
 
 var DeathScreen = function() {
     this.width = 490;
@@ -137,7 +137,7 @@ var DeathScreen = function() {
 
     this.btnSpawn.setDisabledCountdown(Config.respawnTime)
 }
-export default DeathScreen
+global.DeathScreen = DeathScreen;
 
 DeathScreen.prototype.getClass = function() {
     var pickedClass = 0;

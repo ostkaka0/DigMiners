@@ -1,16 +1,16 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import BlockWorld from "Engine/BlockWorld.js";
-import TileWorld from "Engine/TileWorld.js";
-import Keys from "Engine/Keys.js";
 
-import Config from "Game/Config.js";
 
-import ItemFunctions from "Engine/ItemFunctions.js";
-import CommandEntityEquipItem from "Engine/Command/EntityEquipItem.js";
-import CommandKeyStatusUpdate from "Game/Command/KeyStatusUpdate.js";
-import CommandEntityMove from "Engine/Command/EntityMove.js";
-import CommandEntityRotate from "Engine/Command/EntityRotate.js";
+
+
+
+
+
+
+
+
+
+
+
 
 
 var BehaviourDigObstacle = function(entity, maxWalkDis) {
@@ -25,7 +25,7 @@ var BehaviourDigObstacle = function(entity, maxWalkDis) {
     this.oldItemId = 0;
     this.digPauseDuration = 10; // Duration between finish digging and start digging again
 }
-export default BehaviourDigObstacle
+global.BehaviourDigObstacle = BehaviourDigObstacle;
 
 BehaviourDigObstacle.prototype.canRun = function() {
     if (!this.entity.inventory) return false;

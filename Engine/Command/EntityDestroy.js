@@ -1,11 +1,11 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import RegisterCommand from "Engine/Register/Command.js";
+
+
+
 
 var CommandEntityDestroy = function(entityId) {
     this.entityId = entityId;
 }
-export default CommandEntityDestroy;
+global.CommandEntityDestroy = CommandEntityDestroy;
 RegisterCommand.push(CommandEntityDestroy);
 
 CommandEntityDestroy.prototype.execute = function() {

@@ -1,13 +1,13 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import IndexCounter from "Engine/Core/IndexCounter.js";
-import Chunk from "Engine/Chunk.js";
-import BlockChunk from "Engine/BlockChunk.js";
-import {compressRLE} from "Engine/Core/Compress.js";
-import {decompressRLE} from "Engine/Core/Compress.js";
 
 
-import RegisterMessage from "Engine/Register/Message.js";;
+
+
+
+
+
+
+
+;
 
 var MessageChunk = function(chunk, blockChunk, x, y) {
     this.chunk = chunk || new Chunk();
@@ -16,7 +16,7 @@ var MessageChunk = function(chunk, blockChunk, x, y) {
     this.x = x;
     this.y = y;
 }
-export default MessageChunk;
+global.MessageChunk = MessageChunk;
 RegisterMessage.ToClient.push(MessageChunk);
 
 MessageChunk.prototype.execute = function(gameData) {

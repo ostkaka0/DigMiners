@@ -1,12 +1,12 @@
-import Chunk from "Engine/Chunk.js";
-import BlockChunk from "Engine/BlockChunk.js";
 
-import Config from "Game/Config.js";
 
-import Blocks from "Game/Blocks.js";
-import Tiles from "Game/Blocks.js";
 
-import "lib/perlin.js";
+
+
+
+
+
+
 
 var Generator = function(seed) {
     if (!seed)
@@ -17,7 +17,7 @@ var Generator = function(seed) {
     this.oreNoise2 = this.seed + 331;
     this.oreNoise3 = this.seed + 71117;
 }
-export default Generator
+global.Generator = Generator;
 
 Generator.prototype.generate = function(chunk, chunkX, chunkY) {
     for (var yy = 0; yy < Chunk.dim; ++yy) {

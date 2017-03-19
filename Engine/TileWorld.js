@@ -1,12 +1,6 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import Map2D from "Engine/Core/Map2D.js"
-import Chunk from "Engine/Chunk.js";
+"use strict"
 
-
-import Config from "Game/Config.js";
-
-export default class extends Map2D {
+global.TileWorld = class extends Map2D {
     constructor() {
         super();
         this.events = "TODO: EVENTS!";

@@ -48,4 +48,4 @@ PopupMessage.prototype.show = function() {
         }.bind(this), fadeTime);
     }.bind(this), this.timeout);
 }
-export default PopupMessage
+global.PopupMessage = PopupMessage;

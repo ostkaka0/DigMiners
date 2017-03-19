@@ -1,8 +1,6 @@
-import Map2D from "Engine/Core/Map2D.js"
-import Event from "Engine/Core/Event.js"
-import BlockChunk from "Engine/BlockChunk.js";
+"use strict"
 
-export default class extends Map2D {
+global.BlockWorld = class extends Map2D {
     constructor() {
         super();
         this.events = { onPlace: new Map(), onStrengthChange: new Map() };

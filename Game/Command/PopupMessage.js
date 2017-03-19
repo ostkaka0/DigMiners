@@ -1,10 +1,10 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
 
-import Config from "Game/Config.js";
 
-import RegisterCommand from "Engine/Register/Command.js";
-import PopupMessage from "Game/GUI/PopupMessage.js";
+
+
+
+
+
 
 var CommandPopupMessage = function(text, timeout) {
     this.text = text;
@@ -12,7 +12,7 @@ var CommandPopupMessage = function(text, timeout) {
     if (!timeout)
         this.timeout = 3000;
 }
-export default CommandPopupMessage;
+global.CommandPopupMessage = CommandPopupMessage;
 RegisterCommand.push(CommandPopupMessage);
 
 CommandPopupMessage.prototype.execute = function() {

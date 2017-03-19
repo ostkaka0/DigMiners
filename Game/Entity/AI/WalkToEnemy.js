@@ -1,15 +1,15 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import BlockWorld from "Engine/BlockWorld.js";
-import TileWorld from "Engine/TileWorld.js";
 
 
-import EntityTeam from "Engine/Entity/Team.js";
-import CommandEntityEquipItem from "Engine/Command/EntityEquipItem.js";
-import CommandKeyStatusUpdate from "Game/Command/KeyStatusUpdate.js";
-import CommandEntityMove from "Engine/Command/EntityMove.js";
-import CommandEntityRotate from "Engine/Command/EntityRotate.js";
-import CommandEntityLookAtEntity from "Engine/Command/EntityLookAtEntity.js";
+
+
+
+
+
+
+
+
+
+
 
 var BehaviourWalkToEnemy = function(entity, maxRadius) {
     this.entity = entity;
@@ -19,7 +19,7 @@ var BehaviourWalkToEnemy = function(entity, maxRadius) {
     this.moving = false;
     this.nextCanRunTickId = global.gameData.world.tickId;
 }
-export default BehaviourWalkToEnemy;
+global.BehaviourWalkToEnemy = BehaviourWalkToEnemy;
 
 BehaviourWalkToEnemy.prototype.canRun = function() {
     if (global.gameData.world.tickId < this.nextCanRunTickId)

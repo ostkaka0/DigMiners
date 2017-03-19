@@ -1,17 +1,17 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import BlockWorld from "Engine/BlockWorld.js";
-import TileWorld from "Engine/TileWorld.js";
 
-import Config from "Game/Config.js";
 
-import RegisterCommand from "Engine/Register/Command.js";
+
+
+
+
+
+
 
 var CommandPlaceBlock = function(blockPos, blockId) {
     this.blockPos = blockPos;
     this.blockId = blockId;
 }
-export default CommandPlaceBlock;
+global.CommandPlaceBlock = CommandPlaceBlock;
 RegisterCommand.push(CommandPlaceBlock);
 
 CommandPlaceBlock.prototype.execute = function() {

@@ -1,10 +1,10 @@
-import ObjectRegister from "Engine/Core/ObjectRegister.js";
 
-import Items from "Game/Items.js";
-import Blocks from "Game/Blocks.js";
+
+
+
 
 var PlayerClass = {};
-export default PlayerClass;
+global.PlayerClass = PlayerClass;
 
 PlayerClass.init = function() {
     delete PlayerClass.init;
@@ -68,7 +68,7 @@ PlayerClass.init = function() {
         }
     });
 
-    //export default PlayerClass
+    //global.PlayerClass = PlayerClass;
 
     PlayerClass.Register = ObjectRegister.addByObject([], PlayerClass);
 }

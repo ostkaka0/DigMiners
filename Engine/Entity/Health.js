@@ -1,6 +1,6 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import RegisterEntity from "Engine/Register/Entity.js";
+
+
+
 
 var EntityHealth = function(health, maxHealth, armor) {
     this.health = health;
@@ -8,7 +8,7 @@ var EntityHealth = function(health, maxHealth, armor) {
     this.armor = armor;
 }
 EntityHealth.Events = { onChange: new Map(), onDeath: new Map() };
-export default EntityHealth;
+global.EntityHealth = EntityHealth;
 RegisterEntity.push(EntityHealth);
 
 EntityHealth.prototype.name = health.name; function health() { };

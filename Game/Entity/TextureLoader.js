@@ -1,5 +1,5 @@
-import Event from "Engine/Core/Event.js";
-import {loadTextures} from "Engine/Animation/TextureFunctions.js";
+
+
 
 
 
@@ -8,7 +8,7 @@ var TextureLoader = function() {
     this.total = 0;
     this.current = 0;
 }
-export default TextureLoader
+global.TextureLoader = TextureLoader;
 TextureLoader.Events = { onComplete: new Map(), onProgress: new Map() };
 
 TextureLoader.prototype.queue = function(texture) {

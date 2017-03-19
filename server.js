@@ -1,6 +1,6 @@
 global.isServer = true;
 
-import fix from "Engine/Core/Fix.js";
+/*import fix from "Engine/Core/Fix.js";
 import v2 from "Engine/Core/v2.js";
 import Event from "Engine/Core/Event.js";
 
@@ -14,7 +14,9 @@ import RegisterMessage from "Engine/Register/Message.js";
 import MessageCommands from "Game/Message/ToClient/Commands.js";
 import CommandPlayerJoin from "Engine/Command/PlayerJoin.js";
 import CommandPlayerLeave from "Engine/Command/PlayerLeave.js";
-import IndexCounter from "Engine/Core/IndexCounter.js";
+import IndexCounter from "Engine/Core/IndexCounter.js";*/
+
+var ModuleLoader = require("./ModuleLoader.js");
 
 var console = require("console");
 var fs = require("fs");
@@ -23,8 +25,20 @@ var app = require("express")();
 var http = require("http").Server(app);
 global.io = require("socket.io")(http);
 var present = require('present');
+var vm = require("vm");
 
 var isServer = true;
+
+var srcList = [];
+ModuleLoader.loadModule(srcList, {}, "Game/");
+for (var i = 0; i < srcList.length; i++) {
+    var file = srcList[i];
+    var src = fs.readFileSync(file, "utf8");
+    var script = new vm.Script(src, { filename: file, displayErrors: true });
+    script.runInThisContext();
+    //require(file));//eval(src);
+
+}
 
 /*var loadScript = function(filePath) {
     console.log("Loading " + filePath + "...");

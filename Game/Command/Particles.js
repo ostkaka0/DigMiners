@@ -1,19 +1,19 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
 
-import Config from "Game/Config.js";
 
-import RegisterCommand from "Engine/Register/Command.js";
-import ParticleFunctions from "Game/ParticleFunctions.js";
+
+
+
+
+
+
+
 
 var CommandParticles = function(particleFunctionId, pos, variable) {
     this.particleFunctionId = particleFunctionId;
     this.pos = pos;
     this.variable = variable;
 }
-export default CommandParticles;
+global.CommandParticles = CommandParticles;
 RegisterCommand.push(CommandParticles);
 
 CommandParticles.prototype.execute = function() {

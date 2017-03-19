@@ -1,7 +1,7 @@
-import Event from "Engine/Core/Event.js";
 
 
-import TextureLoader from "Game/Entity/TextureLoader.js";
+
+
 
 var LoadingScreen = function() {
 
@@ -73,4 +73,4 @@ var LoadingScreen = function() {
         this.root.hide();
     }.bind(this));
 }
-export default LoadingScreen
+global.LoadingScreen = LoadingScreen;

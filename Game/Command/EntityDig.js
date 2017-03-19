@@ -1,18 +1,18 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import TileWorld from "Engine/TileWorld.js";
 
-import Config from "Game/Config.js";
 
-import RegisterCommand from "Engine/Register/Command.js";
-import Tiles from "Game/Blocks.js";
-import Items from "Game/Items.js";
 
-import CommandPlayerOreInventory from "Game/Command/PlayerOreInventory.js";
-import CommandEntitySpawn from "Engine/Command/EntitySpawn.js";
-import CommandPlayerXP from "Game/Command/PlayerXP.js";
+
+
+
+
+
+
+
+
+
+
+
+
 
 var CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHardness) {
     this.entityId = entityId;
@@ -23,7 +23,7 @@ var CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHard
     this.digSpeed = digSpeed;
     this.maxDigHardness = maxDigHardness;
 }
-export default CommandEntityDig;
+global.CommandEntityDig = CommandEntityDig;
 RegisterCommand.push(CommandEntityDig);
 
 CommandEntityDig.prototype.execute = function() {

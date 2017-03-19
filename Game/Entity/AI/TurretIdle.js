@@ -2,7 +2,7 @@
 var BehaviourTurretIdle = function(entity) {
     this.entity = entity;
 }
-export default BehaviourTurretIdle
+global.BehaviourTurretIdle = BehaviourTurretIdle;
 
 BehaviourTurretIdle.prototype.canRun = function() {
     return true;

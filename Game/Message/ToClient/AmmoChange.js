@@ -1,11 +1,11 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import IndexCounter from "Engine/Core/IndexCounter.js";
-import Event from "Engine/Core/Event.js";
 
 
-import RegisterMessage from "Engine/Register/Message.js";;
-import EntityAmmo from "Engine/Entity/Ammo.js";
+
+
+
+
+;
+
 
 var MessageAmmoChange = function(entity, itemIds) {
     this.ammo = {};
@@ -15,7 +15,7 @@ var MessageAmmoChange = function(entity, itemIds) {
         }.bind(this));
     }
 }
-export default MessageAmmoChange;
+global.MessageAmmoChange = MessageAmmoChange;
 RegisterMessage.ToClient.push(MessageAmmoChange);
 
 MessageAmmoChange.prototype.execute = function(gameData) {

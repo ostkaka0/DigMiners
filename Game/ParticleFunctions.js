@@ -1,12 +1,12 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import Config from "Game/Config.js";
 
-import Particles from "Game/Particles.js";
+
+
+
+
 
 
 var ParticleFunctions = {};
-export default ParticleFunctions
+global.ParticleFunctions = ParticleFunctions;
 
 ParticleFunctions.create = function(particleFunction, pos, variable) {
     if (!isServer)

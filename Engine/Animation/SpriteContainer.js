@@ -3,7 +3,7 @@ var SpriteContainer = function() {
     this.container = [];
     this.isSpriteContainer = true;
 }
-export default SpriteContainer;
+global.SpriteContainer = SpriteContainer;
 
 SpriteContainer.prototype.add = function(sprite) {
     this.container.push(sprite);

@@ -1,4 +1,6 @@
-export default class {
+"use strict"
+
+global.Map2D = class {
     constructor() {
         this.map = new Map();
     }

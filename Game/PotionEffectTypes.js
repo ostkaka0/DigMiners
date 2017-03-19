@@ -1,15 +1,15 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import Event from "Engine/Core/Event.js";
 
-import Config from "Game/Config.js";
 
-import RegisterItem from "Engine/Register/Item.js"
-import EntityAmmo from "Engine/Entity/Ammo.js";
-import EntityHealth from "Engine/Entity/Health.js";
+
+
+
+
+
+
+
 
 var PotionEffectTypes = {};
-export default PotionEffectTypes
+global.PotionEffectTypes = PotionEffectTypes;
 
 PotionEffectTypes.Healing = {
     interval: 5,

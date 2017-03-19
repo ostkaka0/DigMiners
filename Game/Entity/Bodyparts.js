@@ -1,10 +1,10 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import BodyPart from "Engine/Animation/BodyPart.js";
-import Sprite from "Engine/Animation/Sprite.js";
-import RegisterEntity from "Engine/Register/Entity.js";
+
+
+
+
+
+
+
 
 var EntityBodyparts = function(bodyparts) {
     this.bodyparts = bodyparts;
@@ -24,7 +24,7 @@ var EntityBodyparts = function(bodyparts) {
         bodypart.children = this.getChildren(bodypart.name);
     }
 }
-export default EntityBodyparts;
+global.EntityBodyparts = EntityBodyparts;
 RegisterEntity.push(EntityBodyparts);
 
 EntityBodyparts.prototype.name = bodyparts.name; function bodyparts() { };

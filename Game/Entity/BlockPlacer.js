@@ -1,12 +1,12 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import Sprite from "Engine/Animation/Sprite.js";
 
-import Config from "Game/Config.js";
-import CommandEntityInventory from "Engine/Command/EntityInventory.js";
-import CommandPlaceBlock from "Game/Command/PlaceBlock.js";
 
-import RegisterEntity from "Engine/Register/Entity.js";
+
+
+
+
+
+
+
 
 var EntityBlockPlacer = function(blockPos, blockId, duration, entityId) {
     this.blockPos = blockPos;
@@ -14,7 +14,7 @@ var EntityBlockPlacer = function(blockPos, blockId, duration, entityId) {
     this.duration = duration;
     this.entityId = entityId;
 }
-export default EntityBlockPlacer
+global.EntityBlockPlacer = EntityBlockPlacer;
 RegisterEntity.push(EntityBlockPlacer);
 
 EntityBlockPlacer.prototype.name = blockPlacer.name; function blockPlacer() { };

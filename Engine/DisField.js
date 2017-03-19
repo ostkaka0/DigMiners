@@ -1,8 +1,8 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
+
+
 
 var DisField = {};
-export default DisField;
+global.DisField = DisField;
 
 DisField.pageDim = 8;
 

@@ -1,23 +1,23 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import Event from "Engine/Core/Event.js";
-import BlockWorld from "Engine/BlockWorld.js";
-import TileWorld from "Engine/TileWorld.js";
 
-import Config from "Game/Config.js";
 
-import EntityProjectile  from "Game/Entity/Projectile.js";
+
+
+
+
+
+
+
 
 var PROJECTILE_MAX_STEP_LENGTH = 0.125;
 
-export var entityFunctionProjectileSimulate = function(dt) {
+global.entityFunctionProjectileSimulate = function(dt) {
     global.gameData.world.entityWorld.objectArray.forEach(function(entity) {
         if (entity.projectile)
             projectileEntitySimulate(entity, dt);
     });
 }
 
-export var projectileEntitySimulate = function(entity, dt) {
+global.projectileEntitySimulate = function(entity, dt) {
     var projectile = entity.projectile;
     if (!projectile || projectile.hit) return;
 

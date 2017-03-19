@@ -1,14 +1,14 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import IndexCounter from "Engine/Core/IndexCounter.js";
 
 
-import RegisterMessage from "Engine/Register/Message.js";;
+
+
+
+;
 
 var MessageChangeGameMode = function() {
     this.gameModeId = global.gameData.gameMode.id;
 }
-export default MessageChangeGameMode;
+global.MessageChangeGameMode = MessageChangeGameMode;
 RegisterMessage.ToClient.push(MessageChangeGameMode);
 
 MessageChangeGameMode.prototype.execute = function(gameData) {

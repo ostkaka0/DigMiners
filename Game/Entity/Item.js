@@ -1,13 +1,13 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import RegisterEntity from "Engine/Register/Entity.js";
+
+
+
 
 var EntityItem = function(itemId, amount) {
     this.itemId = itemId;
     this.amount = amount;
     this.dropped = new Date();
 }
-export default EntityItem
+global.EntityItem = EntityItem;
 RegisterEntity.push(EntityItem);
 
 EntityItem.prototype.name = item.name; function item() { };

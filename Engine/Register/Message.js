@@ -1,13 +1,13 @@
-import TypeRegister from "Engine/Core/TypeRegister.js";;
+;
 
-var Register = [];
-export default Register;
+var RegisterMessage = [];
+global.RegisterMessage = RegisterMessage;
 
-Register.ToClient = [];
-Register.ToServer = [];
+RegisterMessage.ToClient = [];
+RegisterMessage.ToServer = [];
 
-Register.init = function() {
-    TypeRegister.addByArray(Register, Register.ToClient);
-    TypeRegister.addByArray(Register, Register.ToServer);
-    TypeRegister.sort(Register);
+RegisterMessage.init = function() {
+    TypeRegister.addByArray(RegisterMessage, RegisterMessage.ToClient);
+    TypeRegister.addByArray(RegisterMessage, RegisterMessage.ToServer);
+    TypeRegister.sort(RegisterMessage);
 }

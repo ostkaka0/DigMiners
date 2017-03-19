@@ -1,5 +1,5 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
+
+
 
 var BlockChunk = function() {
     this.foreground = new Uint8Array(BlockChunk.size);
@@ -7,7 +7,7 @@ var BlockChunk = function() {
     this.strength = new Uint8Array(BlockChunk.size);
     var isChanged = true;
 }
-export default BlockChunk;
+global.BlockChunk = BlockChunk;
 
 BlockChunk.dim = 30;
 BlockChunk.size = BlockChunk.dim * BlockChunk.dim;

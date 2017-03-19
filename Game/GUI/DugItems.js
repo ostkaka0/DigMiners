@@ -1,5 +1,5 @@
 
-import Config from "Game/Config.js";
+
 
 var DugItems = function() {
     this.dugItems = $("<div>");
@@ -80,7 +80,7 @@ var DugItems = function() {
 
     this.dugItems.appendTo("#hud");
 }
-export default DugItems
+global.DugItems = DugItems;
 
 DugItems.prototype.update = function() {
     for (var i = 0; i < global.gameData.tileRegister.length; ++i) {

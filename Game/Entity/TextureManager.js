@@ -1,10 +1,10 @@
-import Event from "Engine/Core/Event.js";
-import Texture from "Engine/Animation/Texture.js";
 
-import Items from "Game/Items.js";
-import TextureLoader from "Game/Entity/TextureLoader.js";
 
-export default function() {
+
+
+
+
+var TextureManger = function() {
     this.loader = new TextureLoader();
     var loader = this.loader;
 
@@ -40,7 +40,7 @@ export default function() {
 
     loader.queue("egg.png");
     loader.queue("bigEgg.png");
-    
+
     loader.queue("dynamite.png");
 
     TextureLoader.Events.onProgress.set(this, function(file, progress) {

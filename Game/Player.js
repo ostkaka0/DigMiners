@@ -1,9 +1,9 @@
-import TileWorld from "Engine/TileWorld.js";
-import BlockWorld from "Engine/BlockWorld.js";
-import Chunk from "Engine/Chunk.js";
-import BlockChunk from "Engine/BlockChunk.js";
 
-import Config from "Game/Config.js";
+
+
+
+
+
 
 
 var Player = function(playerId, entityId) {
@@ -16,7 +16,7 @@ var Player = function(playerId, entityId) {
     this.xp = 0;
     this.level = 0;
 }
-export default Player
+global.Player = Player;
 
 Player.prototype.hasRequiredRecipeResources = function(recipe) {
     var entity = global.gameData.world.entityWorld.objects[this.entityId];

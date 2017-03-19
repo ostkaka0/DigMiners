@@ -1,13 +1,13 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import RegisterCommand from "Engine/Register/Command.js";
-import RegisterEntity from "Engine/Register/Entity.js";
+
+
+
+
 
 var CommandEntitySpawn = function(gameData, entity, entityId, teamId) {
     this.entity = entity;
     this.entityId = entityId;
 }
-export default CommandEntitySpawn;
+global.CommandEntitySpawn = CommandEntitySpawn;
 RegisterCommand.push(CommandEntitySpawn);
 
 CommandEntitySpawn.prototype.execute = function() {

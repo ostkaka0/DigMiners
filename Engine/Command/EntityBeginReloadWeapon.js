@@ -1,11 +1,11 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import RegisterCommand from "Engine/Register/Command.js";
+
+
+
 
 var CommandEntityBeginReloadWeapon = function(entityId) {
     this.entityId = entityId;
 }
-export default CommandEntityBeginReloadWeapon;
+global.CommandEntityBeginReloadWeapon = CommandEntityBeginReloadWeapon;
 RegisterCommand.push(CommandEntityBeginReloadWeapon);
 
 CommandEntityBeginReloadWeapon.prototype.execute = function() {
