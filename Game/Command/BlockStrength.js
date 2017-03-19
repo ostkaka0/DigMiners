@@ -1,10 +1,10 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import TileWorld from "Engine/TileWorld.js";
-import BlockWorld from "Engine/BlockWorld.js";
 
-import RegisterCommand from "Engine/Register/Command.js";
-import Config from "Game/Config.js";
+
+
+
+
+
+
 
 
 var CommandBlockStrength = function(x, y, strength) {
@@ -12,7 +12,7 @@ var CommandBlockStrength = function(x, y, strength) {
     this.y = y;
     this.strength = Math.max(strength, 0);
 }
-export default CommandBlockStrength;
+global.CommandBlockStrength = CommandBlockStrength;
 RegisterCommand.push(CommandBlockStrength);
 
 CommandBlockStrength.prototype.execute = function() {

@@ -1,16 +1,16 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import Event from "Engine/Core/Event.js";
-import RegisterCommand from "Engine/Register/Command.js";
-import EntityHealth from "Engine/Entity/Health.js";
+
+
+
+
+
+
+
 
 var CommandEntityHealthChange = function(entityId, healthChange) {
     this.entityId = entityId;
     this.healthChange = fix.toFix(healthChange);
 }
-export default CommandEntityHealthChange;
+global.CommandEntityHealthChange = CommandEntityHealthChange;
 RegisterCommand.push(CommandEntityHealthChange);
 
 CommandEntityHealthChange.prototype.execute = function() {

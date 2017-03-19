@@ -1,12 +1,12 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import Keys from "Engine/Keys.js";
-import CommandEntityBeginReloadWeapon from "Engine/Command/EntityBeginReloadWeapon.js";
-import RegisterEntity from "Engine/Register/Entity.js";
+
+
+
+
+
+
+
 // TODO: Fix dependency
-import Entity from "Game/Entity/Entity.js";
+
 
 var EntityMovement = function(speed, toolUseDuration, damageMultiplier, digHardnessMultiplier) {
     this.keyStatuses = {};
@@ -31,7 +31,7 @@ var EntityMovement = function(speed, toolUseDuration, damageMultiplier, digHardn
     this.digHardnessMultiplier = (digHardnessMultiplier == null) ? 1.0 : digHardnessMultiplier;
     this.entityLookTarget = null;
 }
-export default EntityMovement
+global.EntityMovement = EntityMovement;
 RegisterEntity.push(EntityMovement);
 
 EntityMovement.prototype.name = movement.name; function movement() { };

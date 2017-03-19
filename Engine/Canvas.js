@@ -1,5 +1,5 @@
 var Canvas = {};
-export default Canvas;
+global.Canvas = Canvas;
 
 Canvas.initGL = function(canvas) {
     var gl = null;

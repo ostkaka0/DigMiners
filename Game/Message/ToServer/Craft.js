@@ -1,16 +1,16 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import IndexCounter from "Engine/Core/IndexCounter.js";
 
 
-import RegisterMessage from "Engine/Register/Message.js";
-import CommandEntityInventory from "Engine/Command/EntityInventory.js";
-import CommandPlayerOreInventory from "Game/Command/PlayerOreInventory.js";
+
+
+
+
+
+
 
 var MessageRequestCraft = function(recipeId) {
     this.recipeId = recipeId;
 }
-export default MessageRequestCraft;
+global.MessageRequestCraft = MessageRequestCraft;
 RegisterMessage.ToServer.push(MessageRequestCraft);
 
 MessageRequestCraft.prototype.execute = function(gameData, player) {

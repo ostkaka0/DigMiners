@@ -1,35 +1,35 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import TileWorld from "Engine/TileWorld.js";
-import BlockWorld from "Engine/BlockWorld.js";
-import Sprite from "Engine/Animation/Sprite.js";
-import Event from "Engine/Core/Event.js";
-import BodyPart from "Engine/Animation/BodyPart.js";
-import Noise from "Engine/Core/Noise.js"
 
-import Config from "Game/Config.js";
 
-import Items from "Game/Items.js";
-import EntityTeam from "Engine/Entity/Team.js";
-import EntityChest from "Game/Entity/Chest.js";
-import EntityPhysicsBody from "Engine/Entity/PhysicsBody.js";
-import EntityHealth from "Engine/Entity/Health.js";
-import EntityBodyparts from "Game/Entity/Bodyparts.js";
-import EntityPotionEffects from "Game/Entity/PotionEffects.js";
-import PotionEffectTypes from "Game/PotionEffectTypes.js";
-import EntityInteractable from "Game/Entity/Interactable.js";
-import EntityDrawable from "Engine/Entity/Drawable.js";
-import EntityProjectile from "Game/Entity/Projectile.js"
-import CommandPlaceBlock from "Game/Command/PlaceBlock.js";
-import CommandEntitySpawn from "Engine/Command/EntitySpawn.js";
-import CommandBuild from "Game/Command/Build.js";
-import CommandBlockStrength from "Game/Command/BlockStrength.js";
-import CommandEntityInventory from "Engine/Command/EntityInventory.js";
-import CommandEntityEquipItem from "Engine/Command/EntityEquipItem.js";
-import entityTemplatesTurret from "Game/Entity/EntityTemplates/Turret.js";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 var Blocks = {}; //exports;
-export default Blocks;
+global.Blocks = Blocks;
 
 var BlockTypes = {
     FOREGROUND: 0,

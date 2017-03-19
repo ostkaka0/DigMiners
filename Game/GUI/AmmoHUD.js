@@ -1,8 +1,8 @@
-import Event from "Engine/Core/Event.js";
-import EntityAmmo from "Engine/Entity/Ammo.js";
-import EntityEquippedItems from "Engine/Entity/EquippedItems.js";
 
-export default function() {
+
+
+
+var AmmoHUD = function() {
     this.root = $("<div>", { "text": "No weapon equipped" });
     this.root.css({
         "position": "fixed",

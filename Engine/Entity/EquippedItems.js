@@ -1,13 +1,13 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import RegisterItem from "Engine/Register/Item.js"
-import RegisterEntity from "Engine/Register/Entity.js";
+
+
+
+
 
 var EntityEquippedItems = function(items) {
     this.items = (items ? items : {});
 }
 EntityEquippedItems.Events = { onEquip: new Map(), onDequip: new Map() };
-export default EntityEquippedItems
+global.EntityEquippedItems = EntityEquippedItems;
 RegisterEntity.push(EntityEquippedItems);
 
 EntityEquippedItems.prototype.name = equippedItems.name; function equippedItems() { };

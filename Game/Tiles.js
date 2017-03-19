@@ -1,5 +1,5 @@
 var Tiles = {};
-export default Tiles
+global.Tiles = Tiles;
 
 Tiles.Dirt = {
     name: "Dirt",

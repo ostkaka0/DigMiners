@@ -1,7 +1,6 @@
-import Event from "Engine/Core/Event.js"
-import Map2D from "Engine/Core/Map2D.js"
+"use strict"
 
-export default class {
+global.CelluralAutomata = class {
     constructor(blockWorld, blockRegister) {
         this.blockWorld = blockWorld;
         this.blockRegister = blockRegister;

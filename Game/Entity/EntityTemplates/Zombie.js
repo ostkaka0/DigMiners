@@ -1,25 +1,25 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import Sprite from "Engine/Animation/Sprite.js";
-import BodyPart from "Engine/Animation/BodyPart.js";
-import EntityPhysicsBody from "Engine/Entity/PhysicsBody.js";
-import EntityMovement from "Engine/Entity/Movement.js";
-import EntityBodyparts from "Game/Entity/Bodyparts.js";
-import EntityDrawable from "Engine/Entity/Drawable.js";
-import EntityName from "Engine/Entity/Name.js";
-import EntityTeam from "Engine/Entity/Team.js";
-import EntityHealth from "Engine/Entity/Health.js";
-import EntityAmmo from "Engine/Entity/Ammo.js";
-import EntityInventory from "Engine/Entity/Inventory.js";
-import EntityEquippedItems from "Engine/Entity/EquippedItems.js";
-import EntityPotionEffects from "Game/Entity/PotionEffects.js";
-import BehaviourContainer from "Game/Entity/AI/Container.js";
-import BehaviourDigObstacle from "Game/Entity/AI/DigObstacle.js";
-import BehaviourTargetPlayer from "Game/Entity/AI/TargetPlayer.js";
-import BehaviourWalkToEnemy from "Game/Entity/AI/WalkToEnemy.js";
-import BehaviourRandomWalk from "Game/Entity/AI/RandomWalk.js";
 
-export default function(entityId, pos, teamId) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var entityTemplateZombie = function(entityId, pos, teamId) {
     var entity = {};
     entity.physicsBody = new EntityPhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0, 1.0, 0.3);
     entity.movement = new EntityMovement(20.0, 0.25, 1.0, 0.5);

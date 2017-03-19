@@ -1,6 +1,6 @@
-import binarySearch from "Engine/Core/BinarySearch.js";
+"use strict"
 
-export default class {
+global.IdList = class {
     constructor(firstId) {
         this.firstId = firstId || 1;
         this.nextId = this.firstId;

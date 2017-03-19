@@ -1,35 +1,3 @@
-import Event from "Engine/Core/Event.js";
-import Map2D from "Engine/Core/Map2D.js";
-import IdList from "Engine/Core/IdList.js";
-import ObjectWorld from "Engine/Core/ObjectWorld.js";
-import ParticleWorld from "Engine/ParticleWorld.js";
-import PhysicsWorld from "Engine/PhysicsWorld.js";
-import Generator from "Game/Generator.js";
-import EventHandler from "Engine/EventHandler.js";
-import BodyPart from "Engine/Animation/BodyPart.js";
-import BlockWorld from "Engine/BlockWorld.js";
-import TileWorld from "Engine/TileWorld.js";
-import CelluralAutomata from "Engine/CelluralAutomata.js";
-
-
-import Config from "Game/Config.js";
-import Entity from "Game/Entity/Entity.js";
-import EntityProjectile from "Game/Entity/Projectile.js";
-import EntityHealth from "Engine/Entity/Health.js";
-import EntityInteracter from "Game/Entity/Interacter.js";
-import EntityInteractable from "Game/Entity/Interactable.js";
-import EntityTemplates from "Game/Entity/EntityTemplates/EntityTemplates.js";
-import EntityMovement from "Engine/Entity/Movement.js";
-import EntityEquippedItems from "Engine/Entity/EquippedItems.js";
-import entityFunctionPhysicsBodySimulate from "Engine/Entity/Physics.js";
-import {entityFunctionProjectileSimulate} from "Game/ProjectilePhysics.js";
-import CommandParticles from "Game/Command/Particles.js";
-import CommandBlockStrength from "Game/Command/BlockStrength.js";
-import CommandEntityInteractEntity from "Game/Command/EntityInteractEntity.js";
-import CommandCollisions from "Engine/Command/Collisions.js";
-import InventoryHUD from "Game/GUI/InventoryHUD.js";
-import ParticleFunctions from "Game/ParticleFunctions.js";
-import ExplosionFunctions from "Game/ExplosionFunctions.js";
 
 var World = function() {
     this.tickId = 0;
@@ -59,7 +27,7 @@ var World = function() {
     //Temp variables:
     this.collisionList = []; // Updated, then sent before tick ends
 }
-export default World
+global.World = World;
 
 World.prototype.tick = function(dt) {
     if (this.pendingCommands[this.tickId])

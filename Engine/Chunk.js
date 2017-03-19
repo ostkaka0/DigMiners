@@ -1,5 +1,5 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
+
+
 
 
 var Chunk = function() {
@@ -14,7 +14,7 @@ var Chunk = function() {
         }
     }
 }
-export default Chunk;
+global.Chunk = Chunk;
 
 Chunk.dim = 30;
 Chunk.dim2 = Chunk.dim + 2;

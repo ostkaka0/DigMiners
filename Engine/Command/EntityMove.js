@@ -1,8 +1,8 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import RegisterCommand from "Engine/Register/Command.js";
+
+
+
+
+
 
 var CommandEntityMove = function(entityId, direction, pos) {
     this.entityId = entityId;
@@ -10,7 +10,7 @@ var CommandEntityMove = function(entityId, direction, pos) {
     if (pos)
         this.pos = v2.cloneFix(pos);
 }
-export default CommandEntityMove;
+global.CommandEntityMove = CommandEntityMove;
 RegisterCommand.push(CommandEntityMove);
 
 CommandEntityMove.prototype.execute = function() {

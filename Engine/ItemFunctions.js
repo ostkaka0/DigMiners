@@ -1,39 +1,39 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import TileWorld from "Engine/TileWorld.js";
-import BlockWorld from "Engine/BlockWorld.js";
-import BlockChunk from "Engine/BlockChunk.js";
-import Sprite from "Engine/Animation/Sprite.js";
-import BodyPart from "Engine/Animation/BodyPart.js";
-import ObjectRegister from "Engine/Core/ObjectRegister.js";
-import Item from "Engine/Item.js";
 
-import Blocks from "Game/Blocks.js";
-import Tiles from "Game/Tiles.js";
-import Projectiles from "Game/Projectiles.js";
-import Entity from "Game/Entity/Entity.js";
-import EntityPhysicsBody from "Engine/Entity/PhysicsBody.js";
-import EntityBodyparts from "Game/Entity/Bodyparts.js";
-import EntityDrawable from "Engine/Entity/Drawable.js";
-import ParticleFunctions from "Game/ParticleFunctions.js";
-import ExplosionFunctions from "Game/ExplosionFunctions.js";
 
-import Config from "Game/Config.js";
 
-import RegisterItem from "Engine/Register/Item.js";
 
-import CommandBlockStrength from "Game/Command/BlockStrength.js";
-import CommandEntityDig from "Game/Command/EntityDig.js";
-import CommandProjectileSpawn from "Game/Command/ProjectileSpawn.js";
-import CommandEntityReloadWeapon from "Engine/Command/EntityReloadWeapon.js";
-import CommandEntityInventory from "Engine/Command/EntityInventory.js";
-import CommandEntitySpawn from "Engine/Command/EntitySpawn.js";
-import CommandEntityAnimate from "Game/Command/EntityAnimate.js";
-import CommandParticles from "Game/Command/Particles.js";
-import CommandEntityDestroy from "Engine/Command/EntityDestroy.js";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 var ItemFunctions = {};
-export default ItemFunctions;
+global.ItemFunctions = ItemFunctions;
 
 ItemFunctions.consumable = function(item, entity) {
     Item.interact(itemType, entity);

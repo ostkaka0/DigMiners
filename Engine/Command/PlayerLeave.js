@@ -1,12 +1,12 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import RegisterCommand from "Engine/Register/Command.js";
+
+
+
 
 var CommandPlayerLeave = function(playerId, entityId) {
     this.playerId = playerId;
     this.entityId = entityId;
 }
-export default CommandPlayerLeave;
+global.CommandPlayerLeave = CommandPlayerLeave;
 RegisterCommand.push(CommandPlayerLeave);
 
 CommandPlayerLeave.prototype.execute = function() {

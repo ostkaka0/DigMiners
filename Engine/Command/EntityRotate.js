@@ -1,14 +1,14 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import RegisterCommand from "Engine/Register/Command.js";
+
+
+
+
+
 
 var CommandEntityRotate = function(entityId, direction) {
     this.entityId = entityId;
     this.direction = direction;
 }
-export default CommandEntityRotate;
+global.CommandEntityRotate = CommandEntityRotate;
 RegisterCommand.push(CommandEntityRotate);
 
 CommandEntityRotate.prototype.execute = function() {

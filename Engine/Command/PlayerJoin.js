@@ -1,18 +1,18 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import RegisterCommand from "Engine/Register/Command.js";
+
+
+
 
 // TODO: Fix engine dependency to game
-import Player from "Game/Player.js";
-import MessageInit from "Game/Message/ToClient/Init.js";
-import MessageChunk from "Game/Message/ToClient/Chunk.js";
+
+
+
 
 var CommandPlayerJoin = function(playerId, entityId, playerName, socketId) {
     this.playerId = playerId;
     this.playerName = playerName;
     this.socketId = socketId;
 }
-export default CommandPlayerJoin;
+global.CommandPlayerJoin = CommandPlayerJoin;
 RegisterCommand.push(CommandPlayerJoin);
 
 CommandPlayerJoin.prototype.execute = function() {

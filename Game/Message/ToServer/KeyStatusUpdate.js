@@ -1,18 +1,18 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import IndexCounter from "Engine/Core/IndexCounter.js";
-import Keys from "Engine/Keys.js";
 
 
-import RegisterMessage from "Engine/Register/Message.js";;
-import CommandEntityInteractEntity from "Game/Command/EntityInteractEntity.js";
-import CommandKeyStatusUpdate from "Game/Command/KeyStatusUpdate.js";
+
+
+
+
+;
+
+
 
 var MessageRequestKeyStatusUpdate = function(key, pressed) {
     this.key = key;
     this.pressed = pressed;
 }
-export default MessageRequestKeyStatusUpdate;
+global.MessageRequestKeyStatusUpdate = MessageRequestKeyStatusUpdate;
 RegisterMessage.ToServer.push(MessageRequestKeyStatusUpdate);
 
 MessageRequestKeyStatusUpdate.prototype.execute = function(gameData, player) {

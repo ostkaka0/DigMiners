@@ -19,7 +19,7 @@ var Sprite = function(textureName) {
     this.anchor = [0.5, 0.5];
     this.alpha = 1.0;
 }
-export default Sprite;
+global.Sprite = Sprite;
 
 Sprite.prototype.getSize = function() {
     if (this.frame)

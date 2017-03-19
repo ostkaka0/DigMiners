@@ -1,8 +1,8 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
 
-export var Serialize = {};
-export var Deserialize = {};
+
+
+global.Serialize = {};
+global.Deserialize = {};
 
 Serialize.booleans = function(byteArray, index, booleans) {
     var bitField = (booleans[0] ? 1 : 0) |

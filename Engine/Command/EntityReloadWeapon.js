@@ -1,15 +1,15 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import Event from "Engine/Core/Event.js";
-import RegisterItem from "Engine/Register/Item.js"
-import RegisterCommand from "Engine/Register/Command.js";
-import EntityAmmo from "Engine/Entity/Ammo.js";
+
+
+
+
+
+
 
 var CommandEntityReloadWeapon = function(entityId, stackId) {
     this.entityId = entityId;
     this.stackId = stackId;
 }
-export default CommandEntityReloadWeapon;
+global.CommandEntityReloadWeapon = CommandEntityReloadWeapon;
 RegisterCommand.push(CommandEntityReloadWeapon);
 
 CommandEntityReloadWeapon.prototype.execute = function() {

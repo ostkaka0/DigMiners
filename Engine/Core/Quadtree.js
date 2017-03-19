@@ -1,6 +1,6 @@
-import IdList from "Engine/Core/IdList.js";;
+"use strict"
 
-export default class {
+global.Quadtree = class {
     constructor() {
         this.array = [0, 0, 0, 0];
         this.idList = new IdList(1);

@@ -1,15 +1,15 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import EntityControlledByPlayer from "Game/Entity/ControlledByPlayer.js";
-import EntityPhysicsBody from "Engine/Entity/PhysicsBody.js";
-import EntityMovement from "Engine/Entity/Movement.js";
-import EntityBodyparts from "Game/Entity/Bodyparts.js";
-import EntityDrawable from "Engine/Entity/Drawable.js";
-import Sprite from "Engine/Animation/Sprite.js";
-import BodyPart from "Engine/Animation/BodyPart.js";
-import EntityName from "Engine/Entity/Name.js";
 
-export default function (playerId, entityId, name) {
+
+
+
+
+
+
+
+
+
+
+var entityTemplateGhost = function (playerId, entityId, name) {
     var entity = {};
     entity.controlledByPlayer = new EntityControlledByPlayer(playerId);
     entity.physicsBody = new EntityPhysicsBody(v2.create(0, 0), 0.001, 10.0, 1.0, 0);

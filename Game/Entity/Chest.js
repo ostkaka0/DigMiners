@@ -1,12 +1,12 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
 
-import RegisterEntity from "Engine/Register/Entity.js";
+
+
+
 
 var EntityChest = function() {
 
 }
-export default EntityChest;
+global.EntityChest = EntityChest;
 RegisterEntity.push(EntityChest);
 
 EntityChest.prototype.name = chest.name; function chest() { };

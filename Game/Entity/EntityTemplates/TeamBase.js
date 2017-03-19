@@ -1,31 +1,31 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import BodyPart from "Engine/Animation/BodyPart.js";
-import Sprite from "Engine/Animation/Sprite.js";
 
 
-import EntitySpawner from "Game/Entity/Spawner.js";
-import entityTemplateMonster from "Game/Entity/EntityTemplates/Monster.js";
-import EntityPhysicsBody from "Engine/Entity/PhysicsBody.js";
-import EntityMovement from "Engine/Entity/Movement.js";
-import EntityBodyparts from "Game/Entity/Bodyparts.js";
-import EntityDrawable from "Engine/Entity/Drawable.js";
-import EntityName from "Engine/Entity/Name.js";
-import EntityTeam from "Engine/Entity/Team.js";
-import EntityHealth from "Engine/Entity/Health.js";
-import EntityAmmo from "Engine/Entity/Ammo.js";
-import EntityInventory from "Engine/Entity/Inventory.js";
-import EntityEquippedItems from "Engine/Entity/EquippedItems.js";
-import EntityPotionEffects from "Game/Entity/PotionEffects.js";
-import BehaviourContainer from "Game/Entity/AI/Container.js";
-import BehaviourDigObstacle from "Game/Entity/AI/DigObstacle.js";
-import BehaviourTargetPlayer from "Game/Entity/AI/TargetPlayer.js";
-import BehaviourWalkToEnemy from "Game/Entity/AI/WalkToEnemy.js";
-import BehaviourRandomWalk from "Game/Entity/AI/RandomWalk.js";
 
-import Items from "Game/Items.js";
 
-export default function(entityId, pos, teamId, maxEntities, radius, duration) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var entityTemplateTeamBase = function(entityId, pos, teamId, maxEntities, radius, duration) {
     maxEntities = maxEntities || 10;
     radius = radius || 4.0;
     duration = duration || 60;

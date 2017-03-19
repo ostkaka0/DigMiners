@@ -1,5 +1,5 @@
 var Event = {};
-export default Event;
+global.Event = Event;
 
 Event.subscribe = function(event, subscriber, callback) {
     event.set(subscriber, callback);

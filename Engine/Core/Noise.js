@@ -1,7 +1,7 @@
 
 
 var Noise = {};
-export default Noise;
+global.Noise = Noise;
 
 Noise.rand = function(value) {
     value ^= 0xE773;

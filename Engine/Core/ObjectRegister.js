@@ -1,6 +1,6 @@
 
 var ObjectRegister = {};
-export default ObjectRegister;
+global.ObjectRegister = ObjectRegister;
 
 ObjectRegister.add = function(array, object) {
     object.id = array.length;

@@ -1,14 +1,14 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import BlockWorld from "Engine/BlockWorld.js";
-import TileWorld from "Engine/TileWorld.js";
 
-import Config from "Game/Config.js";
 
-import RegisterCommand from "Engine/Register/Command.js";
-import Blocks from "Game/Blocks.js";
-import EntityBlockPlacer from "Game/Entity/BlockPlacer.js";
-import CommandEntitySpawn from "Engine/Command/EntitySpawn.js";
+
+
+
+
+
+
+
+
+
 
 var CommandEntityBuild = function(entityId, x, y, blockId, type) {
     this.entityId = entityId;
@@ -17,7 +17,7 @@ var CommandEntityBuild = function(entityId, x, y, blockId, type) {
     this.blockId = blockId;
     this.type = type;
 }
-export default CommandEntityBuild;
+global.CommandEntityBuild = CommandEntityBuild;
 RegisterCommand.push(CommandEntityBuild);
 
 CommandEntityBuild.prototype.execute = function() {

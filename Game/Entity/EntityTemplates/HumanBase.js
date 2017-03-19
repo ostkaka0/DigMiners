@@ -1,16 +1,16 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import EntityPhysicsBody from "Engine/Entity/PhysicsBody.js";
-import EntityMovement from "Engine/Entity/Movement.js";
-import EntityBodyparts from "Game/Entity/Bodyparts.js";
-import EntityDrawable from "Engine/Entity/Drawable.js";
-import EntityName from "Engine/Entity/Name.js";
-import EntityTeam from "Engine/Entity/Team.js";
-import Sprite from "Engine/Animation/Sprite.js";
-import BodyPart from "Engine/Animation/BodyPart.js";
-import EntityHealth from "Engine/Entity/Health.js";
 
-export default function(entityId, pos, teamId) {
+
+
+
+
+
+
+
+
+
+
+
+var entityTemplateHumanBase = function(entityId, pos, teamId) {
     var entity = {};
     entity.physicsBody = new EntityPhysicsBody(v2.create(pos[0], pos[1]), 0.01, null, 1000.0);
     entity.name = new EntityName("Base");

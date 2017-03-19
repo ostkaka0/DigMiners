@@ -1,4 +1,4 @@
-export default {
+global.ItemFlags = {
     Positive: 1,
     TargetSelf: 2,
     TargetEnemies: 4,

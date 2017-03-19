@@ -1,14 +1,14 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import TextSprite from "Engine/Animation/TextSprite.js";
-import RegisterEntity from "Engine/Register/Entity.js";
+
+
+
+
+
+
 
 var EntityName = function(entityName) {
     this.entityName = entityName + "";
 }
-export default EntityName;
+global.EntityName = EntityName;
 RegisterEntity.push(EntityName);
 
 EntityName.prototype.name = name.name; function name() { };

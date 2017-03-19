@@ -1,12 +1,12 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import RegisterCommand from "Engine/Register/Command.js";
+
+
+
 
 var CommandEntityLookAtEntity = function(entityId, targetEntityId) {
     this.entityId = entityId;
     this.targetEntityId = targetEntityId;
 }
-export default CommandEntityLookAtEntity;
+global.CommandEntityLookAtEntity = CommandEntityLookAtEntity;
 RegisterCommand.push(CommandEntityLookAtEntity);
 
 CommandEntityLookAtEntity.prototype.execute = function() {

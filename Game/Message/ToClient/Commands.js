@@ -1,17 +1,17 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import IndexCounter from "Engine/Core/IndexCounter.js";
 
-import Config from "Game/Config.js";
 
-import RegisterMessage from "Engine/Register/Message.js";;
-import RegisterCommand from "Engine/Register/Command.js";;
+
+
+
+
+;
+;
 
 var MessageCommands = function() {
     this.tickId = (isServer) ? global.gameData.world.tickId : 0;
     this.commands = (isServer) ? global.gameData.world.commands : [];
 }
-export default MessageCommands;
+global.MessageCommands = MessageCommands;
 RegisterMessage.ToClient.push(MessageCommands);
 
 MessageCommands.prototype.execute = function(gameData) {

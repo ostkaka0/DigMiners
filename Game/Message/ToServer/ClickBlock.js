@@ -1,17 +1,17 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import IndexCounter from "Engine/Core/IndexCounter.js";
-import BlockWorld from "Engine/BlockWorld.js";
 
 
-import Config from "Game/Config.js";
-import RegisterMessage from "Engine/Register/Message.js";;
+
+
+
+
+
+;
 
 var MessageRequestClickBlock = function(blockPos, clickType) {
     this.blockPos = blockPos;
     this.clickType = clickType;
 }
-export default MessageRequestClickBlock;
+global.MessageRequestClickBlock = MessageRequestClickBlock;
 RegisterMessage.ToServer.push(MessageRequestClickBlock);
 
 MessageRequestClickBlock.prototype.execute = function(gameData, player) {

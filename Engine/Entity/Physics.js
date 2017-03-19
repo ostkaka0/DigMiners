@@ -1,10 +1,10 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import TileWorld from "Engine/TileWorld.js";
-import BlockWorld from "Engine/BlockWorld.js";
+
+
+
+
 
 // TODO: Fix dependency
-import Config from "Game/Config.js";
+
 
 
 var PHYSICS_MAX_STEP_LENGTH = 0.25;
@@ -63,7 +63,7 @@ var entityFunctionPhysicsBodySimulate = function(dt) {
             physicsBodySimulate(entity.physicsBody, dt);
     });
 }
-export default entityFunctionPhysicsBodySimulate
+global.entityFunctionPhysicsBodySimulate = entityFunctionPhysicsBodySimulate;
 
 var physicsBodySimulate = function(physicsBody, dt) {
     var radius = physicsBody.getRadius();

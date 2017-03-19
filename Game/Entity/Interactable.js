@@ -1,15 +1,15 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
 
-import Event from "Engine/Core/Event.js";
-import RegisterEntity from "Engine/Register/Entity.js";
+
+
+
+
 
 var EntityInteractable = function(canInteractFunction) {
     this.interacting = [];
     this.canInteractFunction = canInteractFunction || (function(interactableEntity, entity) { return true; });
     this.canInteractFunction.bind(this);
 }
-export default EntityInteractable
+global.EntityInteractable = EntityInteractable;
 RegisterEntity.push(EntityInteractable);
 EntityInteractable.Events = { onInteract: new Map(), onFinishInteract: new Map() };
 

@@ -1,6 +1,6 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import RegisterEntity from "Engine/Register/Entity.js";
+
+
+
 
 var EntityTeams = {
     None: 0,
@@ -15,7 +15,7 @@ var EntityTeams = {
 var EntityTeam = function(value) {
     this.value = value;
 }
-export default EntityTeam
+global.EntityTeam = EntityTeam;
 RegisterEntity.push(EntityTeam);
 EntityTeam.Enum = EntityTeams;
 

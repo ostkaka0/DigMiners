@@ -1,7 +1,7 @@
-import Map2D from "Engine/Core/Map2D.js";
-import BlockChunk from "Engine/BlockChunk.js";
-import GLBlockChunk from "Engine/GLBlockChunk.js";
-import Shader from "Engine/Shader.js";
+
+
+
+
 
 var BlockChunkRenderer = function(gl, world, tileSize) {
     this.gl = gl;
@@ -30,7 +30,7 @@ var BlockChunkRenderer = function(gl, world, tileSize) {
 
     this.isReady = false; // False until shaders, buffers, attributes and uniforms are loaded.
 }
-export default BlockChunkRenderer;
+global.BlockChunkRenderer = BlockChunkRenderer;
 
 BlockChunkRenderer.prototype.lazyInit = function() {
     if (this.isReady)

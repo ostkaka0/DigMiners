@@ -1,25 +1,25 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import IndexCounter from "Engine/Core/IndexCounter.js";
-import Event from "Engine/Core/Event.js"
 
 
-import Config from "Game/Config.js";
-import PlayerClass from "Game/PlayerClass.js";
-import RegisterMessage from "Engine/Register/Message.js";;
-import CommandEntitySpawn from "Engine/Command/EntitySpawn.js";
-import CommandPlayerSpawn from "Engine/Command/PlayerSpawn.js";
-import MessageSpectate from "Game/Message/ToClient/Spectate.js";
-import entityTemplatePlayer from "Game/Entity/EntityTemplates/Player.js";
-import entityTemplateGhost from "Game/Entity/EntityTemplates/Ghost.js";
+
+
+
+
+
+
+
+
+;
+
+
+
+
+
 
 var MessageRequestSpawn = function(playerName, classId) {
     this.playerName = playerName;
     this.classId = classId;
 }
-export default MessageRequestSpawn;
+global.MessageRequestSpawn = MessageRequestSpawn;
 RegisterMessage.ToServer.push(MessageRequestSpawn);
 
 MessageRequestSpawn.prototype.execute = function(gameData, player) {

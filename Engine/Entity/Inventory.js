@@ -1,7 +1,7 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import RegisterItem from "Engine/Register/Item.js"
-import RegisterEntity from "Engine/Register/Entity.js";
+
+
+
+
 
 var EntityInventory = function(inventoryId, entityId, width, height) {
     this.items = [];
@@ -10,7 +10,7 @@ var EntityInventory = function(inventoryId, entityId, width, height) {
     this.width = width;
     this.height = height;
 }
-export default EntityInventory
+global.EntityInventory = EntityInventory;
 RegisterEntity.push(EntityInventory);
 
 EntityInventory.createInventory = function(entityId, width, height) {

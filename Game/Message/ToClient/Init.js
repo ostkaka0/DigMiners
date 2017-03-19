@@ -1,14 +1,14 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import IndexCounter from "Engine/Core/IndexCounter.js";
 
 
-import Config from "Game/Config.js";
-import RegisterMessage from "Engine/Register/Message.js";;
-import RegisterEntity from "Engine/Register/Entity.js";;
-import Generator from "Game/Generator.js";
-import Player from "Game/Player.js";
-import HUD from "Game/GUI/HUD.js";
+
+
+
+
+;
+;
+
+
+
 
 var MessageInit = function(gameData, player) {
     this.players = [];
@@ -21,7 +21,7 @@ var MessageInit = function(gameData, player) {
     if (!gameData) return;
     global.gameData.world.entityWorld.update();
 }
-export default MessageInit;
+global.MessageInit = MessageInit;
 RegisterMessage.ToClient.push(MessageInit);
 
 MessageInit.prototype.execute = function(gameData) {

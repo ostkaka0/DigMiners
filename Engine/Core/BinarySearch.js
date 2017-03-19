@@ -11,4 +11,4 @@ var binarySearch = function(array, value, compareFunction, start, end) {
     else if (middleValue > 0) return binarySearch(array, value, compareFunction, start, middle);
     else return middle;
 }
-export default binarySearch;
+global.binarySearch = binarySearch;

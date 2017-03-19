@@ -1,13 +1,13 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import Event from "Engine/Core/Event.js"
-import Sprite from "Engine/Animation/Sprite.js";
-import RegisterItem from "Engine/Register/Item.js"
-import RegisterCommand from "Engine/Register/Command.js";
-import EntityEquippedItems from "Engine/Entity/EquippedItems.js";
+
+
+
+
+
+
+
 
 // TODO: Fix engine dependency to game
-import ItemFunctions from "Engine/ItemFunctions.js";
+
 
 var CommandEntityEquipItem = function(entityId, stackId, itemId, equipped) {
     this.entityId = entityId;
@@ -15,7 +15,7 @@ var CommandEntityEquipItem = function(entityId, stackId, itemId, equipped) {
     this.itemId = itemId;
     this.equipped = equipped;
 }
-export default CommandEntityEquipItem;
+global.CommandEntityEquipItem = CommandEntityEquipItem;
 RegisterCommand.push(CommandEntityEquipItem);
 
 CommandEntityEquipItem.prototype.execute = function() {

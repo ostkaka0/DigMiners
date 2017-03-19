@@ -1,3 +1,9 @@
+../lib/perlin.js
+
 ../Engine/
 Config.js
 Blocks.js // Items.js
+Tiles.js // Items.js
+Projectiles.js // Items.js
+Particles.js // Items.js
+

@@ -1,9 +1,9 @@
-import Config from "Game/Config.js";
 
-import RegisterMessage from "Engine/Register/Message.js";
 
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
+
+
+
+
 
 var Client = function(gameData, ip) {
 
@@ -63,7 +63,7 @@ var Client = function(gameData, ip) {
         });
     });
 }
-export default Client
+global.Client = Client;
 
 Client.prototype.sendMessage = function(message) {
     var byteArray = new Uint8Array(command.getSerializationSize() + 4);

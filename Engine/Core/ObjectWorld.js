@@ -1,4 +1,4 @@
-import Event from "Engine/Core/Event.js";
+
 
 var ObjectWorld = function(useDestroyFunc) {
     this.useDestroyFunc = useDestroyFunc;
@@ -7,7 +7,7 @@ var ObjectWorld = function(useDestroyFunc) {
     this.onAdd = new Map();
     this.onRemove = new Map();
 }
-export default ObjectWorld;
+global.ObjectWorld = ObjectWorld;
 
 ObjectWorld.prototype.add = function(object, id) {
     object.isActive = false;

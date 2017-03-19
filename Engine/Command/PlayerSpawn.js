@@ -1,13 +1,13 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import RegisterCommand from "Engine/Register/Command.js";
+
+
+
 
 var CommandPlayerSpawn = function(playerId, entityId, playerName) {
     this.playerId = playerId;
     this.entityId = entityId;
     this.playerName = playerName;
 }
-export default CommandPlayerSpawn;
+global.CommandPlayerSpawn = CommandPlayerSpawn;
 RegisterCommand.push(CommandPlayerSpawn);
 
 CommandPlayerSpawn.prototype.execute = function() {

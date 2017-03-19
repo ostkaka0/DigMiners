@@ -1,5 +1,5 @@
 
-export default {
+global.SpriteGroups = {
     Items: 0,
     Players: 1,
     //???: 2,

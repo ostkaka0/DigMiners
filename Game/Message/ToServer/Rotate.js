@@ -1,18 +1,18 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import IndexCounter from "Engine/Core/IndexCounter.js";
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
 
 
-import RegisterMessage from "Engine/Register/Message.js";;
-import CommandEntityRotate from "Engine/Command/EntityRotate.js";
+
+
+
+
+
+;
+
 
 var MessageRequestRotate = function(deltaWorldCursorPos) {
     this.deltaWorldCursorPos = deltaWorldCursorPos;
     //this.direction = direction;
 }
-export default MessageRequestRotate;
+global.MessageRequestRotate = MessageRequestRotate;
 RegisterMessage.ToServer.push(MessageRequestRotate);
 
 MessageRequestRotate.prototype.execute = function(gameData, player) {

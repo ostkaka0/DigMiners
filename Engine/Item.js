@@ -1,22 +1,22 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import TileWorld from "Engine/TileWorld.js";
-import BlockWorld from "Engine/BlockWorld.js";
-import BlockChunk from "Engine/BlockChunk.js";
-import ObjectRegister from "Engine/Core/ObjectRegister.js";
 
-import Blocks from "Game/Blocks.js";
-import Tiles from "Game/Tiles.js";
-import Entity from "Game/Entity/Entity.js";
-import ExplosionFunctions from "Game/ExplosionFunctions.js";
 
-import RegisterItem from "Engine/Register/Item.js";
 
-import CommandBlockStrength from "Game/Command/BlockStrength.js";
-import CommandEntityDig from "Game/Command/EntityDig.js";
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 var Item = {};
-export default Item;
+global.Item = Item;
 
 Item.Flags = {
     Positive: 1,

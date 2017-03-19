@@ -16,7 +16,7 @@ var BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, parent,
     this.animInstance = null;
     this.disableRotation = (disableRotation ? true : false);
 }
-export default BodyPart;
+global.BodyPart = BodyPart;
 
 BodyPart.prototype.position = function(x, y, angle) {
     this.sprite.pos[0] = x + this.offset[0];

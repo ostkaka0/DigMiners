@@ -50,5 +50,3 @@ exports.loadModuleFile = function(fileList, fileTable, path) {
     fileList.push(path);
     console.log(path);
 }
-
-exports.loadModule([], [], "Game/");

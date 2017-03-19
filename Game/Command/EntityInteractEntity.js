@@ -1,16 +1,16 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
 
-import Config from "Game/Config.js";
 
-import RegisterCommand from "Engine/Register/Command.js";
+
+
+
+
 
 var CommandEntityInteractEntity = function(entityId, interactableEntityId, interacting) {
     this.entityId = entityId;
     this.interactableEntityId = interactableEntityId;
     this.interacting = interacting;
 }
-export default CommandEntityInteractEntity;
+global.CommandEntityInteractEntity = CommandEntityInteractEntity;
 RegisterCommand.push(CommandEntityInteractEntity);
 
 CommandEntityInteractEntity.prototype.execute = function() {

@@ -1,9 +1,9 @@
-import {Serialize} from "Engine/Core/Serialization.js";
-import {Deserialize} from "Engine/Core/Serialization.js";
-import RegisterEntity from "Engine/Register/Entity.js";
+
+
+
 
 var EntityAmmo = function() { }
-export default EntityAmmo;
+global.EntityAmmo = EntityAmmo;
 RegisterEntity.push(EntityAmmo);
 EntityAmmo.Events = { onChange: new Map() };
 
