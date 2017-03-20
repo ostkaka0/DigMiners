@@ -1,4 +1,3 @@
-var binarySearch = "Engine/Core/BinarySearch.js"
 
 var TypeRegister = {};// = module.exports;
 global.TypeRegister = TypeRegister;

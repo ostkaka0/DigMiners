@@ -1,5 +1,5 @@
 
-var GameLoop = function(tick, render, tickDuration) {
+var gameLoop = function(tick, render, tickDuration) {
     var frameTime = 1000 / 60;
     var lastFrameTime = performance.now();
     var startDate = performance.now();
