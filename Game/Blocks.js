@@ -76,7 +76,7 @@ var BlockBulletFunctions = {};
 BlockFunctions.createEntityTurret = function(blockPos, block) {
     if (isServer) {
         var turretEntityId = global.gameData.world.idList.next();
-        var turret = entityTemplatesTurret(turretEntityId, v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), EntityTeam.Enum.Human);
+        var turret = entityTemplateTurret(turretEntityId, v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), EntityTeam.Enum.Human);
 
         if (block.onCreateEntity)
             entity = block.onCreateEntity(turret, turretEntityId);
