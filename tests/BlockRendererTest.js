@@ -1,11 +1,3 @@
-import Canvas from "../Engine/Canvas.js";
-import Map2D from "../Engine/Core/Map2d.js";
-import BlockChunk from "../Engine/BlockChunk.js";
-import BlockChunkRenderer from "../Engine/BlockChunkRenderer.js";
-import gameLoop from "../Engine/GameLoop.js";
-
-var "../lib_front_end/apixi.js")
-
 var canvas = document.getElementById("canvas");
 var gl = Canvas.initGL(canvas);
 

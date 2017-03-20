@@ -1,6 +1,3 @@
-import {loadTextures} from "../Engine/Animation/TextureFunctions.js";
-import DrawTransform from "../Engine/Animation/DrawTransform.js";
-
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d", { antialias: true });
 var image = new Image();

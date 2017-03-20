@@ -1,8 +1,3 @@
-import Quadtree from "Engine/Core/Quadtree.js";
-import PointWorld from "Engine/PointWorld.js";
-import DrawTransform from "Engine/Animation/DrawTransform.js";
-import {loadTextures} from "Engine/Animation/TextureFunctions.js";
-
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d", {antialias: true});
 var image = new Image();

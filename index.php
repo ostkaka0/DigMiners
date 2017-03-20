@@ -104,7 +104,10 @@
             echo '<script type="text/javascript"> runUnitTests(); </script>';
             */
             // Run Game/test
-            addScript("DigMiners.js");
+            if (isset($_GET["test"]))
+                addScript("./tests/" . $_GET["test"] . ".js");
+            else
+                addScript("DigMiners.js");
 
         ?>
     </body>
