@@ -4,7 +4,7 @@
 
 
 
-var TextureManger = function() {
+var TextureManager = function() {
     this.loader = new TextureLoader();
     var loader = this.loader;
 

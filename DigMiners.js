@@ -1,33 +1,3 @@
-import fix from "Engine/Core/Fix.js";
-import v2 from "Engine/Core/v2.js";
-import Canvas from "Engine/Canvas.js";
-import Sprite from "Engine/Animation/Sprite.js";
-import ChunkRenderer from "Engine/ChunkRenderer.js";
-import BlockChunkRenderer from "Engine/BlockChunkRenderer.js";
-import SpriteContainer from "Engine/Animation/SpriteContainer.js";
-import Event from "Engine/Core/Event.js";
-import Chunk from "Engine/Chunk.js";
-import {loadTextures} from "Engine/Animation/TextureFunctions.js";
-import gameLoop from "Engine/GameLoop.js";
-import Keys from "Engine/Keys.js";
-import ClickTypes from "Engine/ClickTypes.js";
-import BlockChunk from "Engine/BlockChunk.js";
-
-import Config from "Game/Config.js";
-import gameData from "Game/GameData.js";
-import Client from "Game/Client.js";
-import TextureLoader from "Game/Entity/TextureLoader.js";
-import TextureManager from "Game/Entity/TextureManager.js";
-import LoadingScreen from "Game/GUI/LoadingScreen.js";
-import DeathScreen from "Game/GUI/DeathScreen.js";
-import InventoryHUD from "Game/GUI/InventoryHUD.js";
-import EntityHealth from "Engine/Entity/Health.js";
-import MessageRequestKeyStatusUpdate from "Game/Message/ToServer/KeyStatusUpdate.js";
-import MessageRequestPlaceBlock from "Game/Message/ToServer/PlaceBlock.js";
-import MessageRequestClickBlock from "Game/Message/ToServer/ClickBlock.js";
-import MessageRequestRotate from "Game/Message/ToServer/Rotate.js";
-import MessageRequestItemPickup from "Game/Message/ToServer/ItemPickup.js";
-
 var canvas = document.getElementById("canvas");
 var spriteCanvas = document.getElementById("spriteCanvas");
 var context2d = spriteCanvas.getContext("2d", { antialias: true });

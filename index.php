@@ -14,7 +14,8 @@
         <div id ="eventdiv" style = "position: absolute; width: 100%; height: 100%; background-color: transparent;"></div>
         <script type = "text/javascript">
             var isServer = false;
-            window.vars = { 
+            var global = window;
+            window.vars = {
             <?php
                 $ip = (isset($_GET["ip"]) ? '"' . $_GET["ip"] . '"' : '"127.0.0.1"');
                 if(empty($ip))
@@ -27,15 +28,58 @@
             <div class="crafting" id="crafting"></div>
         </div>
         <?php
+            error_reporting(E_ALL);
+            ini_set('display_errors', TRUE);
+            ini_set('display_startup_errors', TRUE);
             $includedScripts = array();
             function addScript($path) {
                 global $includedScripts;
-                if (isset($includedScripts[$path]))
-                    return;
+                $path = realpath($path);
+                $path = substr($path, strlen(realpath("./")) + 1);
+                if (substr($path, -3) != ".js") return;
+                if (isset($includedScripts[$path])) return;
                 $includedScripts[$path] = true;
                 echo "\n\t\t" . '<script type="text/javascript" src="' . $path . '?' . time() . '"></script>';
             }
 
+            function loadModule($path) {
+                global $includedScripts;
+                $path = realpath($path) . "/";
+                if (isset($includedScripts[$path])) return;
+                $includedScripts[$path] = true;
+
+                $moduleFilePath = $path . "jsmodule";
+                if (file_exists($moduleFilePath)) {
+                    $depsCode = file_get_contents($moduleFilePath);
+                    $lines = explode("\n", $depsCode);
+                    foreach($lines as $line) {
+                        $filePath = $path . explode("//", $line, 1)[0];
+                        if (is_dir($filePath))
+                            loadModule($filePath);
+                        else
+                            addScript($filePath);
+                    }
+                }
+                $dirs = array();
+                $files = array();
+                $filePaths = scandir($path);
+                foreach($filePaths as $filePath) {
+                    if ($filePath == "..") continue;
+                    $filePath = $path . $filePath;
+                    if (is_dir($filePath))
+                        array_push($dirs, $filePath);
+                    else
+                        array_push($files, $filePath);
+                }
+                foreach($files as $file)
+                    addScript($file);
+                foreach($dirs as $dir)
+                    loadModule($dir);
+            }
+
+            loadModule("./lib_front_end/");
+            loadModule("./Game/");
+            /*
             function addScriptsRecursive($path) {
                 $it = new RecursiveDirectoryIterator($path);
                 $extensions = [".js")];
@@ -58,12 +102,10 @@
             addScript("UnitTest.js"));
             addScriptsRecursive("unit_tests");
             echo '<script type="text/javascript"> runUnitTests(); </script>';
-
+            */
             // Run Game/test
-            if (isset($_GET["test"]) && preg_match("/^[a-zA-Z0-9_]*$/i", $_GET["test"]))
-                addScript("tests/" . $_GET["test"] . ".js"), "text/javascript");
-            else
-                addScript("DigMiners.js"));
+            addScript("DigMiners.js");
+
         ?>
     </body>
 </html>
