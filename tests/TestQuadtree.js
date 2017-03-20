@@ -1,5 +1,3 @@
-
-import Quadtree from "Engine/Core/Quadtree.js";;
 var quadtree = new Quadtree();
 
 var insertedPos = [5, 5, 10];
