@@ -30,14 +30,12 @@ var HUD = function(gameData) {
     });
 
     this.dugItems = new DugItems();
-
     this.chat = new Chat();
-
     this.ammo = new AmmoHUD();
+    this.level = new HUDLevel();
 
     $('.hud').show();
 }
-global.HUD = HUD;
 
 HUD.prototype.update = function() {
     // update inventory

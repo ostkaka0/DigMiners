@@ -1,11 +1,4 @@
 
-
-
-
-
-
-
-
 var Player = function(playerId, entityId) {
     this.playerId = playerId;
     this.entityId = entityId;
@@ -14,9 +7,28 @@ var Player = function(playerId, entityId) {
     this.deathTick = global.gameData.world.tickId;
     this.oreInventory = new Array();
     this.xp = 0;
-    this.level = 0;
+    this.level = 1;
 }
-global.Player = Player;
+Player.events = { onLevelChange: new Map(), onXPChange: new Map() };
+
+Player.prototype.getRequiredXP = function() {
+    var requiredXP = 10 * Math.pow(10.0, (this.level-1)/10.0);
+    return 10 * Math.round( requiredXP / Math.pow(10, Math.floor(Math.log10(requiredXP/10)))) *  Math.pow(10, Math.floor(Math.log10(requiredXP/10)));
+}
+
+Player.prototype.addXP = function(xp) {
+    var oldLevel = this.level;
+    var requiredXP = this.getRequiredXP();
+    this.xp += xp;
+    while(this.xp >= requiredXP) {
+        this.xp -= requiredXP;
+        this.level++;
+        requiredXP = this.getRequiredXP();
+    }
+    Event.trigger(Player.events.onXPChange, this);
+    if (oldLevel != this.level)
+        Event.trigger(Player.events.onLevelChange, this);
+}
 
 Player.prototype.hasRequiredRecipeResources = function(recipe) {
     var entity = global.gameData.world.entityWorld.objects[this.entityId];
