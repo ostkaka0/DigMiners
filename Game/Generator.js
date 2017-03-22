@@ -49,21 +49,21 @@ Generator.prototype.generate = function(chunk, chunkX, chunkY) {
             if (value > 1.0)
                 tileId = 3;
 
-            /*if (tileId != 0) {
-                if (oreValue1 > 0.45) {
+            if (tileId != 0) {
+                if (oreValue1 > 0.40) {
                     tileId = Tiles.Coal.id;
                 }
                 if (oreValue2 > 0.50) {
                     tileId = Tiles.Copper.id;
                 }
-                if (oreValue3 > 0.25) {
+                if (oreValue3 > 0.6) {
                     tileId = Tiles.Iron.id;
                 }
-                if (oreValue3 < -0.25) {
+                if (oreValue3 < -0.7) {
                     tileId = Tiles.Apatite.id;
                 }
 
-            }*/
+            }
 
             chunk.setTileId(xx, yy, tileId);
         }

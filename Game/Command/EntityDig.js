@@ -39,20 +39,20 @@ CommandEntityDig.prototype.execute = function() {
 
     var addXP = function(tile, oldDensity, newDensity) {
         if (newDensity < 128 && oldDensity >= 128)
-            xp += tile.xp || 1;
+            xp += tile.xp || 0;
     }
 
     if (targetTile.isOre && targetDensity > 0) {
         entity.movement.isMining = true;
         digDis = 1.0;
         this.radius = 1.0;
-        onDensityChange = function(tileX, tileY, tile, oldDensity, newDensity) {
+        onDensityChange = function([tileX, tileY], tile, oldDensity, newDensity) {
             if (tile.isOre) {
                 var densityChange = (oldDensity - newDensity) / 2 >> 0;
                 var newDensity2 = oldDensity - densityChange;
                 if (newDensity2 < 128)
                     newDensity2 = 0;
-                addXP(tile, oldDensity, newDensity2)
+                addXP(tile, oldDensity, newDensity2);
                 return newDensity2;
             }
             else return oldDensity;
@@ -66,6 +66,8 @@ CommandEntityDig.prototype.execute = function() {
         entity.movement.isDigging = true;
         onDensityChange = function([tileX, tileY], tile, oldDensity, newDensity) {
             if (tile.isOre) return oldDensity;
+            if (newDensity < 128)
+                newDensity = 0;
             addXP(tile, oldDensity, newDensity);
             return newDensity;
         };
