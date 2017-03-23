@@ -1,11 +1,4 @@
 
-
-
-
-
-
-
-
 var CommandEntityHealthChange = function(entityId, healthChange) {
     this.entityId = entityId;
     this.healthChange = fix.toFix(healthChange);
@@ -21,7 +14,7 @@ CommandEntityHealthChange.prototype.execute = function() {
     entity.health.health = (entity.health.health + this.healthChange < 0 ? 0 : entity.health.health + this.healthChange);
     Event.trigger(EntityHealth.Events.onChange, entity);
     if (entity.health.health <= 0)
-        Event.trigger(EntityHealth.Events.onDeath, entity);
+        Event.trigger(EntityHealth.Events.onDeath, entity, gameData.world.entityWorld.objects[entity.health.lastAttackerId]);
 }
 
 CommandEntityHealthChange.prototype.serialize = function(byteArray, index) {

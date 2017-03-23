@@ -171,7 +171,13 @@ World.prototype.initializeEvents = function() {
         }
     }.bind(this));
 
-    EntityHealth.Events.onDeath.set(this, function(entity) {
+    EntityHealth.Events.onDeath.set(this, function(entity, killer) {
+        if (isServer && killer && killer.controlledByPlayer) {
+            var player = gameData.playerWorld.objects[killer.controlledByPlayer.playerId];
+            if (player)
+                sendCommand(new CommandPlayerXP(player.id, entity.health.maxHealth / 4 >> 0));
+        }
+
         if (!entity.isDead) {
             entity.isDead = true;
             this.entityWorld.remove(entity);

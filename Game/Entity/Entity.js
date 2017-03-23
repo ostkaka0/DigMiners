@@ -67,7 +67,7 @@ Entity.hurt = function(entity, attacker, damage, armorPenentration) {
     var health = entity.health;
     if (!health) return false;
     armorPenentration = armorPenentration || 0.0;
-
+    entity.health.lastAttackerId = attacker.id;
     sendCommand(new CommandEntityHealthChange(entity.id, -Math.min(1.0, (1.0 - health.armor + armorPenentration)) * damage));
     return true;
 }

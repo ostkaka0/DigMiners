@@ -1,20 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var Item = {};
 global.Item = Item;
 
@@ -56,7 +40,7 @@ Item.interact = function(itemType, entity) {
 
     // Do interaction
     for (var i = 0; i < hitEntities.length; i++) {
-        var entity = hitEntities[i];
+        var targetEntity = hitEntities[i];
         if (targetEntity.health && damage)
             Entity.hurt(targetEntity, entity, damage, 1.0);
     }

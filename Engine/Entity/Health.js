@@ -6,9 +6,9 @@ var EntityHealth = function(health, maxHealth, armor) {
     this.health = health;
     this.maxHealth = maxHealth;
     this.armor = armor;
+    this.lastAttackerId = 0;
 }
 EntityHealth.Events = { onChange: new Map(), onDeath: new Map() };
-global.EntityHealth = EntityHealth;
 RegisterEntity.push(EntityHealth);
 
 EntityHealth.prototype.name = health.name; function health() { };
