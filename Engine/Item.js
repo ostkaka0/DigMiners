@@ -68,11 +68,10 @@ Item.interact = function(itemType, entity) {
                 var y = chunkPos[1] * BlockChunk.dim + localPos[1];
                 sendCommand(new CommandBlockStrength(x, y, Math.max(strength, 0)));
                 return;
-            }
-            // Dig terrain
-            global.gameData.world.commands.push(new CommandEntityDig(entity.id, entityPos, dir, 1.5, Entity.getDigSpeed(entity), Entity.getMaxDigHardness(entity)));
-            // Crete explosion
+            }// Crete explosion
             //ExplosionFunctions.createExplosion(entityPos, 3.0, 50.0, 250.0, 1.0, entity);
         }
+        // Dig terrain
+        global.gameData.world.commands.push(new CommandEntityDig(entity.id, entityPos, dir, 1.5, Entity.getDigSpeed(entity), Entity.getMaxDigHardness(entity)));
     }
 }

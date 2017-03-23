@@ -61,8 +61,8 @@ GameModeZombieInvasion.prototype.init = function() {
         new MessageChunk(chunk, global.gameData.world.blockWorld.get([x, y]), x, y).send(io.sockets);
     }
 
-    for (var x = -2; x < 2; ++x) {
-        for (var y = -2; y < 2; ++y) {
+    for (var x = -3; x < 3; ++x) {
+        for (var y = -3; y < 3; ++y) {
             loadChunk(global.gameData.world.tileWorld, x, y);
         }
     }
