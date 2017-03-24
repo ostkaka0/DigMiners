@@ -60,7 +60,7 @@ Generator.prototype.generate = function(chunk, chunkX, chunkY) {
                     tileId = Tiles.Iron.id;
                 }
                 if (oreValue3 < -0.7) {
-                    tileId = Tiles.Apatite.id;
+                    tileId = Tiles.Sulfur.id;
                 }
 
             }

@@ -30,6 +30,27 @@ Player.prototype.addXP = function(xp) {
         Event.trigger(Player.events.onLevelChange, this);
 }
 
+Player.prototype.calcOreRecipeQuantity = function(oreRecipe) {
+    if (!oreRecipe || oreRecipe.length < 2) return -1
+    var numItems = Number.MAX_VALUE;
+    for (var i = 0; i < oreRecipe.length; i += 2) {
+        var tileType = oreRecipe[i];
+        var amount = oreRecipe[i + 1];
+        numItems = Math.min(numItems, this.oreInventory[tileType.id] / amount / 255);
+    }
+    if (numItems >= 1000) return -1;
+    return numItems >> 0;
+}
+
+Player.prototype.consumeOreRecipe = function(oreRecipe) {
+    for (var i = 0; i+1 < oreRecipe.length; i += 2) {
+        var tileType = oreRecipe[i];
+        var amount = oreRecipe[i + 1];
+        this.oreInventory[tileType.id] -= amount * 255;
+    }
+}
+
+// TODO: Use calcOreRecipeQuantity
 Player.prototype.hasRequiredRecipeResources = function(recipe) {
     var entity = global.gameData.world.entityWorld.objects[this.entityId];
     if (!entity) return false;

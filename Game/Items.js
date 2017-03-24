@@ -293,7 +293,8 @@ Items.initItems = function() {
             maxStackSize: 100,
             type: "tool",
             typeOfType: "block",
-            blockId: num
+            blockId: num,
+            oreRecipe: block.oreRecipe
         }
         ++num;
     }
@@ -381,7 +382,7 @@ Items.initItems = function() {
         type: "tool",
         typeOfType: "shovel",
         digSpeed: 1.0,
-        maxDigHardness: Tiles.Apatite.hardness,
+        maxDigHardness: Tiles.Iron.hardness + 10,
     }
 
     // Melee

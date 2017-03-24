@@ -12,7 +12,7 @@ Tiles.Dirt = {
 Tiles.Stone = {
     name: "Stone",
     isSolid: true,
-    isOre: false,
+    isOre: true,
     hardness: 4,
     xp: 1
 };
@@ -44,7 +44,7 @@ Tiles.Coal = {
 Tiles.Sulfur = {
     name: "Sulfur",
     isSolid: true,
-    isOre: true,
+    isOre: false,
     hardness: 20,
     xp: 20
 };
@@ -65,7 +65,7 @@ Tiles.Iron = {
     xp: 40
 };
 
-Tiles.Apatite = {
+/*Tiles.Apatite = {
     name: "Apatite",
     isSolid: true,
     isOre: true,
@@ -135,4 +135,4 @@ Tiles.Diamond = {
     isOre: true,
     hardness: 120,
     xp: 200
-};
+};*/

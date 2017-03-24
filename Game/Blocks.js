@@ -227,7 +227,8 @@ Blocks.initBlocks = function() {
         isSolid: true,
         hardness: 1.0,
         type: BlockTypes.FOREGROUND,
-        buildDuration: 20
+        buildDuration: 20,
+        oreRecipe: [Tiles.Stone, 1]
     };
 
     Blocks.WoodCrate = {
@@ -272,7 +273,8 @@ Blocks.initBlocks = function() {
         bulletBunkerDistance: 1.0,
         bulletBunkerNearFactor: 1.0,
         bulletBunkerFarFactor: 0.5,
-        projectileArmor: 0.5
+        projectileArmor: 0.5,
+        oreRecipe: [Tiles.Stone, 2]
     }
 
     Blocks.BlueForcefield = {
@@ -285,7 +287,8 @@ Blocks.initBlocks = function() {
         clickFunction: BlockDoorFunctions.blueForcefield,
         maxDoorSize: 1,
         doorOpenTime: 2000,
-        doorOpenDelay: 200
+        doorOpenDelay: 200,
+        oreRecipe: [Tiles.Copper, 2]
     }
 
     Blocks.RedForcefield = {
@@ -298,21 +301,22 @@ Blocks.initBlocks = function() {
         clickFunction: BlockDoorFunctions.redForcefield,
         maxDoorSize: 10,
         doorOpenTime: 2000,
-        doorOpenDelay: 200
+        doorOpenDelay: 200,
+        oreRecipe: [Tiles.Copper, 2]
     }
 
     Blocks.BlueForcefieldOpen = {
         name: "Blue Forcefield",
         isSolid: false,
         hardness: 1.0,
-        type: BlockTypes.FOREGROUND
+        oreRecipe: BlockTypes.FOREGROUND
     }
 
     Blocks.RedForcefieldOpen = {
         name: "Red Forcefield",
         isSolid: false,
         hardness: 1.0,
-        type: BlockTypes.FOREGROUND
+        oreRecipe: BlockTypes.FOREGROUND
     }
 
     Blocks.HealthBox = {
@@ -326,7 +330,8 @@ Blocks.initBlocks = function() {
             entity.potionEffects = new EntityPotionEffects();
             entity.potionEffects.add(PotionEffectTypes.HealNearEntities, -1);
             return entity;
-        }
+        },
+        oreRecipe: [Tiles.Copper, 2]
     }
 
     Blocks.AmmoBox = {
@@ -340,7 +345,8 @@ Blocks.initBlocks = function() {
             entity.potionEffects = new EntityPotionEffects();
             entity.potionEffects.add(PotionEffectTypes.SupplyAmmoNearEntities, -1);
             return entity;
-        }
+        },
+        oreRecipe: [Tiles.Copper, 2]
     }
 
     Blocks.Chest = {
@@ -360,7 +366,8 @@ Blocks.initBlocks = function() {
             entity.inventory = EntityInventory.createInventory(entityId, 4, 4);
             entity.inventory.addItem(global.gameData, Items.Types.RustyShovel.id, Math.floor(Math.random() * 8));
             return entity;
-        }
+        },
+        oreRecipe: [Tiles.Iron, 2]
     }
 
     Blocks.MachineGunTurret = {
@@ -375,7 +382,8 @@ Blocks.initBlocks = function() {
             var weaponId = Items.Types.WeaponMachineGun.id;
             sendCommand(new CommandEntityInventory(entityId, CommandEntityInventory.Actions.ADD_ITEM, weaponId, 1));
             sendCommand(new CommandEntityEquipItem(entityId, 0, weaponId, true));
-        }
+        },
+        oreRecipe: [Tiles.Coal, 5, Tiles.Copper, 5, Tiles.Iron, 5]
     }
 
     Blocks.SmgTurret = {
@@ -390,7 +398,8 @@ Blocks.initBlocks = function() {
             var weaponId = Items.Types.WeaponSmg.id;
             sendCommand(new CommandEntityInventory(entityId, CommandEntityInventory.Actions.ADD_ITEM, weaponId, 1));
             sendCommand(new CommandEntityEquipItem(entityId, 0, weaponId, true));
-        }
+        },
+        oreRecipe: [Tiles.Coal, 2, Tiles.Copper, 1, Tiles.Iron, 1]
     }
 
     Blocks.Toxin = {

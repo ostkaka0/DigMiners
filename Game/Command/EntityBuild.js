@@ -27,15 +27,21 @@ CommandEntityBuild.prototype.execute = function() {
         setBackground(global.gameData.world.blockWorld, this.x, this.y, this.blockId);*/
 
     var entity = global.gameData.world.entityWorld.objects[this.entityId];
+    var block = global.gameData.blockRegister[this.blockId];
     if (!entity) return;
     if (!isServer && this.blockId)
         entity.bodyparts.bodyparts["rightArm"].cycle("rightArm", 256, true);
     if (isServer) {
-        var block = global.gameData.blockRegister[this.blockId];
         var entityBlockPlacer = { blockPlacer: new EntityBlockPlacer([this.x, this.y], this.blockId, block.buildDuration, entity.id) };
         var entityBlockPlacerId = global.gameData.world.idList.next();
         sendCommand(new CommandEntitySpawn(global.gameData, entityBlockPlacer, entityBlockPlacerId));
         entity.blockPlacerId = entityBlockPlacerId;
+    }
+
+    if (entity.controlledByPlayer && block.oreRecipe) {
+        var player = gameData.playerWorld.objects[entity.controlledByPlayer.playerId];
+        if (player)
+            player.consumeOreRecipe(block.oreRecipe);
     }
 }
 
