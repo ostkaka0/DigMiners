@@ -40,8 +40,15 @@ CommandEntityBuild.prototype.execute = function() {
 
     if (entity.controlledByPlayer && block.oreRecipe) {
         var player = gameData.playerWorld.objects[entity.controlledByPlayer.playerId];
-        if (player)
+        if (player) {
             player.consumeOreRecipe(block.oreRecipe);
+            if (player.calcOreRecipeQuantity(block.oreRecipe) == 0 && entity.equippedItems) {
+                entity.isBuilding = false;
+                Event.trigger(EntityEquippedItems.Events.onDequip, entity, this.stackId, RegisterItem[this.blockId]);
+                if (!isServer && entity.bodyparts && entity.bodyparts.bodyparts["tool"])
+                    entity.bodyparts.bodyparts["tool"].sprite.visible = false;
+            }
+        }
     }
 }
 

@@ -161,15 +161,21 @@ InventoryHUD.prototype.update = function() {
             InventoryHUD.putItemImage(slotImageContainer, itemType, 32, 32, itemType.texture.inventoryAngle, itemType.texture.inventoryOffset, itemType.texture.inventorySize);
 
             slotTextContainer.innerText = "";
-            if (item.amount > 1)
-                slotTextContainer.innerText = item.amount;
-            else if (itemType.oreRecipe) {
+            var amount = item.amount;
+            var showAmount = (amount > 1);
+            if (itemType.oreRecipe) {
                 console.log("ORERECIPE");
-                var oreRecipeQuantity = global.player.calcOreRecipeQuantity(itemType.oreRecipe);
-                if (oreRecipeQuantity >= 0)
-                    slotTextContainer.innerText = oreRecipeQuantity;
+                var amount = global.player.calcOreRecipeQuantity(itemType.oreRecipe);
+                showAmount = (amount >= 0);
             }
+            if (showAmount)
+                slotTextContainer.innerText = amount;
 
+            if (amount == 0) {
+                slot.style.opacity = 0.5;
+            } else {
+                slot.style.opacity = 1.0;
+            }
             slotDescriptionContainer.innerText = itemType.name;
 
             if (item.equipped)
@@ -177,16 +183,18 @@ InventoryHUD.prototype.update = function() {
 
             var context = this;
             $(slot).off();
-            $(slot).click(function() {
-                var slotId = $(this).attr("slotId");
-                var message = new MessageRequestClickSlot(context.inventory.inventoryId, slotId, EntityInventoryClickTypes.LEFT_CLICK);
-                message.send(socket);
-            });
-            $(slot).contextmenu(function() {
-                var slotId = $(this).attr("slotId");
-                var message = new MessageRequestClickSlot(context.inventory.inventoryId, slotId, EntityInventoryClickTypes.RIGHT_CLICK);
-                message.send(socket);
-            });
+            if (amount != 0) {
+                $(slot).click(function() {
+                    var slotId = $(this).attr("slotId");
+                    var message = new MessageRequestClickSlot(context.inventory.inventoryId, slotId, EntityInventoryClickTypes.LEFT_CLICK);
+                    message.send(socket);
+                });
+                $(slot).contextmenu(function() {
+                    var slotId = $(this).attr("slotId");
+                    var message = new MessageRequestClickSlot(context.inventory.inventoryId, slotId, EntityInventoryClickTypes.RIGHT_CLICK);
+                    message.send(socket);
+                });
+            }
             $(slot).mouseenter(function() {
                 var text = $(this).find('.slotDescriber');
                 text.fadeIn(50);
