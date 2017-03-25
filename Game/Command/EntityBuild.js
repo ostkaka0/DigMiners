@@ -37,19 +37,6 @@ CommandEntityBuild.prototype.execute = function() {
         sendCommand(new CommandEntitySpawn(global.gameData, entityBlockPlacer, entityBlockPlacerId));
         entity.blockPlacerId = entityBlockPlacerId;
     }
-
-    if (entity.controlledByPlayer && block.oreRecipe) {
-        var player = gameData.playerWorld.objects[entity.controlledByPlayer.playerId];
-        if (player) {
-            player.consumeOreRecipe(block.oreRecipe);
-            if (player.calcOreRecipeQuantity(block.oreRecipe) == 0 && entity.equippedItems) {
-                entity.isBuilding = false;
-                Event.trigger(EntityEquippedItems.Events.onDequip, entity, this.stackId, RegisterItem[this.blockId]);
-                if (!isServer && entity.bodyparts && entity.bodyparts.bodyparts["tool"])
-                    entity.bodyparts.bodyparts["tool"].sprite.visible = false;
-            }
-        }
-    }
 }
 
 CommandEntityBuild.prototype.serialize = function(byteArray, index) {

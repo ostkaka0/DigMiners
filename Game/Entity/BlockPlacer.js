@@ -40,6 +40,7 @@ EntityBlockPlacer.prototype.update = function(entity) {
     var playerId = (placerEntity && placerEntity.controlledByPlayer) ? placerEntity.controlledByPlayer.playerId : undefined;
     var player = (playerId != undefined) ? global.gameData.playerWorld.objects[playerId] : undefined;
     var inventoryItem = (placerEntity && placerEntity.inventory) ? placerEntity.inventory.getEquippedItemType("tool") : undefined;
+    var blockType = gameData.blockRegister[this.blockId];
     var buildFailure = false;
 
     if (!placerEntity || placerEntity.blockPlacerId != entity.id)
@@ -47,6 +48,8 @@ EntityBlockPlacer.prototype.update = function(entity) {
     if (player && !player.canPlaceBlock(global.gameData, this.blockPos[0], this.blockPos[1]))
         buildFailure = true;
     if (inventoryItem && inventoryItem.blockId != this.blockId)
+        buildFailure = true;
+    if (blockType.oreRecipe && player && player.calcOreRecipeQuantity(blockType.oreRecipe) == 0)
         buildFailure = true;
 
     var shouldDestroy = (buildFailure && this.duration >= 0) || this.duration <= -2;

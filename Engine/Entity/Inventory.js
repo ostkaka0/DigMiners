@@ -166,6 +166,15 @@ EntityInventory.prototype.hasItem = function(id, amount) {
     }
     return false;
 }
+EntityInventory.prototype.isStatic = function(id) {
+    console.log("static?");
+    for (var i = 0; i < this.items.length; ++i) {
+        if (this.items[i].id == id && this.items[i].static)
+            return true;
+    }
+    console.log("not static");
+    return false;
+}
 
 EntityInventory.prototype.getAmountById = function(id) {
     var amount = 0;
