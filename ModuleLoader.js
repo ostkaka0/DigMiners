@@ -28,6 +28,7 @@ exports.loadModule = function(fileList, fileTable, path) {
     var dirs = [];
     var files = [];
     var filePaths = FS.readdirSync(path);
+    filePaths.sort();
     for(var i = 0; i < filePaths.length; ++i) {
         var filePath = path + "/" + filePaths[i];
         var stat = FS.statSync(filePath);

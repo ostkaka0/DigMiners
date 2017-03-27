@@ -63,6 +63,7 @@
                 $dirs = array();
                 $files = array();
                 $filePaths = scandir($path);
+                sort($filePaths);
                 foreach($filePaths as $filePath) {
                     if ($filePath == "..") continue;
                     $filePath = $path . $filePath;
