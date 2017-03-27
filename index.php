@@ -53,7 +53,8 @@
                     $depsCode = file_get_contents($moduleFilePath);
                     $lines = explode("\n", $depsCode);
                     foreach($lines as $line) {
-                        $filePath = $path . explode("//", $line, 1)[0];
+                        $filePath = $path . explode("//", $line, 2)[0];
+                        $filePath = trim($filePath);
                         if (is_dir($filePath))
                             loadModule($filePath);
                         else
