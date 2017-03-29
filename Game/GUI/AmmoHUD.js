@@ -6,12 +6,10 @@ var AmmoHUD = function() {
     this.root = $("<div>", { "text": "No weapon equipped" });
     this.root.css({
         "position": "fixed",
-        "background-color": "rgba(64, 64, 64, 0.5)",
         "right": "10px",
         "bottom": "10px",
         "padding": "10px",
         "z-index": "1",
-        "color": "white",
     });
     this.root.appendTo("#hud");
 

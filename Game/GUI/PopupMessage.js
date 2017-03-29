@@ -9,6 +9,7 @@ var PopupMessage = function(text, timeout) {
         "left": "50%",
         "top": "25px",
         "display": "none",
+        "background-color": "rgba(0,0,0,0)",
     });
 
     this.inner = $("<div>", {

@@ -11,8 +11,6 @@ var Chat = function() {
         "bottom": "5px",
         "z-index": "1",
         "padding": "0",
-        "background-color": "rgba(0, 0, 0, 0.25)",
-        "border-radius": "5px",
     });
 
     this.textOutput = $("<div>", {

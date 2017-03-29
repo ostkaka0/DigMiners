@@ -7,7 +7,6 @@ var DugItems = function() {
         "position": "fixed",
         "right": "70px",
         "top": "100px",
-        "background-color": "rgba(64, 64, 64, 0.5)",
         "-moz-user-select": "none",
         "-khtml-user-select": "none",
         "-webkit-user-select": "none",

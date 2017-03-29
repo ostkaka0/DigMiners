@@ -33,6 +33,7 @@ var HUD = function(gameData) {
     this.chat = new Chat();
     this.ammo = new AmmoHUD();
     this.level = new HUDLevel();
+    this.levelPicker = new HUDLevelPicker();
 
     $('.hud').show();
 }
