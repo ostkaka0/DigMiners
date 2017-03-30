@@ -13,6 +13,9 @@ class HUDLevelPicker {
         this.buttonA = $("<button>", {"text": "+20 health"}).appendTo(this.root);
         this.buttonB = $("<button>", {"text": "+5 speed"}).appendTo(this.root);
 
+        this.buttonA.click(() => new MessageChoosePerk(global.player.perkLevel + 1, 0).send(socket));
+        this.buttonB.click(() => new MessageChoosePerk(global.player.perkLevel + 1, 1).send(socket));
+
         Event.subscribe(Player.events.onPerkChange, this, (player) => this.update(player));
         this.update(global.player);
     }

@@ -37,7 +37,7 @@ Player.prototype.addXP = function(xp) {
         Event.trigger(Player.events.onLevelChange, this);
 }
 
-Player.prototype.pickPerk = function(perkId) {
+Player.prototype.choosePerk = function(perkId) {
     var perks = LevelPerks[this.perkLevel + 1];
     if (!perks) return;
     this.perkLevel++;
