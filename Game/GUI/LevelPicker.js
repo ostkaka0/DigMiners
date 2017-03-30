@@ -13,16 +13,21 @@ class HUDLevelPicker {
         this.buttonA = $("<button>", {"text": "+20 health"}).appendTo(this.root);
         this.buttonB = $("<button>", {"text": "+5 speed"}).appendTo(this.root);
 
-
-        Event.subscribe(Player.events.onLevelChange, this, (player) => this.update(player));
-        this.root.hide();
+        Event.subscribe(Player.events.onPerkChange, this, (player) => this.update(player));
         this.update(global.player);
     }
 
     update(player) {
         if (player != global.player) return;
-        this.label.text("Level " + player.level + "!");
-        this.root.show();
+        var perks = LevelPerks[player.perkLevel + 1];
+        if (player.perkLevel < player.level && perks) {
+            this.label.text("Make a choice!");
+            this.buttonA.text(perks.aText);
+            this.buttonB.text(perks.bText);
+            this.root.show();
+        } else {
+            this.root.hide();
+        }
     }
 
     destroy() {

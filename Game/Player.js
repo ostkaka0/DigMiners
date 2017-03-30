@@ -8,8 +8,9 @@ var Player = function(playerId, entityId) {
     this.oreInventory = new Array();
     this.xp = 0;
     this.level = 1;
+    this.perkLevel = 1;
 }
-Player.events = { onLevelChange: new Map(), onXPChange: new Map() };
+Player.events = { onLevelChange: new Map(), onXPChange: new Map(), onPerkChange: new Map() };
 
 Player.prototype.getRequiredXP = function() {
     var requiredXP = 10 * Math.pow(10.0, (this.level-1)/10.0);
@@ -25,9 +26,29 @@ Player.prototype.addXP = function(xp) {
         this.level++;
         requiredXP = this.getRequiredXP();
     }
+    // Skip empty perk levels
+    while(this.perkLevel < this.level && !LevelPerks[this.perkLevel + 1])
+        this.perkLevel++;
+    Event.trigger(Player.events.onPerkChange, this);
+
+    // Trigger events
     Event.trigger(Player.events.onXPChange, this);
     if (oldLevel != this.level)
         Event.trigger(Player.events.onLevelChange, this);
+}
+
+Player.prototype.pickPerk = function(perkId) {
+    var perks = LevelPerks[this.perkLevel + 1];
+    if (!perks) return;
+    this.perkLevel++;
+    if (perkId == 0)
+        perks.a(this, gameData.world.entityWorld.objects[this.entityId]);
+    else
+        perks.b(this, gameData.world.entityWorld.objects[this.entityId]);
+    // Skip empty perk levels
+    while(this.perkLevel < this.level && !LevelPerks[this.perkLevel + 1])
+        this.perkLevel++;
+    Event.trigger(Player.events.onPerkChange, this);
 }
 
 Player.prototype.calcOreRecipeQuantity = function(oreRecipe) {
