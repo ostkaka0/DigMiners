@@ -34,6 +34,7 @@ var HUD = function(gameData) {
     this.ammo = new AmmoHUD();
     this.level = new HUDLevel();
     this.levelPicker = new HUDLevelPicker();
+    this.skills = new HUDSkills();
 
     $('.hud').show();
 }

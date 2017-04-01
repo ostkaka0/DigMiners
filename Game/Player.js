@@ -9,8 +9,10 @@ var Player = function(playerId, entityId) {
     this.xp = 0;
     this.level = 1;
     this.perkLevel = 1;
+    this.skillLevels = [Object.keys(PlayerSkills).length];
+    this.skillPoints = 0;
 }
-Player.events = { onLevelChange: new Map(), onXPChange: new Map(), onPerkChange: new Map() };
+Player.events = { onLevelChange: new Map(), onXPChange: new Map(), onPerkChange: new Map(), onSkillChange: new Map() };
 
 Player.prototype.getRequiredXP = function() {
     var requiredXP = 10 * Math.pow(10.0, (this.level-1)/10.0);
@@ -25,6 +27,7 @@ Player.prototype.addXP = function(xp) {
         this.xp -= requiredXP;
         this.level++;
         requiredXP = this.getRequiredXP();
+        this.skillPoints++;
     }
     // Skip empty perk levels
     while(this.perkLevel < this.level && !LevelPerks[this.perkLevel + 1])
@@ -49,6 +52,14 @@ Player.prototype.choosePerk = function(perkId) {
     while(this.perkLevel < this.level && !LevelPerks[this.perkLevel + 1])
         this.perkLevel++;
     Event.trigger(Player.events.onPerkChange, this);
+}
+
+Player.prototype.chooseSkill = function(skill) {
+    if (this.skillPoints <= 0) return;
+    playerSkillApply(skill, 1);
+    this.skillLevels[skill]++;
+    this.skillPoints--;
+    Event.trigger(Player.events.onSkillChange, this);
 }
 
 Player.prototype.calcOreRecipeQuantity = function(oreRecipe) {
