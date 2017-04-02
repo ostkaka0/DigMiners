@@ -14,39 +14,38 @@ class HUDSkills {
         this.bars = [];
         this.innerBars = [];
         this.buttons = [];
-        for (var i = 0; i < Object.keys(PlayerSkills).length; i++) {
+        for (var i = 0; i < PlayerSkillRegister.length; i++) {
             var label = $("<p>", { "text": PlayerSkillRegister[i].name }).appendTo(this.root);
             var bar = $("<div>").appendTo(this.root);
             var innerBar = $("<div>").appendTo(bar);
             var button = $("<div>", { "text": "+" }).appendTo(this.root);
             label.css({ "font-size": "12px", "margin": "0", "padding": "0" })
             bar.css({ "background-color": "rgba(0, 0, 0, 0.25)", "width": "320px", "height": "8px", "float": "left", "margin-top": "8px", "margin-bottom": "12px"});
-            innerBar.css({ "background-color": "#AAA", "width": "32px", "height": "8px" });
+            innerBar.css({ "background-color": "#AAA", "width": "0%", "height": "8px" });
             button.css({ "background-color": "rgba(0, 0, 0, 0)", "width": "32px", "height": "12px", "float": "left", "margin-bottom": "0px"});
 
-
-            //this.button.click(() => new MessageChoosePerk(global.player.perkLevel + 1, i).send(socket));
+            // Closure to pass i by value
+            ((i) => button.click(() => new MessageChooseSkill(i).send(socket)))(i);
 
             this.bars[i] = bar;
             this.innerBars[i] = innerBar
             this.buttons[i] = button;
         }
 
-        Event.subscribe(Player.events.onPerkChange, this, (player) => this.update(player));
+        Event.subscribe(Player.events.onSkillChange, this, (player) => this.update(player));
         this.update(global.player);
     }
 
     update(player) {
-        /*if (player != global.player) return;
-        var perks = LevelPerks[player.perkLevel + 1];
-        if (player.perkLevel < player.level && perks) {
-            this.label.text("Make a choice!");
-            this.buttonA.text(perks.aText);
-            this.buttonB.text(perks.bText);
+        if (player != global.player) return;
+        if (player.skillPoints >= 1) {
             this.root.show();
+            for (var i = 0; i < PlayerSkillRegister.length; i++) {
+                this.innerBars[i].css({ "width": player.skillLevels[i] / 10 * 100 + "%" })
+            }
         } else {
             this.root.hide();
-        }*/
+        }
     }
 
     destroy() {

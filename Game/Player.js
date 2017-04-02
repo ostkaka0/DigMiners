@@ -9,8 +9,8 @@ var Player = function(playerId, entityId) {
     this.xp = 0;
     this.level = 1;
     this.perkLevel = 1;
-    this.skillLevels = [Object.keys(PlayerSkills).length];
-    this.skillPoints = 0;
+    this.skillLevels = new Array(PlayerSkillRegister.length).fill(0);
+    this.skillPoints = 2;
 }
 Player.events = { onLevelChange: new Map(), onXPChange: new Map(), onPerkChange: new Map(), onSkillChange: new Map() };
 
@@ -32,12 +32,14 @@ Player.prototype.addXP = function(xp) {
     // Skip empty perk levels
     while(this.perkLevel < this.level && !LevelPerks[this.perkLevel + 1])
         this.perkLevel++;
-    Event.trigger(Player.events.onPerkChange, this);
 
     // Trigger events
     Event.trigger(Player.events.onXPChange, this);
-    if (oldLevel != this.level)
+    if (oldLevel != this.level) {
         Event.trigger(Player.events.onLevelChange, this);
+        Event.trigger(Player.events.onPerkChange, this);
+        Event.trigger(Player.events.onSkillChange, this);
+    }
 }
 
 Player.prototype.choosePerk = function(perkId) {
@@ -56,7 +58,7 @@ Player.prototype.choosePerk = function(perkId) {
 
 Player.prototype.chooseSkill = function(skill) {
     if (this.skillPoints <= 0) return;
-    playerSkillApply(skill, 1);
+    playerSkillApply(gameData.world.entityWorld.objects[this.entityId], skill, 1);
     this.skillLevels[skill]++;
     this.skillPoints--;
     Event.trigger(Player.events.onSkillChange, this);
