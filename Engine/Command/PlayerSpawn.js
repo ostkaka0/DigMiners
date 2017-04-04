@@ -14,7 +14,7 @@ CommandPlayerSpawn.prototype.execute = function() {
     // Associate with existing, already spawned entity (from MessageRequestSpawn)
     var entity = global.gameData.world.entityWorld.objects[this.entityId];
     var player = global.gameData.playerWorld.objects[this.playerId];
-    player.entityId = this.entityId;
+    player.onSpawn(entity);
     if (isServer)
         player.name = this.playerName;
 

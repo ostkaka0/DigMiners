@@ -6,16 +6,32 @@ var Player = function(playerId, entityId) {
     this.text = null;
     this.deathTick = global.gameData.world.tickId;
     this.oreInventory = new Array();
+    // Initialized at onSpawn(entity)
+    this.xp = 0;
+    this.level = 0;
+    this.perkLevel = 0;
+    this.skillLevels = null;
+    this.skillPoints = 0;
+}
+Player.events = { onLevelChange: new Map(), onXPChange: new Map(), onPerkChange: new Map(), onSkillChange: new Map() };
+
+Player.prototype.onSpawn = function(entity) {
+    this.entityId = entity.id;
+    var newXP = 0;
+    for (var i = 1; i < this.level-1; i++) {
+        newXP += this.getRequiredXP(i);
+    }
     this.xp = 0;
     this.level = 1;
     this.perkLevel = 1;
     this.skillLevels = new Array(PlayerSkillRegister.length).fill(0);
-    this.skillPoints = 2;
+    this.skillPoints = 0;
+    this.addXP(newXP);
 }
-Player.events = { onLevelChange: new Map(), onXPChange: new Map(), onPerkChange: new Map(), onSkillChange: new Map() };
 
-Player.prototype.getRequiredXP = function() {
-    var requiredXP = 10 * Math.pow(10.0, (this.level-1)/10.0);
+Player.prototype.getRequiredXP = function(level) {
+    level = level || this.level;
+    var requiredXP = 10 * Math.pow(10.0, (level-1)/10.0);
     return 10 * Math.round( requiredXP / Math.pow(10, Math.floor(Math.log10(requiredXP/10)))) *  Math.pow(10, Math.floor(Math.log10(requiredXP/10)));
 }
 
