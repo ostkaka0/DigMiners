@@ -1,6 +1,7 @@
 var LevelPerks = {};
 
 (function(){
+    return;
     LevelPerks[2] = {
         aText: "+health",
         bText: "+speed",

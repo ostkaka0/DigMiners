@@ -17,6 +17,7 @@ Player.events = { onLevelChange: new Map(), onXPChange: new Map(), onPerkChange:
 
 Player.prototype.onSpawn = function(entity) {
     this.entityId = entity.id;
+    if (!entity.health) return;
     var newXP = 0;
     for (var i = 1; i < this.level-1; i++) {
         newXP += this.getRequiredXP(i);

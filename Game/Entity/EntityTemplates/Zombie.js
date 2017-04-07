@@ -22,7 +22,7 @@
 var entityTemplateZombie = function(entityId, pos, teamId) {
     var entity = {};
     entity.physicsBody = new EntityPhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0, 1.0, 0.3);
-    entity.movement = new EntityMovement(20.0, 0.25, 1.0, 0.5);
+    entity.movement = new EntityMovement(20.0, 0.25, 1.0, 4.0, 4.0, 0.25);
     entity.name = new EntityName("Zombie");
     entity.inventory = EntityInventory.createInventory(entityId, 10, 1);
     entity.equippedItems = new EntityEquippedItems();

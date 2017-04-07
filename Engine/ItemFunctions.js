@@ -32,7 +32,7 @@ ItemFunctions.projectile = function(itemType, entity) {
             var toolUsePos = [0, 0];
             v2.add(toolUsePos, tool.finalPos, toolUsePos);
             toolUsePos = [toolUsePos[0], -toolUsePos[1]];
-            v2.mul(1 / 32, toolUsePos, toolUsePos);
+            v2.mul(0.5 / 32, toolUsePos, toolUsePos);//v2.mul(1 / 32, toolUsePos, toolUsePos);
             v2.add(entity.physicsBody.getPos(), toolUsePos, toolUsePos);
             // Put your offsets here:
             v2.add(toolUsePos, [0, 0], toolUsePos);

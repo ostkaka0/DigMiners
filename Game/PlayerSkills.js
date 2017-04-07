@@ -5,6 +5,9 @@ var PlayerSkills = {
     Agility: {
         name: "Agility",
     },
+    Mining: {
+        name: "Mining",
+    },
     /*Mining: 2,
     Building: 3,*/
 }
@@ -19,10 +22,12 @@ var playerSkillApply = function(entity, skill, num) {
     } else if (skill == PlayerSkills.Agility.id) {
         if (!entity.movement) return false;
         entity.movement.speed += 5 * num;
-    } /*else if (skill = PlayerSkills.Mining) {
+    } else if (skill = PlayerSkills.Mining) {
         if (!entity.movement) return false;
+        entity.movement.digSpeedMultiplier += 0.25 * num;
+        entity.movement.blockBreakMultiplier += 0.25 * num;
 
-    } else if (skill = PlayerSkills.Building) {
+    } /*else if (skill = PlayerSkills.Building) {
         if (!entity.movement) return false;
     }*/
 

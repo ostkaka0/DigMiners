@@ -8,7 +8,7 @@
 // TODO: Fix dependency
 
 
-var EntityMovement = function(speed, toolUseDuration, damageMultiplier, digHardnessMultiplier) {
+var EntityMovement = function(speed, toolUseDuration, damageMultiplier, digHardnessMultiplier, digSpeedMultiplier, blockBreakMultiplier) {
     this.keyStatuses = {};
     this.direction = v2.create(0, 0);
     this.rotationDirection = v2.create(0, 0);
@@ -29,6 +29,8 @@ var EntityMovement = function(speed, toolUseDuration, damageMultiplier, digHardn
     this.isMining = false;
     this.damageMultiplier = (damageMultiplier == null) ? 1.0 : damageMultiplier;
     this.digHardnessMultiplier = (digHardnessMultiplier == null) ? 1.0 : digHardnessMultiplier;
+    this.digSpeedMultiplier = (digSpeedMultiplier == null) ? 1.0 : digSpeedMultiplier
+    this.blockBreakMultiplier = (blockBreakMultiplier == null) ? 1.0 : blockBreakMultiplier
     this.entityLookTarget = null;
 }
 global.EntityMovement = EntityMovement;

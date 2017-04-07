@@ -333,7 +333,7 @@ Items.initItems = function() {
         itemFunction: ItemFunctions.melee,
         type: "tool",
         typeOfType: "shovel",
-        digSpeed: 0.25,
+        digSpeed: 0.125,
         maxDigHardness: Tiles.Copper.hardness,
     }
     Items.Types.CopperShovel = {
@@ -349,7 +349,7 @@ Items.initItems = function() {
         useDuration: 2,
         type: "tool",
         typeOfType: "shovel",
-        digSpeed: 0.375,
+        digSpeed: 0.1875,
         maxDigHardness: Tiles.Iron.hardness,
     }
     Items.Types.IronShovel = {
@@ -365,7 +365,7 @@ Items.initItems = function() {
         useDuration: 2,
         type: "tool",
         typeOfType: "shovel",
-        digSpeed: 0.5,
+        digSpeed: 0.25,
         maxDigHardness: Tiles.Iron.hardness,
     }
     Items.Types.SteelShovel = {
@@ -381,7 +381,7 @@ Items.initItems = function() {
         useDuration: 2,
         type: "tool",
         typeOfType: "shovel",
-        digSpeed: 1.0,
+        digSpeed: 0.5,
         maxDigHardness: Tiles.Iron.hardness + 10,
     }
 

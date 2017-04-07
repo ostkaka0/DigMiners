@@ -5,16 +5,16 @@ Tiles.Dirt = {
     name: "Dirt",
     isSolid: true,
     isOre: false,
-    hardness: 1,
-    xp: 0
+    hardness: 2,
+    xp: 1
 };
 
 Tiles.Stone = {
     name: "Stone",
     isSolid: true,
-    isOre: true,
+    isOre: false,
     hardness: 4,
-    xp: 1
+    xp: 2
 };
 
 Tiles.HardStone = {
@@ -22,7 +22,7 @@ Tiles.HardStone = {
     isSolid: true,
     isOre: false,
     hardness: 8,
-    xp: 3
+    xp: 4
 };
 
 Tiles.VeryHardStone = {

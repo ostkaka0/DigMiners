@@ -11,7 +11,9 @@ Entity.getDigSpeed = function(entity) {
     var defaultDigSpeed = 0.0;
     var itemType = entity.equippedItems.items["tool"];
     if (!itemType || itemType.typeOfType != "shovel") defaultDigSpeed = defaultDigSpeed;
-    else defaultDigSpeed = itemType.digSpeed
+    else defaultDigSpeed = itemType.digSpeed;
+    if (entity.movement)
+        defaultDigSpeed *= entity.movement.digSpeedMultiplier;
     return defaultDigSpeed;
 }
 
@@ -19,17 +21,20 @@ Entity.getBlockBreakSpeed = function(entity) {
     var blockBreakSpeed = 1.0;
     var itemType = entity.equippedItems.items["tool"];
     if (itemType)
-        blockBreakSpeed = itemType.blockBreakSpeed || 1.0;
+        blockBreakSpeed = itemType.blockBreakSpeed || itemType.digSpeed || 1.0;
     if (entity.movement)
-        blockBreakSpeed *= entity.movement.digHardnessMultiplier;
-    return blockBreakSpeed;
+        blockBreakSpeed *= entity.movement.blockBreakMultiplier;
+    return 10.0 * blockBreakSpeed;
 }
 
 Entity.getMaxDigHardness = function(entity) {
     var defaultMaxDigHardness = 0.0;
     var itemType = entity.equippedItems.items["tool"];
     if (!itemType || itemType.typeOfType != "shovel") return defaultMaxDigHardness;
-    return itemType.maxDigHardness;
+    defaultMaxDigHardness = itemType.maxDigHardnes;
+    if (entity.movement)
+        defaultMaxDigHardness *= entity.movement.maxDigHardnessMultiplier;
+    return defaultMaxDigHardness;
 }
 
 Entity.canReload = function(entity, itemType) {

@@ -48,7 +48,7 @@ CommandEntityDig.prototype.execute = function() {
         this.radius = 1.0;
         onDensityChange = function([tileX, tileY], tile, oldDensity, newDensity) {
             if (tile.isOre) {
-                var densityChange = (oldDensity - newDensity) / 2 >> 0;
+                var densityChange = (oldDensity - newDensity);// / 2 >> 0;
                 var newDensity2 = oldDensity - densityChange;
                 if (newDensity2 < 128)
                     newDensity2 = 0;
@@ -72,7 +72,6 @@ CommandEntityDig.prototype.execute = function() {
             return newDensity;
         };
     }
-
     var dug = global.gameData.world.tileWorld.carveCircle(global.gameData.tileRegister, [this.pos[0] + digDis * this.dir[0], this.pos[1] + digDis * this.dir[1]], this.radius, this.digSpeed, this.maxDigHardness, onDensityChange);
     if (isServer) {
         // Only process dug ores on server
