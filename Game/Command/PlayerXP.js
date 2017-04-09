@@ -6,7 +6,7 @@ class CommandPlayerXP {
     }
 
     execute() {
-        var player = global.gameData.playerWorld.objects[this.playerId];
+        var player = gameData.playerWorld.objects[this.playerId];
         if (!player) return;
         player.addXP(this.xp);
     }

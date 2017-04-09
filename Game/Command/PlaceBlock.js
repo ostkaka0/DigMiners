@@ -15,8 +15,8 @@ global.CommandPlaceBlock = CommandPlaceBlock;
 RegisterCommand.push(CommandPlaceBlock);
 
 CommandPlaceBlock.prototype.execute = function() {
-    global.gameData.world.blockWorld.setForeground(this.blockPos, this.blockId);
-    var block = global.gameData.blockRegister[this.blockId];
+    World.blockWorld.setForeground(this.blockPos, this.blockId);
+    var block = gameData.blockRegister[this.blockId];
     if (block.onPlace)
         block.onPlace(this.blockPos, block);
 }

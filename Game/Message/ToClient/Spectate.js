@@ -12,8 +12,8 @@ global.MessageSpectate = MessageSpectate;
 RegisterMessage.ToClient.push(MessageSpectate);
 
 MessageSpectate.prototype.execute = function(gameData) {
-    global.spectateEntity = global.gameData.world.entityWorld.objects[this.entityId];
-    global.gameData.world.events.trigger("spectate", global.spectateEntity);
+    global.spectateEntity = World.entities.objects[this.entityId];
+    World.events.trigger("spectate", global.spectateEntity);
 }
 
 MessageSpectate.prototype.send = function(socket) {

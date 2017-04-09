@@ -14,7 +14,7 @@ var BehaviourWalkToPoint = function(entity, goalPoint, radius) {
     this.entity = entity;
     this.goalPoint = goalPoint;
     this.radius = radius || 5.0;
-    this.nextUpdateTickId = global.gameData.world.tickId;
+    this.nextUpdateTickId = World.tickId;
     this.inverval = 20;
 }
 global.BehaviourWalkToPoint = BehaviourWalkToPoint;
@@ -29,13 +29,13 @@ BehaviourWalkToPoint.prototype.initialize = function() {
     v2.sub(this.goalPoint, physicsBody.getPos(), dir);
     v2.normalize(dir, dir);
     sendCommand(new CommandEntityMove(this.entity.id, dir, physicsBody.getPos()));
-    this.nextUpdateTickId = global.gameData.world.tickId + this.inverval;
+    this.nextUpdateTickId = World.tickId + this.inverval;
 }
 
 BehaviourWalkToPoint.prototype.run = function() {
-    if (global.gameData.world.tickId < this.nextUpdateTickId)
+    if (World.tickId < this.nextUpdateTickId)
         return true;
-    this.nextUpdateTickId = global.gameData.world.tickId + this.inverval;
+    this.nextUpdateTickId = World.tickId + this.inverval;
 
     var physicsBody = this.entity.physicsBody;
     var movement = this.entity.movement;

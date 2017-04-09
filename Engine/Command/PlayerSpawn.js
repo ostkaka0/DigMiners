@@ -12,8 +12,8 @@ RegisterCommand.push(CommandPlayerSpawn);
 
 CommandPlayerSpawn.prototype.execute = function() {
     // Associate with existing, already spawned entity (from MessageRequestSpawn)
-    var entity = global.gameData.world.entityWorld.objects[this.entityId];
-    var player = global.gameData.playerWorld.objects[this.playerId];
+    var entity = World.entities.objects[this.entityId];
+    var player = gameData.playerWorld.objects[this.playerId];
     player.onSpawn(entity);
     if (isServer)
         player.name = this.playerName;
@@ -21,10 +21,10 @@ CommandPlayerSpawn.prototype.execute = function() {
     if (!isServer && global.player.id == this.playerId) {
         global.playerEntityId = this.entityId;
         global.playerEntity = entity;
-        global.gameData.HUD.update();
-        global.gameData.world.events.trigger("ownPlayerSpawned", entity, player);
+        gameData.HUD.update();
+        World.events.trigger("ownPlayerSpawned", entity, player);
     }
-    global.gameData.world.events.trigger("playerSpawned", entity, player);
+    World.events.trigger("playerSpawned", entity, player);
 }
 
 CommandPlayerSpawn.prototype.serialize = function(byteArray, index) {

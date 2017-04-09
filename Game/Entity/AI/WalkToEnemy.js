@@ -15,16 +15,16 @@ var BehaviourWalkToEnemy = function(entity, maxRadius) {
     this.entity = entity;
     this.maxRadius = maxRadius;
     this.target = null;
-    this.nextUpdateTickId = global.gameData.world.tickId;
+    this.nextUpdateTickId = World.tickId;
     this.moving = false;
-    this.nextCanRunTickId = global.gameData.world.tickId;
+    this.nextCanRunTickId = World.tickId;
 }
 global.BehaviourWalkToEnemy = BehaviourWalkToEnemy;
 
 BehaviourWalkToEnemy.prototype.canRun = function() {
-    if (global.gameData.world.tickId < this.nextCanRunTickId)
+    if (World.tickId < this.nextCanRunTickId)
         return false;
-    this.nextCanRunTickId = global.gameData.world.tickId + 40 + 40 * Math.random() >> 0;
+    this.nextCanRunTickId = World.tickId + 40 + 40 * Math.random() >> 0;
     this.target = this.getTarget();
     if (this.target == null)
         return false;
@@ -38,8 +38,8 @@ BehaviourWalkToEnemy.prototype.initialize = function() {
 }
 
 BehaviourWalkToEnemy.prototype.run = function() {
-    if (global.gameData.world.tickId < this.nextUpdateTickId) return true;
-    this.nextUpdateTickId = global.gameData.world.tickId + 20;
+    if (World.tickId < this.nextUpdateTickId) return true;
+    this.nextUpdateTickId = World.tickId + 20;
 
     if (!this.target || this.target.isDead || !this.target.isActive) {
         this.target = this.getTarget();
@@ -83,10 +83,10 @@ BehaviourWalkToEnemy.prototype.getTarget = function() {
     var shortestDistanceEntity = null;
     var bodies = [];
     var pos = this.entity.physicsBody.getPos();
-    global.gameData.world.physicsWorld.getBodiesInRadius(bodies, pos, this.maxRadius);
+    World.physics.getBodiesInRadius(bodies, pos, this.maxRadius);
     for (var i = 0; i < bodies.length; i++) {
         var bodyId = bodies[i];
-        var otherEntity = global.gameData.world.physicsEntities[bodyId];
+        var otherEntity = World.physicsEntities[bodyId];
         if (!otherEntity) continue;
         if (!otherEntity.health || !otherEntity.physicsBody) continue;
         if (!otherEntity.team && !otherEntity.movement) continue;

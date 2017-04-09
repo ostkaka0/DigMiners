@@ -14,7 +14,7 @@ global.CommandEntityMove = CommandEntityMove;
 RegisterCommand.push(CommandEntityMove);
 
 CommandEntityMove.prototype.execute = function() {
-    var entity = global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = World.entities.objects[this.entityId];
     if (!entity) return;
     var movement = entity.movement;
     if (!movement) return;

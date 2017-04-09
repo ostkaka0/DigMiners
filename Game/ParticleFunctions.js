@@ -18,7 +18,7 @@ ParticleFunctions.BulletHitParticles = function(pos, angle) {
         var angle2 = angle + (Math.random() - 0.5) * 1.0;
         var velocity = [-Math.cos(angle2), Math.sin(angle2)];
         v2.mul(Math.random() * 12.0, velocity, velocity);
-        global.gameData.world.particleWorld.add(pos, velocity, Particles.Bullet);
+        World.particleWorld.add(pos, velocity, Particles.Bullet);
     }
 }
 
@@ -27,7 +27,7 @@ ParticleFunctions.BloodHitParticles = function(pos, angle) {
         var angle2 = angle + (Math.random() - 0.5) * 1.0;
         var velocity = [Math.cos(angle2), -Math.sin(angle2)];
         v2.mul(Math.random() * 6.0, velocity, velocity);
-        global.gameData.world.particleWorld.add(pos, velocity, Particles.Blood);
+        World.particleWorld.add(pos, velocity, Particles.Blood);
     }
 }
 
@@ -38,6 +38,6 @@ ParticleFunctions.ExplosionParticles = function(pos, radius) {
         v2.mul(Math.random() * 6.0, velocity, velocity);
         var particleType = Particles.Smoke;
         particleType.size = Math.random() * 15 + 20;
-        gameData.world.particleWorld.add(pos, velocity, particleType);
+        World.particleWorld.add(pos, velocity, particleType);
     }
 }

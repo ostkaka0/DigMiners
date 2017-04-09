@@ -15,11 +15,11 @@ global.MessageRequestClickBlock = MessageRequestClickBlock;
 RegisterMessage.ToServer.push(MessageRequestClickBlock);
 
 MessageRequestClickBlock.prototype.execute = function(gameData, player) {
-    var entity = global.gameData.world.entityWorld.objects[player.entityId];
+    var entity = World.entities.objects[player.entityId];
     if (!entity || !this.blockPos) return;
     //console.log("player " + player.playerId + " clicked block " + this.blockPos + ", clicktype: " + this.clickType);
-    var blockId = global.gameData.world.blockWorld.getForeground(this.blockPos);
-    var blockType = global.gameData.blockRegister[blockId];
+    var blockId = World.blockWorld.getForeground(this.blockPos);
+    var blockType = gameData.blockRegister[blockId];
     if (blockType && blockType.isDoor)
         blockType.clickFunction(this.blockPos, blockType, entity, this.clickType);
 }

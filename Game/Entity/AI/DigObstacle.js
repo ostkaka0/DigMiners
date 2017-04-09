@@ -20,7 +20,7 @@ var BehaviourDigObstacle = function(entity, maxWalkDis) {
     this.oldMoveDir = null;
     this.stopTick = null;
     this.nextRunTick = null;
-    this.nextCanRunTickId = global.gameData.world.tickId;
+    this.nextCanRunTickId = World.tickId;
     this.canRunOldPos = null;
     this.oldItemId = 0;
     this.digPauseDuration = 10; // Duration between finish digging and start digging again
@@ -29,11 +29,11 @@ global.BehaviourDigObstacle = BehaviourDigObstacle;
 
 BehaviourDigObstacle.prototype.canRun = function() {
     if (!this.entity.inventory) return false;
-    if (this.nextRunTick && global.gameData.world.tickId < this.nextRunTick)
+    if (this.nextRunTick && World.tickId < this.nextRunTick)
         return false;
-    if (global.gameData.world.tickId < this.nextCanRunTickId)
+    if (World.tickId < this.nextCanRunTickId)
         return false;
-    this.nextCanRunTickId = global.gameData.world.tickId + 5;
+    this.nextCanRunTickId = World.tickId + 5;
 
     // Change equipped item to shovel
     var shovelSlotId = -1;
@@ -58,8 +58,8 @@ BehaviourDigObstacle.prototype.canRun = function() {
     var tilePos = [Math.floor(digPos[0] - 0.5), Math.floor(digPos[1] - 0.5)];
     for (var i = 0; i < 4; i++) {
         var itPos = [tilePos[0] + (i & 1), tilePos[1] + (i >> 1)];
-        var blockId = global.gameData.world.blockWorld.getForeground(itPos);
-        var density = global.gameData.world.tileWorld.getDensity(itPos);
+        var blockId = World.blockWorld.getForeground(itPos);
+        var density = World.tileWorld.getDensity(itPos);
         if (blockId != 0 || density > 127) {
             this.targetTilePos = itPos;
             if (shovelSlotId != -1) {
@@ -82,16 +82,16 @@ BehaviourDigObstacle.prototype.initialize = function() {
     var normalized = v2.create(0, 0);
     v2.normalize(diff, normalized);
     sendCommand(new CommandEntityRotate(this.entity.id, normalized));
-    this.stopTick = global.gameData.world.tickId + (4000 / Config.tickDuration >> 0);
+    this.stopTick = World.tickId + (4000 / Config.tickDuration >> 0);
     this.nextRunTick = null;
 }
 
 BehaviourDigObstacle.prototype.run = function() {
-    var blockId = global.gameData.world.blockWorld.getForeground(this.targetTilePos);
-    var density = global.gameData.world.tileWorld.getDensity(this.targetTilePos);
-    if (global.gameData.world.tickId >= this.stopTick) {
+    var blockId = World.blockWorld.getForeground(this.targetTilePos);
+    var density = World.tileWorld.getDensity(this.targetTilePos);
+    if (World.tickId >= this.stopTick) {
         // No digging for 2 seconds
-        this.nextRunTick = global.gameData.world.tickId + (2000 / Config.tickDuration >> 0);
+        this.nextRunTick = World.tickId + (2000 / Config.tickDuration >> 0);
         return false;
     }
 
@@ -115,7 +115,7 @@ BehaviourDigObstacle.prototype.finish = function() {
     sendCommand(new CommandEntityMove(this.entity.id, [0, 0], this.entity.physicsBody.getPos()));
     sendCommand(new CommandEntityRotate(this.entity.id, this.oldMoveDir));
 
-    this.nextCanRunTickId = global.gameData.world.tickId + this.digPauseDuration;
+    this.nextCanRunTickId = World.tickId + this.digPauseDuration;
     //if (this.oldItemId)
     //    sendCommand(new CommandEntityEquipItem(this.entity.id, 0, this.oldItemId, true));
 }

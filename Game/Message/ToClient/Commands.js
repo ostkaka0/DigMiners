@@ -8,18 +8,18 @@
 ;
 
 var MessageCommands = function() {
-    this.tickId = (isServer) ? global.gameData.world.tickId : 0;
-    this.commands = (isServer) ? global.gameData.world.commands : [];
+    this.tickId = (isServer) ? World.tickId : 0;
+    this.commands = (isServer) ? World.commands : [];
 }
 global.MessageCommands = MessageCommands;
 RegisterMessage.ToClient.push(MessageCommands);
 
 MessageCommands.prototype.execute = function(gameData) {
     if (Config.fakeLag == 0 && Config.fakeJitter == 0) {
-        global.gameData.world.pendingCommands[this.tickId] = this.commands;
+        World.pendingCommands[this.tickId] = this.commands;
     } else {
-        global.gameData.setTimeout(function() {
-            global.gameData.world.pendingCommands[this.tickId] = this.commands;
+        gameData.setTimeout(function() {
+            World.pendingCommands[this.tickId] = this.commands;
         }.bind(this), Config.fakeLag + Config.fakeJitter * Math.random());
     }
 }

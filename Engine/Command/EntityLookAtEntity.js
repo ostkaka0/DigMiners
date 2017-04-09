@@ -10,8 +10,8 @@ global.CommandEntityLookAtEntity = CommandEntityLookAtEntity;
 RegisterCommand.push(CommandEntityLookAtEntity);
 
 CommandEntityLookAtEntity.prototype.execute = function() {
-    var entity = global.gameData.world.entityWorld.objects[this.entityId];
-    var targetEntity = global.gameData.world.entityWorld.objects[this.targetEntityId];
+    var entity = World.entities.objects[this.entityId];
+    var targetEntity = World.entities.objects[this.targetEntityId];
     if (!entity) return;
     var movement = entity.movement;
     if (!movement) return;

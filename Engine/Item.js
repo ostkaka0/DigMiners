@@ -13,7 +13,7 @@ Item.Flags = {
 
 Item.interact = function(itemType, entity) {
     if (!isServer) return;
-    var physicsWorld = global.gameData.world.physicsWorld;
+    var physicsWorld = World.physics;
     var range = itemType.range || 1.0;
     var radius = itemType.radius || 0.5;
     var damage = (itemType.damage || 10.0) * ((itemType & Item.Flags.Positive)? -1 : 1);
@@ -33,7 +33,7 @@ Item.interact = function(itemType, entity) {
     for (var i = 0; i < bodies.length; i++) {
         var bodyId = bodies[i];
         if (bodyId == entityBodyId && !(itemType.flags & Item.Flags.TargetSelf)) continue;
-        var targetEntity = global.gameData.world.physicsEntities[bodyId];
+        var targetEntity = World.physicsEntities[bodyId];
         if (!targetEntity) continue;
         hitEntities.push(targetEntity);
     }
@@ -47,7 +47,7 @@ Item.interact = function(itemType, entity) {
 
     // TODO: CommandEntityHit
     //if (isServer) {
-    //    global.gameData.world.commands.push(new CommandEntityHit(entity, hitEntities));
+    //    World.commands.push(new CommandEntityHit(entity, hitEntities));
     //}
 
     // Digging
@@ -56,11 +56,11 @@ Item.interact = function(itemType, entity) {
         var chunkPos = [0, 0];
         var localPos = [0, 0];
         BlockChunk.fromV2World(hitPos, chunkPos, localPos);
-        var blockChunk = global.gameData.world.blockWorld.get(chunkPos);
+        var blockChunk = World.blockWorld.get(chunkPos);
         if (blockChunk) {
             var blockId = blockChunk.getForeground(localPos[0], localPos[1]);
             if (blockId) {
-                var blockType = global.gameData.blockRegister[blockId];
+                var blockType = gameData.blockRegister[blockId];
                 var strength = blockChunk.getStrength(localPos[0], localPos[1]);
                 // TODO: 16 magic value
                 strength -= 16 * (Entity.getBlockBreakSpeed(entity) / blockType.hardness);
@@ -72,6 +72,6 @@ Item.interact = function(itemType, entity) {
             //ExplosionFunctions.createExplosion(entityPos, 3.0, 50.0, 250.0, 1.0, entity);
         }
         // Dig terrain
-        global.gameData.world.commands.push(new CommandEntityDig(entity.id, entityPos, dir, 1.5, Entity.getDigSpeed(entity), Entity.getMaxDigHardness(entity)));
+        World.commands.push(new CommandEntityDig(entity.id, entityPos, dir, 1.5, Entity.getDigSpeed(entity), Entity.getMaxDigHardness(entity)));
     }
 }

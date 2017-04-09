@@ -45,10 +45,10 @@ var DugItems = function() {
         dugItemsEntryImage.mouseenter(function() {
             var text = $(this).parent().find('.dugItemsEntryText');
             var id = $(this).parent().attr("id").substr($(this).parent().attr("id").length - 1);
-            var tileType = global.gameData.tileRegister[id];
+            var tileType = gameData.tileRegister[id];
             text.text(tileType.name);
         }).mouseleave(function() {
-            global.gameData.HUD.update();
+            gameData.HUD.update();
         });
 
         var dugItemsEntryText = $("<div>", {

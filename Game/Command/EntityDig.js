@@ -27,12 +27,12 @@ global.CommandEntityDig = CommandEntityDig;
 RegisterCommand.push(CommandEntityDig);
 
 CommandEntityDig.prototype.execute = function() {
-    var entity = global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = World.entities.objects[this.entityId];
     if (!entity || !entity.movement) return;
 
-    var tileWorld = global.gameData.world.tileWorld;
-    var targetTile = global.gameData.tileRegister[global.gameData.world.tileWorld.getTileId([this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1]])];
-    var targetDensity = global.gameData.world.tileWorld.getDensity([this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1]]);
+    var tileWorld = World.tileWorld;
+    var targetTile = gameData.tileRegister[World.tileWorld.getTileId([this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1]])];
+    var targetDensity = World.tileWorld.getDensity([this.pos[0] + 1.0 * this.dir[0], this.pos[1] + 1.0 * this.dir[1]]);
     var onDensityChange = null;
     var digDis = 1.5;
     var xp = 0;
@@ -72,12 +72,12 @@ CommandEntityDig.prototype.execute = function() {
             return newDensity;
         };
     }
-    var dug = global.gameData.world.tileWorld.carveCircle(global.gameData.tileRegister, [this.pos[0] + digDis * this.dir[0], this.pos[1] + digDis * this.dir[1]], this.radius, this.digSpeed, this.maxDigHardness, onDensityChange);
+    var dug = World.tileWorld.carveCircle(gameData.tileRegister, [this.pos[0] + digDis * this.dir[0], this.pos[1] + digDis * this.dir[1]], this.radius, this.digSpeed, this.maxDigHardness, onDensityChange);
     if (isServer) {
         // Only process dug ores on server
         for (var i = 0; i < dug.length; ++i) {
             if (!dug[i] || dug[i] <= 0) continue;
-            var tileName = global.gameData.tileRegister[i].name;
+            var tileName = gameData.tileRegister[i].name;
             var itemId = i;
             if (entity.inventory && entity.controlledByPlayer)
                 sendCommand(new CommandPlayerOreInventory(entity.controlledByPlayer.playerId, CommandPlayerOreInventory.Actions.ADD_ORE, itemId, dug[i]));
@@ -89,12 +89,12 @@ CommandEntityDig.prototype.execute = function() {
                 if (itemId != null) {
                     var physicsBody = entity.physicsBody;
 
-                    var itemEntityId = global.gameData.world.idList.next();
-                    var itemEntity = entityTemplateItem(itemId, 1, global.gameData);
+                    var itemEntityId = World.idList.next();
+                    var itemEntity = entityTemplateItem(itemId, 1, gameData);
                     itemEntity.physicsBody.setPos(v2.clone(physicsBody.getPos()));
                     itemEntity.physicsBody.angle = physicsBody.angle;
                     itemEntity.physicsBody.angleOld = physicsBody.angle;
-                    sendCommand(new CommandEntitySpawn(global.gameData, itemEntity, itemEntityId));
+                    sendCommand(new CommandEntitySpawn(gameData, itemEntity, itemEntityId));
                 }
             }*/
         }

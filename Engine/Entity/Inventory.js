@@ -16,19 +16,19 @@ RegisterEntity.push(EntityInventory);
 EntityInventory.createInventory = function(entityId, width, height) {
     if (!isServer)
         throw ("Tried to create inventory on client.")
-    var inventoryId = global.gameData.world.inventoryIdList.next();
+    var inventoryId = World.inventoryIdList.next();
     var inventory = new EntityInventory(inventoryId, entityId, width, height);
-    global.gameData.world.inventories[inventoryId] = inventory;
-    if (!global.gameData.world.entityInventories[entityId])
-        global.gameData.world.entityInventories[entityId] = [];
-    global.gameData.world.entityInventories[entityId].push(inventory);
+    World.inventories[inventoryId] = inventory;
+    if (!World.entityInventories[entityId])
+        World.entityInventories[entityId] = [];
+    World.entityInventories[entityId].push(inventory);
     return inventory;
 }
 
 EntityInventory.prototype.destroy = function(entity) {
     if (isServer) {
-        delete global.gameData.world.inventories[this.inventoryId];
-        var entityInventories = global.gameData.world.entityInventories[entity.id];
+        delete World.inventories[this.inventoryId];
+        var entityInventories = World.entityInventories[entity.id];
         if (entityInventories) {
             var index = entityInventories.indexOf(this.inventoryId);
             if (index != -1)
@@ -189,7 +189,7 @@ EntityInventory.prototype.removeStack = function(id) {
     var item = this.items[id];
     delete this.items[id];
     this.items.splice(id, 1);
-    this.sortItems(global.gameData);
+    this.sortItems(gameData);
     return item;
 }
 
@@ -202,7 +202,7 @@ EntityInventory.prototype.dequipAll = function(gameData, type, arg) {
             dequippedItems.push([i, this.items[i].id]);
         }
     }
-    this.sortItems(global.gameData);
+    this.sortItems(gameData);
     return dequippedItems;
 }
 

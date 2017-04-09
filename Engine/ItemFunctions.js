@@ -20,7 +20,7 @@ ItemFunctions.projectile = function(itemType, entity) {
     var numProjectiles = itemType.numProjectiles ? itemType.numProjectiles : 1;
     item.magazine -= 1;
 
-    global.gameData.world.events.trigger("bulletFired", entity, item);
+    World.events.trigger("bulletFired", entity, item);
 
     if (isServer) {
         var maxDistance = (itemType.projectileType.hitAtCursor && entity.movement.deltaWorldCursorPos) ?
@@ -47,7 +47,7 @@ ItemFunctions.projectile = function(itemType, entity) {
                 projectileMaxDistance *= 1.0 - 0.5 * scatter + scatter * Math.random();
             }
 
-            global.gameData.world.commands.push(new CommandProjectileSpawn(global.gameData.world.idList.next(), toolUsePos, projectileAngle, projectileSpeed, projectileMaxDistance, itemType.projectileType, entity.id));
+            World.commands.push(new CommandProjectileSpawn(World.idList.next(), toolUsePos, projectileAngle, projectileSpeed, projectileMaxDistance, itemType.projectileType, entity.id));
         }
     }
 }
@@ -70,7 +70,7 @@ ItemFunctions.throwable = function(itemType, entity) {
         v2.mul(10.0 * displacement3, speed, speed2);
         v2.mul(5, speed2, speed2);
 
-        var itemEntityId = gameData.world.idList.next();
+        var itemEntityId = World.idList.next();
         var itemEntity = {};
         itemEntity.physicsBody = new EntityPhysicsBody(physicsBody.getPos(), 0.01, 0, 1, 0.3);
         itemEntity.physicsBody.setVelocity([speed2[0], speed2[1]]);

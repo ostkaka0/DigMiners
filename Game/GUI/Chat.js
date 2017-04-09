@@ -102,7 +102,7 @@ var Chat = function() {
         this.write(text);
     }.bind(this));
 
-    global.gameData.world.events.on("playerSpawned", function(entity, player) {
+    World.events.on("playerSpawned", function(entity, player) {
         this.write(entity.name.entityName + " spawned.");
     }.bind(this));
 

@@ -13,16 +13,16 @@ var BlockFunctions = {};
 BlockFunctions.createEntity = function(blockPos, block) {
     if (isServer) {
         var entity = block.createEntity(blockPos, block);
-        var entityId = global.gameData.world.idList.next();
+        var entityId = World.idList.next();
         sendCommand(new CommandPlaceBlock(blockPos, 0));
-        sendCommand(new CommandEntitySpawn(global.gameData, entity, entityId));
+        sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
     }
 }
 
 BlockFunctions.createEntityBox = function(blockPos, block) {
     if (isServer) {
         var entity = {};
-        var entityId = global.gameData.world.idList.next();
+        var entityId = World.idList.next();
         entity.physicsBody = new EntityPhysicsBody(v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), 0.01);
         entity.health = new EntityHealth(100, 100);
         var bodySprite = new Sprite(block.name);
@@ -39,21 +39,21 @@ BlockFunctions.createEntityBox = function(blockPos, block) {
             entity = block.onCreateEntity(entity, entityId);
 
         sendCommand(new CommandPlaceBlock(blockPos, 0));
-        sendCommand(new CommandEntitySpawn(global.gameData, entity, entityId));
+        sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
     }
 }
 
 var BlockBulletFunctions = {};
 BlockFunctions.createEntityTurret = function(blockPos, block) {
     if (isServer) {
-        var turretEntityId = global.gameData.world.idList.next();
+        var turretEntityId = World.idList.next();
         var turret = entityTemplateTurret(turretEntityId, v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), EntityTeam.Enum.Human);
 
         if (block.onCreateEntity)
             entity = block.onCreateEntity(turret, turretEntityId);
 
         sendCommand(new CommandPlaceBlock(blockPos, 0));
-        sendCommand(new CommandEntitySpawn(global.gameData, turret, turretEntityId));
+        sendCommand(new CommandEntitySpawn(gameData, turret, turretEntityId));
 
         if (block.onEntityCreated)
             block.onEntityCreated(turret, turretEntityId);
@@ -76,7 +76,7 @@ BlockBulletFunctions.bunker = function(blockPos, blockType, entity) {
     var deltaPos = [blockPos[0] + 0.5 - entityPos[0], blockPos[1] + 0.5 - entityPos[1]];
     deltaPos = [Math.max(0, Math.abs(deltaPos[0]) - 0.5), Math.max(0, Math.abs(deltaPos[1]) - 0.5)];
     var dis = v2.length(deltaPos);
-    var rand = Noise.rand(Noise.rand(Noise.rand(Noise.rand(blockPos[0]) ^ blockPos[1]) ^ global.gameData.world.tickId) ^ entity.id) % 100;
+    var rand = Noise.rand(Noise.rand(Noise.rand(Noise.rand(blockPos[0]) ^ blockPos[1]) ^ World.tickId) ^ entity.id) % 100;
     var damageFactor;
     if (dis > blockType.bulletBunkerDistance)
         damageFactor = blockType.bulletBunkerFarFactor;
@@ -109,8 +109,8 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
             if (checked[pos[0]] == null || checked[pos[0]][pos[1]] == null) {
                 if (checked[pos[0]] == null)
                     checked[pos[0]] = [];
-                checked[pos[0]][pos[1]] = global.gameData.world.blockWorld.getStrength(pos);
-                var blockId = global.gameData.world.blockWorld.getForeground(pos);
+                checked[pos[0]][pos[1]] = World.blockWorld.getStrength(pos);
+                var blockId = World.blockWorld.getForeground(pos);
                 if (blockType.id == blockId)
                     runRecursively(pos, blockType);
             }
@@ -118,14 +118,14 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
         }
     }
     checked[startBlockPos[0]] = [];
-    checked[startBlockPos[0]][startBlockPos[1]] = global.gameData.world.blockWorld.getStrength(startBlockPos);
+    checked[startBlockPos[0]][startBlockPos[1]] = World.blockWorld.getStrength(startBlockPos);
     runRecursively(startBlockPos, blockType);
 
     // Too big doors should not work.
     if (doors.length > blockType.maxDoorSize)
         return;
 
-    global.gameData.setTimeout(function() {
+    gameData.setTimeout(function() {
         for (var i = 0; i < doors.length; ++i) {
             var blockPos = doors[i];
             sendCommand(new CommandBuild(blockPos[0], blockPos[1], Blocks.RedForcefieldOpen.id, BlockTypes.FOREGROUND));
@@ -135,12 +135,12 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
         var blockTypeId = blockType.id;
         if (doors.length > 0) {
             var checkDoorClose = function() {
-                global.gameData.setTimeout(function() {
+                gameData.setTimeout(function() {
                     var shouldClose = true;
                     for (var i = 0; i < this.length; ++i) {
                         var blockPos = this[i];
                         var bodies = [];
-                        global.gameData.world.physicsWorld.getBodiesInRadius(bodies, [blockPos[0] + 0.5, blockPos[1] + 0.5], 0.5); // TODO: 1.0 magic number
+                        World.physics.getBodiesInRadius(bodies, [blockPos[0] + 0.5, blockPos[1] + 0.5], 0.5); // TODO: 1.0 magic number
                         if (bodies.length > 0) {
                             shouldClose = false;
                             break;
@@ -163,15 +163,15 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
 }
 
 BlockDoorFunctions.blueForcefield = function(blockPos, blockType, entity, clickType) {
-    var startStrength = global.gameData.world.blockWorld.getStrength(blockPos);
-    global.gameData.setTimeout(function() {
+    var startStrength = World.blockWorld.getStrength(blockPos);
+    gameData.setTimeout(function() {
         sendCommand(new CommandBuild(blockPos[0], blockPos[1], Blocks.BlueForcefieldOpen.id, BlockTypes.FOREGROUND));
         sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], startStrength));
 
         var checkDoorClose = function() {
-            global.gameData.setTimeout(function() {
+            gameData.setTimeout(function() {
                 var bodies = [];
-                global.gameData.world.physicsWorld.getBodiesInRadius(bodies, [blockPos[0] + 0.5, blockPos[1] + 0.5], 0.5); // TODO: 1.0 magic number
+                World.physics.getBodiesInRadius(bodies, [blockPos[0] + 0.5, blockPos[1] + 0.5], 0.5); // TODO: 1.0 magic number
                 if (bodies.length > 0)
                     checkDoorClose();
                 else {
@@ -335,7 +335,7 @@ Blocks.initBlocks = function() {
             });
             entity.chest = new EntityChest();
             entity.inventory = EntityInventory.createInventory(entityId, 4, 4);
-            entity.inventory.addItem(global.gameData, Items.Types.RustyShovel.id, Math.floor(Math.random() * 8));
+            entity.inventory.addItem(gameData, Items.Types.RustyShovel.id, Math.floor(Math.random() * 8));
             return entity;
         },
         oreRecipe: [Tiles.Iron, 2]
@@ -409,7 +409,7 @@ Blocks.initBlocks = function() {
                         var otherPos = v2.clone(blockPos);
                         v2.add(dirs[j], otherPos, otherPos);
                         var otherId = blockWorld.getForeground(otherPos);
-                        var otherDensity = gameData.world.tileWorld.getDensity(otherPos);
+                        var otherDensity = World.tileWorld.getDensity(otherPos);
                         if ((otherId != 0 && otherId != Blocks.Toxin.id) || otherDensity > 127) continue;
                         var oldStrength = (otherId == Blocks.Toxin.id)? blockWorld.getStrength(otherPos) : 0;
                         if (oldStrength >= childStrength) continue;

@@ -20,11 +20,11 @@ Items.Functions.Shovel = function(entity, item) {
         var chunkPos = [];
         var localPos = [];
         BlockChunk.fromV2World(toolUsePos, chunkPos, localPos);
-        var blockChunk = global.gameData.world.blockWorld.get(chunkPos);
+        var blockChunk = World.blockWorld.get(chunkPos);
         if (blockChunk) {
             var blockId = blockChunk.getForeground(localPos[0], localPos[1]);
             if (blockId) {
-                var blockType = global.gameData.blockRegister[blockId];
+                var blockType = gameData.blockRegister[blockId];
                 var strength = blockChunk.getStrength(localPos[0], localPos[1]);
                 // TODO: 16 magic value
                 strength -= 16 * (Entity.getBlockBreakSpeed(entity) / blockType.hardness);
@@ -36,13 +36,13 @@ Items.Functions.Shovel = function(entity, item) {
         }
 
         // Dig terrain
-        global.gameData.world.commands.push(new CommandEntityDig(entity.id, entity.physicsBody.getPos(), dir, 1.5, Entity.getDigSpeed(entity), Entity.getMaxDigHardness(entity)));
+        World.commands.push(new CommandEntityDig(entity.id, entity.physicsBody.getPos(), dir, 1.5, Entity.getDigSpeed(entity), Entity.getMaxDigHardness(entity)));
     }
 }
 
 Items.Functions.Sword = function(entity, item) {
     if (isServer) {
-        var physicsWorld = global.gameData.world.physicsWorld;
+        var physicsWorld = World.physics;
         var hitRange = item.hitRange || 1.0;
         var hitRadius = item.hitRadius || 0.5;
         var damage = item.damage || 10.0;
@@ -60,7 +60,7 @@ Items.Functions.Sword = function(entity, item) {
 
         bodies.forEach(function(bodyId) {
             if (bodyId == entityBodyId) return;
-            var targetEntity = global.gameData.world.physicsEntities[bodyId];
+            var targetEntity = World.physicsEntities[bodyId];
             if (!targetEntity) return;
 
             hitEntities.push(targetEntity.id);
@@ -70,7 +70,7 @@ Items.Functions.Sword = function(entity, item) {
 
         // TODO: CommandEntityHit
         //if (isServer) {
-        //    global.gameData.world.commands.push(new CommandEntityHit(entity, hitEntities));
+        //    World.commands.push(new CommandEntityHit(entity, hitEntities));
         //}
     }
 }
@@ -81,7 +81,7 @@ Items.Functions.Potion = function(entity, item) {
         entity.potionEffects.add(potionEffectType, item.potionDuration);
     }
     if (entity.inventory) {
-        var removed = entity.inventory.removeItem(global.gameData, item.id, 1);
+        var removed = entity.inventory.removeItem(gameData, item.id, 1);
         for (var i = 0; i < removed.length; ++i) {
             // Dequip item when removed from inventory
             var entry = removed[i];
@@ -92,8 +92,8 @@ Items.Functions.Potion = function(entity, item) {
                 Entity.onDequip(entity, stackId, itemType);
         };
         if (!isServer && global.playerEntity && entity.id == global.playerEntity.id) {
-            global.gameData.HUD.update();
-            global.gameData.HUD.checkCanAffordRecipe();
+            gameData.HUD.update();
+            gameData.HUD.checkCanAffordRecipe();
         }
     }
 }
@@ -108,7 +108,7 @@ Items.Functions.RangedWeapon = function(entity, itemType) {
     var numProjectiles = itemType.numProjectiles ? itemType.numProjectiles : 1;
     item.magazine -= 1;
 
-    global.gameData.world.events.trigger("bulletFired", entity, itemType);
+    World.events.trigger("bulletFired", entity, itemType);
 
     if (isServer) {
         var maxDistance = (itemType.projectileType.hitAtCursor && entity.movement.deltaWorldCursorPos) ?
@@ -135,7 +135,7 @@ Items.Functions.RangedWeapon = function(entity, itemType) {
                 projectileMaxDistance *= 1.0 - 0.5 * scatter + scatter * Math.random();
             }
 
-            global.gameData.world.commands.push(new CommandProjectileSpawn(global.gameData.world.idList.next(), toolUsePos, projectileAngle, projectileSpeed, projectileMaxDistance, itemType.projectileType, entity.id));
+            World.commands.push(new CommandProjectileSpawn(World.idList.next(), toolUsePos, projectileAngle, projectileSpeed, projectileMaxDistance, itemType.projectileType, entity.id));
         }
     }
 }
@@ -175,7 +175,7 @@ Items.Functions.ThrowableDynamite = function(entity, itemType) {
         v2.mul(10.0 * displacement3, speed, speed2);
         v2.mul(5, speed2, speed2);
 
-        var itemEntityId = gameData.world.idList.next();
+        var itemEntityId = World.idList.next();
         var itemEntity = {};
         itemEntity.physicsBody = new EntityPhysicsBody(physicsBody.getPos(), 0.01, 0, 1, 0.3);
         itemEntity.physicsBody.setVelocity([speed2[0], speed2[1]]);

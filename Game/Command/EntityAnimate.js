@@ -14,7 +14,7 @@ RegisterCommand.push(CommandEntityAnimate);
 
 CommandEntityAnimate.prototype.execute = function() {
     if (!isServer) {
-        var entity = gameData.world.entityWorld.objects[this.entityId];
+        var entity = World.entities.objects[this.entityId];
         if (!entity || !entity.bodyparts) return;
         var bodypart = entity.bodyparts.bodyparts[this.bodypart];
         if (!bodypart) return;

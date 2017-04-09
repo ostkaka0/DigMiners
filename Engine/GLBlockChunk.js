@@ -24,16 +24,16 @@ GLBlockChunk.prototype.update = function(gl, gameData, blockChunk, chunkX, chunk
             blockChunk.getForeground(x - 1, y),
             blockChunk.getForeground(x, y)];
             if (x - 1 < 0 || y - 1 < 0)
-                blockIds[0] = gameData.world.blockWorld.getForeground([chunkX * BlockChunk.dim + x - 1, chunkY * BlockChunk.dim + y - 1]);
+                blockIds[0] = World.blockWorld.getForeground([chunkX * BlockChunk.dim + x - 1, chunkY * BlockChunk.dim + y - 1]);
             if (y - 1 < 0)
-                blockIds[1] = gameData.world.blockWorld.getForeground([chunkX * BlockChunk.dim + x, chunkY * BlockChunk.dim + y - 1]);
+                blockIds[1] = World.blockWorld.getForeground([chunkX * BlockChunk.dim + x, chunkY * BlockChunk.dim + y - 1]);
             if (x - 1 < 0)
-                blockIds[2] = gameData.world.blockWorld.getForeground([chunkX * BlockChunk.dim + x - 1, chunkY * BlockChunk.dim + y]);
+                blockIds[2] = World.blockWorld.getForeground([chunkX * BlockChunk.dim + x - 1, chunkY * BlockChunk.dim + y]);
 
-            var tiles = [global.gameData.blockRegister[blockIds[0]],
-            global.gameData.blockRegister[blockIds[1]],
-            global.gameData.blockRegister[blockIds[2]],
-            global.gameData.blockRegister[blockIds[3]]];
+            var tiles = [gameData.blockRegister[blockIds[0]],
+            gameData.blockRegister[blockIds[1]],
+            gameData.blockRegister[blockIds[2]],
+            gameData.blockRegister[blockIds[3]]];
 
             for (var i = 0; i < 4; i++) {
                 var blockId = blockIds[i];
@@ -59,7 +59,7 @@ GLBlockChunk.prototype.update = function(gl, gameData, blockChunk, chunkX, chunk
                 verticesUV.push((textureX + 1) / textureQuadDim, 1 - (textureY + 0) / textureQuadDim);
                 verticesUV.push((textureX + 0) / textureQuadDim, 1 - (textureY + 0) / textureQuadDim);
 
-                var strength = gameData.world.blockWorld.getStrength([chunkX * BlockChunk.dim + x + i % 2 - 1, chunkY * BlockChunk.dim + y + (i / 2 >> 0) - 1]);
+                var strength = World.blockWorld.getStrength([chunkX * BlockChunk.dim + x + i % 2 - 1, chunkY * BlockChunk.dim + y + (i / 2 >> 0) - 1]);
                 textureX = 2 * Math.ceil(10 - (strength / 255.0) * 10) + 1 * (cornerIndex % 2);
                 textureY = 1 * (cornerIndex / 2 >> 0);
                 verticesBreakUV.push((textureX + 0) / textureQuadDim, 1 - (textureY + 1) / textureQuadDim);

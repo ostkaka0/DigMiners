@@ -61,7 +61,7 @@ var LoadingScreen = function() {
 
     this.root.hide();
 
-    global.gameData.world.events.on("texturesBeginLoading", function() {
+    World.events.on("texturesBeginLoading", function() {
         this.root.show();
     }.bind(this));
 

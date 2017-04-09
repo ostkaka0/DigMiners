@@ -20,7 +20,7 @@ CommandPlayerJoin.prototype.execute = function() {
     if (isServer)
         player.name = this.playerName;
     if (isServer || this.playerId != global.player.id)
-        global.gameData.playerWorld.add(player, this.playerId);
+        gameData.playerWorld.add(player, this.playerId);
 
     if (isServer) {
         var socket = connections[this.socketId].socket;
@@ -29,14 +29,14 @@ CommandPlayerJoin.prototype.execute = function() {
 
         // Send init message
         // Sends generator seed, chunks must be sent AFTERWARDS
-        new MessageInit(global.gameData, player).send(global.gameData, socket);
+        new MessageInit(gameData, player).send(gameData, socket);
 
         // Send chunks
         // TODO: client requests chunks instead
         for (var x = -3; x < 3; ++x) {
             for (var y = -3; y < 3; ++y) {
-                var chunk = global.gameData.world.tileWorld.get([x, y]);
-                var blockChunk = global.gameData.world.blockWorld.get([x, y]);
+                var chunk = World.tileWorld.get([x, y]);
+                var blockChunk = World.blockWorld.get([x, y]);
                 var message = new MessageChunk(chunk, blockChunk, x, y);
                 message.send(socket);
             }

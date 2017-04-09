@@ -17,9 +17,9 @@ RegisterCommand.push(CommandBlockStrength);
 
 CommandBlockStrength.prototype.execute = function() {
     if (this.strength > 0)
-        global.gameData.world.blockWorld.setStrength([this.x, this.y], this.strength);
+        World.blockWorld.setStrength([this.x, this.y], this.strength);
     else
-        global.gameData.world.blockWorld.setForeground([this.x, this.y], 0);
+        World.blockWorld.setForeground([this.x, this.y], 0);
 }
 
 CommandBlockStrength.prototype.serialize = function(byteArray, index) {

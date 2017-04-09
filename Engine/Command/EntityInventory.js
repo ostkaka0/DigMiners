@@ -22,10 +22,10 @@ RegisterCommand.push(CommandEntityInventory);
 CommandEntityInventory.Actions = CommandEntityInventoryActions;
 
 CommandEntityInventory.prototype.execute = function() {
-    var entity = global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = World.entities.objects[this.entityId];
     if (!entity || !entity.inventory) return;
     if (this.actionId == CommandEntityInventory.Actions.ADD_ITEM) {
-        entity.inventory.addItem(global.gameData, this.itemId, this.amount);
+        entity.inventory.addItem(gameData, this.itemId, this.amount);
     } else if (this.actionId == CommandEntityInventory.Actions.REMOVE_ITEM) {
         console.log(entity.inventory.isStatic(this.itemId));
         if (entity.controlledByPlayer && RegisterItem[this.itemId].oreRecipe && entity.inventory.isStatic(this.itemId)) {
@@ -38,7 +38,7 @@ CommandEntityInventory.prototype.execute = function() {
                     entity.bodyparts.bodyparts["tool"].sprite.visible = false;
             }
         } else {
-            var removed = entity.inventory.removeItem(global.gameData, this.itemId, this.amount);
+            var removed = entity.inventory.removeItem(gameData, this.itemId, this.amount);
             if (isServer) {
                 for (var i = 0; i < removed.length; ++i) {
                     // Dequip item when removed from inventory
@@ -55,8 +55,8 @@ CommandEntityInventory.prototype.execute = function() {
         var item = entity.inventory.removeStack(this.itemId);
     }
     if (!isServer && global.playerEntity && this.entityId == global.playerEntity.id) {
-        global.gameData.HUD.update();
-        global.gameData.HUD.checkCanAffordRecipe();
+        gameData.HUD.update();
+        gameData.HUD.checkCanAffordRecipe();
     }
 }
 

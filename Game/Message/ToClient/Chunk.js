@@ -20,11 +20,11 @@ global.MessageChunk = MessageChunk;
 RegisterMessage.ToClient.push(MessageChunk);
 
 MessageChunk.prototype.execute = function(gameData) {
-    if (global.gameData.world.generator)
-        global.gameData.world.generator.generate(this.chunk, this.x, this.y);
-    global.gameData.world.tileWorld.set([this.x, this.y], this.chunk);
+    if (World.generator)
+        World.generator.generate(this.chunk, this.x, this.y);
+    World.tileWorld.set([this.x, this.y], this.chunk);
     if (!this.blockChunkEmpty)
-        global.gameData.world.blockWorld.set([this.x, this.y], this.blockChunk);
+        World.blockWorld.set([this.x, this.y], this.blockChunk);
 }
 
 MessageChunk.prototype.send = function(socket) {

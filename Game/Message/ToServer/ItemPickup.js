@@ -18,10 +18,10 @@ global.MessageRequestItemPickup = MessageRequestItemPickup;
 RegisterMessage.ToServer.push(MessageRequestItemPickup);
 
 MessageRequestItemPickup.prototype.execute = function(gameData, player) {
-    var entity = global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = World.entities.objects[this.entityId];
     if (!entity) return;
     if (entity.item && !entity.pickedUp) {
-        var playerEntity = global.gameData.world.entityWorld.objects[player.entityId];
+        var playerEntity = World.entities.objects[player.entityId];
         if (!playerEntity) return;
         var physicsBody = entity.physicsBody;
         var playerPhysicsBody = playerEntity.physicsBody;

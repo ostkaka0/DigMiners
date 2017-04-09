@@ -18,7 +18,7 @@ RegisterMessage.ToServer.push(MessageRequestRotate);
 MessageRequestRotate.prototype.execute = function(gameData, player) {
     if (!this.deltaWorldCursorPos) return;
     if (player.entityId == null) return;
-    var entity = global.gameData.world.entityWorld.objects[player.entityId];
+    var entity = World.entities.objects[player.entityId];
     if (!entity) return;
     var movement = entity.movement;
     if (!movement) return;

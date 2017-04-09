@@ -7,14 +7,14 @@ global.CommandEntityHealthChange = CommandEntityHealthChange;
 RegisterCommand.push(CommandEntityHealthChange);
 
 CommandEntityHealthChange.prototype.execute = function() {
-    var entity = global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = World.entities.objects[this.entityId];
     if (!entity || !entity.health) return;
     if (entity.movement)
         entity.movement.disabledCooldown = 40;
     entity.health.health = (entity.health.health + this.healthChange < 0 ? 0 : entity.health.health + this.healthChange);
     Event.trigger(EntityHealth.Events.onChange, entity);
     if (entity.health.health <= 0)
-        Event.trigger(EntityHealth.Events.onDeath, entity, gameData.world.entityWorld.objects[entity.health.lastAttackerId]);
+        Event.trigger(EntityHealth.Events.onDeath, entity, World.entities.objects[entity.health.lastAttackerId]);
 }
 
 CommandEntityHealthChange.prototype.serialize = function(byteArray, index) {

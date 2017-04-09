@@ -34,7 +34,7 @@ EntityInteractable.prototype.getSerializationSize = function() {
 
 EntityInteractable.prototype.destroy = function(interactableEntity) {
     for (var i = 0; i < this.interacting.length; ++i) {
-        var interactingEntity = global.gameData.world.entityWorld.objects[i];
+        var interactingEntity = World.entities.objects[i];
         Event.trigger(EntityInteractable.Events.onFinishInteract, interactableEntity, interactingEntity);
     }
 }

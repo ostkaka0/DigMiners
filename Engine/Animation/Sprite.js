@@ -9,7 +9,7 @@ var Sprite = function(textureName) {
         this.visible = false;
     }
     if (!isServer)
-        this.texture = gameData.textures[this.textureName];
+        this.texture = Client.textures[this.textureName];
     this.frame = null;
 
     this.pos = [0, 0];

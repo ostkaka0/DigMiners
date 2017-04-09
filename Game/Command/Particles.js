@@ -18,7 +18,7 @@ RegisterCommand.push(CommandParticles);
 
 CommandParticles.prototype.execute = function() {
     if (!isServer)
-        ParticleFunctions.create(global.gameData.particleFunctionRegister[this.particleFunctionId], this.pos, this.angle);
+        ParticleFunctions.create(gameData.particleFunctionRegister[this.particleFunctionId], this.pos, this.angle);
 }
 
 CommandParticles.prototype.serialize = function(byteArray, index) {

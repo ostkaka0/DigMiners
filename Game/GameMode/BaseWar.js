@@ -41,15 +41,15 @@ GameModeBaseWar.prototype.init = function() {
 
     var loadChunk = function(world, x, y) {
         var chunk = new Chunk();
-        global.gameData.world.generator.generate(chunk, x, y);
+        World.generator.generate(chunk, x, y);
         world.set([x, y], chunk);
 
-        global.gameData.world.generator.generateDungeons(global.gameData.world.blockWorld, chunk, x, y);
+        World.generator.generateDungeons(World.blockWorld, chunk, x, y);
     }
 
     for (var x = -3; x < 3; ++x) {
         for (var y = -3; y < 3; ++y) {
-            loadChunk(global.gameData.world.tileWorld, x, y);
+            loadChunk(World.tileWorld, x, y);
         }
     }
 
@@ -58,15 +58,15 @@ GameModeBaseWar.prototype.init = function() {
 
     Object.keys(this.playerSpawns).forEach(function(teamId) {
         this.playerSpawns[teamId].forEach(function(pos) {
-            var entityId = global.gameData.world.idList.next();
+            var entityId = World.idList.next();
             var entity = entityTemplateTeamBase(entityId, pos, teamId, 5, 2.0, 40);
             this.spawnEntities[teamId][entityId] = entity;
-            sendCommand(new CommandEntitySpawn(global.gameData, entity, entityId, teamId));
+            sendCommand(new CommandEntitySpawn(gameData, entity, entityId, teamId));
             sendCommand(new CommandDig(pos, 5.0));
         }.bind(this));
     }.bind(this));
 
-    global.gameData.world.entityWorld.onRemove.set(this, function(entity) {
+    World.entities.onRemove.set(this, function(entity) {
         var team = EntityTeam.Enum.none;
 
         this.teams.forEach(function(currentTeam) {
@@ -86,7 +86,7 @@ GameModeBaseWar.prototype.init = function() {
 
        // End gamemode
         if (Object.keys(this.spawnEntities).length <= 1)
-            global.gameData.changeGameMode();
+            gameData.changeGameMode();
     }.bind(this));
 }
 

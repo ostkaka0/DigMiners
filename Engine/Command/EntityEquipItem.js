@@ -19,7 +19,7 @@ global.CommandEntityEquipItem = CommandEntityEquipItem;
 RegisterCommand.push(CommandEntityEquipItem);
 
 CommandEntityEquipItem.prototype.execute = function() {
-    var entity = global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = World.entities.objects[this.entityId];
     if (!entity) return;
 
     var itemType = RegisterItem[this.itemId];
@@ -52,7 +52,7 @@ CommandEntityEquipItem.prototype.execute = function() {
             if (item && item.id == this.itemId) {
                 item.equipped = this.equipped;
                 if (!isServer)
-                    global.gameData.HUD.update();
+                    gameData.HUD.update();
             }
         }
     }

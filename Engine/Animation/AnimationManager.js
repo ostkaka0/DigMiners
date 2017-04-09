@@ -8,8 +8,8 @@ var AnimationManager = function() {
 global.AnimationManager = AnimationManager;
 
 AnimationManager.prototype.load = function() {
-    this.animations["feet"] = new Animation("feet", global.gameData.textures["feet.png"], 60, 75, 75);
-    this.animations["dynamite"] = new Animation("dynamite", global.gameData.textures["dynamite.png"], 64, 32, 32);
+    this.animations["feet"] = new Animation("feet", Client.textures["feet.png"], 60, 75, 75);
+    this.animations["dynamite"] = new Animation("dynamite", Client.textures["dynamite.png"], 64, 32, 32);
 
     this.cycles["rightArm"] = new Cycle([
         [0,        // x
@@ -120,9 +120,9 @@ AnimationManager.prototype.load = function() {
 }
 
 AnimationManager.prototype.update = function() {
-    var entityWorld = global.gameData.world.entityWorld;
+    var entityWorld = World.entities;
     if (!entityWorld)
-        console.error("Missing gameData.world.entityWorld");
+        console.error("Missing World.entities");
     entityWorld.objectArray.forEach(function(entity) {
         if (entity.bodyparts) {
             Object.keys(entity.bodyparts.bodyparts).forEach(function(bodypart) {

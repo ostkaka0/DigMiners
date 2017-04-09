@@ -27,13 +27,13 @@
 
 
 
-global.gameData = {};
+gameData = {};
 
-global.gameData.destroy = function() {
-    global.gameData = {};
+gameData.destroy = function() {
+    gameData = {};
 }
 
-global.gameData.init = function(idList) {
+gameData.init = function(idList) {
     this.events3 = { onChangeGamemode: new Map() };
 
     Blocks.initBlocks();
@@ -51,7 +51,7 @@ global.gameData.init = function(idList) {
     this.gameModeRegister = TypeRegister.addByArray([], [/*GameModeBaseWar,*/ GameModeZombieInvasion/*, GameModeSurvivalWar*/]);
     this.defaultGameMode = GameModeZombieInvasion;
 
-    // global.gameData.textures is set in TextureManager.js when textures are loaded
+    // Client.textures is set in TextureManager.js when textures are loaded
     this.textures = {};
 
     this.timeouts = {};
@@ -117,7 +117,7 @@ global.gameData.init = function(idList) {
     }
 }
 
-global.gameData.tick = function(dt) {
+gameData.tick = function(dt) {
     if (this.nextGameMode) {
         this.clearTimeouts();
         if (isServer)
@@ -143,25 +143,25 @@ global.gameData.tick = function(dt) {
         this.gameMode.tick(dt);
 }
 
-global.gameData.changeGameMode = function() {
+gameData.changeGameMode = function() {
     if (this.playerWorld.objectArray.length < 4)
-        this.nextGameMode =  new global.gameData.defaultGameMode();
+        this.nextGameMode =  new gameData.defaultGameMode();
     else
-        this.nextGameMode = new global.gameData.gameModeRegister[global.gameData.gameModeRegister.length * Math.random() >> 0]();
+        this.nextGameMode = new gameData.gameModeRegister[gameData.gameModeRegister.length * Math.random() >> 0]();
     console.log("Changing game mode to: " + this.nextGameMode.name);
 }
 
-global.gameData.setTimeout = function(callback, duration) {
+gameData.setTimeout = function(callback, duration) {
     var timeoutId = this.timeoutIdList.next();
     var timeout = setTimeout(function() {
-        delete global.gameData.timeouts[timeoutId];
+        delete gameData.timeouts[timeoutId];
         callback();
     }, duration);
     this.timeouts[timeoutId] = timeout;
     return timeout;
 }
 
-global.gameData.clearTimeouts = function() {
+gameData.clearTimeouts = function() {
     Object.keys(this.timeouts).forEach(function(timeoutId) {
         clearTimeout(this.timeouts[timeoutId]);
     }.bind(this));
