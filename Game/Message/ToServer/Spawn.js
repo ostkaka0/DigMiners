@@ -35,8 +35,8 @@ MessageRequestSpawn.prototype.execute = function(gameData, player) {
 
     var entityId = World.idList.next();
     var entity;
-    if (gameData.gameMode.createEntity) {
-        entity = gameData.gameMode.createEntity(player, entityId);
+    if (Game.gameMode.createEntity) {
+        entity = Game.gameMode.createEntity(player, entityId);
     } else {
         entity = entityTemplatePlayer(player.id, entityId, player.name, PlayerClass.Register[this.classId], EntityTeam.Enum.None);
     }

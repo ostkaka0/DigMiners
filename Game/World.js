@@ -10,17 +10,19 @@ var worldInit = function() {
         tiles: new TileWorld(),
         blocks: new BlockWorld(),
         physics: new PhysicsWorld(),
-        physicsEntityMap: new Map(),
+        physicsEntityMap: {},
         generator: new Generator(123),
-        pendingCommands: new Map(),
+        pendingCommands: {},
+        commands: [],
     };
 }
 
 var worldTick = function(dt) {
-    var commands = [];
+    var commands = World.commands;
+    World.commands = [];
     if (World.pendingCommands[World.tickId])
-        commands = World.pendingCommands.get(World.tickId);
-    World.pendingCommands.delete(World.tickId);
+        commands = commands.concat(World.pendingCommands[World.tickId]);
+    delete World.pendingCommands[World.tickId];
 
     for (var i = 0; i < World.entities.objectArray.length; i++) {
         var entity = World.entities.objectArray[i];
@@ -51,9 +53,9 @@ var World = function() {
     World.idList = (isServer) ? new IdList() : null;
     World.entities = new ObjectWorld(true);
     World.particleWorld = new ParticleWorld();
-    World.tileWorld = new TileWorld();
-    World.blockWorld = new BlockWorld();
-    World.celluralAutomata = new CelluralAutomata(World.blockWorld, gameData.blockRegister);
+    World.tiles = new TileWorld();
+    World.blocks = new BlockWorld();
+    World.celluralAutomata = new CelluralAutomata(World.blocks, Game.blockRegister);
     World.physics = new PhysicsWorld();
     World.physicsEntities = {};
     World.generator = new Generator(Math.random() * 1000000 >> 0);
@@ -104,12 +106,12 @@ World.prototype.tick = function(dt) {
     World.entities.update();
 
     if (isServer) {
-        gameData.world.entityWorld.objectArray.forEach(function(entity) {
+        Game.world.entityWorld.objectArray.forEach(function(entity) {
             if (entity.behaviourContainer)
                 entity.behaviourContainer.update();
             //TODO: 20 magic number
-            if (entity.interacter && entity.interacter.interacting && (!entity.interacter.lastCheck || gameData.world.tickId - entity.interacter.lastCheck > 20)) {
-                var interactableEntity = gameData.world.entityWorld.objects[entity.interacter.interacting];
+            if (entity.interacter && entity.interacter.interacting && (!entity.interacter.lastCheck || Game.world.tickId - entity.interacter.lastCheck > 20)) {
+                var interactableEntity = Game.world.entityWorld.objects[entity.interacter.interacting];
                 if (interactableEntity) {
                     if (!Interactable.canInteract(interactableEntity, entity)) {
                         sendCommand(new CommandEntityInteractEntity(entity.id, interactableEntity.id, false));
@@ -117,7 +119,7 @@ World.prototype.tick = function(dt) {
                         entity.interacter.lastCheck = null;
                     }
                 }
-                entity.interacter.lastCheck = gameData.world.tickId;
+                entity.interacter.lastCheck = Game.world.tickId;
             }
         });
 
@@ -142,7 +144,7 @@ World.prototype.initializeEvents = function() {
 
         if (entity.controlledByPlayer) {
             var playerId = entity.controlledByPlayer.playerId;
-            var player = gameData.playerWorld.objects[playerId];
+            var player = Game.playerWorld.objects[playerId];
             if (player) {
                 player.deathTick = World.tickId;
                 player.entityId = null;
@@ -166,7 +168,7 @@ World.prototype.initializeEvents = function() {
     }
 
     EntityProjectile.Events.onHit.set(this, function(projectileEntity, hitPos) {
-        gameData.setTimeout(function(projectileEntity) {
+        World.setTimeout(function(projectileEntity) {
             var type = projectileEntity.projectile.projectileType;
             if (type.isExplosive) {
                 var shooter = World.entities.objects[projectileEntity.projectile.shooterEntityId];
@@ -195,9 +197,9 @@ World.prototype.initializeEvents = function() {
     EntityProjectile.Events.onHitBlock.set(this, function(projectileEntity, blockPos) {
         if (isServer) {
             if (projectileEntity.projectile.projectileType.blockDamage > 0) {
-                var strength = World.blockWorld.getStrength(blockPos);
-                var blockId = World.blockWorld.getForeground(blockPos);
-                var block = gameData.blockRegister[blockId];
+                var strength = World.blocks.getStrength(blockPos);
+                var blockId = World.blocks.getForeground(blockPos);
+                var block = Game.blockRegister[blockId];
                 var projectileArmor = (block.projectileArmor) ? block.projectileArmor : 0;
                 strength -= (1 / block.hardness) * Math.round((1.0 - projectileArmor) * projectileEntity.projectile.projectileType.blockDamage);
                 sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], Math.max(strength, 0)));
@@ -220,7 +222,7 @@ World.prototype.initializeEvents = function() {
 
     EntityHealth.Events.onDeath.set(this, function(entity, killer) {
         if (isServer && killer && killer.controlledByPlayer) {
-            var player = gameData.playerWorld.objects[killer.controlledByPlayer.playerId];
+            var player = Game.playerWorld.objects[killer.controlledByPlayer.playerId];
             if (player)
                 sendCommand(new CommandPlayerXP(player.id, entity.health.maxHealth / 4 >> 0));
         }
@@ -243,8 +245,8 @@ World.prototype.initializeEvents = function() {
             if (global.playerEntity && global.playerEntity.id == interactingEntity.id) {
                 if (interactableEntity.chest && interactableEntity.inventory) {
                     //TODO: inventory size
-                    gameData.HUD.inventory2 = new InventoryHUD(interactableEntity.inventory, "Chest", 80);
-                    gameData.HUD.inventory2.update();
+                    Game.HUD.inventory2 = new InventoryHUD(interactableEntity.inventory, "Chest", 80);
+                    Game.HUD.inventory2.update();
                 }
             }
 
@@ -258,8 +260,8 @@ World.prototype.initializeEvents = function() {
         if (!isServer) {
             if (global.playerEntity && global.playerEntity.id == interactingEntity.id) {
                 if (interactableEntity.chest && interactableEntity.inventory) {
-                    gameData.HUD.inventory2.remove();
-                    gameData.HUD.inventory2 = null;
+                    Game.HUD.inventory2.remove();
+                    Game.HUD.inventory2 = null;
                 }
             }
         }

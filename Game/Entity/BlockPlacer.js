@@ -28,7 +28,7 @@ EntityBlockPlacer.prototype.update = function(entity) {
         if (placerEntity)
             placerEntity.blockPlacerId = entity.id;
         if (!isServer) {
-            var block = gameData.blockRegister[this.blockId];
+            var block = Game.blockRegister[this.blockId];
             this.sprite = new Sprite(block.name);
             this.sprite.anchor[0] = 0.5;
             this.sprite.anchor[1] = 0.5;
@@ -38,9 +38,9 @@ EntityBlockPlacer.prototype.update = function(entity) {
     }
     var placerEntity = World.entities.objects[this.entityId];
     var playerId = (placerEntity && placerEntity.controlledByPlayer) ? placerEntity.controlledByPlayer.playerId : undefined;
-    var player = (playerId != undefined) ? gameData.playerWorld.objects[playerId] : undefined;
+    var player = (playerId != undefined) ? Game.playerWorld.objects[playerId] : undefined;
     var inventoryItem = (placerEntity && placerEntity.inventory) ? placerEntity.inventory.getEquippedItemType("tool") : undefined;
-    var blockType = gameData.blockRegister[this.blockId];
+    var blockType = Game.blockRegister[this.blockId];
     var buildFailure = false;
 
     if (!placerEntity || placerEntity.blockPlacerId != entity.id)

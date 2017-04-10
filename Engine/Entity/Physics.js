@@ -71,7 +71,7 @@ var physicsBodySimulate = function(physicsBody, dt) {
     // Calculate deltaPos and number of steps
     var pos = physicsBody.getPos();
 
-    var touchingBlockType = gameData.blockRegister[World.blockWorld.getForeground(pos)];
+    var touchingBlockType = Game.blockRegister[World.blocks.getForeground(pos)];
     if (touchingBlockType && touchingBlockType.onTouch)
         touchingBlockType.onTouch(World.physicsEntities[physicsBody.bodyId]);
 
@@ -92,9 +92,9 @@ var physicsBodySimulate = function(physicsBody, dt) {
             var worldPos = v2.clone(pos);
             worldPos[0] += COLLISION_BLOCKS[j][0];
             worldPos[1] += COLLISION_BLOCKS[j][1];
-            var blockId = World.blockWorld.getForeground(worldPos);
+            var blockId = World.blocks.getForeground(worldPos);
             if (!blockId) continue; // Air
-            var block = gameData.blockRegister[blockId];
+            var block = Game.blockRegister[blockId];
             if (!block || !block.isSolid) continue;
 
             var worldBlockPos = v2.create(0, 0);
@@ -120,9 +120,9 @@ var physicsBodySimulate = function(physicsBody, dt) {
             var worldPos = v2.clone(pos);
             worldPos[0] += COLLISION_BLOCKS[j][0];
             worldPos[1] += COLLISION_BLOCKS[j][1];
-            var blockId = World.blockWorld.getForeground(worldPos);
+            var blockId = World.blocks.getForeground(worldPos);
             if (!blockId) continue; // Air
-            var block = gameData.blockRegister[blockId];
+            var block = Game.blockRegister[blockId];
             if (!block || !block.isSolid) continue;
 
             var worldBlockPos = v2.create(0, 0);
@@ -156,9 +156,9 @@ var physicsBodySimulate = function(physicsBody, dt) {
         }
 
         // Terrain collision
-        var density = World.tileWorld.calcDensity(pos);
+        var density = World.tiles.calcDensity(pos);
         if (density > 1) {
-            var dir = World.tileWorld.calcDir(pos);
+            var dir = World.tiles.calcDir(pos);
             //v2.mul(2.0, dir, dir);
             var tempDir = v2.clone(dir);
             v2.mul(0.5 + density / 255, tempDir, tempDir);

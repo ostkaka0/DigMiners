@@ -11,9 +11,9 @@ var HUD = function(gameData) {
         if (key == 67) { // c
             var crafting = document.getElementById("crafting");
             if (!crafting.style.display || crafting.style.display == "none")
-                gameData.HUD.openCraftingWindow();
+                Game.HUD.openCraftingWindow();
             else
-                gameData.HUD.closeCraftingWindow();
+                Game.HUD.closeCraftingWindow();
             return true;
         }
         return true;
@@ -132,7 +132,7 @@ HUD.prototype.update = function() {
                 craftingRightPreviewTextContainer.innerText = resultItemType.name;
             }
 
-            gameData.HUD.checkCanAffordRecipe();
+            Game.HUD.checkCanAffordRecipe();
         }.bind(this));
 
         var craftingEntryContent = document.createElement("div");

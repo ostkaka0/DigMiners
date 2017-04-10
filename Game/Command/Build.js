@@ -19,9 +19,9 @@ RegisterCommand.push(CommandBuild);
 
 CommandBuild.prototype.execute = function() {
     //if (this.type == BlockTypes.FOREGROUND)
-        World.blockWorld.setForeground([this.x, this.y], this.blockId);
+        World.blocks.setForeground([this.x, this.y], this.blockId);
     //else if (this.type == BlockTypes.BACKGROUND)
-    //    setBackground(World.blockWorld, this.x, this.y, this.blockId);
+    //    setBackground(World.blocks, this.x, this.y, this.blockId);
 }
 
 CommandBuild.prototype.serialize = function(byteArray, index) {

@@ -42,12 +42,12 @@ GameModeSurvivalWar.prototype.init = function() {
         World.generator.generate(chunk, x, y);
         world.set([x, y], chunk);
 
-        World.generator.generateDungeons(World.blockWorld, chunk, x, y);
+        World.generator.generateDungeons(World.blocks, chunk, x, y);
     }
 
     for (var x = -3; x < 3; ++x) {
         for (var y = -3; y < 3; ++y) {
-            loadChunk(World.tileWorld, x, y);
+            loadChunk(World.tiles, x, y);
         }
     }
 
@@ -74,19 +74,19 @@ GameModeSurvivalWar.prototype.init = function() {
     }
 
     // End gamemode after 15 minutes
-    gameData.setTimeout(gameData.changeGameMode.bind(gameData), 15 * 60 * 1000);
+    World.setTimeout(Game.changeGameMode.bind(gameData), 15 * 60 * 1000);
 
     // End game when less than 2 players, activate after 60 seconds
-    gameData.setTimeout(() => {
-        gameData.playerWorld.onRemove.set(this, (player) => {
-            if (gameData.playerWorld.objectArray.length < 2)
-                gameData.changeGameMode();
+    World.setTimeout(() => {
+        Game.playerWorld.onRemove.set(this, (player) => {
+            if (Game.playerWorld.objectArray.length < 2)
+                Game.changeGameMode();
         });
     }, 60 * 1000);
 }
 
 GameModeSurvivalWar.prototype.destroy = function() {
-    Event.unsubscribe(gameData.playerWorld.onRemove, this);
+    Event.unsubscribe(Game.playerWorld.onRemove, this);
 }
 
 GameModeSurvivalWar.prototype.name = "Survival War";

@@ -22,9 +22,9 @@ RegisterMessage.ToClient.push(MessageChunk);
 MessageChunk.prototype.execute = function(gameData) {
     if (World.generator)
         World.generator.generate(this.chunk, this.x, this.y);
-    World.tileWorld.set([this.x, this.y], this.chunk);
+    World.tiles.set([this.x, this.y], this.chunk);
     if (!this.blockChunkEmpty)
-        World.blockWorld.set([this.x, this.y], this.blockChunk);
+        World.blocks.set([this.x, this.y], this.blockChunk);
 }
 
 MessageChunk.prototype.send = function(socket) {

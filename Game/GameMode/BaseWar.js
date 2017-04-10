@@ -44,12 +44,12 @@ GameModeBaseWar.prototype.init = function() {
         World.generator.generate(chunk, x, y);
         world.set([x, y], chunk);
 
-        World.generator.generateDungeons(World.blockWorld, chunk, x, y);
+        World.generator.generateDungeons(World.blocks, chunk, x, y);
     }
 
     for (var x = -3; x < 3; ++x) {
         for (var y = -3; y < 3; ++y) {
-            loadChunk(World.tileWorld, x, y);
+            loadChunk(World.tiles, x, y);
         }
     }
 
@@ -86,7 +86,7 @@ GameModeBaseWar.prototype.init = function() {
 
        // End gamemode
         if (Object.keys(this.spawnEntities).length <= 1)
-            gameData.changeGameMode();
+            Game.changeGameMode();
     }.bind(this));
 }
 

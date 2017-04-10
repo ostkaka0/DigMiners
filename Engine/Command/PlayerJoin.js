@@ -20,11 +20,11 @@ CommandPlayerJoin.prototype.execute = function() {
     if (isServer)
         player.name = this.playerName;
     if (isServer || this.playerId != global.player.id)
-        gameData.playerWorld.add(player, this.playerId);
+        Game.playerWorld.add(player, this.playerId);
 
     if (isServer) {
-        var socket = connections[this.socketId].socket;
-        connections[this.socketId].player = player;
+        var socket = Server.connections[this.socketId].socket;
+        Server.connections[this.socketId].player = player;
         player.socket = socket;
 
         // Send init message
@@ -35,8 +35,8 @@ CommandPlayerJoin.prototype.execute = function() {
         // TODO: client requests chunks instead
         for (var x = -3; x < 3; ++x) {
             for (var y = -3; y < 3; ++y) {
-                var chunk = World.tileWorld.get([x, y]);
-                var blockChunk = World.blockWorld.get([x, y]);
+                var chunk = World.tiles.get([x, y]);
+                var blockChunk = World.blocks.get([x, y]);
                 var message = new MessageChunk(chunk, blockChunk, x, y);
                 message.send(socket);
             }

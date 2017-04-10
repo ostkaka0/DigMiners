@@ -56,11 +56,11 @@ Item.interact = function(itemType, entity) {
         var chunkPos = [0, 0];
         var localPos = [0, 0];
         BlockChunk.fromV2World(hitPos, chunkPos, localPos);
-        var blockChunk = World.blockWorld.get(chunkPos);
+        var blockChunk = World.blocks.get(chunkPos);
         if (blockChunk) {
             var blockId = blockChunk.getForeground(localPos[0], localPos[1]);
             if (blockId) {
-                var blockType = gameData.blockRegister[blockId];
+                var blockType = Game.blockRegister[blockId];
                 var strength = blockChunk.getStrength(localPos[0], localPos[1]);
                 // TODO: 16 magic value
                 strength -= 16 * (Entity.getBlockBreakSpeed(entity) / blockType.hardness);

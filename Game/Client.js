@@ -47,8 +47,8 @@ var clientInit = function(callback) {
         else if (event.keyCode == 40)
             char = "s";
 
-        if (!keysDown[char]) {
-            keysDown[char] = true;
+        if (!Client.keysDown[char]) {
+            Client.keysDown[char] = true;
             var key = null;
             if (char == "w") key = Keys.UP;
             if (char == "a") key = Keys.LEFT;
@@ -57,10 +57,10 @@ var clientInit = function(callback) {
             if (char == " ") key = Keys.SPACEBAR;
             if (char == "r") key = Keys.R;
 
-            if (key == Keys.SPACEBAR && keysDown["lmb"]) return;
+            if (key == Keys.SPACEBAR && Client.keysDown["lmb"]) return;
 
             if (key != null)
-                new MessageRequestKeyStatusUpdate(key, true).send(socket);
+                new MessageRequestKeyStatusUpdate(key, true).send(Client.socket);
         }
 
 
@@ -78,8 +78,8 @@ var clientInit = function(callback) {
         else if (event.keyCode == 40)
             char = "s";
 
-        if (keysDown[char]) {
-            keysDown[char] = false;
+        if (Client.keysDown[char]) {
+            Client.keysDown[char] = false;
             var key = null;
             if (char == "w") key = Keys.UP;
             if (char == "a") key = Keys.LEFT;
@@ -88,24 +88,24 @@ var clientInit = function(callback) {
             if (char == " ") key = Keys.SPACEBAR;
             if (char == "r") key = Keys.R;
 
-            if (key == Keys.SPACEBAR && keysDown["lmb"]) return;
+            if (key == Keys.SPACEBAR && Client.keysDown["lmb"]) return;
 
             if (key != null)
-                new MessageRequestKeyStatusUpdate(key, false).send(socket);
+                new MessageRequestKeyStatusUpdate(key, false).send(Client.socket);
         }
     });
     $("#eventdiv").mousedown(function(event) {
-        if (event.button == 0 && !keysDown["lmb"]) {
-            keysDown["lmb"] = true;
-            if (keysDown[" "]) return;
-            new MessageRequestKeyStatusUpdate(Keys.SPACEBAR, true).send(socket);
+        if (event.button == 0 && !Client.keysDown["lmb"]) {
+            Client.keysDown["lmb"] = true;
+            if (Client.keysDown[" "]) return;
+            new MessageRequestKeyStatusUpdate(Keys.SPACEBAR, true).send(Client.socket);
         }
     });
     $('*').mouseup(function(event) {
-        if (event.button == 0 && keysDown["lmb"]) {
-            keysDown["lmb"] = false;
-            if (keysDown[" "]) return;
-            new MessageRequestKeyStatusUpdate(Keys.SPACEBAR, false).send(socket);
+        if (event.button == 0 && Client.keysDown["lmb"]) {
+            Client.keysDown["lmb"] = false;
+            if (Client.keysDown[" "]) return;
+            new MessageRequestKeyStatusUpdate(Keys.SPACEBAR, false).send(Client.socket);
         }
     });
 
@@ -152,7 +152,7 @@ var clientInitSocket = function(callback) {
         }, 2000);
 
         console.log("Connected.");
-        global.World.events.trigger("connected");
+        callback();
     });
 
     Client.socket.on('message', function(msg) {
@@ -164,7 +164,7 @@ var clientInitSocket = function(callback) {
     });
 
     Client.socket.on('ping', function() {
-        socket.emit('pong', Date.now());
+        Client.socket.emit('pong', Date.now());
     });
 
     Client.socket.on('pong', function(time) {
@@ -176,8 +176,8 @@ var clientInitSocket = function(callback) {
             var message = new messageType();
             message.receive(gameData, data);
             message.execute(gameData);
-            if (gameData.messageCallbacks[messageType.prototype.id])
-                gameData.messageCallbacks[messageType.prototype.id](message);
+            if (Client.messageCallbacks[messageType.prototype.id])
+                Client.messageCallbacks[messageType.prototype.id](message);
         });
     });
 }
@@ -235,8 +235,8 @@ var clientInitSocket = function(callback) {
             var message = new messageType();
             message.receive(gameData, data);
             message.execute(gameData);
-            if (gameData.messageCallbacks[messageType.prototype.id])
-                gameData.messageCallbacks[messageType.prototype.id](message);
+            if (Client.messageCallbacks[messageType.prototype.id])
+                Client.messageCallbacks[messageType.prototype.id](message);
         });
     });
 }

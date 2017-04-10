@@ -63,8 +63,8 @@ global.projectileEntitySimulate = function(entity, dt) {
         }
 
         var blockTilePos = [Math.floor(pos[0]), Math.floor(pos[1])];
-        var blockId = World.blockWorld.getForeground(blockTilePos);
-        var blockType = gameData.blockRegister[blockId];
+        var blockId = World.blocks.getForeground(blockTilePos);
+        var blockType = Game.blockRegister[blockId];
         var isBulletSolid = (blockType.isBulletSolid == undefined || entity.projectile.projectileType.isExplosive) ? blockType.isSolid : blockType.isBulletSolid;
         if (blockId != 0 && isBulletSolid && v2.dot([Math.cos(projectile.angle), -Math.sin(projectile.angle)], [blockTilePos[0] + 0.5 - pos[0], blockTilePos[1] + 0.5 - pos[1]]) > 0.0) {
             Event.trigger(EntityProjectile.Events.onHitBlock, entity, blockTilePos);
@@ -74,7 +74,7 @@ global.projectileEntitySimulate = function(entity, dt) {
         if (blockType.bulletFunction)
             blockType.bulletFunction(blockTilePos, blockType, entity);
 
-        var density = World.tileWorld.getDensity(blockTilePos);
+        var density = World.tiles.getDensity(blockTilePos);
         if (density >= 160) {
             Event.trigger(EntityProjectile.Events.onHitTile, entity, blockTilePos);
             projectile.hit = true;

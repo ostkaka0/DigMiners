@@ -20,11 +20,11 @@ Items.Functions.Shovel = function(entity, item) {
         var chunkPos = [];
         var localPos = [];
         BlockChunk.fromV2World(toolUsePos, chunkPos, localPos);
-        var blockChunk = World.blockWorld.get(chunkPos);
+        var blockChunk = World.blocks.get(chunkPos);
         if (blockChunk) {
             var blockId = blockChunk.getForeground(localPos[0], localPos[1]);
             if (blockId) {
-                var blockType = gameData.blockRegister[blockId];
+                var blockType = Game.blockRegister[blockId];
                 var strength = blockChunk.getStrength(localPos[0], localPos[1]);
                 // TODO: 16 magic value
                 strength -= 16 * (Entity.getBlockBreakSpeed(entity) / blockType.hardness);
@@ -92,8 +92,8 @@ Items.Functions.Potion = function(entity, item) {
                 Entity.onDequip(entity, stackId, itemType);
         };
         if (!isServer && global.playerEntity && entity.id == global.playerEntity.id) {
-            gameData.HUD.update();
-            gameData.HUD.checkCanAffordRecipe();
+            Game.HUD.update();
+            Game.HUD.checkCanAffordRecipe();
         }
     }
 }
@@ -196,7 +196,7 @@ Items.Functions.ThrowableDynamite = function(entity, itemType) {
         sendCommand(new CommandEntitySpawn(gameData, itemEntity, itemEntityId));
         sendCommand(new CommandEntityAnimate(itemEntityId, "body", "dynamite", 64000.0 / timeout));
 
-        gameData.setTimeout(function(attacker) {
+        World.setTimeout(function(attacker) {
             if (this.isActive && !this.isDead) {
                 sendCommand(new CommandParticles(ParticleFunctions.ExplosionParticles.id, this.physicsBody.getPos(), 10.0));
                 sendCommand(new CommandEntityDestroy(this.id));

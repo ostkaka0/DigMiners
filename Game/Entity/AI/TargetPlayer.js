@@ -77,7 +77,7 @@ BehaviourTargetPlayer.prototype.run = function() {
         if (!this.lastTargetPos || !this.flowField || v2.sqrDistance(this.lastTargetPos, this.target.physicsBody.getPos()) > v2.sqrDistance(this.entity.physicsBody.getPos(), this.target.physicsBody.getPos())) {
             this.flowField = new Map2D();
             var expandList = [];
-            aStarFlowField(this.flowField, expandList, World.tileWorld, World.blockWorld, tilePos, tilePosTarget, 25600);
+            aStarFlowField(this.flowField, expandList, World.tiles, World.blocks, tilePos, tilePosTarget, 25600);
             var delay = Math.min(2000, expandList.length * 10 + Math.floor(dis * 10));
             this.nextPathUpdateTick = World.tickId + (delay / Config.tickDuration >> 0);
             this.lastTargetPos = v2.clone(this.target.physicsBody.getPos());
@@ -208,7 +208,7 @@ BehaviourTargetPlayer.prototype.getAttackDistance = function(pos, dir) {
         var step = [stepLength * dir[0], stepLength * dir[1]];
         v2.add(step, rayPos, rayPos);
         for (var i = 0; i < 40; i++) {
-            if (World.tileWorld.getDensity(rayPos) > 127) break;
+            if (World.tiles.getDensity(rayPos) > 127) break;
             if (blockWorld.getForeground(rayPos) != 0) break;
 
             v2.add(step, rayPos, rayPos);

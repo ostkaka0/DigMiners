@@ -21,7 +21,7 @@ global.CommandPlayerOreInventory = CommandPlayerOreInventory;
 RegisterCommand.push(CommandPlayerOreInventory);
 
 CommandPlayerOreInventory.prototype.execute = function() {
-    var player = gameData.playerWorld.objects[this.playerId];
+    var player = Game.playerWorld.objects[this.playerId];
     if (!player) return;
     if (this.actionId == CommandPlayerOreInventory.Actions.ADD_ORE) {
         if (!player.oreInventory[this.itemId])
@@ -33,8 +33,8 @@ CommandPlayerOreInventory.prototype.execute = function() {
         player.oreInventory[this.itemId] -= this.amount;
     }
     if (!isServer && global.player && this.playerId == global.player.playerId) {
-        gameData.HUD.update();
-        gameData.HUD.checkCanAffordRecipe();
+        Game.HUD.update();
+        Game.HUD.checkCanAffordRecipe();
     }
 }
 

@@ -40,10 +40,10 @@ MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
         var localX = Math.floor(this.x) - blockChunkX * BlockChunk.dim;
         var localY = Math.floor(this.y) - blockChunkY * BlockChunk.dim;
 
-        var blockType = gameData.blockRegister[itemType.blockId];
+        var blockType = Game.blockRegister[itemType.blockId];
         var type = blockType.type;
 
-        var blockChunk = World.blockWorld.get([blockChunkX, blockChunkY]);
+        var blockChunk = World.blocks.get([blockChunkX, blockChunkY]);
         //if (type == BlockTypes.FOREGROUND) {
             if (blockChunk && blockChunk.getForeground(localX, localY) > 0)
                 return;

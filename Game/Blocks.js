@@ -109,8 +109,8 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
             if (checked[pos[0]] == null || checked[pos[0]][pos[1]] == null) {
                 if (checked[pos[0]] == null)
                     checked[pos[0]] = [];
-                checked[pos[0]][pos[1]] = World.blockWorld.getStrength(pos);
-                var blockId = World.blockWorld.getForeground(pos);
+                checked[pos[0]][pos[1]] = World.blocks.getStrength(pos);
+                var blockId = World.blocks.getForeground(pos);
                 if (blockType.id == blockId)
                     runRecursively(pos, blockType);
             }
@@ -118,14 +118,14 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
         }
     }
     checked[startBlockPos[0]] = [];
-    checked[startBlockPos[0]][startBlockPos[1]] = World.blockWorld.getStrength(startBlockPos);
+    checked[startBlockPos[0]][startBlockPos[1]] = World.blocks.getStrength(startBlockPos);
     runRecursively(startBlockPos, blockType);
 
     // Too big doors should not work.
     if (doors.length > blockType.maxDoorSize)
         return;
 
-    gameData.setTimeout(function() {
+    World.setTimeout(function() {
         for (var i = 0; i < doors.length; ++i) {
             var blockPos = doors[i];
             sendCommand(new CommandBuild(blockPos[0], blockPos[1], Blocks.RedForcefieldOpen.id, BlockTypes.FOREGROUND));
@@ -135,7 +135,7 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
         var blockTypeId = blockType.id;
         if (doors.length > 0) {
             var checkDoorClose = function() {
-                gameData.setTimeout(function() {
+                World.setTimeout(function() {
                     var shouldClose = true;
                     for (var i = 0; i < this.length; ++i) {
                         var blockPos = this[i];
@@ -163,13 +163,13 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
 }
 
 BlockDoorFunctions.blueForcefield = function(blockPos, blockType, entity, clickType) {
-    var startStrength = World.blockWorld.getStrength(blockPos);
-    gameData.setTimeout(function() {
+    var startStrength = World.blocks.getStrength(blockPos);
+    World.setTimeout(function() {
         sendCommand(new CommandBuild(blockPos[0], blockPos[1], Blocks.BlueForcefieldOpen.id, BlockTypes.FOREGROUND));
         sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], startStrength));
 
         var checkDoorClose = function() {
-            gameData.setTimeout(function() {
+            World.setTimeout(function() {
                 var bodies = [];
                 World.physics.getBodiesInRadius(bodies, [blockPos[0] + 0.5, blockPos[1] + 0.5], 0.5); // TODO: 1.0 magic number
                 if (bodies.length > 0)
@@ -400,7 +400,7 @@ Blocks.initBlocks = function() {
                     continue;
                 }
                 blockWorld.setStrength(blockPos, blockStrength);*/
-                //gameData.setTimeout(function() { blockWorld.setForeground(blockPos, 0); }, 500 + blockStrength * 15);
+                //World.setTimeout(function() { blockWorld.setForeground(blockPos, 0); }, 500 + blockStrength * 15);
                 var childStrength = blockStrength - strengthDecrease;
                 if (childStrength > 0) {
                 console.log("childStrength", childStrength);
@@ -409,7 +409,7 @@ Blocks.initBlocks = function() {
                         var otherPos = v2.clone(blockPos);
                         v2.add(dirs[j], otherPos, otherPos);
                         var otherId = blockWorld.getForeground(otherPos);
-                        var otherDensity = World.tileWorld.getDensity(otherPos);
+                        var otherDensity = World.tiles.getDensity(otherPos);
                         if ((otherId != 0 && otherId != Blocks.Toxin.id) || otherDensity > 127) continue;
                         var oldStrength = (otherId == Blocks.Toxin.id)? blockWorld.getStrength(otherPos) : 0;
                         if (oldStrength >= childStrength) continue;

@@ -22,12 +22,12 @@ RegisterCommand.push(CommandEntityBuild);
 
 CommandEntityBuild.prototype.execute = function() {
     /*if (this.type == BlockTypes.FOREGROUND)
-        World.blockWorld.setForeground([this.x, this.y], this.blockId);
+        World.blocks.setForeground([this.x, this.y], this.blockId);
     else if (this.type == BlockTypes.BACKGROUND)
-        setBackground(World.blockWorld, this.x, this.y, this.blockId);*/
+        setBackground(World.blocks, this.x, this.y, this.blockId);*/
 
     var entity = World.entities.objects[this.entityId];
-    var block = gameData.blockRegister[this.blockId];
+    var block = Game.blockRegister[this.blockId];
     if (!entity) return;
     if (!isServer && this.blockId)
         entity.bodyparts.bodyparts["rightArm"].cycle("rightArm", 256, true);

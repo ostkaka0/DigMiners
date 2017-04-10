@@ -10,16 +10,16 @@ global.CommandPlayerLeave = CommandPlayerLeave;
 RegisterCommand.push(CommandPlayerLeave);
 
 CommandPlayerLeave.prototype.execute = function() {
-    var player = gameData.playerWorld.objects[this.playerId];
+    var player = Game.playerWorld.objects[this.playerId];
     var entity = World.entities.objects[this.entityId];
     if (player)
-        gameData.playerWorld.remove(player);
+        Game.playerWorld.remove(player);
     if (entity)
         World.entities.remove(entity);
     if (isServer)
         console.log(player.name + " disconnected.");
     else if (entity && entity.name)
-        gameData.HUD.chat.write(entity.name.entityName + " disconnected.");
+        Game.HUD.chat.write(entity.name.entityName + " disconnected.");
 }
 
 CommandPlayerLeave.prototype.serialize = function(byteArray, index) {
