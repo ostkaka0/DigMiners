@@ -19,10 +19,102 @@ var clientInit = function(callback) {
         blockPosBad: null,
         mouseX: null,
         mouseY: null,
+        lastMouseSync: 0,
+        keysDown: {},
+        socket: null,
     }
+    // Resize canvas to correct size
+    Canvas.updateSize(canvas);
+    Canvas.updateSize(spriteCanvas);
+    addEventListener('resize', function() {
+        Canvas.updateSize(canvas);
+        Canvas.updateSize(spriteCanvas);
+    }, false);
+
     for (var i = 0; i < Client.zindices.length; ++i)
         Client.zindices[i] = new SpriteContainer();
 
+    $('*').keydown(function(event) {
+        var char = String.fromCharCode(event.keyCode).toLowerCase();
+
+        // Arrow keys:
+        if (event.keyCode == 37)
+            char = "a";
+        else if (event.keyCode == 38)
+            char = "w";
+        else if (event.keyCode == 39)
+            char = "d";
+        else if (event.keyCode == 40)
+            char = "s";
+
+        if (!keysDown[char]) {
+            keysDown[char] = true;
+            var key = null;
+            if (char == "w") key = Keys.UP;
+            if (char == "a") key = Keys.LEFT;
+            if (char == "s") key = Keys.DOWN;
+            if (char == "d") key = Keys.RIGHT;
+            if (char == " ") key = Keys.SPACEBAR;
+            if (char == "r") key = Keys.R;
+
+            if (key == Keys.SPACEBAR && keysDown["lmb"]) return;
+
+            if (key != null)
+                new MessageRequestKeyStatusUpdate(key, true).send(socket);
+        }
+
+
+    });
+    $('*').keyup(function(event) {
+        var char = String.fromCharCode(event.keyCode).toLowerCase();
+
+        // Arrow keys:
+        if (event.keyCode == 37)
+            char = "a";
+        else if (event.keyCode == 38)
+            char = "w";
+        else if (event.keyCode == 39)
+            char = "d";
+        else if (event.keyCode == 40)
+            char = "s";
+
+        if (keysDown[char]) {
+            keysDown[char] = false;
+            var key = null;
+            if (char == "w") key = Keys.UP;
+            if (char == "a") key = Keys.LEFT;
+            if (char == "s") key = Keys.DOWN;
+            if (char == "d") key = Keys.RIGHT;
+            if (char == " ") key = Keys.SPACEBAR;
+            if (char == "r") key = Keys.R;
+
+            if (key == Keys.SPACEBAR && keysDown["lmb"]) return;
+
+            if (key != null)
+                new MessageRequestKeyStatusUpdate(key, false).send(socket);
+        }
+    });
+    $("#eventdiv").mousedown(function(event) {
+        if (event.button == 0 && !keysDown["lmb"]) {
+            keysDown["lmb"] = true;
+            if (keysDown[" "]) return;
+            new MessageRequestKeyStatusUpdate(Keys.SPACEBAR, true).send(socket);
+        }
+    });
+    $('*').mouseup(function(event) {
+        if (event.button == 0 && keysDown["lmb"]) {
+            keysDown["lmb"] = false;
+            if (keysDown[" "]) return;
+            new MessageRequestKeyStatusUpdate(Keys.SPACEBAR, false).send(socket);
+        }
+    });
+
+    clientInitTextures(() => clientInitSocket(callback));
+}
+
+
+
+var clientInitTextures = function(callback) {
     Client.textures = loadTextures("data/textures/", ["block.png", "egg.png"], () => {
         Client.textureManager = new TextureManager(() => {
             Client.blockPosGood = new Sprite("blockPosGood.png");
@@ -42,6 +134,53 @@ var clientInit = function(callback) {
     });
 }
 
+var clientInitSocket = function(callback) {
+    var ip = window.vars.ip;
+    var port = Config.port;
+    console.log("Connecting to " + ip + ":" + port + "...");
+    Client.socket = io(ip + ":" + port, {
+        reconnection: false
+    });
+    global.sentInit2 = false;
+    global.playersReceived = 0;
+
+    Client.socket.on('connect', function() {
+
+        setInterval(function() {
+            //startTime = Date.now();
+            Client.socket.emit('ping');
+        }, 2000);
+
+        console.log("Connected.");
+        global.World.events.trigger("connected");
+    });
+
+    Client.socket.on('message', function(msg) {
+        console.log("Message from server: " + msg);
+    });
+
+    Client.socket.on('error', function(error) {
+        console.log("Connection failed. " + error);
+    });
+
+    Client.socket.on('ping', function() {
+        socket.emit('pong', Date.now());
+    });
+
+    Client.socket.on('pong', function(time) {
+        global.ping = 2 * (Date.now() - time);
+    });
+
+    RegisterMessage.ToClient.forEach(function(messageType) {
+        Client.socket.on(messageType.prototype.idString, function(data) {
+            var message = new messageType();
+            message.receive(gameData, data);
+            message.execute(gameData);
+            if (gameData.messageCallbacks[messageType.prototype.id])
+                gameData.messageCallbacks[messageType.prototype.id](message);
+        });
+    });
+}
 
 /*var Client = function(gameData, ip) {
 

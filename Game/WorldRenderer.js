@@ -12,6 +12,10 @@ var worldRendererInit = function() {
         blockRenderer: new BlockChunkRenderer(Client.gl, World.blocks, 32.0),
         animationManager: new AnimationManager(),
     }
+    addEventListener('resize', function() {
+        camera.width = window.innerWidth;
+        camera.height = window.innerHeight;
+    }, false);
     WorldRenderer.animationManager.load();
 }
 
