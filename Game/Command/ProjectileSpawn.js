@@ -35,7 +35,7 @@ CommandProjectileSpawn.prototype.execute = function() {
         entity.projectile.sprite.scale[0] = this.projectileType.scaleX;
         entity.projectile.sprite.scale[1] = this.projectileType.scaleY;
         entity.projectile.sprite.visible = false;
-        zindices[2].add(entity.projectile.sprite);
+        Client.zindices[2].add(entity.projectile.sprite);
     }
     projectileEntitySimulate(entity, Config.tickDuration / 1000.0);
     World.entities.add(entity, this.entityId);

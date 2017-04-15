@@ -59,5 +59,5 @@ EntityProjectile.prototype.getSerializationSize = function() {
 
 EntityProjectile.prototype.destroy = function(entity) {
     if (!isServer)
-        zindices[2].remove(entity.projectile.sprite);
+        Client.zindices[2].remove(entity.projectile.sprite);
 }

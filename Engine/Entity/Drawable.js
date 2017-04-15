@@ -41,7 +41,7 @@ EntityDrawable.prototype.deserialize = function(byteArray, index, gameData) {
     this.zindex = (!this.zindex ? 0 : this.zindex);
     if (!isServer) {
         this.container = new SpriteContainer();
-        zindices[this.zindex].add(this.container);
+        Client.zindices[this.zindex].add(this.container);
     }
 
     // Sprites
