@@ -36,8 +36,8 @@ MessageAmmoChange.prototype.send = function(socket) {
 }
 
 MessageAmmoChange.prototype.receive = function(gameData, byteArray) {
-    if (!global.playerEntity || !global.playerEntity.ammo) return;
-    var entity = global.playerEntity;
+    if (!Client.playerEntity || !Client.playerEntity.ammo) return;
+    var entity = Client.playerEntity;
     byteArray = new Uint8Array(byteArray);
     var counter = new IndexCounter();
     var length = Deserialize.int32(byteArray, counter);

@@ -32,7 +32,7 @@ CommandPlayerOreInventory.prototype.execute = function() {
             player.oreInventory[this.itemId] = 0;
         player.oreInventory[this.itemId] -= this.amount;
     }
-    if (!isServer && global.player && this.playerId == global.player.playerId) {
+    if (!isServer && Client.player && this.playerId == Client.player.playerId) {
         Game.HUD.update();
         Game.HUD.checkCanAffordRecipe();
     }

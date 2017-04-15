@@ -48,7 +48,7 @@ CommandEntityEquipItem.prototype.execute = function() {
         }
 
 
-        if (isServer || (global.playerEntity && this.entityId == global.playerEntity.id)) {
+        if (isServer || (Client.playerEntity && this.entityId == Client.playerEntity.id)) {
             if (item && item.id == this.itemId) {
                 item.equipped = this.equipped;
                 if (!isServer)

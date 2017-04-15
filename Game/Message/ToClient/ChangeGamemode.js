@@ -6,7 +6,7 @@
 ;
 
 var MessageChangeGameMode = function() {
-    this.gameModeId = Game.gameMode.id;
+    this.gameModeId = GameMode.id;
 }
 global.MessageChangeGameMode = MessageChangeGameMode;
 TypeRegister.add(RegisterMessage.ToClient, MessageChangeGameMode);

@@ -18,13 +18,13 @@ CommandPlayerSpawn.prototype.execute = function() {
     if (isServer)
         player.name = this.playerName;
 
-    if (!isServer && global.player.id == this.playerId) {
-        global.playerEntityId = this.entityId;
-        global.playerEntity = entity;
+    if (!isServer && Client.player.id == this.playerId) {
+        Client.playerEntityId = this.entityId;
+        Client.playerEntity = entity;
         Game.HUD.update();
-        World.events.trigger("ownPlayerSpawned", entity, player);
+        // TODO: fix: World.events.trigger("ownPlayerSpawned", entity, player);
     }
-    World.events.trigger("playerSpawned", entity, player);
+    // TODO: fix: World.events.trigger("playerSpawned", entity, player);
 }
 
 CommandPlayerSpawn.prototype.serialize = function(byteArray, index) {

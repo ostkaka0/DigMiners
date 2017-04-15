@@ -102,17 +102,17 @@ var physicsBodySimulate = function(physicsBody, dt) {
             var dx = pos[0] - (worldBlockPos[0] + 0.5);
             var dy = pos[1] - (worldBlockPos[1] + 0.5);
 
-            if (radius > 0 && Math.abs(dx) < radius + 0.5 && Math.abs(dy) < radius + 0.5) {
+            /*if (radius > 0 && Math.abs(dx) < radius + 0.5 && Math.abs(dy) < radius + 0.5) {
                 if (dy > dx) {
                     if (dy > -dx)
-                        World.events.trigger("entityHitBlockSide", World.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.TOP);
+                        // TODO: fix: World.events.trigger("entityHitBlockSide", World.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.TOP);
                     else
-                        World.events.trigger("entityHitBlockSide", World.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.LEFT);
+                        // TODO: fix: World.events.trigger("entityHitBlockSide", World.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.LEFT);
                 } else if (dy > -dx)
-                    World.events.trigger("entityHitBlockSide", World.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.RIGHT);
+                    // TODO: fix: World.events.trigger("entityHitBlockSide", World.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.RIGHT);
                 else
-                    World.events.trigger("entityHitBlockSide", World.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.BOTTOM);
-            }
+                    // TODO: fix: World.events.trigger("entityHitBlockSide", World.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.BOTTOM);
+            }*/
         }
 
         // Block collision

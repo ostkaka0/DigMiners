@@ -15,6 +15,7 @@ global.MessageCommands = MessageCommands;
 TypeRegister.add(RegisterMessage.ToClient, MessageCommands);
 
 MessageCommands.prototype.execute = function(gameData) {
+    if (!World || !GameMode) return;
     if (Config.fakeLag == 0 && Config.fakeJitter == 0) {
         World.pendingCommands[this.tickId] = this.commands;
     } else {

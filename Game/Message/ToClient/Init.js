@@ -27,7 +27,7 @@ TypeRegister.add(RegisterMessage.ToClient, MessageInit);
 MessageInit.prototype.execute = function(gameData) {
     World.tickId = this.tickId;
     var player = Game.playerWorld.add(new Player(this.playerId, this.entityId), this.playerId);
-    global.player = player;
+    Client.player = player;
 
     for (var i = 0; i < this.players.length; ++i) {
         var playerData = this.players[i];
@@ -99,6 +99,10 @@ MessageInit.prototype.send = function(gameData, socket) {
 }
 
 MessageInit.prototype.receive = function(gameData, byteArray) {
+    gameModeChange(new GameModeZombieInvasion());
+    gameModeTick();
+    worldTick();
+
     byteArray = new Uint8Array(byteArray);
     var index = new IndexCounter();
 

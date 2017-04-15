@@ -54,7 +54,7 @@ CommandEntityInventory.prototype.execute = function() {
     } else if (this.actionId == CommandEntityInventory.Actions.DROP_STACK) {
         var item = entity.inventory.removeStack(this.itemId);
     }
-    if (!isServer && global.playerEntity && this.entityId == global.playerEntity.id) {
+    if (!isServer && Client.playerEntity && this.entityId == Client.playerEntity.id) {
         Game.HUD.update();
         Game.HUD.checkCanAffordRecipe();
     }

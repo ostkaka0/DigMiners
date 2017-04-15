@@ -142,7 +142,7 @@ var clientInitSocket = function(callback) {
         reconnection: false
     });
     global.sentInit2 = false;
-    global.playersReceived = 0;
+    Client.playersReceived = 0;
 
     Client.socket.on('connect', function() {
 
@@ -201,7 +201,7 @@ var clientInitSocket = function(callback) {
         reconnection: false
     });
     global.sentInit2 = false;
-    global.playersReceived = 0;
+    Client.playersReceived = 0;
 
     Client.socket.on('connect', function() {
 
@@ -211,7 +211,7 @@ var clientInitSocket = function(callback) {
         }, 2000);
 
         console.log("Connected.");
-        global.World.events.trigger("connected");
+        global.// TODO: fix: World.events.trigger("connected");
     });
 
     Client.socket.on('message', function(msg) {

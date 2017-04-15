@@ -11,8 +11,6 @@ var deathScreen = null;
 
 var init = function() {
     gameInit();
-    worldInit(); // TODO: initWorld at MessageInit and MessageChangeGameMode
-    worldRendererInit();
     requestAnimationFrame(update);
 
     deathScreen = new DeathScreen();
@@ -44,6 +42,8 @@ var update = function() {
 
 var tick = function(dt) {
     gameTick(dt);
+    //clientTick(dt);
+    gameModeTick(dt);
     worldTick(dt);
 }
 

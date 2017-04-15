@@ -12,8 +12,10 @@ var EntityDrawable = function(zindex) {
     if (isServer)
         return;
 
-    this.container = new SpriteContainer();
-    zindices[this.zindex].add(this.container);
+    if (!isServer) {
+        this.container = new SpriteContainer();
+        Client.zindices[this.zindex].add(this.container);
+    }
 }
 global.EntityDrawable = EntityDrawable;
 TypeRegister.add(RegisterEntity, EntityDrawable);

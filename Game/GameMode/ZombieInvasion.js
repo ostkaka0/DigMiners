@@ -49,7 +49,7 @@ global.GameModeZombieInvasion = function() {
     this.startSecondsDuration = 2;//15;
     this.startSeconds = this.startSecondsDuration;
 }
-global.GameModeZombieInvasion = GameModeZombieInvasion;
+TypeRegister.add(GameModeRegister, GameModeZombieInvasion);
 
 GameModeZombieInvasion.prototype.init = function() {
     if (!isServer) return;
@@ -58,7 +58,7 @@ GameModeZombieInvasion.prototype.init = function() {
         var chunk = new Chunk();
         World.generator.generate(chunk, x, y);
         world.set([x, y], chunk);
-        new MessageChunk(chunk, World.blocks.get([x, y]), x, y).send(io.sockets);
+        new MessageChunk(chunk, World.blocks.get([x, y]), x, y).send(Server.io.sockets);
     }
 
     for (var x = -3; x < 3; ++x) {

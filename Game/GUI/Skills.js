@@ -33,11 +33,11 @@ class HUDSkills {
         }
 
         Event.subscribe(Player.events.onSkillChange, this, (player) => this.update(player));
-        this.update(global.player);
+        this.update(Client.player);
     }
 
     update(player) {
-        if (player != global.player) return;
+        if (player != Client.player) return;
         if (player.skillPoints >= 1) {
             this.root.show();
             for (var i = 0; i < PlayerSkillRegister.length; i++) {

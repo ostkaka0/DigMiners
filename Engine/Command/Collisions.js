@@ -5,11 +5,12 @@
 
 
 var CommandCollisions = function(collisions) {
+    this.collisions = [];
+    if (!isServer) return;
     var physicsWorld = World.physics;
     var physicsEntities = World.physicsEntities;
 
     var bodies = {};
-    this.collisions = [];
 
     if (collisions) {
         collisions.forEach(function(collision) {

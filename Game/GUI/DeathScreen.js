@@ -110,7 +110,7 @@ var DeathScreen = function() {
         } else {
             this.btnSpawn.prop("disabled", true);
             this.btnSpawn.text("Wait - " + duration);
-            worldSetTimeout(this.btnSpawn.setDisabledCountdown.bind(this, duration - 1), 1000);
+            setTimeout(this.btnSpawn.setDisabledCountdown.bind(this, duration - 1), 1000);
         }
     }.bind(this);
 
@@ -125,16 +125,16 @@ var DeathScreen = function() {
 
     World.events.on("spectate", function(entity) {
         this.root.hide();
-    }.bind(this));*/
+    }.bind(this));
 
     //events.on("entityDeath", function(entity) {
     World.entities.onRemove.set(this, (entity) => {
         if (!entity.controlledByPlayer) return;
-        if (entity.controlledByPlayer.playerId != global.player.id) return;
+        if (entity.controlledByPlayer.playerId != Client.player.id) return;
 
         this.root.show();
         this.btnSpawn.setDisabledCountdown(Config.respawnTime);
-    });
+    });*/
 
     this.btnSpawn.setDisabledCountdown(Config.respawnTime)
 }

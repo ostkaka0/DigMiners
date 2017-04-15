@@ -22,7 +22,6 @@ var MessageRequestSpawn = function(playerName, classId) {
 TypeRegister.add(RegisterMessage.ToServer, MessageRequestSpawn);
 
 MessageRequestSpawn.prototype.execute = function(gameData, player) {
-    console.log(PlayerClass);
     if (player.entity != null && player.entityId != null) return;
     if (World.tickId - player.deathTick < 20 * Config.respawnTime) return;
     if (!PlayerClassRegister[this.classId]) return;
@@ -35,8 +34,8 @@ MessageRequestSpawn.prototype.execute = function(gameData, player) {
 
     var entityId = World.idList.next();
     var entity;
-    if (Game.gameMode.createEntity) {
-        entity = Game.gameMode.createEntity(player, entityId);
+    if (GameMode.createEntity) {
+        entity = GameMode.createEntity(player, entityId);
     } else {
         entity = entityTemplatePlayer(player.id, entityId, player.name, PlayerClassRegister[this.classId], EntityTeam.Enum.None);
     }
@@ -45,7 +44,7 @@ MessageRequestSpawn.prototype.execute = function(gameData, player) {
     /*var pos = playerSpawns[teamId][Math.random() * playerSpawns[teamId].length >> 0];
     entity.physicsBody.setPos(pos);
     entity.physicsBody.posOld = v2.clone(pos);*/
-    Event.trigger(World.events2.onPlayerSpawn, player, entity);
+    // TODO: Fix: Event.trigger(World.events2.onPlayerSpawn, player, entity);
     //}
 
     //if (entity) {

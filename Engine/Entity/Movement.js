@@ -179,7 +179,7 @@ EntityMovement.entityFunction = function(dt) {
 
         if (entity.movement.toolReloadTickTimeout == 0 && entity.movement.isReloading) {// || (!entity.movement.keyStatuses[Keys.R] && entity.movement.isReloading)) {
             entity.movement.isReloading = false;
-            World.events.trigger("finishReload", entity, tool);
+            // TODO: fix: World.events.trigger("finishReload", entity, tool);
         }
         //}
     });

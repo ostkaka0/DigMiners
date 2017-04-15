@@ -247,7 +247,7 @@ HUD.prototype.checkCanAffordRecipe = function() {
     var recipe = Recipes[recipeId];
     var craftingRightTextContainer = document.getElementById("craftingRightTextContainer");
     if (craftingRightTextContainer) {
-        if (global.player.hasRequiredRecipeResources(recipe) === false)
+        if (Client.player.hasRequiredRecipeResources(recipe) === false)
             craftingRightTextContainer.innerText = "Not enough resources";
         else
             craftingRightTextContainer.innerText = "";

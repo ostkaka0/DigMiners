@@ -16,10 +16,20 @@ var worldInit = function() {
         commands: [],
         timeouts: {},
         timeoutIdList: new IdList(),
+        inventoryIdList: new IdList(),
+        inventories: {},
+        entityInventories: {},
     };
 }
 
+var worldDestroy = function() {
+    if (!World) return;
+    worldClearTimeouts();
+    World = null;
+}
+
 var worldTick = function(dt) {
+    if (!World) return;
     var commands = World.commands;
     World.commands = [];
     if (World.pendingCommands[World.tickId])
@@ -167,9 +177,9 @@ World.prototype.initializeEvents = function() {
             if (player) {
                 player.deathTick = World.tickId;
                 player.entityId = null;
-                if (!isServer && player.id == global.player.id) {
-                    global.playerEntity = null;
-                    global.playerEntityId = null;
+                if (!isServer && player.id == Client.player.id) {
+                    Client.playerEntity = null;
+                    Client.playerEntityId = null;
                 }
             }
         }
@@ -261,7 +271,7 @@ World.prototype.initializeEvents = function() {
     EntityInteractable.Events.onInteract.set(this, function(interactableEntity, interactingEntity) {
         //console.log(interactingEntity.id + " is now interacting with " + interactableEntity.id);
         if (!isServer) {
-            if (global.playerEntity && global.playerEntity.id == interactingEntity.id) {
+            if (Client.playerEntity && Client.playerEntity.id == interactingEntity.id) {
                 if (interactableEntity.chest && interactableEntity.inventory) {
                     //TODO: inventory size
                     Game.HUD.inventory2 = new InventoryHUD(interactableEntity.inventory, "Chest", 80);
@@ -277,7 +287,7 @@ World.prototype.initializeEvents = function() {
     EntityInteractable.Events.onFinishInteract.set(this, function(interactableEntity, interactingEntity) {
         //console.log(interactingEntity.id + " is no longer interacting with " + interactableEntity.id);
         if (!isServer) {
-            if (global.playerEntity && global.playerEntity.id == interactingEntity.id) {
+            if (Client.playerEntity && Client.playerEntity.id == interactingEntity.id) {
                 if (interactableEntity.chest && interactableEntity.inventory) {
                     Game.HUD.inventory2.remove();
                     Game.HUD.inventory2 = null;

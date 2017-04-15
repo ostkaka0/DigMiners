@@ -12,14 +12,22 @@ var worldRendererInit = function() {
         blockRenderer: new BlockChunkRenderer(Client.gl, World.blocks, 32.0),
         animationManager: new AnimationManager(),
     }
-    addEventListener('resize', function() {
+    WorldRenderer.onResize = function() {
         WorldRenderer.camera.width = window.innerWidth;
         WorldRenderer.camera.height = window.innerHeight;
-    }, false);
+    };
+    addEventListener('resize', WorldRenderer.onResize, false);
     WorldRenderer.animationManager.load();
 }
 
+var worldRendererDestroy = function() {
+    if (!WorldRenderer) return;
+    removeEventListener('resize', WorldRenderer.onResize, false);
+    WorldRenderer = null;
+}
+
 var worldRendererRender = function(tickFracTime) {
+    if (!WorldRenderer) return;
     var gl = Client.gl;
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.clearColor(0.0, 0.0, 0.0, 1.0);

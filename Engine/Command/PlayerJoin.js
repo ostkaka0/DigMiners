@@ -19,7 +19,7 @@ CommandPlayerJoin.prototype.execute = function() {
     var player = new Player(this.playerId);
     if (isServer)
         player.name = this.playerName;
-    if (isServer || this.playerId != global.player.id)
+    if (isServer || this.playerId != Client.player.id)
         Game.playerWorld.add(player, this.playerId);
 
     if (isServer) {

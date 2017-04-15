@@ -85,8 +85,8 @@ DugItems.prototype.update = function() {
     for (var i = 0; i < this.tileOres.length; ++i) {
         var tileType = this.tileOres[i];
         var amount = 0;
-        if (global.player.oreInventory[tileType.id])
-            amount = global.player.oreInventory[tileType.id];
+        if (Client.player.oreInventory[tileType.id])
+            amount = Client.player.oreInventory[tileType.id];
         var dugItemsEntry = document.getElementById("entry" + i);
         var dugItemsEntryText = dugItemsEntry.childNodes[1];
         dugItemsEntryText.innerText = parseFloat(Math.floor((amount / 256.0) * 10) / 10).toFixed(1);

@@ -184,253 +184,249 @@ BlockDoorFunctions.blueForcefield = function(blockPos, blockType, entity, clickT
     }, blockType.doorOpenDelay);
 }
 
-Blocks.initBlocks = function() {
-    delete Blocks.initBlocks;
-    Blocks.Null = {
-        name: "Air",
-        isSolid: false,
-        hardness: 0,
-        type: -1
-    }
+Blocks.Null = {
+    name: "Air",
+    isSolid: false,
+    hardness: 0,
+    type: -1
+}
 
-    Blocks.StoneWall = {
-        name: "Stone Wall",
-        isSolid: true,
-        hardness: 1.0,
-        type: BlockTypes.FOREGROUND,
-        buildDuration: 20,
-        oreRecipe: [Tiles.Stone, 1]
-    };
+Blocks.StoneWall = {
+    name: "Stone Wall",
+    isSolid: true,
+    hardness: 1.0,
+    type: BlockTypes.FOREGROUND,
+    buildDuration: 20,
+    oreRecipe: [Tiles.Stone, 1]
+};
 
-    Blocks.WoodCrate = {
-        name: "Wood Crate",
-        isSolid: true,
-        hardness: 0.50,
-        type: BlockTypes.FOREGROUND,
-        buildDuration: 5,
-        /*onPlace: BlockFunctions.createEntity,
-        createEntity: function(blockPos, block) {
-            var entity = {};
-            entity.physicsBody = new EntityPhysicsBody(v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), 0.01, 4.0);
-            entity.health = new EntityHealth(50, 50);
+Blocks.WoodCrate = {
+    name: "Wood Crate",
+    isSolid: true,
+    hardness: 0.50,
+    type: BlockTypes.FOREGROUND,
+    buildDuration: 5,
+    /*onPlace: BlockFunctions.createEntity,
+    createEntity: function(blockPos, block) {
+        var entity = {};
+        entity.physicsBody = new EntityPhysicsBody(v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), 0.01, 4.0);
+        entity.health = new EntityHealth(50, 50);
 
-            var bodySprite = new Sprite(block.name);
-            var bodyparts = {
-                "body": new BodyPart(bodySprite, 0, 0, 0),
-                "text": new BodyPart(bodySprite, 0, 0, 0)
-            };
-            entity.bodyparts = new EntityBodyparts(bodyparts);
-            entity.drawable = new EntityDrawable(0);
+        var bodySprite = new Sprite(block.name);
+        var bodyparts = {
+            "body": new BodyPart(bodySprite, 0, 0, 0),
+            "text": new BodyPart(bodySprite, 0, 0, 0)
+        };
+        entity.bodyparts = new EntityBodyparts(bodyparts);
+        entity.drawable = new EntityDrawable(0);
 
-            return entity;
-        }*/
-    }
+        return entity;
+    }*/
+}
 
-    Blocks.StoneFloor = {
-        name: "Stone Floor",
-        isSolid: false,
-        hardness: 1.0,
-        type: BlockTypes.BACKGROUND
-    };
+Blocks.StoneFloor = {
+    name: "Stone Floor",
+    isSolid: false,
+    hardness: 1.0,
+    type: BlockTypes.BACKGROUND
+};
 
-    Blocks.BunkerWindow = {
-        name: "Bunker Window",
-        isSolid: true,
-        hardness: 1.0,
-        type: BlockTypes.FOREGROUND,
-        buildDuration: 40,
-        isBulletSolid: false,
-        bulletFunction: BlockBulletFunctions.bunker,
-        bulletBunkerDistance: 1.0,
-        bulletBunkerNearFactor: 1.0,
-        bulletBunkerFarFactor: 0.5,
-        projectileArmor: 0.5,
-        oreRecipe: [Tiles.Stone, 2]
-    }
+Blocks.BunkerWindow = {
+    name: "Bunker Window",
+    isSolid: true,
+    hardness: 1.0,
+    type: BlockTypes.FOREGROUND,
+    buildDuration: 40,
+    isBulletSolid: false,
+    bulletFunction: BlockBulletFunctions.bunker,
+    bulletBunkerDistance: 1.0,
+    bulletBunkerNearFactor: 1.0,
+    bulletBunkerFarFactor: 0.5,
+    projectileArmor: 0.5,
+    oreRecipe: [Tiles.Stone, 2]
+}
 
-    Blocks.BlueForcefield = {
-        name: "Blue Forcefield",
-        isSolid: true,
-        hardness: 1.0,
-        type: BlockTypes.FOREGROUND,
-        buildDuration: 40,
-        isDoor: true,
-        clickFunction: BlockDoorFunctions.blueForcefield,
-        maxDoorSize: 1,
-        doorOpenTime: 2000,
-        doorOpenDelay: 200,
-        oreRecipe: [Tiles.Copper, 2]
-    }
+Blocks.BlueForcefield = {
+    name: "Blue Forcefield",
+    isSolid: true,
+    hardness: 1.0,
+    type: BlockTypes.FOREGROUND,
+    buildDuration: 40,
+    isDoor: true,
+    clickFunction: BlockDoorFunctions.blueForcefield,
+    maxDoorSize: 1,
+    doorOpenTime: 2000,
+    doorOpenDelay: 200,
+    oreRecipe: [Tiles.Copper, 2]
+}
 
-    Blocks.RedForcefield = {
-        name: "Red Forcefield",
-        isSolid: true,
-        hardness: 1.0,
-        type: BlockTypes.FOREGROUND,
-        buildDuration: 40,
-        isDoor: true,
-        clickFunction: BlockDoorFunctions.redForcefield,
-        maxDoorSize: 10,
-        doorOpenTime: 2000,
-        doorOpenDelay: 200,
-        oreRecipe: [Tiles.Copper, 2]
-    }
+Blocks.RedForcefield = {
+    name: "Red Forcefield",
+    isSolid: true,
+    hardness: 1.0,
+    type: BlockTypes.FOREGROUND,
+    buildDuration: 40,
+    isDoor: true,
+    clickFunction: BlockDoorFunctions.redForcefield,
+    maxDoorSize: 10,
+    doorOpenTime: 2000,
+    doorOpenDelay: 200,
+    oreRecipe: [Tiles.Copper, 2]
+}
 
-    Blocks.BlueForcefieldOpen = {
-        name: "Blue Forcefield",
-        isSolid: false,
-        hardness: 1.0,
-        oreRecipe: BlockTypes.FOREGROUND
-    }
+Blocks.BlueForcefieldOpen = {
+    name: "Blue Forcefield",
+    isSolid: false,
+    hardness: 1.0,
+    oreRecipe: BlockTypes.FOREGROUND
+}
 
-    Blocks.RedForcefieldOpen = {
-        name: "Red Forcefield",
-        isSolid: false,
-        hardness: 1.0,
-        oreRecipe: BlockTypes.FOREGROUND
-    }
+Blocks.RedForcefieldOpen = {
+    name: "Red Forcefield",
+    isSolid: false,
+    hardness: 1.0,
+    oreRecipe: BlockTypes.FOREGROUND
+}
 
-    Blocks.HealthBox = {
-        name: "Health Box",
-        isSolid: true,
-        hardness: 1.0,
-        type: BlockTypes.FOREGROUND,
-        buildDuration: 40,
-        onPlace: BlockFunctions.createEntityBox,
-        onCreateEntity: function(entity) {
-            entity.potionEffects = new EntityPotionEffects();
-            entity.potionEffects.add(PotionEffectTypes.HealNearEntities, -1);
-            return entity;
-        },
-        oreRecipe: [Tiles.Copper, 2]
-    }
+Blocks.HealthBox = {
+    name: "Health Box",
+    isSolid: true,
+    hardness: 1.0,
+    type: BlockTypes.FOREGROUND,
+    buildDuration: 40,
+    onPlace: BlockFunctions.createEntityBox,
+    onCreateEntity: function(entity) {
+        entity.potionEffects = new EntityPotionEffects();
+        entity.potionEffects.add(PotionEffectTypes.HealNearEntities, -1);
+        return entity;
+    },
+    oreRecipe: [Tiles.Copper, 2]
+}
 
-    Blocks.AmmoBox = {
-        name: "Ammo Box",
-        isSolid: true,
-        hardness: 1.0,
-        type: BlockTypes.FOREGROUND,
-        buildDuration: 40,
-        onPlace: BlockFunctions.createEntityBox,
-        onCreateEntity: function(entity) {
-            entity.potionEffects = new EntityPotionEffects();
-            entity.potionEffects.add(PotionEffectTypes.SupplyAmmoNearEntities, -1);
-            return entity;
-        },
-        oreRecipe: [Tiles.Copper, 2]
-    }
+Blocks.AmmoBox = {
+    name: "Ammo Box",
+    isSolid: true,
+    hardness: 1.0,
+    type: BlockTypes.FOREGROUND,
+    buildDuration: 40,
+    onPlace: BlockFunctions.createEntityBox,
+    onCreateEntity: function(entity) {
+        entity.potionEffects = new EntityPotionEffects();
+        entity.potionEffects.add(PotionEffectTypes.SupplyAmmoNearEntities, -1);
+        return entity;
+    },
+    oreRecipe: [Tiles.Copper, 2]
+}
 
-    Blocks.Chest = {
-        name: "Chest",
-        isSolid: true,
-        hardness: 1.0,
-        type: BlockTypes.FOREGROUND,
-        buildDuration: 40,
-        onPlace: BlockFunctions.createEntityBox,
-        onCreateEntity: function(entity, entityId) {
-            entity.interactable = new EntityInteractable(function(interactableEntity, entity) {
-                if (v2.distance(interactableEntity.physicsBody.getPos(), entity.physicsBody.getPos()) > 1.5)
-                    return false;
-                return true;
-            });
-            entity.chest = new EntityChest();
-            entity.inventory = EntityInventory.createInventory(entityId, 4, 4);
-            entity.inventory.addItem(gameData, Items.Types.RustyShovel.id, Math.floor(Math.random() * 8));
-            return entity;
-        },
-        oreRecipe: [Tiles.Iron, 2]
-    }
+Blocks.Chest = {
+    name: "Chest",
+    isSolid: true,
+    hardness: 1.0,
+    type: BlockTypes.FOREGROUND,
+    buildDuration: 40,
+    onPlace: BlockFunctions.createEntityBox,
+    onCreateEntity: function(entity, entityId) {
+        entity.interactable = new EntityInteractable(function(interactableEntity, entity) {
+            if (v2.distance(interactableEntity.physicsBody.getPos(), entity.physicsBody.getPos()) > 1.5)
+                return false;
+            return true;
+        });
+        entity.chest = new EntityChest();
+        entity.inventory = EntityInventory.createInventory(entityId, 4, 4);
+        entity.inventory.addItem(gameData, Items.Types.RustyShovel.id, Math.floor(Math.random() * 8));
+        return entity;
+    },
+    oreRecipe: [Tiles.Iron, 2]
+}
 
-    Blocks.MachineGunTurret = {
-        name: "Turret(Machinegun)",
-        isSolid: true,
-        hardness: 1.0,
-        type: BlockTypes.FOREGROUND,
-        buildDuration: 80,
-        onPlace: BlockFunctions.createEntityTurret,
-        onCreateEntity: null,
-        onEntityCreated: function(entity, entityId) {
-            var weaponId = Items.Types.WeaponMachineGun.id;
-            sendCommand(new CommandEntityInventory(entityId, CommandEntityInventory.Actions.ADD_ITEM, weaponId, 1));
-            sendCommand(new CommandEntityEquipItem(entityId, 0, weaponId, true));
-        },
-        oreRecipe: [Tiles.Coal, 5, Tiles.Copper, 5, Tiles.Iron, 5]
-    }
+Blocks.MachineGunTurret = {
+    name: "Turret(Machinegun)",
+    isSolid: true,
+    hardness: 1.0,
+    type: BlockTypes.FOREGROUND,
+    buildDuration: 80,
+    onPlace: BlockFunctions.createEntityTurret,
+    onCreateEntity: null,
+    onEntityCreated: function(entity, entityId) {
+        var weaponId = Items.Types.WeaponMachineGun.id;
+        sendCommand(new CommandEntityInventory(entityId, CommandEntityInventory.Actions.ADD_ITEM, weaponId, 1));
+        sendCommand(new CommandEntityEquipItem(entityId, 0, weaponId, true));
+    },
+    oreRecipe: [Tiles.Coal, 5, Tiles.Copper, 5, Tiles.Iron, 5]
+}
 
-    Blocks.SmgTurret = {
-        name: "Turret(Smg)",
-        isSolid: true,
-        hardness: 1.0,
-        type: BlockTypes.FOREGROUND,
-        buildDuration: 60,
-        onPlace: BlockFunctions.createEntityTurret,
-        onCreateEntity: null,
-        onEntityCreated: function(entity, entityId) {
-            var weaponId = Items.Types.WeaponSmg.id;
-            sendCommand(new CommandEntityInventory(entityId, CommandEntityInventory.Actions.ADD_ITEM, weaponId, 1));
-            sendCommand(new CommandEntityEquipItem(entityId, 0, weaponId, true));
-        },
-        oreRecipe: [Tiles.Coal, 2, Tiles.Copper, 1, Tiles.Iron, 1]
-    }
+Blocks.SmgTurret = {
+    name: "Turret(Smg)",
+    isSolid: true,
+    hardness: 1.0,
+    type: BlockTypes.FOREGROUND,
+    buildDuration: 60,
+    onPlace: BlockFunctions.createEntityTurret,
+    onCreateEntity: null,
+    onEntityCreated: function(entity, entityId) {
+        var weaponId = Items.Types.WeaponSmg.id;
+        sendCommand(new CommandEntityInventory(entityId, CommandEntityInventory.Actions.ADD_ITEM, weaponId, 1));
+        sendCommand(new CommandEntityEquipItem(entityId, 0, weaponId, true));
+    },
+    oreRecipe: [Tiles.Coal, 2, Tiles.Copper, 1, Tiles.Iron, 1]
+}
 
-    Blocks.Toxin = {
-        name: "Mustard Gas",
-        isSolid: false,
-        hardness: 1.0,
-        type: BlockTypes.BACKGROUND,
-        buildDuration: 40,
-        onTouch: function(entity) {
-            if (!entity.team || entity.team.value == EntityTeam.Enum.Human) return;
-            if (!entity.potionEffects || !entity.health) return;
-            entity.potionEffects.add(PotionEffectTypes.Toxin, 5 * 20);
-        },
-        updateCells: function(blockWorld, blockList) {
-            return;
-            var dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
-            var strengthDecrease = 10;
-            var strengthTimeDecrease = 5;
-            for (var i = blockList.length-1; i >= 0; i--) {
-                let blockPos = blockList[i];
-                var blockId = blockWorld.getForeground(blockPos);
-                if (blockId != Blocks.Toxin.id) continue;
-                var blockStrength = blockWorld.getStrength(blockPos) - 10;
-                //blockStrength -= strengthTimeDecrease;
-                /*if (blockStrength <= 0) {
-                    blockWorld.setForeground(blockPos, 0);
-                    continue;
-                }
-                blockWorld.setStrength(blockPos, blockStrength);*/
-                //worldSetTimeout(function() { blockWorld.setForeground(blockPos, 0); }, 500 + blockStrength * 15);
-                var childStrength = blockStrength - strengthDecrease;
-                if (childStrength > 0) {
-                console.log("childStrength", childStrength);
-
-                    for (var j = 0; j < dirs.length; j++) {
-                        var otherPos = v2.clone(blockPos);
-                        v2.add(dirs[j], otherPos, otherPos);
-                        var otherId = blockWorld.getForeground(otherPos);
-                        var otherDensity = World.tiles.getDensity(otherPos);
-                        if ((otherId != 0 && otherId != Blocks.Toxin.id) || otherDensity > 127) continue;
-                        var oldStrength = (otherId == Blocks.Toxin.id)? blockWorld.getStrength(otherPos) : 0;
-                        if (oldStrength >= childStrength) continue;
-                        if (otherId == Blocks.Toxin.id)
-                            blockWorld.setStrength(otherPos, childStrength);
-                        else
-                            blockWorld.setForeground(otherPos, Blocks.Toxin.id, childStrength);
-                        //blockStrength -= 1;
-                    }
-                }
-                blockStrength--;
-
-                if (blockStrength <= 0) {
-                    blockWorld.setForeground(blockPos, 0);
-                    continue;
-                }
-
-                console.log("blockStrength", blockStrength);
-                blockWorld.setStrength(blockPos, blockStrength);
+Blocks.Toxin = {
+    name: "Mustard Gas",
+    isSolid: false,
+    hardness: 1.0,
+    type: BlockTypes.BACKGROUND,
+    buildDuration: 40,
+    onTouch: function(entity) {
+        if (!entity.team || entity.team.value == EntityTeam.Enum.Human) return;
+        if (!entity.potionEffects || !entity.health) return;
+        entity.potionEffects.add(PotionEffectTypes.Toxin, 5 * 20);
+    },
+    updateCells: function(blockWorld, blockList) {
+        return;
+        var dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+        var strengthDecrease = 10;
+        var strengthTimeDecrease = 5;
+        for (var i = blockList.length-1; i >= 0; i--) {
+            let blockPos = blockList[i];
+            var blockId = blockWorld.getForeground(blockPos);
+            if (blockId != Blocks.Toxin.id) continue;
+            var blockStrength = blockWorld.getStrength(blockPos) - 10;
+            //blockStrength -= strengthTimeDecrease;
+            /*if (blockStrength <= 0) {
+                blockWorld.setForeground(blockPos, 0);
+                continue;
             }
+            blockWorld.setStrength(blockPos, blockStrength);*/
+            //worldSetTimeout(function() { blockWorld.setForeground(blockPos, 0); }, 500 + blockStrength * 15);
+            var childStrength = blockStrength - strengthDecrease;
+            if (childStrength > 0) {
+            console.log("childStrength", childStrength);
+
+                for (var j = 0; j < dirs.length; j++) {
+                    var otherPos = v2.clone(blockPos);
+                    v2.add(dirs[j], otherPos, otherPos);
+                    var otherId = blockWorld.getForeground(otherPos);
+                    var otherDensity = World.tiles.getDensity(otherPos);
+                    if ((otherId != 0 && otherId != Blocks.Toxin.id) || otherDensity > 127) continue;
+                    var oldStrength = (otherId == Blocks.Toxin.id)? blockWorld.getStrength(otherPos) : 0;
+                    if (oldStrength >= childStrength) continue;
+                    if (otherId == Blocks.Toxin.id)
+                        blockWorld.setStrength(otherPos, childStrength);
+                    else
+                        blockWorld.setForeground(otherPos, Blocks.Toxin.id, childStrength);
+                    //blockStrength -= 1;
+                }
+            }
+            blockStrength--;
+
+            if (blockStrength <= 0) {
+                blockWorld.setForeground(blockPos, 0);
+                continue;
+            }
+
+            console.log("blockStrength", blockStrength);
+            blockWorld.setStrength(blockPos, blockStrength);
         }
     }
-
 }
