@@ -15,7 +15,7 @@ var CommandBuild = function(x, y, blockId, type) {
     this.type = type;
 }
 global.CommandBuild = CommandBuild;
-RegisterCommand.push(CommandBuild);
+TypeRegister.add(RegisterCommand, CommandBuild);
 
 CommandBuild.prototype.execute = function() {
     //if (this.type == BlockTypes.FOREGROUND)

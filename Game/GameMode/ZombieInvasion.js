@@ -100,7 +100,7 @@ GameModeZombieInvasion.prototype.init = function() {
             }
             // start wave with timer when there are few zombies
             else if (Object.keys(this.zombies).length <= this.numEndWaveZombies + 5 && this.numZombiesToSpawn <= 0 && !this.endingWave && !this.endingWaveTimer) {
-                this.endingWaveTimer = World.setTimeout(function() {
+                this.endingWaveTimer = worldSetTimeout(function() {
                     this.endingWaveTimer = null;
                     if (this.endingWave) return;
                     this.endingWave = true;
@@ -112,7 +112,7 @@ GameModeZombieInvasion.prototype.init = function() {
             if (Object.keys(this.survivors).length == 0 && !this.playerSpawning) {
                 this.playerSpawning = false;//sendCommand(new CommandWorldSpawnStatus(null, false));
                 sendCommand(new CommandPopupMessage("All survivors died"));
-                World.setTimeout(Game.changeGameMode.bind(gameData), 5000);
+                worldSetTimeout(Game.changeGameMode.bind(gameData), 5000);
             }
         }
     }.bind(this));
@@ -123,7 +123,7 @@ GameModeZombieInvasion.prototype.init = function() {
             if (Object.keys(this.survivors).length == 0 && !this.playerSpawning) {
                 this.playerSpawning = false;//sendCommand(new CommandWorldSpawnStatus(null, false));
                 sendCommand(new CommandPopupMessage("All survivors died"));
-                World.setTimeout(Game.changeGameMode.bind(gameData), 5000);
+                worldSetTimeout(Game.changeGameMode.bind(gameData), 5000);
             }
         }
     }.bind(this));
@@ -137,7 +137,7 @@ GameModeZombieInvasion.prototype.init = function() {
 
 GameModeZombieInvasion.prototype.createEntity = function(player, entityId) {
     if (this.playerSpawning) {
-        var classType = PlayerClass.Register[player.classId];
+        var classType = PlayerClassRegister[player.classId];
         var entity = entityTemplatePlayer(player.id, entityId, player.name, classType, EntityTeam.Enum.Human);
 
         // Set spawn position
@@ -174,7 +174,7 @@ GameModeZombieInvasion.prototype.name = "Zombie Invasion";
 GameModeZombieInvasion.prototype.endWave = function() {
     this.killGhosts();
     this.playerSpawning = true;//sendCommand(new CommandWorldSpawnStatus(null, true));
-    World.setTimeout(this.startWave.bind(this), this.wavePauseDuration);
+    worldSetTimeout(this.startWave.bind(this), this.wavePauseDuration);
     sendCommand(new CommandPopupMessage("Zombies are mutating"));
 
 

@@ -18,7 +18,7 @@ var CommandEntityInventory = function(entityId, actionId, itemId, amount) {
     this.amount = amount;
 }
 global.CommandEntityInventory = CommandEntityInventory;
-RegisterCommand.push(CommandEntityInventory);
+TypeRegister.add(RegisterCommand, CommandEntityInventory);
 CommandEntityInventory.Actions = CommandEntityInventoryActions;
 
 CommandEntityInventory.prototype.execute = function() {

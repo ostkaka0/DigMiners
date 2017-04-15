@@ -13,7 +13,7 @@ var CommandPlayerJoin = function(playerId, entityId, playerName, socketId) {
     this.socketId = socketId;
 }
 global.CommandPlayerJoin = CommandPlayerJoin;
-RegisterCommand.push(CommandPlayerJoin);
+TypeRegister.add(RegisterCommand, CommandPlayerJoin);
 
 CommandPlayerJoin.prototype.execute = function() {
     var player = new Player(this.playerId);

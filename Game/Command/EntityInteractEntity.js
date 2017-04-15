@@ -11,7 +11,7 @@ var CommandEntityInteractEntity = function(entityId, interactableEntityId, inter
     this.interacting = interacting;
 }
 global.CommandEntityInteractEntity = CommandEntityInteractEntity;
-RegisterCommand.push(CommandEntityInteractEntity);
+TypeRegister.add(RegisterCommand, CommandEntityInteractEntity);
 
 CommandEntityInteractEntity.prototype.execute = function() {
     var entity = World.entities.objects[this.entityId];

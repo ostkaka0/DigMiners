@@ -13,7 +13,7 @@ var MessageRequestRotate = function(deltaWorldCursorPos) {
     //this.direction = direction;
 }
 global.MessageRequestRotate = MessageRequestRotate;
-RegisterMessage.ToServer.push(MessageRequestRotate);
+TypeRegister.add(RegisterMessage.ToServer, MessageRequestRotate);
 
 MessageRequestRotate.prototype.execute = function(gameData, player) {
     if (!this.deltaWorldCursorPos) return;

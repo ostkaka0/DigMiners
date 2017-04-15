@@ -7,7 +7,7 @@ var CommandEntityLookAtEntity = function(entityId, targetEntityId) {
     this.targetEntityId = targetEntityId;
 }
 global.CommandEntityLookAtEntity = CommandEntityLookAtEntity;
-RegisterCommand.push(CommandEntityLookAtEntity);
+TypeRegister.add(RegisterCommand, CommandEntityLookAtEntity);
 
 CommandEntityLookAtEntity.prototype.execute = function() {
     var entity = World.entities.objects[this.entityId];

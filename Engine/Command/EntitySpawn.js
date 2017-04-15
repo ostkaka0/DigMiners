@@ -8,7 +8,7 @@ var CommandEntitySpawn = function(gameData, entity, entityId, teamId) {
     this.entityId = entityId;
 }
 global.CommandEntitySpawn = CommandEntitySpawn;
-RegisterCommand.push(CommandEntitySpawn);
+TypeRegister.add(RegisterCommand, CommandEntitySpawn);
 
 CommandEntitySpawn.prototype.execute = function() {
     if (World.entities.objects[this.entityId])

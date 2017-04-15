@@ -9,7 +9,7 @@ var EntityName = function(entityName) {
     this.entityName = entityName + "";
 }
 global.EntityName = EntityName;
-RegisterEntity.push(EntityName);
+TypeRegister.add(RegisterEntity, EntityName);
 
 EntityName.prototype.name = name.name; function name() { };
 

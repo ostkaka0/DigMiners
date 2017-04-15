@@ -14,7 +14,7 @@ var CommandParticles = function(particleFunctionId, pos, variable) {
     this.variable = variable;
 }
 global.CommandParticles = CommandParticles;
-RegisterCommand.push(CommandParticles);
+TypeRegister.add(RegisterCommand, CommandParticles);
 
 CommandParticles.prototype.execute = function() {
     if (!isServer)

@@ -27,7 +27,7 @@ var EntityPhysicsBody = function(pos, damping, rotationSpeed, mass, radius) {
     this.angleOld = 0;
 }
 global.EntityPhysicsBody = EntityPhysicsBody;
-RegisterEntity.push(EntityPhysicsBody);
+TypeRegister.add(RegisterEntity, EntityPhysicsBody);
 
 EntityPhysicsBody.prototype.name = physicsBody.name; function physicsBody() { };
 

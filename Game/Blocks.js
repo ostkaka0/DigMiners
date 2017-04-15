@@ -125,7 +125,7 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
     if (doors.length > blockType.maxDoorSize)
         return;
 
-    World.setTimeout(function() {
+    worldSetTimeout(function() {
         for (var i = 0; i < doors.length; ++i) {
             var blockPos = doors[i];
             sendCommand(new CommandBuild(blockPos[0], blockPos[1], Blocks.RedForcefieldOpen.id, BlockTypes.FOREGROUND));
@@ -135,7 +135,7 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
         var blockTypeId = blockType.id;
         if (doors.length > 0) {
             var checkDoorClose = function() {
-                World.setTimeout(function() {
+                worldSetTimeout(function() {
                     var shouldClose = true;
                     for (var i = 0; i < this.length; ++i) {
                         var blockPos = this[i];
@@ -164,12 +164,12 @@ BlockDoorFunctions.redForcefield = function(startBlockPos, blockType, entity, cl
 
 BlockDoorFunctions.blueForcefield = function(blockPos, blockType, entity, clickType) {
     var startStrength = World.blocks.getStrength(blockPos);
-    World.setTimeout(function() {
+    worldSetTimeout(function() {
         sendCommand(new CommandBuild(blockPos[0], blockPos[1], Blocks.BlueForcefieldOpen.id, BlockTypes.FOREGROUND));
         sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], startStrength));
 
         var checkDoorClose = function() {
-            World.setTimeout(function() {
+            worldSetTimeout(function() {
                 var bodies = [];
                 World.physics.getBodiesInRadius(bodies, [blockPos[0] + 0.5, blockPos[1] + 0.5], 0.5); // TODO: 1.0 magic number
                 if (bodies.length > 0)
@@ -400,7 +400,7 @@ Blocks.initBlocks = function() {
                     continue;
                 }
                 blockWorld.setStrength(blockPos, blockStrength);*/
-                //World.setTimeout(function() { blockWorld.setForeground(blockPos, 0); }, 500 + blockStrength * 15);
+                //worldSetTimeout(function() { blockWorld.setForeground(blockPos, 0); }, 500 + blockStrength * 15);
                 var childStrength = blockStrength - strengthDecrease;
                 if (childStrength > 0) {
                 console.log("childStrength", childStrength);

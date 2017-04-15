@@ -16,7 +16,7 @@ var MessageAmmoChange = function(entity, itemIds) {
     }
 }
 global.MessageAmmoChange = MessageAmmoChange;
-RegisterMessage.ToClient.push(MessageAmmoChange);
+TypeRegister.add(RegisterMessage.ToClient, MessageAmmoChange);
 
 MessageAmmoChange.prototype.execute = function(gameData) {
 

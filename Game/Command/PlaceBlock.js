@@ -12,7 +12,7 @@ var CommandPlaceBlock = function(blockPos, blockId) {
     this.blockId = blockId;
 }
 global.CommandPlaceBlock = CommandPlaceBlock;
-RegisterCommand.push(CommandPlaceBlock);
+TypeRegister.add(RegisterCommand, CommandPlaceBlock);
 
 CommandPlaceBlock.prototype.execute = function() {
     World.blocks.setForeground(this.blockPos, this.blockId);

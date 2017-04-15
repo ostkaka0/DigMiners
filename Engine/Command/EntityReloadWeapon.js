@@ -10,7 +10,7 @@ var CommandEntityReloadWeapon = function(entityId, stackId) {
     this.stackId = stackId;
 }
 global.CommandEntityReloadWeapon = CommandEntityReloadWeapon;
-RegisterCommand.push(CommandEntityReloadWeapon);
+TypeRegister.add(RegisterCommand, CommandEntityReloadWeapon);
 
 CommandEntityReloadWeapon.prototype.execute = function() {
     var entity = World.entities.objects[this.entityId];

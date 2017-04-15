@@ -16,7 +16,7 @@ var CommandEntityEquipItem = function(entityId, stackId, itemId, equipped) {
     this.equipped = equipped;
 }
 global.CommandEntityEquipItem = CommandEntityEquipItem;
-RegisterCommand.push(CommandEntityEquipItem);
+TypeRegister.add(RegisterCommand, CommandEntityEquipItem);
 
 CommandEntityEquipItem.prototype.execute = function() {
     var entity = World.entities.objects[this.entityId];

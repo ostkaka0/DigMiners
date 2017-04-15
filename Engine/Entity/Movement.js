@@ -34,7 +34,7 @@ var EntityMovement = function(speed, toolUseDuration, damageMultiplier, digHardn
     this.entityLookTarget = null;
 }
 global.EntityMovement = EntityMovement;
-RegisterEntity.push(EntityMovement);
+TypeRegister.add(RegisterEntity, EntityMovement);
 
 EntityMovement.prototype.name = movement.name; function movement() { };
 

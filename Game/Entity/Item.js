@@ -8,7 +8,7 @@ var EntityItem = function(itemId, amount) {
     this.dropped = new Date();
 }
 global.EntityItem = EntityItem;
-RegisterEntity.push(EntityItem);
+TypeRegister.add(RegisterEntity, EntityItem);
 
 EntityItem.prototype.name = item.name; function item() { };
 

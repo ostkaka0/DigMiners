@@ -10,7 +10,7 @@ var EntityInteractable = function(canInteractFunction) {
     this.canInteractFunction.bind(this);
 }
 global.EntityInteractable = EntityInteractable;
-RegisterEntity.push(EntityInteractable);
+TypeRegister.add(RegisterEntity, EntityInteractable);
 EntityInteractable.Events = { onInteract: new Map(), onFinishInteract: new Map() };
 
 EntityInteractable.prototype.name = interactable.name; function interactable() { };

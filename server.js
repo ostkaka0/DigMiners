@@ -1,3 +1,5 @@
+
+process.on('warning', e => console.warn(e.stack));
 (() => {
 global.isServer = true;
 

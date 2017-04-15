@@ -187,12 +187,12 @@ InventoryHUD.prototype.update = function() {
                 $(slot).click(function() {
                     var slotId = $(this).attr("slotId");
                     var message = new MessageRequestClickSlot(context.inventory.inventoryId, slotId, EntityInventoryClickTypes.LEFT_CLICK);
-                    message.send(socket);
+                    message.send(Client.socket);
                 });
                 $(slot).contextmenu(function() {
                     var slotId = $(this).attr("slotId");
                     var message = new MessageRequestClickSlot(context.inventory.inventoryId, slotId, EntityInventoryClickTypes.RIGHT_CLICK);
-                    message.send(socket);
+                    message.send(Client.socket);
                 });
             }
             $(slot).mouseenter(function() {

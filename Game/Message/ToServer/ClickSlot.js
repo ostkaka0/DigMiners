@@ -18,7 +18,7 @@ var MessageRequestClickSlot = function(inventoryId, slotId, clickType) {
     this.clickType = clickType;
 }
 global.MessageRequestClickSlot = MessageRequestClickSlot;
-RegisterMessage.ToServer.push(MessageRequestClickSlot);
+TypeRegister.add(RegisterMessage.ToServer, MessageRequestClickSlot);
 
 MessageRequestClickSlot.prototype.execute = function(gameData, player) {
     var entity = World.entities.objects[player.entityId];

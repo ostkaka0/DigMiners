@@ -176,8 +176,8 @@ var clientInitSocket = function(callback) {
             var message = new messageType();
             message.receive(gameData, data);
             message.execute(gameData);
-            if (Client.messageCallbacks[messageType.prototype.id])
-                Client.messageCallbacks[messageType.prototype.id](message);
+            //if (Client.messageCallbacks[messageType.prototype.id])
+            //    Client.messageCallbacks[messageType.prototype.id](message);
         });
     });
 }
@@ -203,35 +203,35 @@ var clientInitSocket = function(callback) {
     global.sentInit2 = false;
     global.playersReceived = 0;
 
-    socket.on('connect', function() {
+    Client.socket.on('connect', function() {
 
         setInterval(function() {
             //startTime = Date.now();
-            socket.emit('ping');
+            Client.socket.emit('ping');
         }, 2000);
 
         console.log("Connected.");
         global.World.events.trigger("connected");
     });
 
-    socket.on('message', function(msg) {
+    Client.socket.on('message', function(msg) {
         console.log("Message from server: " + msg);
     });
 
-    socket.on('error', function(error) {
+    Client.socket.on('error', function(error) {
         console.log("Connection failed. " + error);
     });
 
-    socket.on('ping', function() {
-        socket.emit('pong', Date.now());
+    Client.socket.on('ping', function() {
+        Client.socket.emit('pong', Date.now());
     });
 
-    socket.on('pong', function(time) {
+    Client.socket.on('pong', function(time) {
         global.ping = 2 * (Date.now() - time);
     });
 
     RegisterMessage.ToClient.forEach(function(messageType) {
-        socket.on(messageType.prototype.idString, function(data) {
+        Client.socket.on(messageType.prototype.idString, function(data) {
             var message = new messageType();
             message.receive(gameData, data);
             message.execute(gameData);
@@ -247,5 +247,5 @@ Client.prototype.sendMessage = function(message) {
     var counter = new IndexCounter();
     Serialize.int32(byteArray, counter, command.id);
     command.serialize(byteArray, counter);
-    socket.emit("command", byteArray);
+    Client.socket.emit("command", byteArray);
 }*/

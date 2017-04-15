@@ -8,7 +8,7 @@ var CommandWorldSpawnStatus = function(spawns = null, spawnAllowed = true) {
     this.spawnAllowed = spawnAllowed;
 }
 global.CommandWorldSpawnStatus = CommandWorldSpawnStatus;
-RegisterCommand.push(CommandWorldSpawnStatus);
+TypeRegister.add(RegisterCommand, CommandWorldSpawnStatus);
 
 CommandWorldSpawnStatus.prototype.execute = function() {
     World.playerSpawnAllowed = this.spawnAllowed;

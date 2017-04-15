@@ -25,4 +25,4 @@ class CommandPlayerXP {
         return 8;
     }
 }
-RegisterCommand.push(CommandPlayerXP)
+TypeRegister.add(RegisterCommand, CommandPlayerXP)

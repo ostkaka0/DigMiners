@@ -15,7 +15,7 @@ var EntityBlockPlacer = function(blockPos, blockId, duration, entityId) {
     this.entityId = entityId;
 }
 global.EntityBlockPlacer = EntityBlockPlacer;
-RegisterEntity.push(EntityBlockPlacer);
+TypeRegister.add(RegisterEntity, EntityBlockPlacer);
 
 EntityBlockPlacer.prototype.name = blockPlacer.name; function blockPlacer() { };
 

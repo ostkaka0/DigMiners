@@ -16,7 +16,7 @@ var EntityDrawable = function(zindex) {
     zindices[this.zindex].add(this.container);
 }
 global.EntityDrawable = EntityDrawable;
-RegisterEntity.push(EntityDrawable);
+TypeRegister.add(RegisterEntity, EntityDrawable);
 
 EntityDrawable.prototype.name = drawable.name; function drawable() { };
 

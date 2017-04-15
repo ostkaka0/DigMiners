@@ -7,7 +7,7 @@ var EntityInteracter = function() {
     this.interacting = null;
 }
 global.EntityInteracter = EntityInteracter;
-RegisterEntity.push(EntityInteracter);
+TypeRegister.add(RegisterEntity, EntityInteracter);
 
 EntityInteracter.prototype.name = interacter.name; function interacter() { };
 

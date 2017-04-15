@@ -13,7 +13,7 @@ var CommandBlockStrength = function(x, y, strength) {
     this.strength = Math.max(strength, 0);
 }
 global.CommandBlockStrength = CommandBlockStrength;
-RegisterCommand.push(CommandBlockStrength);
+TypeRegister.add(RegisterCommand, CommandBlockStrength);
 
 CommandBlockStrength.prototype.execute = function() {
     if (this.strength > 0)

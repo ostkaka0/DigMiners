@@ -13,7 +13,7 @@ var MessageRequestKeyStatusUpdate = function(key, pressed) {
     this.pressed = pressed;
 }
 global.MessageRequestKeyStatusUpdate = MessageRequestKeyStatusUpdate;
-RegisterMessage.ToServer.push(MessageRequestKeyStatusUpdate);
+TypeRegister.add(RegisterMessage.ToServer, MessageRequestKeyStatusUpdate);
 
 MessageRequestKeyStatusUpdate.prototype.execute = function(gameData, player) {
     var entity = World.entities.objects[player.entityId];

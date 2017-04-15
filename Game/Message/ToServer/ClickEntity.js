@@ -10,7 +10,7 @@ var MessageRequestClickEntity = function(entityId, clickType) {
     this.clickType = clickType;
 }
 global.MessageRequestClickEntity = MessageRequestClickEntity;
-RegisterMessage.ToServer.push(MessageRequestClickEntity);
+TypeRegister.add(RegisterMessage.ToServer, MessageRequestClickEntity);
 
 MessageRequestClickEntity.prototype.execute = function(gameData, player) {
     var entity = World.entities.objects[this.entityId];

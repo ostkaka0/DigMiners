@@ -22,7 +22,7 @@ var MessageInit = function(gameData, player) {
     World.entities.update();
 }
 global.MessageInit = MessageInit;
-RegisterMessage.ToClient.push(MessageInit);
+TypeRegister.add(RegisterMessage.ToClient, MessageInit);
 
 MessageInit.prototype.execute = function(gameData) {
     World.tickId = this.tickId;
@@ -34,7 +34,7 @@ MessageInit.prototype.execute = function(gameData) {
         var player = Game.playerWorld.add(new Player(playerData[0], playerData[1]), playerData[0]);
     }
 
-    loadGame();
+    //worldLoad();
     Game.HUD = new HUD(gameData);
 }
 

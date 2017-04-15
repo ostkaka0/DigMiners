@@ -7,7 +7,7 @@ var EntityChest = function() {
 
 }
 global.EntityChest = EntityChest;
-RegisterEntity.push(EntityChest);
+TypeRegister.add(RegisterEntity, EntityChest);
 
 EntityChest.prototype.name = chest.name; function chest() { };
 

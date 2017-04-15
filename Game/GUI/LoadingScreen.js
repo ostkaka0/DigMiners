@@ -61,7 +61,8 @@ var LoadingScreen = function() {
 
     this.root.hide();
 
-    World.events.on("texturesBeginLoading", function() {
+    // TODO: Fix:
+    /*World.events.on("texturesBeginLoading", function() {
         this.root.show();
     }.bind(this));
 
@@ -71,6 +72,6 @@ var LoadingScreen = function() {
 
     TextureLoader.Events.onComplete.set(this, function(textures) {
         this.root.hide();
-    }.bind(this));
+    }.bind(this));*/
 }
 global.LoadingScreen = LoadingScreen;

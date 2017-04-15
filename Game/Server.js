@@ -50,12 +50,16 @@ var serverInit = function(io) {
         });
 
         RegisterMessage.ToServer.forEach(function(messageType) {
+            console.log("messageType:", messageType);
+            console.log("id:", messageType.prototype.idString);
+            console.log("name:", messageType.name);
+            console.log("prototype:", messageType.prototype);
             socket.on(messageType.prototype.idString, function(data) {
                 var message = new messageType();
                 message.receive(gameData, data);
                 message.execute(gameData, Server.connections[socket.id].player);
-                if (messageCallbacks[messageType.prototype.id])
-                    messageCallbacks[messageType.prototype.id](message);
+                //if (messageCallbacks[messageType.prototype.id])
+                //    messageCallbacks[messageType.prototype.id](message);
             });
         });
     });

@@ -10,7 +10,7 @@ var CommandEntityAnimate = function(entityId, bodypart, animation, speed) {
     this.speed = speed;
 }
 global.CommandEntityAnimate = CommandEntityAnimate;
-RegisterCommand.push(CommandEntityAnimate);
+TypeRegister.add(RegisterCommand, CommandEntityAnimate);
 
 CommandEntityAnimate.prototype.execute = function() {
     if (!isServer) {

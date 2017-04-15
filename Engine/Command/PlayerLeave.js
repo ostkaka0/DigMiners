@@ -7,7 +7,7 @@ var CommandPlayerLeave = function(playerId, entityId) {
     this.entityId = entityId;
 }
 global.CommandPlayerLeave = CommandPlayerLeave;
-RegisterCommand.push(CommandPlayerLeave);
+TypeRegister.add(RegisterCommand, CommandPlayerLeave);
 
 CommandPlayerLeave.prototype.execute = function() {
     var player = Game.playerWorld.objects[this.playerId];

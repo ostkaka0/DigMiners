@@ -14,6 +14,8 @@ var worldInit = function() {
         generator: new Generator(123),
         pendingCommands: {},
         commands: [],
+        timeouts: {},
+        timeoutIdList: new IdList(),
     };
 }
 
@@ -45,6 +47,23 @@ var worldTick = function(dt) {
     }
 
     World.tickId++;
+}
+
+worldSetTimeout = function(callback, duration) {
+    var timeoutId = World.timeoutIdList.next();
+    var timeout = setTimeout(function() {
+        delete World.timeouts[timeoutId];
+        callback();
+    }, duration);
+    World.timeouts[timeoutId] = timeout;
+    return timeout;
+}
+
+worldClearTimeouts = function() {
+    Object.keys(World.timeouts).forEach(function(timeoutId) {
+        clearTimeout(World.timeouts[timeoutId]);
+    }.bind(this));
+    World.timeouts = {};
 }
 
 /*
@@ -168,7 +187,7 @@ World.prototype.initializeEvents = function() {
     }
 
     EntityProjectile.Events.onHit.set(this, function(projectileEntity, hitPos) {
-        World.setTimeout(function(projectileEntity) {
+        worldSetTimeout(function(projectileEntity) {
             var type = projectileEntity.projectile.projectileType;
             if (type.isExplosive) {
                 var shooter = World.entities.objects[projectileEntity.projectile.shooterEntityId];

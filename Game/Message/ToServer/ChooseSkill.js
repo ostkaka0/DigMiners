@@ -15,4 +15,4 @@ class MessageChooseSkill {
         this.skillId = data[0] >> 0;
     }
 }
-RegisterMessage.ToServer.push(MessageChooseSkill);
+TypeRegister.add(RegisterMessage.ToServer, MessageChooseSkill);

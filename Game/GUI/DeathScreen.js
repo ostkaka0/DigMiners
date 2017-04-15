@@ -110,21 +110,22 @@ var DeathScreen = function() {
         } else {
             this.btnSpawn.prop("disabled", true);
             this.btnSpawn.text("Wait - " + duration);
-            World.setTimeout(this.btnSpawn.setDisabledCountdown.bind(this, duration - 1), 1000);
+            worldSetTimeout(this.btnSpawn.setDisabledCountdown.bind(this, duration - 1), 1000);
         }
     }.bind(this);
 
     this.btnSpawn.click(function(event) {
-        new MessageRequestSpawn(this.inputUsername.val(), this.getClass()).send(socket);
+        new MessageRequestSpawn(this.inputUsername.val(), this.getClass()).send(Client.socket);
     }.bind(this));
 
-    World.events.on("ownPlayerSpawned", function(entity) {
+    //TODO: fix:
+    /*World.events.on("ownPlayerSpawned", function(entity) {
         this.root.hide();
     }.bind(this));
 
     World.events.on("spectate", function(entity) {
         this.root.hide();
-    }.bind(this));
+    }.bind(this));*/
 
     //events.on("entityDeath", function(entity) {
     World.entities.onRemove.set(this, (entity) => {
@@ -143,6 +144,6 @@ DeathScreen.prototype.getClass = function() {
     var pickedClass = 0;
     var button = this.checkboxHolder.find(".active");
     if (button)
-        pickedClass = button.attr("classnumber");
+        pickedClass = parseInt(button.attr("classnumber"));
     return pickedClass;
 }

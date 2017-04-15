@@ -19,4 +19,4 @@ class CommandChoosePerk {
     }
     getSerializationSize() { return 8; }
 }
-RegisterCommand.push(CommandChoosePerk);
+TypeRegister.add(RegisterCommand, CommandChoosePerk);

@@ -11,7 +11,7 @@ var CommandEntityMove = function(entityId, direction, pos) {
         this.pos = v2.cloneFix(pos);
 }
 global.CommandEntityMove = CommandEntityMove;
-RegisterCommand.push(CommandEntityMove);
+TypeRegister.add(RegisterCommand, CommandEntityMove);
 
 CommandEntityMove.prototype.execute = function() {
     var entity = World.entities.objects[this.entityId];

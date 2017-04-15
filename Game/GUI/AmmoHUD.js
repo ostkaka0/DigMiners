@@ -28,7 +28,8 @@ var AmmoHUD = function() {
             this.updateFunction(entity, null)
     }.bind(this));
 
-    World.events.on("beginReload", function(entity) {
+    // TODO: Fix:
+    /*World.events.on("beginReload", function(entity) {
         if (entity && entity.id == global.playerEntityId)
             this.root.text("Reloading...");
     }.bind(this));
@@ -37,15 +38,15 @@ var AmmoHUD = function() {
         this.updateFunction(entity, itemType);
     }.bind(this));
 
+    World.events.on("bulletFired", function(entity, itemType) {
+        this.updateFunction(entity, itemType);
+    }.bind(this));*/
+
     EntityEquippedItems.Events.onEquip.set(this, function(entity, stackId, itemType) {
         this.updateFunction(entity, itemType);
     }.bind(this));
 
     EntityEquippedItems.Events.onDequip.set(this, function(entity, stackId, itemType) {
-        this.updateFunction(entity, itemType);
-    }.bind(this));
-
-    World.events.on("bulletFired", function(entity, itemType) {
         this.updateFunction(entity, itemType);
     }.bind(this));
 }

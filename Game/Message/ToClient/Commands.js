@@ -12,13 +12,13 @@ var MessageCommands = function() {
     this.commands = (isServer) ? World.commands : [];
 }
 global.MessageCommands = MessageCommands;
-RegisterMessage.ToClient.push(MessageCommands);
+TypeRegister.add(RegisterMessage.ToClient, MessageCommands);
 
 MessageCommands.prototype.execute = function(gameData) {
     if (Config.fakeLag == 0 && Config.fakeJitter == 0) {
         World.pendingCommands[this.tickId] = this.commands;
     } else {
-        World.setTimeout(function() {
+        worldSetTimeout(function() {
             World.pendingCommands[this.tickId] = this.commands;
         }.bind(this), Config.fakeLag + Config.fakeJitter * Math.random());
     }

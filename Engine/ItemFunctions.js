@@ -91,7 +91,7 @@ ItemFunctions.throwable = function(itemType, entity) {
         sendCommand(new CommandEntitySpawn(gameData, itemEntity, itemEntityId));
         sendCommand(new CommandEntityAnimate(itemEntityId, "body", "dynamite", 64000.0 / timeout));
 
-        World.setTimeout(function(attacker) {
+        worldSetTimeout(function(attacker) {
             if (this.isActive && !this.isDead) {
                 sendCommand(new CommandParticles(ParticleFunctions.ExplosionParticles.id, this.physicsBody.getPos(), 10.0));
                 sendCommand(new CommandEntityDestroy(this.id));

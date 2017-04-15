@@ -13,8 +13,8 @@ var worldRendererInit = function() {
         animationManager: new AnimationManager(),
     }
     addEventListener('resize', function() {
-        camera.width = window.innerWidth;
-        camera.height = window.innerHeight;
+        WorldRenderer.camera.width = window.innerWidth;
+        WorldRenderer.camera.height = window.innerHeight;
     }, false);
     WorldRenderer.animationManager.load();
 }

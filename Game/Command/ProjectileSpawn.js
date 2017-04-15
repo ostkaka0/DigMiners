@@ -21,7 +21,7 @@ var CommandProjectileSpawn = function(entityId, pos, angle, speed, maxDistance, 
     this.shooterEntityId = shooterEntityId;
 }
 global.CommandProjectileSpawn = CommandProjectileSpawn;
-RegisterCommand.push(CommandProjectileSpawn);
+TypeRegister.add(RegisterCommand, CommandProjectileSpawn);
 
 CommandProjectileSpawn.prototype.execute = function() {
     if (World.entities.objects[this.entityId])

@@ -9,7 +9,7 @@ var MessageSpectate = function(entityId) {
     this.entityId = entityId;
 }
 global.MessageSpectate = MessageSpectate;
-RegisterMessage.ToClient.push(MessageSpectate);
+TypeRegister.add(RegisterMessage.ToClient, MessageSpectate);
 
 MessageSpectate.prototype.execute = function(gameData) {
     global.spectateEntity = World.entities.objects[this.entityId];

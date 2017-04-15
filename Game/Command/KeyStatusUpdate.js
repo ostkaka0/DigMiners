@@ -15,7 +15,7 @@ var CommandKeyStatusUpdate = function(entityId, key, pressed, pos) {
     this.pos = pos;
 }
 global.CommandKeyStatusUpdate = CommandKeyStatusUpdate;
-RegisterCommand.push(CommandKeyStatusUpdate);
+TypeRegister.add(RegisterCommand, CommandKeyStatusUpdate);
 
 CommandKeyStatusUpdate.prototype.execute = function() {
     var entity = World.entities.objects[this.entityId];

@@ -9,7 +9,7 @@ var CommandEntityRotate = function(entityId, direction) {
     this.direction = direction;
 }
 global.CommandEntityRotate = CommandEntityRotate;
-RegisterCommand.push(CommandEntityRotate);
+TypeRegister.add(RegisterCommand, CommandEntityRotate);
 
 CommandEntityRotate.prototype.execute = function() {
     var entity = World.entities.objects[this.entityId];

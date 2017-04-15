@@ -17,4 +17,4 @@ class MessageChoosePerk {
         this.perkId = data[1];
     }
 }
-RegisterMessage.ToServer.push(MessageChoosePerk);
+TypeRegister.add(RegisterMessage.ToServer, MessageChoosePerk);

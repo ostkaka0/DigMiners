@@ -15,7 +15,7 @@ var MessageRequestItemPickup = function(entityId) {
     this.entityId = entityId;
 }
 global.MessageRequestItemPickup = MessageRequestItemPickup;
-RegisterMessage.ToServer.push(MessageRequestItemPickup);
+TypeRegister.add(RegisterMessage.ToServer, MessageRequestItemPickup);
 
 MessageRequestItemPickup.prototype.execute = function(gameData, player) {
     var entity = World.entities.objects[this.entityId];

@@ -18,7 +18,7 @@ var CommandPlayerOreInventory = function(playerId, actionId, itemId, amount) {
 }
 CommandPlayerOreInventory.Actions = CommandPlayerOreInventoryActions
 global.CommandPlayerOreInventory = CommandPlayerOreInventory;
-RegisterCommand.push(CommandPlayerOreInventory);
+TypeRegister.add(RegisterCommand, CommandPlayerOreInventory);
 
 CommandPlayerOreInventory.prototype.execute = function() {
     var player = Game.playerWorld.objects[this.playerId];

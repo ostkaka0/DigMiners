@@ -6,12 +6,16 @@ var startDate = performance.now();
 var firstTickTime = performance.now();
 var tickNum = 0;
 var tickDuration = Config.tickDuration;
+var loadingScreen = new LoadingScreen();
+var deathScreen = null;
 
 var init = function() {
     gameInit();
     worldInit(); // TODO: initWorld at MessageInit and MessageChangeGameMode
     worldRendererInit();
     requestAnimationFrame(update);
+
+    deathScreen = new DeathScreen();
 }
 
 var update = function() {

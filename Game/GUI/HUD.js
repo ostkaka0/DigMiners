@@ -94,7 +94,7 @@ HUD.prototype.update = function() {
         if (recipeId == null || recipeId == undefined)
             return;
         var message = new MessageRequestCraft(recipeId);
-        message.send(socket);
+        message.send(Client.socket);
     });
 
     for (var i = 0; i < Recipes.length; ++i) {

@@ -24,7 +24,7 @@ var CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHard
     this.maxDigHardness = maxDigHardness;
 }
 global.CommandEntityDig = CommandEntityDig;
-RegisterCommand.push(CommandEntityDig);
+TypeRegister.add(RegisterCommand, CommandEntityDig);
 
 CommandEntityDig.prototype.execute = function() {
     var entity = World.entities.objects[this.entityId];

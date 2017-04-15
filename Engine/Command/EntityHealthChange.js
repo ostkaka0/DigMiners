@@ -4,7 +4,7 @@ var CommandEntityHealthChange = function(entityId, healthChange) {
     this.healthChange = fix.toFix(healthChange);
 }
 global.CommandEntityHealthChange = CommandEntityHealthChange;
-RegisterCommand.push(CommandEntityHealthChange);
+TypeRegister.add(RegisterCommand, CommandEntityHealthChange);
 
 CommandEntityHealthChange.prototype.execute = function() {
     var entity = World.entities.objects[this.entityId];

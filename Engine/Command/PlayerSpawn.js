@@ -8,7 +8,7 @@ var CommandPlayerSpawn = function(playerId, entityId, playerName) {
     this.playerName = playerName;
 }
 global.CommandPlayerSpawn = CommandPlayerSpawn;
-RegisterCommand.push(CommandPlayerSpawn);
+TypeRegister.add(RegisterCommand, CommandPlayerSpawn);
 
 CommandPlayerSpawn.prototype.execute = function() {
     // Associate with existing, already spawned entity (from MessageRequestSpawn)

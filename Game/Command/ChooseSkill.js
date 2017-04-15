@@ -20,4 +20,4 @@ class CommandChooseSkill {
     }
     getSerializationSize() { return 8; }
 }
-RegisterCommand.push(CommandChooseSkill);
+TypeRegister.add(RegisterCommand, CommandChooseSkill);

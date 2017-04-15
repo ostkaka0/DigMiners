@@ -7,7 +7,7 @@ var EntityControlledByPlayer = function(playerId) {
     this.playerId = playerId;
 }
 global.EntityControlledByPlayer = EntityControlledByPlayer;
-RegisterEntity.push(EntityControlledByPlayer);
+TypeRegister.add(RegisterEntity, EntityControlledByPlayer);
 
 EntityControlledByPlayer.prototype.name = controlledByPlayer.name; function controlledByPlayer() { };
 

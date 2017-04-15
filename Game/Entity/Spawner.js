@@ -29,7 +29,7 @@ var EntitySpawner = function(entityTemplate, pos, maxEntities, radius, duration,
     this.initialized = false;
 }
 global.EntitySpawner = EntitySpawner;
-RegisterEntity.push(EntitySpawner);
+TypeRegister.add(RegisterEntity, EntitySpawner);
 
 EntitySpawner.prototype.name = spawner.name; function spawner() { };
 

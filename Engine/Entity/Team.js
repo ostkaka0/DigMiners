@@ -16,7 +16,7 @@ var EntityTeam = function(value) {
     this.value = value;
 }
 global.EntityTeam = EntityTeam;
-RegisterEntity.push(EntityTeam);
+TypeRegister.add(RegisterEntity, EntityTeam);
 EntityTeam.Enum = EntityTeams;
 
 EntityTeam.prototype.name = team.name; function team() { };

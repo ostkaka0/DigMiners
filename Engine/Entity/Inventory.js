@@ -11,7 +11,7 @@ var EntityInventory = function(inventoryId, entityId, width, height) {
     this.height = height;
 }
 global.EntityInventory = EntityInventory;
-RegisterEntity.push(EntityInventory);
+TypeRegister.add(RegisterEntity, EntityInventory);
 
 EntityInventory.createInventory = function(entityId, width, height) {
     if (!isServer)

@@ -32,7 +32,7 @@ var CommandCollisions = function(collisions) {
     }
 }
 global.CommandCollisions = CommandCollisions;
-RegisterCommand.push(CommandCollisions);
+TypeRegister.add(RegisterCommand, CommandCollisions);
 
 CommandCollisions.prototype.execute = function() {
     var physicsWorld = World.physics;

@@ -9,7 +9,7 @@ var MessageChangeGameMode = function() {
     this.gameModeId = Game.gameMode.id;
 }
 global.MessageChangeGameMode = MessageChangeGameMode;
-RegisterMessage.ToClient.push(MessageChangeGameMode);
+TypeRegister.add(RegisterMessage.ToClient, MessageChangeGameMode);
 
 MessageChangeGameMode.prototype.execute = function(gameData) {
     // TODO: Don't reload page

@@ -11,7 +11,7 @@ var MessageRequestCraft = function(recipeId) {
     this.recipeId = recipeId;
 }
 global.MessageRequestCraft = MessageRequestCraft;
-RegisterMessage.ToServer.push(MessageRequestCraft);
+TypeRegister.add(RegisterMessage.ToServer, MessageRequestCraft);
 
 MessageRequestCraft.prototype.execute = function(gameData, player) {
     var playerEntity = Game.entityWorld.objects[player.entityId];

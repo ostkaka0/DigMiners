@@ -17,7 +17,7 @@ var MessageRequestPlaceBlock = function(stackId, x, y) {
     this.y = Math.floor(y);
 }
 global.MessageRequestPlaceBlock = MessageRequestPlaceBlock;
-RegisterMessage.ToServer.push(MessageRequestPlaceBlock);
+TypeRegister.add(RegisterMessage.ToServer, MessageRequestPlaceBlock);
 
 MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
     var entity = World.entities.objects[player.entityId];

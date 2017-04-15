@@ -14,7 +14,7 @@ var CommandDig = function(pos, radius) {
     this.radius = fix.toFix(radius);
 }
 global.CommandDig = CommandDig;
-RegisterCommand.push(CommandDig);
+TypeRegister.add(RegisterCommand, CommandDig);
 
 CommandDig.prototype.execute = function() {
     var tileWorld = World.tiles;

@@ -17,7 +17,7 @@ var MessageChunk = function(chunk, blockChunk, x, y) {
     this.y = y;
 }
 global.MessageChunk = MessageChunk;
-RegisterMessage.ToClient.push(MessageChunk);
+TypeRegister.add(RegisterMessage.ToClient, MessageChunk);
 
 MessageChunk.prototype.execute = function(gameData) {
     if (World.generator)

@@ -6,7 +6,7 @@ var CommandEntityDestroy = function(entityId) {
     this.entityId = entityId;
 }
 global.CommandEntityDestroy = CommandEntityDestroy;
-RegisterCommand.push(CommandEntityDestroy);
+TypeRegister.add(RegisterCommand, CommandEntityDestroy);
 
 CommandEntityDestroy.prototype.execute = function() {
     var entity = World.entities.objects[this.entityId];

@@ -7,7 +7,7 @@ var EntityPotionEffects = function() {
     this.effects = {};
 }
 global.EntityPotionEffects = EntityPotionEffects;
-RegisterEntity.push(EntityPotionEffects);
+TypeRegister.add(RegisterEntity, EntityPotionEffects);
 
 EntityPotionEffects.prototype.name = potionEffects.name; function potionEffects() { };
 
