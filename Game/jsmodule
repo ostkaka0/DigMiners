@@ -1,8 +1,9 @@
 ../lib/
-
 ../Engine/
+Register/
+
 Config.js
-Tiles.js // Items.js
+Tiles.js // Items.js, Blocks.js
 Blocks.js // Items.js
 Projectiles.js // Items.js
 Particles.js // Items.js
