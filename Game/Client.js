@@ -211,7 +211,7 @@ var clientInitSocket = function(callback) {
         }, 2000);
 
         console.log("Connected.");
-        global.// TODO: fix: World.events.trigger("connected");
+        global.World.events.trigger("connected");
     });
 
     Client.socket.on('message', function(msg) {

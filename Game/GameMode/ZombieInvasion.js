@@ -112,7 +112,7 @@ GameModeZombieInvasion.prototype.init = function() {
             if (Object.keys(this.survivors).length == 0 && !this.playerSpawning) {
                 this.playerSpawning = false;//sendCommand(new CommandWorldSpawnStatus(null, false));
                 sendCommand(new CommandPopupMessage("All survivors died"));
-                worldSetTimeout(Game.changeGameMode.bind(gameData), 5000);
+                worldSetTimeout(gameModeChange.bind(gameData), 5000);
             }
         }
     }.bind(this));
@@ -123,7 +123,7 @@ GameModeZombieInvasion.prototype.init = function() {
             if (Object.keys(this.survivors).length == 0 && !this.playerSpawning) {
                 this.playerSpawning = false;//sendCommand(new CommandWorldSpawnStatus(null, false));
                 sendCommand(new CommandPopupMessage("All survivors died"));
-                worldSetTimeout(Game.changeGameMode.bind(gameData), 5000);
+                worldSetTimeout(gameModeChange.bind(gameData), 5000);
             }
         }
     }.bind(this));

@@ -171,7 +171,7 @@ BehaviourTargetPlayer.prototype.getTarget = function() {
     World.physics.getBodiesInRadius(bodies, pos, this.maxRadius);
     for (var i = 0; i < bodies.length; i++) {
         var bodyId = bodies[i];
-        var otherEntity = World.physicsEntities[bodyId];
+        var otherEntity = World.physicsEntityMap[bodyId];
         if (!otherEntity) continue;
         if (!otherEntity.health || !otherEntity.physicsBody) continue;
         if (!otherEntity.team && !otherEntity.movement) continue;

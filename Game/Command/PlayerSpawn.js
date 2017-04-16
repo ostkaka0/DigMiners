@@ -22,9 +22,9 @@ CommandPlayerSpawn.prototype.execute = function() {
         Client.playerEntityId = this.entityId;
         Client.playerEntity = entity;
         Game.HUD.update();
-        // TODO: fix: World.events.trigger("ownPlayerSpawned", entity, player);
+        World.events.trigger("ownPlayerSpawned", entity, player);
     }
-    // TODO: fix: World.events.trigger("playerSpawned", entity, player);
+    World.events.trigger("playerSpawned", entity, player);
 }
 
 CommandPlayerSpawn.prototype.serialize = function(byteArray, index) {

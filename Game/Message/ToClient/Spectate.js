@@ -13,7 +13,7 @@ TypeRegister.add(RegisterMessage.ToClient, MessageSpectate);
 
 MessageSpectate.prototype.execute = function(gameData) {
     global.spectateEntity = World.entities.objects[this.entityId];
-    // TODO: fix: World.events.trigger("spectate", global.spectateEntity);
+    World.events.trigger("spectate", global.spectateEntity);
 }
 
 MessageSpectate.prototype.send = function(socket) {

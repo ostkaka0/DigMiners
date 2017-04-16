@@ -29,7 +29,7 @@ MessageRequestKeyStatusUpdate.prototype.execute = function(gameData, player) {
         var distances = [];
         World.physics.getBodiesInRadiusSorted(bodies, distances, interactablePos, 0.25);
         if (bodies.length > 0) {
-            var targetEntity = World.physicsEntities[bodies[0]];
+            var targetEntity = World.physicsEntityMap[bodies[0]];
             // Interact only if player has nothing equipped in hands
             if (targetEntity && targetEntity.interactable && entity.equippedItems && !entity.equippedItems.items["tool"]) {
                 if (!Interactable.isInteracting(targetEntity, entity)) {

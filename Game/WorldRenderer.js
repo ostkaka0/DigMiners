@@ -38,7 +38,7 @@ var worldRendererRender = function(tickFracTime) {
         WorldRenderer.camera.pos[0] = tickFracTime * 32.0 * Client.spectateEntity.physicsBody.posClient[0] + (1 - tickFracTime) * 32.0 * Client.spectateEntity.physicsBody.posClientOld[0];
         WorldRenderer.camera.pos[1] = tickFracTime * 32.0 * Client.spectateEntity.physicsBody.posClient[1] + (1 - tickFracTime) * 32.0 * Client.spectateEntity.physicsBody.posClientOld[1];
     } else if (Client.playerEntity && Client.playerEntity.isActive) {
-        WorldRenderer.camera.pos[0] = tickFracTime * 32.0 * Client.playerEntity.physicsBody.posClient[0] + (1 - tickFracTime) * 32.0 * ClientplayerEntity.physicsBody.posClientOld[0];
+        WorldRenderer.camera.pos[0] = tickFracTime * 32.0 * Client.playerEntity.physicsBody.posClient[0] + (1 - tickFracTime) * 32.0 * Client.playerEntity.physicsBody.posClientOld[0];
         WorldRenderer.camera.pos[1] = tickFracTime * 32.0 * Client.playerEntity.physicsBody.posClient[1] + (1 - tickFracTime) * 32.0 * Client.playerEntity.physicsBody.posClientOld[1];
     } else // TODO: do something else instead of centering camera at 0,0?
         WorldRenderer.camera.pos = [0, 0];

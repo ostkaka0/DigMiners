@@ -47,7 +47,7 @@ PotionEffectTypes.HealNearEntities = {
         var nearBodies = [];
         World.physics.getBodiesInRadius(nearBodies, pos, 2.0);
         nearBodies.forEach(function(bodyId) {
-            var entity = World.physicsEntities[bodyId];
+            var entity = World.physicsEntityMap[bodyId];
             if (!entity || !entity.potionEffects) return;
             entity.potionEffects.add(PotionEffectTypes.Healing.id, 6);
         }.bind(this));*/

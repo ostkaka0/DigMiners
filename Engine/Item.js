@@ -33,7 +33,7 @@ Item.interact = function(itemType, entity) {
     for (var i = 0; i < bodies.length; i++) {
         var bodyId = bodies[i];
         if (bodyId == entityBodyId && !(itemType.flags & Item.Flags.TargetSelf)) continue;
-        var targetEntity = World.physicsEntities[bodyId];
+        var targetEntity = World.physicsEntityMap[bodyId];
         if (!targetEntity) continue;
         hitEntities.push(targetEntity);
     }

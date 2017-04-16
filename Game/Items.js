@@ -60,7 +60,7 @@ Items.Functions.Sword = function(entity, item) {
 
         bodies.forEach(function(bodyId) {
             if (bodyId == entityBodyId) return;
-            var targetEntity = World.physicsEntities[bodyId];
+            var targetEntity = World.physicsEntityMap[bodyId];
             if (!targetEntity) return;
 
             hitEntities.push(targetEntity.id);
@@ -108,7 +108,7 @@ Items.Functions.RangedWeapon = function(entity, itemType) {
     var numProjectiles = itemType.numProjectiles ? itemType.numProjectiles : 1;
     item.magazine -= 1;
 
-    // TODO: fix: World.events.trigger("bulletFired", entity, itemType);
+    World.events.trigger("bulletFired", entity, itemType);
 
     if (isServer) {
         var maxDistance = (itemType.projectileType.hitAtCursor && entity.movement.deltaWorldCursorPos) ?

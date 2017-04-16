@@ -86,7 +86,7 @@ GameModeBaseWar.prototype.init = function() {
 
        // End gamemode
         if (Object.keys(this.spawnEntities).length <= 1)
-            Game.changeGameMode();
+            gameModeChange();
     }.bind(this));
 }
 

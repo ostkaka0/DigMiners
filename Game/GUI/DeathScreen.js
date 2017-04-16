@@ -118,17 +118,19 @@ var DeathScreen = function() {
         new MessageRequestSpawn(this.inputUsername.val(), this.getClass()).send(Client.socket);
     }.bind(this));
 
-    //TODO: fix:
-    /*World.events.on("ownPlayerSpawned", function(entity) {
-        this.root.hide();
-    }.bind(this));
+    Event.subscribe(WorldEvents.onInit, this, () => {
+        World.events.on("ownPlayerSpawned", function(entity) {
+            this.root.hide();
+        }.bind(this));
 
-    World.events.on("spectate", function(entity) {
-        this.root.hide();
-    }.bind(this));
+        World.events.on("spectate", function(entity) {
+            this.root.hide();
+        }.bind(this));
+    });
 
     //events.on("entityDeath", function(entity) {
-    World.entities.onRemove.set(this, (entity) => {
+    //TODO: fix:
+    /*World.entities.onRemove.set(this, (entity) => {
         if (!entity.controlledByPlayer) return;
         if (entity.controlledByPlayer.playerId != Client.player.id) return;
 

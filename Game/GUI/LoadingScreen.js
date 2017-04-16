@@ -61,17 +61,17 @@ var LoadingScreen = function() {
 
     this.root.hide();
 
-    // TODO: Fix:
-    /*World.events.on("texturesBeginLoading", function() {
-        this.root.show();
-    }.bind(this));
+    Event.subscribe(WorldEvents.onInit, this, () => {
+        World.events.on("texturesBeginLoading", function() {
+            this.root.show();
+        }.bind(this));
 
-    TextureLoader.Events.onProgress.set(this, function(file, progress) {
-        this.resize(progress);
-    }.bind(this));
+        TextureLoader.Events.onProgress.set(this, function(file, progress) {
+            this.resize(progress);
+        }.bind(this));
 
-    TextureLoader.Events.onComplete.set(this, function(textures) {
-        this.root.hide();
-    }.bind(this));*/
+        TextureLoader.Events.onComplete.set(this, function(textures) {
+            this.root.hide();
+        }.bind(this));
+    });
 }
-global.LoadingScreen = LoadingScreen;

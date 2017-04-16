@@ -28,25 +28,26 @@ var AmmoHUD = function() {
             this.updateFunction(entity, null)
     }.bind(this));
 
-    // TODO: Fix:
-    /*World.events.on("beginReload", function(entity) {
-        if (entity && entity.id == Client.playerEntityId)
-            this.root.text("Reloading...");
-    }.bind(this));
+    Event.subscribe(WorldEvents.onInit, this, () => {
+        World.events.on("beginReload", function(entity) {
+            if (entity && entity.id == Client.playerEntityId)
+                this.root.text("Reloading...");
+        }.bind(this));
 
-    World.events.on("finishReload", function(entity, itemType) {
-        this.updateFunction(entity, itemType);
-    }.bind(this));
+        World.events.on("finishReload", function(entity, itemType) {
+            this.updateFunction(entity, itemType);
+        }.bind(this));
 
-    World.events.on("bulletFired", function(entity, itemType) {
-        this.updateFunction(entity, itemType);
-    }.bind(this));*/
+        World.events.on("bulletFired", function(entity, itemType) {
+            this.updateFunction(entity, itemType);
+        }.bind(this));
 
-    EntityEquippedItems.Events.onEquip.set(this, function(entity, stackId, itemType) {
-        this.updateFunction(entity, itemType);
-    }.bind(this));
+        EntityEquippedItems.Events.onEquip.set(this, function(entity, stackId, itemType) {
+            this.updateFunction(entity, itemType);
+        }.bind(this));
 
-    EntityEquippedItems.Events.onDequip.set(this, function(entity, stackId, itemType) {
-        this.updateFunction(entity, itemType);
-    }.bind(this));
+        EntityEquippedItems.Events.onDequip.set(this, function(entity, stackId, itemType) {
+            this.updateFunction(entity, itemType);
+        }.bind(this));
+    });
 }

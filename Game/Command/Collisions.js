@@ -8,14 +8,14 @@ var CommandCollisions = function(collisions) {
     this.collisions = [];
     if (!isServer) return;
     var physicsWorld = World.physics;
-    var physicsEntities = World.physicsEntities;
+    var physicsEntityMap = World.physicsEntityMap;
 
     var bodies = {};
 
     if (collisions) {
         collisions.forEach(function(collision) {
-            var aEntity = physicsEntities[collision[0]];
-            var bEntity = physicsEntities[collision[1]];
+            var aEntity = physicsEntityMap[collision[0]];
+            var bEntity = physicsEntityMap[collision[1]];
             if (aEntity == undefined || bEntity == undefined) return;
             var aPos = physicsWorld.getPos(collision[0]);
             var bPos = physicsWorld.getPos(collision[1]);

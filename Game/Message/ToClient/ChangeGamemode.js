@@ -14,7 +14,7 @@ TypeRegister.add(RegisterMessage.ToClient, MessageChangeGameMode);
 MessageChangeGameMode.prototype.execute = function(gameData) {
     // TODO: Don't reload page
     location.reload(); // Reload page
-    Game.changeGameMode(this.gameModeId);
+    gameModeChange(this.gameModeId);
     Game.tick(); // Change gameMode instantly
 }
 

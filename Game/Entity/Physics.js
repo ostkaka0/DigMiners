@@ -73,7 +73,7 @@ var physicsBodySimulate = function(physicsBody, dt) {
 
     var touchingBlockType = Game.blockRegister[World.blocks.getForeground(pos)];
     if (touchingBlockType && touchingBlockType.onTouch)
-        touchingBlockType.onTouch(World.physicsEntities[physicsBody.bodyId]);
+        touchingBlockType.onTouch(World.physicsEntityMap[physicsBody.bodyId]);
 
     var deltaPos = v2.create(0, 0);
     v2.sub(pos, physicsBody.posOld, deltaPos);
@@ -105,13 +105,13 @@ var physicsBodySimulate = function(physicsBody, dt) {
             /*if (radius > 0 && Math.abs(dx) < radius + 0.5 && Math.abs(dy) < radius + 0.5) {
                 if (dy > dx) {
                     if (dy > -dx)
-                        // TODO: fix: World.events.trigger("entityHitBlockSide", World.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.TOP);
+                        World.events.trigger("entityHitBlockSide", World.physicsEntityMap[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.TOP);
                     else
-                        // TODO: fix: World.events.trigger("entityHitBlockSide", World.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.LEFT);
+                        World.events.trigger("entityHitBlockSide", World.physicsEntityMap[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.LEFT);
                 } else if (dy > -dx)
-                    // TODO: fix: World.events.trigger("entityHitBlockSide", World.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.RIGHT);
+                    World.events.trigger("entityHitBlockSide", World.physicsEntityMap[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.RIGHT);
                 else
-                    // TODO: fix: World.events.trigger("entityHitBlockSide", World.physicsEntities[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.BOTTOM);
+                    World.events.trigger("entityHitBlockSide", World.physicsEntityMap[physicsBody.bodyId], worldBlockPos, block, BlockCollisionSide.BOTTOM);
             }*/
         }
 

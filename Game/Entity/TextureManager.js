@@ -9,7 +9,7 @@ var TextureManager = function(callback) {
     this.loader = new TextureLoader();
     var loader = this.loader;
 
-    // TODO: fix: // TODO: fix: World.events.trigger("texturesBeginLoading");
+    // TODO: Fix: World.events.trigger("texturesBeginLoading");
     console.log("Loading textures...");
 
     loader.queue("healthbar.png");

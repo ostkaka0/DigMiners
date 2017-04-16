@@ -52,7 +52,7 @@ global.projectileEntitySimulate = function(entity, dt) {
         var bodyDistances = [];
         World.physics.getBodiesInRadiusSorted(bodies, bodyDistances, pos, 0.0);//projectile.projectileType.radius);
         for (var j = 0; j < bodies.length; ++j) {
-            var hitEntity = World.physicsEntities[bodies[j]];
+            var hitEntity = World.physicsEntityMap[bodies[j]];
             var radius = World.physics.getRadius(bodies[j]);
             var mass = World.physics.getMass(bodies[j]);
             if (!hitEntity || (projectile.shooterEntityId && hitEntity.id == projectile.shooterEntityId)) continue;

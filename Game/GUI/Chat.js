@@ -103,9 +103,9 @@ var Chat = function() {
     }.bind(this));
 
     // TODO: Fix:
-    /*World.events.on("playerSpawned", function(entity, player) {
+    World.events.on("playerSpawned", function(entity, player) {
         this.write(entity.name.entityName + " spawned.");
-    }.bind(this));*/
+    }.bind(this));
 
     this.blurAll = function() {
         var tmp = document.createElement("input");
