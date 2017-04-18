@@ -9,7 +9,7 @@ var World = function() {
     this.celluralAutomata = new CelluralAutomata(this.blockWorld, global.gameData.blockRegister);
     this.physicsWorld = new PhysicsWorld();
     this.physicsEntities = {};
-    this.generator = new Generator(Math.random() * 1000000 >> 0);
+    this.generator = new EmptyGenerator();
 
     this.inventoryIdList = new IdList();
     this.inventories = {};
@@ -27,7 +27,6 @@ var World = function() {
     //Temp variables:
     this.collisionList = []; // Updated, then sent before tick ends
 }
-global.World = World;
 
 World.prototype.tick = function(dt) {
     if (this.pendingCommands[this.tickId])

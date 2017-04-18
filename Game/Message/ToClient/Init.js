@@ -39,7 +39,7 @@ MessageInit.prototype.execute = function(gameData) {
 }
 
 MessageInit.prototype.getSerializationSize = function(gameData) {
-    var size = 20;
+    var size = 24;
 
     // Calculate serializationSize of entities
     var entitySizes = {};
@@ -72,6 +72,7 @@ MessageInit.prototype.send = function(gameData, socket) {
     Serialize.int32(byteArray, index, this.tickId);
     Serialize.int32(byteArray, index, this.playerId);
     Serialize.int32(byteArray, index, this.entityId);
+    Serialize.int32(byteArray, index, global.gameData.world.generator.id);
     Serialize.int32(byteArray, index, global.gameData.world.generator.seed);
 
     // Serialize entities
@@ -105,7 +106,8 @@ MessageInit.prototype.receive = function(gameData, byteArray) {
     this.tickId = Deserialize.int32(byteArray, index);
     this.playerId = Deserialize.int32(byteArray, index);
     this.entityId = Deserialize.int32(byteArray, index);
-    global.gameData.world.generator = new Generator(Deserialize.int32(byteArray, index));
+    var generatorId = Deserialize.int32(byteArray, index);
+    global.gameData.world.generator = new gameData.generatorRegister[generatorId](Deserialize.int32(byteArray, index));
 
     // Deserialize entities
     var amountOfEntities = Deserialize.int32(byteArray, index);

@@ -1,32 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 global.gameData = {};
 
 global.gameData.destroy = function() {
@@ -44,11 +16,12 @@ global.gameData.init = function(idList) {
     RegisterEntity.init();
     this.tileRegister = ObjectRegister.addByObject([], Tiles);
     this.blockRegister = ObjectRegister.addByObject([], Blocks);
+    this.generatorRegister = TypeRegister.addByArray([], [EmptyGenerator, Generator]);
     this.projectileRegister = ObjectRegister.addByObject([], Projectiles);
     this.particleRegister = ObjectRegister.addByObject([], Particles);
     this.particleFunctionRegister = ObjectRegister.addByObject([], ParticleFunctions);
     this.potionEffectTypeRegister = ObjectRegister.addByObject([], PotionEffectTypes);
-    this.gameModeRegister = TypeRegister.addByArray([], [/*GameModeBaseWar,*/ GameModeZombieInvasion/*, GameModeSurvivalWar*/]);
+    this.gameModeRegister = TypeRegister.addByArray([], [/*GameModeBaseWar,*/ GameModeEmpty/*, GameModeSurvivalWar*/]);
     this.defaultGameMode = GameModeEmpty;
 
     // global.gameData.textures is set in TextureManager.js when textures are loaded
@@ -145,7 +118,7 @@ global.gameData.tick = function(dt) {
 
 global.gameData.changeGameMode = function() {
     if (this.playerWorld.objectArray.length < 4)
-        this.nextGameMode =  new global.gameData.defaultGameMode();
+        this.nextGameMode = new global.gameData.defaultGameMode();
     else
         this.nextGameMode = new global.gameData.gameModeRegister[global.gameData.gameModeRegister.length * Math.random() >> 0]();
     console.log("Changing game mode to: " + this.nextGameMode.name);
