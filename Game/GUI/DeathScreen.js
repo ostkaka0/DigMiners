@@ -132,7 +132,7 @@ var DeathScreen = function() {
     //TODO: fix:
     /*World.entities.onRemove.set(this, (entity) => {
         if (!entity.controlledByPlayer) return;
-        if (entity.controlledByPlayer.playerId != Client.player.id) return;
+        if (entity.controlledByPlayer.playerId != Client.playerId) return;
 
         this.root.show();
         this.btnSpawn.setDisabledCountdown(Config.respawnTime);

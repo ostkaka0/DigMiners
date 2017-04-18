@@ -1,6 +1,7 @@
 
 var World = null;
 var WorldEvents = { onInit: new Map() };
+var WorldPendingCommands = {};
 
 var worldInit = function() {
     World = {
@@ -13,7 +14,7 @@ var worldInit = function() {
         physics: new PhysicsWorld(),
         physicsEntityMap: {},
         generator: new Generator(123),
-        pendingCommands: {},
+        pendingCommands: WorldPendingCommands,
         commands: [],
         timeouts: {},
         timeoutIdList: new IdList(),
@@ -22,6 +23,7 @@ var worldInit = function() {
         entityInventories: {},
         events: new EventHandler(),
     };
+    WorldPendingCommands = {};
     worldInitializeEvents();
     Event.trigger(WorldEvents.onInit);
 }
@@ -39,6 +41,11 @@ var worldTick = function(dt) {
     if (World.pendingCommands[World.tickId])
         commands = commands.concat(World.pendingCommands[World.tickId]);
     delete World.pendingCommands[World.tickId];
+
+    Object.keys(WorldPendingCommands).forEach(function(key) {
+        commands = commands.concat(WorldPendingCommands[key]);
+    });
+    WorldPendingCommands = {};
 
     for (var i = 0; i < World.entities.objectArray.length; i++) {
         var entity = World.entities.objectArray[i];
@@ -97,7 +104,7 @@ worldInitializeEvents = function() {
             if (player) {
                 player.deathTick = World.tickId;
                 player.entityId = null;
-                if (!isServer && player.id == Client.player.id) {
+                if (!isServer && player.id == Client.playerId) {
                     Client.playerEntity = null;
                     Client.playerEntityId = null;
                 }
@@ -353,7 +360,7 @@ World.prototype.initializeEvents = function() {
             if (player) {
                 player.deathTick = World.tickId;
                 player.entityId = null;
-                if (!isServer && player.id == Client.player.id) {
+                if (!isServer && player.id == Client.playerId) {
                     Client.playerEntity = null;
                     Client.playerEntityId = null;
                 }

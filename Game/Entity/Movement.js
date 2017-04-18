@@ -130,7 +130,7 @@ EntityMovement.entityFunction = function(dt) {
                 entity.movement.toolUseTickTimeout = useCooldown;
                 if (!isServer) {
                     var useCycleName = (tool.useCycle ? tool.useCycle : "rightArm");
-                    var useCycle = Client.animationManager.cycles[useCycleName];
+                    var useCycle = WorldRenderer.animationManager.cycles[useCycleName];
                     if (useCycle)
                         entity.bodyparts.bodyparts["rightArm"].cycle(useCycleName, useCycle.numFrames / useCooldown * 20, true);
                 }
@@ -142,9 +142,9 @@ EntityMovement.entityFunction = function(dt) {
                     var reloadCycleRightArmName = (tool.reloadCycleRightArm ? tool.reloadCycleRightArm : "rightArm");
                     var reloadCycleLeftArmName = (tool.reloadCycleLeftArm ? tool.reloadCycleLeftArm : "leftArm");
                     var reloadCycleGunName = (tool.reloadCycleGun ? tool.reloadCycleGun : "");
-                    var reloadCycleRightArm = Client.animationManager.cycles[reloadCycleRightArmName];
-                    var reloadCycleLeftArm = Client.animationManager.cycles[reloadCycleLeftArmName];
-                    var reloadCycleGun = Client.animationManager.cycles[reloadCycleGunName];
+                    var reloadCycleRightArm = WorldRenderer.animationManager.cycles[reloadCycleRightArmName];
+                    var reloadCycleLeftArm = WorldRenderer.animationManager.cycles[reloadCycleLeftArmName];
+                    var reloadCycleGun = WorldRenderer.animationManager.cycles[reloadCycleGunName];
                     if (reloadCycleRightArm && entity.bodyparts.bodyparts["rightArm"])
                         entity.bodyparts.bodyparts["rightArm"].cycle(reloadCycleRightArmName, reloadCycleRightArm.numFrames / reloadCooldown * 20, true);
                     if (reloadCycleLeftArm && entity.bodyparts.bodyparts["leftArm"])

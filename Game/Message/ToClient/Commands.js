@@ -15,13 +15,16 @@ global.MessageCommands = MessageCommands;
 TypeRegister.add(RegisterMessage.ToClient, MessageCommands);
 
 MessageCommands.prototype.execute = function(gameData) {
-    if (!World || !GameMode) return;
-    if (Config.fakeLag == 0 && Config.fakeJitter == 0) {
-        World.pendingCommands[this.tickId] = this.commands;
-    } else {
-        worldSetTimeout(function() {
+    if (World) {
+        if (Config.fakeLag == 0 && Config.fakeJitter == 0) {
             World.pendingCommands[this.tickId] = this.commands;
-        }.bind(this), Config.fakeLag + Config.fakeJitter * Math.random());
+        } else {
+            worldSetTimeout(function() {
+                World.pendingCommands[this.tickId] = this.commands;
+            }.bind(this), Config.fakeLag + Config.fakeJitter * Math.random());
+        }
+    } else {
+        WorldPendingCommands[this.tickId] = this.commands;
     }
 }
 

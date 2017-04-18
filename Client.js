@@ -24,8 +24,23 @@ var update = function() {
     if (newTickNum - tickNum > 1200)
         location.reload();
     // Simulate ticks:
-    for (; tickNum < newTickNum; ++tickNum)
-        tick(tickDuration / 1000.0);
+    if (World) {
+        var readyTicks = 0;
+        for (var i = 0; i <= 6 && World.pendingCommands[World.tickId + i]; i++)
+            readyTicks++;
+
+        if (readyTicks >= 3) {
+            while (readyTicks >= 1 && World.pendingCommands[World.tickId]) {
+                tick(tickDuration / 1000.0);
+                readyTicks--;
+            }
+        }
+
+        if (World.pendingCommands[World.tickId])
+            tick(tickDuration / 1000.0);
+    }
+    //for (; tickNum < newTickNum; ++tickNum)
+    //    tick(tickDuration / 1000.0);
     // Render:
     render(tickFracTime);
     // Skip frames:

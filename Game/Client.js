@@ -12,6 +12,7 @@ var clientInit = function(callback) {
         startTime: Date.now(),
         textures: null,
         player: null,
+        playerId: -1,
         playerEntity: null,
         textureManager: null,
         zindices: new Array(3),
@@ -173,6 +174,7 @@ var clientInitSocket = function(callback) {
 
     RegisterMessage.ToClient.forEach(function(messageType) {
         Client.socket.on(messageType.prototype.idString, function(data) {
+            if (messageType.name != "MessageCommands") console.log("Message:", messageType.name);
             var message = new messageType();
             message.receive(gameData, data);
             message.execute(gameData);

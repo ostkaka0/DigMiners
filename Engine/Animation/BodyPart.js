@@ -55,7 +55,7 @@ BodyPart.rotate = function(ax, ay, x, y, angle) {
 BodyPart.prototype.cycle = function(cycle, fps, runToEnd) {
     if (!this.cycleInstance)
         this.cycleInstance = {};
-    this.cycleInstance.cycle = Client.animationManager.cycles[cycle];
+    this.cycleInstance.cycle = WorldRenderer.animationManager.cycles[cycle];
     this.cycleInstance.rest = 0;
     this.cycleInstance.mspf = 1000.0 / fps;
     if (!this.cycleInstance.lastFrame || !this.cycleInstance)
@@ -76,7 +76,7 @@ BodyPart.prototype.finishCycle = function() {
 BodyPart.prototype.animate = function(animation, fps, runToEnd) {
     if (!this.animInstance) {
         this.animInstance = {};
-        this.animInstance.animation = Client.animationManager.animations[animation];
+        this.animInstance.animation = WorldRenderer.animationManager.animations[animation];
         this.sprite.frame = this.animInstance.animation.frames[0];
     }
     this.animInstance.mspf = 1000.0 / fps;

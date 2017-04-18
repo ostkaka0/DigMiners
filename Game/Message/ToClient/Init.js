@@ -12,7 +12,7 @@
 
 var MessageInit = function(gameData, player) {
     this.players = [];
-    this.tickId = (gameData) ? World.tickId : 0;
+    this.tickId = (World) ? World.tickId : 0;
     if (player) {
         this.playerId = player.id;
         this.entityId = player.entityId;
@@ -25,9 +25,10 @@ global.MessageInit = MessageInit;
 TypeRegister.add(RegisterMessage.ToClient, MessageInit);
 
 MessageInit.prototype.execute = function(gameData) {
-    World.tickId = this.tickId;
+    World.tickId = this.tickId + 1;
     var player = Game.playerWorld.add(new Player(this.playerId, this.entityId), this.playerId);
     Client.player = player;
+    Client.playerId = player.id;
 
     for (var i = 0; i < this.players.length; ++i) {
         var playerData = this.players[i];
