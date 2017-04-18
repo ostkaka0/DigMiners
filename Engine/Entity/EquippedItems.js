@@ -1,13 +1,8 @@
 
-
-
-
-
 var EntityEquippedItems = function(items) {
     this.items = (items ? items : {});
 }
 EntityEquippedItems.Events = { onEquip: new Map(), onDequip: new Map() };
-global.EntityEquippedItems = EntityEquippedItems;
 RegisterEntity.push(EntityEquippedItems);
 
 EntityEquippedItems.prototype.name = equippedItems.name; function equippedItems() { };

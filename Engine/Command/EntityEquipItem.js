@@ -1,21 +1,10 @@
 
-
-
-
-
-
-
-
-// TODO: Fix engine dependency to game
-
-
 var CommandEntityEquipItem = function(entityId, stackId, itemId, equipped) {
     this.entityId = entityId;
     this.stackId = stackId;
     this.itemId = itemId;
     this.equipped = equipped;
 }
-global.CommandEntityEquipItem = CommandEntityEquipItem;
 RegisterCommand.push(CommandEntityEquipItem);
 
 CommandEntityEquipItem.prototype.execute = function() {

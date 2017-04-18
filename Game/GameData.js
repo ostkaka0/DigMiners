@@ -49,7 +49,7 @@ global.gameData.init = function(idList) {
     this.particleFunctionRegister = ObjectRegister.addByObject([], ParticleFunctions);
     this.potionEffectTypeRegister = ObjectRegister.addByObject([], PotionEffectTypes);
     this.gameModeRegister = TypeRegister.addByArray([], [/*GameModeBaseWar,*/ GameModeZombieInvasion/*, GameModeSurvivalWar*/]);
-    this.defaultGameMode = GameModeZombieInvasion;
+    this.defaultGameMode = GameModeEmpty;
 
     // global.gameData.textures is set in TextureManager.js when textures are loaded
     this.textures = {};

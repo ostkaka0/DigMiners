@@ -1,15 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
 var CommandProjectileSpawn = function(entityId, pos, angle, speed, maxDistance, projectileType, shooterEntityId) {
     this.entityId = entityId;
     if (pos)
@@ -20,7 +9,6 @@ var CommandProjectileSpawn = function(entityId, pos, angle, speed, maxDistance, 
     this.projectileType = projectileType;
     this.shooterEntityId = shooterEntityId;
 }
-global.CommandProjectileSpawn = CommandProjectileSpawn;
 RegisterCommand.push(CommandProjectileSpawn);
 
 CommandProjectileSpawn.prototype.execute = function() {
