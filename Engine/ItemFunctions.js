@@ -20,7 +20,7 @@ ItemFunctions.projectile = function(itemType, entity) {
     var numProjectiles = itemType.numProjectiles ? itemType.numProjectiles : 1;
     item.magazine -= 1;
 
-    global.gameData.world.events.trigger("bulletFired", entity, item);
+    global.gameData.world.events.trigger("bulletFired", entity, itemType);
 
     if (isServer) {
         var maxDistance = (itemType.projectileType.hitAtCursor && entity.movement.deltaWorldCursorPos) ?
