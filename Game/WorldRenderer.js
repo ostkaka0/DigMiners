@@ -2,6 +2,8 @@
 var WorldRenderer = null;
 
 var worldRendererInit = function() {
+    Canvas.updateSize(canvas);
+    Canvas.updateSize(spriteCanvas);
     WorldRenderer = {
         camera: {
             width: window.innerWidth,
@@ -22,7 +24,7 @@ var worldRendererInit = function() {
 
 var worldRendererDestroy = function() {
     if (!WorldRenderer) return;
-    removeEventListener('resize', WorldRenderer.onResize, false);
+    removeEventListener('resize', WorldRessnderer.onResize, false);
     WorldRenderer = null;
 }
 
@@ -35,11 +37,12 @@ var worldRendererRender = function(tickFracTime) {
 
     // Set camera pos
     if (Client.spectateEntity) {
-        WorldRenderer.camera.pos[0] = tickFracTime * 32.0 * Client.spectateEntity.physicsBody.posClient[0] + (1 - tickFracTime) * 32.0 * Client.spectateEntity.physicsBody.posClientOld[0];
-        WorldRenderer.camera.pos[1] = tickFracTime * 32.0 * Client.spectateEntity.physicsBody.posClient[1] + (1 - tickFracTime) * 32.0 * Client.spectateEntity.physicsBody.posClientOld[1];
+        WorldRenderer.camera.pos[0] = tickFracTime * 32.0 * Client.spectateEntity.physicsBody.getPos()[0] + (1 - tickFracTime) * 32.0 * Client.spectateEntity.physicsBody.getPos()[0];
+        WorldRenderer.camera.pos[1] = tickFracTime * 32.0 * Client.spectateEntity.physicsBody.getPos()[1] + (1 - tickFracTime) * 32.0 * Client.spectateEntity.physicsBody.getPos()[1];
     } else if (Client.playerEntity && Client.playerEntity.isActive) {
-        WorldRenderer.camera.pos[0] = tickFracTime * 32.0 * Client.playerEntity.physicsBody.posClient[0] + (1 - tickFracTime) * 32.0 * Client.playerEntity.physicsBody.posClientOld[0];
-        WorldRenderer.camera.pos[1] = tickFracTime * 32.0 * Client.playerEntity.physicsBody.posClient[1] + (1 - tickFracTime) * 32.0 * Client.playerEntity.physicsBody.posClientOld[1];
+        v2.mul(32., Client.playerEntity.physicsBody.getPos(), WorldRenderer.camera.pos);
+        //WorldRenderer.camera.pos[0] = tickFracTime * 32.0 * Client.playerEntity.physicsBody.getPos()[0] + (1 - tickFracTime) * 32.0 * Client.playerEntity.physicsBody.getPos()[0];
+        //WorldRenderer.camera.pos[1] = tickFracTime * 32.0 * Client.playerEntity.physicsBody.getPos()[1] + (1 - tickFracTime) * 32.0 * Client.playerEntity.physicsBody.getPos()[1];
     } else // TODO: do something else instead of centering camera at 0,0?
         WorldRenderer.camera.pos = [0, 0];
 
@@ -47,19 +50,19 @@ var worldRendererRender = function(tickFracTime) {
     for (var i = 0; i < World.entities.objectArray.length; i++) {
         var entity = World.entities.objectArray[i];
         if (entity.physicsBody && entity.drawable) {
-            var x = -WorldRenderer.camera.pos[0] + Client.canvas.width / 2 + 32.0 * (tickFracTime * entity.physicsBody.posClient[0] + (1 - tickFracTime) * entity.physicsBody.posClientOld[0]);
-            var y = WorldRenderer.camera.pos[1] + Client.canvas.height / 2 - 32.0 * (tickFracTime * entity.physicsBody.posClient[1] + (1 - tickFracTime) * entity.physicsBody.posClientOld[1]);
+            var x = -WorldRenderer.camera.pos[0] + Client.canvas.width / 2 + 32.0 * entity.physicsBody.getPos()[0];//(tickFracTime * entity.physicsBody.getPos()[0] + (1 - tickFracTime) * entity.physicsBody.getPos()[0]);
+            var y = WorldRenderer.camera.pos[1] + Client.canvas.height / 2 - 32.0 * entity.physicsBody.getPos()[1];//(tickFracTime * entity.physicsBody.getPos()[1] + (1 - tickFracTime) * entity.physicsBody.getPos()[1]);
 
             var a = (entity.physicsBody.angle - entity.physicsBody.angleOld) % (Math.PI * 2);
             var rotation = entity.physicsBody.angleOld + (2 * a % (Math.PI * 2) - a) * tickFracTime;
             entity.drawable.positionAll(x, y, rotation, entity.bodyparts);
 
             if (entity.bodyparts.bodyparts.feet) {
-                var speed = v2.distance(entity.physicsBody.posClient, entity.physicsBody.posClientOld);
+                var speed = v2.distance(entity.physicsBody.getPos(), entity.physicsBody.getPos());
                 entity.bodyparts.bodyparts["feet"].animate("feet", speed * 500.0, false);
             }
         } else if (entity.projectile) {
-            var pos = [tickFracTime * entity.projectile.posClient[0] + (1 - tickFracTime) * entity.projectile.posClientOld[0], tickFracTime * entity.projectile.posClient[1] + (1 - tickFracTime) * entity.projectile.posClientOld[1]]
+            var pos = [tickFracTime * entity.projectile.getPos()[0] + (1 - tickFracTime) * entity.projectile.getPos()[0], tickFracTime * entity.projectile.getPos()[1] + (1 - tickFracTime) * entity.projectile.getPos()[1]]
             var x = -WorldRenderer.camera.pos[0] + Client.canvas.width / 2 + 32.0 * pos[0];
             var y = WorldRenderer.camera.pos[1] + Client.canvas.height / 2 - 32.0 * pos[1];
 

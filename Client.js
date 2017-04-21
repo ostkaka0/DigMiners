@@ -32,12 +32,15 @@ var update = function() {
         if (readyTicks >= 3) {
             while (readyTicks >= 1 && World.pendingCommands[World.tickId]) {
                 tick(tickDuration / 1000.0);
+                tickNum++;
                 readyTicks--;
             }
         }
 
-        if (World.pendingCommands[World.tickId])
+        if (World.pendingCommands[World.tickId]) {
             tick(tickDuration / 1000.0);
+            tickNum++;
+        }
     }
     //for (; tickNum < newTickNum; ++tickNum)
     //    tick(tickDuration / 1000.0);

@@ -7,7 +7,7 @@ var GameModeRegister = [];
 var gameModeChange = function(gameMode) {
     NextGameMode = gameMode;
     ChangeGameMode = true;
-    console.log("Changing gameMode to: " + gameMode.name);
+    console.log("Changing gameMode to: ", (gameMode && gameMode.name) ? gameMode.name : null);
 }
 
 var gameModeTick = function(dt) {

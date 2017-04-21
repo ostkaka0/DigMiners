@@ -59,7 +59,6 @@ var clientInit = function(callback) {
             if (char == "r") key = Keys.R;
 
             if (key == Keys.SPACEBAR && Client.keysDown["lmb"]) return;
-
             if (key != null)
                 new MessageRequestKeyStatusUpdate(key, true).send(Client.socket);
         }
