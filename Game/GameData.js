@@ -21,8 +21,8 @@ global.gameData.init = function(idList) {
     this.particleRegister = ObjectRegister.addByObject([], Particles);
     this.particleFunctionRegister = ObjectRegister.addByObject([], ParticleFunctions);
     this.potionEffectTypeRegister = ObjectRegister.addByObject([], PotionEffectTypes);
-    this.gameModeRegister = TypeRegister.addByArray([], [/*GameModeBaseWar,*/ GameModeEmpty/*, GameModeSurvivalWar*/]);
-    this.defaultGameMode = GameModeEmpty;
+    this.gameModeRegister = TypeRegister.addByArray([], [/*GameModeBaseWar,*/ GameModeSurvival/*, GameModeSurvivalWar*/]);
+    this.defaultGameMode = GameModeSurvival;
 
     // global.gameData.textures is set in TextureManager.js when textures are loaded
     this.textures = {};

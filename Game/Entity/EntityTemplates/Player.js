@@ -1,24 +1,5 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*global.*/var entityTemplatePlayerZombie = function(playerId, entityId, name, pos, playerClass) {
+var entityTemplatePlayerZombie = function(playerId, entityId, name, pos, playerClass) {
     var entity = entityTemplateZombie(entityId, pos, EntityTeam.Enum.Zombie);
     entity.behaviourContainer = undefined;
     entity.controlledByPlayer = new EntityControlledByPlayer(playerId);

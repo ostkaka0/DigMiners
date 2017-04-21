@@ -1,8 +1,4 @@
 
-
-
-
-
 var HUD = function(gameData) {
     // Open/close crafting window when "C" is clicked
     /*$('*').keydown(function(e) {
@@ -29,15 +25,11 @@ var HUD = function(gameData) {
         e.preventDefault();
     });
 
-    this.dugItems = new DugItems();
-    this.chat = new Chat();
-    this.ammo = new AmmoHUD();
-    this.level = new HUDLevel();
-    this.levelPicker = new HUDLevelPicker();
-    this.skills = new HUDSkills();
+    Event.trigger(HUD.Events.onInit, this);
 
     $('.hud').show();
 }
+HUD.Events = { onInit: new Map() };
 
 HUD.prototype.update = function() {
     // update inventory
@@ -45,7 +37,8 @@ HUD.prototype.update = function() {
         this.inventory.update();
 
     // update dugItems
-    this.dugItems.update();
+    if (this.dugItems)
+        this.dugItems.update();
 }
 
 /*HUD.prototype.openCraftingWindow = function() {

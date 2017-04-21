@@ -317,15 +317,6 @@ $("*").mousemove(function(e) {
     new MessageRequestRotate(diff).send(socket);
 });
 
-gameData.world.events.on("ownPlayerSpawned", function(entity, player) {
-    if (gameData.HUD.inventory)
-        gameData.HUD.inventory.remove();
-    if (entity.inventory) {
-        gameData.HUD.inventory = new InventoryHUD(entity.inventory, "Your amazing inventory", 10);
-        gameData.HUD.inventory.update();
-    }
-});
-
 gameData.world.entityWorld.onAdd.set(window, function(entity) {
     if (!isServer && entity.health && entity.drawable)
         Event.trigger(EntityHealth.Events.onChange, entity);

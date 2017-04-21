@@ -164,7 +164,6 @@ InventoryHUD.prototype.update = function() {
             var amount = item.amount;
             var showAmount = (amount > 1);
             if (itemType.oreRecipe) {
-                console.log("ORERECIPE");
                 var amount = global.player.calcOreRecipeQuantity(itemType.oreRecipe);
                 showAmount = (amount >= 0);
             }
