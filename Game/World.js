@@ -272,34 +272,33 @@ worldInitializeEvents = function() {
 
 /*
 var World = function() {
-    World.tickId = 0;
-    World.idList = (isServer) ? new IdList() : null;
-    World.entities = new ObjectWorld(true);
-    World.particleWorld = new ParticleWorld();
-    World.tiles = new TileWorld();
-    World.blocks = new BlockWorld();
-    World.celluralAutomata = new CelluralAutomata(World.blocks, Game.blockRegister);
-    World.physics = new PhysicsWorld();
-    World.physicsEntityMap = {};
-    World.generator = new Generator(Math.random() * 1000000 >> 0);
+    this.tickId = 0;
+    this.idList = (isServer) ? new IdList() : null;
+    this.entityWorld = new ObjectWorld(true);
+    this.particleWorld = new ParticleWorld();
+    this.tileWorld = new TileWorld();
+    this.blockWorld = new BlockWorld();
+    this.celluralAutomata = new CelluralAutomata(this.blockWorld, global.gameData.blockRegister);
+    this.physicsWorld = new PhysicsWorld();
+    this.physicsEntities = {};
+    this.generator = new EmptyGenerator();
 
-    World.inventoryIdList = new IdList();
-    World.inventories = {};
-    World.entityInventories = {};
+    this.inventoryIdList = new IdList();
+    this.inventories = {};
+    this.entityInventories = {};
 
 
-    World.commands = [];
-    World.pendingCommands = {};
-    World.commandCallbacks = [];
+    this.commands = [];
+    this.pendingCommands = {};
+    this.commandCallbacks = [];
 
-    World.events = new EventHandler();
-    World.initializeEvents();
-    World.events2 = { onPlayerSpawn: [] };
+    this.events = new EventHandler();
+    this.initializeEvents();
+    this.events2 = { onPlayerSpawn: [] };
 
     //Temp variables:
     World.collisionList = []; // Updated, then sent before tick ends
 }
-World = World;
 
 World.prototype.tick = function(dt) {
     if (World.pendingCommands[World.tickId])
@@ -495,7 +494,7 @@ World.prototype.initializeEvents = function() {
             blockType.clickFunction(blockPos, blockType, entity, 0);
     }.bind(this));
 
-    World.events.on("equip", function(entity, stackId, itemType) {
+    Event.subscribe(EntityEquippedItems.Events.onEquip, this, function(entity, stackId, itemType) {
         if (itemType.type == "tool" && itemType.typeOfType == "rangedWeapon") {
             var shoulderAngle = Math.PI / 4.0;
             if (entity.bodyparts.bodyparts["leftArm"]) {
@@ -512,7 +511,7 @@ World.prototype.initializeEvents = function() {
         }
     }.bind(this));
 
-    EntityEquippedItems.Events.onDequip.set(this, (entity, stackId, itemType) => {
+    Event.subscribe(EntityEquippedItems.Events.onDequip, this, function(entity, stackId, itemType) {
         if (itemType.type == "tool" && itemType.typeOfType == "rangedWeapon") {
             entity.bodyparts.bodyparts["tool"].offset[2] = entity.bodyparts.bodyparts["tool"].defaultOffset[2];
             entity.bodyparts.bodyparts["leftArm"].offset[2] = entity.bodyparts.bodyparts["leftArm"].defaultOffset[2];

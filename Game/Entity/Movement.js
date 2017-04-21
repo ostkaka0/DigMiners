@@ -1,13 +1,4 @@
 
-
-
-
-
-
-
-// TODO: Fix dependency
-
-
 var EntityMovement = function(speed, toolUseDuration, damageMultiplier, digHardnessMultiplier, digSpeedMultiplier, blockBreakMultiplier) {
     this.keyStatuses = {};
     this.direction = v2.create(0, 0);
@@ -33,7 +24,6 @@ var EntityMovement = function(speed, toolUseDuration, damageMultiplier, digHardn
     this.blockBreakMultiplier = (blockBreakMultiplier == null) ? 1.0 : blockBreakMultiplier
     this.entityLookTarget = null;
 }
-global.EntityMovement = EntityMovement;
 TypeRegister.add(RegisterEntity, EntityMovement);
 
 EntityMovement.prototype.name = movement.name; function movement() { };

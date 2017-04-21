@@ -1,31 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 global.GameModeBaseWar = function() {
     this.playerSpawns = {};
     this.spawnEntities = {};

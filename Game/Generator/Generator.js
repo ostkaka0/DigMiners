@@ -1,13 +1,4 @@
 
-
-
-
-
-
-
-
-
-
 var Generator = function(seed) {
     if (!seed)
         seed = 0;
@@ -17,7 +8,6 @@ var Generator = function(seed) {
     this.oreNoise2 = this.seed + 331;
     this.oreNoise3 = this.seed + 71117;
 }
-global.Generator = Generator;
 
 Generator.prototype.generate = function(chunk, chunkX, chunkY) {
     for (var yy = 0; yy < Chunk.dim; ++yy) {

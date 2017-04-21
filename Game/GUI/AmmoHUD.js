@@ -1,25 +1,24 @@
 
-
-
-
 var AmmoHUD = function() {
-    this.root = $("<div>", { "text": "No weapon equipped" });
+    this.root = $("<div>");
     this.root.css({
         "position": "fixed",
         "right": "10px",
         "bottom": "10px",
         "padding": "10px",
         "z-index": "1",
+        "display": "none",
     });
     this.root.appendTo("#hud");
 
     this.updateFunction = function(entity, itemType) {
         if (entity && entity.id == Client.playerEntityId) {
             var item = entity.inventory.getEquippedItem("tool");
-            if (item && (!itemType || itemType.typeOfType == "rangedWeapon"))
+            if (item && (!itemType || itemType.typeOfType == "rangedWeapon")) {
                 this.root.text(item.name + " ammo: " + item.magazine + " / " + ((entity.ammo != undefined) ? entity.ammo[item.id] : -1));
-            else
-                this.root.text("No weapon equipped");
+                this.root.show();
+            } else
+                this.root.hide();
         }
     }
 
@@ -29,10 +28,10 @@ var AmmoHUD = function() {
     }.bind(this));
 
     Event.subscribe(WorldEvents.onInit, this, () => {
-        World.events.on("beginReload", function(entity) {
+        World.events.on("beginReload", (entity) => {
             if (entity && entity.id == Client.playerEntityId)
                 this.root.text("Reloading...");
-        }.bind(this));
+        });
 
         World.events.on("finishReload", function(entity, itemType) {
             this.updateFunction(entity, itemType);
