@@ -228,7 +228,7 @@ worldInitializeEvents = function() {
             blockType.clickFunction(blockPos, blockType, entity, 0);
     }.bind(this));
 
-    World.events.on("equip", function(entity, stackId, itemType) {
+    Event.subscribe(EntityEquippedItems.Events.onEquip, this, (entity, stackId, itemType) => {
         if (itemType.type == "tool" && itemType.typeOfType == "rangedWeapon") {
             var shoulderAngle = Math.PI / 4.0;
             if (entity.bodyparts.bodyparts["leftArm"]) {
@@ -243,9 +243,9 @@ worldInitializeEvents = function() {
                 entity.bodyparts.bodyparts["rightArm"].offset[1] = pos[1];
             }
         }
-    }.bind(this));
+    });
 
-    EntityEquippedItems.Events.onDequip.set(this, (entity, stackId, itemType) => {
+    Event.subscribe(EntityEquippedItems.Events.onDequip, this, (entity, stackId, itemType) => {
         if (itemType.type == "tool" && itemType.typeOfType == "rangedWeapon") {
             entity.bodyparts.bodyparts["tool"].offset[2] = entity.bodyparts.bodyparts["tool"].defaultOffset[2];
             entity.bodyparts.bodyparts["leftArm"].offset[2] = entity.bodyparts.bodyparts["leftArm"].defaultOffset[2];
