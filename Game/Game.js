@@ -13,6 +13,7 @@ var gameInit = function() {
         potionEffectTypeRegister: ObjectRegister.addByObject([], PotionEffectTypes),
         gameModeRegister: TypeRegister.addByArray([], [/*GameModeBaseWar,*/ GameModeZombieInvasion/*, GameModeSurvivalWar*/]),
         defaultgameMode: GameModeZombieInvasion,
+        HUD: null,
     };
 }
 

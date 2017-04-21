@@ -20,6 +20,25 @@ var worldRendererInit = function() {
     };
     addEventListener('resize', WorldRenderer.onResize, false);
     WorldRenderer.animationManager.load();
+
+    // Initialize bodypart-sprites:
+    Event.subscribe(World.entities.onAdd, this, function(entity) {
+        if (!isServer && entity.health && entity.drawable)
+            Event.trigger(EntityHealth.Events.onChange, entity);
+
+        if (entity.drawable && entity.bodyparts) {
+            entity.drawable.initializeBodyparts(entity.bodyparts.bodyparts);
+        }
+
+        if (entity.name && entity.drawable)
+            entity.name.applyName(entity);
+
+        // Text on items on ground
+        if (entity.item && entity.item.amount > 1) {
+            var textSprite = new TextSprite(entity.item.amount, "Monospace", 15, "#ffffff");
+            entity.drawable.addSprite("textAmount", textSprite, null, false);
+        }
+    });
 }
 
 var worldRendererDestroy = function() {

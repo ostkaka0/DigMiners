@@ -257,6 +257,17 @@ worldInitializeEvents = function() {
             entity.bodyparts.bodyparts["rightArm"].offset[1] = entity.bodyparts.bodyparts["rightArm"].defaultOffset[1];
         }
     });
+
+    if (!isServer) {
+        World.events.on("ownPlayerSpawned", function(entity, player) {
+            if (Game.HUD.inventory)
+                Game.HUD.inventory.remove();
+            if (entity.inventory) {
+                Game.HUD.inventory = new InventoryHUD(entity.inventory, "Your amazing inventory", 10);
+                Game.HUD.inventory.update();
+            }
+        });
+    }
 }
 
 /*
