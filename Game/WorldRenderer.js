@@ -77,8 +77,8 @@ var worldRendererRender = function(tickFracTime) {
             entity.drawable.positionAll(x, y, rotation, entity.bodyparts);
 
             if (entity.bodyparts.bodyparts.feet) {
-                var speed = v2.distance(entity.physicsBody.getPos(), entity.physicsBody.getPos());
-                entity.bodyparts.bodyparts["feet"].animate("feet", speed * 500.0, false);
+                var speed = v2.length(entity.physicsBody.getVelocity());
+                entity.bodyparts.bodyparts["feet"].animate("feet", speed * 25.0, false);
             }
         } else if (entity.projectile) {
             var pos = [tickFracTime * entity.projectile.pos[0] + (1 - tickFracTime) * entity.projectile.pos[0], tickFracTime * entity.projectile.pos[1] + (1 - tickFracTime) * entity.projectile.pos[1]]

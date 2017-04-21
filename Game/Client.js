@@ -121,6 +121,30 @@ var clientInit = function(callback) {
         var diff = [worldCursorPos[0] - pos[0], worldCursorPos[1] - pos[1]];
         new MessageRequestRotate(diff).send(Client.socket);
     });
+    $(document).mousedown(function(event) {
+        if (!Client.socket) return;
+        if (Client.player && Client.playerEntity && Client.playerEntity.isBuilding) {
+            if (event.button == 0) {
+                var stackId = Client.playerEntity.inventory.getEquippedStackId("tool");
+                var bodies = [];
+                if (!Client.player.canPlaceBlock(Game, Client.player.buildPos[0], Client.player.buildPos[1]))
+                    return false;
+                if (stackId != null) {
+                    var message = new MessageRequestPlaceBlock(stackId, Client.player.buildPos[0], Client.player.buildPos[1]);
+                    message.send(Client.socket);
+                }
+            }
+        } else if (Client.player && Client.playerEntity) {
+            var worldCursorPos = [(event.pageX + WorldRenderer.camera.pos[0] - WorldRenderer.camera.width / 2) / 32, (canvas.height - event.pageY + WorldRenderer.camera.pos[1] - WorldRenderer.camera.height / 2) / 32];
+            if (v2.distance(Client.playerEntity.physicsBody.getPos(), worldCursorPos) > 0.5) {
+                var chunkPos = [0, 0];
+                var localPos = [0, 0];
+                BlockChunk.fromV2World(worldCursorPos, chunkPos, localPos);
+                var blockPos = [chunkPos[0] * BlockChunk.dim + localPos[0], chunkPos[1] * BlockChunk.dim + localPos[1]];
+                new MessageRequestClickBlock(blockPos, (event.button == 0 ? ClickTypes.LEFT_CLICK : (event.button == 2 ? ClickTypes.RIGHT_CLICK : ClickTypes.UNKNOWN))).send(Client.socket);
+            }
+        }
+    });
 
     clientInitTextures(() => clientInitSocket(callback));
 }
