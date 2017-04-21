@@ -90,7 +90,7 @@ MessageInit.prototype.send = function(gameData, socket) {
 }
 
 MessageInit.prototype.receive = function(gameData, byteArray) {
-    gameModeChange(new GameModeZombieInvasion());
+    gameModeChange(new Game.defaultgameMode());
     gameModeTick();
     worldTick();
 

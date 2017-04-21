@@ -108,6 +108,19 @@ var clientInit = function(callback) {
             new MessageRequestKeyStatusUpdate(Keys.SPACEBAR, false).send(Client.socket);
         }
     });
+    $("*").mousemove(function(e) {
+        if (!Client.player || !Client.playerEntity) return;
+        if (World.tickId - Client.lastMouseSync < 1) return;
+        if (!WorldRenderer) return;
+        if (!Client.socket) return;
+
+        var entity = Client.playerEntity;
+        Client.lastMouseSync = World.tickId;
+        var worldCursorPos = [(e.pageX + WorldRenderer.camera.pos[0] - WorldRenderer.camera.width / 2) / 32, (Client.canvas.height - e.pageY + WorldRenderer.camera.pos[1] - WorldRenderer.camera.height / 2) / 32];
+        var pos = entity.physicsBody.getPos();
+        var diff = [worldCursorPos[0] - pos[0], worldCursorPos[1] - pos[1]];
+        new MessageRequestRotate(diff).send(Client.socket);
+    });
 
     clientInitTextures(() => clientInitSocket(callback));
 }

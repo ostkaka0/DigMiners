@@ -81,7 +81,7 @@ var worldRendererRender = function(tickFracTime) {
                 entity.bodyparts.bodyparts["feet"].animate("feet", speed * 500.0, false);
             }
         } else if (entity.projectile) {
-            var pos = [tickFracTime * entity.projectile.getPos()[0] + (1 - tickFracTime) * entity.projectile.getPos()[0], tickFracTime * entity.projectile.getPos()[1] + (1 - tickFracTime) * entity.projectile.getPos()[1]]
+            var pos = [tickFracTime * entity.projectile.pos[0] + (1 - tickFracTime) * entity.projectile.pos[0], tickFracTime * entity.projectile.pos[1] + (1 - tickFracTime) * entity.projectile.pos[1]]
             var x = -WorldRenderer.camera.pos[0] + Client.canvas.width / 2 + 32.0 * pos[0];
             var y = WorldRenderer.camera.pos[1] + Client.canvas.height / 2 - 32.0 * pos[1];
 
@@ -103,7 +103,7 @@ var worldRendererRender = function(tickFracTime) {
     }
 
     if (Client.player && Client.playerEntity && Client.playerEntity.isBuilding) {
-        var worldCursorPos = [Math.floor((mouseX + WorldRenderer.camera.pos[0] - WorldRenderer.camera.width / 2) / 32), Math.floor((Client.canvas.height - mouseY + WorldRenderer.camera.pos[1] - WorldRenderer.camera.height / 2) / 32)];
+        var worldCursorPos = [Math.floor((Client.mouseX + WorldRenderer.camera.pos[0] - WorldRenderer.camera.width / 2) / 32), Math.floor((Client.canvas.height - Client.mouseY + WorldRenderer.camera.pos[1] - WorldRenderer.camera.height / 2) / 32)];
         var chunkPos = [0, 0];
         var localPos = [0, 0];
         BlockChunk.fromV2World(worldCursorPos, chunkPos, localPos);

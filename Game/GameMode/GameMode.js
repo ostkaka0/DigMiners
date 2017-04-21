@@ -21,7 +21,7 @@ var gameModeTick = function(dt) {
             worldRendererInit();
         }
 
-        if (GameMode) GameMode.destroy();
+        if (GameMode && GameMode.destroy) GameMode.destroy();
         GameMode = NextGameMode;
         NextGameMode = null;
         if (GameMode) GameMode.init();
@@ -29,6 +29,6 @@ var gameModeTick = function(dt) {
         return;
     }
 
-    if (GameMode)
+    if (GameMode && GameMode.tick)
         GameMode.tick(dt);
 }

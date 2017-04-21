@@ -27,7 +27,7 @@ for (var i = 0; i < srcList.length; i++) {
 
 serverInit(io);
 gameInit();
-gameModeChange(new GameModeZombieInvasion());
+gameModeChange(new Game.defaultgameMode());
 gameModeTick(0.0);
 
 var firstTickTime = process.hrtime();
