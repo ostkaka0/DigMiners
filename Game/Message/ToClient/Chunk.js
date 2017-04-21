@@ -17,14 +17,14 @@ var MessageChunk = function(chunk, blockChunk, x, y) {
     this.y = y;
 }
 global.MessageChunk = MessageChunk;
-RegisterMessage.ToClient.push(MessageChunk);
+TypeRegister.add(RegisterMessage.ToClient, MessageChunk);
 
 MessageChunk.prototype.execute = function(gameData) {
-    if (global.gameData.world.generator)
-        global.gameData.world.generator.generate(this.chunk, this.x, this.y);
-    global.gameData.world.tileWorld.set([this.x, this.y], this.chunk);
+    if (World.generator)
+        World.generator.generate(this.chunk, this.x, this.y);
+    World.tiles.set([this.x, this.y], this.chunk);
     if (!this.blockChunkEmpty)
-        global.gameData.world.blockWorld.set([this.x, this.y], this.blockChunk);
+        World.blocks.set([this.x, this.y], this.blockChunk);
 }
 
 MessageChunk.prototype.send = function(socket) {

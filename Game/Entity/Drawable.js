@@ -12,11 +12,13 @@ var EntityDrawable = function(zindex) {
     if (isServer)
         return;
 
-    this.container = new SpriteContainer();
-    zindices[this.zindex].add(this.container);
+    if (!isServer) {
+        this.container = new SpriteContainer();
+        Client.zindices[this.zindex].add(this.container);
+    }
 }
 global.EntityDrawable = EntityDrawable;
-RegisterEntity.push(EntityDrawable);
+TypeRegister.add(RegisterEntity, EntityDrawable);
 
 EntityDrawable.prototype.name = drawable.name; function drawable() { };
 
@@ -39,7 +41,7 @@ EntityDrawable.prototype.deserialize = function(byteArray, index, gameData) {
     this.zindex = (!this.zindex ? 0 : this.zindex);
     if (!isServer) {
         this.container = new SpriteContainer();
-        zindices[this.zindex].add(this.container);
+        Client.zindices[this.zindex].add(this.container);
     }
 
     // Sprites

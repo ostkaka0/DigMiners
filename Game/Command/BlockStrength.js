@@ -13,13 +13,13 @@ var CommandBlockStrength = function(x, y, strength) {
     this.strength = Math.max(strength, 0);
 }
 global.CommandBlockStrength = CommandBlockStrength;
-RegisterCommand.push(CommandBlockStrength);
+TypeRegister.add(RegisterCommand, CommandBlockStrength);
 
 CommandBlockStrength.prototype.execute = function() {
     if (this.strength > 0)
-        global.gameData.world.blockWorld.setStrength([this.x, this.y], this.strength);
+        World.blocks.setStrength([this.x, this.y], this.strength);
     else
-        global.gameData.world.blockWorld.setForeground([this.x, this.y], 0);
+        World.blocks.setForeground([this.x, this.y], 0);
 }
 
 CommandBlockStrength.prototype.serialize = function(byteArray, index) {

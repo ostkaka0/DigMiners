@@ -5,7 +5,7 @@ class CommandChooseSkill {
         this.skillId = skillId;
     }
     execute() {
-        var player = gameData.playerWorld.objects[this.playerId];
+        var player = Game.playerWorld.objects[this.playerId];
         if (!player) return;
         if (player.skillPoints < 1) return;
         player.chooseSkill(this.skillId);
@@ -20,4 +20,4 @@ class CommandChooseSkill {
     }
     getSerializationSize() { return 8; }
 }
-RegisterCommand.push(CommandChooseSkill);
+TypeRegister.add(RegisterCommand, CommandChooseSkill);

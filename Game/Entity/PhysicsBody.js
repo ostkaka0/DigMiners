@@ -5,7 +5,7 @@
 
 
 var EntityPhysicsBody = function(pos, damping, rotationSpeed, mass, radius) {
-    this.bodyId = global.gameData.world.physicsWorld.add(pos, [0.0, 0.0], mass, radius);
+    this.bodyId = World.physics.add(pos, [0.0, 0.0], mass, radius);
     if (pos) {
         this.posOld = v2.clone(pos);
         this.posClient = v2.clone(pos);
@@ -27,7 +27,7 @@ var EntityPhysicsBody = function(pos, damping, rotationSpeed, mass, radius) {
     this.angleOld = 0;
 }
 global.EntityPhysicsBody = EntityPhysicsBody;
-RegisterEntity.push(EntityPhysicsBody);
+TypeRegister.add(RegisterEntity, EntityPhysicsBody);
 
 EntityPhysicsBody.prototype.name = physicsBody.name; function physicsBody() { };
 
@@ -62,17 +62,17 @@ EntityPhysicsBody.prototype.getSerializationSize = function() {
 }
 
 EntityPhysicsBody.prototype.destroy = function(entity) {
-    global.gameData.world.physicsWorld.remove(this.bodyId);
+    World.physics.remove(this.bodyId);
 }
 
-EntityPhysicsBody.prototype.getPos = function() { return global.gameData.world.physicsWorld.getPos(this.bodyId); }
-EntityPhysicsBody.prototype.setPos = function(pos) { global.gameData.world.physicsWorld.setPos(this.bodyId, pos); }
-EntityPhysicsBody.prototype.getVelocity = function() { return global.gameData.world.physicsWorld.getVelocity(this.bodyId); }
-EntityPhysicsBody.prototype.setVelocity = function(velocity) { global.gameData.world.physicsWorld.setVelocity(this.bodyId, velocity); }
-EntityPhysicsBody.prototype.getMass = function() { return global.gameData.world.physicsWorld.getMass(this.bodyId); }
-EntityPhysicsBody.prototype.setMass = function(mass) { global.gameData.world.physicsWorld.setMass(this.bodyId, mass); }
-EntityPhysicsBody.prototype.getRadius = function() { return global.gameData.world.physicsWorld.getRadius(this.bodyId); }
-EntityPhysicsBody.prototype.setRadius = function(radius) { global.gameData.world.physicsWorld.setRadius(this.bodyId, radius); }
+EntityPhysicsBody.prototype.getPos = function() { return World.physics.getPos(this.bodyId); }
+EntityPhysicsBody.prototype.setPos = function(pos) { World.physics.setPos(this.bodyId, pos); }
+EntityPhysicsBody.prototype.getVelocity = function() { return World.physics.getVelocity(this.bodyId); }
+EntityPhysicsBody.prototype.setVelocity = function(velocity) { World.physics.setVelocity(this.bodyId, velocity); }
+EntityPhysicsBody.prototype.getMass = function() { return World.physics.getMass(this.bodyId); }
+EntityPhysicsBody.prototype.setMass = function(mass) { World.physics.setMass(this.bodyId, mass); }
+EntityPhysicsBody.prototype.getRadius = function() { return World.physics.getRadius(this.bodyId); }
+EntityPhysicsBody.prototype.setRadius = function(radius) { World.physics.setRadius(this.bodyId, radius); }
 
 EntityPhysicsBody.prototype.rotateTo = function(angle, speed, dt) {
     if (this.angle == angle)

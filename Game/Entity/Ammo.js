@@ -4,7 +4,7 @@
 
 var EntityAmmo = function() { }
 global.EntityAmmo = EntityAmmo;
-RegisterEntity.push(EntityAmmo);
+TypeRegister.add(RegisterEntity, EntityAmmo);
 EntityAmmo.Events = { onChange: new Map() };
 
 EntityAmmo.prototype.name = ammo.name; function ammo() { };

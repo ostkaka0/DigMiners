@@ -109,7 +109,7 @@
             if (isset($_GET["test"]))
                 addScript("./tests/" . $_GET["test"] . ".js");
             else
-                addScript("DigMiners.js");
+                addScript("Client.js");
 
         ?>
     </body>

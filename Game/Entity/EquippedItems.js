@@ -3,7 +3,7 @@ var EntityEquippedItems = function(items) {
     this.items = (items ? items : {});
 }
 EntityEquippedItems.Events = { onEquip: new Map(), onDequip: new Map() };
-RegisterEntity.push(EntityEquippedItems);
+TypeRegister.add(RegisterEntity, EntityEquippedItems);
 
 EntityEquippedItems.prototype.name = equippedItems.name; function equippedItems() { };
 

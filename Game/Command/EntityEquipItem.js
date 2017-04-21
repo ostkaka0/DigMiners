@@ -5,10 +5,10 @@ var CommandEntityEquipItem = function(entityId, stackId, itemId, equipped) {
     this.itemId = itemId;
     this.equipped = equipped;
 }
-RegisterCommand.push(CommandEntityEquipItem);
+TypeRegister.add(RegisterCommand, CommandEntityEquipItem);
 
 CommandEntityEquipItem.prototype.execute = function() {
-    var entity = global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = World.entities.objects[this.entityId];
     if (!entity) return;
 
     var itemType = RegisterItem[this.itemId];
@@ -37,11 +37,11 @@ CommandEntityEquipItem.prototype.execute = function() {
         }
 
 
-        if (isServer || (global.playerEntity && this.entityId == global.playerEntity.id)) {
+        if (isServer || (Client.playerEntity && this.entityId == Client.playerEntity.id)) {
             if (item && item.id == this.itemId) {
                 item.equipped = this.equipped;
                 if (!isServer)
-                    global.gameData.HUD.update();
+                    Game.HUD.update();
             }
         }
     }

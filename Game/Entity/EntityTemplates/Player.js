@@ -50,12 +50,12 @@ var entityTemplatePlayer = function(playerId, entityId, name, playerClass, teamI
     entity.ammo = new EntityAmmo();
 
     playerClass.weapons.forEach(function(weapon) {
-        entity.inventory.addStaticItem(global.gameData, weapon.id);
+        entity.inventory.addStaticItem(gameData, weapon.id);
         entity.ammo[weapon.id] = weapon.ammoMax || 0;
     });
 
     playerClass.blocks.forEach(function(blockItem) {
-        entity.inventory.addStaticItem(global.gameData, blockItem.id);
+        entity.inventory.addStaticItem(gameData, blockItem.id);
     });
     if (playerClass.items) {
         playerClass.items.forEach(function(item) {

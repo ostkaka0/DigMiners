@@ -12,7 +12,7 @@ var AmmoHUD = function() {
     this.root.appendTo("#hud");
 
     this.updateFunction = function(entity, itemType) {
-        if (entity && entity.id == global.playerEntityId) {
+        if (entity && entity.id == Client.playerEntityId) {
             var item = entity.inventory.getEquippedItem("tool");
             if (item && (!itemType || itemType.typeOfType == "rangedWeapon")) {
                 this.root.text(item.name + " ammo: " + item.magazine + " / " + ((entity.ammo != undefined) ? entity.ammo[item.id] : -1));
@@ -22,24 +22,31 @@ var AmmoHUD = function() {
         }
     }
 
-    global.gameData.world.events.on("beginReload", function(entity) {
-        if (entity && entity.id == global.playerEntityId)
-            this.root.text("Reloading...");
+    EntityAmmo.Events.onChange.set(this, function(entity) {
+        if (entity && entity.id == Client.playerEntityId)
+            this.updateFunction(entity, null)
     }.bind(this));
 
-    global.gameData.world.events.on("finishReload", function(entity, itemType) {
-        this.updateFunction(entity, itemType);
-    }.bind(this));
+    Event.subscribe(WorldEvents.onInit, this, () => {
+        World.events.on("beginReload", (entity) => {
+            if (entity && entity.id == Client.playerEntityId)
+                this.root.text("Reloading...");
+        });
 
-    EntityEquippedItems.Events.onEquip.set(this, function(entity, stackId, itemType) {
-        this.updateFunction(entity, itemType);
-    }.bind(this));
+        World.events.on("finishReload", function(entity, itemType) {
+            this.updateFunction(entity, itemType);
+        }.bind(this));
 
-    EntityEquippedItems.Events.onDequip.set(this, function(entity, stackId, itemType) {
-        this.updateFunction(entity, itemType);
-    }.bind(this));
+        World.events.on("bulletFired", function(entity, itemType) {
+            this.updateFunction(entity, itemType);
+        }.bind(this));
 
-    global.gameData.world.events.on("bulletFired", function(entity, itemType) {
-        this.updateFunction(entity, itemType);
-    }.bind(this));
+        EntityEquippedItems.Events.onEquip.set(this, function(entity, stackId, itemType) {
+            this.updateFunction(entity, itemType);
+        }.bind(this));
+
+        EntityEquippedItems.Events.onDequip.set(this, function(entity, stackId, itemType) {
+            this.updateFunction(entity, itemType);
+        }.bind(this));
+    });
 }

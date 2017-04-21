@@ -13,7 +13,7 @@ var CommandPopupMessage = function(text, timeout) {
         this.timeout = 3000;
 }
 global.CommandPopupMessage = CommandPopupMessage;
-RegisterCommand.push(CommandPopupMessage);
+TypeRegister.add(RegisterCommand, CommandPopupMessage);
 
 CommandPopupMessage.prototype.execute = function() {
     if (!isServer)

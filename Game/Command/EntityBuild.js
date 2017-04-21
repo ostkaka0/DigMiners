@@ -18,23 +18,23 @@ var CommandEntityBuild = function(entityId, x, y, blockId, type) {
     this.type = type;
 }
 global.CommandEntityBuild = CommandEntityBuild;
-RegisterCommand.push(CommandEntityBuild);
+TypeRegister.add(RegisterCommand, CommandEntityBuild);
 
 CommandEntityBuild.prototype.execute = function() {
     /*if (this.type == BlockTypes.FOREGROUND)
-        global.gameData.world.blockWorld.setForeground([this.x, this.y], this.blockId);
+        World.blocks.setForeground([this.x, this.y], this.blockId);
     else if (this.type == BlockTypes.BACKGROUND)
-        setBackground(global.gameData.world.blockWorld, this.x, this.y, this.blockId);*/
+        setBackground(World.blocks, this.x, this.y, this.blockId);*/
 
-    var entity = global.gameData.world.entityWorld.objects[this.entityId];
-    var block = global.gameData.blockRegister[this.blockId];
+    var entity = World.entities.objects[this.entityId];
+    var block = Game.blockRegister[this.blockId];
     if (!entity) return;
     if (!isServer && this.blockId)
         entity.bodyparts.bodyparts["rightArm"].cycle("rightArm", 256, true);
     if (isServer) {
         var entityBlockPlacer = { blockPlacer: new EntityBlockPlacer([this.x, this.y], this.blockId, block.buildDuration, entity.id) };
-        var entityBlockPlacerId = global.gameData.world.idList.next();
-        sendCommand(new CommandEntitySpawn(global.gameData, entityBlockPlacer, entityBlockPlacerId));
+        var entityBlockPlacerId = World.idList.next();
+        sendCommand(new CommandEntitySpawn(gameData, entityBlockPlacer, entityBlockPlacerId));
         entity.blockPlacerId = entityBlockPlacerId;
     }
 }

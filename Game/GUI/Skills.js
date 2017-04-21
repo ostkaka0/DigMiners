@@ -25,7 +25,7 @@ class HUDSkills {
             button.css({ "background-color": "rgba(0, 0, 0, 0)", "width": "32px", "height": "12px", "float": "left", "margin-bottom": "0px"});
 
             // Closure to pass i by value
-            ((i) => button.click(() => new MessageChooseSkill(i).send(socket)))(i);
+            ((i) => button.click(() => new MessageChooseSkill(i).send(Client.socket)))(i);
 
             this.bars[i] = bar;
             this.innerBars[i] = innerBar
@@ -33,11 +33,11 @@ class HUDSkills {
         }
 
         Event.subscribe(Player.events.onSkillChange, this, (player) => this.update(player));
-        this.update(global.player);
+        this.update(Client.player);
     }
 
     update(player) {
-        if (player != global.player) return;
+        if (player != Client.player) return;
         if (player.skillPoints >= 1) {
             this.root.show();
             for (var i = 0; i < PlayerSkillRegister.length; i++) {

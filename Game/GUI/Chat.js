@@ -93,16 +93,17 @@ var Chat = function() {
     });
     this.sendButton.click(function() {
         if (this.textInputInput.val().length > 0) {
-            socket.emit("chat", this.textInputInput.val());
+            Client.socket.emit("chat", this.textInputInput.val());
             this.textInputInput.val("");
         }
     }.bind(this));
 
-    socket.on("chat", function(text) {
+    Client.socket.on("chat", function(text) {
         this.write(text);
     }.bind(this));
 
-    global.gameData.world.events.on("playerSpawned", function(entity, player) {
+    // TODO: Fix:
+    World.events.on("playerSpawned", function(entity, player) {
         this.write(entity.name.entityName + " spawned.");
     }.bind(this));
 

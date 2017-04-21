@@ -24,24 +24,24 @@ var EntitySpawner = function(entityTemplate, pos, maxEntities, radius, duration,
 
     this.numEntities = 0;
     this.entityTable = {};
-    this.nextSpawnTickId = global.gameData.world.tickId;
+    this.nextSpawnTickId = World.tickId;
 
     this.initialized = false;
 }
 global.EntitySpawner = EntitySpawner;
-RegisterEntity.push(EntitySpawner);
+TypeRegister.add(RegisterEntity, EntitySpawner);
 
 EntitySpawner.prototype.name = spawner.name; function spawner() { };
 
 EntitySpawner.prototype.update = function(entity) {
     if (this.numEntities >= this.maxEntities) return;
-    if (global.gameData.world.tickId - this.nextSpawnTickId <= 0) return;
+    if (World.tickId - this.nextSpawnTickId <= 0) return;
     if (!isServer) return;
 
     // Lazy init
     if (!this.initialized) {
         this.initialized = true;
-        global.gameData.world.entityWorld.onRemove.set(this, function(entity) {
+        World.entities.onRemove.set(this, function(entity) {
             if (this.entityTable[entity.id] == undefined) return;
 
             if (this.numEntities == this.maxEntities)
@@ -53,9 +53,9 @@ EntitySpawner.prototype.update = function(entity) {
     };
 
     // Spawn entity
-    var monsterEntityId = global.gameData.world.idList.next();
+    var monsterEntityId = World.idList.next();
     var monster = this.entityTemplate(monsterEntityId, [this.pos[0] + this.radius * (-1 + 2 *Math.random()), this.pos[1] + this.radius * (-1 + 2 *Math.random())], this.teamId);
-    sendCommand(new CommandEntitySpawn(global.gameData, monster, monsterEntityId));
+    sendCommand(new CommandEntitySpawn(gameData, monster, monsterEntityId));
 
     // Add items
     if (this.items) {
@@ -76,9 +76,9 @@ EntitySpawner.prototype.update = function(entity) {
 }
 
 EntitySpawner.prototype.onDestroy = function(entity) {
-    Event.unsubscribe(global.gameData.world.entityWorld.onRemove, this);
+    Event.unsubscribe(World.entities.onRemove, this);
 }
 
 EntitySpawner.prototype.updateDuration = function() {
-    this.nextSpawnTickId = global.gameData.world.tickId + this.duration + Math.floor(this.randomDuration * this.duration * (-0.5 + Math.random()));
+    this.nextSpawnTickId = World.tickId + this.duration + Math.floor(this.randomDuration * this.duration * (-0.5 + Math.random()));
 }

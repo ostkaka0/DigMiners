@@ -4,11 +4,12 @@
 
 
 
-var TextureManager = function() {
+var TextureManager = function(callback) {
+    this.callback = callback;
     this.loader = new TextureLoader();
     var loader = this.loader;
 
-    global.gameData.world.events.trigger("texturesBeginLoading");
+    // TODO: Fix: World.events.trigger("texturesBeginLoading");
     console.log("Loading textures...");
 
     loader.queue("healthbar.png");
@@ -70,8 +71,8 @@ var TextureManager = function() {
                     itemType.texture.spriteHeight);
             }
         }
-
-        global.gameData.textures = texturesOutput;
+        Object.assign(Client.textures, texturesOutput);
+        this.callback();
     }.bind(this), true);
 
     this.loader.loadTextures();

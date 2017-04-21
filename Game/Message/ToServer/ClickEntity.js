@@ -10,10 +10,10 @@ var MessageRequestClickEntity = function(entityId, clickType) {
     this.clickType = clickType;
 }
 global.MessageRequestClickEntity = MessageRequestClickEntity;
-RegisterMessage.ToServer.push(MessageRequestClickEntity);
+TypeRegister.add(RegisterMessage.ToServer, MessageRequestClickEntity);
 
 MessageRequestClickEntity.prototype.execute = function(gameData, player) {
-    var entity = global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = World.entities.objects[this.entityId];
     if (!entity) return;
     console.log("player " + player.playerId + " clicked entity " + this.entityId + ", clicktype: " + this.clickType);
 }

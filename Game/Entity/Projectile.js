@@ -28,7 +28,7 @@ var EntityProjectile = function(pos, angle, speed, maxDistance, projectileType, 
     }
 }
 global.EntityProjectile = EntityProjectile;
-RegisterEntity.push(EntityProjectile);
+TypeRegister.add(RegisterEntity, EntityProjectile);
 EntityProjectile.Events = { onHit: new Map(), onHitEntity: new Map(), onHitBlock: new Map(), onHitTile: new Map() };
 
 EntityProjectile.prototype.name = projectile.name; function projectile() { };
@@ -48,7 +48,7 @@ EntityProjectile.prototype.deserialize = function(byteArray, index) {
     this.angle = Deserialize.fix(byteArray, index);
     this.speed = Deserialize.fix(byteArray, index);
     this.maxDistance = Deserialize.fix(byteArray, index);
-    this.projectileType = global.gameData.projectileRegister[Deserialize.int8(byteArray, index)];
+    this.projectileType = Game.projectileRegister[Deserialize.int8(byteArray, index)];
     this.posClient = v2.create(0, 0);
     this.posClientOld = v2.create(0, 0);
 }
@@ -59,5 +59,5 @@ EntityProjectile.prototype.getSerializationSize = function() {
 
 EntityProjectile.prototype.destroy = function(entity) {
     if (!isServer)
-        zindices[2].remove(entity.projectile.sprite);
+        Client.zindices[2].remove(entity.projectile.sprite);
 }

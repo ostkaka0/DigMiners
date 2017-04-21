@@ -15,13 +15,13 @@ var CommandBuild = function(x, y, blockId, type) {
     this.type = type;
 }
 global.CommandBuild = CommandBuild;
-RegisterCommand.push(CommandBuild);
+TypeRegister.add(RegisterCommand, CommandBuild);
 
 CommandBuild.prototype.execute = function() {
     //if (this.type == BlockTypes.FOREGROUND)
-        global.gameData.world.blockWorld.setForeground([this.x, this.y], this.blockId);
+        World.blocks.setForeground([this.x, this.y], this.blockId);
     //else if (this.type == BlockTypes.BACKGROUND)
-    //    setBackground(global.gameData.world.blockWorld, this.x, this.y, this.blockId);
+    //    setBackground(World.blocks, this.x, this.y, this.blockId);
 }
 
 CommandBuild.prototype.serialize = function(byteArray, index) {

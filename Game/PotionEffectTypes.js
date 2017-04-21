@@ -45,13 +45,13 @@ PotionEffectTypes.HealNearEntities = {
         var pos = entity.physicsBody.getPos();
         /*var pos = entity.physicsBody.getPos();
         var nearBodies = [];
-        global.gameData.world.physicsWorld.getBodiesInRadius(nearBodies, pos, 2.0);
+        World.physics.getBodiesInRadius(nearBodies, pos, 2.0);
         nearBodies.forEach(function(bodyId) {
-            var entity = global.gameData.world.physicsEntities[bodyId];
+            var entity = World.physicsEntityMap[bodyId];
             if (!entity || !entity.potionEffects) return;
             entity.potionEffects.add(PotionEffectTypes.Healing.id, 6);
         }.bind(this));*/
-        global.gameData.world.entityWorld.objectArray.forEach(function(otherEntity) {
+        World.entities.objectArray.forEach(function(otherEntity) {
             if (!otherEntity.physicsBody || !otherEntity.potionEffects)
                 return;
             var posOther = otherEntity.physicsBody.getPos();
@@ -66,7 +66,7 @@ PotionEffectTypes.SupplyAmmoNearEntities = {
     interval: 5,
     potionFunction: function(entity) {
         var pos = entity.physicsBody.getPos();
-        global.gameData.world.entityWorld.objectArray.forEach(function(otherEntity) {
+        World.entities.objectArray.forEach(function(otherEntity) {
             if (!otherEntity.physicsBody || !otherEntity.potionEffects)
                 return;
             var posOther = otherEntity.physicsBody.getPos();

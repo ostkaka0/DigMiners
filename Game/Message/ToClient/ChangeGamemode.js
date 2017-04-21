@@ -6,16 +6,16 @@
 ;
 
 var MessageChangeGameMode = function() {
-    this.gameModeId = global.gameData.gameMode.id;
+    this.gameModeId = GameMode.id;
 }
 global.MessageChangeGameMode = MessageChangeGameMode;
-RegisterMessage.ToClient.push(MessageChangeGameMode);
+TypeRegister.add(RegisterMessage.ToClient, MessageChangeGameMode);
 
 MessageChangeGameMode.prototype.execute = function(gameData) {
     // TODO: Don't reload page
     location.reload(); // Reload page
-    global.gameData.changeGameMode(this.gameModeId);
-    global.gameData.tick(); // Change gameMode instantly
+    gameModeChange(this.gameModeId);
+    Game.tick(); // Change gameMode instantly
 }
 
 MessageChangeGameMode.prototype.send = function(socket) {

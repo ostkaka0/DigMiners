@@ -17,10 +17,10 @@ var MessageRequestPlaceBlock = function(stackId, x, y) {
     this.y = Math.floor(y);
 }
 global.MessageRequestPlaceBlock = MessageRequestPlaceBlock;
-RegisterMessage.ToServer.push(MessageRequestPlaceBlock);
+TypeRegister.add(RegisterMessage.ToServer, MessageRequestPlaceBlock);
 
 MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
-    var entity = global.gameData.world.entityWorld.objects[player.entityId];
+    var entity = World.entities.objects[player.entityId];
     if (!entity) return;
     var item = entity.inventory.items[this.stackId];
     if (!item) return;
@@ -32,7 +32,7 @@ MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
         if (itemType.oreRecipe && player.calcOreRecipeQuantity(itemType.oreRecipe) == 0)
             return;
 
-        if (!player.canPlaceBlock(global.gameData, this.x, this.y))
+        if (!player.canPlaceBlock(gameData, this.x, this.y))
             return;
 
         var blockChunkX = Math.floor(this.x / BlockChunk.dim);
@@ -40,10 +40,10 @@ MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
         var localX = Math.floor(this.x) - blockChunkX * BlockChunk.dim;
         var localY = Math.floor(this.y) - blockChunkY * BlockChunk.dim;
 
-        var blockType = global.gameData.blockRegister[itemType.blockId];
+        var blockType = Game.blockRegister[itemType.blockId];
         var type = blockType.type;
 
-        var blockChunk = global.gameData.world.blockWorld.get([blockChunkX, blockChunkY]);
+        var blockChunk = World.blocks.get([blockChunkX, blockChunkY]);
         //if (type == BlockTypes.FOREGROUND) {
             if (blockChunk && blockChunk.getForeground(localX, localY) > 0)
                 return;

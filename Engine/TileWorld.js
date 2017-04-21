@@ -122,7 +122,7 @@ global.TileWorld = class extends Map2D {
             digSpeed = 1.0;
 
         var dug = [];
-        for (var i = 0; i < tileRegister.length; ++i)
+        for (var i = 0; i < Game.tileRegister.length; ++i)
             dug.push(0);
 
         var intR = parseInt(radius + 0.5);

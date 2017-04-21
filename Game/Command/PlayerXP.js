@@ -6,7 +6,7 @@ class CommandPlayerXP {
     }
 
     execute() {
-        var player = global.gameData.playerWorld.objects[this.playerId];
+        var player = Game.playerWorld.objects[this.playerId];
         if (!player) return;
         player.addXP(this.xp);
     }
@@ -25,4 +25,4 @@ class CommandPlayerXP {
         return 8;
     }
 }
-RegisterCommand.push(CommandPlayerXP)
+TypeRegister.add(RegisterCommand, CommandPlayerXP)

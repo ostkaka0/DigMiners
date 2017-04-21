@@ -1,12 +1,11 @@
+var gameData = {};
 
-global.gameData = {};
-
-global.gameData.destroy = function() {
-    global.gameData = {};
+gameData.destroy = function() {
+    gameData = {};
 }
 
-global.gameData.init = function(idList) {
-    this.events3 = { onChangeGamemode: new Map() };
+gameData.init = function(idList) {
+    this.events3 = { onChangegameMode: new Map() };
 
     Blocks.initBlocks();
     Items.initItems(this);
@@ -24,7 +23,7 @@ global.gameData.init = function(idList) {
     this.gameModeRegister = TypeRegister.addByArray([], [/*GameModeBaseWar,*/ GameModeSurvival/*, GameModeSurvivalWar*/]);
     this.defaultGameMode = GameModeSurvival;
 
-    // global.gameData.textures is set in TextureManager.js when textures are loaded
+    // Client.textures is set in TextureManager.js when textures are loaded
     this.textures = {};
 
     this.timeouts = {};
@@ -33,9 +32,9 @@ global.gameData.init = function(idList) {
     this.playerWorld = new ObjectWorld(true);
     this.world = null;
     this.gameMode = null;
-    this.nextGameMode = null;
-    this.changeGameMode();
-    this.tick(); // Load gamemode
+    this.nextgameMode = null;
+    this.changegameMode();
+    this.tick(); // Load gameMode
 
     if (!isServer)
         this.animationManager = new AnimationManager();
@@ -90,8 +89,8 @@ global.gameData.init = function(idList) {
     }
 }
 
-global.gameData.tick = function(dt) {
-    if (this.nextGameMode) {
+gameData.tick = function(dt) {
+    if (this.nextgameMode) {
         this.clearTimeouts();
         if (isServer)
             clearCommands();
@@ -100,12 +99,12 @@ global.gameData.tick = function(dt) {
         if (this.world) this.world.destroy();
         this.world = new World();
         Object.assign(this, this.world);
-        this.gameMode = this.nextGameMode;
+        this.gameMode = this.nextgameMode;
         this.gameMode.init();
-        Event.trigger(this.events3.onChangeGamemode);
-        this.nextGameMode = null;
+        Event.trigger(this.events3.onChangegameMode);
+        this.nextgameMode = null;
         if (isServer)
-            new MessageChangeGameMode().send(io.sockets);
+            new MessageChangeGameMode().send(Server.io.sockets);
         return;
     }
 
@@ -116,25 +115,25 @@ global.gameData.tick = function(dt) {
         this.gameMode.tick(dt);
 }
 
-global.gameData.changeGameMode = function() {
+gameData.changegameMode = function() {
     if (this.playerWorld.objectArray.length < 4)
         this.nextGameMode = new global.gameData.defaultGameMode();
     else
-        this.nextGameMode = new global.gameData.gameModeRegister[global.gameData.gameModeRegister.length * Math.random() >> 0]();
-    console.log("Changing game mode to: " + this.nextGameMode.name);
+        this.nextgameMode = new gameData.gameModeRegister[gameData.gameModeRegister.length * Math.random() >> 0]();
+    console.log("Changing gameData mode to: " + this.nextgameMode.name);
 }
 
-global.gameData.setTimeout = function(callback, duration) {
+gameData.setTimeout = function(callback, duration) {
     var timeoutId = this.timeoutIdList.next();
     var timeout = setTimeout(function() {
-        delete global.gameData.timeouts[timeoutId];
+        delete gameData.timeouts[timeoutId];
         callback();
     }, duration);
     this.timeouts[timeoutId] = timeout;
     return timeout;
 }
 
-global.gameData.clearTimeouts = function() {
+gameData.clearTimeouts = function() {
     Object.keys(this.timeouts).forEach(function(timeoutId) {
         clearTimeout(this.timeouts[timeoutId]);
     }.bind(this));

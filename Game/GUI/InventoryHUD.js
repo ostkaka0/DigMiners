@@ -164,7 +164,7 @@ InventoryHUD.prototype.update = function() {
             var amount = item.amount;
             var showAmount = (amount > 1);
             if (itemType.oreRecipe) {
-                var amount = global.player.calcOreRecipeQuantity(itemType.oreRecipe);
+                var amount = Client.player.calcOreRecipeQuantity(itemType.oreRecipe);
                 showAmount = (amount >= 0);
             }
             if (showAmount)
@@ -186,12 +186,12 @@ InventoryHUD.prototype.update = function() {
                 $(slot).click(function() {
                     var slotId = $(this).attr("slotId");
                     var message = new MessageRequestClickSlot(context.inventory.inventoryId, slotId, EntityInventoryClickTypes.LEFT_CLICK);
-                    message.send(socket);
+                    message.send(Client.socket);
                 });
                 $(slot).contextmenu(function() {
                     var slotId = $(this).attr("slotId");
                     var message = new MessageRequestClickSlot(context.inventory.inventoryId, slotId, EntityInventoryClickTypes.RIGHT_CLICK);
-                    message.send(socket);
+                    message.send(Client.socket);
                 });
             }
             $(slot).mouseenter(function() {

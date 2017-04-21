@@ -5,16 +5,17 @@
 
 
 var CommandCollisions = function(collisions) {
-    var physicsWorld = global.gameData.world.physicsWorld;
-    var physicsEntities = global.gameData.world.physicsEntities;
+    this.collisions = [];
+    if (!isServer) return;
+    var physicsWorld = World.physics;
+    var physicsEntityMap = World.physicsEntityMap;
 
     var bodies = {};
-    this.collisions = [];
 
     if (collisions) {
         collisions.forEach(function(collision) {
-            var aEntity = physicsEntities[collision[0]];
-            var bEntity = physicsEntities[collision[1]];
+            var aEntity = physicsEntityMap[collision[0]];
+            var bEntity = physicsEntityMap[collision[1]];
             if (aEntity == undefined || bEntity == undefined) return;
             var aPos = physicsWorld.getPos(collision[0]);
             var bPos = physicsWorld.getPos(collision[1]);
@@ -32,11 +33,11 @@ var CommandCollisions = function(collisions) {
     }
 }
 global.CommandCollisions = CommandCollisions;
-RegisterCommand.push(CommandCollisions);
+TypeRegister.add(RegisterCommand, CommandCollisions);
 
 CommandCollisions.prototype.execute = function() {
-    var physicsWorld = global.gameData.world.physicsWorld;
-    var entities = global.gameData.world.entityWorld.objects;
+    var physicsWorld = World.physics;
+    var entities = World.entities.objects;
 
     this.collisions.forEach(function(collisionData) {
         var entity = entities[collisionData[0]];

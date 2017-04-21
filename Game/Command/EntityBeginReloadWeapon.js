@@ -6,13 +6,13 @@ var CommandEntityBeginReloadWeapon = function(entityId) {
     this.entityId = entityId;
 }
 global.CommandEntityBeginReloadWeapon = CommandEntityBeginReloadWeapon;
-RegisterCommand.push(CommandEntityBeginReloadWeapon);
+TypeRegister.add(RegisterCommand, CommandEntityBeginReloadWeapon);
 
 CommandEntityBeginReloadWeapon.prototype.execute = function() {
-    var entity = global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = World.entities.objects[this.entityId];
     if (!entity || !entity.movement) return;
     entity.movement.isReloading = true;
-    global.gameData.world.events.trigger("beginReload", entity);
+    World.events.trigger("beginReload", entity);
 }
 
 CommandEntityBeginReloadWeapon.prototype.serialize = function(byteArray, index) {

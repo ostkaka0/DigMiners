@@ -13,12 +13,12 @@ var MessageRequestRotate = function(deltaWorldCursorPos) {
     //this.direction = direction;
 }
 global.MessageRequestRotate = MessageRequestRotate;
-RegisterMessage.ToServer.push(MessageRequestRotate);
+TypeRegister.add(RegisterMessage.ToServer, MessageRequestRotate);
 
 MessageRequestRotate.prototype.execute = function(gameData, player) {
     if (!this.deltaWorldCursorPos) return;
     if (player.entityId == null) return;
-    var entity = global.gameData.world.entityWorld.objects[player.entityId];
+    var entity = World.entities.objects[player.entityId];
     if (!entity) return;
     var movement = entity.movement;
     if (!movement) return;

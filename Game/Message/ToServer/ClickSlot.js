@@ -18,17 +18,17 @@ var MessageRequestClickSlot = function(inventoryId, slotId, clickType) {
     this.clickType = clickType;
 }
 global.MessageRequestClickSlot = MessageRequestClickSlot;
-RegisterMessage.ToServer.push(MessageRequestClickSlot);
+TypeRegister.add(RegisterMessage.ToServer, MessageRequestClickSlot);
 
 MessageRequestClickSlot.prototype.execute = function(gameData, player) {
-    var entity = global.gameData.world.entityWorld.objects[player.entityId];
+    var entity = World.entities.objects[player.entityId];
     if (!entity) return;
-    var inventory = global.gameData.world.inventories[this.inventoryId];
+    var inventory = World.inventories[this.inventoryId];
     if (!inventory) return;
     if (entity.inventory && entity.inventory.inventoryId != this.inventoryId) {
         if (!entity.interacter || !entity.interacter.interacting)
             return;
-        var interactableEntity = global.gameData.world.entityWorld.objects[entity.interacter.interacting];
+        var interactableEntity = World.entities.objects[entity.interacter.interacting];
         if (!interactableEntity || !interactableEntity.inventory)
             return;
         if (interactableEntity.inventory.inventoryId != this.inventoryId)
@@ -51,9 +51,9 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
 
 <<<<<<< HEAD
         var itemEntityId = idList.next();
-        var itemEntity = entityTemplateItem(item.id, item.amount, global.gameData);
+        var itemEntity = entityTemplateItem(item.id, item.amount, gameData);
 =======
-        var itemEntityId = gameData.world.idList.next();
+        var itemEntityId = World.idList.next();
         var itemEntity = entityTemplates.Item(item.id, item.amount, gameData);
 >>>>>>> master
         itemEntity.physicsBody.setPos(physicsBody.getPos());
@@ -63,7 +63,7 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
         itemEntity.physicsBody.angle = physicsBody.angle;
         itemEntity.physicsBody.angleOld = physicsBody.angle;
         itemEntity.item.dropped = new Date();
-        sendCommand(new CommandEntitySpawn(global.gameData, itemEntity, itemEntityId));
+        sendCommand(new CommandEntitySpawn(gameData, itemEntity, itemEntityId));
 
         sendCommand(new CommandEntityInventory(player.entityId, CommandEntityInventory.Actions.DROP_STACK, this.slotId, 0));
 
@@ -80,7 +80,7 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
                 var equipped = !item.equipped;
                 if (equipped && inventory) {
                     // Dequip all other items of the same type
-                    var dequippedItems = inventory.dequipAll(global.gameData, itemType.type, entity.id);
+                    var dequippedItems = inventory.dequipAll(gameData, itemType.type, entity.id);
                     for (var i = 0; i < dequippedItems.length; ++i) {
                         var entry = dequippedItems[i];
                         sendCommand(new CommandEntityEquipItem(player.entityId, entry[0], entry[1], false));

@@ -11,12 +11,12 @@ var CommandEntityInteractEntity = function(entityId, interactableEntityId, inter
     this.interacting = interacting;
 }
 global.CommandEntityInteractEntity = CommandEntityInteractEntity;
-RegisterCommand.push(CommandEntityInteractEntity);
+TypeRegister.add(RegisterCommand, CommandEntityInteractEntity);
 
 CommandEntityInteractEntity.prototype.execute = function() {
-    var entity = global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = World.entities.objects[this.entityId];
     if (!entity || !entity.movement) return;
-    var interactableEntity = global.gameData.world.entityWorld.objects[this.interactableEntityId];
+    var interactableEntity = World.entities.objects[this.interactableEntityId];
     if (!interactableEntity || !interactableEntity.interactable) return;
     EntityInteractable.setInteracting(interactableEntity, entity, this.interacting);
 }

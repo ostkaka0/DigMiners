@@ -8,23 +8,26 @@ var CommandPlayerSpawn = function(playerId, entityId, playerName) {
     this.playerName = playerName;
 }
 global.CommandPlayerSpawn = CommandPlayerSpawn;
-RegisterCommand.push(CommandPlayerSpawn);
+TypeRegister.add(RegisterCommand, CommandPlayerSpawn);
 
 CommandPlayerSpawn.prototype.execute = function() {
     // Associate with existing, already spawned entity (from MessageRequestSpawn)
-    var entity = global.gameData.world.entityWorld.objects[this.entityId];
-    var player = global.gameData.playerWorld.objects[this.playerId];
+    var entity = World.entities.objects[this.entityId];
+    var player = Game.playerWorld.objects[this.playerId];
+    console.log("Player spawn(entity):", entity);
+    console.log("Player spawn(player):", player);
     player.onSpawn(entity);
     if (isServer)
         player.name = this.playerName;
 
-    if (!isServer && global.player.id == this.playerId) {
-        global.playerEntityId = this.entityId;
-        global.playerEntity = entity;
-        global.gameData.HUD.update();
-        global.gameData.world.events.trigger("ownPlayerSpawned", entity, player);
+    if (!isServer) console.log("Player.id:", this.playerId, ", Client.playerId:", Client.playerId);
+    if (!isServer && Client.playerId == this.playerId) {
+        Client.playerEntityId = this.entityId;
+        Client.playerEntity = entity;
+        Game.HUD.update();
+        World.events.trigger("ownPlayerSpawned", entity, player);
     }
-    global.gameData.world.events.trigger("playerSpawned", entity, player);
+    World.events.trigger("playerSpawned", entity, player);
 }
 
 CommandPlayerSpawn.prototype.serialize = function(byteArray, index) {

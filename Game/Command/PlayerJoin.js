@@ -13,30 +13,30 @@ var CommandPlayerJoin = function(playerId, entityId, playerName, socketId) {
     this.socketId = socketId;
 }
 global.CommandPlayerJoin = CommandPlayerJoin;
-RegisterCommand.push(CommandPlayerJoin);
+TypeRegister.add(RegisterCommand, CommandPlayerJoin);
 
 CommandPlayerJoin.prototype.execute = function() {
     var player = new Player(this.playerId);
     if (isServer)
         player.name = this.playerName;
-    if (isServer || this.playerId != global.player.id)
-        global.gameData.playerWorld.add(player, this.playerId);
+    if (isServer || this.playerId != Client.playerId)
+        Game.playerWorld.add(player, this.playerId);
 
     if (isServer) {
-        var socket = connections[this.socketId].socket;
-        connections[this.socketId].player = player;
+        var socket = Server.connections[this.socketId].socket;
+        Server.connections[this.socketId].player = player;
         player.socket = socket;
 
         // Send init message
         // Sends generator seed, chunks must be sent AFTERWARDS
-        new MessageInit(global.gameData, player).send(global.gameData, socket);
+        new MessageInit(gameData, player).send(gameData, socket);
 
         // Send chunks
         // TODO: client requests chunks instead
         for (var x = -3; x < 3; ++x) {
             for (var y = -3; y < 3; ++y) {
-                var chunk = global.gameData.world.tileWorld.get([x, y]);
-                var blockChunk = global.gameData.world.blockWorld.get([x, y]);
+                var chunk = World.tiles.get([x, y]);
+                var blockChunk = World.blocks.get([x, y]);
                 var message = new MessageChunk(chunk, blockChunk, x, y);
                 message.send(socket);
             }

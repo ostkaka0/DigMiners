@@ -25,7 +25,7 @@ var EntityBodyparts = function(bodyparts) {
     }
 }
 global.EntityBodyparts = EntityBodyparts;
-RegisterEntity.push(EntityBodyparts);
+TypeRegister.add(RegisterEntity, EntityBodyparts);
 
 EntityBodyparts.prototype.name = bodyparts.name; function bodyparts() { };
 

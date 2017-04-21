@@ -7,19 +7,19 @@ var CommandPlayerLeave = function(playerId, entityId) {
     this.entityId = entityId;
 }
 global.CommandPlayerLeave = CommandPlayerLeave;
-RegisterCommand.push(CommandPlayerLeave);
+TypeRegister.add(RegisterCommand, CommandPlayerLeave);
 
 CommandPlayerLeave.prototype.execute = function() {
-    var player = global.gameData.playerWorld.objects[this.playerId];
-    var entity = global.gameData.world.entityWorld.objects[this.entityId];
+    var player = Game.playerWorld.objects[this.playerId];
+    var entity = World.entities.objects[this.entityId];
     if (player)
-        global.gameData.playerWorld.remove(player);
+        Game.playerWorld.remove(player);
     if (entity)
-        global.gameData.world.entityWorld.remove(entity);
+        World.entities.remove(entity);
     if (isServer)
         console.log(player.name + " disconnected.");
     else if (entity && entity.name)
-        global.gameData.HUD.chat.write(entity.name.entityName + " disconnected.");
+        Game.HUD.chat.write(entity.name.entityName + " disconnected.");
 }
 
 CommandPlayerLeave.prototype.serialize = function(byteArray, index) {

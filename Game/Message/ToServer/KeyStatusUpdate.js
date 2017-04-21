@@ -13,10 +13,10 @@ var MessageRequestKeyStatusUpdate = function(key, pressed) {
     this.pressed = pressed;
 }
 global.MessageRequestKeyStatusUpdate = MessageRequestKeyStatusUpdate;
-RegisterMessage.ToServer.push(MessageRequestKeyStatusUpdate);
+TypeRegister.add(RegisterMessage.ToServer, MessageRequestKeyStatusUpdate);
 
 MessageRequestKeyStatusUpdate.prototype.execute = function(gameData, player) {
-    var entity = global.gameData.world.entityWorld.objects[player.entityId];
+    var entity = World.entities.objects[player.entityId];
     if (!entity) return;
     var physicsBody = entity.physicsBody;
     if (!physicsBody) return;
@@ -27,9 +27,9 @@ MessageRequestKeyStatusUpdate.prototype.execute = function(gameData, player) {
         var interactablePos = [physicsBody.getPos()[0] + 1.0 * dir[0], physicsBody.getPos()[1] + 1.0 * dir[1]];
         var bodies = [];
         var distances = [];
-        global.gameData.world.physicsWorld.getBodiesInRadiusSorted(bodies, distances, interactablePos, 0.25);
+        World.physics.getBodiesInRadiusSorted(bodies, distances, interactablePos, 0.25);
         if (bodies.length > 0) {
-            var targetEntity = global.gameData.world.physicsEntities[bodies[0]];
+            var targetEntity = World.physicsEntityMap[bodies[0]];
             // Interact only if player has nothing equipped in hands
             if (targetEntity && targetEntity.interactable && entity.equippedItems && !entity.equippedItems.items["tool"]) {
                 if (!Interactable.isInteracting(targetEntity, entity)) {
@@ -40,7 +40,7 @@ MessageRequestKeyStatusUpdate.prototype.execute = function(gameData, player) {
                     if (EntityInteractable.canInteract(targetEntity, entity)) {
                         sendCommand(new CommandEntityInteractEntity(entity.id, targetEntity.id, true));
                         entity.interacter.interacting = targetEntity.id;
-                        entity.interacter.lastCheck = global.gameData.world.tickId;
+                        entity.interacter.lastCheck = World.tickId;
                     }
                 } else {
                     sendCommand(new CommandEntityInteractEntity(entity.id, targetEntity.id, false));

@@ -4,7 +4,7 @@ var Player = function(playerId, entityId) {
     this.entityId = entityId;
     this.classId = 0;
     this.text = null;
-    this.deathTick = global.gameData.world.tickId;
+    this.deathTick = World.tickId;
     this.oreInventory = new Array();
     // Initialized at onSpawn(entity)
     this.xp = 0;
@@ -64,9 +64,9 @@ Player.prototype.choosePerk = function(perkId) {
     if (!perks) return;
     this.perkLevel++;
     if (perkId == 0)
-        perks.a(this, gameData.world.entityWorld.objects[this.entityId]);
+        perks.a(this, World.entities.objects[this.entityId]);
     else
-        perks.b(this, gameData.world.entityWorld.objects[this.entityId]);
+        perks.b(this, World.entities.objects[this.entityId]);
     // Skip empty perk levels
     while(this.perkLevel < this.level && !LevelPerks[this.perkLevel + 1])
         this.perkLevel++;
@@ -75,7 +75,7 @@ Player.prototype.choosePerk = function(perkId) {
 
 Player.prototype.chooseSkill = function(skill) {
     if (this.skillPoints <= 0) return;
-    playerSkillApply(gameData.world.entityWorld.objects[this.entityId], skill, 1);
+    playerSkillApply(World.entities.objects[this.entityId], skill, 1);
     this.skillLevels[skill]++;
     this.skillPoints--;
     Event.trigger(Player.events.onSkillChange, this);
@@ -103,7 +103,7 @@ Player.prototype.consumeOreRecipe = function(oreRecipe) {
 
 // TODO: Use calcOreRecipeQuantity
 Player.prototype.hasRequiredRecipeResources = function(recipe) {
-    var entity = global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = World.entities.objects[this.entityId];
     if (!entity) return false;
     for (var j = 0; j < recipe.requiredItems.length; ++j) {
         var itemType = recipe.requiredItems[j][0];
@@ -122,10 +122,10 @@ Player.prototype.hasRequiredRecipeResources = function(recipe) {
 
 Player.prototype.canPlaceBlock = function(gameData, x, y) {
     var distBlockPos = [x * 32 + 16, y * 32 + 16];
-    var entity = global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = World.entities.objects[this.entityId];
     if (!entity) return false;
     var bodies = [];
-    global.gameData.world.physicsWorld.getBodiesInRadius(bodies, [x + 0.5, y + 0.5], 0.0);
+    World.physics.getBodiesInRadius(bodies, [x + 0.5, y + 0.5], 0.0);
     if (bodies.length != 0) return false;
     var physicsBody = entity.physicsBody;
     if (!physicsBody) return false;
@@ -133,10 +133,10 @@ Player.prototype.canPlaceBlock = function(gameData, x, y) {
     var dist = Math.sqrt((distPlayerPos[0] - distBlockPos[0]) * (distPlayerPos[0] - distBlockPos[0]) + (distPlayerPos[1] - distBlockPos[1]) * (distPlayerPos[1] - distBlockPos[1]));
     var blockChunkX = Math.floor(x / BlockChunk.dim);
     var blockChunkY = Math.floor(y / BlockChunk.dim);
-    var blockChunk = global.gameData.world.blockWorld.get([blockChunkX, blockChunkY]);
+    var blockChunk = World.blocks.get([blockChunkX, blockChunkY]);
     var localX = Math.floor(x) - blockChunkX * BlockChunk.dim;
     var localY = Math.floor(y) - blockChunkY * BlockChunk.dim;
-    if (global.gameData.world.tileWorld.getDensity([x, y]) > 127) return false;
+    if (World.tiles.getDensity([x, y]) > 127) return false;
     if (dist < Config.blockPlaceDistance && (!blockChunk || !blockChunk.getForeground(localX, localY)))
         return true;
     return false;

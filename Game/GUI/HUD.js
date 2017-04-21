@@ -7,9 +7,9 @@ var HUD = function(gameData) {
         if (key == 67) { // c
             var crafting = document.getElementById("crafting");
             if (!crafting.style.display || crafting.style.display == "none")
-                global.gameData.HUD.openCraftingWindow();
+                Game.HUD.openCraftingWindow();
             else
-                global.gameData.HUD.closeCraftingWindow();
+                Game.HUD.closeCraftingWindow();
             return true;
         }
         return true;
@@ -87,7 +87,7 @@ HUD.prototype.update = function() {
         if (recipeId == null || recipeId == undefined)
             return;
         var message = new MessageRequestCraft(recipeId);
-        message.send(socket);
+        message.send(Client.socket);
     });
 
     for (var i = 0; i < Recipes.length; ++i) {
@@ -117,15 +117,15 @@ HUD.prototype.update = function() {
             for (var j = 0; j < recipe.item.length; ++j) {
                 var resultItemType = recipe.item[j][0];
                 var resultAmount = recipe.item[j][1];
-                var imageWidth = global.gameData.textures[resultItemType.name].width;
-                var imageHeight = global.gameData.textures[resultItemType.name].height;
+                var imageWidth = Client.textures[resultItemType.name].width;
+                var imageHeight = Client.textures[resultItemType.name].height;
                 craftingRightPreviewImageHolder.style.width = imageWidth;
                 craftingRightPreviewImageHolder.style.height = imageHeight;
                 this.putItemImage(craftingRightPreviewImageHolder, resultItemType, 80, 80);
                 craftingRightPreviewTextContainer.innerText = resultItemType.name;
             }
 
-            global.gameData.HUD.checkCanAffordRecipe();
+            Game.HUD.checkCanAffordRecipe();
         }.bind(this));
 
         var craftingEntryContent = document.createElement("div");
@@ -166,8 +166,8 @@ HUD.prototype.update = function() {
             var itemType = recipe.requiredItems[j][0];
             var amount = recipe.requiredItems[j][1];
 
-            var imageWidth = global.gameData.textures[itemType.name].width;
-            var imageHeight = global.gameData.textures[itemType.name].height;
+            var imageWidth = Client.textures[itemType.name].width;
+            var imageHeight = Client.textures[itemType.name].height;
 
             var imageHolder = document.createElement("div");
             imageHolder.setAttribute("class", "craftingImageHolder");
@@ -198,8 +198,8 @@ HUD.prototype.update = function() {
             var resultItemType = recipe.item[j][0];
             var resultAmount = recipe.item[j][1];
 
-            var imageWidth = global.gameData.textures[resultItemType.name].width;
-            var imageHeight = global.gameData.textures[resultItemType.name].height;
+            var imageWidth = Client.textures[resultItemType.name].width;
+            var imageHeight = Client.textures[resultItemType.name].height;
 
             var imageHolder = document.createElement("div");
             imageHolder.setAttribute("class", "craftingImageHolder");
@@ -240,7 +240,7 @@ HUD.prototype.checkCanAffordRecipe = function() {
     var recipe = Recipes[recipeId];
     var craftingRightTextContainer = document.getElementById("craftingRightTextContainer");
     if (craftingRightTextContainer) {
-        if (global.player.hasRequiredRecipeResources(recipe) === false)
+        if (Client.player.hasRequiredRecipeResources(recipe) === false)
             craftingRightTextContainer.innerText = "Not enough resources";
         else
             craftingRightTextContainer.innerText = "";

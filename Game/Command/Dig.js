@@ -14,11 +14,11 @@ var CommandDig = function(pos, radius) {
     this.radius = fix.toFix(radius);
 }
 global.CommandDig = CommandDig;
-RegisterCommand.push(CommandDig);
+TypeRegister.add(RegisterCommand, CommandDig);
 
 CommandDig.prototype.execute = function() {
-    var tileWorld = global.gameData.world.tileWorld;
-    global.gameData.world.tileWorld.carveCircle(global.gameData.tileRegister, this.pos, this.radius, 5000.0, 5000.0);
+    var tileWorld = World.tiles;
+    World.tiles.carveCircle(Game.tileRegister, this.pos, this.radius, 5000.0, 5000.0);
 }
 
 CommandDig.prototype.serialize = function(byteArray, index) {

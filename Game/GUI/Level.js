@@ -10,11 +10,11 @@ class HUDLevel {
             "z-index": "1",
         });
         Event.subscribe(Player.events.onXPChange, this, (player) => this.update(player));
-        this.update(global.player);
+        this.update(Client.player);
     }
 
     update(player) {
-        if (player != global.player) return;
+        if (player != Client.player) return;
         this.root.text("Level " + player.level + " - xp: " + player.xp + " / " + player.getRequiredXP());
     }
 

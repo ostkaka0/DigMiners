@@ -19,19 +19,19 @@ var BehaviourTurret = function(entity, maxRadius) {
     this.maxRadius = maxRadius;
     this.target = null;
     this.flowField = null;
-    this.lastUpdateTickId = global.gameData.world.tickId;
+    this.lastUpdateTickId = World.tickId;
     this.lastTargetPos = null;
     this.spacebar = false;
     this.foundGun = false;
     this.isAiming = false;
-    this.nextCanRunTickId = global.gameData.world.tickId;
+    this.nextCanRunTickId = World.tickId;
 }
 global.BehaviourTurret = BehaviourTurret;
 
 BehaviourTurret.prototype.canRun = function() {
-    if (global.gameData.world.tickId < this.nextCanRunTickId)
+    if (World.tickId < this.nextCanRunTickId)
         return false;
-    this.nextCanRunTickId = global.gameData.world.tickId + 20 + 5 * Math.random() >> 0;
+    this.nextCanRunTickId = World.tickId + 20 + 5 * Math.random() >> 0;
     this.target = this.getTarget();
     if (this.target == null)
         return false;
@@ -51,7 +51,7 @@ BehaviourTurret.prototype.initialize = function() {
 }
 
 BehaviourTurret.prototype.run = function() {
-    if (global.gameData.world.tickId % 5 != this.nextCanRunTickId % 5) return true;
+    if (World.tickId % 5 != this.nextCanRunTickId % 5) return true;
 
     if (!this.target || this.target.isDead || !this.target.isActive) {
         this.target = this.getTarget();
@@ -75,9 +75,9 @@ BehaviourTurret.prototype.run = function() {
     var tickInterval = Math.floor(20 * Math.min(1.0, dis / 40.0));
     tickInterval = Math.max(5, tickInterval);
 
-    if (global.gameData.world.tickId < this.lastUpdateTickId + tickInterval)
+    if (World.tickId < this.lastUpdateTickId + tickInterval)
         return true;
-    this.lastUpdateTickId = global.gameData.world.tickId;
+    this.lastUpdateTickId = World.tickId;
 
     var currentDir = this.entity.movement.direction;
     var angle = this.entity.physicsBody.angle;
@@ -124,10 +124,10 @@ BehaviourTurret.prototype.getTarget = function() {
     var shortestDistanceEntity = null;
     var bodies = [];
     var pos = this.entity.physicsBody.getPos();
-    global.gameData.world.physicsWorld.getBodiesInRadius(bodies, pos, this.maxRadius);
+    World.physics.getBodiesInRadius(bodies, pos, this.maxRadius);
     for (var i = 0; i < bodies.length; i++) {
         var bodyId = bodies[i];
-        var otherEntity = global.gameData.world.physicsEntities[bodyId];
+        var otherEntity = World.physicsEntityMap[bodyId];
         if (!otherEntity) continue;
         if (!otherEntity.health || !otherEntity.physicsBody) continue;
         if (!otherEntity.team && !otherEntity.movement) continue;
@@ -162,9 +162,9 @@ BehaviourTurret.prototype.getAttackDistance = function(pos, dir) {
     var step = [stepLength * dir[0], stepLength * dir[1]];
     v2.add(step, rayPos, rayPos);
     for (var i = 0; i < 40; i++) {
-        if (global.gameData.world.tileWorld.getDensity(rayPos) > 127) break;
-        var blockId = global.gameData.world.blockWorld.getForeground(rayPos);
-        var block = global.gameData.blockRegister[blockId];
+        if (World.tiles.getDensity(rayPos) > 127) break;
+        var blockId = World.blocks.getForeground(rayPos);
+        var block = Game.blockRegister[blockId];
         if (!block || !block.isSolid) break;
 
         v2.add(step, rayPos, rayPos);

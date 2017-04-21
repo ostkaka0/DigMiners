@@ -10,10 +10,10 @@ var CommandEntityReloadWeapon = function(entityId, stackId) {
     this.stackId = stackId;
 }
 global.CommandEntityReloadWeapon = CommandEntityReloadWeapon;
-RegisterCommand.push(CommandEntityReloadWeapon);
+TypeRegister.add(RegisterCommand, CommandEntityReloadWeapon);
 
 CommandEntityReloadWeapon.prototype.execute = function() {
-    var entity = global.gameData.world.entityWorld.objects[this.entityId];
+    var entity = World.entities.objects[this.entityId];
     if (!entity || !entity.inventory) return;
     var item = entity.inventory.items[this.stackId];
     var itemType = RegisterItem[item.id];
