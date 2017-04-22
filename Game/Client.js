@@ -26,10 +26,10 @@ var clientInit = function(callback) {
     }
     // Resize canvas to correct size
     Canvas.updateSize(canvas);
-    Canvas.updateSize(spriteCanvas);
+    Canvas.updateSize(glCanvas);
     addEventListener('resize', function() {
         Canvas.updateSize(canvas);
-        Canvas.updateSize(spriteCanvas);
+        Canvas.updateSize(glCanvas);
     }, false);
 
     for (var i = 0; i < Client.zindices.length; ++i)

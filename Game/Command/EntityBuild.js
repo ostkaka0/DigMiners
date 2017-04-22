@@ -1,15 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
 var CommandEntityBuild = function(entityId, x, y, blockId, type) {
     this.entityId = entityId;
     this.x = x;
@@ -32,8 +21,8 @@ CommandEntityBuild.prototype.execute = function() {
     if (!isServer && this.blockId)
         entity.bodyparts.bodyparts["rightArm"].cycle("rightArm", 256, true);
     if (isServer) {
-        var entityBlockPlacer = { blockPlacer: new EntityBlockPlacer([this.x, this.y], this.blockId, block.buildDuration, entity.id) };
         var entityBlockPlacerId = World.idList.next();
+        var entityBlockPlacer = { blockPlacer: new EntityBlockPlacer([this.x, this.y], this.blockId, block.buildDuration, entity.id) };
         sendCommand(new CommandEntitySpawn(gameData, entityBlockPlacer, entityBlockPlacerId));
         entity.blockPlacerId = entityBlockPlacerId;
     }

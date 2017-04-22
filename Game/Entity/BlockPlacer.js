@@ -13,12 +13,15 @@ var EntityBlockPlacer = function(blockPos, blockId, duration, entityId) {
     this.blockId = blockId;
     this.duration = duration;
     this.entityId = entityId;
-    this.update(World.entities.objects[entityId]);
 }
 global.EntityBlockPlacer = EntityBlockPlacer;
 TypeRegister.add(RegisterEntity, EntityBlockPlacer);
 
 EntityBlockPlacer.prototype.name = blockPlacer.name; function blockPlacer() { };
+
+EntityBlockPlacer.prototype.init = function(entity) {
+    this.update(entity);
+}
 
 EntityBlockPlacer.prototype.update = function(entity) {
     this.duration--;
@@ -75,7 +78,7 @@ EntityBlockPlacer.prototype.update = function(entity) {
             placerEntity.blockPlacerId = undefined;
         World.entities.remove(entity);
     }
-    worldSetTimeout(() => this.update(entity), 1 / 60);
+    worldSetTimeout(() => this.update(entity), Config.tickDuration);
 }
 
 EntityBlockPlacer.prototype.serialize = function(byteArray, index) {

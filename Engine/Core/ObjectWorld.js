@@ -24,6 +24,11 @@ ObjectWorld.prototype.add = function(object, id) {
 
     this.objects[object.id] = object;
     object.isActive = true;
+    // init component
+    Object.keys(object).forEach((key) => {
+        var component = object[key];
+        if (component && component.init) component.init(object);
+    });
     Event.trigger(this.onAdd, object);
     return object;
 }

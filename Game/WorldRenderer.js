@@ -15,6 +15,7 @@ var worldRendererInit = function() {
         animationManager: new AnimationManager(),
     }
     WorldRenderer.onResize = function() {
+        console.log("resize");
         WorldRenderer.camera.width = window.innerWidth;
         WorldRenderer.camera.height = window.innerHeight;
     };
