@@ -1,5 +1,5 @@
 
-var SpriteContainer = function() {
+/*var SpriteContainer = function() {
     this.container = [];
     this.isSpriteContainer = true;
 }
@@ -29,3 +29,4 @@ SpriteContainer.prototype.getAll = function() {
     }
     return out;
 }
+ */

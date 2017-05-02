@@ -23,4 +23,4 @@ DrawTransform.prototype.end = function(context) {
 
 DrawTransform.prototype.clone = function() {
     return new DrawTransform(this.pos, this.angle, this.scale, this.pivot);
-}
+} 

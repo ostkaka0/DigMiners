@@ -1,4 +1,4 @@
-var Cycle = function(frames) {
+/*var Cycle = function(frames) {
     this.frames = [];
     this.load(frames);
 }
@@ -25,3 +25,4 @@ Cycle.prototype.load = function(frames) {
     this.numFrames = this.frames.length;
     //console.log("Created cycle with " + this.frames.length + " frames.");
 }
+ */

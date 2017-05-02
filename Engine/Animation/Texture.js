@@ -1,4 +1,5 @@
-
+// Texture replaced by new Sprite.js
+/*
 var Texture = function(baseImage, x, y, width, height) {
     if (!baseImage)
         throw ("Texture.js baseImage undefined");
@@ -17,3 +18,4 @@ Object.defineProperties(Texture.prototype, {
         }
     },
 });
+ */

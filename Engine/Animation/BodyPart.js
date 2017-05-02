@@ -1,4 +1,4 @@
-
+/*
 var BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, parent, disableRotation) {
     this.sprite = sprite;
     this.offset = [offsetX, offsetY, offsetRotation];
@@ -92,4 +92,4 @@ BodyPart.prototype.animate = function(animation, fps, runToEnd) {
 BodyPart.prototype.finishAnimation = function() {
     this.runToEnd = true;
     this.finishing = true;
-}
+} */

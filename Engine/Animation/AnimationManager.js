@@ -1,6 +1,6 @@
 
 
-
+/*
 var AnimationManager = function() {
     this.animations = {};
     this.cycles = {};
@@ -171,3 +171,4 @@ AnimationManager.prototype.update = function() {
         }
     }.bind(this));
 }
+*/

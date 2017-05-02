@@ -1,6 +1,20 @@
+class Sprite {
+    constructor(image, rect = [0, 0, image.width, image.height], animationColumns = 1) {
+        this.image = image;
+        this.rect = rect;
+        this.animationColumns = animationColumns;
+    }
 
+    getRect(animationId = 0) {
+        return [
+            this.rect[0] + (animationId % this.animationColumns) * this.rect[2],
+            this.rect[1] + (animationId / this.animationColumns >> 0) * this.rect[3],
+            this.rect[2],
+            this.rect[3]];
+    }
+}
 
-var Sprite = function(textureName) {
+/* var Sprite = function(textureName) {
     if (textureName) {
         this.textureName = textureName;
         this.visible = true;
@@ -54,4 +68,4 @@ Sprite.prototype.draw = function(context) {
 Sprite.prototype.end = function(context) {
     context.globalAlpha = 1.0;
     context.setTransform(1, 0, 0, 1, 0, 0);
-}
+}*/

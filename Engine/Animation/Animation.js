@@ -1,5 +1,4 @@
-var Animation = function(name, texture, numFrames, frameWidth, frameHeight) {
-    this.name = name;
+/*var Animation = function(name, texture, numFrames, frameWidth, frameHeight) {
     this.texture = texture;
     this.numFrames = numFrames;
     this.frameWidth = frameWidth;
@@ -25,4 +24,5 @@ Animation.prototype.load = function() {
             }
         }
     }
-}
+}*/
+ 
