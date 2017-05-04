@@ -4,14 +4,35 @@ var image = new Image();
 var startTime = Date.now();
 var textures = null;
 var sprites = null;
+var bodyPart = null;
+var bodyParts = {};
 
 preload = function() {
-    textures = loadTextures("data/textures/", ["block.png", "egg.png", "feet.png"], load, function(percentage, name) {
+    textures = loadTextures("data/textures/", ["block.png", "egg.png", "feet.png", "head.png", "leftArm.png", "rightArm.png"], load, function(percentage, name) {
         console.log(percentage + "% complete. (" + name + ")");
     });
     sprites = {
         feet: new Sprite(textures["feet.png"], [0, 0, 75, 75], 60),
+        head: new Sprite(textures["head.png"], [0, 0, 75, 75]),
+        leftArm: new Sprite(textures["leftArm.png"], [0, 0, 22, 34]),
+        rightArm: new Sprite(textures["rightArm.png"], [0, 0, 22, 34]),
     }
+    bodyParts = {
+        feet: new BodyPart(sprites.feet, 0, new DrawTransform([0, 0]), new DrawTransform([0, 0], 0, [32, 32], [0.5, 0.5])),
+        head: new BodyPart(sprites.head, 0, new DrawTransform([256, 128], 0, [2, 2]), new DrawTransform([0, 0], 0, [32, 32], [0.5, 0.5])),
+        leftArm: new BodyPart(sprites.leftArm, 0, new DrawTransform([0, 0]), new DrawTransform([0, -2], 0, [8, 16], [0.5, 0.7])),
+        rightArm: new BodyPart(sprites.rightArm, 0, new DrawTransform([0, 0]), new DrawTransform([0, 2], 0, [8, 16], [0.5, 0.3])),
+    }
+    bodyParts.head.children.push(bodyParts.feet);
+    bodyParts.head.children.push(bodyParts.leftArm);
+    bodyParts.head.children.push(bodyParts.rightArm);
+    bodyPart = bodyParts.head;
+    bodyPartsSetAnimation(bodyParts, {
+        leftArm: [new DrawTransform([0, 0], 0.4 * 3.14159265, [1.0, 1.0], [0.0, 0.0]),
+                  new DrawTransform([0, 0], 0.3 * 3.14159265, [1.0, 1.0], [0.0, 0.0])],
+        head: [new DrawTransform([0, 0], 0, [1.0, 1.0], [0.0, 0.0]),
+               new DrawTransform([0, 0], 0, [1.0, 1.0], [0.0, 0.0])],
+    }, 2.0);
 }
 
 load = function() {
@@ -40,6 +61,7 @@ render = function() {
         context.drawImage(sprite.image, spriteRect[0], spriteRect[1], spriteRect[2], spriteRect[3], 0, 0, 1, 1);
         transformB.end(context);
     }
+    bodyPart.draw(context, 1.0 / 60.0);
 }
 
 preload();

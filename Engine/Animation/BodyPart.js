@@ -1,3 +1,84 @@
+
+class BodyPart {
+    constructor(sprite, animationId = 0, transform = new DrawTransform(), spriteTransform = new DrawTransform()) {
+        this.sprite = sprite;
+        this.animationId = animationId; // Sprite animation id
+        this.transform = transform;
+        this.spriteTransform = spriteTransform; // Only applied to the sprite, not for children
+        this.children = [];
+        // Animation
+        this.animation = null; // Current animation
+        this.animationTransform = null; // Interpolated animation transform
+        this.prevAnimationTransform = null;
+        this.nextAnimationTransform = null;
+        this.animationIndex = 0;
+        this.animationTime = 0.0; // Interpolation time between frames, value between 0-1
+        this.animationSpeed = 0.0; // Animation frames per second
+    }
+
+    setAnimation(animation, animationSpeed) {
+        this.animation = animation;
+        this.animationSpeed = animationSpeed || this.animationSpeed;
+        this.animationIndex = 0;
+        this.animationTime = 0.0;
+        this.prevAnimationTransform = this.animationTransform || new DrawTransform();
+        this.nextAnimationTransform = this.animation ? this.animation[0] : new DrawTransform();
+        this.animationTransform = new DrawTransform();
+    }
+
+    updateAnimationTransform(dt) {
+        if (!this.nextAnimationTransform || !this.prevAnimationTransform) return;
+        this.animationTime += dt * this.animationSpeed;
+        while(this.animationTime > 1.0) {
+            this.animationTime -= 1.0;
+            this.animationId++;
+            if (!this.animation || this.animationId > this.animation.length) {
+                this.animation = null;
+                this.animationTransform = null;
+                this.prevAnimationTransform = null;
+                this.nextAnimationTransform = null;
+                return;
+            }
+            this.prevAnimationTransform = this.nextAnimationTransform;
+            this.nextAnimationTransform = (this.animationId < this.animation.length) ? this.animation[this.animationId] : new DrawTransform();
+        }
+        // Interpolate animation
+        var a = 1.0 - this.animationTime;
+        var b = this.animationTime;
+        this.animationTransform.pos[0] = a * this.prevAnimationTransform.pos[0] + b * this.nextAnimationTransform.pos[0];
+        this.animationTransform.pos[1] = a * this.prevAnimationTransform.pos[1] + b * this.nextAnimationTransform.pos[1];
+        this.animationTransform.angle = a * this.prevAnimationTransform.angle + b * this.nextAnimationTransform.angle;
+        this.animationTransform.scale[0] = a * this.prevAnimationTransform.scale[0] + b * this.nextAnimationTransform.scale[0];
+        this.animationTransform.scale[1] = a * this.prevAnimationTransform.scale[1] + b * this.nextAnimationTransform.scale[1];
+        this.animationTransform.pivot[0] = a * this.prevAnimationTransform.pivot[0] + b * this.nextAnimationTransform.pivot[0];
+        this.animationTransform.pivot[1] = a * this.prevAnimationTransform.pivot[1] + b * this.nextAnimationTransform.pivot[1];
+    }
+
+    draw(context, dt) {
+        this.updateAnimationTransform(dt);
+
+        this.transform.begin(context);
+        if (this.animationTransform) this.animationTransform.begin(context);
+        for (var i = 0; i < this.children.length; i++)
+            this.children[i].draw(context, dt);
+        this.spriteTransform.begin(context);
+        var srcRect = this.sprite.getRect(0);
+        context.drawImage(this.sprite.image, srcRect[0], srcRect[1], srcRect[2], srcRect[3], 0, 0, 1, 1);
+        this.spriteTransform.end(context);
+        if (this.animationTransform) this.animationTransform.end(context);
+        this.transform.end(context);
+    }
+
+
+
+}
+
+var bodyPartsSetAnimation = function(bodyParts, animation, animationSpeed) {
+    Object.keys(animation).forEach((key) => {
+        bodyParts[key].setAnimation(animation[key], animationSpeed);
+    });
+}
+
 /*
 var BodyPart = function(sprite, offsetX, offsetY, offsetRotation, pivot, parent, disableRotation) {
     this.sprite = sprite;

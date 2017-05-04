@@ -3,7 +3,7 @@ var DrawTransform = function(pos, angle, scale, pivot) {
     this.pos = pos || [0, 0];
     this.angle = angle || 0;
     this.scale = scale || [1.0, 1.0];
-    this.pivot = pivot || [0.5, 0.5];
+    this.pivot = pivot || [0.0, 0.0];
 }
 global.DrawTransform = DrawTransform;
 
@@ -23,4 +23,4 @@ DrawTransform.prototype.end = function(context) {
 
 DrawTransform.prototype.clone = function() {
     return new DrawTransform(this.pos, this.angle, this.scale, this.pivot);
-} 
+}
