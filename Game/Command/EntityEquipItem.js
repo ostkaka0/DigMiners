@@ -20,14 +20,23 @@ CommandEntityEquipItem.prototype.execute = function() {
     else
         entity.equippedItems.items[itemType.type] = null;
 
-    var sprite = entity.bodyParts.bodyParts[itemType.type].sprite;
-    if (!isServer && sprite && !this.equipped)
-        sprite.visible = false;
-    else if (this.equipped) {
-        entity.drawable.setBodypartSprite(entity.bodyParts.bodyParts[itemType.type], new Sprite(itemType.name));
-        var equippedOffset = (itemType.texture.equippedOffset ? itemType.texture.equippedOffset : [0, 0]);
-        entity.bodyParts.bodyParts[itemType.type].offset[0] += equippedOffset[0];
-        entity.bodyParts.bodyParts[itemType.type].offset[1] += equippedOffset[1];
+    if (!isServer) {
+        var sprite = entity.bodyParts.bodyParts[itemType.type].sprite;
+        if (!isServer && sprite && !this.equipped)
+            entity.bodyParts.bodyParts[itemType.type].sprite = null;
+        else if (this.equipped) {
+            var sprite = new Sprite(Client.textures[itemType.texture.path], [
+                (itemType.textureId % itemType.texture.dimX) * itemType.texture.spriteWidth,
+                (itemType.textureId / itemType.texture.dimX >> 0) * itemType.texture.spriteHeight,
+                itemType.texture.spriteWidth,
+                itemType.texture.spriteHeight]);
+
+            entity.bodyParts.bodyParts[itemType.type].sprite = sprite;
+            //entity.drawable.setBodypartSprite(entity.bodyParts.bodyParts[itemType.type], sprite);
+            //var equippedOffset = (itemType.texture.equippedOffset ? itemType.texture.equippedOffset : [0, 0]);
+            //entity.bodyParts.bodyParts[itemType.type].offset[0] += equippedOffset[0];
+            //entity.bodyParts.bodyParts[itemType.type].offset[1] += equippedOffset[1];
+        }
     }
 
     if (entity.inventory) {

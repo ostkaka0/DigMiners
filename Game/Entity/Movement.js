@@ -120,15 +120,18 @@ EntityMovement.entityFunction = function(dt) {
                 entity.movement.toolUseTickTimeout = useCooldown;
                 if (!isServer) {
                     var useCycleName = (tool.useCycle ? tool.useCycle : "rightArm");
-                    var useCycle = WorldRenderer.animationManager.cycles[useCycleName];
-                    if (useCycle)
-                        entity.bodyParts.bodyParts["rightArm"].cycle(useCycleName, useCycle.numFrames / useCooldown * 20, true);
+                    // TODO: TOFIX: BodyParts
+                    //var useCycle = WorldRenderer.animationManager.cycles[useCycleName];
+                    //if (useCycle)
+                    //    entity.bodyParts.bodyParts["rightArm"].cycle(useCycleName, useCycle.numFrames / useCooldown * 20, true);
                 }
             }
 
             if (entity.movement.isReloading && entity.movement.toolReloadTickTimeout <= 0) {
                 entity.movement.toolReloadTickTimeout = reloadCooldown;
                 if (!isServer) {
+                    // TODO: TOFIX: BodyParts
+                    /*
                     var reloadCycleRightArmName = (tool.reloadCycleRightArm ? tool.reloadCycleRightArm : "rightArm");
                     var reloadCycleLeftArmName = (tool.reloadCycleLeftArm ? tool.reloadCycleLeftArm : "leftArm");
                     var reloadCycleGunName = (tool.reloadCycleGun ? tool.reloadCycleGun : "");
@@ -140,7 +143,7 @@ EntityMovement.entityFunction = function(dt) {
                     if (reloadCycleLeftArm && entity.bodyParts.bodyParts["leftArm"])
                         entity.bodyParts.bodyParts["leftArm"].cycle(reloadCycleLeftArmName, reloadCycleLeftArm.numFrames / reloadCooldown * 20, true);
                     if (reloadCycleGun && entity.bodyParts.bodyParts["tool"])
-                        entity.bodyParts.bodyParts["tool"].cycle(reloadCycleGunName, reloadCycleGun.numFrames / reloadCooldown * 20, true);
+                        entity.bodyParts.bodyParts["tool"].cycle(reloadCycleGunName, reloadCycleGun.numFrames / reloadCooldown * 20, true);*/
                 }
             }
 

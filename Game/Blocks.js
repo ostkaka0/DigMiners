@@ -25,12 +25,13 @@ BlockFunctions.createEntityBox = function(blockPos, block) {
         var entityId = World.idList.next();
         entity.physicsBody = new EntityPhysicsBody(v2.create(blockPos[0] + 0.5, blockPos[1] + 0.5), 0.01);
         entity.health = new EntityHealth(100, 100);
-        var bodySprite = new Sprite(block.name);
+        // TODO: TOFIX: BodyParts
+        /*var bodySprite = new Sprite(block.name);
         var bodyParts = {
             "body": new BodyPart(bodySprite, 0, 0, 0),
             "text": new BodyPart(bodySprite, 0, 0, 0)
         };
-        entity.bodyParts = new EntityBodyparts(bodyParts);
+        entity.bodyParts = new EntityBodyparts(bodyParts);*/
         entity.drawable = new EntityDrawable(1);
         var healthbarSprite = new Sprite("healthbar.png");
         entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
