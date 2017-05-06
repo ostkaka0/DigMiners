@@ -124,9 +124,9 @@ AnimationManager.prototype.update = function() {
     if (!entityWorld)
         console.error("Missing World.entities");
     entityWorld.objectArray.forEach(function(entity) {
-        if (entity.bodyparts) {
-            Object.keys(entity.bodyparts.bodyparts).forEach(function(bodypart) {
-                bodypart = entity.bodyparts.bodyparts[bodypart];
+        if (entity.bodyParts) {
+            Object.keys(entity.bodyParts.bodyParts).forEach(function(bodypart) {
+                bodypart = entity.bodyParts.bodyParts[bodypart];
 
                 if (bodypart.animInstance && bodypart.animInstance.animating) {
                     var diff = new Date() - bodypart.animInstance.lastFrame;

@@ -206,8 +206,8 @@ worldInitializeEvents = function() {
                 }
             }
 
-            interactingEntity.bodyparts.bodyparts["rightArm"].cycle("rightArmAction", 200, true);
-            interactingEntity.bodyparts.bodyparts["leftArm"].cycle("leftArmAction", 200, true);
+            interactingEntity.bodyParts.bodyParts["rightArm"].cycle("rightArmAction", 200, true);
+            interactingEntity.bodyParts.bodyParts["leftArm"].cycle("leftArmAction", 200, true);
         }
     });
 
@@ -231,30 +231,30 @@ worldInitializeEvents = function() {
     Event.subscribe(EntityEquippedItems.Events.onEquip, this, (entity, stackId, itemType) => {
         if (itemType.type == "tool" && itemType.typeOfType == "rangedWeapon") {
             var shoulderAngle = Math.PI / 4.0;
-            if (entity.bodyparts.bodyparts["leftArm"]) {
-                var pos = BodyPart.rotate(0, 0, entity.bodyparts.bodyparts["leftArm"].offset[0], entity.bodyparts.bodyparts["leftArm"].offset[1], shoulderAngle + 1.0);
-                entity.bodyparts.bodyparts["leftArm"].offset[0] = -pos[0];
-                entity.bodyparts.bodyparts["leftArm"].offset[1] = pos[1];
-                entity.bodyparts.bodyparts["leftArm"].offset[2] = 2.5;
+            if (entity.bodyParts.bodyParts["leftArm"]) {
+                var pos = BodyPart.rotate(0, 0, entity.bodyParts.bodyParts["leftArm"].offset[0], entity.bodyParts.bodyParts["leftArm"].offset[1], shoulderAngle + 1.0);
+                entity.bodyParts.bodyParts["leftArm"].offset[0] = -pos[0];
+                entity.bodyParts.bodyParts["leftArm"].offset[1] = pos[1];
+                entity.bodyParts.bodyParts["leftArm"].offset[2] = 2.5;
             }
-            if (entity.bodyparts.bodyparts["rightArm"]) {
-                pos = BodyPart.rotate(0, 0, entity.bodyparts.bodyparts["rightArm"].offset[0], entity.bodyparts.bodyparts["rightArm"].offset[1], shoulderAngle);
-                entity.bodyparts.bodyparts["rightArm"].offset[0] = -pos[0];
-                entity.bodyparts.bodyparts["rightArm"].offset[1] = pos[1];
+            if (entity.bodyParts.bodyParts["rightArm"]) {
+                pos = BodyPart.rotate(0, 0, entity.bodyParts.bodyParts["rightArm"].offset[0], entity.bodyParts.bodyParts["rightArm"].offset[1], shoulderAngle);
+                entity.bodyParts.bodyParts["rightArm"].offset[0] = -pos[0];
+                entity.bodyParts.bodyParts["rightArm"].offset[1] = pos[1];
             }
         }
     });
 
     Event.subscribe(EntityEquippedItems.Events.onDequip, this, (entity, stackId, itemType) => {
         if (itemType.type == "tool" && itemType.typeOfType == "rangedWeapon") {
-            entity.bodyparts.bodyparts["tool"].offset[2] = entity.bodyparts.bodyparts["tool"].defaultOffset[2];
-            entity.bodyparts.bodyparts["leftArm"].offset[2] = entity.bodyparts.bodyparts["leftArm"].defaultOffset[2];
-            entity.bodyparts.bodyparts["rightArm"].offset[2] = entity.bodyparts.bodyparts["rightArm"].defaultOffset[2];
+            entity.bodyParts.bodyParts["tool"].offset[2] = entity.bodyParts.bodyParts["tool"].defaultOffset[2];
+            entity.bodyParts.bodyParts["leftArm"].offset[2] = entity.bodyParts.bodyParts["leftArm"].defaultOffset[2];
+            entity.bodyParts.bodyParts["rightArm"].offset[2] = entity.bodyParts.bodyParts["rightArm"].defaultOffset[2];
 
-            entity.bodyparts.bodyparts["leftArm"].offset[0] = entity.bodyparts.bodyparts["leftArm"].defaultOffset[0];
-            entity.bodyparts.bodyparts["leftArm"].offset[1] = entity.bodyparts.bodyparts["leftArm"].defaultOffset[1];
-            entity.bodyparts.bodyparts["rightArm"].offset[0] = entity.bodyparts.bodyparts["rightArm"].defaultOffset[0];
-            entity.bodyparts.bodyparts["rightArm"].offset[1] = entity.bodyparts.bodyparts["rightArm"].defaultOffset[1];
+            entity.bodyParts.bodyParts["leftArm"].offset[0] = entity.bodyParts.bodyParts["leftArm"].defaultOffset[0];
+            entity.bodyParts.bodyParts["leftArm"].offset[1] = entity.bodyParts.bodyParts["leftArm"].defaultOffset[1];
+            entity.bodyParts.bodyParts["rightArm"].offset[0] = entity.bodyParts.bodyParts["rightArm"].defaultOffset[0];
+            entity.bodyParts.bodyParts["rightArm"].offset[1] = entity.bodyParts.bodyParts["rightArm"].defaultOffset[1];
         }
     });
 
@@ -472,8 +472,8 @@ World.prototype.initializeEvents = function() {
                 }
             }
 
-            interactingEntity.bodyparts.bodyparts["rightArm"].cycle("rightArmAction", 200, true);
-            interactingEntity.bodyparts.bodyparts["leftArm"].cycle("leftArmAction", 200, true);
+            interactingEntity.bodyParts.bodyParts["rightArm"].cycle("rightArmAction", 200, true);
+            interactingEntity.bodyParts.bodyParts["leftArm"].cycle("leftArmAction", 200, true);
         }
     });
 
@@ -497,30 +497,30 @@ World.prototype.initializeEvents = function() {
     Event.subscribe(EntityEquippedItems.Events.onEquip, this, function(entity, stackId, itemType) {
         if (itemType.type == "tool" && itemType.typeOfType == "rangedWeapon") {
             var shoulderAngle = Math.PI / 4.0;
-            if (entity.bodyparts.bodyparts["leftArm"]) {
-                var pos = BodyPart.rotate(0, 0, entity.bodyparts.bodyparts["leftArm"].offset[0], entity.bodyparts.bodyparts["leftArm"].offset[1], shoulderAngle + 1.0);
-                entity.bodyparts.bodyparts["leftArm"].offset[0] = -pos[0];
-                entity.bodyparts.bodyparts["leftArm"].offset[1] = pos[1];
-                entity.bodyparts.bodyparts["leftArm"].offset[2] = 2.5;
+            if (entity.bodyParts.bodyParts["leftArm"]) {
+                var pos = BodyPart.rotate(0, 0, entity.bodyParts.bodyParts["leftArm"].offset[0], entity.bodyParts.bodyParts["leftArm"].offset[1], shoulderAngle + 1.0);
+                entity.bodyParts.bodyParts["leftArm"].offset[0] = -pos[0];
+                entity.bodyParts.bodyParts["leftArm"].offset[1] = pos[1];
+                entity.bodyParts.bodyParts["leftArm"].offset[2] = 2.5;
             }
-            if (entity.bodyparts.bodyparts["rightArm"]) {
-                pos = BodyPart.rotate(0, 0, entity.bodyparts.bodyparts["rightArm"].offset[0], entity.bodyparts.bodyparts["rightArm"].offset[1], shoulderAngle);
-                entity.bodyparts.bodyparts["rightArm"].offset[0] = -pos[0];
-                entity.bodyparts.bodyparts["rightArm"].offset[1] = pos[1];
+            if (entity.bodyParts.bodyParts["rightArm"]) {
+                pos = BodyPart.rotate(0, 0, entity.bodyParts.bodyParts["rightArm"].offset[0], entity.bodyParts.bodyParts["rightArm"].offset[1], shoulderAngle);
+                entity.bodyParts.bodyParts["rightArm"].offset[0] = -pos[0];
+                entity.bodyParts.bodyParts["rightArm"].offset[1] = pos[1];
             }
         }
     }.bind(this));
 
     Event.subscribe(EntityEquippedItems.Events.onDequip, this, function(entity, stackId, itemType) {
         if (itemType.type == "tool" && itemType.typeOfType == "rangedWeapon") {
-            entity.bodyparts.bodyparts["tool"].offset[2] = entity.bodyparts.bodyparts["tool"].defaultOffset[2];
-            entity.bodyparts.bodyparts["leftArm"].offset[2] = entity.bodyparts.bodyparts["leftArm"].defaultOffset[2];
-            entity.bodyparts.bodyparts["rightArm"].offset[2] = entity.bodyparts.bodyparts["rightArm"].defaultOffset[2];
+            entity.bodyParts.bodyParts["tool"].offset[2] = entity.bodyParts.bodyParts["tool"].defaultOffset[2];
+            entity.bodyParts.bodyParts["leftArm"].offset[2] = entity.bodyParts.bodyParts["leftArm"].defaultOffset[2];
+            entity.bodyParts.bodyParts["rightArm"].offset[2] = entity.bodyParts.bodyParts["rightArm"].defaultOffset[2];
 
-            entity.bodyparts.bodyparts["leftArm"].offset[0] = entity.bodyparts.bodyparts["leftArm"].defaultOffset[0];
-            entity.bodyparts.bodyparts["leftArm"].offset[1] = entity.bodyparts.bodyparts["leftArm"].defaultOffset[1];
-            entity.bodyparts.bodyparts["rightArm"].offset[0] = entity.bodyparts.bodyparts["rightArm"].defaultOffset[0];
-            entity.bodyparts.bodyparts["rightArm"].offset[1] = entity.bodyparts.bodyparts["rightArm"].defaultOffset[1];
+            entity.bodyParts.bodyParts["leftArm"].offset[0] = entity.bodyParts.bodyParts["leftArm"].defaultOffset[0];
+            entity.bodyParts.bodyParts["leftArm"].offset[1] = entity.bodyParts.bodyParts["leftArm"].defaultOffset[1];
+            entity.bodyParts.bodyParts["rightArm"].offset[0] = entity.bodyParts.bodyParts["rightArm"].defaultOffset[0];
+            entity.bodyParts.bodyParts["rightArm"].offset[1] = entity.bodyParts.bodyParts["rightArm"].defaultOffset[1];
         }
     });
 }

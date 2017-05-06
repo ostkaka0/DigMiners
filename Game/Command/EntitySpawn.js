@@ -3,9 +3,10 @@
 
 
 
-var CommandEntitySpawn = function(gameData, entity, entityId, teamId) {
+var CommandEntitySpawn = function(gameData, entity, entityId, templateId) {
     this.entity = entity;
     this.entityId = entityId;
+    this.templateId = templateId;
 }
 global.CommandEntitySpawn = CommandEntitySpawn;
 TypeRegister.add(RegisterCommand, CommandEntitySpawn);
@@ -19,6 +20,7 @@ CommandEntitySpawn.prototype.execute = function() {
 
 CommandEntitySpawn.prototype.serialize = function(byteArray, index) {
     Serialize.int32(byteArray, index, this.entityId);
+    Serialize.int32(byteArray, index, this.templateId);
     Serialize.int32(byteArray, index, this.numComponents);
     Object.keys(this.entity).forEach(function(key) {
         var component = this.entity[key];
@@ -30,22 +32,25 @@ CommandEntitySpawn.prototype.serialize = function(byteArray, index) {
 
 CommandEntitySpawn.prototype.deserialize = function(byteArray, index) {
     var entityId = Deserialize.int32(byteArray, index);
+    var templateId = Deserialize.int32(byteArray, index);
     var numComponents = Deserialize.int32(byteArray, index);
-    var entity = {};
+    var entity = new EntityTemplateRegister[templateId]();
     for (var i = 0; i < numComponents; ++i) {
 
         var componentId = Deserialize.int32(byteArray, index);
         var componentType = RegisterEntity[componentId];
         var componentName = componentType.prototype.name;
-        entity[componentName] = new componentType();
+        if (!entity[componentName])
+            entity[componentName] = new componentType();
         entity[componentName].deserialize(byteArray, index, gameData);
     }
     this.entityId = entityId;
+    this.templateId = templateId;
     this.entity = entity;
 }
 
 CommandEntitySpawn.prototype.getSerializationSize = function() {
-    var size = 8; // Entity-id, numComponents
+    var size = 12; // Entity-id, template-id, numComponents
     this.numComponents = 0;
     Object.keys(this.entity).forEach(function(component) {
         component = this.entity[component];

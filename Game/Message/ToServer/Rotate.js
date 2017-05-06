@@ -31,10 +31,11 @@ MessageRequestRotate.prototype.execute = function(gameData, player) {
     var diffLen = 2 * v2.length(this.deltaWorldCursorPos);
     if (diffLen < 0.1) return;
 
-    entity.drawable.positionAll(0, 0, 0, entity.bodyparts);
-    var tool = entity.bodyparts.bodyparts["tool"];
+    // TODO: Fix:
+    //entity.drawable.positionAll(0, 0, 0, entity.bodyParts);
+    //var tool = entity.bodyParts.bodyParts["tool"];
     var toolUsePos = [0, 0];
-    v2.add(toolUsePos, tool.finalPos, toolUsePos);
+    //v2.add(toolUsePos, tool.finalPos, toolUsePos);
     toolUsePos = [toolUsePos[0], -toolUsePos[1]];
     v2.mul(1 / 32, toolUsePos, toolUsePos);
     var armLength = -toolUsePos[1] * 2; // The distance from origin to weapon

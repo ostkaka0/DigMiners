@@ -55,22 +55,19 @@ class BodyPart {
     }
 
     draw(context, dt) {
-        this.updateAnimationTransform(dt);
-
         this.transform.begin(context);
         if (this.animationTransform) this.animationTransform.begin(context);
         for (var i = 0; i < this.children.length; i++)
             this.children[i].draw(context, dt);
-        this.spriteTransform.begin(context);
-        var srcRect = this.sprite.getRect(0);
-        context.drawImage(this.sprite.image, srcRect[0], srcRect[1], srcRect[2], srcRect[3], 0, 0, 1, 1);
-        this.spriteTransform.end(context);
+        if (this.sprite) {
+            this.spriteTransform.begin(context);
+            var srcRect = this.sprite.getRect(this.animationId);
+            context.drawImage(this.sprite.image, srcRect[0], srcRect[1], srcRect[2], srcRect[3], -srcRect[2]/2, -srcRect[3]/2, srcRect[2], srcRect[3]);
+            this.spriteTransform.end(context);
+        }
         if (this.animationTransform) this.animationTransform.end(context);
         this.transform.end(context);
     }
-
-
-
 }
 
 var bodyPartsSetAnimation = function(bodyParts, animation, animationSpeed) {

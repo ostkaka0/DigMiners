@@ -15,8 +15,8 @@ TypeRegister.add(RegisterCommand, CommandEntityAnimate);
 CommandEntityAnimate.prototype.execute = function() {
     if (!isServer) {
         var entity = World.entities.objects[this.entityId];
-        if (!entity || !entity.bodyparts) return;
-        var bodypart = entity.bodyparts.bodyparts[this.bodypart];
+        if (!entity || !entity.bodyParts) return;
+        var bodypart = entity.bodyParts.bodyParts[this.bodypart];
         if (!bodypart) return;
         bodypart.animate(this.animation, this.speed, true);
     }

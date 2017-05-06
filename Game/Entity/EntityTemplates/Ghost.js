@@ -1,14 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
 var entityTemplateGhost = function (playerId, entityId, name) {
     var entity = {};
     entity.controlledByPlayer = new EntityControlledByPlayer(playerId);
@@ -16,7 +6,7 @@ var entityTemplateGhost = function (playerId, entityId, name) {
     entity.movement = new EntityMovement(40.0);
     entity.name = new EntityName(name);
 
-    var bodyparts = {
+    var bodyParts = {
         "player": new BodyPart(new Sprite("ghost.png"), 0, 0, 0, null, null),
         "feet": new BodyPart(new Sprite(), 0, 0, 0, null, "player"),
         "leftArm": new BodyPart(new Sprite(), 5, -4, 0, [10, 23], "body"),
@@ -27,8 +17,10 @@ var entityTemplateGhost = function (playerId, entityId, name) {
         "hat": new BodyPart(new Sprite(), 1, 0, 0, null, "player")
     };
 
-    entity.bodyparts = new EntityBodyparts(bodyparts);
+    entity.bodyParts = new EntityBodyparts(bodyParts);
     entity.drawable = new EntityDrawable(1);
 
     return entity;
 }
+
+ObjectRegister.add(EntityTemplateRegister, entityTemplateGhost);

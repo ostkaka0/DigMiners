@@ -34,8 +34,8 @@ CommandEntityInventory.prototype.execute = function() {
             if (player.calcOreRecipeQuantity(RegisterItem[this.itemId].oreRecipe) == 0 && entity.equippedItems) {
                 entity.isBuilding = false;
                 Event.trigger(EntityEquippedItems.Events.onDequip, entity, this.stackId, RegisterItem[this.itemId]);
-                if (!isServer && entity.bodyparts && entity.bodyparts.bodyparts["tool"])
-                    entity.bodyparts.bodyparts["tool"].sprite.visible = false;
+                if (!isServer && entity.bodyParts && entity.bodyParts.bodyParts["tool"])
+                    entity.bodyParts.bodyParts["tool"].sprite.visible = false;
             }
         } else {
             var removed = entity.inventory.removeItem(gameData, this.itemId, this.amount);

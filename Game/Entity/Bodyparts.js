@@ -1,38 +1,46 @@
 
+class EntityBodyParts {
+    constructor(bodyParts, root) {
+        this.bodyParts = bodyParts;
+        this.root = root;
+    }
+
+    setAnimation(animation, animationSpeed) {
+        bodyPartsSetAnimation(this.bodyParts, animation, animationSpeed);
+    }
+}
+
+EntityBodyParts.prototype.name = bodyParts.name; function bodyParts() {};
 
 
-
-
-
-
-
-var EntityBodyparts = function(bodyparts) {
-    this.bodyparts = bodyparts;
+/*
+var EntityBodyparts = function(bodyParts) {
+    this.bodyParts = bodyParts;
 
     // Set parents
-    for (var key in this.bodyparts) {
-        var bodypart = this.bodyparts[key];
+    for (var key in this.bodyParts) {
+        var bodypart = this.bodyParts[key];
         bodypart.name = key;
         if (bodypart.parent) {
             var name = bodypart.parent;
-            bodypart.parent = this.bodyparts[name];
+            bodypart.parent = this.bodyParts[name];
         }
     }
 
-    for (var key in this.bodyparts) {
-        var bodypart = this.bodyparts[key];
+    for (var key in this.bodyParts) {
+        var bodypart = this.bodyParts[key];
         bodypart.children = this.getChildren(bodypart.name);
     }
 }
 global.EntityBodyparts = EntityBodyparts;
 TypeRegister.add(RegisterEntity, EntityBodyparts);
 
-EntityBodyparts.prototype.name = bodyparts.name; function bodyparts() { };
+EntityBodyparts.prototype.name = bodyParts.name; function bodyParts() { };
 
 EntityBodyparts.prototype.serialize = function(byteArray, index) {
-    Serialize.int32(byteArray, index, Object.keys(this.bodyparts).length);
-    for (var key in this.bodyparts) {
-        var bodypart = this.bodyparts[key];
+    Serialize.int32(byteArray, index, Object.keys(this.bodyParts).length);
+    for (var key in this.bodyParts) {
+        var bodypart = this.bodyParts[key];
         Serialize.utf8(byteArray, index, key);
         Serialize.utf8(byteArray, index, (!bodypart.parent ? "" : bodypart.parent.name));
         Serialize.utf8(byteArray, index, bodypart.sprite.textureName);
@@ -57,7 +65,7 @@ EntityBodyparts.prototype.serialize = function(byteArray, index) {
 }
 
 EntityBodyparts.prototype.deserialize = function(byteArray, index, gameData) {
-    this.bodyparts = {};
+    this.bodyParts = {};
     var bodypartsLength = Deserialize.int32(byteArray, index);
     for (var i = 0; i < bodypartsLength; ++i) {
         var key = Deserialize.utf8(byteArray, index);
@@ -72,25 +80,25 @@ EntityBodyparts.prototype.deserialize = function(byteArray, index, gameData) {
         var sprite = new Sprite(textureName);
         if (deserializeFrame)
             sprite.frame = [Deserialize.int32(byteArray, index), Deserialize.int32(byteArray, index), Deserialize.int32(byteArray, index), Deserialize.int32(byteArray, index)];
-        this.bodyparts[key] = new BodyPart(sprite, defaultOffset[0], defaultOffset[1], defaultOffset[2], pivot, null, disableRotation);
-        this.bodyparts[key].offset = offset;
+        this.bodyParts[key] = new BodyPart(sprite, defaultOffset[0], defaultOffset[1], defaultOffset[2], pivot, null, disableRotation);
+        this.bodyParts[key].offset = offset;
         if (parent && parent.length > 0)
-            this.bodyparts[key].parent = parent;
+            this.bodyParts[key].parent = parent;
     }
 
     if (!isServer) {
         // Set parents
-        for (var key in this.bodyparts) {
-            var bodypart = this.bodyparts[key];
+        for (var key in this.bodyParts) {
+            var bodypart = this.bodyParts[key];
             bodypart.name = key;
             if (bodypart.parent) {
                 var name = bodypart.parent;
-                bodypart.parent = this.bodyparts[name];
+                bodypart.parent = this.bodyParts[name];
             }
         }
 
-        for (var key in this.bodyparts) {
-            var bodypart = this.bodyparts[key];
+        for (var key in this.bodyParts) {
+            var bodypart = this.bodyParts[key];
             bodypart.children = this.getChildren(bodypart.name);
         }
     }
@@ -99,8 +107,8 @@ EntityBodyparts.prototype.deserialize = function(byteArray, index, gameData) {
 EntityBodyparts.prototype.getSerializationSize = function() {
     var size = 4;
 
-    for (var key in this.bodyparts) {
-        var bodypart = this.bodyparts[key];
+    for (var key in this.bodyParts) {
+        var bodypart = this.bodyParts[key];
         var parent = (!bodypart.parent ? "" : bodypart.parent.name);
         var textureName = bodypart.sprite.textureName;
         size += Serialize.utf8Size(key);
@@ -119,8 +127,8 @@ EntityBodyparts.prototype.destroy = function(entity) {
 
 EntityBodyparts.prototype.getChildren = function(parentName) {
     var output = [];
-    for (var key in this.bodyparts) {
-        var bodypart = this.bodyparts[key];
+    for (var key in this.bodyParts) {
+        var bodypart = this.bodyParts[key];
         if (bodypart.parent && bodypart.parent.name == parentName)
             output.push(bodypart);
     }
@@ -128,9 +136,10 @@ EntityBodyparts.prototype.getChildren = function(parentName) {
 }
 
 EntityBodyparts.prototype.positionBodyparts = function(x, y, rotation) {
-    for (var bodypart in this.bodyparts) {
-        bodypart = this.bodyparts[bodypart];
+    for (var bodypart in this.bodyParts) {
+        bodypart = this.bodyParts[bodypart];
         if (!bodypart.parent)
             bodypart.position(x, y, rotation);
     }
 }
+*/

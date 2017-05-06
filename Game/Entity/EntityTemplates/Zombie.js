@@ -1,24 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var entityTemplateZombie = function(entityId, pos, teamId) {
     var entity = {};
     entity.physicsBody = new EntityPhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0, 1.0, 0.3);
@@ -35,7 +14,7 @@ var entityTemplateZombie = function(entityId, pos, teamId) {
     var headSprite = new Sprite("monster/head.png");
     var hatSprite = new Sprite();//((teamEnum == EntityTeam.Enum.Blue) ? "egg" : "bigEgg");
 
-    var bodyparts = {
+    var bodyParts = {
         "feet": new BodyPart(feetSprite, 0, 0, 0, null, null),
         "tool": new BodyPart(new Sprite(), -10, 15, 0, null, "rightArm"),
         "rightArm": new BodyPart(rightArmSprite, 5, 8, 0, [10, 11], "body"),
@@ -45,7 +24,7 @@ var entityTemplateZombie = function(entityId, pos, teamId) {
         "hat": new BodyPart(hatSprite, 1, 0, 0, null, null)
     };
 
-    entity.bodyparts = new EntityBodyparts(bodyparts);
+    entity.bodyParts = new EntityBodyparts(bodyParts);
     entity.drawable = new EntityDrawable(1);
     var healthbarSprite = new Sprite("healthbar.png", null, false);
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
@@ -62,3 +41,5 @@ var entityTemplateZombie = function(entityId, pos, teamId) {
 
     return entity;
 }
+
+ObjectRegister.add(EntityTemplateRegister, entityTemplateZombie);

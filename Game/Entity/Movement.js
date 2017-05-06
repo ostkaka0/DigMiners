@@ -122,7 +122,7 @@ EntityMovement.entityFunction = function(dt) {
                     var useCycleName = (tool.useCycle ? tool.useCycle : "rightArm");
                     var useCycle = WorldRenderer.animationManager.cycles[useCycleName];
                     if (useCycle)
-                        entity.bodyparts.bodyparts["rightArm"].cycle(useCycleName, useCycle.numFrames / useCooldown * 20, true);
+                        entity.bodyParts.bodyParts["rightArm"].cycle(useCycleName, useCycle.numFrames / useCooldown * 20, true);
                 }
             }
 
@@ -135,12 +135,12 @@ EntityMovement.entityFunction = function(dt) {
                     var reloadCycleRightArm = WorldRenderer.animationManager.cycles[reloadCycleRightArmName];
                     var reloadCycleLeftArm = WorldRenderer.animationManager.cycles[reloadCycleLeftArmName];
                     var reloadCycleGun = WorldRenderer.animationManager.cycles[reloadCycleGunName];
-                    if (reloadCycleRightArm && entity.bodyparts.bodyparts["rightArm"])
-                        entity.bodyparts.bodyparts["rightArm"].cycle(reloadCycleRightArmName, reloadCycleRightArm.numFrames / reloadCooldown * 20, true);
-                    if (reloadCycleLeftArm && entity.bodyparts.bodyparts["leftArm"])
-                        entity.bodyparts.bodyparts["leftArm"].cycle(reloadCycleLeftArmName, reloadCycleLeftArm.numFrames / reloadCooldown * 20, true);
-                    if (reloadCycleGun && entity.bodyparts.bodyparts["tool"])
-                        entity.bodyparts.bodyparts["tool"].cycle(reloadCycleGunName, reloadCycleGun.numFrames / reloadCooldown * 20, true);
+                    if (reloadCycleRightArm && entity.bodyParts.bodyParts["rightArm"])
+                        entity.bodyParts.bodyParts["rightArm"].cycle(reloadCycleRightArmName, reloadCycleRightArm.numFrames / reloadCooldown * 20, true);
+                    if (reloadCycleLeftArm && entity.bodyParts.bodyParts["leftArm"])
+                        entity.bodyParts.bodyParts["leftArm"].cycle(reloadCycleLeftArmName, reloadCycleLeftArm.numFrames / reloadCooldown * 20, true);
+                    if (reloadCycleGun && entity.bodyParts.bodyParts["tool"])
+                        entity.bodyParts.bodyParts["tool"].cycle(reloadCycleGunName, reloadCycleGun.numFrames / reloadCooldown * 20, true);
                 }
             }
 

@@ -27,8 +27,8 @@ ItemFunctions.projectile = function(itemType, entity) {
             v2.length(entity.movement.deltaWorldCursorPos) : itemType.projectileType.maxDistance;
         for (var i = 0; i < numProjectiles; i++) {
 
-            entity.drawable.positionAll(0, 0, entity.physicsBody.angle, entity.bodyparts);
-            var tool = entity.bodyparts.bodyparts["tool"];
+            entity.drawable.positionAll(0, 0, entity.physicsBody.angle, entity.bodyParts);
+            var tool = entity.bodyParts.bodyParts["tool"];
             var toolUsePos = [0, 0];
             v2.add(toolUsePos, tool.finalPos, toolUsePos);
             toolUsePos = [toolUsePos[0], -toolUsePos[1]];
@@ -80,10 +80,10 @@ ItemFunctions.throwable = function(itemType, entity) {
 
         var bodySprite = new Sprite(itemType.throwEntityTexture);
         bodySprite.frame = [0, 0, 32, 32];
-        var bodyparts = {
+        var bodyParts = {
             "body": new BodyPart(bodySprite, 0, 0, 0),
         };
-        itemEntity.bodyparts = new EntityBodyparts(bodyparts);
+        itemEntity.bodyParts = new EntityBodyparts(bodyParts);
         itemEntity.drawable = new EntityDrawable(0);
 
         var timeout = 2000;

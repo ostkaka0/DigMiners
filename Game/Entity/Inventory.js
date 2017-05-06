@@ -14,8 +14,6 @@ global.EntityInventory = EntityInventory;
 TypeRegister.add(RegisterEntity, EntityInventory);
 
 EntityInventory.createInventory = function(entityId, width, height) {
-    if (!isServer)
-        throw ("Tried to create inventory on client.")
     var inventoryId = World.inventoryIdList.next();
     var inventory = new EntityInventory(inventoryId, entityId, width, height);
     World.inventories[inventoryId] = inventory;

@@ -1,21 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var entityTemplateTurret = function(entityId, pos, teamId) {
     var entity = {};
     entity.physicsBody = new EntityPhysicsBody(v2.create(pos[0], pos[1]), 0.01, 10.0, 10, 0.5);
@@ -25,13 +8,13 @@ var entityTemplateTurret = function(entityId, pos, teamId) {
 
     var bottomSprite = new Sprite("turret/bottom.png");
 
-    var bodyparts = {
+    var bodyParts = {
         "bottom": new BodyPart(bottomSprite, 0, 0, 0, null, null, true),
         "top": new BodyPart(new Sprite(), 0, 0, 0, null, null),
         "tool": new BodyPart(new Sprite(), 0, 0, 0, null, "top"),
     };
 
-    entity.bodyparts = new EntityBodyparts(bodyparts);
+    entity.bodyParts = new EntityBodyparts(bodyParts);
     entity.drawable = new EntityDrawable(1);
     var healthbarSprite = new Sprite("healthbar.png", null, false);
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
@@ -46,3 +29,5 @@ var entityTemplateTurret = function(entityId, pos, teamId) {
 
     return entity;
 }
+
+ObjectRegister.add(EntityTemplateRegister, entityTemplateTurret);

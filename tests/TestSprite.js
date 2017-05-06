@@ -18,10 +18,10 @@ preload = function() {
         rightArm: new Sprite(textures["rightArm.png"], [0, 0, 22, 34]),
     }
     bodyParts = {
-        feet: new BodyPart(sprites.feet, 0, new DrawTransform([0, 0]), new DrawTransform([0, 0], 0, [32, 32], [0.5, 0.5])),
-        head: new BodyPart(sprites.head, 0, new DrawTransform([256, 128], 0, [2, 2]), new DrawTransform([0, 0], 0, [32, 32], [0.5, 0.5])),
-        leftArm: new BodyPart(sprites.leftArm, 0, new DrawTransform([0, 0]), new DrawTransform([0, -2], 0, [8, 16], [0.5, 0.7])),
-        rightArm: new BodyPart(sprites.rightArm, 0, new DrawTransform([0, 0]), new DrawTransform([0, 2], 0, [8, 16], [0.5, 0.3])),
+        feet: new BodyPart(sprites.feet, 0, new DrawTransform([0, 0]), new DrawTransform([0, 0], 0, [0.8 * 75, 0.8 * 75], [0.5, 0.5])),
+        head: new BodyPart(sprites.head, 0, new DrawTransform([256, 128], 0, [1, 1]), new DrawTransform([0, 0], 0, [0.8 * 75, 0.8 * 75], [0.5, 0.5])),
+        leftArm: new BodyPart(sprites.leftArm, 0, new DrawTransform([0, 0]), new DrawTransform([0, -2], 0, [0.7 * 22, 32], [0.5, 0.7])),
+        rightArm: new BodyPart(sprites.rightArm, 0, new DrawTransform([0, 0]), new DrawTransform([0, 2], 0, [0.7 * 22, 32], [0.5, 0.3])),
     }
     bodyParts.head.children.push(bodyParts.feet);
     bodyParts.head.children.push(bodyParts.leftArm);

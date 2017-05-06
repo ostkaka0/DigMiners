@@ -11,11 +11,12 @@ var clientInit = function(callback) {
         gl: Canvas.initGL(glCanvas),
         startTime: Date.now(),
         textures: null,
+        sprites: {},
         player: null,
         playerId: -1,
         playerEntity: null,
         textureManager: null,
-        zindices: new Array(3),
+        //zindices: new Array(3),
         blockPosGood: null,
         blockPosBad: null,
         mouseX: null,
@@ -32,8 +33,8 @@ var clientInit = function(callback) {
         Canvas.updateSize(glCanvas);
     }, false);
 
-    for (var i = 0; i < Client.zindices.length; ++i)
-        Client.zindices[i] = new SpriteContainer();
+    //for (var i = 0; i < Client.zindices.length; ++i)
+    //    Client.zindices[i] = new SpriteContainer();
 
     $('*').keydown(function(event) {
         var char = String.fromCharCode(event.keyCode).toLowerCase();
@@ -152,20 +153,22 @@ var clientInit = function(callback) {
 
 
 var clientInitTextures = function(callback) {
-    Client.textures = loadTextures("data/textures/", ["block.png", "egg.png"], () => {
-        Client.textureManager = new TextureManager(() => {
-            Client.blockPosGood = new Sprite("blockPosGood.png");
-            Client.blockPosGood.anchor = [0, 0];
-            Client.zindices[2].add(Client.blockPosGood);
-            Client.blockPosBad = new Sprite("blockPosBad.png");
-            Client.blockPosBad.anchor = [0, 0];
-            Client.zindices[2].add(Client.blockPosBad);
-            $("*").mousemove(function(event) {
-                Client.mouseX = event.pageX;
-                Client.mouseY = event.pageY;
-            });
-            callback();
+    Client.textures = loadTextures("data/textures/", Config.textures, () => {
+        Client.sprites["head"] = new Sprite(Client.textures["head.png"], [20, 20, 35, 35]);
+        Client.sprites["feet"] = new Sprite(Client.textures["feet.png"], [0, 0, 75, 75], 60);
+        Client.sprites["leftArm"] = new Sprite(Client.textures["leftArm.png"], [0, 0, 22, 34]);
+        Client.sprites["rightArm"] = new Sprite(Client.textures["rightArm.png"], [0, 0, 22, 34]);
+        /*Client.blockPosGood = new Sprite("blockPosGood.png");
+        Client.blockPosGood.anchor = [0, 0];
+        Client.zindices[2].add(Client.blockPosGood);
+        Client.blockPosBad = new Sprite("blockPosBad.png");
+        Client.blockPosBad.anchor = [0, 0];
+        Client.zindices[2].add(Client.blockPosBad);*/
+        $("*").mousemove(function(event) {
+            Client.mouseX = event.pageX;
+            Client.mouseY = event.pageY;
         });
+        callback();
     }, function(percentage, name) {
         console.log(percentage + "% complete. (" + name + ")");
     });

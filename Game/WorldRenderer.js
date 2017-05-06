@@ -12,7 +12,7 @@ var worldRendererInit = function() {
         },
         chunkRenderer: new ChunkRenderer(Client.gl, World.tiles, 32.0),
         blockRenderer: new BlockChunkRenderer(Client.gl, World.blocks, 32.0),
-        animationManager: new AnimationManager(),
+        //animationManager: new AnimationManager(),
     }
     WorldRenderer.onResize = function() {
         console.log("resize");
@@ -20,15 +20,15 @@ var worldRendererInit = function() {
         WorldRenderer.camera.height = window.innerHeight;
     };
     addEventListener('resize', WorldRenderer.onResize, false);
-    WorldRenderer.animationManager.load();
+    //WorldRenderer.animationManager.load();
 
     // Initialize bodypart-sprites:
     Event.subscribe(World.entities.onAdd, this, function(entity) {
         if (!isServer && entity.health && entity.drawable)
             Event.trigger(EntityHealth.Events.onChange, entity);
 
-        if (entity.drawable && entity.bodyparts) {
-            entity.drawable.initializeBodyparts(entity.bodyparts.bodyparts);
+        if (entity.drawable && entity.bodyParts) {
+            entity.drawable.initializeBodyparts(entity.bodyParts.bodyParts);
         }
 
         if (entity.name && entity.drawable)
@@ -51,9 +51,11 @@ var worldRendererDestroy = function() {
 var worldRendererRender = function(tickFracTime) {
     if (!WorldRenderer) return;
     var gl = Client.gl;
-    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.viewport(0, 0, Client.canvas.width, Client.canvas.height);
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    Client.context.clearRect(0, 0, Client.canvas.width, Client.canvas.height)
 
     // Set camera pos
     if (Client.spectateEntity) {
@@ -66,7 +68,24 @@ var worldRendererRender = function(tickFracTime) {
     } else // TODO: do something else instead of centering camera at 0,0?
         WorldRenderer.camera.pos = [0, 0];
 
-    // Position entities
+    Client.context.translate(-WorldRenderer.camera.pos[0] + Client.canvas.width / 2, -WorldRenderer.camera.pos[1] + Client.canvas.height / 2);
+
+    for(var i = 0; i < World.entities.objectArray.length; i++) {
+        var entity = World.entities.objectArray[i];
+        if (entity.physicsBody && entity.bodyParts) {
+            var entityPos = entity.physicsBody.getPos();
+            Client.context.translate(32.0 * entityPos[0], 32.0 * entityPos[1]);
+            Client.context.rotate(entity.physicsBody.angle);
+            entity.bodyParts.root.draw(Client.context, tickFracTime / 1000.0);
+            Client.context.rotate(-entity.physicsBody.angle);
+            Client.context.translate(-32.0 * entityPos[0], -32.0 * entityPos[1]);
+            entity.bodyParts.bodyParts["feet"].animationId = Math.random() * 60 >> 0;
+        }
+    }
+
+    Client.context.translate(WorldRenderer.camera.pos[0] - Client.canvas.width / 2, WorldRenderer.camera.pos[1] - Client.canvas.height / 2);
+
+    /*// Position entities
     for (var i = 0; i < World.entities.objectArray.length; i++) {
         var entity = World.entities.objectArray[i];
         if (entity.physicsBody && entity.drawable) {
@@ -75,11 +94,11 @@ var worldRendererRender = function(tickFracTime) {
 
             var a = (entity.physicsBody.angle - entity.physicsBody.angleOld) % (Math.PI * 2);
             var rotation = entity.physicsBody.angleOld + (2 * a % (Math.PI * 2) - a) * tickFracTime;
-            entity.drawable.positionAll(x, y, rotation, entity.bodyparts);
+            entity.drawable.positionAll(x, y, rotation, entity.bodyParts);
 
-            if (entity.bodyparts.bodyparts.feet) {
+            if (entity.bodyParts.bodyParts.feet) {
                 var speed = v2.length(entity.physicsBody.getVelocity());
-                entity.bodyparts.bodyparts["feet"].animate("feet", speed * 25.0, false);
+                entity.bodyParts.bodyParts["feet"].animate("feet", speed * 25.0, false);
             }
         } else if (entity.projectile) {
             var pos = [tickFracTime * entity.projectile.pos[0] + (1 - tickFracTime) * entity.projectile.pos[0], tickFracTime * entity.projectile.pos[1] + (1 - tickFracTime) * entity.projectile.pos[1]]
@@ -127,7 +146,7 @@ var worldRendererRender = function(tickFracTime) {
     }
 
     //TODO: animationmanager use dt? maybe not needed
-    WorldRenderer.animationManager.update();
+    //WorldRenderer.animationManager.update();*/
 
     // Render terrain and blocks
     var projectionMatrix = PIXI.Matrix.IDENTITY.clone();
@@ -137,7 +156,7 @@ var worldRendererRender = function(tickFracTime) {
     WorldRenderer.chunkRenderer.render(World.tiles, projectionMatrix.clone().append(viewMatrix), WorldRenderer.camera);
     WorldRenderer.blockRenderer.render(gameData, World.blocks, projectionMatrix.clone().append(viewMatrix), WorldRenderer.camera);
 
-    // Render entities
+    /*// Render entities
     Client.context.clearRect(0, 0, Client.canvas.width, Client.canvas.height);
     for (var i = 0; i < Client.zindices.length; ++i) {
         var arr = Client.zindices[i].getAll();
@@ -149,5 +168,5 @@ var worldRendererRender = function(tickFracTime) {
     }
 
     // Render particles
-    World.particles.render(WorldRenderer.camera, Client.context, tickFracTime);
+    World.particles.render(WorldRenderer.camera, Client.context, tickFracTime);*/
 }

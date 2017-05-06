@@ -77,7 +77,7 @@ EntityDrawable.prototype.getSerializationSize = function() {
 }
 
 EntityDrawable.prototype.destroy = function(entity) {
-    this.remove(entity.bodyparts.bodyparts);
+    this.remove(entity.bodyParts.bodyParts);
 }
 
 // Add a sprite that follows this drawable. For example, a healthbar.
@@ -113,10 +113,10 @@ EntityDrawable.prototype.positionSprites = function(x, y, angle) {
     }
 }
 
-EntityDrawable.prototype.positionAll = function(x, y, rotation, bodyparts) {
+EntityDrawable.prototype.positionAll = function(x, y, rotation, bodyParts) {
     this.positionSprites(x, y, rotation);
-    if (bodyparts)
-        bodyparts.positionBodyparts(x, y, rotation);
+    if (bodyParts)
+        bodyParts.positionBodyparts(x, y, rotation);
 }
 
 EntityDrawable.prototype.setBodypartSprite = function(bodypart, sprite) {
@@ -135,24 +135,24 @@ EntityDrawable.prototype.setBodypartSprite = function(bodypart, sprite) {
     }
 }
 
-EntityDrawable.prototype.initializeBodyparts = function(bodyparts) {
+EntityDrawable.prototype.initializeBodyparts = function(bodyParts) {
     // Add bodypart sprite to world
-    for (var key in bodyparts) {
-        var bodypart = bodyparts[key];
+    for (var key in bodyParts) {
+        var bodypart = bodyParts[key];
         this.container.add(bodypart.sprite);
     }
 }
 
-EntityDrawable.prototype.remove = function(bodyparts) {
+EntityDrawable.prototype.remove = function(bodyParts) {
     for (var sprite in this.sprites) {
         var sprite = this.sprites[sprite];
         if (!isServer)
             this.container.remove(sprite);
     }
 
-    if (bodyparts) {
-        for (var bodypart in bodyparts) {
-            bodypart = bodyparts[bodypart];
+    if (bodyParts) {
+        for (var bodypart in bodyParts) {
+            bodypart = bodyParts[bodypart];
             if (!isServer)
                 this.container.remove(bodypart.sprite);
         }
