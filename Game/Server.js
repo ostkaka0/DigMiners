@@ -51,7 +51,6 @@ var serverInit = function(io) {
 
         RegisterMessage.ToServer.forEach(function(messageType) {
             socket.on(messageType.prototype.idString, function(data) {
-                console.log("Message:", messageType.name);
                 var message = new messageType();
                 message.receive(gameData, data);
                 message.execute(gameData, Server.connections[socket.id].player);

@@ -11,9 +11,9 @@ var gameInit = function() {
         particleRegister: ObjectRegister.addByObject([], Particles),
         particleFunctionRegister: ObjectRegister.addByObject([], ParticleFunctions),
         potionEffectTypeRegister: ObjectRegister.addByObject([], PotionEffectTypes),
-        generatorRegister: TypeRegister.addByArray([], [EmptyGenerator, Generator]),
-        gameModeRegister: TypeRegister.addByArray([], [/*GameModeBaseWar,*/ GameModeZombieInvasion, GameModeEmpty/*, GameModeSurvivalWar*/]),
-        defaultgameMode: GameModeEmpty,
+        generatorRegister: TypeRegister.addByArray([], [EmptyGenerator, Generator, SurvivalGenerator]),
+        gameModeRegister: TypeRegister.addByArray([], [/*GameModeBaseWar,*/ GameModeSurvival/*, GameModeSurvivalWar*/]),
+        defaultgameMode: GameModeSurvival,
         HUD: null,
     };
 }

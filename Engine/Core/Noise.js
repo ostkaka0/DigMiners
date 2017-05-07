@@ -18,6 +18,10 @@ Noise.nextInt = function(seed) {
     return Noise.rand(seed[0]++);
 }
 
+Noise.betterRand = function(seed) {
+    return (Noise.nextInt([seed]) % 1000) / 1000;
+}
+
 /*noiseNextFix = function(seed) {
     return fix.div(noiseNextInt(seed)%32768, 32768);
 }

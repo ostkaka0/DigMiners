@@ -210,7 +210,6 @@ var clientInitSocket = function(callback) {
 
     RegisterMessage.ToClient.forEach(function(messageType) {
         Client.socket.on(messageType.prototype.idString, function(data) {
-            if (messageType.name != "MessageCommands") console.log("Message:", messageType.name);
             var message = new messageType();
             message.receive(gameData, data);
             message.execute(gameData);
