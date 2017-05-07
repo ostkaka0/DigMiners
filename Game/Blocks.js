@@ -66,7 +66,7 @@ BlockBulletFunctions.bunker = function(blockPos, blockType, entity) {
         return;
     // Fix of diagonal shooting
     if (entity.projectile.lastBunkerPos != undefined) {
-        var dir = [Math.abs(Math.cos(entity.projectile.angle)), Math.abs(-Math.sin(entity.projectile.angle))]
+        var dir = [Math.abs(Math.cos(entity.projectile.angle)), Math.abs(Math.sin(entity.projectile.angle))]
         if (dir[0] > dir[1] && entity.projectile.lastBunkerPos[0] == blockPos[0])
             return
         else if (dir[1] > dir[0] && entity.projectile.lastBunkerPos[1] == blockPos[1])

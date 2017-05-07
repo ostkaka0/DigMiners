@@ -34,12 +34,12 @@ var entityTemplatePlayer = function(playerId, entityId, name, playerClass, teamI
         var hatSprite = new Sprite(strHatSprite);
 
         var bodyParts = {
-            body: new BodyPart(null),
-            head: new BodyPart(headSprite),//, 0, Mat3.create(), Mat3.scale([0.7, 0.7])),
-            leftArm: new BodyPart(leftArmSprite, 0, Mat3.translate([0, -4])),// new DrawTransform([10, 23], 0, [1, 1], [0.5, 0.5])),
-            rightArm: new BodyPart(rightArmSprite, 0, Mat3.translate([0, 4])),// new DrawTransform([10, 11], 0, [1, 1], [0.5, 0.5])),
+            body: new BodyPart(null, 0, Mat3.scale([1.5, 1.5])),
+            head: new BodyPart(headSprite, 0, Mat3.scale([0.8, 0.8])),
+            leftArm: new BodyPart(leftArmSprite, 0, Mat3.translate([0, -8])),// new DrawTransform([10, 23], 0, [1, 1], [0.5, 0.5])),
+            rightArm: new BodyPart(rightArmSprite, 0, Mat3.translate([0, 8])),// new DrawTransform([10, 11], 0, [1, 1], [0.5, 0.5])),
             feet: new BodyPart(feetSprite, 0, Mat3.create(), Mat3.scale([0.8, 0.8])),
-            tool: new BodyPart(null),
+            tool: new BodyPart(null, 0, Mat3.translate([12, 8])),
             hat: new BodyPart(null),
         }
         bodyParts.body.children.push(bodyParts.feet);

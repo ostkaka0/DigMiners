@@ -26,7 +26,7 @@ CommandEntityEquipItem.prototype.execute = function() {
             entity.bodyParts.bodyParts[itemType.type].sprite = null;
         else if (this.equipped) {
             var sprite = new Sprite(Client.textures[itemType.texture.path], [
-                (itemType.textureId % itemType.texture.dimX) * itemType.texture.spriteWidth,
+                (itemType.textureId % itemType.texture.dimX >> 0) * itemType.texture.spriteWidth,
                 (itemType.textureId / itemType.texture.dimX >> 0) * itemType.texture.spriteHeight,
                 itemType.texture.spriteWidth,
                 itemType.texture.spriteHeight]);

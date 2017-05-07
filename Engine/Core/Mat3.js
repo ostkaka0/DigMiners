@@ -36,7 +36,7 @@ Mat3.rotate = function(angle, mat = Mat3.create(), out = mat) {
     return out;
 }
 
-Mat3.mul = function(i, j, out) {
+Mat3.mul = function(i, j, out = Mat3.create()) {
     var a = i[0] * j[0] + i[1] * j[3];
     var b = i[0] * j[1] + i[1] * j[4];
     var c = i[0] * j[2] + i[1] * j[5] + i[2];
@@ -53,7 +53,8 @@ Mat3.mul = function(i, j, out) {
 
 // transform - [x, y, scaleX, scaleY, angle]
 Mat3.fromTransform = function(transform) {
-    return Mat3.rotate(transform[4], Mat3.scale([transform[2], transform[3]], Mat3.translate(transform)));
+    return Mat3.translate(transform, Mat3.rotate(transform[4], Mat3.scale([transform[2], transform[3]])))
+    //return Mat3.rotate(transform[4], Mat3.scale([transform[2], transform[3]], Mat3.translate(transform)));
 }
 
 Mat3.mulV2 = function(vec, mat, out = vec) {
@@ -64,5 +65,5 @@ Mat3.mulV2 = function(vec, mat, out = vec) {
 }
 
 Mat3.apply = function(context, mat) {
-    context.setTransform(-mat[0], mat[3], -mat[1], mat[4], -mat[2], mat[5]);
+    context.setTransform(mat[0], -mat[3], mat[1], -mat[4], mat[2], -mat[5]);
 }

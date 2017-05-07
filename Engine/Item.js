@@ -21,7 +21,7 @@ Item.interact = function(itemType, entity) {
     var entityBodyId = entity.physicsBody.bodyId;
     var entityPos = entity.physicsBody.getPos();
     var angle = entity.physicsBody.angle;
-    var dir = [Math.cos(-angle), Math.sin(-angle)];
+    var dir = [Math.cos(angle), Math.sin(angle)];
     var hitPos = [0, 0];
     v2.mul(range, dir, hitPos);
     v2.add(entityPos, hitPos, hitPos);

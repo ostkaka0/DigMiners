@@ -23,7 +23,7 @@ MessageRequestKeyStatusUpdate.prototype.execute = function(gameData, player) {
 
     if (this.key == Keys.SPACEBAR && this.pressed && entity.interacter) {
         var angle = physicsBody.angle;
-        var dir = [Math.cos(-angle), Math.sin(-angle)];
+        var dir = [Math.cos(angle), Math.sin(angle)];
         var interactablePos = [physicsBody.getPos()[0] + 1.0 * dir[0], physicsBody.getPos()[1] + 1.0 * dir[1]];
         var bodies = [];
         var distances = [];

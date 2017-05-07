@@ -56,6 +56,8 @@ var worldRendererRender = function(tickFracTime) {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
+
+    Client.context.setTransform(1, 0, 0, 1, 0, 0);
     Client.context.clearRect(0, 0, Client.canvas.width, Client.canvas.height)
 
     // Set camera pos
@@ -71,14 +73,15 @@ var worldRendererRender = function(tickFracTime) {
 
 
     Client.context.setTransform(1, 0, 0, 1, 0, 0);
-    var matCamera = Mat3.translate([-WorldRenderer.camera.pos[0], -WorldRenderer.camera.pos[1]]);
+    var matCamera = Mat3.translate([-WorldRenderer.camera.pos[0] + 0.5 * Client.canvas.width, -WorldRenderer.camera.pos[1] - 0.5 * Client.canvas.height]);
     Client.context.translate(-WorldRenderer.camera.pos[0] + Client.canvas.width / 2, -WorldRenderer.camera.pos[1] + Client.canvas.height / 2);
     for(var i = 0; i < World.entities.objectArray.length; i++) {
         var entity = World.entities.objectArray[i];
         if (!entity.physicsBody) return;
-        var matEntity = Mat3.translate(entity.physicsBody.getPos(), matCamera, Mat3.create());
+        var entityPos = entity.physicsBody.getPos();
+        var entityAngle = entity.physicsBody.angle;
+        var matEntity = Mat3.mul(matCamera, Mat3.fromTransform([32 * entityPos[0], 32 * entityPos[1], 1, 1, entityAngle]));//Mat3.translate([32 * entityPos[0], 32 * entityPos[1]], matCamera, Mat3.create());
         if (entity.physicsBody && entity.bodyParts) {
-            var entityPos = entity.physicsBody.getPos();
             Client.context.translate(32.0 * entityPos[0], 32.0 * entityPos[1]);
             Client.context.rotate(entity.physicsBody.angle);
             entity.bodyParts.root.draw(Client.context, tickFracTime / 1000.0, matEntity);

@@ -52,7 +52,7 @@ class BodyPart {
         this.animationTransform[4] = a * this.prevAnimationTransform[4] + b * this.nextAnimationTransform[4];
     }
 
-    draw(context, dt, matIn = Mat3.create()) {
+    draw(context, dt, matIn) {
         var matDraw = Mat3.create();
         Mat3.mul(matIn, this.mat, matDraw);
         Mat3.mul(matDraw, Mat3.fromTransform(this.animationTransform), matDraw);

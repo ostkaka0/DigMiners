@@ -98,7 +98,7 @@ EntityMovement.entityFunction = function(dt) {
         }
         var rotationDirection = entity.movement.rotationDirection;
         if (rotationDirection[0] != 0 || rotationDirection[1] != 0)
-            entity.physicsBody.rotateTo(Math.atan2(-rotationDirection[1], rotationDirection[0]), entity.physicsBody.rotationSpeed, dt);
+            entity.physicsBody.rotateTo(-Math.atan2(-rotationDirection[1], rotationDirection[0]), entity.physicsBody.rotationSpeed, dt);
 
         if (entity.equippedItems) {
             var tool = entity.equippedItems.items["tool"];

@@ -45,7 +45,7 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
         var displacement1 = Math.random() / 5 - 0.1;
         var displacement2 = Math.random() / 5 - 0.1;
         var displacement3 = Math.random() / 5 - 0.1 + 1;
-        var speed = v2.create(Math.cos(displacement1 + physicsBody.angle), -Math.sin(displacement2 + physicsBody.angle));
+        var speed = v2.create(Math.cos(displacement1 + physicsBody.angle), Math.sin(displacement2 + physicsBody.angle));
         var speed2 = {};
         v2.mul(10.0 * displacement3, speed, speed2);
 

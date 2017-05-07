@@ -22,7 +22,7 @@ global.projectileEntitySimulate = function(entity, dt) {
     if (!projectile || projectile.hit) return;
 
     // Simulate projectile
-    var dir = v2.create(Math.cos(entity.projectile.angle), -Math.sin(entity.projectile.angle));
+    var dir = v2.create(Math.cos(entity.projectile.angle), Math.sin(entity.projectile.angle));
     var toAdd = v2.create(0, 0);
     v2.mul(projectile.speed * dt, dir, toAdd);
     v2.add(projectile.pos, toAdd, projectile.pos);
@@ -66,7 +66,7 @@ global.projectileEntitySimulate = function(entity, dt) {
         var blockId = World.blocks.getForeground(blockTilePos);
         var blockType = Game.blockRegister[blockId];
         var isBulletSolid = (blockType.isBulletSolid == undefined || entity.projectile.projectileType.isExplosive) ? blockType.isSolid : blockType.isBulletSolid;
-        if (blockId != 0 && isBulletSolid && v2.dot([Math.cos(projectile.angle), -Math.sin(projectile.angle)], [blockTilePos[0] + 0.5 - pos[0], blockTilePos[1] + 0.5 - pos[1]]) > 0.0) {
+        if (blockId != 0 && isBulletSolid && v2.dot([Math.cos(projectile.angle), Math.sin(projectile.angle)], [blockTilePos[0] + 0.5 - pos[0], blockTilePos[1] + 0.5 - pos[1]]) > 0.0) {
             Event.trigger(EntityProjectile.Events.onHitBlock, entity, blockTilePos);
             projectile.hit = true;
             break;

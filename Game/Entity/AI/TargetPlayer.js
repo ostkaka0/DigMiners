@@ -111,7 +111,7 @@ BehaviourTargetPlayer.prototype.run = function() {
 
     var currentDir = this.entity.movement.direction;
     var angle = this.entity.physicsBody.angle;
-    var angleVec = [Math.cos(-angle), Math.sin(-angle)];
+    var angleVec = [Math.cos(angle), Math.sin(angle)];
     var attackDistance = this.getAttackDistance(this.entity.physicsBody.getPos(), angleVec);
     var attackDotAngle = this.getAttackDotAngle();
     var dotAngle = v2.dot(targetDir, angleVec);
