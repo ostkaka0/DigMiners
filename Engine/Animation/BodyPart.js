@@ -1,14 +1,14 @@
 
 class BodyPart {
-    constructor(sprite, animationId = 0, transform = new DrawTransform(), spriteTransform = new DrawTransform()) {
+    constructor(sprite, animationId = 0, mat = Mat3.create(), matSprite = Mat3.create()) {
         this.sprite = sprite;
         this.animationId = animationId; // Sprite animation id
-        this.transform = transform;
-        this.spriteTransform = spriteTransform; // Only applied to the sprite, not for children
+        this.mat = mat;//this.transform = transform;
+        this.matSprite = matSprite;//this.spriteTransform = spriteTransform; // Only applied to the sprite, not for children
         this.children = [];
         // Animation
         this.animation = null; // Current animation
-        this.animationTransform = null; // Interpolated animation transform
+        this.animationTransform = null; //this.matAnimation = Mat3.create(); // Interpolated animation transform
         this.prevAnimationTransform = null;
         this.nextAnimationTransform = null;
         this.animationIndex = 0;
@@ -21,7 +21,7 @@ class BodyPart {
         this.animationSpeed = animationSpeed || this.animationSpeed;
         this.animationIndex = 0;
         this.animationTime = 0.0;
-        this.prevAnimationTransform = this.animationTransform || new DrawTransform();
+        this.prevAnimationTransform = this.animationTransform || [];
         this.nextAnimationTransform = this.animation ? this.animation[0] : new DrawTransform();
         this.animationTransform = new DrawTransform();
     }
@@ -50,23 +50,21 @@ class BodyPart {
         this.animationTransform.angle = a * this.prevAnimationTransform.angle + b * this.nextAnimationTransform.angle;
         this.animationTransform.scale[0] = a * this.prevAnimationTransform.scale[0] + b * this.nextAnimationTransform.scale[0];
         this.animationTransform.scale[1] = a * this.prevAnimationTransform.scale[1] + b * this.nextAnimationTransform.scale[1];
-        this.animationTransform.pivot[0] = a * this.prevAnimationTransform.pivot[0] + b * this.nextAnimationTransform.pivot[0];
-        this.animationTransform.pivot[1] = a * this.prevAnimationTransform.pivot[1] + b * this.nextAnimationTransform.pivot[1];
     }
 
-    draw(context, dt) {
-        this.transform.begin(context);
-        if (this.animationTransform) this.animationTransform.begin(context);
+    draw(context, dt, matIn = Mat3.create()) {
+        var matDraw = Mat3.create();
+        Mat3.mul(matIn, this.mat, matDraw);
+        Mat3.mul(matDraw, this.animationTransform.toMat3(), matDraw);
+
         for (var i = 0; i < this.children.length; i++)
-            this.children[i].draw(context, dt);
+            this.children[i].draw(context, dt, matDraw);
         if (this.sprite) {
-            this.spriteTransform.begin(context);
+            Mat3.mul(matDraw, this.matSprite, matDraw);
+            Mat3.apply(context, matDraw);
             var srcRect = this.sprite.getRect(this.animationId);
             context.drawImage(this.sprite.image, srcRect[0], srcRect[1], srcRect[2], srcRect[3], -srcRect[2]/2, -srcRect[3]/2, srcRect[2], srcRect[3]);
-            this.spriteTransform.end(context);
         }
-        if (this.animationTransform) this.animationTransform.end(context);
-        this.transform.end(context);
     }
 }
 
