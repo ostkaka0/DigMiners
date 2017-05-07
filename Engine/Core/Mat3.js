@@ -5,7 +5,7 @@ Mat3.create = function() {
             0, 1, 0];
 }
 
-at3.translate = function(vec, mat = Mat3.create(), out = mat) {
+Mat3.translate = function(vec, mat = Mat3.create(), out = mat) {
     out[2] = mat[2] + vec[0];
     out[5] = mat[5] + vec[1];
     return out;
@@ -64,5 +64,5 @@ Mat3.mulV2 = function(vec, mat, out = vec) {
 }
 
 Mat3.apply = function(context, mat) {
-    context.setTransform(mat[0], mat[3], mat[1], mat[4], mat[2], mat[5]);
+    context.setTransform(-mat[0], mat[3], -mat[1], mat[4], -mat[2], mat[5]);
 }

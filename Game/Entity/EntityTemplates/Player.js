@@ -35,10 +35,10 @@ var entityTemplatePlayer = function(playerId, entityId, name, playerClass, teamI
 
         var bodyParts = {
             body: new BodyPart(null),
-            head: new BodyPart(headSprite, 0, new DrawTransform(), new DrawTransform([0,0], 0, [0.7, 0.7])),
-            leftArm: new BodyPart(leftArmSprite, 0, new DrawTransform([0, -4])),// new DrawTransform([10, 23], 0, [1, 1], [0.5, 0.5])),
-            rightArm: new BodyPart(rightArmSprite, 0, new DrawTransform([0, 4])),// new DrawTransform([10, 11], 0, [1, 1], [0.5, 0.5])),
-            feet: new BodyPart(feetSprite, 0, new DrawTransform(), new DrawTransform([0,0],0, [0.8, 0.8])),
+            head: new BodyPart(headSprite),//, 0, Mat3.create(), Mat3.scale([0.7, 0.7])),
+            leftArm: new BodyPart(leftArmSprite, 0, Mat3.translate([0, -4])),// new DrawTransform([10, 23], 0, [1, 1], [0.5, 0.5])),
+            rightArm: new BodyPart(rightArmSprite, 0, Mat3.translate([0, 4])),// new DrawTransform([10, 11], 0, [1, 1], [0.5, 0.5])),
+            feet: new BodyPart(feetSprite, 0, Mat3.create(), Mat3.scale([0.8, 0.8])),
             tool: new BodyPart(null),
             hat: new BodyPart(null),
         }

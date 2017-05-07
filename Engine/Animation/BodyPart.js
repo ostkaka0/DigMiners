@@ -8,7 +8,7 @@ class BodyPart {
         this.children = [];
         // Animation
         this.animation = null; // Current animation
-        this.animationTransform = null; //this.matAnimation = Mat3.create(); // Interpolated animation transform
+        this.animationTransform = [0, 0, 1, 1, 0]; // [x, y, scaleX, scaleY, angle] //this.matAnimation = Mat3.create(); // Interpolated animation transform
         this.prevAnimationTransform = null;
         this.nextAnimationTransform = null;
         this.animationIndex = 0;
@@ -21,9 +21,9 @@ class BodyPart {
         this.animationSpeed = animationSpeed || this.animationSpeed;
         this.animationIndex = 0;
         this.animationTime = 0.0;
-        this.prevAnimationTransform = this.animationTransform || [];
-        this.nextAnimationTransform = this.animation ? this.animation[0] : new DrawTransform();
-        this.animationTransform = new DrawTransform();
+        this.prevAnimationTransform = this.animationTransform || [0, 0, 1, 1, 0];
+        this.nextAnimationTransform = this.animation ? this.animation[0] : [0, 0, 1, 1, 0];
+        this.animationTransform = [0, 0, 1, 1, 0];
     }
 
     updateAnimationTransform(dt) {
@@ -40,22 +40,22 @@ class BodyPart {
                 return;
             }
             this.prevAnimationTransform = this.nextAnimationTransform;
-            this.nextAnimationTransform = (this.animationId < this.animation.length) ? this.animation[this.animationId] : new DrawTransform();
+            this.nextAnimationTransform = (this.animationId < this.animation.length) ? this.animation[this.animationId] : [0, 0, 1, 1, 0];
         }
         // Interpolate animation
         var a = 1.0 - this.animationTime;
         var b = this.animationTime;
-        this.animationTransform.pos[0] = a * this.prevAnimationTransform.pos[0] + b * this.nextAnimationTransform.pos[0];
-        this.animationTransform.pos[1] = a * this.prevAnimationTransform.pos[1] + b * this.nextAnimationTransform.pos[1];
-        this.animationTransform.angle = a * this.prevAnimationTransform.angle + b * this.nextAnimationTransform.angle;
-        this.animationTransform.scale[0] = a * this.prevAnimationTransform.scale[0] + b * this.nextAnimationTransform.scale[0];
-        this.animationTransform.scale[1] = a * this.prevAnimationTransform.scale[1] + b * this.nextAnimationTransform.scale[1];
+        this.animationTransform[0] = a * this.prevAnimationTransform[0] + b * this.nextAnimationTransform[0];
+        this.animationTransform[1] = a * this.prevAnimationTransform[1] + b * this.nextAnimationTransform[1];
+        this.animationTransform[2] = a * this.prevAnimationTransform[2] + b * this.nextAnimationTransform[2];
+        this.animationTransform[3] = a * this.prevAnimationTransform[3] + b * this.nextAnimationTransform[3];
+        this.animationTransform[4] = a * this.prevAnimationTransform[4] + b * this.nextAnimationTransform[4];
     }
 
     draw(context, dt, matIn = Mat3.create()) {
         var matDraw = Mat3.create();
         Mat3.mul(matIn, this.mat, matDraw);
-        Mat3.mul(matDraw, this.animationTransform.toMat3(), matDraw);
+        Mat3.mul(matDraw, Mat3.fromTransform(this.animationTransform), matDraw);
 
         for (var i = 0; i < this.children.length; i++)
             this.children[i].draw(context, dt, matDraw);

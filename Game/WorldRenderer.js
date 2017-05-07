@@ -71,14 +71,17 @@ var worldRendererRender = function(tickFracTime) {
 
 
     Client.context.setTransform(1, 0, 0, 1, 0, 0);
+    var matCamera = Mat3.translate([-WorldRenderer.camera.pos[0], -WorldRenderer.camera.pos[1]]);
     Client.context.translate(-WorldRenderer.camera.pos[0] + Client.canvas.width / 2, -WorldRenderer.camera.pos[1] + Client.canvas.height / 2);
     for(var i = 0; i < World.entities.objectArray.length; i++) {
         var entity = World.entities.objectArray[i];
+        if (!entity.physicsBody) return;
+        var matEntity = Mat3.translate(entity.physicsBody.getPos(), matCamera, Mat3.create());
         if (entity.physicsBody && entity.bodyParts) {
             var entityPos = entity.physicsBody.getPos();
             Client.context.translate(32.0 * entityPos[0], 32.0 * entityPos[1]);
             Client.context.rotate(entity.physicsBody.angle);
-            entity.bodyParts.root.draw(Client.context, tickFracTime / 1000.0);
+            entity.bodyParts.root.draw(Client.context, tickFracTime / 1000.0, matEntity);
             Client.context.rotate(-entity.physicsBody.angle);
             Client.context.translate(-32.0 * entityPos[0], -32.0 * entityPos[1]);
             entity.bodyParts.bodyParts["feet"].animationId = Math.random() * 60 >> 0;
