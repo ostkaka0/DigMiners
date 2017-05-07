@@ -27,7 +27,7 @@ ItemFunctions.projectile = function(itemType, entity) {
             v2.length(entity.movement.deltaWorldCursorPos) : itemType.projectileType.maxDistance;
         for (var i = 0; i < numProjectiles; i++) {
 
-            entity.drawable.positionAll(0, 0, entity.physicsBody.angle, entity.bodyParts);
+            // TODO: TOFIX: BodyPart: entity.drawable.positionAll(0, 0, entity.physicsBody.angle, entity.bodyParts);
             var tool = entity.bodyParts.bodyParts["tool"];
             var toolUsePos = [0, 0];
             v2.add(toolUsePos, tool.finalPos, toolUsePos);

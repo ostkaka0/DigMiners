@@ -39,7 +39,7 @@
                 if (substr($path, -3) != ".js") return;
                 if (isset($includedScripts[$path])) return;
                 $includedScripts[$path] = true;
-                echo "\n\t\t" . '<script type="text/javascript" src="' . $path . '?' . time() . '"></script>';
+                echo "\n\t\t" . '<script type="text/javascript" src="' . $path . '?' . filemtime($path) . '"></script>';
             }
 
             function loadModule($path) {

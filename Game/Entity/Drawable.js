@@ -1,11 +1,115 @@
 
+class EntityDrawable {
+    constructor(/*zindex / layer*/) {
+        this.sprites = {};
+        this.spriteTransforms = {};
+        this.spriteVars = {};
+    }
+
+    addSprite(name, sprite, offset, rotateWithBody) {
+        this.sprites[name] = sprite;
+        this.spriteVars[name] = { offset: offset, rotateWithBody: rotateWithBody };
+        this.spriteTransforms[name] = new DrawTransform(offset);
+    }
+
+    removeSprite(name) {
+        delete this.sprites[name];
+        delete this.spriteTransforms[name];
+        delete this.spriteVars[name];
+    }
+
+    draw(context, dt, entity) {
+        var pos = entity.physicsBody.getPos();
+        var angle = entity.physicsBody.angle;
+        var keys = Object.keys(this.sprites);
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            var transform = this.spriteTransforms[key];
+            //context.translate(-pos[0], -pos[1]);
+            if (this.spriteVars[key].rotateWithBody)
+                context.rotate(-angle);
+            //transform.begin(context);
+            if (this.sprites[key] instanceof Sprite) {
+                var texture = this.sprites[key].texture;
+                var rect = this.sprites[key].getRect(0);
+                context.drawImage(texture, rect[0], rect[1], rect[2], rect[3], -rect[2]/2, -rect[3]/2, rect[2]/2, rect[3]/2);
+            } else if (this.sprites[key] instanceof TextSprite) {
+                this.sprites[key].draw(context);
+            }
+            //transform.end(context);
+            if (this.spriteVars[key].rotateWithBody)
+                context.rotate(angle);
+            //context.translate(pos[0], pos[1]);
+        }
+    }
+
+    positionSprites(x, y, angle) {
+        // TODO: TOFIX: BodyParts:
+        /*for (var key in this.sprites) {
+            var sprite = this.sprites[key];
+            sprite.pos[0] = x + (sprite.offset ? sprite.offset[0] : 0);
+            sprite.pos[1] = y + (sprite.offset ? sprite.offset[1] : 0);
+            if (sprite.rotateWithBody)
+                sprite.angle = angle;
+        }*/
+    }
+
+    positionAll(x, y, rotation, bodyParts) {
+        this.positionSprites(x, y, rotation);
+        //if (bodyParts)
+        //    bodyParts.positionBodyparts(x, y, rotation);
+    }
+
+    setBodypartSprite(bodypart, sprite) {
+        // TODO: TOFIX: BodyParts:
+        /*var index = -1;
+        if (!isServer && !bodypart.sprite.fake)
+            index = this.container.remove(bodypart.sprite);
+        bodypart.sprite = sprite;
+        bodypart.offset[0] = bodypart.defaultOffset[0];
+        bodypart.offset[1] = bodypart.defaultOffset[1];
+        bodypart.offset[2] = bodypart.defaultOffset[2];
+        if (!isServer) {
+            if (index != -1)
+                this.container.container.splice(index, 0, sprite);
+            else
+                this.container.add(sprite);
+        }*/
+    }
+
+    initializeBodyparts(bodyParts) {
+        // TODO: TOFIX: BodyParts:
+        /*// Add bodypart sprite to world
+        for (var key in bodyParts) {
+            var bodypart = bodyParts[key];
+            this.container.add(bodypart.sprite);
+        }*/
+    }
+
+    remove(bodyParts) {
+        for (var sprite in this.sprites) {
+            var sprite = this.sprites[sprite];
+            if (!isServer)
+                this.container.remove(sprite);
+        }
+        // TODO: TOFIX: BodyParts:
+        /*if (bodyParts) {
+            for (var bodypart in bodyParts) {
+                bodypart = bodyParts[bodypart];
+                if (!isServer)
+                    this.container.remove(bodypart.sprite);
+            }
+        }*/
+    }
+
+}
+TypeRegister.add(RegisterEntity, EntityDrawable);
 
 
 
 
 
-
-
+/*
 var EntityDrawable = function(zindex) {
     this.sprites = {};
     this.zindex = (!zindex ? 0 : zindex);
@@ -157,4 +261,4 @@ EntityDrawable.prototype.remove = function(bodyParts) {
                 this.container.remove(bodypart.sprite);
         }
     }
-}
+}*/

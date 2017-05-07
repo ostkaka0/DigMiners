@@ -1,5 +1,5 @@
 
-/*var TextSprite = function(text, font, fontSize, color) {
+var TextSprite = function(text, font, fontSize, color) {
     this.text = text;
     this.font = font;
     this.fontSize = fontSize;
@@ -37,4 +37,4 @@ TextSprite.prototype.draw = function(context) {
 TextSprite.prototype.end = function(context) {
     context.globalAlpha = 1.0;
     context.setTransform(1, 0, 0, 1, 0, 0);
-} */
+} 

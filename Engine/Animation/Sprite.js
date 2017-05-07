@@ -1,6 +1,7 @@
 class Sprite {
     constructor(image, rect = [0, 0, image.width, image.height], animationColumns = 1) {
         this.image = image;
+        this.texture = image; // TODO: this.image = this.texture, only keep one
         this.rect = rect;
         this.animationColumns = animationColumns;
     }

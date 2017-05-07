@@ -60,9 +60,9 @@ var entityTemplatePlayer = function(playerId, entityId, name, playerClass, teamI
         };*/
 
         entity.bodyParts = new EntityBodyParts(bodyParts, bodyParts.body);
-        //entity.drawable = new EntityDrawable(1);
-        //var healthbarSprite = new Sprite("healthbar.png", null, false);
-        //entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
+        entity.drawable = new EntityDrawable(1);
+        var healthbarSprite = new Sprite(Client.textures["healthbar.png"]);
+        entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
     }
     entity.health = new EntityHealth(playerClass ? playerClass.health : 100, playerClass ? playerClass.health : 100, playerClass ? playerClass.armor : 0);
     entity.team = new EntityTeam(teamEnum);

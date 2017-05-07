@@ -36,6 +36,7 @@ var worldRendererInit = function() {
 
         // Text on items on ground
         if (entity.item && entity.item.amount > 1) {
+            // TODO: TOFIX: TextSprite
             var textSprite = new TextSprite(entity.item.amount, "Monospace", 15, "#ffffff");
             entity.drawable.addSprite("textAmount", textSprite, null, false);
         }
@@ -68,8 +69,9 @@ var worldRendererRender = function(tickFracTime) {
     } else // TODO: do something else instead of centering camera at 0,0?
         WorldRenderer.camera.pos = [0, 0];
 
-    Client.context.translate(-WorldRenderer.camera.pos[0] + Client.canvas.width / 2, -WorldRenderer.camera.pos[1] + Client.canvas.height / 2);
 
+    Client.context.setTransform(1, 0, 0, 1, 0, 0);
+    Client.context.translate(-WorldRenderer.camera.pos[0] + Client.canvas.width / 2, -WorldRenderer.camera.pos[1] + Client.canvas.height / 2);
     for(var i = 0; i < World.entities.objectArray.length; i++) {
         var entity = World.entities.objectArray[i];
         if (entity.physicsBody && entity.bodyParts) {
@@ -80,6 +82,9 @@ var worldRendererRender = function(tickFracTime) {
             Client.context.rotate(-entity.physicsBody.angle);
             Client.context.translate(-32.0 * entityPos[0], -32.0 * entityPos[1]);
             entity.bodyParts.bodyParts["feet"].animationId = Math.random() * 60 >> 0;
+        }
+        if (entity.physicsBody && entity.drawable) {
+            entity.drawable.draw(Client.context, tickFracTime / 1000.0, entity);
         }
     }
 

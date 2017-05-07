@@ -33,6 +33,7 @@ EntityName.prototype.applyName = function(entity) {
     if (!entity.drawable) return;
     if (entity.textSprite)
         entity.drawable.removeSprite("name");
+    // TODO: TOFIX: TextSprite
     var sprite = new TextSprite(this.entityName, "Monospace", 15, "#ffffff");
     entity.drawable.addSprite("name", sprite, v2.create(0, -47), false);
 }
