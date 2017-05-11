@@ -1,13 +1,4 @@
 
-
-
-
-
-
-
-;
-
-
 var MessageRequestRotate = function(deltaWorldCursorPos) {
     this.deltaWorldCursorPos = deltaWorldCursorPos;
     //this.direction = direction;

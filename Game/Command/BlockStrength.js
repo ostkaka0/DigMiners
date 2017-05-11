@@ -1,18 +1,9 @@
 
-
-
-
-
-
-
-
-
 var CommandBlockStrength = function(x, y, strength) {
     this.x = x;
     this.y = y;
     this.strength = Math.max(strength, 0);
 }
-global.CommandBlockStrength = CommandBlockStrength;
 TypeRegister.add(RegisterCommand, CommandBlockStrength);
 
 CommandBlockStrength.prototype.execute = function() {

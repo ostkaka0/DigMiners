@@ -51,7 +51,6 @@ var serverInit = function(io) {
 
         RegisterMessage.ToServer.forEach(function(messageType) {
             socket.on(messageType.prototype.idString, function(data) {
-                console.log(data);
                 var message = new messageType();
                 message.receive(data);
                 message.execute(Server.connections[socket.id].player);

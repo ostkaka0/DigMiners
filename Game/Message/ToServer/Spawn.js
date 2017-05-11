@@ -3,6 +3,7 @@ var MessageRequestSpawn = function(playerName, classId) {
     this.playerName = playerName;
     this.classId = classId;
 }
+TypeRegister.add(RegisterMessage.ToServer, MessageRequestSpawn);
 
 MessageRequestSpawn.prototype.execute = function(player) {
     if (player.entity != null && player.entityId != null) return;
@@ -31,8 +32,8 @@ MessageRequestSpawn.prototype.execute = function(player) {
     //}
 
     //if (entity) {
-        sendCommand(new CommandEntitySpawn(entity, entityId));
-        sendCommand(new CommandPlayerSpawn(player.id, entityId, player.name));
+    sendCommand(new CommandEntitySpawn(entity, entityId));
+    sendCommand(new CommandPlayerSpawn(player.id, entityId, player.name));
     /*} else {
 
         var entities = [];

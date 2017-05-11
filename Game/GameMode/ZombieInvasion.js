@@ -19,6 +19,7 @@ global.GameModeZombieInvasion = function() {
     this.startSecondsDuration = 2;//15;
     this.startSeconds = this.startSecondsDuration;
 }
+TypeRegister.add(GameModeRegister, GameModeZombieInvasion);
 
 GameModeZombieInvasion.prototype.init = function() {
     if (!isServer) return;
@@ -180,7 +181,7 @@ GameModeZombieInvasion.prototype.forceRespawnPlayers = function() {
             });
             Event.trigger(EntityAmmo.Events.onChange, entity);
             new MessageAmmoChange(entity, Object.keys(entity.ammo)).send(player.socket);
-            var healthChange = Math.min(entity.health.maxHealth/2, entity.health.maxHealth - entity.health.health);
+            var healthChange = Math.min(entity.health.maxHealth / 2, entity.health.maxHealth - entity.health.health);
             sendCommand(new CommandEntityHealthChange(entity.id, healthChange));
             return;
         }

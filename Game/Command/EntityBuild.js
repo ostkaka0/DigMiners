@@ -6,6 +6,7 @@ var CommandEntityBuild = function(entityId, x, y, blockId, type) {
     this.blockId = blockId;
     this.type = type;
 }
+TypeRegister.add(RegisterCommand, CommandEntityBuild);
 
 CommandEntityBuild.prototype.execute = function() {
     /*if (this.type == BlockTypes.FOREGROUND)
