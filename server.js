@@ -48,7 +48,7 @@ var lastnames = ["face", "dip", "nose", "brain", "head", "breath",
 
 
 var update = function() {
-    var server_has_players = (Object.keys(Server.connections).length > 0);
+    //var server_has_players = (Object.keys(Server.connections).length > 0);
     var diff = process.hrtime(firstTickTime);
     var diff_ms = diff[0] * 1e3 + diff[1] / 1e6;
     var delay = -diff_ms + (tickNum + skippedTicks) * Config.tickDuration;
@@ -58,7 +58,7 @@ var update = function() {
         console.log(numTicksToSkip + " ticks skipped!");
     }
     setTimeout(update, delay);
-    if (server_has_players)
+    //if (server_has_players)
         tick(Config.tickDuration / 1000.0);
     tickNum++;
 }

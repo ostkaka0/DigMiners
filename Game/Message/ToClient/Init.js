@@ -90,6 +90,7 @@ MessageInit.prototype.send = function(gameData, socket) {
 }
 
 MessageInit.prototype.receive = function(gameData, byteArray) {
+    console.log("init");
     gameModeChange(new Game.defaultgameMode());
     gameModeTick();
     worldTick();

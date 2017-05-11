@@ -14,7 +14,6 @@ CommandEntitySpawn.prototype.execute = function() {
     if (World.entities.objects[this.entityId])
         World.entities.remove(World.entities.objects[this.entityId]);
     World.entities.add(this.entity, this.entityId);
-    console.log("Entity spawn:", this.entity);
 }
 
 CommandEntitySpawn.prototype.serialize = function(byteArray, index) {

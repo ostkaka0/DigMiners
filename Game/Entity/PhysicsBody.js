@@ -1,9 +1,4 @@
 
-
-
-
-
-
 var EntityPhysicsBody = function(pos, damping, rotationSpeed, mass, radius) {
     this.bodyId = World.physics.add(pos, [0.0, 0.0], mass, radius);
     if (pos) {
@@ -26,7 +21,6 @@ var EntityPhysicsBody = function(pos, damping, rotationSpeed, mass, radius) {
     this.angle = 0;
     this.angleOld = 0;
 }
-global.EntityPhysicsBody = EntityPhysicsBody;
 TypeRegister.add(RegisterEntity, EntityPhysicsBody);
 
 EntityPhysicsBody.prototype.name = physicsBody.name; function physicsBody() { };
