@@ -45,6 +45,7 @@ var TextureManager = function(callback) {
     loader.queue("dynamite.png");
 
     loader.queue("tree.png");
+    loader.queue("log.png");
 
     TextureLoader.Events.onProgress.set(this, function(file, progress) {
         console.log(Math.round(progress) + "% complete");
