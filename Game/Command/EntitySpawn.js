@@ -3,7 +3,7 @@
 
 
 
-var CommandEntitySpawn = function(gameData, entity, entityId, teamId) {
+var CommandEntitySpawn = function(entity, entityId, teamId) {
     this.entity = entity;
     this.entityId = entityId;
 }
@@ -37,7 +37,7 @@ CommandEntitySpawn.prototype.deserialize = function(byteArray, index) {
         var componentType = RegisterEntity[componentId];
         var componentName = componentType.prototype.name;
         entity[componentName] = new componentType();
-        entity[componentName].deserialize(byteArray, index, gameData);
+        entity[componentName].deserialize(byteArray, index);
     }
     this.entityId = entityId;
     this.entity = entity;

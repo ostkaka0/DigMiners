@@ -1,34 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 global.GameModeZombieInvasion = function() {
     this.wavePauseDuration = 30000;
     this.numEndWaveZombies = 5;
@@ -49,7 +19,6 @@ global.GameModeZombieInvasion = function() {
     this.startSecondsDuration = 2;//15;
     this.startSeconds = this.startSecondsDuration;
 }
-TypeRegister.add(GameModeRegister, GameModeZombieInvasion);
 
 GameModeZombieInvasion.prototype.init = function() {
     if (!isServer) return;
@@ -81,7 +50,7 @@ GameModeZombieInvasion.prototype.init = function() {
             pos = [60.0 * (-1 + 2 * Math.random()), 60.0 * (-1 + 2 * Math.random())];
         var entityId = World.idList.next();
         var entity = entityTemplateMonsterSpawner(entityId, pos, this.spawnZombie.bind(this), 0, 2.0, 40, null, null, EntityTeam.Enum.Zombie);
-        sendCommand(new CommandEntitySpawn(gameData, entity, entityId, EntityTeam.Enum.Zombie));
+        sendCommand(new CommandEntitySpawn(entity, entityId, EntityTeam.Enum.Zombie));
         sendCommand(new CommandDig(pos, 5.0));
         this.zombieSpawners.push(entity);
         this.zombieSpawns.push(pos);
@@ -112,7 +81,7 @@ GameModeZombieInvasion.prototype.init = function() {
             if (Object.keys(this.survivors).length == 0 && !this.playerSpawning) {
                 this.playerSpawning = false;//sendCommand(new CommandWorldSpawnStatus(null, false));
                 sendCommand(new CommandPopupMessage("All survivors died"));
-                worldSetTimeout(gameModeChange.bind(gameData), 5000);
+                worldSetTimeout(gameModeChange, 5000);
             }
         }
     }.bind(this));
@@ -123,7 +92,7 @@ GameModeZombieInvasion.prototype.init = function() {
             if (Object.keys(this.survivors).length == 0 && !this.playerSpawning) {
                 this.playerSpawning = false;//sendCommand(new CommandWorldSpawnStatus(null, false));
                 sendCommand(new CommandPopupMessage("All survivors died"));
-                worldSetTimeout(gameModeChange.bind(gameData), 5000);
+                worldSetTimeout(gameModeChange, 5000);
             }
         }
     }.bind(this));
@@ -150,7 +119,7 @@ GameModeZombieInvasion.prototype.createEntity = function(player, entityId) {
     } else {
         var pos = this.zombieSpawns[Math.random() * this.zombieSpawns.length >> 0];
         var entity = entityTemplateGhost(player.id, entityId, player.name, pos);
-        //entity.inventory.addItem(gameData, Items.Types.RustyShovel.id, 1);
+        //entity.inventory.addItem(Items.Types.RustyShovel.id, 1);
         return entity;
     }
 }
@@ -224,7 +193,7 @@ GameModeZombieInvasion.prototype.forceRespawnPlayers = function() {
             return;
         }
 
-        sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
+        sendCommand(new CommandEntitySpawn(entity, entityId));
         sendCommand(new CommandPlayerSpawn(player.id, entityId, player.name));
     }.bind(this));
 }

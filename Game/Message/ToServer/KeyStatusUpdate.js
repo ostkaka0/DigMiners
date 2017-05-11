@@ -15,7 +15,7 @@ var MessageRequestKeyStatusUpdate = function(key, pressed) {
 global.MessageRequestKeyStatusUpdate = MessageRequestKeyStatusUpdate;
 TypeRegister.add(RegisterMessage.ToServer, MessageRequestKeyStatusUpdate);
 
-MessageRequestKeyStatusUpdate.prototype.execute = function(gameData, player) {
+MessageRequestKeyStatusUpdate.prototype.execute = function(player) {
     var entity = World.entities.objects[player.entityId];
     if (!entity) return;
     var physicsBody = entity.physicsBody;
@@ -60,7 +60,7 @@ MessageRequestKeyStatusUpdate.prototype.send = function(socket) {
     socket.emit(this.idString, [this.key, this.pressed]);
 }
 
-MessageRequestKeyStatusUpdate.prototype.receive = function(gameData, data) {
+MessageRequestKeyStatusUpdate.prototype.receive = function(data) {
     this.key = data[0];
     this.pressed = data[1];
 }

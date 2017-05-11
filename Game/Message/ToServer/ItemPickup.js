@@ -17,7 +17,7 @@ var MessageRequestItemPickup = function(entityId) {
 global.MessageRequestItemPickup = MessageRequestItemPickup;
 TypeRegister.add(RegisterMessage.ToServer, MessageRequestItemPickup);
 
-MessageRequestItemPickup.prototype.execute = function(gameData, player) {
+MessageRequestItemPickup.prototype.execute = function(player) {
     var entity = World.entities.objects[this.entityId];
     if (!entity) return;
     if (entity.item && !entity.pickedUp) {
@@ -41,6 +41,6 @@ MessageRequestItemPickup.prototype.send = function(socket) {
     socket.emit(this.idString, this.entityId);
 }
 
-MessageRequestItemPickup.prototype.receive = function(gameData, data) {
+MessageRequestItemPickup.prototype.receive = function(data) {
     this.entityId = data;
 }

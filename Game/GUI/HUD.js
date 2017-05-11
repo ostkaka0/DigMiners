@@ -1,5 +1,5 @@
 
-var HUD = function(gameData) {
+var HUD = function() {
     // Open/close crafting window when "C" is clicked
     /*$('*').keydown(function(e) {
         e.stopPropagation();

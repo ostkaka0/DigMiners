@@ -19,7 +19,7 @@ var MessageRequestPlaceBlock = function(stackId, x, y) {
 global.MessageRequestPlaceBlock = MessageRequestPlaceBlock;
 TypeRegister.add(RegisterMessage.ToServer, MessageRequestPlaceBlock);
 
-MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
+MessageRequestPlaceBlock.prototype.execute = function(player) {
     var entity = World.entities.objects[player.entityId];
     if (!entity) return;
     var item = entity.inventory.items[this.stackId];
@@ -32,7 +32,7 @@ MessageRequestPlaceBlock.prototype.execute = function(gameData, player) {
         if (itemType.oreRecipe && player.calcOreRecipeQuantity(itemType.oreRecipe) == 0)
             return;
 
-        if (!player.canPlaceBlock(gameData, this.x, this.y))
+        if (!player.canPlaceBlock(this.x, this.y))
             return;
 
         var blockChunkX = Math.floor(this.x / BlockChunk.dim);
@@ -63,7 +63,7 @@ MessageRequestPlaceBlock.prototype.send = function(socket) {
     socket.emit(this.idString, [this.stackId, this.x, this.y]);
 }
 
-MessageRequestPlaceBlock.prototype.receive = function(gameData, data) {
+MessageRequestPlaceBlock.prototype.receive = function(data) {
     this.stackId = data[0];
     this.x = data[1];
     this.y = data[2];

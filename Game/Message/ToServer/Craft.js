@@ -13,7 +13,7 @@ var MessageRequestCraft = function(recipeId) {
 global.MessageRequestCraft = MessageRequestCraft;
 TypeRegister.add(RegisterMessage.ToServer, MessageRequestCraft);
 
-MessageRequestCraft.prototype.execute = function(gameData, player) {
+MessageRequestCraft.prototype.execute = function(player) {
     var playerEntity = Game.entityWorld.objects[player.entityId];
     if (!playerEntity) return;
     var recipe = Recipes[this.recipeId];
@@ -40,6 +40,6 @@ MessageRequestCraft.prototype.send = function(socket) {
     socket.emit(this.idString, this.recipeId);
 }
 
-MessageRequestCraft.prototype.receive = function(gameData, data) {
+MessageRequestCraft.prototype.receive = function(data) {
     this.recipeId = data;
 }

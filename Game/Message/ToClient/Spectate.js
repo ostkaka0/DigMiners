@@ -11,7 +11,7 @@ var MessageSpectate = function(entityId) {
 global.MessageSpectate = MessageSpectate;
 TypeRegister.add(RegisterMessage.ToClient, MessageSpectate);
 
-MessageSpectate.prototype.execute = function(gameData) {
+MessageSpectate.prototype.execute = function() {
     global.spectateEntity = World.entities.objects[this.entityId];
     World.events.trigger("spectate", global.spectateEntity);
 }
@@ -24,7 +24,7 @@ MessageSpectate.prototype.send = function(socket) {
     socket.emit(this.idString, byteArray);
 }
 
-MessageSpectate.prototype.receive = function(gameData, byteArray) {
+MessageSpectate.prototype.receive = function(byteArray) {
     byteArray = new Uint8Array(byteArray);
     var counter = new IndexCounter();
     this.entityId = Deserialize.int32(byteArray, counter);

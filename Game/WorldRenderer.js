@@ -135,7 +135,7 @@ var worldRendererRender = function(tickFracTime) {
     viewMatrix = viewMatrix.translate(-Math.floor(WorldRenderer.camera.pos[0]), -Math.floor(WorldRenderer.camera.pos[1]));
     viewMatrix = viewMatrix.scale(2 / Client.canvas.width, 2 / Client.canvas.height);
     WorldRenderer.chunkRenderer.render(World.tiles, projectionMatrix.clone().append(viewMatrix), WorldRenderer.camera);
-    WorldRenderer.blockRenderer.render(gameData, World.blocks, projectionMatrix.clone().append(viewMatrix), WorldRenderer.camera);
+    WorldRenderer.blockRenderer.render(World.blocks, projectionMatrix.clone().append(viewMatrix), WorldRenderer.camera);
 
     // Render entities
     Client.context.clearRect(0, 0, Client.canvas.width, Client.canvas.height);

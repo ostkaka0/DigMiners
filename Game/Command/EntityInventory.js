@@ -25,7 +25,7 @@ CommandEntityInventory.prototype.execute = function() {
     var entity = World.entities.objects[this.entityId];
     if (!entity || !entity.inventory) return;
     if (this.actionId == CommandEntityInventory.Actions.ADD_ITEM) {
-        entity.inventory.addItem(gameData, this.itemId, this.amount);
+        entity.inventory.addItem(this.itemId, this.amount);
     } else if (this.actionId == CommandEntityInventory.Actions.REMOVE_ITEM) {
         console.log(entity.inventory.isStatic(this.itemId));
         if (entity.controlledByPlayer && RegisterItem[this.itemId].oreRecipe && entity.inventory.isStatic(this.itemId)) {
@@ -38,7 +38,7 @@ CommandEntityInventory.prototype.execute = function() {
                     entity.bodyparts.bodyparts["tool"].sprite.visible = false;
             }
         } else {
-            var removed = entity.inventory.removeItem(gameData, this.itemId, this.amount);
+            var removed = entity.inventory.removeItem(this.itemId, this.amount);
             if (isServer) {
                 for (var i = 0; i < removed.length; ++i) {
                     // Dequip item when removed from inventory

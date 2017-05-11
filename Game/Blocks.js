@@ -15,7 +15,7 @@ BlockFunctions.createEntity = function(blockPos, block) {
         var entity = block.createEntity(blockPos, block);
         var entityId = World.idList.next();
         sendCommand(new CommandPlaceBlock(blockPos, 0));
-        sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
+        sendCommand(new CommandEntitySpawn(entity, entityId));
     }
 }
 
@@ -39,7 +39,7 @@ BlockFunctions.createEntityBox = function(blockPos, block) {
             entity = block.onCreateEntity(entity, entityId);
 
         sendCommand(new CommandPlaceBlock(blockPos, 0));
-        sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
+        sendCommand(new CommandEntitySpawn(entity, entityId));
     }
 }
 
@@ -53,7 +53,7 @@ BlockFunctions.createEntityTurret = function(blockPos, block) {
             entity = block.onCreateEntity(turret, turretEntityId);
 
         sendCommand(new CommandPlaceBlock(blockPos, 0));
-        sendCommand(new CommandEntitySpawn(gameData, turret, turretEntityId));
+        sendCommand(new CommandEntitySpawn(turret, turretEntityId));
 
         if (block.onEntityCreated)
             block.onEntityCreated(turret, turretEntityId);
@@ -333,7 +333,7 @@ Blocks.Chest = {
         });
         entity.chest = new EntityChest();
         entity.inventory = EntityInventory.createInventory(entityId, 4, 4);
-        entity.inventory.addItem(gameData, Items.Types.RustyShovel.id, Math.floor(Math.random() * 8));
+        entity.inventory.addItem(Items.Types.RustyShovel.id, Math.floor(Math.random() * 8));
         return entity;
     },
     oreRecipe: [Tiles.Iron, 2]

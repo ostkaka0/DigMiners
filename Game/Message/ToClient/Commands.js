@@ -14,7 +14,7 @@ var MessageCommands = function() {
 global.MessageCommands = MessageCommands;
 TypeRegister.add(RegisterMessage.ToClient, MessageCommands);
 
-MessageCommands.prototype.execute = function(gameData) {
+MessageCommands.prototype.execute = function() {
     if (World) {
         if (Config.fakeLag == 0 && Config.fakeJitter == 0) {
             World.pendingCommands[this.tickId] = this.commands;
@@ -44,7 +44,7 @@ MessageCommands.prototype.send = function(socket) {
 
 }
 
-MessageCommands.prototype.receive = function(gameData, byteArray) {
+MessageCommands.prototype.receive = function(byteArray) {
     byteArray = new Uint8Array(byteArray);
     var counter = new IndexCounter();
     this.tickId = Deserialize.int32(byteArray, counter);

@@ -120,7 +120,7 @@ Player.prototype.hasRequiredRecipeResources = function(recipe) {
     return true;
 }
 
-Player.prototype.canPlaceBlock = function(gameData, x, y) {
+Player.prototype.canPlaceBlock = function(x, y) {
     var distBlockPos = [x * 32 + 16, y * 32 + 16];
     var entity = World.entities.objects[this.entityId];
     if (!entity) return false;

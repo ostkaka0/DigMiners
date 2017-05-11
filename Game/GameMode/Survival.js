@@ -6,7 +6,6 @@ var GameModeSurvival = function() {
 GameModeSurvival.prototype.init = function() {
     if (!isServer) {
         Event.subscribe(HUD.Events.onInit, this, function(HUDInstance) {
-            HUDInstance.dugItems = new DugItems();
             HUDInstance.chat = new Chat();
             HUDInstance.ammo = new AmmoHUD();
             HUDInstance.level = new HUDLevel();

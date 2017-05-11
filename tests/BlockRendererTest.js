@@ -1,7 +1,6 @@
 var canvas = document.getElementById("canvas");
 var gl = Canvas.initGL(canvas);
 
-//var gameData = new GameData();
 var blockWorld = new Map2D();
 var blockRenderer = new BlockChunkRenderer(gl, blockWorld, 32.0);
 //var camera = new Camera();
@@ -30,7 +29,7 @@ render = function() {
     var viewMatrix = PIXI.Matrix.IDENTITY.clone();
     viewMatrix = viewMatrix.translate(-camera.pos[0], -camera.pos[1]);
     viewMatrix = viewMatrix.scale(2 / canvas.width, 2 / canvas.height);
-    blockRenderer.render(gameData, blockWorld, projectionMatrix.clone().append(viewMatrix), camera);
+    blockRenderer.render(blockWorld, projectionMatrix.clone().append(viewMatrix), camera);
 }
 
 $("#hud").click(function(event) {

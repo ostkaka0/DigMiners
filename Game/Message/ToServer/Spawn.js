@@ -1,27 +1,10 @@
 
-
-
-
-
-
-
-
-
-
-;
-
-
-
-
-
-
 var MessageRequestSpawn = function(playerName, classId) {
     this.playerName = playerName;
     this.classId = classId;
 }
-TypeRegister.add(RegisterMessage.ToServer, MessageRequestSpawn);
 
-MessageRequestSpawn.prototype.execute = function(gameData, player) {
+MessageRequestSpawn.prototype.execute = function(player) {
     if (player.entity != null && player.entityId != null) return;
     if (World.tickId - player.deathTick < 20 * Config.respawnTime) return;
     if (!PlayerClassRegister[this.classId]) return;
@@ -48,7 +31,7 @@ MessageRequestSpawn.prototype.execute = function(gameData, player) {
     //}
 
     //if (entity) {
-        sendCommand(new CommandEntitySpawn(gameData, entity, entityId));
+        sendCommand(new CommandEntitySpawn(entity, entityId));
         sendCommand(new CommandPlayerSpawn(player.id, entityId, player.name));
     /*} else {
 
@@ -69,7 +52,7 @@ MessageRequestSpawn.prototype.send = function(socket) {
     socket.emit(this.idString, [this.playerName, this.classId]);
 }
 
-MessageRequestSpawn.prototype.receive = function(gameData, data) {
+MessageRequestSpawn.prototype.receive = function(data) {
     this.playerName = data[0];
     this.classId = data[1];
 }

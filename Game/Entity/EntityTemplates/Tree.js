@@ -14,7 +14,7 @@ var entityTemplateTree = function(entityId, pos, angle) {
     };
 
     entity.bodyparts = new EntityBodyparts(bodyparts);
-    entity.drawable = new EntityDrawable(1);
+    entity.drawable = new EntityDrawable(2);
     var healthbarSprite = new Sprite("healthbar.png", null, false);
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
     entity.health = new EntityHealth(100, 100, 0.0);

@@ -1,30 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 global.GameModeSurvivalWar = function() {
     this.playerSpawns = {};
     this.spawnEntities = {};
@@ -32,7 +6,6 @@ global.GameModeSurvivalWar = function() {
     this.spawnEntities[EntityTeam.Enum.Blue] = [];
     this.spawnEntities[EntityTeam.Enum.Red] = [];
 }
-global.GameModeSurvivalWar = GameModeSurvivalWar;
 
 GameModeSurvivalWar.prototype.init = function() {
     if (!isServer) return;
@@ -69,12 +42,12 @@ GameModeSurvivalWar.prototype.init = function() {
         var entityId = World.idList.next();
         var entity = entityTemplateMonsterSpawner(entityId, pos, entityTemplateZombie, 2, 5.0, 1200, null, null, EntityTeam.Enum.None);
         this.spawnEntities[entityId] = entity;
-        sendCommand(new CommandEntitySpawn(gameData, entity, entityId, EntityTeam.Enum.none));
+        sendCommand(new CommandEntitySpawn(entity, entityId, EntityTeam.Enum.none));
         sendCommand(new CommandDig(pos, 5.0));
     }
 
     // End gamemode after 15 minutes
-    worldSetTimeout(gameModeChange.bind(gameData), 15 * 60 * 1000);
+    worldSetTimeout(gameModeChange, 15 * 60 * 1000);
 
     // End game when less than 2 players, activate after 60 seconds
     worldSetTimeout(() => {

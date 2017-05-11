@@ -1,16 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
 var EntitySpawner = function(entityTemplate, pos, maxEntities, radius, duration, items, equippedItemId, randomDuration, teamId) {
     this.entityTemplate = entityTemplate;
     this.pos = v2.clone(pos);
@@ -28,8 +16,6 @@ var EntitySpawner = function(entityTemplate, pos, maxEntities, radius, duration,
 
     this.initialized = false;
 }
-global.EntitySpawner = EntitySpawner;
-TypeRegister.add(RegisterEntity, EntitySpawner);
 
 EntitySpawner.prototype.name = spawner.name; function spawner() { };
 
@@ -55,7 +41,7 @@ EntitySpawner.prototype.update = function(entity) {
     // Spawn entity
     var monsterEntityId = World.idList.next();
     var monster = this.entityTemplate(monsterEntityId, [this.pos[0] + this.radius * (-1 + 2 *Math.random()), this.pos[1] + this.radius * (-1 + 2 *Math.random())], this.teamId);
-    sendCommand(new CommandEntitySpawn(gameData, monster, monsterEntityId));
+    sendCommand(new CommandEntitySpawn(monster, monsterEntityId));
 
     // Add items
     if (this.items) {

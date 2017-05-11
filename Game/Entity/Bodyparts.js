@@ -56,7 +56,7 @@ EntityBodyparts.prototype.serialize = function(byteArray, index) {
     }
 }
 
-EntityBodyparts.prototype.deserialize = function(byteArray, index, gameData) {
+EntityBodyparts.prototype.deserialize = function(byteArray, index) {
     this.bodyparts = {};
     var bodypartsLength = Deserialize.int32(byteArray, index);
     for (var i = 0; i < bodypartsLength; ++i) {

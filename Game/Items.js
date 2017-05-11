@@ -81,7 +81,7 @@ Items.Functions.Potion = function(entity, item) {
         entity.potionEffects.add(potionEffectType, item.potionDuration);
     }
     if (entity.inventory) {
-        var removed = entity.inventory.removeItem(gameData, item.id, 1);
+        var removed = entity.inventory.removeItem(item.id, 1);
         for (var i = 0; i < removed.length; ++i) {
             // Dequip item when removed from inventory
             var entry = removed[i];
@@ -193,7 +193,7 @@ Items.Functions.ThrowableDynamite = function(entity, itemType) {
 
         var timeout = 2000;
 
-        sendCommand(new CommandEntitySpawn(gameData, itemEntity, itemEntityId));
+        sendCommand(new CommandEntitySpawn(itemEntity, itemEntityId));
         sendCommand(new CommandEntityAnimate(itemEntityId, "body", "dynamite", 64000.0 / timeout));
 
         worldSetTimeout(function(attacker) {

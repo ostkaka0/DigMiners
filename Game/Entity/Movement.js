@@ -44,7 +44,7 @@ EntityMovement.prototype.serialize = function(byteArray, index) {
     Serialize.fix(byteArray, index, this.speed);
 }
 
-EntityMovement.prototype.deserialize = function(byteArray, index, gameData) {
+EntityMovement.prototype.deserialize = function(byteArray, index) {
     this.direction = Deserialize.v2(byteArray, index);
     var keyStatusesLength = Deserialize.int32(byteArray, index);
     this.keyStatuses = {};

@@ -1,5 +1,5 @@
 
-var MessageInit = function(gameData, player) {
+var MessageInit = function(player) {
     this.players = [];
     this.tickId = (World) ? World.tickId : 0;
     if (player) {
@@ -7,13 +7,13 @@ var MessageInit = function(gameData, player) {
         this.entityId = player.entityId;
     }
 
-    if (!gameData) return;
-    World.entities.update();
+    if (World)
+        World.entities.update();
 }
 global.MessageInit = MessageInit;
 TypeRegister.add(RegisterMessage.ToClient, MessageInit);
 
-MessageInit.prototype.execute = function(gameData) {
+MessageInit.prototype.execute = function() {
     World.tickId = this.tickId + 1;
     var player = Game.playerWorld.add(new Player(this.playerId, this.entityId), this.playerId);
     Client.player = player;
@@ -25,10 +25,10 @@ MessageInit.prototype.execute = function(gameData) {
     }
 
     //worldLoad();
-    Game.HUD = new HUD(gameData);
+    Game.HUD = new HUD();
 }
 
-MessageInit.prototype.getSerializationSize = function(gameData) {
+MessageInit.prototype.getSerializationSize = function() {
     var size = 24;
 
     // Calculate serializationSize of entities
@@ -55,8 +55,8 @@ MessageInit.prototype.getSerializationSize = function(gameData) {
     return size;
 }
 
-MessageInit.prototype.send = function(gameData, socket) {
-    var byteArray = new Array(this.getSerializationSize(gameData));//new Buffer(this.getSerializationSize());
+MessageInit.prototype.send = function(socket) {
+    var byteArray = new Array(this.getSerializationSize());//new Buffer(this.getSerializationSize());
     var index = new IndexCounter();
 
     Serialize.int32(byteArray, index, this.tickId);
@@ -89,8 +89,7 @@ MessageInit.prototype.send = function(gameData, socket) {
     socket.emit(this.idString, new Buffer(byteArray));
 }
 
-MessageInit.prototype.receive = function(gameData, byteArray) {
-    console.log("init");
+MessageInit.prototype.receive = function(byteArray) {
     gameModeChange(new Game.defaultgameMode());
     gameModeTick();
     worldTick();
@@ -117,7 +116,7 @@ MessageInit.prototype.receive = function(gameData, byteArray) {
             var componentType = RegisterEntity[componentId];
             var componentName = componentType.prototype.name;
             entity[componentName] = new componentType();
-            entity[componentName].deserialize(byteArray, index, gameData);
+            entity[componentName].deserialize(byteArray, index);
         }
 
         // If entity received already exists, remove existing(convenience)

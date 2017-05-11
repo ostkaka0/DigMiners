@@ -29,7 +29,7 @@ CommandPlayerJoin.prototype.execute = function() {
 
         // Send init message
         // Sends generator seed, chunks must be sent AFTERWARDS
-        new MessageInit(gameData, player).send(gameData, socket);
+        new MessageInit(player).send(socket);
 
         // Send chunks
         // TODO: client requests chunks instead
