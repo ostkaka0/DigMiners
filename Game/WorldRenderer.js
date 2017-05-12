@@ -143,11 +143,11 @@ var worldRendererRender = function(tickFracTime) {
         for (var j = 0; j < arr.length; ++j) {
             var sprite = arr[j];
             var [x, y] = sprite.pos;
-            var radius = 32.0 * Math.max(sprite.scale[0], sprite.scale[1]);
-            if (x < -radius || y < -radius || x - Client.canvas.width > radius || y - Client.canvas.height > radius)
+            var width = sprite.getSize()[0] * sprite.scale[0];
+            var height = sprite.getSize()[1] * sprite.scale[1];
+            if (x < -width / 2 || y < -height / 2 || x - Client.canvas.width > width / 2 || y - Client.canvas.height > height / 2 || !sprite.visible)
                 continue;
-            if (sprite.visible)
-                sprite.draw(Client.context);
+            sprite.draw(Client.context);
         }
     }
 

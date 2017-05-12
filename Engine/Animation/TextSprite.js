@@ -10,13 +10,12 @@ var TextSprite = function(text, font, fontSize, color) {
     this.pos = [0, 0];
     this.scale = [1.0, 1.0];
     this.alpha = 1.0;
+    this.size = [0, fontSize];
 }
 global.TextSprite = TextSprite;
 
 TextSprite.prototype.getSize = function() {
-    if (this.frame)
-        return [this.frame[2], this.frame[3]];
-    return [this.texture.width, this.texture.height];
+    return this.size;
 }
 
 TextSprite.prototype.begin = function(context) {
@@ -30,6 +29,7 @@ TextSprite.prototype.draw = function(context) {
     context.font = this.fontSize + "px " + this.font;
     context.fillStyle = this.color;
     context.textAlign = "center";
+    this.size[0] = context.measureText(this.text).width;
     context.fillText(this.text, 0, 0);
     this.end(context);
 }
