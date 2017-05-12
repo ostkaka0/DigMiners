@@ -15,12 +15,13 @@ SurvivalGenerator.prototype.generate = function(chunk, chunkX, chunkY) {
             var distance = Math.sqrt(x * x + y * y);
             noise.seed(this.seed);
             var value = noise.perlin2(x / 20.0, y / 20.0);
-            value += distance / 40.0;
-            if (value < 1.0) {
+            //value += distance / 40.0;
+            var grassValue = value + distance / 40.0;
+            if (grassValue < 1.0) {
                 chunk.setTileId(xx, yy, Tiles.Grass.id);
                 chunk.setDensity(xx, yy, 0);
                 if (isServer) {
-                    if (Math.random() * 1000 < 5) {
+                    if ((value + distance / 80.0) < 0.001 && Math.random() <= 0.2) {
                         var treeEntityId = World.idList.next();
                         var tree = entityTemplateTree(treeEntityId, v2.create(x + 0.5, y + 0.5), Math.random() * Math.PI * 2);
                         sendCommand(new CommandEntitySpawn(tree, treeEntityId));
@@ -28,7 +29,7 @@ SurvivalGenerator.prototype.generate = function(chunk, chunkX, chunkY) {
                 }
             } else {
                 chunk.setTileId(xx, yy, Tiles.Dirt.id);
-                if (value < 1.5)
+                if (grassValue < 1.5)
                     continue;
 
                 noise.seed(this.seed);

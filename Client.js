@@ -21,8 +21,10 @@ var update = function() {
     var newTickNum = Math.floor((now - firstTickTime) / tickDuration);
     var tickFracTime = (now - firstTickTime) / tickDuration - newTickNum;
     // Refresh tab when simulation lag
-    if (newTickNum - tickNum > 1200)
+    if (newTickNum - tickNum > 1200) {
         location.reload();
+        exit();
+    }
     // Simulate ticks:
     if (World) {
         var readyTicks = 0;
