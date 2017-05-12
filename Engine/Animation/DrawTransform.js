@@ -1,4 +1,4 @@
-
+// TODO: Replace by array: [x, y, scaleX, scaleY, angle] or [x, y, angle, scaleX, scaleY]
 
 var DrawTransform = function(pos, angle, scale) {
     this.pos = pos || [0, 0];

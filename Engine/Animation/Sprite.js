@@ -1,3 +1,6 @@
+// TODO: Rename "Sprite" to "SpriteAnimation" or "textureAnimation" or "spriteBoundary" or ...
+// TODO: Create real Sprite-class: texture + source-rect + matrix
+
 class Sprite {
     constructor(image, rect = [0, 0, image.width, image.height], animationColumns = 1) {
         this.image = image;
