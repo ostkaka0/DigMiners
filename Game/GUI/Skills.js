@@ -32,7 +32,7 @@ class HUDSkills {
             this.buttons[i] = button;
         }
 
-        Event.subscribe(Player.events.onSkillChange, this, (player) => this.update(player));
+        Event.subscribe(Player.Events.onSkillChange, this, (player) => this.update(player));
         this.update(Client.player);
     }
 
@@ -49,6 +49,6 @@ class HUDSkills {
     }
 
     destroy() {
-        Event.unsubscribeAll(Player.events);
+        Event.unsubscribeAll(Player.Events);
     }
 }

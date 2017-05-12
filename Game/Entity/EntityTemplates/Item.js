@@ -1,14 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
 var entityTemplateItem = function(itemId, amount) {
     var entity = {};
     entity.physicsBody = new EntityPhysicsBody(v2.create(0, 0), 0.01);

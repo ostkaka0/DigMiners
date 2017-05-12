@@ -1,10 +1,4 @@
 
-
-
-
-
-
-
 var CommandEntityInventoryActions = {
     ADD_ITEM: 0,
     REMOVE_ITEM: 1,
@@ -17,8 +11,8 @@ var CommandEntityInventory = function(entityId, actionId, itemId, amount) {
     this.itemId = itemId;
     this.amount = amount;
 }
-global.CommandEntityInventory = CommandEntityInventory;
 TypeRegister.add(RegisterCommand, CommandEntityInventory);
+CommandEntityInventory.Events = { onInventoryChange: new Map() };
 CommandEntityInventory.Actions = CommandEntityInventoryActions;
 
 CommandEntityInventory.prototype.execute = function() {
@@ -27,7 +21,6 @@ CommandEntityInventory.prototype.execute = function() {
     if (this.actionId == CommandEntityInventory.Actions.ADD_ITEM) {
         entity.inventory.addItem(this.itemId, this.amount);
     } else if (this.actionId == CommandEntityInventory.Actions.REMOVE_ITEM) {
-        console.log(entity.inventory.isStatic(this.itemId));
         if (entity.controlledByPlayer && RegisterItem[this.itemId].oreRecipe && entity.inventory.isStatic(this.itemId)) {
             var player = Game.playerWorld.objects[entity.controlledByPlayer.playerId];
             player.consumeOreRecipe(RegisterItem[this.itemId].oreRecipe);
@@ -54,10 +47,8 @@ CommandEntityInventory.prototype.execute = function() {
     } else if (this.actionId == CommandEntityInventory.Actions.DROP_STACK) {
         var item = entity.inventory.removeStack(this.itemId);
     }
-    if (!isServer && Client.playerEntity && this.entityId == Client.playerEntity.id) {
-        Game.HUD.update();
-        Game.HUD.checkCanAffordRecipe();
-    }
+
+    Event.trigger(CommandEntityInventory.Events.onInventoryChange, entity);
 }
 
 CommandEntityInventory.prototype.serialize = function(byteArray, index) {

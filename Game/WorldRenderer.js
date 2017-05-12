@@ -22,7 +22,7 @@ var worldRendererInit = function() {
     WorldRenderer.animationManager.load();
 
     // Initialize bodypart-sprites:
-    Event.subscribe(World.entities.onAdd, this, function(entity) {
+    Event.subscribe(World.entities.onAdd, WorldRenderer, function(entity) {
         if (!isServer && entity.health && entity.drawable)
             Event.trigger(EntityHealth.Events.onChange, entity);
 

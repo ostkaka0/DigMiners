@@ -80,22 +80,8 @@ Items.Functions.Potion = function(entity, item) {
     if (entity.potionEffects) {
         entity.potionEffects.add(potionEffectType, item.potionDuration);
     }
-    if (entity.inventory) {
-        var removed = entity.inventory.removeItem(item.id, 1);
-        for (var i = 0; i < removed.length; ++i) {
-            // Dequip item when removed from inventory
-            var entry = removed[i];
-            var stackId = entry[0];
-            var item = entry[1];
-            var itemType = RegisterItem[item.id];
-            if (item.equipped)
-                Entity.onDequip(entity, stackId, itemType);
-        };
-        if (!isServer && Client.playerEntity && entity.id == Client.playerEntity.id) {
-            Game.HUD.update();
-            Game.HUD.checkCanAffordRecipe();
-        }
-    }
+    if (isServer)
+        sendCommand(new CommandEntityInventory(entity.id, CommandEntityInventory.Actions.REMOVE_ITEM, item.id, 1));
 }
 
 Items.Functions.RangedWeapon = function(entity, itemType) {
@@ -509,15 +495,6 @@ Items.Types.SmallSticks = {
     maxStackSize: 100,
     type: "resource"
 }
-Items.Types.Torch = {
-    name: "Torch",
-    texture: ItemTextures.ItemAtlas,
-    spriteId: 4,
-    isEquipable: false,
-    isDropable: true,
-    maxStackSize: 10,
-    type: "resource"
-}
 Items.Types.Egg = {
     name: "Egg",
     texture: ItemTextures.ItemAtlas,
@@ -525,6 +502,33 @@ Items.Types.Egg = {
     isEquipable: false,
     isDropable: true,
     maxStackSize: 100,
+    type: "resource"
+}
+Items.Types.Stick = {
+    name: "Stick",
+    texture: ItemTextures.ItemAtlas,
+    spriteId: 4,
+    isEquipable: false,
+    isDropable: true,
+    maxStackSize: 99,
+    type: "resource"
+}
+Items.Types.Log = {
+    name: "Log",
+    texture: ItemTextures.ItemAtlas,
+    spriteId: 5,
+    isEquipable: false,
+    isDropable: true,
+    maxStackSize: 99,
+    type: "resource"
+}
+Items.Types.Torch = {
+    name: "Torch",
+    texture: ItemTextures.ItemAtlas,
+    spriteId: 6,
+    isEquipable: false,
+    isDropable: true,
+    maxStackSize: 10,
     type: "resource"
 }
 Items.Types.PotionHealth = {

@@ -16,7 +16,7 @@ class HUDLevelPicker {
         this.buttonA.click(() => new MessageChoosePerk(Client.player.perkLevel + 1, 0).send(Client.socket));
         this.buttonB.click(() => new MessageChoosePerk(Client.player.perkLevel + 1, 1).send(Client.socket));
 
-        Event.subscribe(Player.events.onPerkChange, this, (player) => this.update(player));
+        Event.subscribe(Player.Events.onPerkChange, this, (player) => this.update(player));
         this.update(Client.player);
     }
 
@@ -34,6 +34,6 @@ class HUDLevelPicker {
     }
 
     destroy() {
-        Event.unsubscribeAll(Player.events);
+        Event.unsubscribeAll(Player.Events);
     }
 }

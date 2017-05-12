@@ -9,7 +9,7 @@ class HUDLevel {
             "padding": "10px",
             "z-index": "1",
         });
-        Event.subscribe(Player.events.onXPChange, this, (player) => this.update(player));
+        Event.subscribe(Player.Events.onXPChange, this, (player) => this.update(player));
         this.update(Client.player);
     }
 
@@ -19,6 +19,6 @@ class HUDLevel {
     }
 
     destroy() {
-        Event.unsubscribeAll(Player.events);
+        Event.unsubscribeAll(Player.Events);
     }
 }

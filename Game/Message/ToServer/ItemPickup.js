@@ -1,20 +1,7 @@
 
-
-
-
-
-
-
-
-;
-
-
-
-
 var MessageRequestItemPickup = function(entityId) {
     this.entityId = entityId;
 }
-global.MessageRequestItemPickup = MessageRequestItemPickup;
 TypeRegister.add(RegisterMessage.ToServer, MessageRequestItemPickup);
 
 MessageRequestItemPickup.prototype.execute = function(player) {
