@@ -8,12 +8,14 @@ var PhysicsWorld = function(size) {
     this.velocity = [];
     this.mass = [];
     this.onCollision = [];
+    this.activeObjects = [];
+    this.activeTable = {};
 }
 global.PhysicsWorld = PhysicsWorld;
 
 PhysicsWorld.prototype.update = function(dt) {
     // Update pos, velocity, posOld and pages
-    this.forEach(this, function(id) {
+    this.forEachActive(this, function(id) {
         if (this.getMass(id) == 0) return;
 
         var pos = this.getPos(id);
@@ -33,9 +35,9 @@ PhysicsWorld.prototype.update = function(dt) {
 
     var collisions = [];
 
-    var velocityEpsilon = -1;//fix.toFix(0.01);
+    var velocityEpsilon = 0.01;//fix.toFix(0.01);
     // Collision:
-    this.forEach(this, function(id) {
+    this.forEachActive(this, function(id) {
         var radius = this.getRadius(id);
         var mass = this.getMass(id);
         if (radius <= 0 || mass <= 0) return;
@@ -58,7 +60,7 @@ PhysicsWorld.prototype.update = function(dt) {
             var otherVelocity = this.getVelocity(otherId);
 
             // Only do collision once
-            if (otherId > id && v2.length(otherVelocity) >= velocityEpsilon && otherMass != 0) return;
+            if (otherId > id && v2.length(otherVelocity) >= velocityEpsilon && otherMass != 0/* && this.activeTable[otherId]*/) return;
 
             var otherPos = this.getPos(otherId);
             var otherPosOld = this.getPosOld(otherId);
@@ -127,12 +129,22 @@ PhysicsWorld.prototype.add = function(pos, velocity, mass, radius) {
     this._setPosOld(id, pos);
     this.setVelocity(id, velocity);
     this.setMass(id, mass);
+    this.setActive(id, true);
 
     return id;
 }
 
 PhysicsWorld.prototype.remove = function(id) {
     this.pointWorld.remove(id);
+}
+
+PhysicsWorld.prototype.setActive = function(id, isActive) {
+    return;
+    if (isActive && !this.activeTable[id]) {
+        this.activeTable[id] = true;
+    } else if (!isActive && this.activeTable[id]) {
+        delete this.activeTable[id];
+    }
 }
 
 PhysicsWorld.prototype.getBodiesInRadius = function(bodies, point, radius) {
@@ -182,6 +194,11 @@ PhysicsWorld.prototype.getBodiesInRadiusSorted = function(bodies, bodyDistances,
 
 PhysicsWorld.prototype.forEach = function(thisRef, callback) {
     this.pointWorld.forEach(callback.bind(thisRef));
+}
+
+PhysicsWorld.prototype.forEachActive = function(thisRef, callback) {
+    this.pointWorld.forEach(callback.bind(thisRef));
+    //this.activeObjects.forEach(callback.bind(thisRef));
 }
 
 PhysicsWorld.prototype.getPos = function(id) {
