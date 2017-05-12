@@ -142,6 +142,10 @@ var worldRendererRender = function(tickFracTime) {
         var arr = Client.zindices[i].getAll();
         for (var j = 0; j < arr.length; ++j) {
             var sprite = arr[j];
+            var [x, y] = sprite.pos;
+            var radius = 32.0 * Math.max(sprite.scale[0], sprite.scale[1]);
+            if (x < -radius || y < -radius || x - Client.canvas.width > radius || y - Client.canvas.height > radius)
+                continue;
             if (sprite.visible)
                 sprite.draw(Client.context);
         }

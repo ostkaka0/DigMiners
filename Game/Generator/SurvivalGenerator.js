@@ -21,7 +21,7 @@ SurvivalGenerator.prototype.generate = function(chunk, chunkX, chunkY) {
                 chunk.setTileId(xx, yy, Tiles.Grass.id);
                 chunk.setDensity(xx, yy, 0);
                 if (isServer) {
-                    if ((value + distance / 80.0) < 0.001 && Math.random() <= 0.2) {
+                    if ((value + distance / 80.0) < 0.201 && Math.random() <= 0.2) {
                         var treeEntityId = World.idList.next();
                         var tree = entityTemplateTree(treeEntityId, v2.create(x + 0.5, y + 0.5), Math.random() * Math.PI * 2);
                         sendCommand(new CommandEntitySpawn(tree, treeEntityId));
