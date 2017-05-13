@@ -1,7 +1,7 @@
 
 var entityTemplateLog = function(entityId, pos, angle) {
     var entity = {};
-    entity.physicsBody = new EntityPhysicsBody(pos, 0.001, 20.0, 1.0, 0.7);
+    entity.physicsBody = new EntityPhysicsBody(pos, 0.001, 20.0, 4.0, 0.7);
     entity.physicsBody.angle = angle;
     entity.physicsBody.angleOld = angle;
 
