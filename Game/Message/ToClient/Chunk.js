@@ -1,14 +1,4 @@
 
-
-
-
-
-
-
-
-
-;
-
 var MessageChunk = function(chunk, blockChunk, x, y) {
     this.chunk = chunk || new Chunk();
     this.blockChunk = blockChunk || new BlockChunk();
@@ -16,7 +6,6 @@ var MessageChunk = function(chunk, blockChunk, x, y) {
     this.x = x;
     this.y = y;
 }
-global.MessageChunk = MessageChunk;
 TypeRegister.add(RegisterMessage.ToClient, MessageChunk);
 
 MessageChunk.prototype.execute = function() {

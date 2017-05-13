@@ -7,6 +7,8 @@ var worldInit = function() {
     World = {
         tickId: 0,
         idList: (isServer) ? new IdList() : null,
+        width: 1,
+        height: 1,
         entities: new ObjectWorld(true),
         particles: new ParticleWorld(),
         tiles: new TileWorld(),
@@ -23,9 +25,20 @@ var worldInit = function() {
         entityInventories: {},
         events: new EventHandler(),
     };
+    worldGenerate();
     WorldPendingCommands = {};
     worldInitializeEvents();
     Event.trigger(WorldEvents.onInit);
+}
+
+var worldGenerate = function() {
+    for (var x = -World.width; x < World.width; ++x) {
+        for (var y = -World.height; y < World.height; ++y) {
+            var chunk = new Chunk();
+            World.generator.generate(chunk, x, y);
+            World.tiles.set([x, y], chunk);
+        }
+    }
 }
 
 var worldDestroy = function() {

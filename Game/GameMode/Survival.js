@@ -28,17 +28,18 @@ GameModeSurvival.prototype.init = function() {
     }
 
     World.generator = new SurvivalGenerator(Math.random() * 10000);
-    for (var x = -3; x < 3; ++x) {
-        for (var y = -3; y < 3; ++y) {
-            var chunk = new Chunk();
-            World.generator.generate(chunk, x, y);
-            World.tiles.set([x, y], chunk);
-        }
-    }
+    World.width = 6;
+    World.height = 6;
+    worldGenerate();
 
     EntityHealth.Events.onDeath.set(this, function(entity, killer) {
         if (entity.resource) {
             if (entity.resource.type == ResourceType.TREE) {
+                // Spawn tree stump
+                var treeStumpEntityId = World.idList.next();
+                var treeStumpEntity = entityTemplateTreeStump(treeStumpEntityId, entity.physicsBody.getPos(), Math.random() * Math.PI * 2);
+                sendCommand(new CommandEntitySpawn(treeStumpEntity, treeStumpEntityId));
+
                 // Spawn logs on the ground
                 var pos = v2.clone(entity.physicsBody.getPos());
                 var angle = (killer && killer.physicsBody ? killer.physicsBody.angle : (Math.random() * Math.PI * 2));

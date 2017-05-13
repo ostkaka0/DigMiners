@@ -68,18 +68,18 @@ MessageInit.prototype.send = function(socket) {
     // Serialize entities
     Serialize.int32(byteArray, index, World.entities.objectArray.length);
     World.entities.objectArray.forEach(function(entity) {
-        var start = index.value;
+        //var start = index.value;
         Serialize.int32(byteArray, index, entity.id);
         Serialize.int32(byteArray, index, this.entitySizes[entity.id]);
         Object.keys(entity).forEach(function(key) {
-            var begin = index.value;
+            //var begin = index.value;
             var component = entity[key];
             if (!component || !component.serialize) return;
             Serialize.int32(byteArray, index, component.id);
             component.serialize(byteArray, index);
-            console.log(component.name + " is " + (index.value - begin) + " bytes");
+            //console.log(component.name + " is " + (index.value - begin) + " bytes");
         }.bind(this));
-        console.log("entity was " + (index.value - start) + " bytes");
+        //console.log("entity was " + (index.value - start) + " bytes");
     }.bind(this));
 
     // Serialize players
