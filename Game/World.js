@@ -76,6 +76,23 @@ var worldTick = function(dt) {
     World.entities.update();
 
     if (isServer) {
+        World.entities.objectArray.forEach(function(entity) {
+            if (entity.behaviourContainer)
+                entity.behaviourContainer.update();
+            //TODO: 20 magic number
+            if (entity.interacter && entity.interacter.interacting && (!entity.interacter.lastCheck || World.tickId - entity.interacter.lastCheck > 20)) {
+                var interactableEntity = World.entities.objects[entity.interacter.interacting];
+                if (interactableEntity) {
+                    if (!EntityInteractable.canInteract(interactableEntity, entity)) {
+                        sendCommand(new CommandEntityInteractEntity(entity.id, interactableEntity.id, false));
+                        entity.interacter.interacting = null;
+                        entity.interacter.lastCheck = null;
+                    }
+                }
+                entity.interacter.lastCheck = World.tickId;
+            }
+        });
+
         // Synchronize collisions:
         sendCommand(new CommandCollisions(World.collisionList));
     }

@@ -109,7 +109,7 @@ var worldRendererRender = function(tickFracTime) {
         BlockChunk.fromV2World(worldCursorPos, chunkPos, localPos);
         var blockPos = [chunkPos[0] * BlockChunk.dim + localPos[0], chunkPos[1] * BlockChunk.dim + localPos[1]];
         Client.player.buildPos = blockPos;
-        if (Client.player.canPlaceBlock(Game, blockPos[0], blockPos[1])) {
+        if (Client.player.canPlaceBlock(blockPos[0], blockPos[1])) {
             Client.blockPosBad.visible = false;
             Client.blockPosGood.visible = true;
             Client.blockPosGood.pos[0] = blockPos[0] * 32 - WorldRenderer.camera.pos[0] + WorldRenderer.camera.width / 2;

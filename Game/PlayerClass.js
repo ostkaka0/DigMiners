@@ -2,7 +2,7 @@
 var PlayerClass = {
     Survivor: {
         name: "Survivor",
-        blocks: [],
+        blocks: [Items.Types.WoodCrate, Items.Types.Chest],
         weapons: [Items.Types.CopperShovel],
         speed: 1.0,
         health: 100.0,

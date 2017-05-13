@@ -1,18 +1,8 @@
 
-
-
-
-
-
-;
-
-
-
 var MessageRequestKeyStatusUpdate = function(key, pressed) {
     this.key = key;
     this.pressed = pressed;
 }
-global.MessageRequestKeyStatusUpdate = MessageRequestKeyStatusUpdate;
 TypeRegister.add(RegisterMessage.ToServer, MessageRequestKeyStatusUpdate);
 
 MessageRequestKeyStatusUpdate.prototype.execute = function(player) {
@@ -32,7 +22,7 @@ MessageRequestKeyStatusUpdate.prototype.execute = function(player) {
             var targetEntity = World.physicsEntityMap[bodies[0]];
             // Interact only if player has nothing equipped in hands
             if (targetEntity && targetEntity.interactable && entity.equippedItems && !entity.equippedItems.items["tool"]) {
-                if (!Interactable.isInteracting(targetEntity, entity)) {
+                if (!EntityInteractable.isInteracting(targetEntity, entity)) {
                     if (entity.interacter.interacting) {
                         sendCommand(new CommandEntityInteractEntity(entity.id, entity.interacter.interacting, false));
                         entity.interacter.interacting = null;

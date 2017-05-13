@@ -75,13 +75,17 @@ GameModeSurvival.prototype.init = function() {
 }
 
 GameModeSurvival.prototype.initRecipes = function() {
-    Recipes = [];
-
-    Recipes.push({
-        item: [[Items.Types.Dynamite, 1]],
-        requiredOres: [],
-        requiredItems: [[Items.Types.Log, 1], [Items.Types.Stick, 2]],
-    });
+    Recipes = [
+        {
+            item: [[Items.Types.Dynamite, 1]],
+            requiredOres: [],
+            requiredItems: [[Items.Types.Log, 1], [Items.Types.Stick, 2]],
+        }, {
+            item: [[Items.Types.WoodCrate, 1]],
+            requiredOres: [],
+            requiredItems: [[Items.Types.Stick, 2]],
+        }
+    ];
 }
 
 GameModeSurvival.prototype.name = "Survival";

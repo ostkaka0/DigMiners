@@ -97,6 +97,7 @@ EntityInventory.prototype.sortItems = function() {
 }
 
 EntityInventory.prototype.addItem = function(id, amount) {
+    if (!amount) amount = 1;
     //console.log("adding " + amount + " " + id);
     var maxStack = RegisterItem[id].maxStackSize;
     for (var i = 0; i < this.width * this.height; ++i) {

@@ -127,7 +127,7 @@ var clientInit = function(callback) {
             if (event.button == 0) {
                 var stackId = Client.playerEntity.inventory.getEquippedStackId("tool");
                 var bodies = [];
-                if (!Client.player.canPlaceBlock(Game, Client.player.buildPos[0], Client.player.buildPos[1]))
+                if (!Client.player.canPlaceBlock(Client.player.buildPos[0], Client.player.buildPos[1]))
                     return false;
                 if (stackId != null) {
                     var message = new MessageRequestPlaceBlock(stackId, Client.player.buildPos[0], Client.player.buildPos[1]);

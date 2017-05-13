@@ -21,7 +21,7 @@ CommandEntityInventory.prototype.execute = function() {
     if (this.actionId == CommandEntityInventory.Actions.ADD_ITEM) {
         entity.inventory.addItem(this.itemId, this.amount);
     } else if (this.actionId == CommandEntityInventory.Actions.REMOVE_ITEM) {
-        if (entity.controlledByPlayer && RegisterItem[this.itemId].oreRecipe && entity.inventory.isStatic(this.itemId)) {
+        /*if (entity.controlledByPlayer && RegisterItem[this.itemId].oreRecipe && entity.inventory.isStatic(this.itemId)) {
             var player = Game.playerWorld.objects[entity.controlledByPlayer.playerId];
             player.consumeOreRecipe(RegisterItem[this.itemId].oreRecipe);
             if (player.calcOreRecipeQuantity(RegisterItem[this.itemId].oreRecipe) == 0 && entity.equippedItems) {
@@ -30,20 +30,20 @@ CommandEntityInventory.prototype.execute = function() {
                 if (!isServer && entity.bodyparts && entity.bodyparts.bodyparts["tool"])
                     entity.bodyparts.bodyparts["tool"].sprite.visible = false;
             }
-        } else {
-            var removed = entity.inventory.removeItem(this.itemId, this.amount);
-            if (isServer) {
-                for (var i = 0; i < removed.length; ++i) {
-                    // Dequip item when removed from inventory
-                    var entry = removed[i];
-                    var stackId = entry[0];
-                    var item = entry[1];
-                    var itemType = RegisterItem[item.id];
-                    if (item.equipped)
-                        sendCommand(new CommandEntityEquipItem(entity.id, stackId, itemType.id, false));
-                };
-            }
+        } else {*/
+        var removed = entity.inventory.removeItem(this.itemId, this.amount);
+        if (isServer) {
+            for (var i = 0; i < removed.length; ++i) {
+                // Dequip item when removed from inventory
+                var entry = removed[i];
+                var stackId = entry[0];
+                var item = entry[1];
+                var itemType = RegisterItem[item.id];
+                if (item.equipped)
+                    sendCommand(new CommandEntityEquipItem(entity.id, stackId, itemType.id, false));
+            };
         }
+        //}
     } else if (this.actionId == CommandEntityInventory.Actions.DROP_STACK) {
         var item = entity.inventory.removeStack(this.itemId);
     }

@@ -1,20 +1,10 @@
 
-
-
-
-
-
-
-
-
-
 var CommandKeyStatusUpdate = function(entityId, key, pressed, pos) {
     this.entityId = entityId;
     this.key = key;
     this.pressed = pressed;
     this.pos = pos;
 }
-global.CommandKeyStatusUpdate = CommandKeyStatusUpdate;
 TypeRegister.add(RegisterCommand, CommandKeyStatusUpdate);
 
 CommandKeyStatusUpdate.prototype.execute = function() {

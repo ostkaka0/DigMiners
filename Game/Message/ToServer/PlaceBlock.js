@@ -29,8 +29,8 @@ MessageRequestPlaceBlock.prototype.execute = function(player) {
         if (!entity.inventory.hasItem(item.id, 1))
             return;
 
-        if (itemType.oreRecipe && player.calcOreRecipeQuantity(itemType.oreRecipe) == 0)
-            return;
+        //if (itemType.oreRecipe && player.calcOreRecipeQuantity(itemType.oreRecipe) == 0)
+          //  return;
 
         if (!player.canPlaceBlock(this.x, this.y))
             return;

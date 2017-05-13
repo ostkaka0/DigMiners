@@ -279,7 +279,6 @@ for (var name in Blocks) {
         type: "tool",
         typeOfType: "block",
         blockId: num,
-        oreRecipe: block.oreRecipe
     }
     ++num;
 }

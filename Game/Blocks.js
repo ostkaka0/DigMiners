@@ -197,7 +197,6 @@ Blocks.StoneWall = {
     hardness: 1.0,
     type: BlockTypes.FOREGROUND,
     buildDuration: 20,
-    oreRecipe: [Tiles.Stone, 1]
 };
 
 Blocks.WoodCrate = {
@@ -243,7 +242,6 @@ Blocks.BunkerWindow = {
     bulletBunkerNearFactor: 1.0,
     bulletBunkerFarFactor: 0.5,
     projectileArmor: 0.5,
-    oreRecipe: [Tiles.Stone, 2]
 }
 
 Blocks.BlueForcefield = {
@@ -257,7 +255,6 @@ Blocks.BlueForcefield = {
     maxDoorSize: 1,
     doorOpenTime: 2000,
     doorOpenDelay: 200,
-    oreRecipe: [Tiles.Copper, 2]
 }
 
 Blocks.RedForcefield = {
@@ -271,21 +268,20 @@ Blocks.RedForcefield = {
     maxDoorSize: 10,
     doorOpenTime: 2000,
     doorOpenDelay: 200,
-    oreRecipe: [Tiles.Copper, 2]
 }
 
 Blocks.BlueForcefieldOpen = {
     name: "Blue Forcefield",
     isSolid: false,
     hardness: 1.0,
-    oreRecipe: BlockTypes.FOREGROUND
+    type: BlockTypes.FOREGROUND
 }
 
 Blocks.RedForcefieldOpen = {
     name: "Red Forcefield",
     isSolid: false,
     hardness: 1.0,
-    oreRecipe: BlockTypes.FOREGROUND
+    type: BlockTypes.FOREGROUND
 }
 
 Blocks.HealthBox = {
@@ -300,7 +296,6 @@ Blocks.HealthBox = {
         entity.potionEffects.add(PotionEffectTypes.HealNearEntities, -1);
         return entity;
     },
-    oreRecipe: [Tiles.Copper, 2]
 }
 
 Blocks.AmmoBox = {
@@ -315,7 +310,6 @@ Blocks.AmmoBox = {
         entity.potionEffects.add(PotionEffectTypes.SupplyAmmoNearEntities, -1);
         return entity;
     },
-    oreRecipe: [Tiles.Copper, 2]
 }
 
 Blocks.Chest = {
@@ -336,7 +330,6 @@ Blocks.Chest = {
         entity.inventory.addItem(Items.Types.RustyShovel.id, Math.floor(Math.random() * 8));
         return entity;
     },
-    oreRecipe: [Tiles.Iron, 2]
 }
 
 Blocks.MachineGunTurret = {
@@ -352,7 +345,6 @@ Blocks.MachineGunTurret = {
         sendCommand(new CommandEntityInventory(entityId, CommandEntityInventory.Actions.ADD_ITEM, weaponId, 1));
         sendCommand(new CommandEntityEquipItem(entityId, 0, weaponId, true));
     },
-    oreRecipe: [Tiles.Coal, 5, Tiles.Copper, 5, Tiles.Iron, 5]
 }
 
 Blocks.SmgTurret = {
@@ -368,7 +360,6 @@ Blocks.SmgTurret = {
         sendCommand(new CommandEntityInventory(entityId, CommandEntityInventory.Actions.ADD_ITEM, weaponId, 1));
         sendCommand(new CommandEntityEquipItem(entityId, 0, weaponId, true));
     },
-    oreRecipe: [Tiles.Coal, 2, Tiles.Copper, 1, Tiles.Iron, 1]
 }
 
 Blocks.Toxin = {
@@ -387,7 +378,7 @@ Blocks.Toxin = {
         var dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
         var strengthDecrease = 10;
         var strengthTimeDecrease = 5;
-        for (var i = blockList.length-1; i >= 0; i--) {
+        for (var i = blockList.length - 1; i >= 0; i--) {
             let blockPos = blockList[i];
             var blockId = blockWorld.getForeground(blockPos);
             if (blockId != Blocks.Toxin.id) continue;
@@ -401,7 +392,7 @@ Blocks.Toxin = {
             //worldSetTimeout(function() { blockWorld.setForeground(blockPos, 0); }, 500 + blockStrength * 15);
             var childStrength = blockStrength - strengthDecrease;
             if (childStrength > 0) {
-            console.log("childStrength", childStrength);
+                console.log("childStrength", childStrength);
 
                 for (var j = 0; j < dirs.length; j++) {
                     var otherPos = v2.clone(blockPos);
@@ -409,7 +400,7 @@ Blocks.Toxin = {
                     var otherId = blockWorld.getForeground(otherPos);
                     var otherDensity = World.tiles.getDensity(otherPos);
                     if ((otherId != 0 && otherId != Blocks.Toxin.id) || otherDensity > 127) continue;
-                    var oldStrength = (otherId == Blocks.Toxin.id)? blockWorld.getStrength(otherPos) : 0;
+                    var oldStrength = (otherId == Blocks.Toxin.id) ? blockWorld.getStrength(otherPos) : 0;
                     if (oldStrength >= childStrength) continue;
                     if (otherId == Blocks.Toxin.id)
                         blockWorld.setStrength(otherPos, childStrength);

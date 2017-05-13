@@ -156,10 +156,10 @@ InventoryHUD.prototype.update = function() {
             slotTextContainer.innerText = "";
             var amount = item.amount;
             var showAmount = (amount > 1);
-            if (itemType.oreRecipe) {
+            /*if (itemType.oreRecipe) {
                 var amount = Client.player.calcOreRecipeQuantity(itemType.oreRecipe);
                 showAmount = (amount >= 0);
-            }
+            }*/
             if (showAmount)
                 slotTextContainer.innerText = amount;
 

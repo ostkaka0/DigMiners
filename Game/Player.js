@@ -19,7 +19,7 @@ Player.prototype.onSpawn = function(entity) {
     this.entityId = entity.id;
     if (!entity.health) return;
     var newXP = 0;
-    for (var i = 1; i < this.level-1; i++) {
+    for (var i = 1; i < this.level - 1; i++) {
         newXP += this.getRequiredXP(i);
     }
     this.xp = 0;
@@ -32,22 +32,22 @@ Player.prototype.onSpawn = function(entity) {
 
 Player.prototype.getRequiredXP = function(level) {
     level = level || this.level;
-    var requiredXP = 10 * Math.pow(10.0, (level-1)/10.0);
-    return 10 * Math.round( requiredXP / Math.pow(10, Math.floor(Math.log10(requiredXP/10)))) *  Math.pow(10, Math.floor(Math.log10(requiredXP/10)));
+    var requiredXP = 10 * Math.pow(10.0, (level - 1) / 10.0);
+    return 10 * Math.round(requiredXP / Math.pow(10, Math.floor(Math.log10(requiredXP / 10)))) * Math.pow(10, Math.floor(Math.log10(requiredXP / 10)));
 }
 
 Player.prototype.addXP = function(xp) {
     var oldLevel = this.level;
     var requiredXP = this.getRequiredXP();
     this.xp += xp;
-    while(this.xp >= requiredXP) {
+    while (this.xp >= requiredXP) {
         this.xp -= requiredXP;
         this.level++;
         requiredXP = this.getRequiredXP();
         this.skillPoints++;
     }
     // Skip empty perk levels
-    while(this.perkLevel < this.level && !LevelPerks[this.perkLevel + 1])
+    while (this.perkLevel < this.level && !LevelPerks[this.perkLevel + 1])
         this.perkLevel++;
 
     // Trigger events
@@ -68,7 +68,7 @@ Player.prototype.choosePerk = function(perkId) {
     else
         perks.b(this, World.entities.objects[this.entityId]);
     // Skip empty perk levels
-    while(this.perkLevel < this.level && !LevelPerks[this.perkLevel + 1])
+    while (this.perkLevel < this.level && !LevelPerks[this.perkLevel + 1])
         this.perkLevel++;
     Event.trigger(Player.Events.onPerkChange, this);
 }
@@ -81,7 +81,7 @@ Player.prototype.chooseSkill = function(skill) {
     Event.trigger(Player.Events.onSkillChange, this);
 }
 
-Player.prototype.calcOreRecipeQuantity = function(oreRecipe) {
+/*Player.prototype.calcOreRecipeQuantity = function(oreRecipe) {
     if (!oreRecipe || oreRecipe.length < 2) return -1
     var numItems = Number.MAX_VALUE;
     for (var i = 0; i < oreRecipe.length; i += 2) {
@@ -94,12 +94,12 @@ Player.prototype.calcOreRecipeQuantity = function(oreRecipe) {
 }
 
 Player.prototype.consumeOreRecipe = function(oreRecipe) {
-    for (var i = 0; i+1 < oreRecipe.length; i += 2) {
+    for (var i = 0; i + 1 < oreRecipe.length; i += 2) {
         var tileType = oreRecipe[i];
         var amount = oreRecipe[i + 1];
         this.oreInventory[tileType.id] -= amount * 255;
     }
-}
+}*/
 
 // TODO: Use calcOreRecipeQuantity
 Player.prototype.hasRequiredRecipeResources = function(recipe) {

@@ -1,15 +1,9 @@
 
-
-
-
-
-
 var EntityInteractable = function(canInteractFunction) {
     this.interacting = [];
     this.canInteractFunction = canInteractFunction || (function(interactableEntity, entity) { return true; });
     this.canInteractFunction.bind(this);
 }
-global.EntityInteractable = EntityInteractable;
 TypeRegister.add(RegisterEntity, EntityInteractable);
 EntityInteractable.Events = { onInteract: new Map(), onFinishInteract: new Map() };
 
