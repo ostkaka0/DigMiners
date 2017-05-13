@@ -7,6 +7,7 @@ var SurvivalGenerator = function(seed) {
 }
 
 SurvivalGenerator.prototype.generate = function(chunk, chunkX, chunkY) {
+    //TODO: optimize number of noise.seed calls.
     for (var yy = 0; yy < Chunk.dim; ++yy) {
         for (var xx = 0; xx < Chunk.dim; ++xx) {
             var x = xx + chunkX * Chunk.dim;
@@ -32,11 +33,9 @@ SurvivalGenerator.prototype.generate = function(chunk, chunkX, chunkY) {
                 if (grassValue < 1.5)
                     continue;
 
-                noise.seed(this.seed);
-                var value = noise.perlin2(x / 20.0, y / 20.0);
-                value += distance / 200.0;
+                var value2 = value + distance / 200.0;
 
-                if (value > 0.3) {
+                if (value2 > 0.3) {
                     chunk.setTileId(xx, yy, 1);
 
                     noise.seed(this.seed + 1);

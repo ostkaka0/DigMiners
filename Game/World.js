@@ -32,8 +32,8 @@ var worldInit = function() {
 }
 
 var worldGenerate = function() {
-    for (var x = -World.width; x < World.width; ++x) {
-        for (var y = -World.height; y < World.height; ++y) {
+    for (var x = -World.width / 2; x < World.width / 2; ++x) {
+        for (var y = -World.height / 2; y < World.height / 2; ++y) {
             var chunk = new Chunk();
             World.generator.generate(chunk, x, y);
             World.tiles.set([x, y], chunk);
