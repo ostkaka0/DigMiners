@@ -6,7 +6,7 @@ var entityTemplateTurret = function(entityId, pos, teamId) {
     entity.inventory = EntityInventory.createInventory(entityId, 10, 1);
     entity.equippedItems = new EntityEquippedItems();
 
-    var bottomSprite = new Sprite("turret/bottom.png");
+    var bottomSprite = new Sprite(Client.textures["turret/bottom.png"]);
 
     var bodyParts = {
         "bottom": new BodyPart(bottomSprite, 0, 0, 0, null, null, true),
@@ -16,7 +16,7 @@ var entityTemplateTurret = function(entityId, pos, teamId) {
 
     entity.bodyParts = new EntityBodyparts(bodyParts);
     entity.drawable = new EntityDrawable(1);
-    var healthbarSprite = new Sprite("healthbar.png", null, false);
+    var healthbarSprite = new Sprite(Client.textures["healthbar.png"]);
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
 
     entity.health = new EntityHealth(50, 50, 0.0);

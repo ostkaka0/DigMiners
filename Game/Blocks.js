@@ -33,7 +33,7 @@ BlockFunctions.createEntityBox = function(blockPos, block) {
         };
         entity.bodyParts = new EntityBodyparts(bodyParts);*/
         entity.drawable = new EntityDrawable(1);
-        var healthbarSprite = new Sprite("healthbar.png");
+        var healthbarSprite = new Sprite(Client.textures["healthbar.png"]);
         entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
 
         if (block.onCreateEntity)

@@ -9,10 +9,10 @@ var entityTemplateMonster = function(entityId, pos, teamId) {
     entity.potionEffects = new EntityPotionEffects();
 
     var teamEnum = teamId || EntityTeam.Enum.None;
-    var feetSprite = new Sprite("feet.png");
-    var rightArmSprite = new Sprite("rightArm.png");
-    var leftArmSprite = new Sprite("leftArm.png");
-    var headSprite = new Sprite("head.png");
+    var feetSprite = new Sprite(Client.textures["feet.png"]);
+    var rightArmSprite = new Sprite(Client.textures["rightArm.png"]);
+    var leftArmSprite = new Sprite(Client.textures["leftArm.png"]);
+    var headSprite = new Sprite(Client.textures["head.png"]);
     var hatSprite = new Sprite((teamEnum == EntityTeam.Enum.Blue) ? "egg.png" : "bigEgg.png");
 
     var bodyParts = {
@@ -27,7 +27,7 @@ var entityTemplateMonster = function(entityId, pos, teamId) {
 
     entity.bodyParts = new EntityBodyparts(bodyParts);
     entity.drawable = new EntityDrawable(1);
-    var healthbarSprite = new Sprite("healthbar.png", null, false);
+    var healthbarSprite = new Sprite(Client.textures["healthbar.png"]);
     entity.drawable.addSprite("healthbar", healthbarSprite, v2.create(0, -35), false, true);
 
     entity.health = new EntityHealth(50, 50, 0.0);

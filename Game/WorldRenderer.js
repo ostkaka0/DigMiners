@@ -10,10 +10,12 @@ var worldRendererInit = function() {
             height: window.innerHeight,
             pos: v2.create(0, 0)
         },
+        zindices: [],
         chunkRenderer: new ChunkRenderer(Client.gl, World.tiles, 32.0),
         blockRenderer: new BlockChunkRenderer(Client.gl, World.blocks, 32.0),
         //animationManager: new AnimationManager(),
     }
+    for (var i = 0; i < 10; i++) WorldRenderer.zindices.push([]);
     WorldRenderer.onResize = function() {
         console.log("resize");
         WorldRenderer.camera.width = window.innerWidth;
@@ -84,13 +86,13 @@ var worldRendererRender = function(tickFracTime) {
         if (entity.physicsBody && entity.bodyParts) {
             Client.context.translate(32.0 * entityPos[0], 32.0 * entityPos[1]);
             Client.context.rotate(entity.physicsBody.angle);
-            entity.bodyParts.root.draw(Client.context, tickFracTime / 1000.0, matEntity);
+            entity.bodyParts.root.draw(WorldRenderer.zindices[1], tickFracTime / 1000.0, matEntity);
             Client.context.rotate(-entity.physicsBody.angle);
             Client.context.translate(-32.0 * entityPos[0], -32.0 * entityPos[1]);
             entity.bodyParts.bodyParts["feet"].animationId = Math.random() * 60 >> 0;
         }
         if (entity.physicsBody && entity.drawable) {
-            entity.drawable.draw(Client.context, tickFracTime / 1000.0, entity);
+            entity.drawable.draw(matCamera, tickFracTime / 1000.0, entity);
         }
     }
 
@@ -167,17 +169,17 @@ var worldRendererRender = function(tickFracTime) {
     WorldRenderer.chunkRenderer.render(World.tiles, projectionMatrix.clone().append(viewMatrix), WorldRenderer.camera);
     WorldRenderer.blockRenderer.render(gameData, World.blocks, projectionMatrix.clone().append(viewMatrix), WorldRenderer.camera);
 
-    /*// Render entities
+    // Render entities
     Client.context.clearRect(0, 0, Client.canvas.width, Client.canvas.height);
-    for (var i = 0; i < Client.zindices.length; ++i) {
-        var arr = Client.zindices[i].getAll();
+    for (var i = 0; i < WorldRenderer.zindices.length; ++i) {
+        var arr = WorldRenderer.zindices[i];
         for (var j = 0; j < arr.length; ++j) {
             var sprite = arr[j];
-            if (sprite.visible)
-                sprite.draw(Client.context);
+            sprite.draw(Client.context);
         }
+        WorldRenderer.zindices[i].length = 0;
     }
 
-    // Render particles
-    World.particles.render(WorldRenderer.camera, Client.context, tickFracTime);*/
+    // TODO: Render particles
+    //World.particles.render(WorldRenderer.camera, Client.context, tickFracTime);
 }

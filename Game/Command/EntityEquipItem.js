@@ -25,11 +25,11 @@ CommandEntityEquipItem.prototype.execute = function() {
         if (!isServer && sprite && !this.equipped)
             entity.bodyParts.bodyParts[itemType.type].sprite = null;
         else if (this.equipped) {
-            var sprite = new Sprite(Client.textures[itemType.texture.path], [
+            var sprite = new Sprite(Client.textures[itemType.texture.path]); /* TODO: Fix: , [
                 (itemType.textureId % itemType.texture.dimX >> 0) * itemType.texture.spriteWidth,
                 (itemType.textureId / itemType.texture.dimX >> 0) * itemType.texture.spriteHeight,
                 itemType.texture.spriteWidth,
-                itemType.texture.spriteHeight]);
+                itemType.texture.spriteHeight]);*/
 
             entity.bodyParts.bodyParts[itemType.type].sprite = sprite;
             //entity.drawable.setBodypartSprite(entity.bodyParts.bodyParts[itemType.type], sprite);

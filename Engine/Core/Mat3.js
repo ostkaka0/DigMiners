@@ -5,6 +5,15 @@ Mat3.create = function() {
             0, 1, 0];
 }
 
+Mat3.clear = function(mat) {
+    mat[0] = 1;
+    mat[1] = 0;
+    mat[2] = 0;
+    mat[3] = 0;
+    mat[4] = 1;
+    mat[5] = 0
+}
+
 Mat3.translate = function(vec, mat = Mat3.create(), out = mat) {
     out[2] = mat[2] + vec[0];
     out[5] = mat[5] + vec[1];
@@ -52,8 +61,8 @@ Mat3.mul = function(i, j, out = Mat3.create()) {
 }
 
 // transform - [x, y, scaleX, scaleY, angle]
-Mat3.fromTransform = function(transform) {
-    return Mat3.translate(transform, Mat3.rotate(transform[4], Mat3.scale([transform[2], transform[3]])))
+Mat3.fromTransform = function(transform, mat = Mat3.create()) {
+    return Mat3.translate(transform, Mat3.rotate(transform[4], Mat3.scale([transform[2], transform[3]], mat)))
     //return Mat3.rotate(transform[4], Mat3.scale([transform[2], transform[3]], Mat3.translate(transform)));
 }
 

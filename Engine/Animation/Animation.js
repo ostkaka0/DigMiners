@@ -1,3 +1,21 @@
+class Animation {
+    constructor(rect, animationColumns = 1, animationRows = 1, animationLength = animationCOlumns * animationRows) {
+        this.rect = rect;
+        this.animationColumns = animationColumns;
+        this.animationRows = animationRows;
+        this.animationLength = animationLength;
+    }
+
+    getRect(animationId = 0) {
+        animationId %= this.animationLength;
+        return [
+            this.rect[0] + (animationId % this.animationColumns) * this.rect[2],
+            this.rect[1] + (animationId / this.animationColumns >> 0) * this.rect[3],
+            this.rect[2],
+            this.rect[3]];
+    }
+}
+
 /*var Animation = function(name, texture, numFrames, frameWidth, frameHeight) {
     this.texture = texture;
     this.numFrames = numFrames;
@@ -25,4 +43,3 @@ Animation.prototype.load = function() {
         }
     }
 }*/
- 

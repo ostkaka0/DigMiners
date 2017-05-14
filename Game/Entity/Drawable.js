@@ -18,28 +18,23 @@ class EntityDrawable {
         delete this.spriteVars[name];
     }
 
-    draw(context, dt, entity) {
+    draw(mat, dt, entity) {
         var pos = entity.physicsBody.getPos();
         var angle = entity.physicsBody.angle;
         var keys = Object.keys(this.sprites);
         for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
-            var transform = this.spriteTransforms[key];
-            //context.translate(-pos[0], -pos[1]);
-            if (this.spriteVars[key].rotateWithBody)
-                context.rotate(-angle);
-            //transform.begin(context);
+            //var transform = this.spriteTransforms[key];
+            var transform = [32. * pos[0], 32. * pos[1], 1., 1., (this.spriteVars[key].rotateWithBody) ? angle : 0.0];
+            var spriteMat = Mat3.fromTransform(transform);
+            Mat3.mul(mat, spriteMat, spriteMat);
             if (this.sprites[key] instanceof Sprite) {
-                var texture = this.sprites[key].texture;
-                var rect = this.sprites[key].getRect(0);
-                context.drawImage(texture, rect[0], rect[1], rect[2], rect[3], -rect[2]/2, -rect[3]/2, rect[2]/2, rect[3]/2);
+                this.sprites[key].updateMat(spriteMat)
+                if (this.sprites[key].isVisible(Client.canvas.width, Client.canvas.height))
+                    WorldRenderer.zindices[1].push(this.sprites[key]);
             } else if (this.sprites[key] instanceof TextSprite) {
-                this.sprites[key].draw(context);
+                //this.sprites[key].draw(context);
             }
-            //transform.end(context);
-            if (this.spriteVars[key].rotateWithBody)
-                context.rotate(angle);
-            //context.translate(pos[0], pos[1]);
         }
     }
 

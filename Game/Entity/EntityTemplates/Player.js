@@ -24,22 +24,22 @@ var entityTemplatePlayer = function(playerId, entityId, name, playerClass, teamI
     // Order of bodyParts is draw order
     // Parameters: sprite, offsetX, offsetY, offsetAngle, pivot(v2), parent name
     if (!isServer) {
-        var feetSprite = Client.sprites["feet"];//new Sprite("feet.png");
-        var rightArmSprite = Client.sprites["rightArm"];//new Sprite("rightArm.png");
-        var leftArmSprite = Client.sprites["leftArm"];//new Sprite("leftArm.png");
-        var headSprite = Client.sprites["head"];//new Sprite("head.png");
+        var feetSprite = new Sprite(Client.textures["feet.png"], null, 0, [0., 0., 0.8, 0.8, 0.]);
+        var rightArmSprite = new Sprite(Client.textures["rightArm.png"]);
+        var leftArmSprite = new Sprite(Client.textures["leftArm.png"]);
+        var headSprite = new Sprite(Client.textures["head.png"]);
         var strHatSprite = "";
         if (teamEnum == EntityTeam.Enum.Blue) strHatSprite = "egg.png";
         if (teamEnum == EntityTeam.Enum.Red) strHatSprite = "bigEgg.png";
-        var hatSprite = new Sprite(strHatSprite);
+        var hatSprite = new Sprite(Client.textures[strHatSprite]);
 
         var bodyParts = {
-            body: new BodyPart(null, 0, Mat3.scale([1.5, 1.5])),
-            head: new BodyPart(headSprite, 0, Mat3.scale([0.8, 0.8])),
-            leftArm: new BodyPart(leftArmSprite, 0, Mat3.translate([0, -8])),// new DrawTransform([10, 23], 0, [1, 1], [0.5, 0.5])),
-            rightArm: new BodyPart(rightArmSprite, 0, Mat3.translate([0, 8])),// new DrawTransform([10, 11], 0, [1, 1], [0.5, 0.5])),
-            feet: new BodyPart(feetSprite, 0, Mat3.create(), Mat3.scale([0.8, 0.8])),
-            tool: new BodyPart(null, 0, Mat3.translate([12, 8])),
+            body: new BodyPart(null, Mat3.scale([1.5, 1.5])),
+            head: new BodyPart(headSprite, Mat3.scale([0.8, 0.8])),
+            leftArm: new BodyPart(leftArmSprite, Mat3.translate([0, -8])),// new DrawTransform([10, 23], 0, [1, 1], [0.5, 0.5])),
+            rightArm: new BodyPart(rightArmSprite, Mat3.translate([0, 8])),// new DrawTransform([10, 11], 0, [1, 1], [0.5, 0.5])),
+            feet: new BodyPart(feetSprite),
+            tool: new BodyPart(null, Mat3.translate([12, 8])),
             hat: new BodyPart(null),
         }
         bodyParts.body.children.push(bodyParts.feet);

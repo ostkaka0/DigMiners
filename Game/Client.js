@@ -154,16 +154,6 @@ var clientInit = function(callback) {
 
 var clientInitTextures = function(callback) {
     Client.textures = loadTextures("data/textures/", Config.textures, () => {
-        Client.sprites["head"] = new Sprite(Client.textures["head.png"], [20, 20, 35, 35]);
-        Client.sprites["feet"] = new Sprite(Client.textures["feet.png"], [0, 0, 75, 75], 60);
-        Client.sprites["leftArm"] = new Sprite(Client.textures["leftArm.png"], [0, 0, 22, 34]);
-        Client.sprites["rightArm"] = new Sprite(Client.textures["rightArm.png"], [0, 0, 22, 34]);
-        /*Client.blockPosGood = new Sprite("blockPosGood.png");
-        Client.blockPosGood.anchor = [0, 0];
-        Client.zindices[2].add(Client.blockPosGood);
-        Client.blockPosBad = new Sprite("blockPosBad.png");
-        Client.blockPosBad.anchor = [0, 0];
-        Client.zindices[2].add(Client.blockPosBad);*/
         $("*").mousemove(function(event) {
             Client.mouseX = event.pageX;
             Client.mouseY = event.pageY;

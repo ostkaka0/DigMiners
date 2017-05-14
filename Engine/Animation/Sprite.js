@@ -2,6 +2,54 @@
 // TODO: Create real Sprite-class: texture + source-rect + matrix
 
 class Sprite {
+    constructor(image, animation = null, animationId = 0, transform = [0., 0., 1., 1., 0.,], mat = Mat3.create()) {
+        this.image = image;
+        this.animation = animation;
+        this.animationId = animationId;
+        this.transform = transform;
+        this.mat = mat;
+    }
+
+    getAnimationRectSize() {
+        return this.animation ? [this.animation.rect[2], this.animation.rect[3]] : [this.image.width, this.image.height];
+    }
+
+    getSrcRect() {
+        return this.animation ? this.animation.getRect(this.animationId) : [0, 0, this.image.width, this.image.height];
+    }
+
+    updateMat(mat) {
+        Mat3.clear(this.mat);
+        Mat3.fromTransform(this.transform, this.mat);
+        Mat3.mul(mat, this.mat, this.mat);
+    }
+
+    draw(context) {
+        Mat3.apply(context, this.mat);
+        var srcRect = this.getSrcRect();
+        context.drawImage(this.image, srcRect[0], srcRect[1], srcRect[2], srcRect[3], -srcRect[2]/2, -srcRect[3]/2, srcRect[2], srcRect[3]);
+    }
+
+    isVisible(width, height) {
+        if (this.image == null) return false;
+        var size = this.getAnimationRectSize();
+        var a = [-0.5 * size[0], -0.5 * size[1]];
+        var b = [0.5 * size[0], -0.5 * size[1]];
+        var c = [-0.5 * size[0], 0.5 * size[1]];
+        var d = [0.5 * size[0], 0.5 * size[1]];
+        Mat3.mulV2(a, this.mat);
+        Mat3.mulV2(b, this.mat);
+        Mat3.mulV2(c, this.mat);
+        Mat3.mulV2(d, this.mat);
+        var minX = Math.min(Math.min(a[0], b[0]), Math.min(c[0], d[0]));
+        var maxX = Math.max(Math.max(a[0], b[0]), Math.max(c[0], d[0]));
+        var minY = Math.min(Math.min(a[1], b[1]), Math.min(c[1], d[1]));
+        var maxY = Math.max(Math.max(a[1], b[1]), Math.max(c[1], d[1]));
+        return (maxX < 0 || maxY < 0 || minX > width || minY > height);
+    }
+}
+
+/*class Sprite {
     constructor(image, rect = [0, 0, image.width, image.height], animationColumns = 1) {
         this.image = image;
         this.texture = image; // TODO: this.image = this.texture, only keep one
@@ -16,7 +64,7 @@ class Sprite {
             this.rect[2],
             this.rect[3]];
     }
-}
+}*/
 
 /* var Sprite = function(textureName) {
     if (textureName) {

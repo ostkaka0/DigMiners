@@ -381,7 +381,7 @@ World.physicsWorld.onCollision.push(function(collisions) {
 
 TextureLoader.Events.onComplete.set(window, function(textures) {
     // Must wait until all textures have loaded to continue! important
-    window.blockPosGood = new Sprite("blockPosGood.png");
+    window.blockPosGood = new Sprite(textures["blockPosGood.png"]);
     window.blockPosGood.anchor = [0, 0];
     window.zindices[2].add(window.blockPosGood);
     window.blockPosBad = new Sprite("blockPosBad.png");

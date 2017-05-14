@@ -7,7 +7,7 @@ var entityTemplateGhost = function (playerId, entityId, name) {
     entity.name = new EntityName(name);
 
     var bodyParts = {
-        "player": new BodyPart(new Sprite("ghost.png"), 0, 0, 0, null, null),
+        "player": new BodyPart(new Sprite(Client.textures["ghost.png"]), 0, 0, 0, null, null),
         "feet": new BodyPart(new Sprite(), 0, 0, 0, null, "player"),
         "leftArm": new BodyPart(new Sprite(), 5, -4, 0, [10, 23], "body"),
         "tool": new BodyPart(new Sprite(), -10, 15, 0, null, "rightArm"),

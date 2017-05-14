@@ -171,8 +171,8 @@ worldInitializeEvents = function() {
         if (!isServer) {
             var sprite = entity.drawable.sprites["healthbar"];
             if (!sprite) return;
-            var defaultHealthbarWidth = 64;
-            sprite.frame = [0, 0, (entity.health.health / entity.health.maxHealth) * defaultHealthbarWidth, sprite.texture.height];
+            var defaultHealthbarWidth = 64 / sprite.image.width;
+            sprite.transform[2] = (entity.health.health / entity.health.maxHealth) * defaultHealthbarWidth;
         }
     }.bind(this));
 
@@ -441,7 +441,7 @@ World.prototype.initializeEvents = function() {
             var sprite = entity.drawable.sprites["healthbar"];
             if (!sprite) return;
             var defaultHealthbarWidth = 64;
-            sprite.frame = [0, 0, (entity.health.health / entity.health.maxHealth) * defaultHealthbarWidth, sprite.texture.height];
+            sprite.transform[2] = (entity.health.health / entity.health.maxHealth) * defaultHealthbarWidth;
         }
     }.bind(this));
 

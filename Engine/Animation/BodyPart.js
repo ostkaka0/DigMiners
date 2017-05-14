@@ -1,10 +1,8 @@
 
 class BodyPart {
-    constructor(sprite, animationId = 0, mat = Mat3.create(), matSprite = Mat3.create()) {
+    constructor(sprite, mat = Mat3.create()) {
         this.sprite = sprite;
-        this.animationId = animationId; // Sprite animation id
         this.mat = mat;//this.transform = transform;
-        this.matSprite = matSprite;//this.spriteTransform = spriteTransform; // Only applied to the sprite, not for children
         this.children = [];
         // Animation
         this.animation = null; // Current animation
@@ -52,18 +50,17 @@ class BodyPart {
         this.animationTransform[4] = a * this.prevAnimationTransform[4] + b * this.nextAnimationTransform[4];
     }
 
-    draw(context, dt, matIn) {
+    draw(spriteArray, dt, matIn) {
         var matDraw = Mat3.create();
         Mat3.mul(matIn, this.mat, matDraw);
         Mat3.mul(matDraw, Mat3.fromTransform(this.animationTransform), matDraw);
 
         for (var i = 0; i < this.children.length; i++)
-            this.children[i].draw(context, dt, matDraw);
+            this.children[i].draw(spriteArray, dt, matDraw);
         if (this.sprite) {
-            Mat3.mul(matDraw, this.matSprite, matDraw);
-            Mat3.apply(context, matDraw);
-            var srcRect = this.sprite.getRect(this.animationId);
-            context.drawImage(this.sprite.image, srcRect[0], srcRect[1], srcRect[2], srcRect[3], -srcRect[2]/2, -srcRect[3]/2, srcRect[2], srcRect[3]);
+            this.sprite.updateMat(matDraw);
+            if (this.sprite.isVisible(Client.canvas.width, Client.canvas.height))
+                spriteArray.push(this.sprite);
         }
     }
 }
