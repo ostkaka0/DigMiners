@@ -1,5 +1,5 @@
 
-var CommandEntitySpawn = function(entity, entityId, teamId) {
+var CommandEntitySpawn = function(entity, entityId, templateId) {
     this.entity = entity;
     this.entityId = entityId;
     this.templateId = templateId;
@@ -35,7 +35,8 @@ CommandEntitySpawn.prototype.deserialize = function(byteArray, index) {
         var componentId = Deserialize.int32(byteArray, index);
         var componentType = RegisterEntity[componentId];
         var componentName = componentType.prototype.name;
-        entity[componentName] = new componentType();
+        if (!entity[componentName])
+            entity[componentName] = new componentType();
         entity[componentName].deserialize(byteArray, index);
     }
     this.entityId = entityId;

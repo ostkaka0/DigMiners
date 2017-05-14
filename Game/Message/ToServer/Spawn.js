@@ -32,7 +32,7 @@ MessageRequestSpawn.prototype.execute = function(player) {
     //}
 
     //if (entity) {
-    sendCommand(new CommandEntitySpawn(entity, entityId));
+    sendCommand(new CommandEntitySpawn(entity, entityId, entityTemplatePlayer.id));
     sendCommand(new CommandPlayerSpawn(player.id, entityId, player.name));
     /*} else {
 

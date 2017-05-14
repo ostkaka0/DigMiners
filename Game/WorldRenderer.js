@@ -174,11 +174,6 @@ var worldRendererRender = function(tickFracTime) {
         var arr = WorldRenderer.zindices[i];
         for (var j = 0; j < arr.length; ++j) {
             var sprite = arr[j];
-            var [x, y] = sprite.pos;
-            var width = sprite.getSize()[0] * sprite.scale[0];
-            var height = sprite.getSize()[1] * sprite.scale[1];
-            if (x < -width / 2 || y < -height / 2 || x - Client.canvas.width > width / 2 || y - Client.canvas.height > height / 2 || !sprite.visible)
-                continue;
             sprite.draw(Client.context);
         }
         WorldRenderer.zindices[i].length = 0;
