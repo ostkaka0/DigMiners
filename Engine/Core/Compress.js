@@ -28,8 +28,12 @@ global.decompressRLE = function(arrayBuffer, outputArray, begin, end) {
     while (i < end) {
         var length = arrayBuffer[i++];
         var byte = arrayBuffer[i++];
-        for (var j = 0; j < length; j++)
-            outputArray.fill(byte, outputIndex, outputIndex + length);
+        for (var j = 0; j < length; j++) {
+            //TODO: check why for-loop is faster than .fill(twice as fast)
+            for (var k = outputIndex; k < outputIndex + length; ++k)
+                outputArray[k] = byte;
+            //outputArray.fill(byte, outputIndex, outputIndex + length);
+        }
         outputIndex += length;
     }
     return outputArray;

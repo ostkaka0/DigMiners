@@ -8,12 +8,14 @@ var PhysicsWorld = function(size) {
     this.velocity = [];
     this.mass = [];
     this.onCollision = [];
+    this.activeObjects = [];
+    this.activeTable = {};
 }
 global.PhysicsWorld = PhysicsWorld;
 
 PhysicsWorld.prototype.update = function(dt) {
     // Update pos, velocity, posOld and pages
-    this.forEach(this, function(id) {
+    this.forEachActive(this, function(id) {
         if (this.getMass(id) == 0) return;
 
         var pos = this.getPos(id);
@@ -33,9 +35,9 @@ PhysicsWorld.prototype.update = function(dt) {
 
     var collisions = [];
 
-    var velocityEpsilon = -1;//fix.toFix(0.01);
+    var velocityEpsilon = 0.01;//fix.toFix(0.01);
     // Collision:
-    this.forEach(this, function(id) {
+    this.forEachActive(this, function(id) {
         var radius = this.getRadius(id);
         var mass = this.getMass(id);
         if (radius <= 0 || mass <= 0) return;
@@ -58,7 +60,7 @@ PhysicsWorld.prototype.update = function(dt) {
             var otherVelocity = this.getVelocity(otherId);
 
             // Only do collision once
-            if (otherId > id && v2.length(otherVelocity) >= velocityEpsilon && otherMass != 0) return;
+            if (otherId > id && v2.length(otherVelocity) >= velocityEpsilon && otherMass != 0/* && this.activeTable[otherId]*/) return;
 
             var otherPos = this.getPos(otherId);
             var otherPosOld = this.getPosOld(otherId);
@@ -66,10 +68,6 @@ PhysicsWorld.prototype.update = function(dt) {
             // Calc position
             var dir = [0, 0];
             v2.sub(otherPosOld, posOld, dir);
-            if (Math.abs(dir[0]) > Math.abs(dir[1]))
-                dir[1] /= 10.0;
-            else
-                dir[0] /= 10.0;
             var dis = v2.length(dir);
             v2.normalize(dir, dir);
             if (dis == 0)
@@ -86,7 +84,7 @@ PhysicsWorld.prototype.update = function(dt) {
             var velocityY = fix.mul(velocity[1], Math.min(1.0, Math.max(-1.0, fix.sub(mass, otherMass)))) + fix.div(fix.mul(2, fix.mul(otherMass, otherVelocity[1])), fix.add(mass, otherMass))
             var otherVelocityX = fix.mul(otherVelocity[0], Math.min(1.0, Math.max(-1.0, fix.sub(otherMass, mass)))) + fix.div(fix.mul(2, fix.mul(mass, velocity[0])), fix.add(mass, otherMass));
             var otherVelocityY = fix.mul(otherVelocity[1], Math.min(1.0, Math.max(-1.0, fix.sub(otherMass, mass)))) + fix.div(fix.mul(2, fix.mul(mass, velocity[1])), fix.add(mass, otherMass));
-            var collisionVelocityFactor = 0.0; //Math.min(8, 80 * (1.0 - dis));
+            //var collisionVelocityFactor = 0.0; //Math.min(8, 80 * (1.0 - dis));
             //velocity = [velocityX - collisionVelocityFactor * Math.min(2.0, otherMass / mass) * deltaPos[0], velocityY - collisionVelocityFactor * Math.min(2.0, otherMass / mass) * deltaPos[1]];
             //otherVelocity = [otherVelocityX + collisionVelocityFactor * Math.min(2.0, mass / otherMass) * deltaPos[0], otherVelocityY + collisionVelocityFactor * Math.min(2.0, mass / otherMass) * deltaPos[1]];
 
@@ -116,7 +114,7 @@ PhysicsWorld.prototype.add = function(pos, velocity, mass, radius) {
 
     var id = this.pointWorld.add(pos, radius);
 
-    while(id >= this.mass.length) {
+    while (id >= this.mass.length) {
         this.posOld.push(0.0);
         this.posOld.push(0.0);
         this.velocity.push(0.0);
@@ -127,12 +125,22 @@ PhysicsWorld.prototype.add = function(pos, velocity, mass, radius) {
     this._setPosOld(id, pos);
     this.setVelocity(id, velocity);
     this.setMass(id, mass);
+    this.setActive(id, true);
 
     return id;
 }
 
 PhysicsWorld.prototype.remove = function(id) {
     this.pointWorld.remove(id);
+}
+
+PhysicsWorld.prototype.setActive = function(id, isActive) {
+    return;
+    if (isActive && !this.activeTable[id]) {
+        this.activeTable[id] = true;
+    } else if (!isActive && this.activeTable[id]) {
+        delete this.activeTable[id];
+    }
 }
 
 PhysicsWorld.prototype.getBodiesInRadius = function(bodies, point, radius) {
@@ -184,6 +192,11 @@ PhysicsWorld.prototype.forEach = function(thisRef, callback) {
     this.pointWorld.forEach(callback.bind(thisRef));
 }
 
+PhysicsWorld.prototype.forEachActive = function(thisRef, callback) {
+    this.pointWorld.forEach(callback.bind(thisRef));
+    //this.activeObjects.forEach(callback.bind(thisRef));
+}
+
 PhysicsWorld.prototype.getPos = function(id) {
     return this.pointWorld.getPos(id);
 }
@@ -197,7 +210,7 @@ PhysicsWorld.prototype.getPosOld = function(id) {
 }
 
 PhysicsWorld.prototype._setPosOld = function(id, posOld) {
-    this.posOld[2* id] = posOld[0];
+    this.posOld[2 * id] = posOld[0];
     this.posOld[2 * id + 1] = posOld[1];
 }
 

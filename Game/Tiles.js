@@ -65,6 +65,14 @@ Tiles.Iron = {
     xp: 40
 };
 
+Tiles.Grass = {
+    name: "Grass",
+    isSolid: false,
+    isOre: false,
+    hardness: 1,
+    xp: 1
+}
+
 /*Tiles.Apatite = {
     name: "Apatite",
     isSolid: true,

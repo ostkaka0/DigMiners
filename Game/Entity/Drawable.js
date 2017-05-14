@@ -135,7 +135,7 @@ EntityDrawable.prototype.serialize = function(byteArray, index) {
     }
 }
 
-EntityDrawable.prototype.deserialize = function(byteArray, index, gameData) {
+EntityDrawable.prototype.deserialize = function(byteArray, index) {
     this.zindex = Deserialize.int32(byteArray, index);
     this.zindex = (!this.zindex ? 0 : this.zindex);
     if (!isServer) {

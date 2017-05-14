@@ -1,14 +1,4 @@
 
-
-
-
-
-
-
-
-
-;
-
 var MessageChunk = function(chunk, blockChunk, x, y) {
     this.chunk = chunk || new Chunk();
     this.blockChunk = blockChunk || new BlockChunk();
@@ -16,10 +6,9 @@ var MessageChunk = function(chunk, blockChunk, x, y) {
     this.x = x;
     this.y = y;
 }
-global.MessageChunk = MessageChunk;
 TypeRegister.add(RegisterMessage.ToClient, MessageChunk);
 
-MessageChunk.prototype.execute = function(gameData) {
+MessageChunk.prototype.execute = function() {
     if (World.generator)
         World.generator.generate(this.chunk, this.x, this.y);
     World.tiles.set([this.x, this.y], this.chunk);
@@ -56,7 +45,7 @@ MessageChunk.prototype.send = function(socket) {
     socket.emit(this.idString, new Buffer(byteArray));
 }
 
-MessageChunk.prototype.receive = function(gameData, data) {
+MessageChunk.prototype.receive = function(data) {
     var byteArray = new Uint8Array(data);
     var index = new IndexCounter();
     this.x = Deserialize.int32(byteArray, index);

@@ -10,7 +10,7 @@ class EntityBodyParts {
     }
 }
 
-EntityBodyParts.prototype.name = bodyParts.name; function bodyParts() {};
+EntityBodyParts.prototype.name = bodyParts.name; function bodyParts() { };
 
 
 /*
@@ -64,8 +64,8 @@ EntityBodyparts.prototype.serialize = function(byteArray, index) {
     }
 }
 
-EntityBodyparts.prototype.deserialize = function(byteArray, index, gameData) {
-    this.bodyParts = {};
+EntityBodyparts.prototype.deserialize = function(byteArray, index) {
+    this.bodyparts = {};
     var bodypartsLength = Deserialize.int32(byteArray, index);
     for (var i = 0; i < bodypartsLength; ++i) {
         var key = Deserialize.utf8(byteArray, index);

@@ -1,21 +1,11 @@
 
-
-
-
-
-
-;
-
-
-
 var MessageRequestKeyStatusUpdate = function(key, pressed) {
     this.key = key;
     this.pressed = pressed;
 }
-global.MessageRequestKeyStatusUpdate = MessageRequestKeyStatusUpdate;
 TypeRegister.add(RegisterMessage.ToServer, MessageRequestKeyStatusUpdate);
 
-MessageRequestKeyStatusUpdate.prototype.execute = function(gameData, player) {
+MessageRequestKeyStatusUpdate.prototype.execute = function(player) {
     var entity = World.entities.objects[player.entityId];
     if (!entity) return;
     var physicsBody = entity.physicsBody;
@@ -32,7 +22,7 @@ MessageRequestKeyStatusUpdate.prototype.execute = function(gameData, player) {
             var targetEntity = World.physicsEntityMap[bodies[0]];
             // Interact only if player has nothing equipped in hands
             if (targetEntity && targetEntity.interactable && entity.equippedItems && !entity.equippedItems.items["tool"]) {
-                if (!Interactable.isInteracting(targetEntity, entity)) {
+                if (!EntityInteractable.isInteracting(targetEntity, entity)) {
                     if (entity.interacter.interacting) {
                         sendCommand(new CommandEntityInteractEntity(entity.id, entity.interacter.interacting, false));
                         entity.interacter.interacting = null;
@@ -60,7 +50,7 @@ MessageRequestKeyStatusUpdate.prototype.send = function(socket) {
     socket.emit(this.idString, [this.key, this.pressed]);
 }
 
-MessageRequestKeyStatusUpdate.prototype.receive = function(gameData, data) {
+MessageRequestKeyStatusUpdate.prototype.receive = function(data) {
     this.key = data[0];
     this.pressed = data[1];
 }

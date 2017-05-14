@@ -6,7 +6,9 @@ var WorldPendingCommands = {};
 var worldInit = function() {
     World = {
         tickId: 0,
-        idList: (isServer)? new IdList() : null,
+        idList: (isServer) ? new IdList() : null,
+        width: 1,
+        height: 1,
         entities: new ObjectWorld(true),
         particles: new ParticleWorld(),
         tiles: new TileWorld(),
@@ -23,9 +25,20 @@ var worldInit = function() {
         entityInventories: {},
         events: new EventHandler(),
     };
+    worldGenerate();
     WorldPendingCommands = {};
     worldInitializeEvents();
     Event.trigger(WorldEvents.onInit);
+}
+
+var worldGenerate = function() {
+    for (var x = -World.width / 2; x < World.width / 2; ++x) {
+        for (var y = -World.height / 2; y < World.height / 2; ++y) {
+            var chunk = new Chunk();
+            World.generator.generate(chunk, x, y);
+            World.tiles.set([x, y], chunk);
+        }
+    }
 }
 
 var worldDestroy = function() {
@@ -63,6 +76,23 @@ var worldTick = function(dt) {
     World.entities.update();
 
     if (isServer) {
+        World.entities.objectArray.forEach(function(entity) {
+            if (entity.behaviourContainer)
+                entity.behaviourContainer.update();
+            //TODO: 20 magic number
+            if (entity.interacter && entity.interacter.interacting && (!entity.interacter.lastCheck || World.tickId - entity.interacter.lastCheck > 20)) {
+                var interactableEntity = World.entities.objects[entity.interacter.interacting];
+                if (interactableEntity) {
+                    if (!EntityInteractable.canInteract(interactableEntity, entity)) {
+                        sendCommand(new CommandEntityInteractEntity(entity.id, interactableEntity.id, false));
+                        entity.interacter.interacting = null;
+                        entity.interacter.lastCheck = null;
+                    }
+                }
+                entity.interacter.lastCheck = World.tickId;
+            }
+        });
+
         // Synchronize collisions:
         sendCommand(new CommandCollisions(World.collisionList));
     }
@@ -90,11 +120,12 @@ worldClearTimeouts = function() {
 worldInitializeEvents = function() {
     // Update physicsEntityMap
     // No unsubscribing is required, becuase world is owner of entityWorld
-    World.entities.onAdd.set(this, function(entity) {
+
+    Event.subscribe(World.entities.onAdd, World, function(entity) {
         if (entity.physicsBody)
             World.physicsEntityMap[entity.physicsBody.bodyId] = entity;
     }.bind(this));
-    World.entities.onRemove.set(this, function(entity) {
+    Event.subscribe(World.entities.onRemove, World, function(entity) {
         if (entity.physicsBody)
             World.physicsEntityMap[entity.physicsBody.bodyId] = undefined;
 
@@ -120,6 +151,30 @@ worldInitializeEvents = function() {
     if (isServer) {
         World.physics.onCollision.push((collisions) => {
             World.collisionList = collisions;
+        });
+    } else {
+        World.physics.onCollision.push(function(collisions) {
+            if (Client.playerEntity && collisions) {
+                collisions.forEach(function(collision) {
+                    var aEntity = World.physicsEntityMap[collision[0]];
+                    var bEntity = World.physicsEntityMap[collision[1]];
+                    if (aEntity == undefined || bEntity == undefined) return;
+                    var playerEntity = null;
+                    var itemEntity = null;
+                    if (aEntity.id == Client.playerEntity.id) {
+                        playerEntity = aEntity;
+                        itemEntity = bEntity;
+                    } else if (bEntity.id == Client.playerEntity.id) {
+                        playerEntity = bEntity;
+                        itemEntity = aEntity;
+                    } else
+                        return;
+                    if (itemEntity.item && itemEntity.physicsBody && (!itemEntity.item.dropped || ((new Date()) - itemEntity.item.dropped) >= 500)) {
+                        var message = new MessageRequestItemPickup(itemEntity.id);
+                        message.send(Client.socket);
+                    }
+                });
+            }
         });
     }
 
@@ -272,264 +327,3 @@ worldInitializeEvents = function() {
         });
     }
 }
-
-/*
-var World = function() {
-    this.tickId = 0;
-    this.idList = (isServer) ? new IdList() : null;
-    this.entityWorld = new ObjectWorld(true);
-    this.particleWorld = new ParticleWorld();
-    this.tileWorld = new TileWorld();
-    this.blockWorld = new BlockWorld();
-    this.celluralAutomata = new CelluralAutomata(this.blockWorld, global.gameData.blockRegister);
-    this.physicsWorld = new PhysicsWorld();
-    this.physicsEntities = {};
-    this.generator = new EmptyGenerator();
-
-    this.inventoryIdList = new IdList();
-    this.inventories = {};
-    this.entityInventories = {};
-
-
-    this.commands = [];
-    this.pendingCommands = {};
-    this.commandCallbacks = [];
-
-    this.events = new EventHandler();
-    this.initializeEvents();
-    this.events2 = { onPlayerSpawn: [] };
-
-    //Temp variables:
-    World.collisionList = []; // Updated, then sent before tick ends
-}
-
-World.prototype.tick = function(dt) {
-    if (World.pendingCommands[World.tickId])
-        World.commands = World.commands.concat(World.pendingCommands[World.tickId]);
-    World.pendingCommands[World.tickId] = undefined;
-
-    World.entities.objectArray.forEach(function(entity) {
-        if (entity.physicsBody && entity.physicsBody.angle)
-            entity.physicsBody.angleOld = entity.physicsBody.angle;
-    });
-    World.commands.forEach(function(command) {
-        command.execute(this);
-    }.bind(this));
-    World.commands.length = 0;
-    World.celluralAutomata.tick();
-    World.physics.update(dt);
-    EntityMovement.entityFunction(dt);
-    entityFunctionPhysicsBodySimulate(dt);
-    entityFunctionProjectileSimulate(dt);
-    World.entities.objectArray.forEach(function(entity) {
-        Object.keys(entity).forEach(function(key) {
-            var component = entity[key];
-            if (component && component.update)
-                component.update(entity);
-        });
-    });
-    World.entities.update();
-
-    if (isServer) {
-        Game.world.entityWorld.objectArray.forEach(function(entity) {
-            if (entity.behaviourContainer)
-                entity.behaviourContainer.update();
-            //TODO: 20 magic number
-            if (entity.interacter && entity.interacter.interacting && (!entity.interacter.lastCheck || Game.world.tickId - entity.interacter.lastCheck > 20)) {
-                var interactableEntity = Game.world.entityWorld.objects[entity.interacter.interacting];
-                if (interactableEntity) {
-                    if (!Interactable.canInteract(interactableEntity, entity)) {
-                        sendCommand(new CommandEntityInteractEntity(entity.id, interactableEntity.id, false));
-                        entity.interacter.interacting = null;
-                        entity.interacter.lastCheck = null;
-                    }
-                }
-                entity.interacter.lastCheck = Game.world.tickId;
-            }
-        });
-
-        // Synchronize collisions:
-        sendCommand(new CommandCollisions(World.collisionList));
-        World.collisionList = [];
-    }
-
-    World.tickId++;
-}
-
-World.prototype.initializeEvents = function() {
-    // Update physicsEntityMap
-    // No unsubscribing is required, becuase world is owner of entityWorld
-    World.entities.onAdd.set(this, function(entity) {
-        if (entity.physicsBody)
-            World.physicsEntityMap[entity.physicsBody.bodyId] = entity;
-    }.bind(this));
-    World.entities.onRemove.set(this, function(entity) {
-        if (entity.physicsBody)
-            World.physicsEntityMap[entity.physicsBody.bodyId] = undefined;
-
-        if (entity.controlledByPlayer) {
-            var playerId = entity.controlledByPlayer.playerId;
-            var player = Game.playerWorld.objects[playerId];
-            if (player) {
-                player.deathTick = World.tickId;
-                player.entityId = null;
-                if (!isServer && player.id == Client.playerId) {
-                    Client.playerEntity = null;
-                    Client.playerEntityId = null;
-                }
-            }
-        }
-    }.bind(this));
-
-    if (World.idList) {
-        var onObjectRemove = function(object) { World.idList.remove(object.id); }.bind(this);
-        World.entities.onRemove.set(this, onObjectRemove);
-    }
-
-    if (isServer) {
-        World.physics.onCollision.push((collisions) => {
-            World.collisionList = collisions;
-        });
-    }
-
-    EntityProjectile.Events.onHit.set(this, function(projectileEntity, hitPos) {
-        worldSetTimeout(function(projectileEntity) {
-            var type = projectileEntity.projectile.projectileType;
-            if (type.isExplosive) {
-                var shooter = World.entities.objects[projectileEntity.projectile.shooterEntityId];
-                ExplosionFunctions.createExplosion(hitPos, type.explosiveRadius, type.explosiveEntityDamage, type.explosionBlockDamage, type.explosionTileDamage, shooter);
-                if (isServer) sendCommand(new CommandParticles(ParticleFunctions.ExplosionParticles.id, hitPos, 10.0));
-            }
-            World.entities.remove(projectileEntity);
-        }.bind(this, projectileEntity), projectileEntity.projectile.projectileType.stayTime);
-        if (!isServer)
-            ParticleFunctions.create(ParticleFunctions.BulletHitParticles, hitPos, projectileEntity.projectile.angle);
-    }.bind(this));
-
-    EntityProjectile.Events.onHitEntity.set(this, function(projectileEntity, hitEntity, hitPos) {
-        if (isServer) {
-            if (hitEntity && hitEntity.health && projectileEntity.projectile.projectileType.damage > 0) {
-                var damage = projectileEntity.projectile.projectileType.damage * projectileEntity.projectile.damageFactor;
-                var armorPenentration = projectileEntity.projectile.projectileType.armorPenentration;
-                var shooterId = projectileEntity.projectile.shooterEntityId;
-                var shooter = World.entities.objects[shooterId];
-                Entity.hurt(hitEntity, shooter, damage, armorPenentration);
-                sendCommand(new CommandParticles(ParticleFunctions.BloodHitParticles.id, hitPos, projectileEntity.projectile.angle));
-            }
-        }
-    }.bind(this));
-
-    EntityProjectile.Events.onHitBlock.set(this, function(projectileEntity, blockPos) {
-        if (isServer) {
-            if (projectileEntity.projectile.projectileType.blockDamage > 0) {
-                var strength = World.blocks.getStrength(blockPos);
-                var blockId = World.blocks.getForeground(blockPos);
-                var block = Game.blockRegister[blockId];
-                var projectileArmor = (block.projectileArmor) ? block.projectileArmor : 0;
-                strength -= (1 / block.hardness) * Math.round((1.0 - projectileArmor) * projectileEntity.projectile.projectileType.blockDamage);
-                sendCommand(new CommandBlockStrength(blockPos[0], blockPos[1], Math.max(strength, 0)));
-            }
-        }
-    }.bind(this));
-
-    EntityProjectile.Events.onHitTile.set(this, function(projectileEntity, tilePos) {
-
-    }.bind(this));
-
-    EntityHealth.Events.onChange.set(this, function(entity) {
-        if (!isServer) {
-            var sprite = entity.drawable.sprites["healthbar"];
-            if (!sprite) return;
-            var defaultHealthbarWidth = 64;
-            sprite.transform[2] = (entity.health.health / entity.health.maxHealth) * defaultHealthbarWidth;
-        }
-    }.bind(this));
-
-    EntityHealth.Events.onDeath.set(this, function(entity, killer) {
-        if (isServer && killer && killer.controlledByPlayer) {
-            var player = Game.playerWorld.objects[killer.controlledByPlayer.playerId];
-            if (player)
-                sendCommand(new CommandPlayerXP(player.id, entity.health.maxHealth / 4 >> 0));
-        }
-
-        if (!entity.isDead) {
-            entity.isDead = true;
-            World.entities.remove(entity);
-        }
-
-        Object.keys(entity).forEach(function(key) {
-            var component = entity[key];
-            if (component && component.onDestroy)
-                component.onDestroy(entity);
-        });
-    }.bind(this));
-
-    EntityInteractable.Events.onInteract.set(this, function(interactableEntity, interactingEntity) {
-        //console.log(interactingEntity.id + " is now interacting with " + interactableEntity.id);
-        if (!isServer) {
-            if (Client.playerEntity && Client.playerEntity.id == interactingEntity.id) {
-                if (interactableEntity.chest && interactableEntity.inventory) {
-                    //TODO: inventory size
-                    Game.HUD.inventory2 = new InventoryHUD(interactableEntity.inventory, "Chest", 80);
-                    Game.HUD.inventory2.update();
-                }
-            }
-
-            interactingEntity.bodyParts.bodyParts["rightArm"].cycle("rightArmAction", 200, true);
-            interactingEntity.bodyParts.bodyParts["leftArm"].cycle("leftArmAction", 200, true);
-        }
-    });
-
-    EntityInteractable.Events.onFinishInteract.set(this, function(interactableEntity, interactingEntity) {
-        //console.log(interactingEntity.id + " is no longer interacting with " + interactableEntity.id);
-        if (!isServer) {
-            if (Client.playerEntity && Client.playerEntity.id == interactingEntity.id) {
-                if (interactableEntity.chest && interactableEntity.inventory) {
-                    Game.HUD.inventory2.remove();
-                    Game.HUD.inventory2 = null;
-                }
-            }
-        }
-    });
-
-    World.events.on("entityHitBlockSide", function(entity, blockPos, blockType, blockCollisionSide) {
-        if (isServer && blockType && blockType.isDoor)
-            blockType.clickFunction(blockPos, blockType, entity, 0);
-    }.bind(this));
-
-    Event.subscribe(EntityEquippedItems.Events.onEquip, this, function(entity, stackId, itemType) {
-        if (itemType.type == "tool" && itemType.typeOfType == "rangedWeapon") {
-            var shoulderAngle = Math.PI / 4.0;
-            if (entity.bodyParts.bodyParts["leftArm"]) {
-                var pos = BodyPart.rotate(0, 0, entity.bodyParts.bodyParts["leftArm"].offset[0], entity.bodyParts.bodyParts["leftArm"].offset[1], shoulderAngle + 1.0);
-                entity.bodyParts.bodyParts["leftArm"].offset[0] = -pos[0];
-                entity.bodyParts.bodyParts["leftArm"].offset[1] = pos[1];
-                entity.bodyParts.bodyParts["leftArm"].offset[2] = 2.5;
-            }
-            if (entity.bodyParts.bodyParts["rightArm"]) {
-                pos = BodyPart.rotate(0, 0, entity.bodyParts.bodyParts["rightArm"].offset[0], entity.bodyParts.bodyParts["rightArm"].offset[1], shoulderAngle);
-                entity.bodyParts.bodyParts["rightArm"].offset[0] = -pos[0];
-                entity.bodyParts.bodyParts["rightArm"].offset[1] = pos[1];
-            }
-        }
-    }.bind(this));
-
-    Event.subscribe(EntityEquippedItems.Events.onDequip, this, function(entity, stackId, itemType) {
-        if (itemType.type == "tool" && itemType.typeOfType == "rangedWeapon") {
-            entity.bodyParts.bodyParts["tool"].offset[2] = entity.bodyParts.bodyParts["tool"].defaultOffset[2];
-            entity.bodyParts.bodyParts["leftArm"].offset[2] = entity.bodyParts.bodyParts["leftArm"].defaultOffset[2];
-            entity.bodyParts.bodyParts["rightArm"].offset[2] = entity.bodyParts.bodyParts["rightArm"].defaultOffset[2];
-
-            entity.bodyParts.bodyParts["leftArm"].offset[0] = entity.bodyParts.bodyParts["leftArm"].defaultOffset[0];
-            entity.bodyParts.bodyParts["leftArm"].offset[1] = entity.bodyParts.bodyParts["leftArm"].defaultOffset[1];
-            entity.bodyParts.bodyParts["rightArm"].offset[0] = entity.bodyParts.bodyParts["rightArm"].defaultOffset[0];
-            entity.bodyParts.bodyParts["rightArm"].offset[1] = entity.bodyParts.bodyParts["rightArm"].defaultOffset[1];
-        }
-    });
-}
-
-World.prototype.destroy = function() {
-    Event.unsubscribeAll(EntityHealth.Events, this);
-    Event.unsubscribeAll(EntityProjectile.Events, this);
-    Event.unsubscribeAll(EntityEquippedItems.Events, this);
-}*/

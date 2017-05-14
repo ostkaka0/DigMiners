@@ -1,19 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHardness) {
     this.entityId = entityId;
     if (pos)
@@ -23,7 +8,6 @@ var CommandEntityDig = function(entityId, pos, dir, radius, digSpeed, maxDigHard
     this.digSpeed = digSpeed;
     this.maxDigHardness = maxDigHardness;
 }
-global.CommandEntityDig = CommandEntityDig;
 TypeRegister.add(RegisterCommand, CommandEntityDig);
 
 CommandEntityDig.prototype.execute = function() {
@@ -90,11 +74,11 @@ CommandEntityDig.prototype.execute = function() {
                     var physicsBody = entity.physicsBody;
 
                     var itemEntityId = World.idList.next();
-                    var itemEntity = entityTemplateItem(itemId, 1, gameData);
+                    var itemEntity = entityTemplateItem(itemId, 1);
                     itemEntity.physicsBody.setPos(v2.clone(physicsBody.getPos()));
                     itemEntity.physicsBody.angle = physicsBody.angle;
                     itemEntity.physicsBody.angleOld = physicsBody.angle;
-                    sendCommand(new CommandEntitySpawn(gameData, itemEntity, itemEntityId));
+                    sendCommand(new CommandEntitySpawn(itemEntity, itemEntityId));
                 }
             }*/
         }

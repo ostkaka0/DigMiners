@@ -6,7 +6,6 @@ var CommandEntityBuild = function(entityId, x, y, blockId, type) {
     this.blockId = blockId;
     this.type = type;
 }
-global.CommandEntityBuild = CommandEntityBuild;
 TypeRegister.add(RegisterCommand, CommandEntityBuild);
 
 CommandEntityBuild.prototype.execute = function() {
@@ -23,7 +22,7 @@ CommandEntityBuild.prototype.execute = function() {
     if (isServer) {
         var entityBlockPlacerId = World.idList.next();
         var entityBlockPlacer = { blockPlacer: new EntityBlockPlacer([this.x, this.y], this.blockId, block.buildDuration, entity.id) };
-        sendCommand(new CommandEntitySpawn(gameData, entityBlockPlacer, entityBlockPlacerId));
+        sendCommand(new CommandEntitySpawn(entityBlockPlacer, entityBlockPlacerId));
         entity.blockPlacerId = entityBlockPlacerId;
     }
 }

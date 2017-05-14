@@ -1,10 +1,4 @@
 
-
-
-
-
-
-
 var CommandEntityInventoryActions = {
     ADD_ITEM: 0,
     REMOVE_ITEM: 1,
@@ -17,18 +11,17 @@ var CommandEntityInventory = function(entityId, actionId, itemId, amount) {
     this.itemId = itemId;
     this.amount = amount;
 }
-global.CommandEntityInventory = CommandEntityInventory;
 TypeRegister.add(RegisterCommand, CommandEntityInventory);
+CommandEntityInventory.Events = { onInventoryChange: new Map() };
 CommandEntityInventory.Actions = CommandEntityInventoryActions;
 
 CommandEntityInventory.prototype.execute = function() {
     var entity = World.entities.objects[this.entityId];
     if (!entity || !entity.inventory) return;
     if (this.actionId == CommandEntityInventory.Actions.ADD_ITEM) {
-        entity.inventory.addItem(gameData, this.itemId, this.amount);
+        entity.inventory.addItem(this.itemId, this.amount);
     } else if (this.actionId == CommandEntityInventory.Actions.REMOVE_ITEM) {
-        console.log(entity.inventory.isStatic(this.itemId));
-        if (entity.controlledByPlayer && RegisterItem[this.itemId].oreRecipe && entity.inventory.isStatic(this.itemId)) {
+        /*if (entity.controlledByPlayer && RegisterItem[this.itemId].oreRecipe && entity.inventory.isStatic(this.itemId)) {
             var player = Game.playerWorld.objects[entity.controlledByPlayer.playerId];
             player.consumeOreRecipe(RegisterItem[this.itemId].oreRecipe);
             if (player.calcOreRecipeQuantity(RegisterItem[this.itemId].oreRecipe) == 0 && entity.equippedItems) {
@@ -37,27 +30,25 @@ CommandEntityInventory.prototype.execute = function() {
                 if (!isServer && entity.bodyParts && entity.bodyParts.bodyParts["tool"])
                     entity.bodyParts.bodyParts["tool"].sprite.visible = false;
             }
-        } else {
-            var removed = entity.inventory.removeItem(gameData, this.itemId, this.amount);
-            if (isServer) {
-                for (var i = 0; i < removed.length; ++i) {
-                    // Dequip item when removed from inventory
-                    var entry = removed[i];
-                    var stackId = entry[0];
-                    var item = entry[1];
-                    var itemType = RegisterItem[item.id];
-                    if (item.equipped)
-                        sendCommand(new CommandEntityEquipItem(entity.id, stackId, itemType.id, false));
-                };
-            }
+        } else {*/
+        var removed = entity.inventory.removeItem(this.itemId, this.amount);
+        if (isServer) {
+            for (var i = 0; i < removed.length; ++i) {
+                // Dequip item when removed from inventory
+                var entry = removed[i];
+                var stackId = entry[0];
+                var item = entry[1];
+                var itemType = RegisterItem[item.id];
+                if (item.equipped)
+                    sendCommand(new CommandEntityEquipItem(entity.id, stackId, itemType.id, false));
+            };
         }
+        //}
     } else if (this.actionId == CommandEntityInventory.Actions.DROP_STACK) {
         var item = entity.inventory.removeStack(this.itemId);
     }
-    if (!isServer && Client.playerEntity && this.entityId == Client.playerEntity.id) {
-        Game.HUD.update();
-        Game.HUD.checkCanAffordRecipe();
-    }
+
+    Event.trigger(CommandEntityInventory.Events.onInventoryChange, entity);
 }
 
 CommandEntityInventory.prototype.serialize = function(byteArray, index) {

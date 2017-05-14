@@ -14,13 +14,10 @@ CommandPlayerSpawn.prototype.execute = function() {
     // Associate with existing, already spawned entity (from MessageRequestSpawn)
     var entity = World.entities.objects[this.entityId];
     var player = Game.playerWorld.objects[this.playerId];
-    console.log("Player spawn(entity):", entity);
-    console.log("Player spawn(player):", player);
     player.onSpawn(entity);
     if (isServer)
         player.name = this.playerName;
 
-    if (!isServer) console.log("Player.id:", this.playerId, ", Client.playerId:", Client.playerId);
     if (!isServer && Client.playerId == this.playerId) {
         Client.playerEntityId = this.entityId;
         Client.playerEntity = entity;

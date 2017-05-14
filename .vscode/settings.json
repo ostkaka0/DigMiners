@@ -3,4 +3,5 @@
     "typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
     "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
     "php.validate.executablePath": "C:/xampp/php/php.exe",
+    "window.title": "${dirty}${activeEditorMedium}${separator}${rootName}${separator}${appName}"
 }

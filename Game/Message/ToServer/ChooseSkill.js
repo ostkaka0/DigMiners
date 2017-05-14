@@ -3,7 +3,7 @@ class MessageChooseSkill {
     constructor(skillId) {
         this.skillId = skillId;
     }
-    execute(gameData, player) {
+    execute(player) {
         if (this.skillId >= PlayerSkillRegister.length || this.skillId < 0) return;
         if (player.skillPoints < 1) return;
         sendCommand(new CommandChooseSkill(player.id, this.skillId));
@@ -11,7 +11,7 @@ class MessageChooseSkill {
     send(socket) {
         socket.emit(this.idString, [this.skillId]);
     }
-    receive(gameData, data) {
+    receive(data) {
         this.skillId = data[0] >> 0;
     }
 }

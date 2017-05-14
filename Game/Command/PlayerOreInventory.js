@@ -32,10 +32,11 @@ CommandPlayerOreInventory.prototype.execute = function() {
             player.oreInventory[this.itemId] = 0;
         player.oreInventory[this.itemId] -= this.amount;
     }
-    if (!isServer && Client.player && this.playerId == Client.player.playerId) {
+    //TODO: FIX (remove oreinventory totally >.<)
+    /*if (!isServer && Client.player && this.playerId == Client.player.playerId) {
         Game.HUD.update();
         Game.HUD.checkCanAffordRecipe();
-    }
+    }*/
 }
 
 CommandPlayerOreInventory.prototype.serialize = function(byteArray, index) {

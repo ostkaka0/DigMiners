@@ -11,9 +11,9 @@ var entityTemplatePlayer = function(playerId, entityId, name, playerClass, teamI
     var entity = {};
     entity.controlledByPlayer = new EntityControlledByPlayer(playerId);
     entity.physicsBody = new EntityPhysicsBody(v2.create(0, 0), 0.001, 20.0, 1.0, 0.45);
-    entity.movement = new EntityMovement((playerClass ? playerClass.speed : 1) * 30.0);
-    entity.name = new EntityName(name || "nameless");
-    entity.inventory = EntityInventory.createInventory(entityId, 10, 1);
+    entity.movement = new EntityMovement(playerClass.speed * 30.0);
+    entity.name = new EntityName(name);
+    entity.inventory = EntityInventory.createInventory(entityId, 10, 3);
     entity.equippedItems = new EntityEquippedItems();
     entity.potionEffects = new EntityPotionEffects();
     entity.interacter = new EntityInteracter(); // Server only used component
@@ -70,17 +70,22 @@ var entityTemplatePlayer = function(playerId, entityId, name, playerClass, teamI
 
     if (playerClass) {
         playerClass.weapons.forEach(function(weapon) {
-            entity.inventory.addStaticItem(gameData, weapon.id);
+            entity.inventory.addItem(weapon.id);
             entity.ammo[weapon.id] = weapon.ammoMax || 0;
         });
 
         playerClass.blocks.forEach(function(blockItem) {
-            entity.inventory.addStaticItem(gameData, blockItem.id);
+            entity.inventory.addItem(blockItem.id);
         });
         if (playerClass.items) {
             playerClass.items.forEach(function(item) {
-                entity.inventory.addItem(gameData, item[0].id, item[1]);
+                entity.inventory.addItem(item[0].id, item[1]);
             });
+            if (playerClass.items) {
+                playerClass.items.forEach(function(item) {
+                    entity.inventory.addItem(gameData, item[0].id, item[1]);
+                });
+            }
         }
     }
 

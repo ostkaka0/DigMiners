@@ -24,9 +24,7 @@
             ?>
         };
         </script>
-        <div class="hud" id="hud">
-            <div class="crafting" id="crafting"></div>
-        </div>
+        <div class="hud" id="hud"></div>
         <?php
             error_reporting(E_ALL);
             ini_set('display_errors', TRUE);

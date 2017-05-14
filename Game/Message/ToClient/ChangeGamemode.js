@@ -11,7 +11,7 @@ var MessageChangeGameMode = function() {
 global.MessageChangeGameMode = MessageChangeGameMode;
 TypeRegister.add(RegisterMessage.ToClient, MessageChangeGameMode);
 
-MessageChangeGameMode.prototype.execute = function(gameData) {
+MessageChangeGameMode.prototype.execute = function() {
     // TODO: Don't reload page
     location.reload(); // Reload page
     gameModeChange(this.gameModeId);
@@ -26,7 +26,7 @@ MessageChangeGameMode.prototype.send = function(socket) {
     socket.emit(this.idString, byteArray);
 }
 
-MessageChangeGameMode.prototype.receive = function(gameData, byteArray) {
+MessageChangeGameMode.prototype.receive = function(byteArray) {
     byteArray = new Uint8Array(byteArray);
     var counter = new IndexCounter();
     this.gameModeId = Deserialize.int32(byteArray, counter);

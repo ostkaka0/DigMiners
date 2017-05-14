@@ -94,7 +94,8 @@ EntityInventory.prototype.sortItems = function() {
     });
 }
 
-EntityInventory.prototype.addItem = function(gameData, id, amount) {
+EntityInventory.prototype.addItem = function(id, amount) {
+    if (!amount) amount = 1;
     //console.log("adding " + amount + " " + id);
     var maxStack = RegisterItem[id].maxStackSize;
     for (var i = 0; i < this.width * this.height; ++i) {
@@ -123,13 +124,13 @@ EntityInventory.prototype.addItem = function(gameData, id, amount) {
     this.sortItems();
 }
 
-EntityInventory.prototype.addStaticItem = function(gameData, id) {
+EntityInventory.prototype.addStaticItem = function(id) {
     //console.log("adding " + amount + " " + id);
     this.items.push({ id: id, name: RegisterItem[id].name, amount: 1, static: true });
     this.sortItems();
 }
 
-EntityInventory.prototype.removeItem = function(gameData, id, amount) {
+EntityInventory.prototype.removeItem = function(id, amount) {
     var removedItems = [];
     for (var i = this.items.length - 1; i >= 0; --i) {
         var currentAmount = this.items[i].amount;
@@ -165,12 +166,10 @@ EntityInventory.prototype.hasItem = function(id, amount) {
     return false;
 }
 EntityInventory.prototype.isStatic = function(id) {
-    console.log("static?");
     for (var i = 0; i < this.items.length; ++i) {
         if (this.items[i].id == id && this.items[i].static)
             return true;
     }
-    console.log("not static");
     return false;
 }
 
@@ -187,11 +186,11 @@ EntityInventory.prototype.removeStack = function(id) {
     var item = this.items[id];
     delete this.items[id];
     this.items.splice(id, 1);
-    this.sortItems(gameData);
+    this.sortItems();
     return item;
 }
 
-EntityInventory.prototype.dequipAll = function(gameData, type, arg) {
+EntityInventory.prototype.dequipAll = function(type, arg) {
     var dequippedItems = [];
     for (var i = 0; i < this.items.length; ++i) {
         var itemType = RegisterItem[this.items[i].id];
@@ -200,7 +199,7 @@ EntityInventory.prototype.dequipAll = function(gameData, type, arg) {
             dequippedItems.push([i, this.items[i].id]);
         }
     }
-    this.sortItems(gameData);
+    this.sortItems();
     return dequippedItems;
 }
 

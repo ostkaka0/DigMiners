@@ -11,8 +11,9 @@ Canvas.initGL = function(canvas) {
     if (!gl)
         document.write("<h1 style = 'position: fixed; left:24px;top:24px;'>Unable to initialize WebGL. Your browser may not support it.</h1>");
 
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_COLOR);
+    // Blending disabled because it makes blocks ugly
+    //gl.enable(gl.BLEND);
+    //gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_COLOR);
 
     return gl;
 }

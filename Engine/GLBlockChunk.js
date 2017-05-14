@@ -10,7 +10,7 @@ var GLBlockChunk = function(gl, blockChunk) {
 
 global.GLBlockChunk = GLBlockChunk;
 
-GLBlockChunk.prototype.update = function(gl, gameData, blockChunk, chunkX, chunkY) {
+GLBlockChunk.prototype.update = function(gl, blockChunk, chunkX, chunkY) {
     var tileSize = 32;
     var size = tileSize * BlockChunk.dim;
     var verticesPos = [];

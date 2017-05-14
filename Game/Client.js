@@ -128,7 +128,7 @@ var clientInit = function(callback) {
             if (event.button == 0) {
                 var stackId = Client.playerEntity.inventory.getEquippedStackId("tool");
                 var bodies = [];
-                if (!Client.player.canPlaceBlock(Game, Client.player.buildPos[0], Client.player.buildPos[1]))
+                if (!Client.player.canPlaceBlock(Client.player.buildPos[0], Client.player.buildPos[1]))
                     return false;
                 if (stackId != null) {
                     var message = new MessageRequestPlaceBlock(stackId, Client.player.buildPos[0], Client.player.buildPos[1]);
@@ -203,80 +203,9 @@ var clientInitSocket = function(callback) {
 
     RegisterMessage.ToClient.forEach(function(messageType) {
         Client.socket.on(messageType.prototype.idString, function(data) {
-            if (messageType.name != "MessageCommands") console.log("Message:", messageType.name);
             var message = new messageType();
-            message.receive(gameData, data);
-            message.execute(gameData);
-            //if (Client.messageCallbacks[messageType.prototype.id])
-            //    Client.messageCallbacks[messageType.prototype.id](message);
+            message.receive(data);
+            message.execute();
         });
     });
 }
-
-/*var Client = function(gameData, ip) {
-
-    // This is code to test serialization and deserialization of UTF-8 strings.
-    / *var test = "test1 test2 123 !@,@£€$€734ÅÄÖ";
-    console.log("serializing \"" + test + "\"");
-    var testArray = new Uint8Array(5000);
-    var counter = new IndexCounter();
-    Serialize.utf8(testArray, counter, test);
-    console.log("serialized length " + testArray.length);
-    counter = new IndexCounter();
-    var testOut = Deserialize.utf8(testArray, counter);
-    console.log("unserialized \"" + testOut + "\"");* /
-
-    var port = Config.port;
-    console.log("Connecting to " + ip + ":" + port + "...");
-    global.socket = io(ip + ":" + port, {
-        reconnection: false
-    });
-    global.sentInit2 = false;
-    Client.playersReceived = 0;
-
-    Client.socket.on('connect', function() {
-
-        setInterval(function() {
-            //startTime = Date.now();
-            Client.socket.emit('ping');
-        }, 2000);
-
-        console.log("Connected.");
-        global.World.events.trigger("connected");
-    });
-
-    Client.socket.on('message', function(msg) {
-        console.log("Message from server: " + msg);
-    });
-
-    Client.socket.on('error', function(error) {
-        console.log("Connection failed. " + error);
-    });
-
-    Client.socket.on('ping', function() {
-        Client.socket.emit('pong', Date.now());
-    });
-
-    Client.socket.on('pong', function(time) {
-        global.ping = 2 * (Date.now() - time);
-    });
-
-    RegisterMessage.ToClient.forEach(function(messageType) {
-        Client.socket.on(messageType.prototype.idString, function(data) {
-            var message = new messageType();
-            message.receive(gameData, data);
-            message.execute(gameData);
-            if (Client.messageCallbacks[messageType.prototype.id])
-                Client.messageCallbacks[messageType.prototype.id](message);
-        });
-    });
-}
-global.Client = Client;
-
-Client.prototype.sendMessage = function(message) {
-    var byteArray = new Uint8Array(command.getSerializationSize() + 4);
-    var counter = new IndexCounter();
-    Serialize.int32(byteArray, counter, command.id);
-    command.serialize(byteArray, counter);
-    Client.socket.emit("command", byteArray);
-}*/

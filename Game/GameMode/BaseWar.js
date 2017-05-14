@@ -34,7 +34,7 @@ GameModeBaseWar.prototype.init = function() {
             var entityId = World.idList.next();
             var entity = entityTemplateTeamBase(entityId, pos, teamId, 5, 2.0, 40);
             this.spawnEntities[teamId][entityId] = entity;
-            sendCommand(new CommandEntitySpawn(gameData, entity, entityId, teamId));
+            sendCommand(new CommandEntitySpawn(entity, entityId, teamId));
             sendCommand(new CommandDig(pos, 5.0));
         }.bind(this));
     }.bind(this));

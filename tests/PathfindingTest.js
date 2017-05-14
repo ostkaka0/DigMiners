@@ -10,7 +10,6 @@ var camera = {
     height: window.innerHeight,
     pos: v2.create(0, 0)
 };
-var gameData = { tileWorld: world, tileRegister: objectRegisterAddByObject([], Tiles) };
 
 var renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight, { 'transparent': true, 'antialias': true });
 renderer.view.style.position = 'absolute';
@@ -82,7 +81,7 @@ $(document.getElementById("hud")).click(function(event) {
     var worldY = canvas.height - event.clientY + camera.pos[1] - camera.height / 2;
     var tileX = Math.floor(worldX / 32);
     var tileY = Math.floor(worldY / 32);
-    World.tileWorld.carveCircle(global.gameData.tileRegister, [10*tileX, 10*tileY], 10.0, 10.0, 10.0);
+    World.tileWorld.carveCircle(Game.tileRegister, [10*tileX, 10*tileY], 10.0, 10.0, 10.0);
     var t0 = performance.now();
     flowField = genFlowField(flowField, flowFieldRect, world, null, [8*tileX, 8*tileY]);
     var now = performance.now();

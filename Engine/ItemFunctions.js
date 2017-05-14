@@ -88,7 +88,7 @@ ItemFunctions.throwable = function(itemType, entity) {
 
         var timeout = 2000;
 
-        sendCommand(new CommandEntitySpawn(gameData, itemEntity, itemEntityId));
+        sendCommand(new CommandEntitySpawn(itemEntity, itemEntityId));
         sendCommand(new CommandEntityAnimate(itemEntityId, "body", "dynamite", 64000.0 / timeout));
 
         worldSetTimeout(function(attacker) {

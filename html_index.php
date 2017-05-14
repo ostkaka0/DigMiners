@@ -31,9 +31,7 @@
             ?>
         };
         </script>
-        <div class="hud" id="hud">
-            <div class="crafting" id="crafting"></div>
-        </div>
+        <div class="hud" id="hud"></div>
         <?php
             function scriptVersion($fileName){
                 return $fileName . "?" . filemtime($fileName);

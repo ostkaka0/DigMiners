@@ -1,13 +1,4 @@
 
-
-
-
-
-
-
-;
-
-
 var MessageRequestRotate = function(deltaWorldCursorPos) {
     this.deltaWorldCursorPos = deltaWorldCursorPos;
     //this.direction = direction;
@@ -15,7 +6,7 @@ var MessageRequestRotate = function(deltaWorldCursorPos) {
 global.MessageRequestRotate = MessageRequestRotate;
 TypeRegister.add(RegisterMessage.ToServer, MessageRequestRotate);
 
-MessageRequestRotate.prototype.execute = function(gameData, player) {
+MessageRequestRotate.prototype.execute = function(player) {
     if (!this.deltaWorldCursorPos) return;
     if (player.entityId == null) return;
     var entity = World.entities.objects[player.entityId];
@@ -54,6 +45,6 @@ MessageRequestRotate.prototype.send = function(socket) {
     socket.emit(this.idString, this.deltaWorldCursorPos);
 }
 
-MessageRequestRotate.prototype.receive = function(gameData, data) {
+MessageRequestRotate.prototype.receive = function(data) {
     this.deltaWorldCursorPos = data;
 }

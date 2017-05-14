@@ -1,26 +1,12 @@
 
-
-
-
-
-
-
-
-
-;
-
-
-
-
 var MessageRequestClickSlot = function(inventoryId, slotId, clickType) {
     this.inventoryId = inventoryId;
     this.slotId = slotId;
     this.clickType = clickType;
 }
-global.MessageRequestClickSlot = MessageRequestClickSlot;
 TypeRegister.add(RegisterMessage.ToServer, MessageRequestClickSlot);
 
-MessageRequestClickSlot.prototype.execute = function(gameData, player) {
+MessageRequestClickSlot.prototype.execute = function(player) {
     var entity = World.entities.objects[player.entityId];
     if (!entity) return;
     var inventory = World.inventories[this.inventoryId];
@@ -38,7 +24,7 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
     var item = inventory.items[this.slotId];
     if (!item) return;
     // Uncomment to enable throwing items on the ground
-    /*if (this.clickType == EntityInventoryClickTypes.RIGHT_CLICK) {
+    if (this.clickType == EntityInventoryClickTypes.RIGHT_CLICK) {
         // Drop stack
         var physicsBody = entity.physicsBody;
         if (!physicsBody) return;
@@ -49,13 +35,8 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
         var speed2 = {};
         v2.mul(10.0 * displacement3, speed, speed2);
 
-<<<<<<< HEAD
-        var itemEntityId = idList.next();
-        var itemEntity = entityTemplateItem(item.id, item.amount, gameData);
-=======
         var itemEntityId = World.idList.next();
-        var itemEntity = entityTemplates.Item(item.id, item.amount, gameData);
->>>>>>> master
+        var itemEntity = entityTemplateItem(item.id, item.amount);
         itemEntity.physicsBody.setPos(physicsBody.getPos());
         itemEntity.physicsBody.posOld = v2.clone(physicsBody.getPos());
         itemEntity.physicsBody.setVelocity([speed2[0], speed2[1]]);
@@ -63,13 +44,13 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
         itemEntity.physicsBody.angle = physicsBody.angle;
         itemEntity.physicsBody.angleOld = physicsBody.angle;
         itemEntity.item.dropped = new Date();
-        sendCommand(new CommandEntitySpawn(gameData, itemEntity, itemEntityId));
+        sendCommand(new CommandEntitySpawn(itemEntity, itemEntityId));
 
         sendCommand(new CommandEntityInventory(player.entityId, CommandEntityInventory.Actions.DROP_STACK, this.slotId, 0));
 
         if (item.equipped)
             sendCommand(new CommandEntityEquipItem(player.entityId, this.slotId, item.id, false));
-    } else if (this.clickType == EntityInventoryClickTypes.LEFT_CLICK)*/ {
+    } else if (this.clickType == EntityInventoryClickTypes.LEFT_CLICK) {
         // Only equip items in own inventory
         if (entity.inventory && entity.inventory.inventoryId == this.inventoryId) {
             // Equip stack
@@ -80,7 +61,7 @@ MessageRequestClickSlot.prototype.execute = function(gameData, player) {
                 var equipped = !item.equipped;
                 if (equipped && inventory) {
                     // Dequip all other items of the same type
-                    var dequippedItems = inventory.dequipAll(gameData, itemType.type, entity.id);
+                    var dequippedItems = inventory.dequipAll(itemType.type, entity.id);
                     for (var i = 0; i < dequippedItems.length; ++i) {
                         var entry = dequippedItems[i];
                         sendCommand(new CommandEntityEquipItem(player.entityId, entry[0], entry[1], false));
@@ -96,7 +77,7 @@ MessageRequestClickSlot.prototype.send = function(socket) {
     socket.emit(this.idString, [this.inventoryId, this.slotId, this.clickType]);
 }
 
-MessageRequestClickSlot.prototype.receive = function(gameData, data) {
+MessageRequestClickSlot.prototype.receive = function(data) {
     this.inventoryId = data[0];
     this.slotId = data[1];
     this.clickType = data[2];

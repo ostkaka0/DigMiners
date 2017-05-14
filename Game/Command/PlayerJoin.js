@@ -29,12 +29,12 @@ CommandPlayerJoin.prototype.execute = function() {
 
         // Send init message
         // Sends generator seed, chunks must be sent AFTERWARDS
-        new MessageInit(gameData, player).send(gameData, socket);
+        new MessageInit(player).send(socket);
 
         // Send chunks
         // TODO: client requests chunks instead
-        for (var x = -3; x < 3; ++x) {
-            for (var y = -3; y < 3; ++y) {
+        for (var x = -World.width / 2; x < World.width / 2; ++x) {
+            for (var y = -World.height / 2; y < World.height / 2; ++y) {
                 var chunk = World.tiles.get([x, y]);
                 var blockChunk = World.blocks.get([x, y]);
                 var message = new MessageChunk(chunk, blockChunk, x, y);

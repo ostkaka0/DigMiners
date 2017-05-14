@@ -1,9 +1,5 @@
 
-
-
-
-
-var CommandEntitySpawn = function(gameData, entity, entityId, templateId) {
+var CommandEntitySpawn = function(entity, entityId, teamId) {
     this.entity = entity;
     this.entityId = entityId;
     this.templateId = templateId;
@@ -15,7 +11,6 @@ CommandEntitySpawn.prototype.execute = function() {
     if (World.entities.objects[this.entityId])
         World.entities.remove(World.entities.objects[this.entityId]);
     World.entities.add(this.entity, this.entityId);
-    console.log("Entity spawn:", this.entity);
 }
 
 CommandEntitySpawn.prototype.serialize = function(byteArray, index) {
@@ -40,9 +35,8 @@ CommandEntitySpawn.prototype.deserialize = function(byteArray, index) {
         var componentId = Deserialize.int32(byteArray, index);
         var componentType = RegisterEntity[componentId];
         var componentName = componentType.prototype.name;
-        if (!entity[componentName])
-            entity[componentName] = new componentType();
-        entity[componentName].deserialize(byteArray, index, gameData);
+        entity[componentName] = new componentType();
+        entity[componentName].deserialize(byteArray, index);
     }
     this.entityId = entityId;
     this.templateId = templateId;

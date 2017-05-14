@@ -18,7 +18,7 @@ var MessageAmmoChange = function(entity, itemIds) {
 global.MessageAmmoChange = MessageAmmoChange;
 TypeRegister.add(RegisterMessage.ToClient, MessageAmmoChange);
 
-MessageAmmoChange.prototype.execute = function(gameData) {
+MessageAmmoChange.prototype.execute = function() {
 
 }
 
@@ -35,7 +35,7 @@ MessageAmmoChange.prototype.send = function(socket) {
     socket.emit(this.idString, byteArray);
 }
 
-MessageAmmoChange.prototype.receive = function(gameData, byteArray) {
+MessageAmmoChange.prototype.receive = function(byteArray) {
     if (!Client.playerEntity || !Client.playerEntity.ammo) return;
     var entity = Client.playerEntity;
     byteArray = new Uint8Array(byteArray);

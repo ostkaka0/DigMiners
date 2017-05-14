@@ -49,12 +49,12 @@ EntityBlockPlacer.prototype.update = function(entity) {
 
     if (!placerEntity || placerEntity.blockPlacerId != entity.id)
         buildFailure = true;
-    if (player && !player.canPlaceBlock(gameData, this.blockPos[0], this.blockPos[1]))
+    if (player && !player.canPlaceBlock(this.blockPos[0], this.blockPos[1]))
         buildFailure = true;
     if (inventoryItem && inventoryItem.blockId != this.blockId)
         buildFailure = true;
-    if (blockType.oreRecipe && player && player.calcOreRecipeQuantity(blockType.oreRecipe) == 0)
-        buildFailure = true;
+    //if (blockType.oreRecipe && player && player.calcOreRecipeQuantity(blockType.oreRecipe) == 0)
+      //  buildFailure = true;
 
     var shouldDestroy = (buildFailure && this.duration >= 0) || this.duration <= -2;
     if (!isServer && shouldDestroy) {

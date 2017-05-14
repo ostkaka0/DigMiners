@@ -57,7 +57,7 @@ BlockChunkRenderer.prototype.lazyInit = function() {
     }
 }
 
-BlockChunkRenderer.prototype.render = function(gameData, world, matVP, camera) {
+BlockChunkRenderer.prototype.render = function(world, matVP, camera) {
     var blockChunksToRender = [];
 
     var x1 = Math.floor((camera.pos[0] - camera.width / 2) / this.tileSize / BlockChunk.dim);
@@ -74,10 +74,10 @@ BlockChunkRenderer.prototype.render = function(gameData, world, matVP, camera) {
         }
     }
 
-    this.renderBlockChunks(gameData, matVP, blockChunksToRender);
+    this.renderBlockChunks(matVP, blockChunksToRender);
 }
 
-BlockChunkRenderer.prototype.renderBlockChunks = function(gameData, matVP, blockChunksToRender) {
+BlockChunkRenderer.prototype.renderBlockChunks = function(matVP, blockChunksToRender) {
     if (!this.isReady)
         this.lazyInit();
     if (!this.isReady || !this.textureTiles || !this.textureBlockBreak)
@@ -108,7 +108,7 @@ BlockChunkRenderer.prototype.renderBlockChunks = function(gameData, matVP, block
         }
         // Update glBlockChunk
         if (true || blockChunk.isChanged) {
-            glBlockChunk.update(this.gl, gameData, blockChunk, x, y);
+            glBlockChunk.update(this.gl, blockChunk, x, y);
             blockChunk.isChanged = false;
         }
         glBlockChunk.bind(this.gl);

@@ -90,6 +90,8 @@ global.Sprite = Sprite;
 Sprite.prototype.getSize = function() {
     if (this.frame)
         return [this.frame[2], this.frame[3]];
+    if (!this.texture)
+        return [0, 0];
     return [this.texture.width, this.texture.height];
 }
 
